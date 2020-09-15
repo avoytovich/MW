@@ -39,10 +39,12 @@
     "browser-locale": "1.0.3",
     "css-loader": "4.3.0",
     "file-loader": "6.1.0",
+    "formik": "2.1.5",
     "i18n-js": "3.7.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "7.2.1",
+    "react-router-dom": "5.2.0",
     "redux": "4.0.5",
     "style-loader": "1.2.1"
   }
