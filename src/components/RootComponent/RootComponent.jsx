@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Typography, CssBaseline } from '@material-ui/core';
-
 import HttpNotifications from '../utils/HttpNotifications';
 import localization from '../../localization';
 

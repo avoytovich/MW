@@ -7,6 +7,13 @@ const api = {
       url: '/prices',
     });
   },
+  recoverPassword(data) {
+    return axiosInstance({
+      method: 'post',
+      url: '/iam/identities/lostpassword/nexway',
+      data,
+    });
+  },
 };
 
 export default api;

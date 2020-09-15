@@ -45,8 +45,8 @@ const themeConfig = {
       main: '#5850EC',
     },
     text: {
-      primary: MuiColors.blueGrey[900],
-      secondary: MuiColors.blueGrey[600],
+      primary:colors.textPrimary,
+      secondary:colors.textsSecondary,
     },
     error: {
       main: colors.errorText,
