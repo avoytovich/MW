@@ -14,7 +14,7 @@ const HttpActionNotification = () => {
   const [hideTimeout, setHideTimeout] = useState(null);
   const {
     message, showNotification, error,
-  } = useSelector(({ HttpNotifications }) => HttpNotifications);
+  } = useSelector(({ httpNotifications }) => httpNotifications);
 
   const severity = error ? 'error' : 'success';
 

@@ -1,18 +1,28 @@
 import React from 'react';
+import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 
-import { Typography, CssBaseline } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
+import Routes from '../utils/Routes';
+import Auth from '../utils/Auth';
 import HttpNotifications from '../utils/HttpNotifications';
-import localization from '../../localization';
 
 import '../../styles/main.scss';
 
-const RootComponent = () => (
-  <>
-    <CssBaseline />
-    <Typography variant='h1'>{localization.t('general.welcomeMessage')}</Typography>
-    <HttpNotifications />
-  </>
-);
+const RootComponent = () => {
+  const history = useHistory();
+
+  return (
+    <>
+      <CssBaseline />
+      <Router history={history}>
+        <Auth>
+          <Routes />
+          <HttpNotifications />
+        </Auth>
+      </Router>
+    </>
+  );
+};
 
 export default RootComponent;
