@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
-import HttpNotifications from './HttpNotifications';
+import account from './Account';
+import httpNotifications from './HttpNotifications';
 
 const app = combineReducers({
-  HttpNotifications,
+  account,
+  httpNotifications,
 });
 
 export default app;
