@@ -15,7 +15,16 @@ const Routes = () => (
         path='/login'
         component={lazy(() => import('../../../screens/AuthScreen'))}
       />
-
+      <GuestRoute
+        exact
+        path='/recoverPassword'
+        component={lazy(() => import('../../../screens/RecoveryPasswordScreen'))}
+      />
+      <GuestRoute
+        exact
+        path='/updatePassword/:token'
+        component={lazy(() => import('../../../screens/UpdatePasswordScreen'))}
+      />
       <AuthRoute
         path='/'
         render={(props) => (

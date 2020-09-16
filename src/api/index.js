@@ -31,10 +31,16 @@ const api = {
       data,
     });
   },
-  setNewPassword(data){
+  setNewPassword(token,data){
+    let url = `/iam/identities/resetpassword/nexway/${token}`
+    console.log('url',token)
+    const reason = 'Nexway-Center';
+    if (reason) {
+      url += `?reason=${reason}`;
+    }
     return axiosInstance({
       method: 'post',
-      url: '',
+      url,
       data,
     });
   }

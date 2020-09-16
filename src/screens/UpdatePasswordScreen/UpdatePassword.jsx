@@ -7,11 +7,13 @@ import {
     Button, Typography,
     TextField,
     Box,
-    Container
+    Container, FormHelperText
 } from '@material-ui/core';
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
-const UpdatePassword = () => {
+const UpdatePassword = (props) => {
+    let { token } = useParams()
+    let history = useHistory();
     return (
         <Container maxWidth="md">
             <Box mt={3}>
@@ -21,7 +23,7 @@ const UpdatePassword = () => {
                     initialValues={{ newPassword: '', confirmedPassword: '' }}
                     onSubmit={(values, { setSubmitting, setErrors }) => {
                         setSubmitting(true)
-                        api.setNewPassword(values)
+                        api.setNewPassword(token, { password: values.newPassword }).then(() => history.push('/'))
                             .catch(error => { setSubmitting(false); setErrors({ message: error.response.data.error }) })
                     }}
                 >{({
@@ -87,4 +89,4 @@ const UpdatePassword = () => {
 
 }
 
-export default UpdatePassword;
+export default UpdatePassword
