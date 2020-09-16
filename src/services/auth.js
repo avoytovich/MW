@@ -1,10 +1,96 @@
-const USER_KEY = 'auth-user';
+/* eslint-disable class-methods-use-this */
 
-export const onSignIn = (data) => localStorage.setItem(USER_KEY, JSON.stringify(data));
+import jwtDecode from 'jwt-decode';
+import api from '../api';
+import { axiosInstance } from '../axios';
 
-export const onSignOut = () => localStorage.removeItem(USER_KEY);
+class Auth {
+  setAxiosInterceptors({ onLogout }) {
+    axiosInstance.interceptors.request.use(
+      (config) => {
+        const headers = { ...config.headers };
+        const token = this.getAccessToken();
 
-export const getToken = () => {
-  const { token } = JSON.parse(localStorage.getItem(USER_KEY)) || {};
-  return token;
-};
+        if (token) {
+          const Authorization = `Bearer ${token}`;
+          headers.Authorization = Authorization;
+        }
+
+        return { ...config, headers };
+      },
+
+      (error) => Promise.reject(error),
+    );
+
+    axiosInstance.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          this.setSession(null);
+
+          if (onLogout) {
+            onLogout();
+          }
+        }
+
+        return Promise.reject(error);
+      },
+    );
+  }
+
+  handleAuthentication() {
+    const accessToken = this.getAccessToken();
+
+    if (!accessToken) {
+      return;
+    }
+
+    if (this.isValidToken(accessToken)) {
+      this.setSession(accessToken);
+    } else {
+      this.setSession(null);
+    }
+  }
+
+  loginWithEmailAndPassword(username, password) {
+    return api
+      .signIn({ username, password })
+      .then(({ data }) => {
+        if (data.access_token) {
+          this.setSession(data.access_token);
+          return data;
+        }
+
+        return data.error;
+      });
+  }
+
+  logout() { this.setSession(null); }
+
+  setSession(accessToken) {
+    if (accessToken) {
+      return localStorage.setItem('accessToken', accessToken);
+    }
+
+    return localStorage.removeItem('accessToken');
+  }
+
+  getAccessToken() { return localStorage.getItem('accessToken'); }
+
+  isValidToken(accessToken) {
+    if (!accessToken) {
+      return false;
+    }
+
+    const decoded = jwtDecode(accessToken);
+    const currentTime = Date.now() / 1000;
+
+    return decoded.exp > currentTime;
+  }
+
+  isSignedIn() { return !!this.getAccessToken(); }
+}
+
+const auth = new Auth();
+
+export default auth;
