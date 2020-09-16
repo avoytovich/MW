@@ -14,6 +14,13 @@ const api = {
       data,
     });
   },
+  setNewPassword(data){
+    return axiosInstance({
+      method: 'post',
+      url: '',
+      data,
+    });
+  }
 };
 
 export default api;

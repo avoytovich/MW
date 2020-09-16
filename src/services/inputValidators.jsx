@@ -1,5 +1,5 @@
 
-export const emailValidation = (values) => {
+export const email = (values) => {
     const errors = {};
     if (!values.email) {
         errors.email = 'Required';
@@ -12,3 +12,10 @@ export const emailValidation = (values) => {
 }
 
 
+export const updatePassword = (values) => {
+    const errors = {};
+    if (values.newPassword !== values.confirmedPassword) {
+        errors.confirmedPassword = 'Confirmed password should match to new password'
+    }
+    return errors;
+}

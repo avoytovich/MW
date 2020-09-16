@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import localization from '../../localization';
+import { Formik } from 'formik';
+import * as validators from '../../services/inputValidators'
 import api from '../../api'
 import {
     Button, Typography,
@@ -9,14 +11,19 @@ import {
 } from '@material-ui/core';
 import { useParams } from "react-router-dom";
 
-const RecoveryPassword = () => {
-
+const UpdatePassword = () => {
     return (
         <Container maxWidth="md">
             <Box mt={3}>
                 <Formik
+                    validate={(values) => validators.updatePassword(values)}
+
                     initialValues={{ newPassword: '', confirmedPassword: '' }}
-                    onSubmit={}
+                    onSubmit={(values, { setSubmitting, setErrors }) => {
+                        setSubmitting(true)
+                        api.setNewPassword(values)
+                            .catch(error => { setSubmitting(false); setErrors({ message: error.response.data.error }) })
+                    }}
                 >{({
                     values,
                     errors,
@@ -28,12 +35,12 @@ const RecoveryPassword = () => {
                 }) =>
                     <form noValidate onSubmit={handleSubmit}>
                         <TextField
-                            error={Boolean(touched.password && errors.password)}
+                            error={Boolean(touched.newPassword && errors.newPassword)}
                             fullWidth
-                            helperText={touched.password && errors.password}
-                            label="Password"
+                            helperText={touched.newPassword && errors.newPassword}
+                            label=" New Password"
                             margin="normal"
-                            name="password"
+                            name="newPassword"
                             onBlur={handleBlur}
                             onChange={handleChange}
                             type="password"
@@ -41,12 +48,12 @@ const RecoveryPassword = () => {
                             variant="outlined"
                         />
                         <TextField
-                            error={Boolean(touched.password && errors.password)}
+                            error={Boolean(touched.confirmedPassword && errors.confirmedPassword)}
                             fullWidth
-                            helperText={touched.password && errors.password}
+                            helperText={touched.confirmedPassword && errors.confirmedPassword}
                             label="Confirm Password"
                             margin="normal"
-                            name="confirmPassword"
+                            name="confirmedPassword"
                             onBlur={handleBlur}
                             onChange={handleChange}
                             type="password"
@@ -56,7 +63,7 @@ const RecoveryPassword = () => {
                         <Box mt={2}>
                             <Button
                                 color="secondary"
-                                // disabled={isSubmitting}
+                                disabled={Object.keys(errors).length !== 0 || !values.newPassword || isSubmitting}
                                 fullWidth
                                 size="large"
                                 type="submit"
@@ -72,11 +79,12 @@ const RecoveryPassword = () => {
                                 </Box>
                             )}
                         </Box>
-                    </form>}
+                    </form>
+                    }
                 </Formik>
             </Box>
-        </Container>)
+        </Container >)
 
 }
 
-export default RecoveryPassword;
+export default UpdatePassword;

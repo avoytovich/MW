@@ -9,7 +9,7 @@ import {
     FormHelperText
 } from '@material-ui/core';
 import api from '../../api'
-import { emailValidation } from '../../services/inputValidators'
+import * as validators from '../../services/inputValidators'
 
 const RecoveryPassword = () => {
     return (
@@ -19,10 +19,9 @@ const RecoveryPassword = () => {
                 <Typography variant="body1">{localization.t('general.forgotPasswordMessage')}</Typography>
                 <Formik
                     initialValues={{ email: '' }}
-                    validate={(values) => emailValidation(values)}
+                    validate={(values) => validators.email(values)}
                     onSubmit={(values, { setSubmitting, setErrors }) => {
                         api.recoverPassword({ email: values.email })
-                            .then(() => setSubmitting(true))
                             .catch(error => { setSubmitting(false); setErrors({ message: error.response.data.error }) })
                     }}
                 >{({
@@ -32,7 +31,7 @@ const RecoveryPassword = () => {
                     handleChange,
                     handleBlur,
                     handleSubmit,
-                    isSubmitting,
+                    isSubmitting
                 }) =>
                     <form noValidate onSubmit={handleSubmit}>
                         <TextField
@@ -52,7 +51,7 @@ const RecoveryPassword = () => {
                         <Box mt={2}>
                             <Button
                                 color="secondary"
-                                disabled={isSubmitting}
+                                disabled={Object.keys(errors).length !== 0 || !values.email || isSubmitting}
                                 fullWidth
                                 size="large"
                                 type="submit"

@@ -1,3 +1,4 @@
 import RecoveryPassword from './RecoveryPassword';
+import UpdatePassword from './UpdatePassword'
 
-export default RecoveryPassword;
+export  { RecoveryPassword, UpdatePassword };
