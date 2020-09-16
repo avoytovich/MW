@@ -37,22 +37,24 @@ const UpdatePassword = (props) => {
                 }) =>
                     <form noValidate onSubmit={handleSubmit}>
                         <TextField
-                            error={Boolean(touched.newPassword && errors.newPassword)}
+                            // error={Boolean(touched.newPassword && errors.length || touched.newPassword && errors.letterCase)}
                             fullWidth
-                            helperText={touched.newPassword && errors.newPassword}
+                            // helperText={touched.newPassword && errors.length}
+                            // helperText={touched.newPassword && errors.letterCase}
+
                             label=" New Password"
                             margin="normal"
                             name="newPassword"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            type="password"
+                            type="text"
                             value={values.newPassword}
                             variant="outlined"
                         />
                         <TextField
-                            error={Boolean(touched.confirmedPassword && errors.confirmedPassword)}
+                            error={Boolean(touched.confirmedPassword && errors.matches)}
                             fullWidth
-                            helperText={touched.confirmedPassword && errors.confirmedPassword}
+                            helperText={touched.confirmedPassword && errors.matches}
                             label="Confirm Password"
                             margin="normal"
                             name="confirmedPassword"
