@@ -1,0 +1,19 @@
+.root {
+    justify-content: center;
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    padding-bottom: 80px;
+    padding-top: 80px;
+  }
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+  }
+.card {
+    overflow: visible;
+    display: flex;
+    position: relative;
+  }

@@ -1,19 +1,47 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from '../../redux/actions/Account';
+import './AuthScreen.scss';
+
+import {
+  Box,
+  Container,
+  Card,
+  CardContent,
+  Divider,
+  Link,
+  Typography,
+} from '@material-ui/core';
+
+import LoginForm from './LoginForm'; 
 
 const AuthScreen = () => {
-  const dispatch = useDispatch();
-  const doSignIn = () => {
-    const mockCreds = { username: 'mtsybran', password: 'Nexway2020' };
-    dispatch(login(mockCreds.username, mockCreds.password));
-  };
 
   return (
-    <>
-      <div>Sign in</div>
-      <button onClick={doSignIn} type='button'>Sign In</button>
-    </>
+      <Container maxWidth="md" className="loginContainer">
+      <Card className="card">
+        <CardContent className="content">
+          <Typography
+            variant="h2"
+            color="textSecondary"
+          >
+            Sign in
+          </Typography>
+          <Box mt={3}>
+            <LoginForm/>
+          </Box>
+          <Box my={2}>
+            <Divider />
+          </Box>
+          <Link
+            // component={RouterLink}
+            // to="/register"
+            // variant="body2"
+            color="textSecondary"
+          >
+            Create new account
+          </Link>
+        </CardContent>
+      </Card>
+    </Container>
   );
 };
 
