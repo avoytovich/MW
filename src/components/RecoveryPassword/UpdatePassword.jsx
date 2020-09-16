@@ -1,30 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import localization from '../../localization';
-import { Formik } from 'formik';
+import api from '../../api'
 import {
     Button, Typography,
     TextField,
     Box,
-    Container,
-    FormHelperText
+    Container
 } from '@material-ui/core';
-import api from '../../api'
-import { emailValidation } from '../../services/inputValidators'
+import { useParams } from "react-router-dom";
 
 const RecoveryPassword = () => {
+
     return (
         <Container maxWidth="md">
             <Box mt={3}>
-                <Typography variant='h1' color="textSecondary">{localization.t('general.forgotPassword')}</Typography>
-                <Typography variant="body1">{localization.t('general.forgotPasswordMessage')}</Typography>
                 <Formik
-                    initialValues={{ email: '' }}
-                    validate={(values) => emailValidation(values)}
-                    onSubmit={(values, { setSubmitting, setErrors }) => {
-                        api.recoverPassword({ email: values.email })
-                            .then(() => setSubmitting(true))
-                            .catch(error => { setSubmitting(false); setErrors({ message: error.response.data.error }) })
-                    }}
+                    initialValues={{ newPassword: '', confirmedPassword: '' }}
+                    onSubmit={}
                 >{({
                     values,
                     errors,
@@ -36,29 +28,41 @@ const RecoveryPassword = () => {
                 }) =>
                     <form noValidate onSubmit={handleSubmit}>
                         <TextField
-                            error={Boolean(touched.email && errors.email)}
+                            error={Boolean(touched.password && errors.password)}
                             fullWidth
-                            autoFocus
-                            helperText={touched.email && errors.email}
-                            label="Email Address"
+                            helperText={touched.password && errors.password}
+                            label="Password"
                             margin="normal"
-                            name="email"
+                            name="password"
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            type="email"
-                            value={values.email}
+                            type="password"
+                            value={values.newPassword}
+                            variant="outlined"
+                        />
+                        <TextField
+                            error={Boolean(touched.password && errors.password)}
+                            fullWidth
+                            helperText={touched.password && errors.password}
+                            label="Confirm Password"
+                            margin="normal"
+                            name="confirmPassword"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            type="password"
+                            value={values.confirmedPassword}
                             variant="outlined"
                         />
                         <Box mt={2}>
                             <Button
                                 color="secondary"
-                                disabled={isSubmitting}
+                                // disabled={isSubmitting}
                                 fullWidth
                                 size="large"
                                 type="submit"
                                 variant="contained"
                             >
-                                {localization.t('general.getInstructions')}
+                                {localization.t('general.setNewPassword')}
                             </Button>
                             {errors.message && (
                                 <Box mt={3}>
@@ -68,11 +72,10 @@ const RecoveryPassword = () => {
                                 </Box>
                             )}
                         </Box>
-                    </form>
-                    }
+                    </form>}
                 </Formik>
             </Box>
-        </Container >)
+        </Container>)
 
 }
 
