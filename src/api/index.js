@@ -31,9 +31,8 @@ const api = {
       data,
     });
   },
-  setNewPassword(token,data){
-    let url = `/iam/identities/resetpassword/nexway/${token}`
-    console.log('url',token)
+  setNewPassword(token, data) {
+    let url = `/iam/identities/resetpassword/nexway/${token}`;
     const reason = 'Nexway-Center';
     if (reason) {
       url += `?reason=${reason}`;
@@ -43,7 +42,7 @@ const api = {
       url,
       data,
     });
-  }
+  },
 };
 
 export default api;

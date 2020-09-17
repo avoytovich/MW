@@ -45,8 +45,8 @@ const themeConfig = {
       main: '#5850EC',
     },
     text: {
-      primary:colors.textPrimary,
-      secondary:colors.textsSecondary,
+      primary: colors.textPrimary,
+      secondary: colors.textsSecondary,
     },
     error: {
       main: colors.errorText,

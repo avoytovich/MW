@@ -7,7 +7,8 @@ const general = {
   getInstructions:'Get instructions',
   forgotPassword:'Forgot password?',
   forgotPasswordMessage:`Submit your email in the form; You'll then receive a message to start the password recovery process.`,
-  setNewPassword:'Set new password'
+  setNewPassword:'Set new password',
+ 
 };
 
 export default general;

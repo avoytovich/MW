@@ -1,3 +1,3 @@
-import RecoveryPassword  from './RecoveryPassword'
+import RecoveryPassword from './RecoveryPassword';
 
-export default RecoveryPassword
+export default RecoveryPassword;
