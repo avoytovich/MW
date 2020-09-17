@@ -11,38 +11,35 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import LoginForm from './LoginForm'; 
+import LoginForm from '../../components/LoginForm';
 
-const AuthScreen = () => {
-
-  return (
-      <Container maxWidth="md" className="loginContainer">
-      <Card className="card">
-        <CardContent className="content">
-          <Typography
-            variant="h2"
-            color="textSecondary"
-          >
-            Sign in
-          </Typography>
-          <Box mt={3}>
-            <LoginForm/>
-          </Box>
-          <Box my={2}>
-            <Divider />
-          </Box>
-          <Link
+const AuthScreen = () => (
+  <Container maxWidth="md" className="loginContainer">
+    <Card className="card">
+      <CardContent className="content">
+        <Typography
+          variant="h2"
+          color="textSecondary"
+        >
+          Sign in
+        </Typography>
+        <Box mt={3}>
+          <LoginForm />
+        </Box>
+        <Box my={2}>
+          <Divider />
+        </Box>
+        <Link
             // component={RouterLink}
-            // to="/register"
+          to="/register"
             // variant="body2"
-            color="textSecondary"
-          >
-            Create new account
-          </Link>
-        </CardContent>
-      </Card>
-    </Container>
-  );
-};
+          color="textSecondary"
+        >
+          Create new account
+        </Link>
+      </CardContent>
+    </Card>
+  </Container>
+);
 
 export default AuthScreen;
