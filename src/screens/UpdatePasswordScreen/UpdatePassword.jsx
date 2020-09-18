@@ -5,6 +5,8 @@ import {
   Box,
   FormHelperText,
   Typography,
+  Checkbox,
+  Link,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import { useHistory, useParams } from 'react-router-dom';
@@ -17,7 +19,7 @@ const UpdatePassword = () => {
   const history = useHistory();
   return (
     <>
-      <Box mb={10}>
+      <Box mb={4}>
         <Typography color="textPrimary" variant="h3" component="h2">
           {localization.t('general.setNewPassword')}
         </Typography>
@@ -71,12 +73,26 @@ const UpdatePassword = () => {
               value={values.confirmedPassword}
               variant="outlined"
             />
+            <Box alignItems="center" display="flex">
+              <Checkbox
+                checked={values.policy}
+                name="policy"
+                onChange={handleChange}
+              />
+              <Typography variant="body2" color="secondary">
+                {localization.t('general.iHaveReadThe')}
+                <Link href="/" color="secondary">
+                  {localization.t('general.termsAndConditions')}
+                </Link>
+              </Typography>
+            </Box>
             <Box mt={2}>
               <Button
                 color="primary"
                 disabled={
                   Object.keys(errors).length !== 0
                   || !values.newPassword
+                  || !values.policy
                   || isSubmitting
                 }
                 fullWidth

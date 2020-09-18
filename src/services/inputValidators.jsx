@@ -23,7 +23,8 @@ export const updatePassword = (values) => {
   }
   if (values.newPassword.length < 6) {
     notifications.push(localization.t('errorNotifications.atLeast6Characters'));
-  } else if (values.newPassword.length > 20) {
+  }
+  if (values.newPassword.length > 20) {
     notifications.push(
       localization.t('errorNotifications.lessThan20Characters'),
     );
@@ -32,7 +33,8 @@ export const updatePassword = (values) => {
     notifications.push(
       localization.t('errorNotifications.containsAtLeast1LowercaseCharacter'),
     );
-  } else if (!/(?=.*[A-Z])/.test(values.newPassword)) {
+  }
+  if (!/(?=.*[A-Z])/.test(values.newPassword)) {
     notifications.push(
       localization.t('errorNotifications.containsAtLeast1UppercaseCharacter'),
     );

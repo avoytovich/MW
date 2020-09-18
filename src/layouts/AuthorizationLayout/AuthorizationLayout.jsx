@@ -38,7 +38,7 @@ const AuthorizationLayout = ({ children }) => (
                   display="block"
                   gutterBottom
                 >
-                  {localization.t('general.JavascriptMasterEchovoxUA')}
+                  {localization.t('general.javascriptMasterEchovoxUA')}
                 </Typography>
               </Box>
             </Typography>
