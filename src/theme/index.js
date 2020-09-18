@@ -20,39 +20,33 @@ const themeConfig = {
         },
       },
     },
-    MuiInputBase: {
-      input: {
-        '&::placeholder': {
-          opacity: 1,
-          color: MuiColors.blueGrey[600],
-        },
-      },
-    },
+
+    MuiFormLabel: { root: { color: colors.textPrimaryGray } },
   },
   palette: {
-    type: 'dark',
+    type: 'light',
     action: {
       active: MuiColors.blueGrey[600],
+      hover: colors.buttonPrimary,
     },
     background: {
       default: colors.mainBackground,
       paper: colors.mainBackground,
     },
     primary: {
-      main: MuiColors.indigo[600],
+      main: colors.buttonPrimary,
     },
-    secondary: {
-      main: '#5850EC',
-    },
+    secondary: { main: colors.textPrimaryGray },
     text: {
-      primary: colors.textPrimary,
-      secondary: colors.textsSecondary,
+      primary: colors.textPrimaryDark,
+      secondary: colors.mainBackground,
     },
     error: {
       main: colors.errorText,
     },
   },
   shadows: softShadows,
+  spacing: 6,
 };
 
 const theme = createMuiTheme({ ...baseConfig, ...themeConfig });

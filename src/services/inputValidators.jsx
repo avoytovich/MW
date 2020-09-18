@@ -17,6 +17,9 @@ export const updatePassword = (values) => {
     errors.matches = localization.t(
       'errorNotifications.passwordConfirmationMatch',
     );
+    notifications.push(
+      localization.t('errorNotifications.passwordConfirmationMatch'),
+    );
   }
   if (values.newPassword.length < 6) {
     notifications.push(localization.t('errorNotifications.atLeast6Characters'));

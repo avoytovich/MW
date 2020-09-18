@@ -1,8 +1,9 @@
 const colors = {
-  mainBackground: '#212121',
+  mainBackground: '#FFFFFF',
   errorText: '#FF6341',
-  textPrimary: '#e6e5e8',
-  textsSecondary: '#adb0bb',
+  textPrimaryGray: '#b9b1b1',
+  textPrimaryDark: '#303030',
+  buttonPrimary: '#4791db',
 };
 
 export default colors;
