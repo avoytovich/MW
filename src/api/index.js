@@ -24,6 +24,12 @@ const api = {
       url: '/prices',
     });
   },
+  getProducts() {
+    return axiosInstance({
+      method: 'get',
+      url: '/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=0',
+    });
+  },
 };
 
 export default api;

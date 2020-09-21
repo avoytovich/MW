@@ -28,6 +28,16 @@ const themeConfig = {
         },
       },
     },
+    MuiTableRow: {
+      root: {
+        '&:nth-of-type(odd)': {
+          backgroundColor: colors.tablesOddRow,
+        },
+        '&$hover:hover': {
+          // backgroundColor: 'green',
+        },
+      },
+    },
   },
   palette: {
     type: 'dark',
