@@ -1,42 +1,37 @@
 import React, { Suspense } from 'react';
-import { Switch, Redirect } from 'react-router-dom';
 
 import SignedRoutes from './SignedRoutes';
+import GuestRoutes from './GuestRoutes';
 import { AuthRoute, GuestRoute } from '../PrivateRoutes';
-import UpdatePasswordScreen from '../../../screens/UpdatePasswordScreen';
-import RecoveryPasswordScreen from '../../../screens/RecoveryPasswordScreen';
+
 import LoadingScreen from '../../../screens/LoadingScreen';
+
 import MainLayout from '../../../layouts/MainLayout';
-import AuthScreen from '../../../screens/AuthScreen';
+import AuthorizationLayout from '../../../layouts/AuthorizationLayout';
 
 const Routes = () => (
   <Suspense fallback={<LoadingScreen />}>
-    <Switch>
-      <GuestRoute exact path="/login" component={AuthScreen} />
-      <GuestRoute
-        exact
-        path="/recoverPassword"
-        component={RecoveryPasswordScreen}
-      />
-      <GuestRoute
-        exact
-        path="/updatePassword/:token"
-        component={UpdatePasswordScreen}
-      />
+    <GuestRoute
+      path='/login'
+      render={(props) => (
+        <AuthorizationLayout {...props}>
+          <Suspense fallback={<LoadingScreen />}>
+            <GuestRoutes />
+          </Suspense>
+        </AuthorizationLayout>
+      )}
+    />
 
-      <AuthRoute
-        path="/"
-        render={(props) => (
-          <MainLayout {...props}>
-            <Suspense fallback={<LoadingScreen />}>
-              <SignedRoutes />
-            </Suspense>
-          </MainLayout>
-        )}
-      />
-
-      <Redirect to="/404" />
-    </Switch>
+    <AuthRoute
+      path='/'
+      render={(props) => (
+        <MainLayout {...props}>
+          <Suspense fallback={<LoadingScreen />}>
+            <SignedRoutes />
+          </Suspense>
+        </MainLayout>
+      )}
+    />
   </Suspense>
 );
 
