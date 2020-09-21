@@ -6,10 +6,11 @@ import { axiosInstance } from '../axios';
 
 class Auth {
   setAxiosInterceptors({ onLogout }) {
+    const token = this.getAccessToken();
+
     axiosInstance.interceptors.request.use(
       (config) => {
         const headers = { ...config.headers };
-        const token = this.getAccessToken();
 
         if (token) {
           const Authorization = `Bearer ${token}`;
@@ -25,7 +26,7 @@ class Auth {
     axiosInstance.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response && error.response.status === 401) {
+        if (token && error.response && error.response.status === 401) {
           this.setSession(null);
 
           if (onLogout) {
