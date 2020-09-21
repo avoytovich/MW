@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ./src/*",
+    "lint": "eslint ./src/* --no-error-on-unmatched-pattern",
     "dev": "webpack-dev-server --mode=development --env.NODE_ENV=development",
     "prod": "webpack --mode=production --env.NODE_ENV=production"
   },
