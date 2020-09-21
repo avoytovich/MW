@@ -9,17 +9,21 @@ import {
 } from '@material-ui/core';
 import { login } from '../../redux/actions/Account';
 import localization from '../../localization';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+const initialValues = {
+  email: '',
+  password: '',
+};
 
 function LoginForm({ className, onSubmitSuccess, ...rest }) {
   const dispatch = useDispatch();
 
+
   return (
     <Formik
       className="formik"
-      initialValues={{
-        email: 'mtsybran',
-        password: 'Nexway2020'
-      }}
+      initialValues={initialValues}
       onSubmit={async (values, {
       }) => { dispatch(login(values.email, values.password));
       }}

@@ -61,9 +61,7 @@ const AuthScreen = () => (
         <Box mt={3}>
           <LoginForm />
         </Box>
-        {/* <Box my={2}>
-          <Divider />
-        </Box> */}
+        {false && (
         <Box className="signUpContainer">
           <Typography
             className="MuiTypography-colorTextPrimary"
@@ -80,6 +78,7 @@ const AuthScreen = () => (
             {localization.t('forms.links.signUp')}
           </Link>
         </Box>
+        )}
       </CardContent>
     </Card>
   </Container>
