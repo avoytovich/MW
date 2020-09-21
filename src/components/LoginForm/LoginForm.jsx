@@ -18,7 +18,7 @@ function LoginForm({ className, onSubmitSuccess, ...rest }) {
       className="formik"
       initialValues={{
         email: 'mtsybran',
-        password: 'Nexway2020'
+        password: 'Nexway2020',
       }}
       onSubmit={async (values, {
       }) => { dispatch(login(values.email, values.password));
@@ -30,7 +30,7 @@ function LoginForm({ className, onSubmitSuccess, ...rest }) {
         handleSubmit,
         isSubmitting,
         touched,
-        values
+        values,
       }) => (
         <form
           noValidate
@@ -84,11 +84,11 @@ function LoginForm({ className, onSubmitSuccess, ...rest }) {
 
 LoginForm.propTypes = {
   className: PropTypes.string,
-  onSubmitSuccess: PropTypes.func
+  onSubmitSuccess: PropTypes.func,
 };
 
 LoginForm.defaultProps = {
-  onSubmitSuccess: () => {}
+  onSubmitSuccess: () => {},
 };
 
 export default LoginForm;
