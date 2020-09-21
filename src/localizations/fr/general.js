@@ -9,7 +9,6 @@ const general = {
   resetPassword: 'Reset password',
   resetPasswordMessage: 'Please use your work email to reset your password.',
   setNewPassword: 'Set new password',
-  BogdanKulynka: '  Bogdan Kulynka',
   javascriptMasterEchovoxUA: 'Javascript Master @ EchovoxUA',
   iHaveReadThe: 'I have read the ',
   termsAndConditions: 'Terms and Conditions',

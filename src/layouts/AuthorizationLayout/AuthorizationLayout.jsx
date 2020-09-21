@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Typography, Box } from '@material-ui/core';
-import './AuthorizationLayout.scss';
 import localization from '../../localization';
+import './AuthorizationLayout.scss';
 
 const AuthorizationLayout = ({ children }) => (
   <Grid className="authWrapperContainer" container>
@@ -30,7 +30,7 @@ const AuthorizationLayout = ({ children }) => (
                   display="block"
                   gutterBottom
                 >
-                  {localization.t('general.BogdanKulynka')}
+                  BogdanKulynka
                 </Typography>
                 <Typography
                   className="authWrapperText"

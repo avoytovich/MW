@@ -7,38 +7,21 @@ import UpdatePasswordScreen from '../../../screens/UpdatePasswordScreen';
 import RecoveryPasswordScreen from '../../../screens/RecoveryPasswordScreen';
 import LoadingScreen from '../../../screens/LoadingScreen';
 import MainLayout from '../../../layouts/MainLayout';
-import AuthorizationLayout from '../../../layouts/AuthorizationLayout';
 import AuthScreen from '../../../screens/AuthScreen';
 
 const Routes = () => (
   <Suspense fallback={<LoadingScreen />}>
     <Switch>
-      <GuestRoute
-        exact
-        path="/login"
-        render={(props) => (
-          <AuthorizationLayout {...props}>
-            <AuthScreen />
-          </AuthorizationLayout>
-        )}
-      />
+      <GuestRoute exact path="/login" component={AuthScreen} />
       <GuestRoute
         exact
         path="/recoverPassword"
-        render={(props) => (
-          <AuthorizationLayout {...props}>
-            <RecoveryPasswordScreen />
-          </AuthorizationLayout>
-        )}
+        component={RecoveryPasswordScreen}
       />
       <GuestRoute
         exact
         path="/updatePassword/:token"
-        render={(props) => (
-          <AuthorizationLayout {...props}>
-            <UpdatePasswordScreen />
-          </AuthorizationLayout>
-        )}
+        component={UpdatePasswordScreen}
       />
 
       <AuthRoute

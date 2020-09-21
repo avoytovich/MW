@@ -11,8 +11,20 @@ import localization from '../../localization';
 import api from '../../api';
 import * as validators from '../../services/inputValidators';
 
+const initialRecoveryValues = { email: '' };
+
 const RecoveryPassword = () => {
-  const [emailSendind, setemailSendind] = useState(false);
+  const [emailSendind, setEmailSendind] = useState(false);
+  const handleOnSubmit = (values, setSubmitting, setErrors) => {
+    api
+      .recoverPassword({ email: values.email })
+      .then(() => setEmailSendind(true))
+      .catch((error) => {
+        setSubmitting(false);
+        setErrors({ message: error.response.data.error });
+      });
+  };
+
   return emailSendind ? (
     <Box mb={4}>
       <Typography m="100px" variant="h3" color="textPrimary">
@@ -31,17 +43,11 @@ const RecoveryPassword = () => {
       </Box>
       <Formik
         mt={100}
-        initialValues={{ email: '' }}
+        initialValues={initialRecoveryValues}
         validate={(values) => validators.email(values)}
-        onSubmit={(values, { setSubmitting, setErrors }) => {
-          api
-            .recoverPassword({ email: values.email })
-            .then(() => setemailSendind(true))
-            .catch((error) => {
-              setSubmitting(false);
-              setErrors({ message: error.response.data.error });
-            });
-        }}
+        onSubmit={(values, {
+          setSubmitting, setErrors,
+        }) => handleOnSubmit(values, setSubmitting, setErrors)}
       >
         {({
           values,
@@ -54,7 +60,7 @@ const RecoveryPassword = () => {
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <TextField
-              error={Boolean(touched.email && errors.email)}
+              error={touched.email && !!errors.email}
               fullWidth
               autoFocus
               helperText={touched.email && errors.email}

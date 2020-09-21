@@ -14,7 +14,7 @@ const errorHandler = (error) => {
   return Promise.reject(error);
 };
 
-export const SERVER = process.env.API_SERVER || 'https://cors-anywhere.herokuapp.com/https://api.staging.nexway.build';
+export const SERVER = process.env.API_SERVER || 'https://api.staging.nexway.build';
 
 export const axiosInstance = axios.create({
   baseURL: `${cors}${SERVER}`,

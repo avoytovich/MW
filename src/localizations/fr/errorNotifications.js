@@ -4,7 +4,7 @@ const errorNotifications = {
   lessThan20Characters: ' less than 20 characters',
   containsAtLeast1LowercaseCharacter: 'contains at least 1 lowercase character',
   containsAtLeast1UppercaseCharacter: 'contains at least 1 uppercase character',
-  containsAtLeast1DigitFrom0_9: 'contains at least 1 digit from 0-9',
+  containsAtLeast1DigitFrom0to9: 'contains at least 1 digit from 0-9',
   containsNoSpace: 'contains no space',
   required: 'Required',
   invalidEmailAddress: 'Invalid email address',

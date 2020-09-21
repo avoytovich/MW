@@ -14,9 +14,21 @@ import localization from '../../localization';
 import * as validators from '../../services/inputValidators';
 import api from '../../api';
 
+const initialUpdateValues = { newPassword: '', confirmedPassword: '' };
+
 const UpdatePassword = () => {
   const { token } = useParams();
   const history = useHistory();
+  const handleOnSubmit = (values, setSubmitting, setErrors) => {
+    setSubmitting(true);
+    api
+      .setNewPassword(token, { password: values.newPassword })
+      .then(() => history.push('/'))
+      .catch((error) => {
+        setSubmitting(false);
+        setErrors({ message: error.response.data.error });
+      });
+  };
   return (
     <>
       <Box mb={4}>
@@ -26,16 +38,9 @@ const UpdatePassword = () => {
       </Box>
       <Formik
         validate={(values) => validators.updatePassword(values)}
-        initialValues={{ newPassword: '', confirmedPassword: '' }}
+        initialValues={initialUpdateValues}
         onSubmit={(values, { setSubmitting, setErrors }) => {
-          setSubmitting(true);
-          api
-            .setNewPassword(token, { password: values.newPassword })
-            .then(() => history.push('/'))
-            .catch((error) => {
-              setSubmitting(false);
-              setErrors({ message: error.response.data.error });
-            });
+          handleOnSubmit(values, setSubmitting, setErrors);
         }}
       >
         {({
@@ -49,7 +54,7 @@ const UpdatePassword = () => {
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <TextField
-              error={Boolean(touched.newPassword && errors.notifications)}
+              error={touched.newPassword && !!errors.notifications.length}
               fullWidth
               label=" New Password"
               margin="normal"
@@ -62,7 +67,7 @@ const UpdatePassword = () => {
             />
 
             <TextField
-              error={Boolean(touched.confirmedPassword && errors.matches)}
+              error={touched.confirmedPassword && errors.matches}
               fullWidth
               label="Confirm Password"
               margin="normal"
@@ -81,7 +86,7 @@ const UpdatePassword = () => {
               />
               <Typography variant="body2" color="secondary">
                 {localization.t('general.iHaveReadThe')}
-                <Link href="/" color="secondary">
+                <Link to="/" color="secondary">
                   {localization.t('general.termsAndConditions')}
                 </Link>
               </Typography>
