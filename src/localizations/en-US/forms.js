@@ -82,6 +82,7 @@ const Forms = {
     apply: 'Apply',
     clear: 'Clear',
     googleLogin: 'LOGIN WITH GOOGLE',
+    forgotPassword: 'Forgot password',
   },
   links: {
     signUp: 'Sign Up',

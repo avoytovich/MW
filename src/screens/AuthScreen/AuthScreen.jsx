@@ -57,6 +57,18 @@ const AuthScreen = () => (
           <LoginForm />
         </Box>
 
+        <Box mt={3}>
+          <Button
+            color="primary"
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+          >
+            {localization.t('forms.buttons.forgotPassword')}
+          </Button>
+        </Box>
+
         {false && (
           <Box className="signUpContainer">
             <Typography color="textPrimary">
