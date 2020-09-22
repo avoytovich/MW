@@ -13,6 +13,7 @@ const general = {
   iHaveReadThe: 'I have read the ',
   termsAndConditions: 'Terms and Conditions',
   checkYourEmailToResetThePassword: 'Check your email to reset the password',
+  noResults: 'No results',
 };
 
 export default general;
