@@ -1,5 +1,5 @@
 import api from '../../api';
-import { SET_PRODUCTS } from '../constants/actionTypes';
+import { GET_PRODUCTS } from '../constants/actionTypes';
 import { showNotification } from './HttpNotifications';
 
 const getProducts = () => async (dispatch) => {
@@ -13,4 +13,4 @@ const getProducts = () => async (dispatch) => {
   });
 };
 
-export { setProducts };
+export { getProducts };
