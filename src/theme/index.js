@@ -22,17 +22,6 @@ const themeConfig = {
     },
     MuiFormLabel: { root: { color: colors.textPrimaryGray } },
     MuiCheckbox: { root: { color: colors.textPrimaryGray } },
-
-    MuiTableRow: {
-      root: {
-        '&:nth-of-type(odd)': {
-          backgroundColor: colors.tablesOddRow,
-        },
-        '&$hover:hover': {
-          // backgroundColor: 'green',
-        },
-      },
-    },
   },
   palette: {
     type: 'light',

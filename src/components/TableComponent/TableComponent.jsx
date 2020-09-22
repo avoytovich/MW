@@ -1,50 +1,58 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import './TableComponent.scss';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Grid,
-} from '@material-ui/core';
-import PaginationComponent from './PaginationComponent';
+import { Typography, Grid, Box } from '@material-ui/core';
 import TableRowComponent from './TableRowComponent';
 import tableMarkup from '../../services/tableMarkup';
 
 const TableComponent = (props) => {
   const location = useLocation();
-  const markap = tableMarkup[location.pathname.substring(1)];
-  const [showColumn, setShowColumn] = useState(markap.defaultShow);
+  const markup = tableMarkup[location.pathname.substring(1)];
+  const [showColumn, setShowColumn] = useState(markup.defaultShow);
   const { tableData } = props;
 
   return tableData?.items?.length ? (
-    <Grid container spacing={3}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {markap.headers.map((product) => {
-              if (showColumn[product.cell]) {
-                return <TableCell key={product.name}>{product.name}</TableCell>;
-              }
-              return null;
-            })}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {tableData?.items.map((rowItem) => (
-            <TableRowComponent
-              showColumn={showColumn}
-              key={rowItem.id}
-              rowItem={rowItem}
-            />
-          ))}
-        </TableBody>
-      </Table>
-      <PaginationComponent />
-    </Grid>
+    <>
+      <Grid
+        spacing={2}
+        container
+        wrap="nowrap"
+        justify="center"
+        className="tableHeaderGrid"
+      >
+        {markup.headers.map((product) => {
+          if (showColumn[product.cell]) {
+            return (
+              <Grid item xs zeroMinWidth key={product.name}>
+                <Box my={1}>
+                  <Typography
+                    variant="h6"
+                    className="tableHeader"
+                    noWrap
+                    style={{ textAlign: 'center' }}
+                  >
+                    {product.name}
+                  </Typography>
+                </Box>
+              </Grid>
+            );
+          }
+          return null;
+        })}
+      </Grid>
+      <Box className="tableBodyGrid">
+        {tableData?.items.map((rowItem) => (
+          <TableRowComponent
+            markupSequence={markup.headers}
+            showColumn={showColumn}
+            key={rowItem.id}
+            rowItem={rowItem}
+          />
+        ))}
+      </Box>
+    </>
   ) : (
     <></>
   );
