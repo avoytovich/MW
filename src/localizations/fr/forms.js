@@ -6,6 +6,7 @@ const forms = {
     dontHaveAccount: "Je n'ai pas de compte",
     signInSso: 'Connectez-vous avec SSO',
     loginWithEmailAddress: 'ou connectez-vous avec une adresse e-mail',
+    forgotPassword: 'Mot de passe oublié',
   },
   inputs: {
     username: "Nom d'utilisateur",
@@ -82,7 +83,6 @@ const forms = {
     apply: 'Apply',
     clear: 'Clear',
     googleLogin: 'CONNEXION AVEC GOOGLE',
-    forgotPassword: 'Mot de passe oublié',
   },
   links: {
     signUp: "S'inscrire",

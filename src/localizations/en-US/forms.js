@@ -6,6 +6,7 @@ const Forms = {
     dontHaveAccount: "Don't have an account",
     signInSso: 'Sign in With SSO',
     loginWithEmailAddress: 'or login with email address',
+    forgotPassword: 'Forgot password',
   },
   inputs: {
     username: 'Username',
@@ -82,7 +83,6 @@ const Forms = {
     apply: 'Apply',
     clear: 'Clear',
     googleLogin: 'LOGIN WITH GOOGLE',
-    forgotPassword: 'Forgot password',
   },
   links: {
     signUp: 'Sign Up',
