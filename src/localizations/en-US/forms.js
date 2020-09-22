@@ -1,8 +1,16 @@
 const Forms = {
+  headers: {
+    signIn: 'Sign in',
+  },
+  text: {
+    dontHaveAccount: "Don't have an account",
+    signInSso: 'Sign in With SSO',
+    loginWithEmailAddress: 'or login with email address',
+  },
   inputs: {
     username: 'Username',
     password: 'Password',
-    email: 'Email',
+    email: 'Email address',
     createPassword: 'Password',
     confirmPassword: 'Confirm password',
     productName: 'Product name',
@@ -65,7 +73,7 @@ const Forms = {
   },
   buttons: {
     createAccount: 'Create your account',
-    login: 'Login',
+    signIn: 'Sign In',
     signOut: 'Sign out',
     save: 'Save',
     submit: 'Submit',
@@ -73,8 +81,11 @@ const Forms = {
     reset: 'Reset',
     apply: 'Apply',
     clear: 'Clear',
+    googleLogin: 'LOGIN WITH GOOGLE',
+    forgotPassword: 'Forgot password',
   },
   links: {
+    signUp: 'Sign Up',
     signIn: 'Back to sign in page',
     lostPassword: 'Forgotten password',
   },

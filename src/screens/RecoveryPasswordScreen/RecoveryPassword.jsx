@@ -6,6 +6,7 @@ import {
   TextField,
   Box,
   FormHelperText,
+  CircularProgress,
 } from '@material-ui/core';
 import localization from '../../localization';
 import api from '../../api';
@@ -16,6 +17,8 @@ const initialRecoveryValues = { email: '' };
 const RecoveryPassword = () => {
   const [emailSend, setEmailSend] = useState(false);
   const handleOnSubmit = (values, setSubmitting, setErrors) => {
+    setSubmitting(true);
+
     api
       .recoverPassword({ email: values.email })
       .then(() => setEmailSend(true))
@@ -37,10 +40,12 @@ const RecoveryPassword = () => {
         <Typography m="100px" variant="h3" color="textPrimary">
           {localization.t('general.resetPassword')}
         </Typography>
+
         <Typography variant="body2" color="secondary">
           {localization.t('general.resetPasswordMessage')}
         </Typography>
       </Box>
+
       <Formik
         mt={100}
         initialValues={initialRecoveryValues}
@@ -86,7 +91,7 @@ const RecoveryPassword = () => {
                 type="submit"
                 variant="contained"
               >
-                {localization.t('general.reset')}
+                {isSubmitting ? <CircularProgress size={26} /> : localization.t('general.reset')}
               </Button>
               {errors.message && (
                 <Box mt={3}>

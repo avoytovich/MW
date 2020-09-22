@@ -1,0 +1,36 @@
+.root {
+    justify-content: center;
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    padding-bottom: 80px;
+    padding-top: 80px;
+  }
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+  }
+.card {
+    overflow: visible;
+    display: flex;
+    position: relative;
+  }
+.headerSignIn {
+  margin-bottom: 35px;
+}
+.signUpContainer {
+  display: flex;
+  align-items: baseline;
+  margin-top: 30px;
+}
+.signUpLink {
+  padding-left: 10px;
+}
+.orLogin {
+  margin: 20px 0 -10px 0;
+}
+.MuiPaper-root {
+  box-shadow: none;
+}
