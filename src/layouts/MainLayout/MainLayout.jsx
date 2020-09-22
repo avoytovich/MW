@@ -5,7 +5,7 @@ import SideBar from '../../components/SideBar';
 
 const MainLayout = ({ children }) => (
   <Grid container>
-    <Grid item><SideBar /></Grid>
+    <SideBar />
 
     <Grid container item style={{ paddingLeft: 240 }}>
       <Grid item>{children}</Grid>
