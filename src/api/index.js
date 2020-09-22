@@ -24,6 +24,32 @@ const api = {
       url: '/prices',
     });
   },
+  recoverPassword(data) {
+    return axiosInstance({
+      method: 'post',
+      url: '/iam/identities/lostpassword/nexway',
+      data,
+    });
+  },
+  setNewPassword(token, data) {
+    let url = `/iam/identities/resetpassword/nexway/${token}`;
+    const reason = 'Nexway-Center';
+    if (reason) {
+      url += `?reason=${reason}`;
+    }
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  getProducts() {
+    return axiosInstance({
+      method: 'get',
+      url:
+        '/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=0',
+    });
+  },
 };
 
 export default api;

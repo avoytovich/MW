@@ -1,6 +1,5 @@
 import auth from '../../services/auth';
 import {
-  LOGIN_REQUEST,
   LOGIN_SUCCESS,
   SILENT_LOGIN,
   LOGOUT,
@@ -8,8 +7,6 @@ import {
 import { showNotification } from './HttpNotifications';
 
 const login = (username, password) => async (dispatch) => {
-  dispatch({ type: LOGIN_REQUEST });
-
   const user = await auth.loginWithEmailAndPassword(username, password);
 
   dispatch({

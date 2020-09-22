@@ -20,7 +20,6 @@ const themeConfig = {
         },
       },
     },
-
     MuiFormLabel: { root: { color: colors.textPrimaryGray } },
     MuiListSubheader: {
       root: {

@@ -1,0 +1,13 @@
+.authWrapperContainer {
+  .authWrapper {
+    height: 100vh;
+    background-image: url('../../assets/authBackground.jpg');
+    background-size: cover;
+  }
+  .authWrapperText {
+    text-align: center;
+  }
+  .authWrapperChild {
+    height: 100vh;
+  }
+}

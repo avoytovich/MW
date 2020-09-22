@@ -1,35 +1,35 @@
-import React, { lazy, Suspense } from 'react';
-import { Switch, Redirect } from 'react-router-dom';
+import React, { Suspense } from 'react';
+import { useSelector } from 'react-redux';
 
 import SignedRoutes from './SignedRoutes';
-import { AuthRoute, GuestRoute } from '../PrivateRoutes';
+import GuestRoutes from './GuestRoutes';
 
 import LoadingScreen from '../../../screens/LoadingScreen';
+
 import MainLayout from '../../../layouts/MainLayout';
+import AuthorizationLayout from '../../../layouts/AuthorizationLayout';
 
-const Routes = () => (
-  <Suspense fallback={<LoadingScreen />}>
-    <Switch>
-      <GuestRoute
-        exact
-        path='/login'
-        component={lazy(() => import('../../../screens/AuthScreen'))}
-      />
+const Routes = () => {
+  const account = useSelector(({ account: acc }) => acc);
+  console.log(account);
 
-      <AuthRoute
-        path='/'
-        render={(props) => (
-          <MainLayout {...props}>
-            <Suspense fallback={<LoadingScreen />}>
-              <SignedRoutes />
-            </Suspense>
-          </MainLayout>
-        )}
-      />
-
-      <Redirect to='/404' />
-    </Switch>
-  </Suspense>
-);
+  return (
+    <Suspense fallback={<LoadingScreen />}>
+      {account && account.user ? (
+        <MainLayout>
+          <Suspense fallback={<LoadingScreen />}>
+            <SignedRoutes />
+          </Suspense>
+        </MainLayout>
+      ) : (
+        <AuthorizationLayout>
+          <Suspense fallback={<LoadingScreen />}>
+            <GuestRoutes />
+          </Suspense>
+        </AuthorizationLayout>
+      )}
+    </Suspense>
+  );
+};
 
 export default Routes;

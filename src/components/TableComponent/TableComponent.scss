@@ -1,0 +1,38 @@
+$tablesOddRow: #f7f7f9;
+$tableHeader: #f9f9f9;
+$editIcon: #fee650;
+$deleteIcon: #fd8e8d;
+$copyIcon: #99de90;
+
+.tableRowGrid {
+  &:nth-of-type(odd) {
+    background-color: $tablesOddRow;
+  }
+  .tableCellItemGrid {
+    overflow-x: hidden;
+    .tableCellItem {
+      display: inherit;
+      white-space: nowrap;
+      text-align: center;
+    }
+  }
+  .deleteIcon {
+    color: $deleteIcon;
+  }
+  .copyIcon {
+    color: $copyIcon;
+  }
+  .editIcon {
+    color: $editIcon;
+  }
+}
+
+.tableHeaderGrid {
+  overflow-x: hidden;
+  background-color: $tableHeader;
+  .tableHeader {
+    display: inherit;
+    white-space: nowrap;
+    text-align: center;
+  }
+}

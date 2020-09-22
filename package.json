@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ./src/*",
+    "lint": "eslint ./src/* --no-error-on-unmatched-pattern",
     "dev": "webpack-dev-server --mode=development --env.NODE_ENV=development",
     "prod": "webpack --mode=production --env.NODE_ENV=production"
   },
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@material-ui/core": "4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "4.0.0-alpha.56",
     "axios": "0.20.0",
     "browser-locale": "1.0.3",

@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import {
-  LOGIN_REQUEST,
   LOGIN_SUCCESS,
   SILENT_LOGIN,
   LOGOUT,
@@ -14,7 +13,6 @@ const Account = (state = initialState, {
   type, payload,
 }) => {
   switch (type) {
-    case LOGIN_REQUEST:
     case LOGOUT:
       return { user: null };
 

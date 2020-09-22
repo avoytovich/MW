@@ -1,28 +1,40 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import {
   Box,
   Button,
   TextField,
+  CircularProgress,
 } from '@material-ui/core';
 import { login } from '../../redux/actions/Account';
 import localization from '../../localization';
 
-function LoginForm({ className, onSubmitSuccess, ...rest }) {
+const initialValues = {
+  username: '',
+  password: '',
+};
+
+const LoginForm = () => {
   const dispatch = useDispatch();
+
+  const handleOnSubmit = async ({ username, password, setSubmitting }) => {
+    setSubmitting(true);
+
+    try {
+      await dispatch(login(username, password));
+    } catch (e) {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Formik
       className="formik"
-      initialValues={{
-        email: 'mtsybran',
-        password: 'Nexway2020',
-      }}
-      onSubmit={async (values, {
-      }) => { dispatch(login(values.email, values.password));
-      }}
+      initialValues={initialValues}
+      onSubmit={(values, {
+        setSubmitting,
+      }) => handleOnSubmit({ ...values, setSubmitting })}
     >
       {({
         errors,
@@ -32,28 +44,23 @@ function LoginForm({ className, onSubmitSuccess, ...rest }) {
         touched,
         values,
       }) => (
-        <form
-          noValidate
-          // className={clsx(classes.root, className)}
-          onSubmit={handleSubmit}
-          {...rest}
-        >
+        <form noValidate onSubmit={handleSubmit}>
           <TextField
-            className="MuiTypography-colorSecondary"
-            error={Boolean(touched.email && errors.email)}
+            error={touched.username && errors.username}
             fullWidth
-            autoFocus
-            helperText={touched.email && errors.email}
-            label={localization.t('forms.inputs.email')}
+            helperText={touched.username && errors.username}
+            label={localization.t('forms.inputs.username')}
             margin="normal"
-            name="email"
+            name="username"
             onChange={handleChange}
-            type="email"
-            value={values.email}
+            type="text"
+            value={values.username}
             variant="outlined"
+            inputProps={{ form: { autocomplete: 'off' } }}
           />
+
           <TextField
-            error={Boolean(touched.password && errors.password)}
+            error={touched.password && errors.password}
             fullWidth
             helperText={touched.password && errors.password}
             label={localization.t('forms.inputs.password')}
@@ -63,32 +70,30 @@ function LoginForm({ className, onSubmitSuccess, ...rest }) {
             type="password"
             value={values.password}
             variant="outlined"
+            inputProps={{ autoComplete: 'new-password' }}
           />
+
           <Box mt={2}>
             <Button
               color="primary"
-              disabled={isSubmitting}
+              disabled={
+                Object.keys(errors).length !== 0
+                || !values.username
+                || !values.password
+                || isSubmitting
+              }
               fullWidth
               size="large"
               type="submit"
               variant="contained"
             >
-              {localization.t('forms.buttons.signIn')}
+              {isSubmitting ? <CircularProgress size={26} /> : localization.t('forms.buttons.signIn')}
             </Button>
           </Box>
         </form>
       )}
     </Formik>
   );
-}
-
-LoginForm.propTypes = {
-  className: PropTypes.string,
-  onSubmitSuccess: PropTypes.func,
-};
-
-LoginForm.defaultProps = {
-  onSubmitSuccess: () => {},
 };
 
 export default LoginForm;

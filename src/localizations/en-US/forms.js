@@ -6,6 +6,7 @@ const Forms = {
     dontHaveAccount: "Don't have an account",
     signInSso: 'Sign in With SSO',
     loginWithEmailAddress: 'or login with email address',
+    forgotPassword: 'Forgot password',
   },
   inputs: {
     username: 'Username',
