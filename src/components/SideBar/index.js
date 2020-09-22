@@ -4,7 +4,6 @@ import { useLocation, matchPath } from 'react-router';
 import { useSelector } from 'react-redux';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
-
 import {
   Box,
   Drawer,
@@ -12,6 +11,7 @@ import {
   List,
   ListSubheader,
 } from '@material-ui/core';
+
 import localization from '../../localization';
 
 import NavItem from './NavItem';
@@ -187,7 +187,6 @@ function NavBar({ openMobile, onMobileClose }) {
                 <ListSubheader
                   disableGutters
                   disableSticky
-                  color="inherit"
                 >
                   {config.subheader}
                 </ListSubheader>

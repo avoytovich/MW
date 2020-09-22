@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   buttonLeaf: {
-    color: theme.palette.text.primary,
+    color: theme.palette.secondary.main,
     padding: '10px 8px',
     justifyContent: 'flex-start',
     textTransform: 'none',
@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
       '& $title': {
         fontWeight: theme.typography.fontWeightMedium,
       },
+    },
+    '&:hover': {
+      color: '#1665d8',
     },
   },
   icon: {
@@ -54,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.secondary.main,
     '& $title': {
       fontWeight: theme.typography.fontWeightMedium,
+      color: '#1665d8'
     },
     '& $icon': {
       color: theme.palette.secondary.main,
@@ -109,17 +113,6 @@ function NavItem({
           <span className={classes.title}>
             {title}
           </span>
-          {/* {open ? (
-            <ExpandLessIcon
-              size="small"
-              color="inherit"
-            />
-          ) : (
-            <ExpandMoreIcon
-              size="small"
-              color="inherit"
-            />
-          )} */}
         </Button>
         <Collapse in={open}>
           {children}
