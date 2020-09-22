@@ -4,22 +4,9 @@ import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import EditIcon from '@material-ui/icons/Edit';
+import monthNames from '../../services/constants';
 import './TableComponent.scss';
 
-const monthNames = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
 const TableRowComponent = (props) => {
   const { rowItem, showColumn, markupSequence } = props;
   const [rowHover, setRowHover] = useState(false);
@@ -29,6 +16,33 @@ const TableRowComponent = (props) => {
     const day = fullDate.getDay();
     const month = monthNames[fullDate.getMonth()].substring(0, 3);
     return `${day} ${month}`;
+  };
+
+  const drawTableCell = (item) => {
+    if (showColumn[item.cell]) {
+      let valueToShow;
+      if (item.cell === 'createDate' || item.cell === 'updateDate') {
+        valueToShow = formatDate(rowItem[item.cell]);
+      } else {
+        valueToShow = rowItem[item.cell];
+      }
+      return (
+        <Grid
+          className="tableCellItemGrid"
+          item
+          xs
+          zeroMinWidth
+          key={`${item.cell}_${rowItem.id}`}
+        >
+          <Box my={2}>
+            <Typography noWrap className="tableCellItem">
+              {valueToShow}
+            </Typography>
+          </Box>
+        </Grid>
+      );
+    }
+    return null;
   };
 
   return (
@@ -41,31 +55,7 @@ const TableRowComponent = (props) => {
       wrap="nowrap"
       justify="center"
     >
-      {markupSequence.map((item) => {
-        if (showColumn[item.cell]) {
-          let valueToShow;
-          if (item.cell === 'createDate' || item.cell === 'updateDate') {
-            valueToShow = formatDate(rowItem[item.cell]);
-          } else {
-            valueToShow = rowItem[item.cell];
-          }
-          return (
-            <Grid
-              className="tableCellItemGrid"
-              item
-              xs
-              zeroMinWidth
-              key={`${item.cell}_${rowItem.id}`}
-            >
-              <Box my={2}>
-                <Typography noWrap className="tableCellItem">
-                  {valueToShow}
-                </Typography>
-              </Box>
-            </Grid>
-          );
-        }
-      })}
+      {markupSequence.map((item) => drawTableCell(item))}
       {rowHover && (
         <Grid>
           <Box my={2}>

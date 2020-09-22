@@ -8,10 +8,11 @@ import TableRowComponent from './TableRowComponent';
 import tableMarkup from '../../services/tableMarkup';
 
 const TableComponent = (props) => {
+  const { tableData } = props;
+
   const location = useLocation();
   const markup = tableMarkup[location.pathname.substring(1)];
   const [showColumn, setShowColumn] = useState(markup.defaultShow);
-  const { tableData } = props;
 
   return tableData?.items?.length ? (
     <>
