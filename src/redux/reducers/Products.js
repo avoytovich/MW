@@ -2,14 +2,13 @@
 import { GET_PRODUCTS } from '../constants/actionTypes';
 
 const initialState = {
-  products: [],
+  products: {},
 };
 
 const Products = (state = initialState, { type, payload }) => {
   switch (type) {
     case GET_PRODUCTS:
-      return { ...payload };
-
+      return { ...payload.products.data };
     default:
       return state;
   }

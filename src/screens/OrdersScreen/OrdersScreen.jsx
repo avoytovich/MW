@@ -2,21 +2,21 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import TableComponent from '../../components/TableComponent';
-import getStores from '../../redux/actions/Stores';
+import getOrders from '../../redux/actions/Orders';
 
-const StoresScreen = () => {
-  const stores = useSelector((state) => state.stores);
-  console.log('stores', stores);
+const OrdersScreen = () => {
+  const orders = useSelector((state) => state.orders);
+  console.log('orders', orders);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getStores());
+      await dispatch(getOrders());
     };
     fetchData();
   }, []);
 
-  return <div>StoresScreen</div>;
+  return <div>OrdersScreen</div>;
   // <TableComponent tableData={stores} />;
 };
 
-export default StoresScreen;
+export default OrdersScreen;

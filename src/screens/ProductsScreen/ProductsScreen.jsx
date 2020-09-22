@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import TableComponent from '../../components/TableComponent';
-import api from '../../api';
+import getProducts from '../../redux/actions/Products';
 
 const ProductsScreen = () => {
-  const [products, setProducts] = useState({});
-
+  const products = useSelector((state) => state.products);
+  console.log(products)
+  const dispatch = useDispatch();
   useEffect(() => {
-    api.getProducts().then((res) => setProducts(res.data));
+    const fetchData = async () => {
+      await dispatch(getProducts());
+    };
+    fetchData();
   }, []);
 
   return <TableComponent tableData={products} />;

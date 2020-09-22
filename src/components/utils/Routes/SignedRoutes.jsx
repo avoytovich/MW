@@ -5,7 +5,7 @@ const SignedRoutes = () => (
   <Switch>
     <Route
       exact
-      path='/'
+      path="/"
       component={lazy(() => import('../../../screens/MainScreen'))}
     />
     <Route
@@ -13,8 +13,17 @@ const SignedRoutes = () => (
       path="/products"
       component={lazy(() => import('../../../screens/ProductsScreen'))}
     />
-
-    <Redirect to='/' />
+    <Route
+      exect
+      path="/stores"
+      component={lazy(() => import('../../../screens/StoresScreen'))}
+    />
+    <Route
+      exect
+      path="/orders"
+      component={lazy(() => import('../../../screens/OrdersScreen'))}
+    />
+    <Redirect to="/" />
   </Switch>
 );
 

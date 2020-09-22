@@ -6,11 +6,11 @@ const getProducts = () => async (dispatch) => {
   const products = await api.getProducts();
   console.log('products', products);
   dispatch({
-    type: SET_PRODUCTS,
+    type: GET_PRODUCTS,
     payload: {
       products,
     },
   });
 };
 
-export { getProducts };
+export default getProducts;
