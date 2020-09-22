@@ -8,6 +8,11 @@ const SignedRoutes = () => (
       path='/'
       component={lazy(() => import('../../../screens/MainScreen'))}
     />
+    <Route
+      exect
+      path="/products"
+      component={lazy(() => import('../../../screens/ProductsScreen'))}
+    />
 
     <Redirect to='/' />
   </Switch>
