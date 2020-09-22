@@ -57,18 +57,14 @@ const AuthScreen = () => (
           <LoginForm />
         </Box>
 
-        <Box mt={3}>
-          <Button
-            component={Link}
+        <Box className="signUpContainer">
+          <Link
             to="/recoverPassword"
             color="primary"
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
+            className="forgotPasswordLink"
           >
-            {localization.t('forms.buttons.forgotPassword')}
-          </Button>
+            {localization.t('forms.text.forgotPassword')}
+          </Link>
         </Box>
 
         {false && (
