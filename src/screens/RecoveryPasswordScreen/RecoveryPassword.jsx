@@ -15,24 +15,20 @@ import * as validators from '../../services/inputValidators';
 const initialRecoveryValues = { email: '' };
 
 const RecoveryPassword = () => {
-  const [emailSendind, setEmailSendind] = useState(false);
-
+  const [emailSend, setEmailSend] = useState(false);
   const handleOnSubmit = (values, setSubmitting, setErrors) => {
     setSubmitting(true);
 
     api
       .recoverPassword({ email: values.email })
-      .then(() => {
-        setSubmitting(false);
-        setEmailSendind(true);
-      })
+      .then(() => setEmailSend(true))
       .catch((error) => {
         setSubmitting(false);
         setErrors({ message: error.response.data.error });
       });
   };
 
-  return emailSendind ? (
+  return emailSend ? (
     <Box mb={4}>
       <Typography m="100px" variant="h3" color="textPrimary">
         {localization.t('general.checkYourEmailToResetThePassword')}
