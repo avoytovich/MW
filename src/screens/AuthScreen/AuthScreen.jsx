@@ -4,10 +4,10 @@ import {
   Container,
   Card,
   CardContent,
-  Link,
   Typography,
   Button,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import localization from '../../localization';
 import LoginForm from '../../components/LoginForm';
 import './AuthScreen.scss';
@@ -59,6 +59,8 @@ const AuthScreen = () => (
 
         <Box mt={3}>
           <Button
+            component={Link}
+            to="/recoverPassword"
             color="primary"
             fullWidth
             size="large"
