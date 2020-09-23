@@ -18,6 +18,7 @@ const SideBar = () => (
       height="100%"
       display="flex"
       flexDirection="column"
+      style={{ width: 240 }}
     >
       <Box p={2}>
         {navConfig.map((config) => (

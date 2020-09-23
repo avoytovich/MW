@@ -4,17 +4,12 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 const SignedRoutes = () => (
   <Switch>
     <Route
-      exact
-      path='/'
-      component={lazy(() => import('../../../screens/MainScreen'))}
-    />
-    <Route
       exect
-      path="/products"
+      path='/overview/products'
       component={lazy(() => import('../../../screens/ProductsScreen'))}
     />
 
-    <Redirect to='/' />
+    <Redirect to='/overview/products' />
   </Switch>
 );
 

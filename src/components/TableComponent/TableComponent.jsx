@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Typography, Grid, Box } from '@material-ui/core';
 import TableRowComponent from './TableRowComponent';
@@ -8,11 +7,8 @@ import localization from '../../localization';
 
 import './TableComponent.scss';
 
-const TableComponent = (props) => {
-  const { tableData } = props;
-
-  const location = useLocation();
-  const markup = tableMarkup[location.pathname.substring(1)];
+const TableComponent = ({ tableData, type }) => {
+  const markup = tableMarkup[type];
   const [showColumn, setShowColumn] = useState(markup.defaultShow);
 
   return tableData?.items?.length ? (

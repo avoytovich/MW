@@ -9,7 +9,7 @@ const ProductsScreen = () => {
     api.getProducts().then((res) => setProducts(res.data));
   }, []);
 
-  return <TableComponent tableData={products} />;
+  return <TableComponent tableData={products} type='products' />;
 };
 
 export default ProductsScreen;
