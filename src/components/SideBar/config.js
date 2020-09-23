@@ -1,14 +1,16 @@
+import {
+  FolderOpen,
+  Visibility,
+  EmojiObjects,
+  Toll,
+  Link,
+  FormatQuote,
+  Settings,
+  Build,
+  SwapHorizontalCircle,
+  PeopleOutline,
+} from '@material-ui/icons';
 import localization from '../../localization';
-import FolderOpenIcon from '@material-ui/icons/FolderOpen';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
-import TollIcon from '@material-ui/icons/Toll';
-import LinkIcon from '@material-ui/icons/Link';
-import FormatQuoteIcon from '@material-ui/icons/FormatQuote';
-import SettingsIcon from '@material-ui/icons/Settings';
-import BuildIcon from '@material-ui/icons/Build';
-import SwapHorizontalCircleIcon from '@material-ui/icons/SwapHorizontalCircle';
-import PeopleOutlineIcon from '@material-ui/icons/PeopleOutline';
 
 const navConfig = [
   {
@@ -18,31 +20,31 @@ const navConfig = [
         id: 'products',
         title: localization.t('sideBar.titles.products'),
         href: '/overview/products',
-        icon: FolderOpenIcon,
+        icon: FolderOpen,
       },
       {
         id: 'stores',
         title: localization.t('sideBar.titles.stores'),
         href: '/overview/stores',
-        icon: FolderOpenIcon,
+        icon: FolderOpen,
       },
       {
         id: 'orders',
         title: localization.t('sideBar.titles.orders'),
         href: '/overview/orders',
-        icon: FolderOpenIcon,
+        icon: FolderOpen,
       },
       {
         id: 'invoices-credit-notes',
         title: localization.t('sideBar.titles.invoicesCreditNotes'),
         href: '/overview/invoices-credit-notes',
-        icon: FolderOpenIcon,
+        icon: FolderOpen,
       },
       {
         id: 'subscriptions',
         title: localization.t('sideBar.titles.subscriptions'),
         href: '/overview/subscriptions',
-        icon: FolderOpenIcon,
+        icon: FolderOpen,
       },
     ],
   },
@@ -53,31 +55,31 @@ const navConfig = [
         id: 'sales-customers',
         title: localization.t('sideBar.titles.salesCustomers'),
         href: '/tobedefined/sales-customers',
-        icon: VisibilityIcon,
+        icon: Visibility,
       },
       {
         id: 'marketing',
         title: localization.t('sideBar.titles.marketing'),
         href: '/tobedefined/marketing',
-        icon: EmojiObjectsIcon,
+        icon: EmojiObjects,
       },
       {
         id: 'checkout-experience',
         title: localization.t('sideBar.titles.checkoutExperience'),
         href: '/tobedefined/checkout-experience',
-        icon: TollIcon,
+        icon: Toll,
       },
       {
         id: 'reports',
         title: localization.t('sideBar.titles.reports'),
         href: '/tobedefined/reports',
-        icon: LinkIcon,
+        icon: Link,
       },
       {
         id: 'myaccount',
         title: localization.t('sideBar.titles.myAccount'),
         href: '/tobedefined/myaccount',
-        icon: FormatQuoteIcon,
+        icon: FormatQuote,
       },
     ],
   },
@@ -88,25 +90,25 @@ const navConfig = [
         id: 'api',
         title: localization.t('sideBar.titles.api'),
         href: '/settings/api',
-        icon: SwapHorizontalCircleIcon,
+        icon: SwapHorizontalCircle,
       },
       {
         id: 'services-configuration',
         title: localization.t('sideBar.titles.servicesConfiguration'),
         href: '/settings/services-configuration',
-        icon: BuildIcon,
+        icon: Build,
       },
       {
         id: 'administration',
         title: localization.t('sideBar.titles.administration'),
         href: '/settings/administration',
-        icon: SettingsIcon,
+        icon: Settings,
       },
       {
         id: 'identities',
         title: localization.t('sideBar.titles.identities'),
         href: '/settings/identities',
-        icon: PeopleOutlineIcon,
+        icon: PeopleOutline,
       },
     ],
   },

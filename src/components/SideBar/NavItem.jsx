@@ -19,7 +19,6 @@ const NavItem = ({
       className='listItemButton'
       color='secondary'
       activeClassName='active'
-      // component={NavLink}
       exact
       to={href}
     >
