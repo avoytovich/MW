@@ -63,6 +63,13 @@ const api = {
         '/orders?format=short&status=COMPLETED&sort=updateDate%2Cdesc&size=50&page=0',
     });
   },
+  getCustomerById(id) {
+    const url = `/customers/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default api;

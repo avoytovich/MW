@@ -6,6 +6,7 @@ import getStores from '../../redux/actions/Stores';
 
 const StoresScreen = () => {
   const stores = useSelector((state) => state.stores);
+  console.log(stores);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {

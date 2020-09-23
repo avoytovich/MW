@@ -29,7 +29,6 @@ const tableMarkup = {
   orders: {
     headers: [
       { name: 'Customer', cell: 'store.name' },
-      { name: 'Customer Status', cell: '' },
       { name: 'Create date', cell: 'createDate' },
       { name: 'Last Update', cell: 'updateDate' },
       { name: 'Status', cell: 'status' },
@@ -70,19 +69,18 @@ const tableMarkup = {
   },
   stores: {
     headers: [
-      { name: 'Store ID', cell: 'id' },
-      { name: 'Customer', cell: 'name' }, // Temporarry
+      { name: 'Customer', cell: 'customerId' }, // Temporary
       { name: 'Name', cell: 'name' },
       { name: 'Creation Date', cell: 'createDate' },
       { name: 'Last update', cell: 'updateDate' },
       { name: 'Default Language', cell: 'defaultLocale' },
-      { name: 'Checkout Theme', cell: 'designs?.theme' }, // Tot shure
       { name: 'Status', cell: 'status' },
       { name: 'GTM ID', cell: 'gtmId' },
+      { name: 'Store ID', cell: 'id' },
     ],
     defaultShow: {
       id: true,
-      // Add for Customer
+      customerId: true, // Temporary
       name: true,
       createDate: true,
       updateDate: true,
