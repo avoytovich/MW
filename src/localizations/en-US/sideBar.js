@@ -19,7 +19,7 @@ const sideBar = {
     servicesConfiguration: 'Services Configuration',
     administration: 'Administration',
     identities: 'Identities',
-  }
+  },
 };
 
 export default sideBar;

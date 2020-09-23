@@ -21,6 +21,11 @@ const themeConfig = {
       },
     },
     MuiFormLabel: { root: { color: colors.textPrimaryGray } },
+    MuiAppBar: {
+      colorPrimary: {
+        backgroundColor: colors.mainBackground,
+      },
+    },
     MuiListSubheader: {
       root: {
         color: colors.textPrimaryGray,

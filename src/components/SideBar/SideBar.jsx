@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Box,
   Drawer,
@@ -8,10 +9,10 @@ import {
 import NavItem from './NavItem';
 import navConfig from './config';
 
-const SideBar = () => (
+const SideBar = ({ open }) => (
   <Drawer
     anchor="left"
-    open
+    open={open}
     variant="persistent"
   >
     <Box
@@ -40,5 +41,9 @@ const SideBar = () => (
     </Box>
   </Drawer>
 );
+
+SideBar.propTypes = {
+  open: PropTypes.bool,
+};
 
 export default SideBar;

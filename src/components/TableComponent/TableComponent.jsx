@@ -54,6 +54,7 @@ const TableComponent = ({ tableData, type }) => {
 };
 
 TableComponent.propTypes = {
+  type: PropTypes.string,
   tableData: PropTypes.object,
 };
 
