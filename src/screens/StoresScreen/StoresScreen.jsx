@@ -6,7 +6,6 @@ import getStores from '../../redux/actions/Stores';
 
 const StoresScreen = () => {
   const stores = useSelector((state) => state.stores);
-  console.log('stores', stores);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -15,8 +14,7 @@ const StoresScreen = () => {
     fetchData();
   }, []);
 
-  return <div>StoresScreen</div>;
-  // <TableComponent tableData={stores} />;
+  return <TableComponent tableData={stores} />;
 };
 
 export default StoresScreen;

@@ -4,7 +4,6 @@ import { showNotification } from './HttpNotifications';
 
 const getProducts = () => async (dispatch) => {
   const products = await api.getProducts();
-  console.log('products', products);
   dispatch({
     type: GET_PRODUCTS,
     payload: {
