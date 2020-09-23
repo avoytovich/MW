@@ -6,10 +6,13 @@ const ProductsScreen = () => {
   const [products, setProducts] = useState({});
 
   useEffect(() => {
-    api.getProducts().then((res) => setProducts(res.data));
+    api.getProducts().then((res) => {
+      console.log('res', res);
+      setProducts(res.data);
+    });
   }, []);
 
-  return <TableComponent tableData={products} type='products' />;
+  return <TableComponent tableData={products} type="products" />;
 };
 
 export default ProductsScreen;
