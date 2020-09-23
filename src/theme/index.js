@@ -21,6 +21,7 @@ const themeConfig = {
       },
     },
     MuiFormLabel: { root: { color: colors.textPrimaryGray } },
+    MuiCheckbox: { root: { color: colors.textPrimaryGray } },
     MuiListSubheader: {
       root: {
         color: colors.textPrimaryGray,

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Grid, Box } from '@material-ui/core';
+import { Typography, Grid, Box, Checkbox } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -8,7 +8,13 @@ import monthNames from '../../services/constants';
 import './TableComponent.scss';
 
 const TableRowComponent = (props) => {
-  const { rowItem, showColumn, markupSequence } = props;
+  const {
+    rowItem,
+    showColumn,
+    markupSequence,
+    handleCheck,
+    checked,
+  } = props;
   const [rowHover, setRowHover] = useState(false);
 
   const formatDate = (formatingData) => {
@@ -55,6 +61,15 @@ const TableRowComponent = (props) => {
       wrap="nowrap"
       justify="center"
     >
+      <Grid>
+        <Box my={1}>
+          <Checkbox
+            checked={checked}
+            name={rowItem.id}
+            onChange={() => handleCheck(rowItem.id)}
+          />
+        </Box>
+      </Grid>
       {markupSequence.map((item) => drawTableCell(item))}
       {rowHover && (
         <Grid>
@@ -72,6 +87,8 @@ const TableRowComponent = (props) => {
 TableRowComponent.propTypes = {
   rowItem: PropTypes.object,
   showColumn: PropTypes.object,
+  handleCheck: PropTypes.func,
+  checked: PropTypes.bool,
   markupSequence: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
