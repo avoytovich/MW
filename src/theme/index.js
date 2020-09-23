@@ -27,6 +27,23 @@ const themeConfig = {
         fontSize: '12px',
       },
     },
+    // MuiLink: {
+    //   root: {
+
+    //     active: {
+    //       backgroundColor: colors.buttonPrimary,
+    //       color: colors.buttonPrimary,
+    //       '& $title': {
+    //         fontWeight: typography.fontWeightMedium,
+    //         color: colors.buttonPrimary,
+    //       },
+    //       '& $icon': {
+    //         color: '#719ded',
+    //       },
+    //     },
+
+    //   },
+    // },
   },
   palette: {
     type: 'light',

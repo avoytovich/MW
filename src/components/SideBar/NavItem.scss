@@ -1,0 +1,19 @@
+.listItemButton {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding-left: 2px;
+  text-decoration: none;
+  color: #c6c0c0;
+}
+.listItemButton:hover {
+  color: #719ded;
+  text-decoration: none;
+}
+.linkTitle {
+  padding-left: 14px;
+}
+.active {
+  color: #719ded;
+}
