@@ -7,7 +7,10 @@ import {
 import { showNotification } from './HttpNotifications';
 
 const login = (username, password) => async (dispatch) => {
-  const user = await auth.loginWithEmailAndPassword(username, password);
+  const result = await auth.loginWithEmailAndPassword(username, password);
+  // eslint-disable-next-line camelcase
+  const { access_token } = result;
+  const user = { access_token, ...auth.decodeToken(access_token) };
 
   dispatch({
     type: LOGIN_SUCCESS,
@@ -16,7 +19,11 @@ const login = (username, password) => async (dispatch) => {
     },
   });
 
-  dispatch(showNotification('Signed In!'));
+  dispatch(
+    showNotification(
+      `Welcome back${user.given_name ? `, ${user.given_name}` : ''}!`,
+    ),
+  );
 };
 
 const setUserData = (user) => (dispatch) => {
@@ -34,6 +41,8 @@ const logout = () => async (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
+
+  dispatch(showNotification('Session ended!'));
 };
 
 export {

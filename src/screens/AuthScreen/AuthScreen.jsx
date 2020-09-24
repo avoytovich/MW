@@ -59,7 +59,7 @@ const AuthScreen = () => (
 
         <Box className="signUpContainer" justifyContent='flex-end'>
           <Link
-            to="/recoverPassword"
+            to="/recover-password"
             color="text.secondary"
             className="forgotPasswordLink"
           >

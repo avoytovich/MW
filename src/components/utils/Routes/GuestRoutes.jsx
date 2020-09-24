@@ -1,28 +1,49 @@
-import React, { lazy } from 'react';
-import { Switch, Redirect, Route } from 'react-router-dom';
+import React from 'react';
+import { SwitchTransition, CSSTransition } from 'react-transition-group';
+import {
+  Switch, Redirect, Route, useLocation,
+} from 'react-router-dom';
 
-const SignedRoutes = () => (
-  <Switch>
-    <Route
-      exact
-      path='/login'
-      component={lazy(() => import('../../../screens/AuthScreen'))}
-    />
+import AuthScreen from '../../../screens/AuthScreen';
+import RecoveryPasswordScreen from '../../../screens/RecoveryPasswordScreen';
+import UpdatePasswordScreen from '../../../screens/UpdatePasswordScreen';
 
-    <Route
-      exact
-      path='/recoverPassword'
-      component={lazy(() => import('../../../screens/RecoveryPasswordScreen'))}
-    />
+import './routes.scss';
 
-    <Route
-      exact
-      path='/updatePassword/:token'
-      component={lazy(() => import('../../../screens/UpdatePasswordScreen'))}
-    />
+const SignedRoutes = () => {
+  const location = useLocation();
 
-    <Redirect to='/login' />
-  </Switch>
-);
+  return (
+    <SwitchTransition mode='out-in'>
+      <CSSTransition
+        key={location.pathname}
+        classNames='fade'
+        addEndListener={(node, done) => node.addEventListener('transitionend', done, false)}
+      >
+        <Switch location={location}>
+          <Route
+            exact
+            path='/login'
+            component={AuthScreen}
+          />
+
+          <Route
+            exact
+            path='/recover-password'
+            component={RecoveryPasswordScreen}
+          />
+
+          <Route
+            exact
+            path='/update-password/:token'
+            component={UpdatePasswordScreen}
+          />
+
+          <Redirect to='/login' />
+        </Switch>
+      </CSSTransition>
+    </SwitchTransition>
+  );
+};
 
 export default SignedRoutes;
