@@ -9,7 +9,7 @@ const StoresScreen = () => {
   const [isLoading, setLoading] = useState(true);
   const stores = useSelector((state) => state.stores);
   const dispatch = useDispatch();
-  const fetchData = () => dispatch(getStores());
+  const fetchData = () => dispatch(getStores(currentPage - 1));
 
   useEffect(() => {
     let isCancelled = false;

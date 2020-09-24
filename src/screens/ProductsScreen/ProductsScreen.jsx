@@ -10,9 +10,10 @@ const ProductsScreen = () => {
   const products = useSelector((state) => state.products);
   const dispatch = useDispatch();
 
-  const fetchData = () => dispatch(getProducts());
+  const fetchData = () => dispatch(getProducts(currentPage - 1));
 
   useEffect(() => {
+
     let isCancelled = false;
     fetchData()
       .then(() => {
