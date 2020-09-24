@@ -9,11 +9,17 @@ import {
 import TableRowComponent from './TableRowComponent';
 import tableMarkup from '../../services/tableMarkup';
 import localization from '../../localization';
-
+import PaginationComponent from './PaginationComponent';
 import './TableComponent.scss';
 
-const TableComponent = ({ tableData, type }) => {
+const TableComponent = ({
+  tableData,
+  type,
+  setCurrentPage,
+  currentPage,
+}) => {
   const markup = tableMarkup[type];
+  // eslint-disable-next-line no-unused-vars
   const [showColumn, setShowColumn] = useState(markup.defaultShow);
   const [checked, setChecked] = useState([]);
 
@@ -51,7 +57,8 @@ const TableComponent = ({ tableData, type }) => {
             onChange={handleCheckAll}
           />
         </Grid>
-        {markup.headers.map((product) => showColumn[product.cell]
+        {markup.headers.map(
+          (product) => showColumn[product.cell]
           && (
             <Grid item xs zeroMinWidth key={product.name}>
               <Box my={1}>
@@ -65,7 +72,8 @@ const TableComponent = ({ tableData, type }) => {
                 </Typography>
               </Box>
             </Grid>
-          ))}
+          ),
+        )}
       </Grid>
       <Box className="tableBodyGrid">
         {tableData.items.map((rowItem) => (
@@ -79,6 +87,11 @@ const TableComponent = ({ tableData, type }) => {
           />
         ))}
       </Box>
+      <PaginationComponent
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={tableData.totalPages}
+      />
     </>
   ) : (
     <Typography>{localization.t('general.noResults')}</Typography>
@@ -88,6 +101,8 @@ const TableComponent = ({ tableData, type }) => {
 TableComponent.propTypes = {
   type: PropTypes.string,
   tableData: PropTypes.object,
+  setCurrentPage: PropTypes.func,
+  currentPage: PropTypes.number,
 };
 
 export default TableComponent;

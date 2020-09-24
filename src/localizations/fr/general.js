@@ -14,6 +14,9 @@ const general = {
   termsAndConditions: 'Terms and Conditions',
   checkYourEmailToResetThePassword: 'Check your email to reset the password',
   noResults: 'No results',
+  first: 'First',
+  last: 'Last',
+  next: 'Next',
 };
 
 export default general;
