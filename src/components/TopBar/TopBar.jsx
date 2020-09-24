@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import {
   AppBar,
@@ -13,38 +14,50 @@ import {
   Menu as MenuIcon,
   Search as SearchIcon,
   Refresh as RefreshIcon,
+  ExitToApp as LogoutIcon,
   NotificationsNone as NotificationsIcon,
 } from '@material-ui/icons';
+import { logout } from '../../redux/actions/Account';
 
-const TopBar = ({ toggleDrawer }) => (
-  <AppBar position='static' className='top-bar' elevation={1}>
-    <Toolbar>
-      <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
-        <MenuIcon />
-      </IconButton>
+const TopBar = ({ toggleDrawer }) => {
+  const dispatch = useDispatch();
 
-      <Box flexGrow={1}>
-        <InputBase
-          fullWidth
-          placeholder='Search...'
-          startAdornment={(
-            <IconButton edge='start' aria-label='search' color='secondary'>
-              <SearchIcon />
-            </IconButton>
-          )}
-        />
-      </Box>
+  const doLogout = () => dispatch(logout());
 
-      <IconButton edge='start' aria-label='refresh' color='secondary'>
-        <RefreshIcon />
-      </IconButton>
+  return (
+    <AppBar position='static' className='top-bar' elevation={1}>
+      <Toolbar>
+        <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
+          <MenuIcon />
+        </IconButton>
 
-      <IconButton edge='start' aria-label='notifications' color='secondary'>
-        <NotificationsIcon />
-      </IconButton>
-    </Toolbar>
-  </AppBar>
-);
+        <Box flexGrow={1}>
+          <InputBase
+            fullWidth
+            placeholder='Search...'
+            startAdornment={(
+              <IconButton edge='start' aria-label='search' color='secondary'>
+                <SearchIcon />
+              </IconButton>
+            )}
+          />
+        </Box>
+
+        <IconButton edge='start' aria-label='refresh' color='secondary'>
+          <RefreshIcon />
+        </IconButton>
+
+        <IconButton edge='start' aria-label='notifications' color='secondary'>
+          <NotificationsIcon />
+        </IconButton>
+
+        <IconButton edge='start' aria-label='logout' color='secondary' onClick={doLogout}>
+          <LogoutIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
+  );
+};
 
 TopBar.propTypes = {
   toggleDrawer: PropTypes.func,

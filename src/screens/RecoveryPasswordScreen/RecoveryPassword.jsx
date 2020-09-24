@@ -67,7 +67,6 @@ const RecoveryPassword = () => {
             <TextField
               error={touched.email && !!errors.email}
               fullWidth
-              autoFocus
               helperText={touched.email && errors.email}
               label="Email Address"
               margin="normal"
