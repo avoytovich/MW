@@ -50,6 +50,26 @@ const api = {
         '/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=0',
     });
   },
+  getStores() {
+    return axiosInstance({
+      method: 'get',
+      url: '/stores?format=short&sort=name%2Casc&size=50&page=0',
+    });
+  },
+  getOrders() {
+    return axiosInstance({
+      method: 'get',
+      url:
+        '/orders?format=short&status=COMPLETED&sort=updateDate%2Cdesc&size=50&page=0',
+    });
+  },
+  getCustomerById(id) {
+    const url = `/customers/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default api;

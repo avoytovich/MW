@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import TableComponent from '../../components/TableComponent';
-import getProducts from '../../redux/actions/Products';
+import getStores from '../../redux/actions/Stores';
 
-const ProductsScreen = () => {
+const StoresScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const products = useSelector((state) => state.products);
-  console.log(products);
+  const stores = useSelector((state) => state.stores);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getProducts());
+      await dispatch(getStores());
     };
     fetchData();
   }, []);
@@ -21,10 +20,10 @@ const ProductsScreen = () => {
     <TableComponent
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
-      tableData={products}
-      type="products"
+      tableData={stores}
+      type="stores"
     />
   );
 };
 
-export default ProductsScreen;
+export default StoresScreen;

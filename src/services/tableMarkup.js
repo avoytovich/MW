@@ -26,6 +26,70 @@ const tableMarkup = {
       family: false,
     },
   },
+  orders: {
+    headers: [
+      { name: 'Customer', cell: 'endUser.firstName' },
+      { name: 'Email address', cell: 'endUser.email' },
+      { name: 'Status', cell: 'status' },
+      // { name: 'Phone', cell: '' },
+      // { name: 'Online store', cell: '' },
+      // { name: 'Company name', cell: '' }, //(if any)
+      { name: 'Order ID', cell: 'id' },
+      { name: 'InvoiceID', cell: 'invoice.id' },
+      { name: 'Net price', cell: 'fullTotalAmount.netPrice' },
+      { name: 'Gross price', cell: 'fullTotalAmount.grossPrice' },
+      { name: 'Vat amount', cell: 'fullTotalAmount.vatAmount' },
+      { name: 'Currency', cell: 'currency' },
+      // { name: 'Split Payment', cell: '' }, //(if any)
+      { name: 'Products', cell: 'productFamily' },
+      { name: 'Payment type', cell: 'payment.paymentTypeId' },
+      { name: 'Invoice Date', cell: 'invoice.date' },
+      { name: 'Country', cell: 'endUser.country' },
+      { name: 'Payment status', cell: 'payment.informativeDPStatus' },
+      { name: 'Subscription Status', cell: 'subscriptionProcessingStatus' },
+      // { name: 'Cancellation Reasons', cell: '' },
+    ],
+    defaultShow: {
+      'endUser.firstName': true,
+      'endUser.email': true,
+      status: true,
+      id: true,
+      'invoice.id': true,
+      'fullTotalAmount.netPrice': true,
+      'fullTotalAmount.grossPrice': true,
+      'fullTotalAmount.vatAmount': true,
+      currency: true,
+      productFamily: true,
+      'payment.paymentTypeId': true,
+      'invoice.date': true,
+      'endUser.country': true,
+      'payment.informativeDPStatus': true,
+      subscriptionProcessingStatus: true,
+    },
+  },
+  stores: {
+    headers: [
+      { name: 'Customer', cell: 'customerId' }, // Temporary
+      { name: 'Name', cell: 'name' },
+      { name: 'Creation Date', cell: 'createDate' },
+      { name: 'Last update', cell: 'updateDate' },
+      { name: 'Default Language', cell: 'defaultLocale' },
+      { name: 'Status', cell: 'status' },
+      { name: 'GTM ID', cell: 'gtmId' },
+      { name: 'Store ID', cell: 'id' },
+    ],
+    defaultShow: {
+      id: true,
+      customerId: true, // Temporary
+      name: true,
+      createDate: true,
+      updateDate: true,
+      defaultLocale: true,
+      'designs?.theme': true,
+      status: true,
+      gtmId: false,
+    },
+  },
 };
 
 export default tableMarkup;
