@@ -10,12 +10,12 @@ const SignedRoutes = () => (
     />
     <Route
       exect
-      path="/stores"
+      path="/overview/stores"
       component={lazy(() => import('../../../screens/StoresScreen'))}
     />
     <Route
       exect
-      path="/orders"
+      path="/overview/orders"
       component={lazy(() => import('../../../screens/OrdersScreen'))}
     />
     <Redirect to="/" />
