@@ -13,6 +13,7 @@ const StoresScreen = () => {
 
   useEffect(() => {
     let isCancelled = false;
+    setLoading(true);
 
     fetchData()
       .then(() => {
@@ -27,7 +28,7 @@ const StoresScreen = () => {
       });
 
     return () => { isCancelled = true; };
-  }, []);
+  }, [currentPage]);
 
   return (
     <TableComponent

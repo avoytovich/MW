@@ -13,8 +13,9 @@ const ProductsScreen = () => {
   const fetchData = () => dispatch(getProducts(currentPage - 1));
 
   useEffect(() => {
-
     let isCancelled = false;
+    setLoading(true);
+
     fetchData()
       .then(() => {
         if (!isCancelled) {
@@ -28,7 +29,7 @@ const ProductsScreen = () => {
       });
 
     return () => { isCancelled = true; };
-  }, []);
+  }, [currentPage]);
 
   return (
     <TableComponent
