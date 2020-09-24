@@ -12,7 +12,7 @@ const MainLayout = ({ children }) => {
     <Grid container>
       <SideBar open={drawerOpen} />
 
-      <Grid container item style={{ paddingLeft: drawerOpen ? 240 : 0 }}>
+      <Grid container item style={{ paddingLeft: drawerOpen ? 260 : 0 }}>
         <TopBar toggleDrawer={() => setDrawer((d) => !d)} />
         <Grid item>{children}</Grid>
       </Grid>

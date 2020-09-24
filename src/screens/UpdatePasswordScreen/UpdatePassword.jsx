@@ -9,8 +9,10 @@ import {
   Link,
   CircularProgress,
 } from '@material-ui/core';
-import { Formik } from 'formik';
+import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import { Formik } from 'formik';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import * as validators from '../../services/inputValidators';
 import api from '../../api';
@@ -18,6 +20,7 @@ import api from '../../api';
 const initialUpdateValues = { newPassword: '', confirmedPassword: '' };
 
 const UpdatePassword = () => {
+  const dispatch = useDispatch();
   const { token } = useParams();
   const history = useHistory();
 
@@ -25,7 +28,10 @@ const UpdatePassword = () => {
     setSubmitting(true);
     api
       .setNewPassword(token, { password: values.newPassword })
-      .then(() => history.push('/'))
+      .then(() => {
+        dispatch(showNotification('Password updated!'));
+        history.push('/');
+      })
       .catch((error) => {
         setSubmitting(false);
         setErrors({ message: error.response.data.error });

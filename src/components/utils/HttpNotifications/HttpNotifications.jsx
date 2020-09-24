@@ -7,7 +7,7 @@ import { hideNotification } from '../../../redux/actions/HttpNotifications';
 
 import './HttpNotifications.scss';
 
-const AUTO_HIDE_INTERVAL = 2400;
+const AUTO_HIDE_INTERVAL = 3000;
 
 const HttpActionNotification = () => {
   const dispatch = useDispatch();
