@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Typography, Grid, Box, Checkbox } from '@material-ui/core';
+import {
+  Typography, Grid, Box, Checkbox,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -41,7 +43,11 @@ const TableRowComponent = (props) => {
           key={`${item.cell}_${rowItem.id}`}
         >
           <Box my={2}>
-            <Typography noWrap className="tableCellItem">
+            <Typography
+              color={item.cell === 'genericName' || item.cell === 'customerId' ? 'primary' : 'secondary'}
+              noWrap
+              className="tableCellItem"
+            >
               {valueToShow}
             </Typography>
           </Box>
