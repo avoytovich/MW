@@ -2,26 +2,34 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Button,
   ListItem,
 } from '@material-ui/core';
+import './NavItem.scss';
 
 const NavItem = ({
   title,
   href,
   icon: Icon,
 }) => (
-  <ListItem disableGutters>
-    <Button
+  <ListItem
+    disableGutters
+    className='listItem'
+  >
+    <NavLink
+      className='listItemButton'
+      color='secondary'
       activeClassName='active'
-      component={NavLink}
       exact
       to={href}
     >
       {Icon && <Icon size="20" />}
 
-      <span>{title}</span>
-    </Button>
+      <span
+        className='linkTitle'
+      >
+        {title}
+      </span>
+    </NavLink>
   </ListItem>
 );
 
