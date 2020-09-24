@@ -48,6 +48,7 @@ const RecoveryPassword = () => {
 
       <Formik
         mt={100}
+        style={{ width: 408 }}
         initialValues={initialRecoveryValues}
         validate={(values) => validators.email(values)}
         onSubmit={(values, {
@@ -63,7 +64,15 @@ const RecoveryPassword = () => {
           handleSubmit,
           isSubmitting,
         }) => (
-          <form noValidate onSubmit={handleSubmit}>
+          <form
+            noValidate
+            onSubmit={handleSubmit}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: 410,
+            }}
+          >
             <TextField
               error={touched.email && !!errors.email}
               fullWidth
