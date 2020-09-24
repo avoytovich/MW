@@ -6,21 +6,21 @@ import localization from '../../localization';
 
 const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
   const calculatePaginationNumbers = (condition = 0) => {
-    let pluss;
+    let plus;
     const toLeft = currentPage - 2;
     let min = condition;
     if (toLeft === -1) {
       min += currentPage;
-      pluss = 4;
+      plus = 4;
     } else if (toLeft === 0) {
       min = min + currentPage - 1;
-      pluss = 3;
+      plus = 3;
     } else {
       min = min + currentPage - 2;
-      pluss = 2;
+      plus = 2;
     }
-    const toRoght = totalPages - (currentPage + pluss);
-    const max = toRoght < 1 || toRoght === 0 ? totalPages : currentPage + pluss;
+    const toRoght = totalPages - (currentPage + plus);
+    const max = toRoght < 1 || toRoght === 0 ? totalPages : currentPage + plus;
     const res = [];
     for (let i = min; i <= max; i++) {
       res.push(i);
