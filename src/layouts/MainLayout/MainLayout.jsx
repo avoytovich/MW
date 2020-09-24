@@ -14,7 +14,21 @@ const MainLayout = ({ children }) => {
 
       <Grid container item style={{ paddingLeft: drawerOpen ? 240 : 0 }}>
         <TopBar toggleDrawer={() => setDrawer((d) => !d)} />
-        <Grid item>{children}</Grid>
+        <Grid
+          style={{
+            flexGrow: 1,
+            margin: 20,
+            border: '1px solid #f3f5fa',
+            borderRadius: 10,
+            padding: 15,
+          }}
+        >
+          <Grid
+            item
+          >
+            {children}
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
