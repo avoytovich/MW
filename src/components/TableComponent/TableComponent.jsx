@@ -5,6 +5,7 @@ import {
   Grid,
   Box,
   Checkbox,
+  LinearProgress,
 } from '@material-ui/core';
 import TableRowComponent from './TableRowComponent';
 import tableMarkup from '../../services/tableMarkup';
@@ -17,6 +18,7 @@ const TableComponent = ({
   type,
   setCurrentPage,
   currentPage,
+  isLoading,
 }) => {
   const markup = tableMarkup[type];
   // eslint-disable-next-line no-unused-vars
@@ -40,6 +42,8 @@ const TableComponent = ({
     }
     setChecked(newChecked);
   };
+
+  if (isLoading) return <LinearProgress />;
 
   return tableData?.items?.length ? (
     <>
@@ -103,6 +107,7 @@ TableComponent.propTypes = {
   tableData: PropTypes.object,
   setCurrentPage: PropTypes.func,
   currentPage: PropTypes.number,
+  isLoading: PropTypes.bool,
 };
 
 export default TableComponent;
