@@ -6,15 +6,27 @@ import getProducts from '../../redux/actions/Products';
 
 const ProductsScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [isLoading, setLoading] = useState(true);
   const products = useSelector((state) => state.products);
-  console.log(products);
   const dispatch = useDispatch();
+
+  const fetchData = () => dispatch(getProducts());
+
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(getProducts());
-    };
-    fetchData();
+    let isCancelled = false;
+    fetchData()
+      .then(() => {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      });
+
+    return () => { isCancelled = true; };
   }, []);
 
   return (
@@ -22,6 +34,7 @@ const ProductsScreen = () => {
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       tableData={products}
+      isLoading={isLoading}
       type="products"
     />
   );

@@ -8,17 +8,20 @@ const SignedRoutes = () => (
       path='/overview/products'
       component={lazy(() => import('../../../screens/ProductsScreen'))}
     />
+
     <Route
       exect
-      path="/overview/stores"
+      path='/overview/stores'
       component={lazy(() => import('../../../screens/StoresScreen'))}
     />
+
     <Route
       exect
-      path="/overview/orders"
+      path='/overview/orders'
       component={lazy(() => import('../../../screens/OrdersScreen'))}
     />
-    <Redirect to="/" />
+
+    <Redirect to='/overview/products' />
   </Switch>
 );
 
