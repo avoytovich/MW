@@ -5,8 +5,10 @@ import TableComponent from '../../components/TableComponent';
 import getProducts from '../../redux/actions/Products';
 
 const ProductsScreen = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+
   const products = useSelector((state) => state.products);
-  console.log(products)
+  console.log(products);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
@@ -15,7 +17,14 @@ const ProductsScreen = () => {
     fetchData();
   }, []);
 
-  return <TableComponent tableData={products} />;
+  return (
+    <TableComponent
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      tableData={products}
+      type="products"
+    />
+  );
 };
 
 export default ProductsScreen;

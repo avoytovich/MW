@@ -11,7 +11,6 @@ import AuthorizationLayout from '../../../layouts/AuthorizationLayout';
 
 const Routes = () => {
   const account = useSelector(({ account: acc }) => acc);
-  console.log(account);
 
   return (
     <Suspense fallback={<LoadingScreen />}>

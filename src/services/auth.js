@@ -1,11 +1,12 @@
 /* eslint-disable class-methods-use-this */
 
 import jwtDecode from 'jwt-decode';
+
 import api from '../api';
 import { axiosInstance } from '../axios';
 
 class Auth {
-  setAxiosInterceptors({ onLogout }) {
+  setAxiosInterceptors() {
     const token = this.getAccessToken();
 
     axiosInstance.interceptors.request.use(
@@ -27,11 +28,8 @@ class Auth {
       (response) => response,
       (error) => {
         if (token && error.response && error.response.status === 401) {
-          this.setSession(null);
-
-          if (onLogout) {
-            onLogout();
-          }
+          this.logout();
+          window.location.reload();
         }
 
         return Promise.reject(error);
@@ -59,6 +57,7 @@ class Auth {
       .then(({ data }) => {
         if (data.access_token) {
           this.setSession(data.access_token);
+          this.setAxiosInterceptors();
           return data;
         }
 
