@@ -11,10 +11,10 @@ const StoresScreen = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getStores());
+      await dispatch(getStores(currentPage - 1));
     };
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <TableComponent

@@ -8,14 +8,13 @@ const ProductsScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const products = useSelector((state) => state.products);
-  console.log(products);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getProducts());
+      await dispatch(getProducts(currentPage - 1));
     };
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <TableComponent

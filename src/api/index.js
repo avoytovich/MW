@@ -43,24 +43,25 @@ const api = {
       data,
     });
   },
-  getProducts() {
+  getProducts(page) {
+    const url = `/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
-      url:
-        '/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=0',
+      url,
     });
   },
-  getStores() {
+  getStores(page) {
+    const url = `/stores?format=short&sort=name%2Casc&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
-      url: '/stores?format=short&sort=name%2Casc&size=50&page=0',
+      url,
     });
   },
-  getOrders() {
+  getOrders(page) {
+    const url = `/orders?format=short&status=COMPLETED&sort=updateDate%2Cdesc&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
-      url:
-        '/orders?format=short&status=COMPLETED&sort=updateDate%2Cdesc&size=50&page=0',
+      url,
     });
   },
   getCustomerById(id) {
