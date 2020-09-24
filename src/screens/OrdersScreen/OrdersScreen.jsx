@@ -13,19 +13,18 @@ const OrdersScreen = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      await dispatch(getOrders());
+      await dispatch(getOrders(currentPage - 1));
     };
     fetchData();
-  }, []);
+  }, [currentPage]);
 
-  return <></>
-    // <TableComponent
-    //   currentPage={currentPage}
-    //   setCurrentPage={setCurrentPage}
-    //   tableData={stores}
-    //   type="orders"
-    // />
-
+  return <></>;
+  // <TableComponent
+  //   currentPage={currentPage}
+  //   setCurrentPage={setCurrentPage}
+  //   tableData={stores}
+  //   type="orders"
+  // />
 };
 
 export default OrdersScreen;

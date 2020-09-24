@@ -32,11 +32,11 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
   };
 
   const pageNumbers = calculatePaginationNumbers();
-  const drawPagination = () => (
-    <>
+  return (
+    <Grid spacing={2} container justify="flex-end" direction="row">
       {pageNumbers[0] !== 1 && (
         <Grid item>
-          <Typography color="secondary">
+          <Typography color="secondary" onClick={() => setCurrentPage(1)}>
             {localization.t('general.first')}
           </Typography>
         </Grid>
@@ -57,23 +57,22 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
         </Grid>
       </Grid>
       {pageNumbers[pageNumbers.length - 1] !== totalPages && (
-        <>
-          <Grid item>
-            <Typography color="secondary">
-              {localization.t('general.last')}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Typography>{localization.t('general.next')}</Typography>
-          </Grid>
-        </>
+        <Grid item>
+          <Typography
+            color="secondary"
+            onClick={() => setCurrentPage(totalPages)}
+          >
+            {localization.t('general.last')}
+          </Typography>
+        </Grid>
       )}
-    </>
-  );
-
-  return (
-    <Grid spacing={2} container justify="flex-end" direction="row">
-      {drawPagination()}
+      {pageNumbers[pageNumbers.length - 1] !== currentPage && (
+        <Grid item>
+          <Typography onClick={() => setCurrentPage(currentPage + 1)}>
+            {localization.t('general.next')}
+          </Typography>
+        </Grid>
+      )}{' '}
     </Grid>
   );
 };
