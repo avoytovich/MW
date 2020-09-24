@@ -7,6 +7,7 @@ import {
   Typography,
   Checkbox,
   Link,
+  CircularProgress,
 } from '@material-ui/core';
 import { Formik } from 'formik';
 import { useHistory, useParams } from 'react-router-dom';
@@ -19,6 +20,7 @@ const initialUpdateValues = { newPassword: '', confirmedPassword: '' };
 const UpdatePassword = () => {
   const { token } = useParams();
   const history = useHistory();
+
   const handleOnSubmit = (values, setSubmitting, setErrors) => {
     setSubmitting(true);
     api
@@ -36,12 +38,13 @@ const UpdatePassword = () => {
           {localization.t('general.setNewPassword')}
         </Typography>
       </Box>
+
       <Formik
         validate={(values) => validators.updatePassword(values)}
         initialValues={initialUpdateValues}
-        onSubmit={(values, { setSubmitting, setErrors }) => {
-          handleOnSubmit(values, setSubmitting, setErrors);
-        }}
+        onSubmit={(values, {
+          setSubmitting, setErrors,
+        }) => handleOnSubmit(values, setSubmitting, setErrors)}
       >
         {({
           values,
@@ -54,7 +57,7 @@ const UpdatePassword = () => {
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <TextField
-              error={touched.newPassword && !!errors.notifications.length}
+              error={touched.newPassword && !!errors?.notifications?.length}
               fullWidth
               label=" New Password"
               margin="normal"
@@ -78,6 +81,7 @@ const UpdatePassword = () => {
               value={values.confirmedPassword}
               variant="outlined"
             />
+
             <Box alignItems="center" display="flex">
               <Checkbox
                 checked={values.policy}
@@ -91,6 +95,7 @@ const UpdatePassword = () => {
                 </Link>
               </Typography>
             </Box>
+
             <Box mt={2}>
               <Button
                 color="primary"
@@ -105,8 +110,9 @@ const UpdatePassword = () => {
                 type="submit"
                 variant="contained"
               >
-                {localization.t('general.setNewPassword')}
+                {isSubmitting ? <CircularProgress size={26} /> : localization.t('general.setNewPassword')}
               </Button>
+
               {errors.notifications && (
                 <Box mt={3}>
                   {errors.notifications.map((note) => (
@@ -120,6 +126,7 @@ const UpdatePassword = () => {
                   ))}
                 </Box>
               )}
+
               {errors.message && (
                 <Box mt={3}>
                   <FormHelperText error>{errors.message}</FormHelperText>

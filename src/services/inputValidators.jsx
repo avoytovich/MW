@@ -29,22 +29,22 @@ export const updatePassword = (values) => {
       localization.t('errorNotifications.lessThan20Characters'),
     );
   }
-  if (!/(?=.*[a-z])/.test(values.newPassword)) {
+  if (!(/(?=.*[a-z])/).test(values.newPassword)) {
     notifications.push(
       localization.t('errorNotifications.containsAtLeast1LowercaseCharacter'),
     );
   }
-  if (!/(?=.*[A-Z])/.test(values.newPassword)) {
+  if (!(/(?=.*[A-Z])/).test(values.newPassword)) {
     notifications.push(
       localization.t('errorNotifications.containsAtLeast1UppercaseCharacter'),
     );
   }
-  if (!/(?=.*\d)/.test(values.newPassword)) {
+  if (!(/(?=.*\d)/).test(values.newPassword)) {
     notifications.push(
-      localization.t('errorNotifications.containsAtLeast1DigitFrom0_9'),
+      localization.t('errorNotifications.containsAtLeast1DigitFrom0to9'),
     );
   }
-  if (!/(^\S*$)/.test(values.newPassword)) {
+  if (!(/(^\S*$)/).test(values.newPassword)) {
     notifications.push(localization.t('errorNotifications.containsNoSpace'));
   }
   if (notifications.length) {

@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 
 import jwtDecode from 'jwt-decode';
-
 import api from '../api';
 import { axiosInstance } from '../axios';
 
@@ -77,12 +76,14 @@ class Auth {
 
   getAccessToken() { return localStorage.getItem('accessToken'); }
 
+  decodeToken(accessToken) { return jwtDecode(accessToken); }
+
   isValidToken(accessToken) {
     if (!accessToken) {
       return false;
     }
 
-    const decoded = jwtDecode(accessToken);
+    const decoded = this.decodeToken(accessToken);
     const currentTime = Date.now() / 1000;
 
     return decoded.exp > currentTime;
