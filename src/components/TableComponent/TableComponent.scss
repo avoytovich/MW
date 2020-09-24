@@ -3,6 +3,8 @@ $tableHeader: #f9f9f9;
 $editIcon: #fee650;
 $deleteIcon: #fd8e8d;
 $copyIcon: #99de90;
+$currentPageBackground: #cde7fb;
+$currentPageText: #4791db;
 
 .tableRowGrid {
   &:nth-of-type(odd) {
@@ -26,7 +28,6 @@ $copyIcon: #99de90;
     color: $editIcon;
   }
 }
-
 .tableHeaderGrid {
   overflow-x: hidden;
   background-color: $tableHeader;
@@ -35,4 +36,11 @@ $copyIcon: #99de90;
     white-space: nowrap;
     text-align: center;
   }
+}
+.currentPage {
+  color: $currentPageText;
+  border-radius: 50%;
+  background-color: $currentPageBackground;
+  padding-left: 6px;
+  padding-right: 6px;
 }
