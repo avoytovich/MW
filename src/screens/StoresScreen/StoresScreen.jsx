@@ -1,42 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import React, { useState } from 'react';
+import useStoresData from '../../services/useData/useStoresData';
 import TableComponent from '../../components/TableComponent';
-import getStores from '../../redux/actions/Stores';
+import { defaultShow } from '../../services/useData/tableMarkups/stores';
 
 const StoresScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
+  const [showColumn, setShowColumn] = useState(defaultShow);
+
   const [isLoading, setLoading] = useState(true);
-  const stores = useSelector((state) => state.stores);
-  const dispatch = useDispatch();
-  const fetchData = () => dispatch(getStores(currentPage - 1));
-
-  useEffect(() => {
-    let isCancelled = false;
-    setLoading(true);
-
-    fetchData()
-      .then(() => {
-        if (!isCancelled) {
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!isCancelled) {
-          setLoading(false);
-        }
-      });
-
-    return () => { isCancelled = true; };
-  }, [currentPage]);
-
+  const stores = useStoresData(currentPage - 1, setLoading);
   return (
     <TableComponent
+      showColumn={showColumn}
       currentPage={currentPage}
       setCurrentPage={setCurrentPage}
       tableData={stores}
       isLoading={isLoading}
-      type="stores"
     />
   );
 };

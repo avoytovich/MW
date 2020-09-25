@@ -8,21 +8,17 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 import TableRowComponent from './TableRowComponent';
-import tableMarkup from '../../services/tableMarkup';
 import localization from '../../localization';
 import PaginationComponent from './PaginationComponent';
 import './TableComponent.scss';
 
 const TableComponent = ({
   tableData,
-  type,
   setCurrentPage,
   currentPage,
   isLoading,
+  showColumn,
 }) => {
-  const markup = tableMarkup[type];
-  // eslint-disable-next-line no-unused-vars
-  const [showColumn, setShowColumn] = useState(markup.defaultShow);
   const [checked, setChecked] = useState([]);
 
   const handleCheck = (itemId) => {
@@ -38,14 +34,14 @@ const TableComponent = ({
   const handleCheckAll = () => {
     let newChecked = [];
     if (!checked.length) {
-      newChecked = tableData?.items.map((item) => item.id);
+      newChecked = tableData?.values.map((item) => item.id);
     }
     setChecked(newChecked);
   };
 
   if (isLoading) return <LinearProgress />;
 
-  return tableData?.items?.length ? (
+  return tableData?.values?.length ? (
     <>
       <Grid
         spacing={1}
@@ -56,15 +52,15 @@ const TableComponent = ({
       >
         <Grid>
           <Checkbox
-            checked={tableData?.items.length === checked.length}
+            checked={tableData?.values.length === checked.length}
             name="checkAll"
             onChange={handleCheckAll}
           />
         </Grid>
-        {markup.headers.map(
-          (product) => showColumn[product.cell]
+        {tableData.headers.map(
+          (header) => showColumn[header.id]
           && (
-            <Grid item xs zeroMinWidth key={product.name}>
+            <Grid item xs zeroMinWidth key={header.value}>
               <Box my={1}>
                 <Typography
                   variant="h6"
@@ -72,7 +68,7 @@ const TableComponent = ({
                   noWrap
                   style={{ textAlign: 'center' }}
                 >
-                  {product.name}
+                  {header.value}
                 </Typography>
               </Box>
             </Grid>
@@ -80,11 +76,11 @@ const TableComponent = ({
         )}
       </Grid>
       <Box className="tableBodyGrid">
-        {tableData.items.map((rowItem) => (
+        {tableData.values.map((rowItem) => (
           <TableRowComponent
             checked={checked.indexOf(rowItem.id) !== -1}
             handleCheck={handleCheck}
-            markupSequence={markup.headers}
+            markupSequence={tableData.headers}
             showColumn={showColumn}
             key={rowItem.id}
             rowItem={rowItem}
@@ -94,7 +90,7 @@ const TableComponent = ({
       <PaginationComponent
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalPages={tableData.totalPages}
+        totalPages={tableData.meta?.totalPages}
       />
     </>
   ) : (
@@ -103,11 +99,11 @@ const TableComponent = ({
 };
 
 TableComponent.propTypes = {
-  type: PropTypes.string,
   tableData: PropTypes.object,
   setCurrentPage: PropTypes.func,
   currentPage: PropTypes.number,
   isLoading: PropTypes.bool,
+  showColumn: PropTypes.object,
 };
 
 export default TableComponent;
