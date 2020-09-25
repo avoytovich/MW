@@ -25,8 +25,9 @@ const TableRowComponent = ({
     const fullDate = new Date(formatingData);
     const day = fullDate.getDay();
     const month = monthNames[fullDate.getMonth()].substring(0, 3);
+    const year = fullDate.getUTCFullYear();
 
-    return `${day} ${month}`;
+    return `${day} ${month} ${year}`;
   };
 
   const drawTableCell = (item) => {
