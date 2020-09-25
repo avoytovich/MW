@@ -1,30 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
+import React, { useState } from 'react';
+import useOredersData from '../../services/useData/useOredersData';
+import { defaultShow } from '../../services/useData/tableMarkups/orders';
 import TableComponent from '../../components/TableComponent';
-import getOrders from '../../redux/actions/Orders';
 
 const OrdersScreen = () => {
-  // eslint-disable-next-line no-unused-vars
   const [currentPage, setCurrentPage] = useState(1);
-
   // eslint-disable-next-line no-unused-vars
-  const orders = useSelector((state) => state.orders);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(getOrders(currentPage - 1));
-    };
-    fetchData();
-  }, [currentPage]);
+  const [showColumn, setShowColumn] = useState(defaultShow);
+  const [isLoading, setLoading] = useState(true);
+  const oreders = useOredersData(currentPage - 1, setLoading);
 
-  return <></>;
-  // <TableComponent
-  //   currentPage={currentPage}
-  //   setCurrentPage={setCurrentPage}
-  //   tableData={stores}
-  //   type="orders"
-  // />
+  return (
+    <TableComponent
+      showColumn={showColumn}
+      currentPage={currentPage}
+      setCurrentPage={setCurrentPage}
+      tableData={oreders}
+      isLoading={isLoading}
+    />
+  );
 };
 
 export default OrdersScreen;

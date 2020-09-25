@@ -1,50 +1,58 @@
 import React, { useState } from 'react';
 import {
-  Typography, Grid, Box, Checkbox,
+  Typography,
+  Grid,
+  Box,
+  Checkbox,
 } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import EditIcon from '@material-ui/icons/Edit';
 import monthNames from '../../services/constants';
 import './TableComponent.scss';
 
-const TableRowComponent = (props) => {
-  const {
-    rowItem,
-    showColumn,
-    markupSequence,
-    handleCheck,
-    checked,
-  } = props;
+const TableRowComponent = ({
+  rowItem,
+  showColumn,
+  markupSequence,
+  handleCheck,
+  checked,
+}) => {
   const [rowHover, setRowHover] = useState(false);
 
   const formatDate = (formatingData) => {
     const fullDate = new Date(formatingData);
     const day = fullDate.getDay();
     const month = monthNames[fullDate.getMonth()].substring(0, 3);
+
     return `${day} ${month}`;
   };
 
   const drawTableCell = (item) => {
-    if (showColumn[item.cell]) {
+    if (showColumn[item.id]) {
       let valueToShow;
-      if (item.cell === 'createDate' || item.cell === 'updateDate') {
-        valueToShow = formatDate(rowItem[item.cell]);
+      if (item.id === 'createDate' || item.id === 'updateDate') {
+        valueToShow = formatDate(rowItem[item.id]);
       } else {
-        valueToShow = rowItem[item.cell];
+        valueToShow = rowItem[item.id];
       }
+
       return (
         <Grid
           className="tableCellItemGrid"
           item
           xs
           zeroMinWidth
-          key={`${item.cell}_${rowItem.id}`}
+          key={`${item.id}_${rowItem.id}`}
         >
           <Box my={2}>
             <Typography
-              color={item.cell === 'genericName' || item.cell === 'customerId' ? 'primary' : 'secondary'}
+              color={
+                item.id === 'genericName' || item.id === 'customerId'
+                  ? 'primary'
+                  : 'secondary'
+              }
               noWrap
               className="tableCellItem"
             >
