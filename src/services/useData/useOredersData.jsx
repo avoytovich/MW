@@ -12,9 +12,14 @@ const useOredersData = (page, setLoading) => {
       .getOrders(page)
       .then(({ data }) => {
         if (!isCancelled) {
-          const orders = generateData(data);
-          setOrders(orders);
-          setLoading(false);
+          const costumersId = data.items.map(
+            (item) => `id=${item.customer.id}`,
+          );
+          api.getCustomersByIds(costumersId.join('&')).then((customers) => {
+            const orders = generateData(data, customers.data);
+            setOrders(orders);
+            setLoading(false);
+          });
         }
       })
       .catch(() => {
