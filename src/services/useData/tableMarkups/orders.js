@@ -1,72 +1,56 @@
 const defaultShow = {
-  firstName: true,
+  customer: true,
   email: true,
   status: true,
-  // phone: true,
-  // onlineStore:true,
-  // companyName:true,
+  storeId: true,
+  companyName: true,
   id: true,
   invoiceId: true,
-  netPrice: true,
-  grossPrice: true,
-  vatAmount: true,
   currency: true,
-  // splitPayment:true,
-  productFamily: true,
-  paymentTypeId: true,
-  invoiceDate: true,
+  products: true,
   country: true,
-  informativeDPStatus: true,
-  subscriptionProcessingStatus: true,
+  paymentType: true,
+  paymentStatus: true,
 };
 
 const markUp = {
   headers: [
-    { value: 'Customer', id: 'firstName' },
+    { value: 'Customer', id: 'customer' },
     { value: 'Email address', id: 'email' },
     { value: 'Status', id: 'status' },
-    // { value: 'Phone', id:: '' },
-    // { value: 'Online store', id:: '' },
-    // { value: 'Company name', id:: '' }, //(if any)
+    { value: 'Online store', id: 'storeId' },
+    { value: 'Company name', id: 'companyName' },
     { value: 'Order ID', id: 'id' },
     { value: 'InvoiceID', id: 'invoiceId' },
-    { value: 'Net price', id: 'netPrice' },
-    { value: 'Gross price', id: 'grossPrice' },
-    { value: 'Vat amount', id: 'vatAmount' },
     { value: 'Currency', id: 'currency' },
-    // { value: 'Split Payment', id:: '' }, //(if any)
-    { value: 'Products', id: 'productFamily' },
-    { value: 'Payment type', id: 'paymentTypeId' },
-    { value: 'Invoice Date', id: 'invoiceDate' },
+    { value: 'Products', id: 'products' },
     { value: 'Country', id: 'country' },
-    { value: 'Payment status', id: 'informativeDPStatus' },
-    { value: 'Subscription Status', id: 'subscriptionProcessingStatus' },
-    // { value: 'Cancellation Reasons', id:: '' },
+    { value: 'Payment type', id: 'paymentType' },
+    { value: 'Payment status', id: 'paymentStatus' },
   ],
 };
 
-const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    firstName: val.endUser?.firstName,
-    email: val.endUser?.email,
-    status: val.status,
-    // phone: val.,
-    // onlineStore:val.
-    // companyName:val.
-    id: val.id,
-    invoiceId: val.invoice?.id,
-    netPrice: val.fullTotalAmount?.netPrice,
-    grossPrice: val.fullTotalAmount?.grossPrice,
-    vatAmount: val.fullTotalAmount?.vatAmount,
-    currency: val.currency,
-    // splitPayment: val.,
-    productFamily: val.productFamily,
-    paymentTypeId: val.payment?.paymentTypeId,
-    invoiceDate: val.invoice?.date,
-    country: val.endUser?.country,
-    informativeDPStatus: val.payment?.informativeDPStatus,
-    subscriptionProcessingStatus: val.subscriptionProcessingStatus,
-  }));
+const generateData = (data, customers) => {
+  const values = data.items.map((val) => {
+    const customer = customers.items.filter(
+      (item) => item.id === val.customer.id,
+    )[0].name;
+
+    return {
+      customer,
+      email: val.endUser?.email,
+      status: val.status,
+      storeId: val.endUser?.storeId,
+      companyName: val.customer?.id,
+      id: val.id,
+      invoiceId: val.invoice?.id,
+      currency: val.lineItems[0]?.currency,
+      products: val.lineItems[0]?.name,
+      country: val.endUser?.country,
+      paymentType: val.payments[0]?.methodType,
+      paymentStatus: val.payments[0]?.status,
+    };
+  });
 
   const meta = {
     totalPages: data.totalPages,

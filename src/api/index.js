@@ -64,8 +64,8 @@ const api = {
       url,
     });
   },
-  getCustomerById(id) {
-    const url = `/customers/${id}`;
+  getCustomersByIds(ids) {
+    const url = `/customers/public?format=short/${ids}`;
     return axiosInstance({
       method: 'get',
       url,
