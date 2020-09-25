@@ -66,7 +66,7 @@ const TableComponent = ({
                   variant="h6"
                   className="tableHeader"
                   noWrap
-                  style={{ textAlign: 'center' }}
+                  align='center'
                 >
                   {header.value}
                 </Typography>
