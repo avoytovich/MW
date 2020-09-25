@@ -7,7 +7,6 @@ import {
   Box,
   FormHelperText,
   CircularProgress,
-  Container,
 } from '@material-ui/core';
 import localization from '../../localization';
 import api from '../../api';
@@ -37,7 +36,7 @@ const RecoveryPassword = () => {
     </Box>
   ) : (
     <>
-      <Container>
+      <Box width={420}>
         <Box mb={4}>
           <Typography m="100px" variant="h3" color="textPrimary">
             {localization.t('general.resetPassword')}
@@ -68,13 +67,8 @@ const RecoveryPassword = () => {
             <form
               noValidate
               onSubmit={handleSubmit}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
             >
               <TextField
-                style={{ marginRight: '210px' }}
                 error={touched.email && !!errors.email}
                 fullWidth
                 helperText={touched.email && errors.email}
@@ -111,7 +105,7 @@ const RecoveryPassword = () => {
             </form>
           )}
         </Formik>
-      </Container>
+      </Box>
     </>
   );
 };
