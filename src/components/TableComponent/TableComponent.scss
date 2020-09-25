@@ -37,10 +37,15 @@ $currentPageText: #4791db;
     text-align: center;
   }
 }
+.paginationBlock p {
+  cursor: pointer;
+}
 .currentPage {
   color: $currentPageText;
   border-radius: 50%;
   background-color: $currentPageBackground;
-  padding-left: 6px;
-  padding-right: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-weight: bold;
+  cursor: pointer;
 }
