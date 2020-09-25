@@ -5,8 +5,6 @@ import {
   Box,
   FormHelperText,
   Typography,
-  Checkbox,
-  Link,
   CircularProgress,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
@@ -88,27 +86,12 @@ const UpdatePassword = () => {
               variant="outlined"
             />
 
-            <Box alignItems="center" display="flex">
-              <Checkbox
-                checked={values.policy}
-                name="policy"
-                onChange={handleChange}
-              />
-              <Typography variant="body2" color="secondary">
-                {localization.t('general.iHaveReadThe')}
-                <Link to="/" color="secondary">
-                  {localization.t('general.termsAndConditions')}
-                </Link>
-              </Typography>
-            </Box>
-
             <Box mt={2}>
               <Button
                 color="primary"
                 disabled={
                   Object.keys(errors).length !== 0
                   || !values.newPassword
-                  || !values.policy
                   || isSubmitting
                 }
                 fullWidth
