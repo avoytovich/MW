@@ -11,9 +11,9 @@ const useStoresData = (page, setLoading) => {
     api
       .getStores(page)
       .then(({ data }) => {
-        const stores = generateData(data);
-        setStores(stores);
         if (!isCancelled) {
+          const stores = generateData(data);
+          setStores(stores);
           setLoading(false);
         }
       })

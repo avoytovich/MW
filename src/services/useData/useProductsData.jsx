@@ -11,9 +11,9 @@ const useProductsData = (page, setLoading) => {
     api
       .getProducts(page)
       .then(({ data }) => {
-        const products = generateData(data);
-        setProducts(products);
         if (!isCancelled) {
+          const products = generateData(data);
+          setProducts(products);
           setLoading(false);
         }
       })

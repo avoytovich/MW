@@ -11,9 +11,9 @@ const useOredersData = (page, setLoading) => {
     api
       .getOrders(page)
       .then(({ data }) => {
-        const orders = generateData(data);
-        setOrders(orders);
         if (!isCancelled) {
+          const orders = generateData(data);
+          setOrders(orders);
           setLoading(false);
         }
       })

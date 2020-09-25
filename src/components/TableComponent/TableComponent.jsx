@@ -90,7 +90,7 @@ const TableComponent = ({
       <PaginationComponent
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalPages={tableData.meta.totalPages}
+        totalPages={tableData.meta?.totalPages}
       />
     </>
   ) : (
