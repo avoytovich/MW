@@ -33,46 +33,48 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
 
   const pageNumbers = calculatePaginationNumbers();
   return (
-    <Grid spacing={2} container justify="flex-end" direction="row">
-      {pageNumbers[0] !== 1 && (
+    <Grid className="paginationBlock">
+      <Grid spacing={5} container justify="flex-end" direction="row">
+        {pageNumbers[0] !== 1 && (
+          <Grid item>
+            <Typography color="secondary" onClick={() => setCurrentPage(1)}>
+              {localization.t('general.first')}
+            </Typography>
+          </Grid>
+        )}
         <Grid item>
-          <Typography color="secondary" onClick={() => setCurrentPage(1)}>
-            {localization.t('general.first')}
-          </Typography>
+          <Grid spacing={3} container justify="center" direction="row">
+            {pageNumbers.map((item) => (
+              <Grid item key={`page ${item}`}>
+                <Typography
+                  color="secondary"
+                  className={item === currentPage ? 'currentPage' : ''}
+                  onClick={() => setCurrentPage(item)}
+                >
+                  {item}
+                </Typography>
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
-      )}
-      <Grid item>
-        <Grid spacing={1} container justify="center" direction="row">
-          {pageNumbers.map((item) => (
-            <Grid item key={`page ${item}`}>
-              <Typography
-                color="secondary"
-                className={item === currentPage ? 'currentPage' : ''}
-                onClick={() => setCurrentPage(item)}
-              >
-                {item}
-              </Typography>
-            </Grid>
-          ))}
-        </Grid>
+        {pageNumbers[pageNumbers.length - 1] !== totalPages && (
+          <Grid item>
+            <Typography
+              color="secondary"
+              onClick={() => setCurrentPage(totalPages)}
+            >
+              {localization.t('general.last')}
+            </Typography>
+          </Grid>
+        )}
+        {pageNumbers[pageNumbers.length - 1] !== currentPage && (
+          <Grid item>
+            <Typography onClick={() => setCurrentPage(currentPage + 1)}>
+              {localization.t('general.next')}
+            </Typography>
+          </Grid>
+        )}{' '}
       </Grid>
-      {pageNumbers[pageNumbers.length - 1] !== totalPages && (
-        <Grid item>
-          <Typography
-            color="secondary"
-            onClick={() => setCurrentPage(totalPages)}
-          >
-            {localization.t('general.last')}
-          </Typography>
-        </Grid>
-      )}
-      {pageNumbers[pageNumbers.length - 1] !== currentPage && (
-        <Grid item>
-          <Typography onClick={() => setCurrentPage(currentPage + 1)}>
-            {localization.t('general.next')}
-          </Typography>
-        </Grid>
-      )}{' '}
     </Grid>
   );
 };
