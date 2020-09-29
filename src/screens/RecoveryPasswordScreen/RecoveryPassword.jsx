@@ -36,7 +36,7 @@ const RecoveryPassword = () => {
     </Box>
   ) : (
     <>
-      <Box width={420}>
+      <Box width={420} display='contents'>
         <Box mb={4}>
           <Typography m="100px" variant="h3" color="textPrimary">
             {localization.t('general.resetPassword')}
@@ -67,6 +67,7 @@ const RecoveryPassword = () => {
             <form
               noValidate
               onSubmit={handleSubmit}
+              width={1420}
             >
               <TextField
                 error={touched.email && !!errors.email}
