@@ -43,6 +43,8 @@ const api = {
       data,
     });
   },
+
+  // GET ALL
   getProducts(page) {
     const url = `/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=${page}`;
     return axiosInstance({
@@ -68,6 +70,52 @@ const api = {
     const url = `/customers/public?format=short/${ids}`;
     return axiosInstance({
       method: 'get',
+      url,
+    });
+  },
+
+  // GET ONE BY ID
+  getProductById(id) {
+    const url = `/products/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getStoreById(id) {
+    const url = `/stores/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getOrderById(id) {
+    const url = `/orders/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  // DELETE ONE BY ID
+  deleteProductById(id) {
+    const url = `/products/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteOrderById(id) {
+    const url = `/orders/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteStoreById(id) {
+    const url = `/stores/${id}`;
+    return axiosInstance({
+      method: 'delete',
       url,
     });
   },

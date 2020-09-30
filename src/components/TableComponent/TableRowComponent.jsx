@@ -18,6 +18,7 @@ const TableRowComponent = ({
   markupSequence,
   handleCheck,
   checked,
+  handleDeleteItem,
 }) => {
   const [rowHover, setRowHover] = useState(false);
 
@@ -29,7 +30,6 @@ const TableRowComponent = ({
 
     return `${day} ${month} ${year}`;
   };
-
   const drawTableCell = (item) => {
     if (showColumn[item.id]) {
       let valueToShow;
@@ -89,7 +89,10 @@ const TableRowComponent = ({
       {rowHover && (
         <Grid>
           <Box my={2}>
-            <DeleteIcon className="deleteIcon" />
+            <DeleteIcon
+              onClick={() => handleDeleteItem(rowItem.id)}
+              className="deleteIcon"
+            />
             <EditIcon className="editIcon" />
             <FileCopyIcon className="copyIcon" />
           </Box>
@@ -104,6 +107,7 @@ TableRowComponent.propTypes = {
   showColumn: PropTypes.object,
   handleCheck: PropTypes.func,
   checked: PropTypes.bool,
+  handleDeleteItem: PropTypes.func,
   markupSequence: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,

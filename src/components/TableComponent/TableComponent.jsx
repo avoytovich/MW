@@ -14,10 +14,11 @@ import './TableComponent.scss';
 
 const TableComponent = ({
   tableData,
-  setCurrentPage,
+  updatePage,
   currentPage,
   isLoading,
   showColumn,
+  handleDeleteItem,
 }) => {
   const [checked, setChecked] = useState([]);
 
@@ -58,26 +59,27 @@ const TableComponent = ({
           />
         </Grid>
         {tableData.headers.map(
-          (header) => showColumn[header.id]
-          && (
-            <Grid item xs zeroMinWidth key={header.value}>
-              <Box my={1}>
-                <Typography
-                  variant="h6"
-                  className="tableHeader"
-                  noWrap
-                  align='center'
-                >
-                  {header.value}
-                </Typography>
-              </Box>
-            </Grid>
-          ),
+          (header) =>
+            showColumn[header.id] && (
+              <Grid item xs zeroMinWidth key={header.value}>
+                <Box my={1}>
+                  <Typography
+                    variant="h6"
+                    className="tableHeader"
+                    noWrap
+                    align="center"
+                  >
+                    {header.value}
+                  </Typography>
+                </Box>
+              </Grid>
+            ),
         )}
       </Grid>
       <Box className="tableBodyGrid">
         {tableData.values.map((rowItem) => (
           <TableRowComponent
+            handleDeleteItem={handleDeleteItem}
             checked={checked.indexOf(rowItem.id) !== -1}
             handleCheck={handleCheck}
             markupSequence={tableData.headers}
@@ -89,7 +91,7 @@ const TableComponent = ({
       </Box>
       <PaginationComponent
         currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
+        updatePage={updatePage}
         totalPages={tableData.meta?.totalPages}
       />
     </>
@@ -99,8 +101,9 @@ const TableComponent = ({
 };
 
 TableComponent.propTypes = {
+  handleDeleteItem: PropTypes.func,
   tableData: PropTypes.object,
-  setCurrentPage: PropTypes.func,
+  updatePage: PropTypes.func,
   currentPage: PropTypes.number,
   isLoading: PropTypes.bool,
   showColumn: PropTypes.object,

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Typography, Grid } from '@material-ui/core';
 import localization from '../../localization';
 
-const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
+const PaginationComponent = ({ updatePage, totalPages, currentPage }) => {
   const calculatePaginationNumbers = (condition = 0) => {
     let plus;
     const toLeft = currentPage - 2;
@@ -37,7 +37,7 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
       <Grid spacing={5} container justify="flex-end" direction="row">
         {pageNumbers[0] !== 1 && (
           <Grid item>
-            <Typography color="secondary" onClick={() => setCurrentPage(1)}>
+            <Typography color="secondary" onClick={() => updatePage(1)}>
               {localization.t('general.first')}
             </Typography>
           </Grid>
@@ -49,7 +49,7 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
                 <Typography
                   color="secondary"
                   className={item === currentPage ? 'currentPage' : ''}
-                  onClick={() => setCurrentPage(item)}
+                  onClick={() => updatePage(item)}
                 >
                   {item}
                 </Typography>
@@ -61,7 +61,7 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
           <Grid item>
             <Typography
               color="secondary"
-              onClick={() => setCurrentPage(totalPages)}
+              onClick={() => updatePage(totalPages)}
             >
               {localization.t('general.last')}
             </Typography>
@@ -69,11 +69,11 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
         )}
         {pageNumbers[pageNumbers.length - 1] !== currentPage && (
           <Grid item>
-            <Typography onClick={() => setCurrentPage(currentPage + 1)}>
+            <Typography onClick={() => updatePage(currentPage + 1)}>
               {localization.t('general.next')}
             </Typography>
           </Grid>
-        )}{' '}
+        )}
       </Grid>
     </Grid>
   );
@@ -82,7 +82,7 @@ const PaginationComponent = ({ setCurrentPage, totalPages, currentPage }) => {
 PaginationComponent.propTypes = {
   totalPages: PropTypes.number,
   currentPage: PropTypes.number,
-  setCurrentPage: PropTypes.func,
+  updatePage: PropTypes.func,
 };
 
 export default PaginationComponent;
