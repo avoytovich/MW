@@ -34,8 +34,7 @@ const generateData = (data, customers) => {
   const values = data.items.map((val) => {
     const customer = customers.items.filter(
       (item) => item.id === val.customer.id,
-    )[0].name;
-
+    )[0]?.name;
     return {
       customer,
       email: val.endUser?.email,
