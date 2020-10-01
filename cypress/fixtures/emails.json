@@ -1,0 +1,7 @@
+{
+  "valid": [
+    { "email": "mtsybran@nexway.com", "acceptable": "true" },
+    { "email": "mtsybran@gmail.com" }
+  ],
+  "invalid": [ "qweqweqgmail.com", "1231233" ]
+}

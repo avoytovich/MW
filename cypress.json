@@ -1,1 +1,6 @@
-{}
+{
+  "baseUrl": "https://my.staging.nexway.build/",
+  "env": {
+    "apiUrl": "https://cors-anywhere.herokuapp.com/https://api.staging.nexway.build"
+  }
+}
