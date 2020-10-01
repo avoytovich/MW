@@ -25,8 +25,6 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', (valid) => { 
-  cy.visit('/login');
-  
   cy.server();
   cy.route({
     url: Cypress.env('apiUrl') + '/iam/tokens?reason=Nexway-Center',

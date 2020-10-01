@@ -2,7 +2,7 @@ import auth from '../../src/services/auth';
 /// <reference types="cypress" />
 
 describe('App', () => {  
-  before(() => cy.visit('/'));
+  beforeEach(() => cy.visit('/'));
 
   context('Authenticaton', () => {
     context('Is Not Signed', () => {
