@@ -88,11 +88,11 @@ You should use it like this `localization.t('{section}.{item}')` (e.g. `localiza
 
 Please follow next naming conventions for branching:
 
-- `feature/{jiraTicketKey}` (e.g. *`feature/MN-1`*) -> for adding a feature described in the jira ticket
-- `bug/{jiraTicketKey}` (e.g. *`bug/MN-1`*) -> for solving a bug described in the jira ticket
+- `{jiraTicketKey}/feature` (e.g. *`MN-1/feature`*) -> for adding a feature described in the jira ticket
+- `{jiraTicketKey}/bug` (e.g. *`MN-1/bug`*) -> for solving a bug described in the jira ticket
 - `hotfix/{fixShortName}` (e.g. *`hotfix/changeThemeVariables`*) -> for solving issues **NOT** described in a jira ticket
 - `refactoring/{what}` (e.g. *`refactoring/reorginiseStoreComponent`*) -> for refactoring changes
  
 For commits messages please follow next:
 
-git commit -am '`{branchName};{short description}`' (e.g. '`bug/MN-1; fix unpredicted header behaviour`').
+git commit -am '`{branchName};{short description}`' (e.g. '`MN-1/bug; fix unpredicted header behaviour`').
