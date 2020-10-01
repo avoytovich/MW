@@ -1,4 +1,5 @@
 $tablesOddRow: #f7f7f9;
+$tablesEvenRow: #ffffff;
 $tableHeader: #f9f9f9;
 $editIcon: #fee650;
 $deleteIcon: #fd8e8d;
@@ -9,6 +10,9 @@ $currentPageText: #4791db;
 .tableRowGrid {
   &:nth-of-type(odd) {
     background-color: $tablesOddRow;
+  }
+  &:nth-of-type(even) {
+    background-color: $tablesEvenRow;
   }
   .tableCellItemGrid {
     overflow-x: hidden;
@@ -36,9 +40,13 @@ $currentPageText: #4791db;
     white-space: nowrap;
   }
 }
-.paginationBlock p {
-  cursor: pointer;
+.paginationBlock {
+  padding: 15px 20px 0 0;
+  p {
+    cursor: pointer;
+  }
 }
+
 .currentPage {
   color: $currentPageText;
   border-radius: 50%;

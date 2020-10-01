@@ -10,15 +10,14 @@ const MainLayout = ({ children }) => {
   const [drawerOpen, setDrawer] = useState(true);
 
   return (
-    <Grid container>
+    <Grid className="mainLayout" container>
       <SideBar open={drawerOpen} />
 
       <Grid container item style={{ paddingLeft: drawerOpen ? 260 : 0 }}>
         <TopBar toggleDrawer={() => setDrawer((d) => !d)} />
-        <Grid
-          className="tableBorder"
-        >
+        <Grid className="table">
           <Grid
+            className="tableBorder"
             item
           >
             {children}
