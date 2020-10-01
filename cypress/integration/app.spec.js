@@ -7,7 +7,7 @@ describe('App', () => {
   context('Authenticaton', () => {
     context('Is Not Signed', () => {
       it('redirects guest user from private routes to login', () => {
-        expect(localStorage.getItem('accessToken')).to.null;
+        expect(localStorage.getItem('accessToken')).to.be.null;
   
         ['/overview/products', '/overview/stores', '/overview/orders'].forEach(path => {
           cy.visit(path);
