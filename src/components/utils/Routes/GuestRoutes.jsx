@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import {
   Switch, Redirect, Route, useLocation,
 } from 'react-router-dom';
+
+import Session from '../../../services/session';
 
 import AuthScreen from '../../../screens/AuthScreen';
 import RecoveryPasswordScreen from '../../../screens/RecoveryPasswordScreen';
@@ -12,6 +14,12 @@ import './routes.scss';
 
 const SignedRoutes = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    const { pathname } = location;
+
+    Session.setRedirect(pathname);
+  }, []);
 
   return (
     <SwitchTransition mode='out-in'>

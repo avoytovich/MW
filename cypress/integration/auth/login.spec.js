@@ -49,6 +49,8 @@ describe('Login Screen', () => {
   });
 
   context('Auth Actions', () => {
+    beforeEach(() => cy.visit('/login'));
+
     it('reject wrong credentials with error notification', () => {
       cy.login().then((xhr) => {
         cy.wrap(xhr).then((data) => {
@@ -70,6 +72,26 @@ describe('Login Screen', () => {
           cy.get('#success-notification').should('exist');
           cy.url().should('include', '/overview/products');
         })
+      });
+    });
+
+    it('redirects a user to desired section after signin', () => {
+      const desiredPath = '/overview/stores';
+      cy.visit(desiredPath);
+
+      cy.wait(300).then(() => {
+        expect(sessionStorage.getItem('redirect')).to.be.equal(desiredPath);
+
+        cy.login(true).then((xhr) => {
+          cy.wrap(xhr).then((data) => {
+            expect(data.status).to.equal(200);
+          });
+        });
+
+        cy.wait(300).then(() => {
+          cy.url().should('contain', desiredPath);
+          expect(sessionStorage.getItem('redirect')).to.be.null;
+        });
       });
     });
   });
