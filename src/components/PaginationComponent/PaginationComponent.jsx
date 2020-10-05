@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Grid } from '@material-ui/core';
 import localization from '../../localization';
+import './PaginationComponent.scss';
 
 const PaginationComponent = ({ updatePage, totalPages, currentPage }) => {
   const calculatePaginationNumbers = (condition = 0) => {

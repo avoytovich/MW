@@ -96,6 +96,13 @@ const api = {
       url,
     });
   },
+  getCustomerById(id) {
+    const url = `/customers/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // DELETE ONE BY ID
   deleteProductById(id) {
