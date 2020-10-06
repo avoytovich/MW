@@ -7,33 +7,31 @@ import {
   Grid,
   CardActionArea,
   CardContent,
-  Container,
 } from '@material-ui/core';
-import PaginationComponent from '../PaginationComponent';
+import PaginationComponent from '../../PaginationComponent';
 
-const ThankDesc = ({ thankData }) => {
-  const totalPages = Math.ceil(thankData?.length / 4);
+const ThankDesc = ({ bottom }) => {
+  const totalPages = Math.ceil(bottom?.length / 4);
   const [currentPage, setCurrentPage] = useState(1);
-  const [showContent, setShowContent] = useState([...thankData.slice(0, 4)]);
+  const [showContent, setShowContent] = useState([...bottom?.slice(0, 4)]);
 
   const updatePage = (pageNumber) => {
     const first = pageNumber === 1 ? 0 : (pageNumber - 1) * 4;
     const last = first + 4;
     setCurrentPage(pageNumber);
-    setShowContent([...thankData.slice(first, last)]);
+    setShowContent([...bottom?.slice(first, last)]);
   };
   return (
-    <Container>
+    <>
       <Grid
         container
         direction="row"
         justify="space-around"
-        spacing={2}
         alignItems="center"
       >
         {showContent.map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
-          <Grid item sm={3} key={`${item.image}${item.text}${index}`}>
+          <Grid item sm={2} key={`${item.image}${item.text}${index}`}>
             <Card>
               <CardActionArea>
                 <CardMedia
@@ -56,11 +54,11 @@ const ThankDesc = ({ thankData }) => {
         totalPages={totalPages}
         currentPage={currentPage}
       />
-    </Container>
+    </>
   );
 };
 ThankDesc.propTypes = {
-  thankData: PropTypes.array,
+  bottom: PropTypes.array,
 };
 
 export default ThankDesc;

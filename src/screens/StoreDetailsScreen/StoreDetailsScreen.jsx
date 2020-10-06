@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
 import { useStoreDetailsData } from '../../services/useData';
-import ThankDesc from '../../components/ThankDesc';
 import DetailLayout from '../../layouts/DetailLayout';
 
 const StoreDetailsScreen = () => {
@@ -13,15 +12,7 @@ const StoreDetailsScreen = () => {
   const store = useStoreDetailsData(id, setLoading);
   if (isLoading) return <LinearProgress />;
 
-  return store ? (
-    <DetailLayout
-      leftComponent={<>rightComponent</>}
-      rightComponent={<>rightComponent</>}
-      bottomComponent={<ThankDesc thankData={store.bottom} />}
-    />
-  ) : (
-    <></>
-  );
+  return store ? <DetailLayout data={store} /> : <></>;
 };
 
 export default StoreDetailsScreen;
