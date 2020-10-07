@@ -89,6 +89,7 @@ const TableComponent = ({
         ))}
       </Box>
       <PaginationComponent
+        location="flex-end"
         currentPage={currentPage}
         updatePage={updatePage}
         totalPages={tableData.meta?.totalPages}

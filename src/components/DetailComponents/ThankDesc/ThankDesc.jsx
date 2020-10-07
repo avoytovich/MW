@@ -31,18 +31,22 @@ const ThankDesc = ({ bottom }) => {
       >
         {showContent.map((item, index) => (
           // eslint-disable-next-line react/no-array-index-key
-          <Grid item sm={2} key={`${item.image}${item.text}${index}`}>
+          <Grid item sm={2} key={`${item?.image}${item.text}${index}`}>
             <Card>
               <CardActionArea>
-                <CardMedia
-                  style={{ height: 140 }}
-                  image={item.image}
-                  title="Contemplative Reptile"
-                />
+                {item?.image && (
+                  <CardMedia
+                    style={{ height: 140 }}
+                    image={item.image}
+                    title="Contemplative Reptile"
+                  />
+                )}
                 <CardContent>
-                  <Typography variant="body2" color="secondary" component="p">
-                    {item.text}
-                  </Typography>
+                  <Typography
+                    dangerouslySetInnerHTML={{ __html: item?.text }}
+                    variant="body2"
+                    color="secondary"
+                  />
                 </CardContent>
               </CardActionArea>
             </Card>
@@ -50,6 +54,7 @@ const ThankDesc = ({ bottom }) => {
         ))}
       </Grid>
       <PaginationComponent
+        location="center"
         updatePage={updatePage}
         totalPages={totalPages}
         currentPage={currentPage}

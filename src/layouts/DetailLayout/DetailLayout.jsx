@@ -22,14 +22,18 @@ const DetailLayout = ({ data }) => (
           <Grid sm={8} item>
             <MainInformation left={data.left} />
           </Grid>
-          <Grid sm={4} item>
-            <Payment right={data.right} />
-          </Grid>
+          {data.right && (
+            <Grid sm={4} item>
+              <Payment right={data.right} />
+            </Grid>
+          )}
         </Grid>
       </Grid>
-      <Grid sm={12} item>
-        <ThankDesc bottom={data.bottom} />
-      </Grid>
+      {data.bottom && (
+        <Grid sm={12} item>
+          <ThankDesc bottom={data.bottom} />
+        </Grid>
+      )}
     </Grid>
   </>
 );

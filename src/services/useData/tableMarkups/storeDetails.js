@@ -1,8 +1,12 @@
 const parseData = (data) => {
   const res = Object.keys(data).map((key) => {
-    const { image, text } = data[key].match(/<p><img src="(?<image>.[^"]+)".+>(?<text>.+)<\/p>/).groups;
+    const image = data[key].match(/(?<=<p>)<img src="(?<url>.[^"]+)".+>(?=.+)/)
+      ?.groups;
+    const text = image
+      ? data[key].replace(/(?<=<p>)<img src="(?<image>.[^"]+)".+>(?=.+)/, '')
+      : data[key];
     return {
-      image,
+      image: image?.url,
       text,
     };
   });
@@ -44,7 +48,7 @@ const generateData = (data, customer) => {
         },
         {
           id: 'Sales languages',
-          value: data?.saleLocales.join(', '),
+          value: data?.saleLocales?.join(', '),
           row: 'odd',
         },
         {
@@ -59,14 +63,18 @@ const generateData = (data, customer) => {
         },
       ],
     },
-    right: {
-      id: 'Payment methods',
-      value:
-        data?.designs?.paymentComponent?.rankedPaymentTabsByCountriesList[0]
-          ?.rankedPaymentTabs,
-    },
-    bottom: parseData(data?.thankYouDesc),
+    right: data?.designs?.paymentComponent?.rankedPaymentTabsByCountriesList[0]
+      ?.rankedPaymentTabs
+      ? {
+        id: 'Payment methods',
+        value:
+          data?.designs?.paymentComponent?.rankedPaymentTabsByCountriesList[0]
+            ?.rankedPaymentTabs,
+      }
+      : null,
+    bottom: data?.thankYouDesc ? parseData(data?.thankYouDesc) : null,
   };
+
   return values;
 };
 
