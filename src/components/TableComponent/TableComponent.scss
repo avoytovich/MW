@@ -8,11 +8,16 @@ $currentPageBackground: #cde7fb;
 $currentPageText: #4791db;
 
 .tableRowGrid {
+  padding: 8px 15px;
   &:nth-of-type(odd) {
     background-color: $tablesOddRow;
   }
   &:nth-of-type(even) {
     background-color: $tablesEvenRow;
+  }
+  &:hover {
+    transform: scale(1.03);
+    transition: all .3s ease-in-out .0s;
   }
   .tableCellItemGrid {
     overflow-x: hidden;
@@ -21,6 +26,9 @@ $currentPageText: #4791db;
       white-space: nowrap;
       text-align: center;
     }
+  }
+  .icons {
+    cursor: pointer;
   }
   .deleteIcon {
     color: $deleteIcon;
@@ -31,8 +39,15 @@ $currentPageText: #4791db;
   .editIcon {
     color: $editIcon;
   }
+  .statusEnabled {
+    color: $copyIcon;
+  }
+  .statusDisable {
+    color: $deleteIcon;
+  }
 }
 .tableHeaderGrid {
+  padding: 8px 15px;
   overflow-x: hidden;
   background-color: $tableHeader;
   .tableHeader {
