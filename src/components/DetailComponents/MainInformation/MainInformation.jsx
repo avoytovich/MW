@@ -4,11 +4,11 @@ import { Typography, Box } from '@material-ui/core';
 import './MainInformation.scss';
 
 const MainInformation = ({ left }) => (
-  <Box display="flex" flexDirection="column" className="mainContainer">
+  <Box pl={5} display="flex" flexDirection="column" className="mainContainer">
     <Box pb={2} display="flex" flexDirection="row" alignItems="flex-end">
       <Box className="mainRow" pb={20} display="flex" flexDirection="column">
         {left.titles.map((item) => (
-          <Box key={item.id}>
+          <Box key={item.id} pt={3}>
             <Typography variant="h4">{item.value}</Typography>
           </Box>
         ))}
