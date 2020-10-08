@@ -49,7 +49,7 @@ const TableRowComponent = ({
           zeroMinWidth
           key={`${item.id}_${rowItem.id}`}
         >
-          <Box my={2}>
+          <Box mt={2}>
             <Typography
               color={
                 item.id === 'genericName' || item.id === 'customerId'
@@ -69,38 +69,39 @@ const TableRowComponent = ({
   };
 
   return (
-    <Grid
-      className="tableRowGrid"
-      spacing={1}
-      onMouseOver={() => setRowHover(true)}
-      onMouseLeave={() => setRowHover(false)}
-      container
-      wrap="nowrap"
-      justify="center"
-    >
-      <Grid>
-        <Box my={1}>
-          <Checkbox
-            checked={checked}
-            name={rowItem.id}
-            onChange={() => handleCheck(rowItem.id)}
-          />
-        </Box>
-      </Grid>
-      {markupSequence.map((item) => drawTableCell(item))}
-      {rowHover && (
+    <Box className="tableRowGrid" boxShadow={rowHover ? 1 : 0}>
+      <Grid
+        spacing={1}
+        onMouseOver={() => setRowHover(true)}
+        onMouseLeave={() => setRowHover(false)}
+        container
+        wrap="nowrap"
+        justify="center"
+      >
         <Grid>
-          <Box my={2}>
-            <DeleteIcon
-              onClick={() => handleDeleteItem(rowItem.id)}
-              className="deleteIcon icons"
+          <Box my={1}>
+            <Checkbox
+              checked={checked}
+              name={rowItem.id}
+              onChange={() => handleCheck(rowItem.id)}
             />
-            <EditIcon className="editIcon icons" />
-            <FileCopyIcon className="copyIcon icons" />
           </Box>
         </Grid>
-      )}
-    </Grid>
+        {markupSequence.map((item) => drawTableCell(item))}
+        {rowHover && (
+          <Grid>
+            <Box my={2}>
+              <DeleteIcon
+                onClick={() => handleDeleteItem(rowItem.id)}
+                className="deleteIcon icons"
+              />
+              <EditIcon className="editIcon icons" />
+              <FileCopyIcon className="copyIcon icons" />
+            </Box>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
   );
 };
 
