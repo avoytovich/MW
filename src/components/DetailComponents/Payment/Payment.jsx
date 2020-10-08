@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box } from '@material-ui/core';
+import { Typography, Box, Divider } from '@material-ui/core';
 import getPaymentImages from './images';
 import './Payment.scss';
 
@@ -34,7 +34,8 @@ const Payment = ({ right }) => (
     )}
     {right.paymentMethods && (
       <>
-        <Typography>{right.paymentMethods.id}</Typography>
+        <Typography color="secondary">{right.paymentMethods.id}</Typography>
+        <Divider width="60%" />
         <Box
           display="flex"
           alignItems="center"

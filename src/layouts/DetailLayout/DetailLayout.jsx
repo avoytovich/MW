@@ -10,16 +10,16 @@ const DetailLayout = ({ data }) => (
   <>
     <Grid container direction="row" spacing={2}>
       <Grid item>
-        <FolderOpen />
+        <FolderOpen color='secondary' />
       </Grid>
       <Grid item>
-        <Typography>{data.header}</Typography>
+        <Typography color='primary'>{data.header}</Typography>
       </Grid>
     </Grid>
     <Grid container direction="row" spacing={4}>
       <Grid item sm={12}>
-        <Grid container spacing={2} justify="space-around" alignItems="center">
-          <Grid sm={8} item>
+        <Grid container spacing={2} justify="space-between" alignItems="flex-end">
+          <Grid sm={7} item>
             <MainInformation left={data.left} />
           </Grid>
           {data.right && (
