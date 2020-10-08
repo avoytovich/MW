@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Typography,
   Grid,
   Box,
   Checkbox,
 } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
-import monthNames from '../../services/constants';
+
+import { MONTH_NAMES } from '../../services/constants';
+
 import './TableComponent.scss';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const TableRowComponent = ({
   rowItem,
@@ -23,15 +29,24 @@ const TableRowComponent = ({
   handleDeleteItem,
 }) => {
   const [rowHover, setRowHover] = useState(false);
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const formatDate = (formatingData) => {
     const fullDate = new Date(formatingData);
     const day = fullDate.getDay();
-    const month = monthNames[fullDate.getMonth()].substring(0, 3);
+    const month = MONTH_NAMES[fullDate.getMonth()].substring(0, 3);
     const year = fullDate.getUTCFullYear();
 
     return `${day} ${month} ${year}`;
   };
+
+  const copyUrl = () => {
+    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
+      dispatch(showNotification('Item URL has been copied!'));
+    });
+  };
+
   const drawTableCell = (item) => {
     if (showColumn[item.id]) {
       let valueToShow;
@@ -71,7 +86,9 @@ const TableRowComponent = ({
   return (
     <Box className="tableRowGrid" boxShadow={rowHover ? 1 : 0}>
       <Grid
+        className="tableRowGrid"
         spacing={1}
+        onClick={() => history.push(`${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}
         onMouseLeave={() => setRowHover(false)}
         container
@@ -83,10 +100,23 @@ const TableRowComponent = ({
             <Checkbox
               checked={checked}
               name={rowItem.id}
+              onClick={(e) => e.stopPropagation()}
               onChange={() => handleCheck(rowItem.id)}
             />
           </Box>
         </Grid>
+        {markupSequence.map((item) => drawTableCell(item))}
+        {rowHover && (
+          <Grid>
+            <Box my={2}>
+              <DeleteIcon
+                onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                className="deleteIcon icons"
+              />
+              <EditIcon className="editIcon icons" />
+              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+            </Box>
+          </Grid>
         {markupSequence.map((item) => drawTableCell(item))}
         {rowHover && (
           <Grid>

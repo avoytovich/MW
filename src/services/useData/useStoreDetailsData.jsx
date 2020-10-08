@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../api';
+import generateData from './tableMarkups/storeDetails';
 
 const useStoreDetailsData = (id, setLoading) => {
   const [storeData, setStoreData] = useState();
@@ -11,8 +12,11 @@ const useStoreDetailsData = (id, setLoading) => {
       .getStoreById(id)
       .then(({ data }) => {
         if (!isCancelled) {
-          setStoreData(data);
-          setLoading(false);
+          api.getCustomerById(data.customerId).then((res) => {
+            const store = generateData(data, res.data.name);
+            setStoreData(store);
+            setLoading(false);
+          });
         }
       })
       .catch(() => {

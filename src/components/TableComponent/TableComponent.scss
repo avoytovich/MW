@@ -4,8 +4,6 @@ $tableHeader: #f9f9f9;
 $editIcon: #fee650;
 $deleteIcon: #fd8e8d;
 $copyIcon: #99de90;
-$currentPageBackground: #cde7fb;
-$currentPageText: #4791db;
 
 .tableRowGrid {
   padding: 8px 15px;
@@ -55,20 +53,4 @@ $currentPageText: #4791db;
     display: inherit;
     white-space: nowrap;
   }
-}
-.paginationBlock {
-  padding: 15px 20px 0 0;
-  p {
-    cursor: pointer;
-  }
-}
-
-.currentPage {
-  color: $currentPageText;
-  border-radius: 50%;
-  background-color: $currentPageBackground;
-  padding-left: 8px;
-  padding-right: 8px;
-  font-weight: bold;
-  cursor: pointer;
 }

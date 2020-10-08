@@ -1,6 +1,6 @@
 import useProductsData from './useProductsData';
 import useStoresData from './useStoresData';
-import useOredersData from './useOredersData';
+import useOrdersData from './useOrdersData';
 import useProductDetailsData from './useProductDetailsData';
 import useStoreDetailsData from './useStoreDetailsData';
 import useOrderDetailsData from './useOrderDetailsData';
@@ -8,7 +8,7 @@ import useOrderDetailsData from './useOrderDetailsData';
 export {
   useProductsData,
   useStoresData,
-  useOredersData,
+  useOrdersData,
   useProductDetailsData,
   useStoreDetailsData,
   useOrderDetailsData,

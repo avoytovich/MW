@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import {
   AppBar,
@@ -8,6 +9,7 @@ import {
   IconButton,
   InputBase,
   Box,
+  Dialog,
 } from '@material-ui/core';
 
 import {
@@ -15,14 +17,33 @@ import {
   Search as SearchIcon,
   Refresh as RefreshIcon,
   ExitToApp as LogoutIcon,
-  NotificationsNone as NotificationsIcon,
+  // NotificationsNone as NotificationsIcon,
+  FilterList as FilterListIcon,
 } from '@material-ui/icons';
+
 import { logout } from '../../redux/actions/Account';
+import { refreshTable, setTableScope } from '../../redux/actions/TableData';
+
+import Filters from '../utils/Modals/Filters';
+import FiltersChips from '../utils/FiltersChips/FiltersChips';
+
+import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
 
 const TopBar = ({ toggleDrawer }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const [showFilters, setShowFilters] = useState(false);
+  const scope = location.pathname.split('/').pop();
 
   const doLogout = () => dispatch(logout());
+
+  const doRefresh = () => dispatch(refreshTable(scope));
+
+  const activeFilters = useSelector(({ tableData: { filters } }) => filters);
+
+  useEffect(() => {
+    dispatch(setTableScope(scope));
+  }, [scope]);
 
   return (
     <AppBar position='static' className='top-bar' elevation={1}>
@@ -32,29 +53,57 @@ const TopBar = ({ toggleDrawer }) => {
         </IconButton>
 
         <Box flexGrow={1}>
-          <InputBase
-            fullWidth
-            placeholder='Search...'
-            startAdornment={(
-              <IconButton edge='start' aria-label='search' color='secondary'>
-                <SearchIcon />
-              </IconButton>
-            )}
-          />
+          {
+            VALID_FILTER_SCOPES.indexOf(scope) >= 0 && (
+              <Box display='flex' flexGrow={1}>
+                <Box flexGrow={1}>
+                  <InputBase
+                    fullWidth
+                    placeholder='Search...'
+                    startAdornment={(
+                      <IconButton edge='start' aria-label='search' color='secondary'>
+                        <SearchIcon />
+                      </IconButton>
+                    )}
+                  />
+                </Box>
+
+                <IconButton edge='start' aria-label='filter-list' color='secondary' onClick={() => setShowFilters(true)}>
+                  <FilterListIcon />
+                </IconButton>
+
+                <Dialog
+                  open={showFilters}
+                  onClose={() => setShowFilters(false)}
+                  aria-labelledby='filters-dialog-title'
+                  fullWidth
+                  maxWidth='sm'
+                >
+                  <Filters scope={scope} hide={() => setShowFilters(false)} />
+                </Dialog>
+              </Box>
+            )
+          }
         </Box>
 
-        <IconButton edge='start' aria-label='refresh' color='secondary'>
-          <RefreshIcon />
-        </IconButton>
+        {
+          VALID_REFRESH_SCOPES.indexOf(scope) >= 0 && (
+            <IconButton edge='start' aria-label='refresh' color='secondary' onClick={doRefresh}>
+              <RefreshIcon />
+            </IconButton>
+          )
+        }
 
-        <IconButton edge='start' aria-label='notifications' color='secondary'>
+        {/* <IconButton edge='start' aria-label='notifications' color='secondary'>
           <NotificationsIcon />
-        </IconButton>
+        </IconButton> */}
 
         <IconButton edge='start' aria-label='logout' color='secondary' onClick={doLogout}>
           <LogoutIcon />
         </IconButton>
       </Toolbar>
+
+      {!!activeFilters.length && <FiltersChips filters={activeFilters} />}
     </AppBar>
   );
 };

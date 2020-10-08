@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import api from '../../api';
+import generateData from './tableMarkups/orderDetails';
 
 const useOrderDetailsScreen = (id, setLoading) => {
-  const [orederData, setOrederData] = useState();
+  const [orderData, setOrderData] = useState();
 
   useEffect(() => {
     let isCancelled = false;
@@ -11,8 +12,11 @@ const useOrderDetailsScreen = (id, setLoading) => {
       .getOrderById(id)
       .then(({ data }) => {
         if (!isCancelled) {
-          setOrederData(data);
-          setLoading(false);
+          api.getCustomerById(data.customer.id).then((res) => {
+            const order = generateData(data, res.data.name);
+            setOrderData(order);
+            setLoading(false);
+          });
         }
       })
       .catch(() => {
@@ -26,7 +30,7 @@ const useOrderDetailsScreen = (id, setLoading) => {
     };
   }, []);
 
-  return orederData;
+  return orderData;
 };
 
 export default useOrderDetailsScreen;

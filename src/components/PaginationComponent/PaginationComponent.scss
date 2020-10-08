@@ -1,0 +1,19 @@
+$currentPageBackground: #cde7fb;
+$currentPageText: #4791db;
+
+.paginationBlock {
+  padding: 15px 20px 0 0;
+  p {
+    cursor: pointer;
+  }
+}
+
+.currentPage {
+  color: $currentPageText;
+  border-radius: 50%;
+  background-color: $currentPageBackground;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
