@@ -6,11 +6,16 @@ $deleteIcon: #fd8e8d;
 $copyIcon: #99de90;
 
 .tableRowGrid {
+  padding: 8px 15px;
   &:nth-of-type(odd) {
     background-color: $tablesOddRow;
   }
   &:nth-of-type(even) {
     background-color: $tablesEvenRow;
+  }
+  &:hover {
+    transform: scale(1.03);
+    transition: all .3s ease-in-out .0s;
   }
   .tableCellItemGrid {
     overflow-x: hidden;
@@ -19,6 +24,9 @@ $copyIcon: #99de90;
       white-space: nowrap;
       text-align: center;
     }
+  }
+  .icons {
+    cursor: pointer;
   }
   .deleteIcon {
     color: $deleteIcon;
@@ -29,8 +37,15 @@ $copyIcon: #99de90;
   .editIcon {
     color: $editIcon;
   }
+  .statusEnabled {
+    color: $copyIcon;
+  }
+  .statusDisable {
+    color: $deleteIcon;
+  }
 }
 .tableHeaderGrid {
+  padding: 8px 15px;
   overflow-x: hidden;
   background-color: $tableHeader;
   .tableHeader {
