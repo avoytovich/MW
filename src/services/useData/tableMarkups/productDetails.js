@@ -1,21 +1,14 @@
 const parseData = (data) => {
-  const res = Object.keys(data).map((key) => {
-    const image = data[key].match(/(?<=<p>)<img src="(?<url>.[^"]+)".+>(?=.+)/)
-      ?.groups;
-    const text = image
-      ? data[key].replace(/(?<=<p>)<img src="(?<image>.[^"]+)".+>(?=.+)/, '')
-      : data[key];
-    return {
-      image: image?.url,
-      text,
-    };
-  });
+  const res = data.map((item) => ({
+    image: item.url,
+    text: `<p>${item.label}</p>`,
+  }));
   return res;
 };
 
 const generateData = (data, storeName) => {
   const values = {
-    header: 'Order',
+    header: 'Product',
     left: {
       titles: [
         {
@@ -38,9 +31,10 @@ const generateData = (data, storeName) => {
         },
         {
           id: 'Currency',
-          value: data?.prices
-            ? Object.keys(data?.prices?.priceByCountryByCurrency).join(', ')
-            : '-',
+          value:
+            data?.prices && data?.prices?.priceByCountryByCurrency
+              ? Object.keys(data?.prices?.priceByCountryByCurrency).join(', ')
+              : '-',
           row: 'odd',
         },
       ],
@@ -51,21 +45,23 @@ const generateData = (data, storeName) => {
       prices: [
         {
           id: 'Total price',
-          value:
-            data?.prices?.priceByCountryByCurrency?.[
+          value: data?.prices?.priceByCountryByCurrency
+            ? data?.prices?.priceByCountryByCurrency?.[
               data?.prices?.defaultCurrency
-            ]?.default?.value,
+            ]?.default?.value
+            : '-',
         },
         {
           id: 'Total',
-          value:
-            data?.prices?.priceByCountryByCurrency?.[
+          value: data?.prices?.priceByCountryByCurrency
+            ? data?.prices?.priceByCountryByCurrency?.[
               data?.prices?.defaultCurrency
-            ]?.default?.value,
+            ]?.default?.value
+            : '-',
         },
       ],
     },
-    bottom: data?.thankYouDesc ? parseData(data?.thankYouDesc) : null,
+    bottom: data?.resources ? parseData(data?.resources) : null,
   };
   return values;
 };
