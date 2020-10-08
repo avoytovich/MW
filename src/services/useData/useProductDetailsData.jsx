@@ -12,9 +12,18 @@ const useProductDetailsData = (id, setLoading) => {
       .getProductById(id)
       .then(({ data }) => {
         if (!isCancelled) {
-          const product = generateData(data);
-          setProductData(product);
-          setLoading(false);
+          const storesId = data.sellingStores?.[0];
+          if (storesId) {
+            api.getStoreById(storesId).then((res) => {
+              const product = generateData(data, res.data.name);
+              setProductData(product);
+              setLoading(false);
+            });
+          } else {
+            const product = generateData(data, '-');
+            setProductData(product);
+            setLoading(false);
+          }
         }
       })
       .catch(() => {

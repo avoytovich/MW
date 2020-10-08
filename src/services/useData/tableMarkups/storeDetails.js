@@ -63,15 +63,18 @@ const generateData = (data, customer) => {
         },
       ],
     },
-    right: data?.designs?.paymentComponent?.rankedPaymentTabsByCountriesList[0]
-      ?.rankedPaymentTabs
-      ? {
-        id: 'Payment methods',
-        value:
-          data?.designs?.paymentComponent?.rankedPaymentTabsByCountriesList[0]
-            ?.rankedPaymentTabs,
-      }
-      : null,
+    right: {
+      paymentMethods: data?.designs?.paymentComponent
+        ?.rankedPaymentTabsByCountriesList[0]?.rankedPaymentTabs
+        ? {
+          id: 'Payment methods',
+          value:
+          data?.designs?.paymentComponent
+            ?.rankedPaymentTabsByCountriesList[0]?.rankedPaymentTabs,
+        }
+        : null,
+      prices: null,
+    },
     bottom: data?.thankYouDesc ? parseData(data?.thankYouDesc) : null,
   };
 

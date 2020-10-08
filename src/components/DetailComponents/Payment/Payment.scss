@@ -1,7 +1,13 @@
+$tablesEvenRow: #ffffff;
+
 .paymentImageWrapper {
   width: 60px;
 }
 
 .paymentImage {
   width: 100%;
+}
+.pricesBlock {
+  padding: 5;
+  background-color: $tablesEvenRow;
 }
