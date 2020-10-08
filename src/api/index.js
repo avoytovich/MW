@@ -47,6 +47,7 @@ const api = {
   // GET ALL
   getProducts(page) {
     const url = `/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=${page}`;
+
     return axiosInstance({
       method: 'get',
       url,

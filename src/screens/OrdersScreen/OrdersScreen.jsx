@@ -1,35 +1,32 @@
 import React, { useState } from 'react';
-import useOredersData from '../../services/useData/useOredersData';
+
+import useOrdersData from '../../services/useData/useOrdersData';
 import { defaultShow } from '../../services/useData/tableMarkups/orders';
-import TableComponent from '../../components/TableComponent';
+
 import api from '../../api';
+
+import TableComponent from '../../components/TableComponent';
 
 const OrdersScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [makeUpdate, setMakeUpdate] = useState(true);
-  // eslint-disable-next-line no-unused-vars
-  const [showColumn, setShowColumn] = useState(defaultShow);
+  const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const oreders = useOredersData(
-    currentPage - 1,
-    setLoading,
-    makeUpdate,
-    setMakeUpdate,
-  );
-  const handleDeleteOrder = (id) => {
-    api.deleteOrderById(id).then(() => setMakeUpdate(true));
-  };
-  const updatePage = (page) => {
-    setCurrentPage(page);
-    setMakeUpdate(true);
-  };
+
+  const orders = useOrdersData(currentPage - 1, setLoading, makeUpdate);
+
+  const handleDeleteOrder = (id) => api
+    .deleteOrderById(id)
+    .then(() => setMakeUpdate((v) => (v + 1)));
+
+  const updatePage = (page) => setCurrentPage(page);
+
   return (
     <TableComponent
       handleDeleteItem={handleDeleteOrder}
-      showColumn={showColumn}
+      showColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
-      tableData={oreders}
+      tableData={orders}
       isLoading={isLoading}
     />
   );
