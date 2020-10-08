@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import useProductsData from '../../services/useData/useProductsData';
 import { defaultShow } from '../../services/useData/tableMarkups/products';
+import TableComponent from '../../components/TableComponent';
 
 import api from '../../api';
 
-import TableComponent from '../../components/TableComponent';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const ProductsScreen = () => {
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -16,7 +19,10 @@ const ProductsScreen = () => {
 
   const handleDeleteProduct = (id) => api
     .deleteProductById(id)
-    .then(() => setMakeUpdate((v) => (v + 1)));
+    .then(() => {
+      setMakeUpdate((v) => (v + 1));
+      dispatch(showNotification(`Product ${id} has been successfully deleted!`));
+    });
 
   const updatePage = (page) => setCurrentPage(page);
 

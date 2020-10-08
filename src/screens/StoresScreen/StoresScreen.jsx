@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import useStoresData from '../../services/useData/useStoresData';
 import { defaultShow } from '../../services/useData/tableMarkups/stores';
+import TableComponent from '../../components/TableComponent';
 
 import api from '../../api';
 
-import TableComponent from '../../components/TableComponent';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const StoresScreen = () => {
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -16,7 +19,10 @@ const StoresScreen = () => {
 
   const handleDeleteStore = (id) => api
     .deleteStoreById(id)
-    .then(() => setMakeUpdate((v) => (v + 1)));
+    .then(() => {
+      setMakeUpdate((v) => (v + 1));
+      dispatch(showNotification(`Store ${id} has been successfully deleted!`));
+    });
 
   const updatePage = (page) => setCurrentPage(page);
 
