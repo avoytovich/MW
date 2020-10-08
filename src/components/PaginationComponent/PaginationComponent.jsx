@@ -3,8 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography, Grid } from '@material-ui/core';
 import localization from '../../localization';
+import './PaginationComponent.scss';
 
-const PaginationComponent = ({ updatePage, totalPages, currentPage }) => {
+const PaginationComponent = ({
+  updatePage,
+  totalPages,
+  currentPage,
+  location,
+}) => {
   const calculatePaginationNumbers = (condition = 0) => {
     let plus;
     const toLeft = currentPage - 2;
@@ -30,17 +36,18 @@ const PaginationComponent = ({ updatePage, totalPages, currentPage }) => {
       ? calculatePaginationNumbers(exitConditin === 0 && min > 2 ? -2 : -1)
       : res;
   };
-
   const pageNumbers = calculatePaginationNumbers();
   return (
+    (totalPages > 1
+    && (
     <Grid className="paginationBlock">
-      <Grid spacing={5} container justify="flex-end" direction="row">
+      <Grid spacing={5} container justify={location} direction="row">
         {pageNumbers[0] !== 1 && (
-          <Grid item>
-            <Typography color="secondary" onClick={() => updatePage(1)}>
-              {localization.t('general.first')}
-            </Typography>
-          </Grid>
+        <Grid item>
+          <Typography color="secondary" onClick={() => updatePage(1)}>
+            {localization.t('general.first')}
+          </Typography>
+        </Grid>
         )}
         <Grid item>
           <Grid spacing={3} container justify="center" direction="row">
@@ -58,28 +65,31 @@ const PaginationComponent = ({ updatePage, totalPages, currentPage }) => {
           </Grid>
         </Grid>
         {pageNumbers[pageNumbers.length - 1] !== totalPages && (
-          <Grid item>
-            <Typography
-              color="secondary"
-              onClick={() => updatePage(totalPages)}
-            >
-              {localization.t('general.last')}
-            </Typography>
-          </Grid>
+        <Grid item>
+          <Typography
+            color="secondary"
+            onClick={() => updatePage(totalPages)}
+          >
+            {localization.t('general.last')}
+          </Typography>
+        </Grid>
         )}
         {pageNumbers[pageNumbers.length - 1] !== currentPage && (
-          <Grid item>
-            <Typography onClick={() => updatePage(currentPage + 1)}>
-              {localization.t('general.next')}
-            </Typography>
-          </Grid>
+        <Grid item>
+          <Typography onClick={() => updatePage(currentPage + 1)}>
+            {localization.t('general.next')}
+          </Typography>
+        </Grid>
         )}
       </Grid>
     </Grid>
+    )
+    )
   );
 };
 
 PaginationComponent.propTypes = {
+  location: PropTypes.string,
   totalPages: PropTypes.number,
   currentPage: PropTypes.number,
   updatePage: PropTypes.func,

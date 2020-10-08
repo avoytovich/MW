@@ -74,7 +74,13 @@ const api = {
       url,
     });
   },
-
+  getStoresByIds(id) {
+    const url = `/stores/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET ONE BY ID
   getProductById(id) {
     const url = `/products/${id}`;
@@ -92,6 +98,13 @@ const api = {
   },
   getOrderById(id) {
     const url = `/orders/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getCustomerById(id) {
+    const url = `/customers/${id}`;
     return axiosInstance({
       method: 'get',
       url,

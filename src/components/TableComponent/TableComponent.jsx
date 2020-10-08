@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Typography,
@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import TableRowComponent from './TableRowComponent';
 import localization from '../../localization';
-import PaginationComponent from './PaginationComponent';
+import PaginationComponent from '../PaginationComponent';
 import './TableComponent.scss';
 
 const TableComponent = ({
@@ -59,21 +59,20 @@ const TableComponent = ({
           />
         </Grid>
         {tableData.headers.map(
-          (header) =>
-            showColumn[header.id] && (
-              <Grid item xs zeroMinWidth key={header.value}>
-                <Box my={1}>
-                  <Typography
-                    variant="h6"
-                    className="tableHeader"
-                    noWrap
-                    align="center"
-                  >
-                    {header.value}
-                  </Typography>
-                </Box>
-              </Grid>
-            ),
+          (header) => showColumn[header.id] && (
+            <Grid item xs zeroMinWidth key={header.value}>
+              <Box my={1}>
+                <Typography
+                  variant="h6"
+                  className="tableHeader"
+                  noWrap
+                  align="center"
+                >
+                  {header.value}
+                </Typography>
+              </Box>
+            </Grid>
+          ),
         )}
       </Grid>
       <Box className="tableBodyGrid">
@@ -90,6 +89,7 @@ const TableComponent = ({
         ))}
       </Box>
       <PaginationComponent
+        location="flex-end"
         currentPage={currentPage}
         updatePage={updatePage}
         totalPages={tableData.meta?.totalPages}

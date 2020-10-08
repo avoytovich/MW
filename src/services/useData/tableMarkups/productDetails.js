@@ -1,63 +1,72 @@
-const generateData = (data) => {
-  const values = [
-    {
-      id: 'id',
-      value: data?.id,
-      type: 'text',
+const parseData = (data) => {
+  const res = Object.keys(data).map((key) => {
+    const image = data[key].match(/(?<=<p>)<img src="(?<url>.[^"]+)".+>(?=.+)/)
+      ?.groups;
+    const text = image
+      ? data[key].replace(/(?<=<p>)<img src="(?<image>.[^"]+)".+>(?=.+)/, '')
+      : data[key];
+    return {
+      image: image?.url,
+      text,
+    };
+  });
+  return res;
+};
+
+const generateData = (data, storeName) => {
+  const values = {
+    header: 'Order',
+    left: {
+      titles: [
+        {
+          id: 'Name',
+          value: data?.genericName,
+        },
+      ],
+      main: [
+        {
+          id: 'Type',
+          value: data?.type,
+          row: 'odd',
+        },
+        // eslint-disable-next-line spaced-comment
+        //3???
+        {
+          id: 'Selling Stores',
+          value: storeName,
+          row: 'even',
+        },
+        {
+          id: 'Currency',
+          value: data?.prices
+            ? Object.keys(data?.prices?.priceByCountryByCurrency).join(', ')
+            : '-',
+          row: 'odd',
+        },
+      ],
+      other: [],
     },
-    {
-      id: 'customerId',
-      value: data?.customerId,
+    right: {
+      paymentMethods: null,
+      prices: [
+        {
+          id: 'Total price',
+          value:
+            data?.prices?.priceByCountryByCurrency?.[
+              data?.prices?.defaultCurrency
+            ]?.default?.value,
+        },
+        {
+          id: 'Total',
+          value:
+            data?.prices?.priceByCountryByCurrency?.[
+              data?.prices?.defaultCurrency
+            ]?.default?.value,
+        },
+      ],
     },
-    {
-      id: 'catalog',
-      value: data?.catalog,
-    },
-    {
-      id: 'genericName',
-      value: data?.genericName,
-    },
-    {
-      id: 'publisherRefId',
-      value: data?.publisherRefId,
-    },
-    {
-      id: 'type',
-      value: data?.type,
-    },
-    {
-      id: 'physicalProduct',
-      value: data?.physicalProduct,
-    },
-    {
-      id: 'lifeTime',
-      value: data?.lifeTime,
-    },
-    {
-      id: 'sellingStores',
-      value: data?.sellingStores,
-    },
-    {
-      id: 'blockedCountries',
-      value: data?.blockedCountries,
-    },
-    {
-      id: 'externalContext',
-      value: data?.externalContext,
-    },
-    {
-      id: 'status',
-      value: data?.status,
-    },
-    {
-      id: 'family',
-      value: data?.family,
-    },
-    {
-      id: 'priceFunction',
-      value: data?.priceFunction,
-    },
-  ];
+    bottom: data?.thankYouDesc ? parseData(data?.thankYouDesc) : null,
+  };
   return values;
 };
 
