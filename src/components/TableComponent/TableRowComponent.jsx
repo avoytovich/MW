@@ -84,9 +84,8 @@ const TableRowComponent = ({
   };
 
   return (
-    <Box className="tableRowGrid" boxShadow={rowHover ? 1 : 0}>
+    <Box className="tableRowGrid" boxShadow={rowHover ? 2 : 0}>
       <Grid
-        className="tableRowGrid"
         spacing={1}
         onClick={() => history.push(`${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}
@@ -105,18 +104,6 @@ const TableRowComponent = ({
             />
           </Box>
         </Grid>
-        {markupSequence.map((item) => drawTableCell(item))}
-        {rowHover && (
-          <Grid>
-            <Box my={2}>
-              <DeleteIcon
-                onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-                className="deleteIcon icons"
-              />
-              <EditIcon className="editIcon icons" />
-              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
-            </Box>
-          </Grid>
         {markupSequence.map((item) => drawTableCell(item))}
         {rowHover && (
           <Grid>
