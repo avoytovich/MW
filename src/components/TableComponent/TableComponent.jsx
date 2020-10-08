@@ -40,12 +40,6 @@ const TableComponent = ({
     setChecked(newChecked);
   };
 
-  const copyUrl = (id) => {
-    navigator.clipboard.writeText('blalabl').then(() => {
-      console.log('copied');
-    });
-  };
-
   if (isLoading) return <LinearProgress />;
 
   return tableData?.values?.length ? (
