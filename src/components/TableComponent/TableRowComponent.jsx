@@ -109,11 +109,11 @@ const TableRowComponent = ({
           <Grid>
             <Box my={2}>
               <DeleteIcon
-                onClick={() => handleDeleteItem(rowItem.id)}
+                onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
                 className="deleteIcon icons"
               />
               <EditIcon className="editIcon icons" />
-              <FileCopyIcon className="copyIcon icons" />
+              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
             </Box>
           </Grid>
         )}
