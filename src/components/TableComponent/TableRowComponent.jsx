@@ -64,7 +64,7 @@ const TableRowComponent = ({
           zeroMinWidth
           key={`${item.id}_${rowItem.id}`}
         >
-          <Box my={2}>
+          <Box mt={2}>
             <Typography
               color={
                 item.id === 'genericName' || item.id === 'customerId'
@@ -84,40 +84,54 @@ const TableRowComponent = ({
   };
 
   return (
-    <Grid
-      className="tableRowGrid"
-      spacing={1}
-      onClick={() => history.push(`${history.location.pathname}/${rowItem.id}`)}
-      onMouseOver={() => setRowHover(true)}
-      onMouseLeave={() => setRowHover(false)}
-      container
-      wrap="nowrap"
-      justify="center"
-    >
-      <Grid>
-        <Box my={1}>
-          <Checkbox
-            checked={checked}
-            name={rowItem.id}
-            onClick={(e) => e.stopPropagation()}
-            onChange={() => handleCheck(rowItem.id)}
-          />
-        </Box>
-      </Grid>
-      {markupSequence.map((item) => drawTableCell(item))}
-      {rowHover && (
+    <Box className="tableRowGrid" boxShadow={rowHover ? 1 : 0}>
+      <Grid
+        className="tableRowGrid"
+        spacing={1}
+        onClick={() => history.push(`${history.location.pathname}/${rowItem.id}`)}
+        onMouseOver={() => setRowHover(true)}
+        onMouseLeave={() => setRowHover(false)}
+        container
+        wrap="nowrap"
+        justify="center"
+      >
         <Grid>
-          <Box my={2}>
-            <DeleteIcon
-              onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-              className="deleteIcon icons"
+          <Box my={1}>
+            <Checkbox
+              checked={checked}
+              name={rowItem.id}
+              onClick={(e) => e.stopPropagation()}
+              onChange={() => handleCheck(rowItem.id)}
             />
-            <EditIcon className="editIcon icons" />
-            <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
           </Box>
         </Grid>
-      )}
-    </Grid>
+        {markupSequence.map((item) => drawTableCell(item))}
+        {rowHover && (
+          <Grid>
+            <Box my={2}>
+              <DeleteIcon
+                onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                className="deleteIcon icons"
+              />
+              <EditIcon className="editIcon icons" />
+              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+            </Box>
+          </Grid>
+        {markupSequence.map((item) => drawTableCell(item))}
+        {rowHover && (
+          <Grid>
+            <Box my={2}>
+              <DeleteIcon
+                onClick={() => handleDeleteItem(rowItem.id)}
+                className="deleteIcon icons"
+              />
+              <EditIcon className="editIcon icons" />
+              <FileCopyIcon className="copyIcon icons" />
+            </Box>
+          </Grid>
+        )}
+      </Grid>
+    </Box>
   );
 };
 
