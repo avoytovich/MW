@@ -18,6 +18,7 @@ $currentPageText: #4791db;
   &:hover {
     transform: scale(1.03);
     transition: all .3s ease-in-out .0s;
+    box-shadow: 0px 0px 4px #d1d1d4;
   }
   .tableCellItemGrid {
     overflow-x: hidden;
@@ -29,6 +30,7 @@ $currentPageText: #4791db;
   }
   .icons {
     cursor: pointer;
+    margin-left: 10px;
   }
   .deleteIcon {
     color: $deleteIcon;
