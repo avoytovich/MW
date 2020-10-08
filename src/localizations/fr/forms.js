@@ -1,12 +1,15 @@
 const forms = {
   headers: {
     signIn: 'Se connecter',
+    tableFilters: 'Table Filters',
+    noFilters: 'No Filters Available',
   },
   text: {
     dontHaveAccount: "Je n'ai pas de compte",
     signInSso: 'Connectez-vous avec SSO',
     loginWithEmailAddress: 'ou connectez-vous avec une adresse e-mail',
     forgotPassword: 'Mot de passe oublié',
+    unlimited: 'Unlimited',
   },
   inputs: {
     username: "Nom d'utilisateur",
@@ -82,6 +85,9 @@ const forms = {
     reset: 'Remettre',
     apply: 'Apply',
     clear: 'Clear',
+    exact: 'Exact',
+    cancel: 'Cancel',
+    contains: 'Contains',
     googleLogin: 'CONNEXION AVEC GOOGLE',
   },
   links: {

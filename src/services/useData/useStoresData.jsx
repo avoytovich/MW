@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
-import api from '../../api';
+import { useSelector } from 'react-redux';
 import { generateData } from './tableMarkups/stores';
+import api from '../../api';
 
-const useStoresData = (page, setLoading, makeUpdate, setMakeUpdate) => {
+const useStoresData = (page, setLoading, makeUpdate) => {
   const [storesData, setStores] = useState();
+  const tableScope = useSelector(({ tableData: { scope } }) => scope);
+  const activeFilters = useSelector(({ tableData: { filters } }) => filters);
 
   useEffect(() => {
-    let isCancelled;
-    if (makeUpdate) {
-      isCancelled = false;
+    let isCancelled = false;
+
+    if (tableScope === 'stores') {
       setLoading(true);
+
       api
         .getStores(page)
         .then(({ data }) => {
           if (!isCancelled) {
             const stores = generateData(data);
             setStores(stores);
-            setMakeUpdate(false);
             setLoading(false);
           }
         })
@@ -26,10 +29,9 @@ const useStoresData = (page, setLoading, makeUpdate, setMakeUpdate) => {
           }
         });
     }
-    return () => {
-      isCancelled = true;
-    };
-  }, [page, makeUpdate]);
+
+    return () => { isCancelled = true; };
+  }, [page, makeUpdate, tableScope, activeFilters]);
 
   return storesData;
 };

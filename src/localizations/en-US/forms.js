@@ -1,12 +1,15 @@
 const Forms = {
   headers: {
     signIn: 'Sign in',
+    tableFilters: 'Table Filters',
+    noFilters: 'No Filters Available',
   },
   text: {
     dontHaveAccount: "Don't have an account",
     signInSso: 'Sign in With SSO',
     loginWithEmailAddress: 'or login with email address',
     forgotPassword: 'Forgot password',
+    unlimited: 'Unlimited',
   },
   inputs: {
     username: 'Username',
@@ -82,6 +85,9 @@ const Forms = {
     reset: 'Reset',
     apply: 'Apply',
     clear: 'Clear',
+    cancel: 'Cancel',
+    exact: 'Is Exactly',
+    contains: 'Contains',
     googleLogin: 'LOGIN WITH GOOGLE',
   },
   links: {

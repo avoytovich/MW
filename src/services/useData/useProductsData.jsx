@@ -1,35 +1,37 @@
 import { useState, useEffect } from 'react';
-import api from '../../api';
+import { useSelector } from 'react-redux';
 import { generateData } from './tableMarkups/products';
+import api from '../../api';
 
-const useProductsData = (page, setLoading, makeUpdate, setMakeUpdate) => {
+const useProductsData = (page, setLoading, makeUpdate) => {
   const [productsData, setProducts] = useState();
+  const tableScope = useSelector(({ tableData: { scope } }) => scope);
+  const activeFilters = useSelector(({ tableData: { filters } }) => filters);
 
   useEffect(() => {
-    let isCancelled;
-    if (makeUpdate) {
-      isCancelled = false;
+    let isCanceled = false;
+
+    if (tableScope === 'products') {
       setLoading(true);
+
       api
-        .getProducts(page)
+        .getProducts(page, activeFilters)
         .then(({ data }) => {
-          if (!isCancelled) {
+          if (!isCanceled) {
             const products = generateData(data);
             setProducts(products);
-            setMakeUpdate(false);
             setLoading(false);
           }
         })
         .catch(() => {
-          if (!isCancelled) {
+          if (!isCanceled) {
             setLoading(false);
           }
         });
     }
-    return () => {
-      isCancelled = true;
-    };
-  }, [page, makeUpdate]);
+
+    return () => { isCanceled = true; };
+  }, [page, makeUpdate, tableScope, activeFilters]);
 
   return productsData;
 };

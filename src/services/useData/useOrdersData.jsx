@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react';
-import api from '../../api';
+import { useSelector } from 'react-redux';
 import { generateData } from './tableMarkups/orders';
+import api from '../../api';
 
-const useOredersData = (page, setLoading, makeUpdate, setMakeUpdate) => {
+const useOrdersData = (page, setLoading, makeUpdate) => {
   const [ordersData, setOrders] = useState();
+  const tableScope = useSelector(({ tableData: { scope } }) => scope);
+  const activeFilters = useSelector(({ tableData: { filters } }) => filters);
 
   useEffect(() => {
-    let isCancelled;
-    if (makeUpdate) {
-      isCancelled = false;
+    let isCancelled = false;
 
+    if (tableScope === 'orders') {
       setLoading(true);
+
       api
         .getOrders(page)
         .then(({ data }) => {
           if (!isCancelled) {
-            const costumersId = data.items.map(
-              (item) => `id=${item.customer.id}`,
-            );
+            const costumersId = data.items.map((item) => `id=${item.customer.id}`);
+
             api.getCustomersByIds(costumersId.join('&')).then((customers) => {
               const orders = generateData(data, customers.data);
               setOrders(orders);
-              setMakeUpdate(false);
               setLoading(false);
             });
           }
@@ -32,12 +33,11 @@ const useOredersData = (page, setLoading, makeUpdate, setMakeUpdate) => {
           }
         });
     }
-    return () => {
-      isCancelled = true;
-    };
-  }, [page, makeUpdate]);
+
+    return () => { isCancelled = true; };
+  }, [page, makeUpdate, tableScope, activeFilters]);
 
   return ordersData;
 };
 
-export default useOredersData;
+export default useOrdersData;

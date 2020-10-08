@@ -9,7 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import monthNames from '../../services/constants';
+import { MONTH_NAMES } from '../../services/constants';
 import './TableComponent.scss';
 
 const TableRowComponent = ({
@@ -25,7 +25,7 @@ const TableRowComponent = ({
   const formatDate = (formatingData) => {
     const fullDate = new Date(formatingData);
     const day = fullDate.getDay();
-    const month = monthNames[fullDate.getMonth()].substring(0, 3);
+    const month = MONTH_NAMES[fullDate.getMonth()].substring(0, 3);
     const year = fullDate.getUTCFullYear();
 
     return `${day} ${month} ${year}`;
