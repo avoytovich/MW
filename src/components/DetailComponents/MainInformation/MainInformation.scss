@@ -1,0 +1,17 @@
+$tablesOddRow: #f7f7f7;
+$tablesEvenRow: #ffffff;
+
+.mainContainer {
+  background-color: $tablesEvenRow;
+  width: 100%;
+  border-radius: 10px;
+}
+.mainRow {
+  width: 50%;
+}
+.odd {
+  background-color: $tablesOddRow;
+}
+.even {
+  background-color: $tablesEvenRow;
+}

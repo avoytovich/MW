@@ -5,6 +5,7 @@ import {
   Box,
   Checkbox,
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -23,7 +24,7 @@ const TableRowComponent = ({
   handleDeleteItem,
 }) => {
   const [rowHover, setRowHover] = useState(false);
-
+  const history = useHistory();
   const formatDate = (formatingData) => {
     const fullDate = new Date(formatingData);
     const day = fullDate.getDay();
@@ -72,6 +73,7 @@ const TableRowComponent = ({
     <Grid
       className="tableRowGrid"
       spacing={1}
+      onClick={() => history.push(`${history.location.pathname}/${rowItem.id}`)}
       onMouseOver={() => setRowHover(true)}
       onMouseLeave={() => setRowHover(false)}
       container
