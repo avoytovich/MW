@@ -9,6 +9,8 @@ import EditIcon from '@material-ui/icons/Edit';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
 import monthNames from '../../services/constants';
 import './TableComponent.scss';
 
@@ -57,7 +59,7 @@ const TableRowComponent = ({
               noWrap
               className="tableCellItem"
             >
-              {valueToShow}
+              { valueToShow === 'ENABLED' ? <CheckIcon className="statusEnabled"/> : valueToShow === 'DISABLE' ? <CloseIcon className="statusDisable"/> : valueToShow }
             </Typography>
           </Box>
         </Grid>
@@ -91,10 +93,10 @@ const TableRowComponent = ({
           <Box my={2}>
             <DeleteIcon
               onClick={() => handleDeleteItem(rowItem.id)}
-              className="deleteIcon"
+              className="deleteIcon icons"
             />
-            <EditIcon className="editIcon" />
-            <FileCopyIcon className="copyIcon" />
+            <EditIcon className="editIcon icons" />
+            <FileCopyIcon className="copyIcon icons" />
           </Box>
         </Grid>
       )}

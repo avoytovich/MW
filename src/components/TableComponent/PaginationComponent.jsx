@@ -33,14 +33,16 @@ const PaginationComponent = ({ updatePage, totalPages, currentPage }) => {
 
   const pageNumbers = calculatePaginationNumbers();
   return (
+    (totalPages > 1
+    && (
     <Grid className="paginationBlock">
       <Grid spacing={5} container justify="flex-end" direction="row">
         {pageNumbers[0] !== 1 && (
-          <Grid item>
-            <Typography color="secondary" onClick={() => updatePage(1)}>
-              {localization.t('general.first')}
-            </Typography>
-          </Grid>
+        <Grid item>
+          <Typography color="secondary" onClick={() => updatePage(1)}>
+            {localization.t('general.first')}
+          </Typography>
+        </Grid>
         )}
         <Grid item>
           <Grid spacing={3} container justify="center" direction="row">
@@ -58,24 +60,26 @@ const PaginationComponent = ({ updatePage, totalPages, currentPage }) => {
           </Grid>
         </Grid>
         {pageNumbers[pageNumbers.length - 1] !== totalPages && (
-          <Grid item>
-            <Typography
-              color="secondary"
-              onClick={() => updatePage(totalPages)}
-            >
-              {localization.t('general.last')}
-            </Typography>
-          </Grid>
+        <Grid item>
+          <Typography
+            color="secondary"
+            onClick={() => updatePage(totalPages)}
+          >
+            {localization.t('general.last')}
+          </Typography>
+        </Grid>
         )}
         {pageNumbers[pageNumbers.length - 1] !== currentPage && (
-          <Grid item>
-            <Typography onClick={() => updatePage(currentPage + 1)}>
-              {localization.t('general.next')}
-            </Typography>
-          </Grid>
+        <Grid item>
+          <Typography onClick={() => updatePage(currentPage + 1)}>
+            {localization.t('general.next')}
+          </Typography>
+        </Grid>
         )}
       </Grid>
     </Grid>
+    )
+    )
   );
 };
 
