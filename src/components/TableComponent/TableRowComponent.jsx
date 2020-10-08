@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
   Typography,
   Grid,
@@ -17,6 +18,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { MONTH_NAMES } from '../../services/constants';
 
 import './TableComponent.scss';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const TableRowComponent = ({
   rowItem,
@@ -28,6 +30,8 @@ const TableRowComponent = ({
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
+  const dispatch = useDispatch();
+
   const formatDate = (formatingData) => {
     const fullDate = new Date(formatingData);
     const day = fullDate.getDay();
@@ -36,6 +40,13 @@ const TableRowComponent = ({
 
     return `${day} ${month} ${year}`;
   };
+
+  const copyUrl = () => {
+    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
+      dispatch(showNotification('Item URL has been copied!'));
+    });
+  };
+
   const drawTableCell = (item) => {
     if (showColumn[item.id]) {
       let valueToShow;
@@ -88,6 +99,7 @@ const TableRowComponent = ({
           <Checkbox
             checked={checked}
             name={rowItem.id}
+            onClick={(e) => e.stopPropagation()}
             onChange={() => handleCheck(rowItem.id)}
           />
         </Box>
@@ -97,11 +109,11 @@ const TableRowComponent = ({
         <Grid>
           <Box my={2}>
             <DeleteIcon
-              onClick={() => handleDeleteItem(rowItem.id)}
+              onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
               className="deleteIcon icons"
             />
             <EditIcon className="editIcon icons" />
-            <FileCopyIcon className="copyIcon icons" />
+            <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
           </Box>
         </Grid>
       )}
