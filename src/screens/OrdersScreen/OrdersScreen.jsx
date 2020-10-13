@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import TableComponent from '../../components/TableComponent';
 import useOrdersData from '../../services/useData/useOrdersData';
 import { defaultShow } from '../../services/useData/tableMarkups/orders';
-import TableComponent from '../../components/TableComponent';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 
 import api from '../../api';
-
-import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const OrdersScreen = () => {
   const dispatch = useDispatch();
@@ -21,6 +20,7 @@ const OrdersScreen = () => {
     .deleteOrderById(id)
     .then(() => {
       setMakeUpdate((v) => (v + 1));
+      // ToDo: make message localized
       dispatch(showNotification(`Order ${id} has been successfully deleted!`));
     });
 

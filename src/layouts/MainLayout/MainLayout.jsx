@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
-import './MainLayout.scss';
+
+import Grid from '@material-ui/core/Grid';
 
 import SideBar from '../../components/SideBar';
 import TopBar from '../../components/TopBar';
+
+import './MainLayout.scss';
 
 const MainLayout = ({ children }) => {
   const [drawerOpen, setDrawer] = useState(true);

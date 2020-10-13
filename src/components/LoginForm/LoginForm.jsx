@@ -1,19 +1,18 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { Formik } from 'formik';
+
 import {
   Box,
   Button,
   TextField,
   CircularProgress,
 } from '@material-ui/core';
+import { Formik } from 'formik';
+
 import { login } from '../../redux/actions/Account';
 import localization from '../../localization';
 
-const initialValues = {
-  username: '',
-  password: '',
-};
+const initialValues = { username: '', password: '' };
 
 const LoginForm = () => {
   const dispatch = useDispatch();

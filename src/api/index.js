@@ -1,6 +1,7 @@
 import { axiosInstance } from '../axios';
 
 const api = {
+  // AUTH
   signIn(data) {
     let url = '/iam/tokens';
 
@@ -18,12 +19,6 @@ const api = {
       },
     });
   },
-  getPrices() {
-    return axiosInstance({
-      method: 'get',
-      url: '/prices',
-    });
-  },
   recoverPassword(data) {
     return axiosInstance({
       method: 'post',
@@ -33,10 +28,12 @@ const api = {
   },
   setNewPassword(token, data) {
     let url = `/iam/identities/resetpassword/nexway/${token}`;
+
     const reason = 'Nexway-Center';
     if (reason) {
       url += `?reason=${reason}`;
     }
+
     return axiosInstance({
       method: 'post',
       url,
@@ -45,28 +42,38 @@ const api = {
   },
 
   // GET ALL
-  getProducts(page) {
-    const url = `/products?format=short&sort=createDate%2Casc&parentId=null&size=50&page=${page}`;
+  getProducts(page, filters) {
+    let url = `/products?format=short&sort=updateDate,desc&parentId=null&size=50&page=${page}`;
+
+    if (filters) { url += filters; }
 
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getStores(page) {
-    const url = `/stores?format=short&sort=name%2Casc&size=50&page=${page}`;
+  getStores(page, filters) {
+    let url = `/stores?format=short&sort=name,asc&size=50&page=${page}`;
+
+    if (filters) { url += filters; }
+
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getOrders(page) {
-    const url = `/orders?format=short&status=COMPLETED&sort=updateDate%2Cdesc&size=50&page=${page}`;
+  getOrders(page, filters) {
+    let url = `/orders?format=short&sort=updateDate,desc&size=50&page=${page}`;
+
+    if (filters) { url += filters; }
+
     return axiosInstance({
       method: 'get',
       url,
     });
   },
+
+  // GET ALL BY ID
   getCustomersByIds(ids) {
     const url = `/customers/public?format=short/${ids}`;
     return axiosInstance({
@@ -81,6 +88,7 @@ const api = {
       url,
     });
   },
+
   // GET ONE BY ID
   getProductById(id) {
     const url = `/products/${id}`;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+
 import {
   Button,
   Typography,
@@ -8,9 +8,11 @@ import {
   FormHelperText,
   CircularProgress,
 } from '@material-ui/core';
+import { Formik } from 'formik';
+
+import * as validators from '../../services/helpers/inputValidators';
 import localization from '../../localization';
 import api from '../../api';
-import * as validators from '../../services/inputValidators';
 
 const initialRecoveryValues = { email: '' };
 
@@ -110,4 +112,5 @@ const RecoveryPassword = () => {
     </>
   );
 };
+
 export default RecoveryPassword;

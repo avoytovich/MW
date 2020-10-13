@@ -4,10 +4,9 @@ import { useDispatch } from 'react-redux';
 import useProductsData from '../../services/useData/useProductsData';
 import { defaultShow } from '../../services/useData/tableMarkups/products';
 import TableComponent from '../../components/TableComponent';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 
 import api from '../../api';
-
-import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const ProductsScreen = () => {
   const dispatch = useDispatch();
@@ -21,6 +20,7 @@ const ProductsScreen = () => {
     .deleteProductById(id)
     .then(() => {
       setMakeUpdate((v) => (v + 1));
+      // ToDo: make message localized
       dispatch(showNotification(`Product ${id} has been successfully deleted!`));
     });
 

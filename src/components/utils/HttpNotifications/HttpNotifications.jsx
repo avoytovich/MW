@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
@@ -41,7 +42,13 @@ const HttpActionNotification = () => {
   return (
     showNotification && (
       <Snackbar open={showNotification} autoHideDuration={AUTO_HIDE_INTERVAL} onClose={handleClose}>
-        <Alert elevation={6} variant='filled' onClose={handleClose} severity={severity} id={`${severity}-notification`}>
+        <Alert
+          elevation={6}
+          variant='filled'
+          onClose={handleClose}
+          severity={severity}
+          id={`${severity}-notification`}
+        >
           {message}
         </Alert>
       </Snackbar>

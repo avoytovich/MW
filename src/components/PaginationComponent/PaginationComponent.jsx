@@ -1,10 +1,13 @@
 /* eslint-disable no-plusplus */
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { Typography, Grid } from '@material-ui/core';
+
 import localization from '../../localization';
 import './PaginationComponent.scss';
 
+// ToDo: refactor this component
 const PaginationComponent = ({
   updatePage,
   totalPages,
@@ -36,7 +39,9 @@ const PaginationComponent = ({
       ? calculatePaginationNumbers(exitConditin === 0 && min > 2 ? -2 : -1)
       : res;
   };
+
   const pageNumbers = calculatePaginationNumbers();
+
   return (
     (totalPages > 1
     && (

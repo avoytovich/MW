@@ -4,11 +4,11 @@ import {
   Switch, Redirect, Route, useLocation,
 } from 'react-router-dom';
 
-import Session from '../../../services/session';
+import Session from '../session';
 
-import AuthScreen from '../../../screens/AuthScreen';
-import RecoveryPasswordScreen from '../../../screens/RecoveryPasswordScreen';
-import UpdatePasswordScreen from '../../../screens/UpdatePasswordScreen';
+import AuthScreen from '../../screens/AuthScreen';
+import RecoveryPasswordScreen from '../../screens/RecoveryPasswordScreen';
+import UpdatePasswordScreen from '../../screens/UpdatePasswordScreen';
 
 import './routes.scss';
 

@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import SignedRoutes from './SignedRoutes';
 import GuestRoutes from './GuestRoutes';
 
-import LoadingScreen from '../../../screens/LoadingScreen';
+import LoadingScreen from '../../screens/LoadingScreen';
 
-import MainLayout from '../../../layouts/MainLayout';
-import AuthorizationLayout from '../../../layouts/AuthorizationLayout';
+import MainLayout from '../../layouts/MainLayout';
+import AuthorizationLayout from '../../layouts/AuthorizationLayout';
 
 const Routes = () => {
   const account = useSelector(({ account: acc }) => acc);
