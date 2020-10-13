@@ -1,4 +1,7 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+
 import {
   Button,
   TextField,
@@ -7,12 +10,11 @@ import {
   Typography,
   CircularProgress,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
 import { Formik } from 'formik';
+
+import * as validators from '../../services/helpers/inputValidators';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import * as validators from '../../services/inputValidators';
 import api from '../../api';
 
 const initialUpdateValues = { newPassword: '', confirmedPassword: '' };
@@ -27,6 +29,7 @@ const UpdatePassword = () => {
     api
       .setNewPassword(token, { password: values.newPassword })
       .then(() => {
+        // ToDo: make message localized
         dispatch(showNotification('Password updated!'));
         history.push('/');
       })
@@ -35,6 +38,7 @@ const UpdatePassword = () => {
         setErrors({ message: error.response.data.error });
       });
   };
+
   return (
     <>
       <Box mb={4}>

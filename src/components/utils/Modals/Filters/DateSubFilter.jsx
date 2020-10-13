@@ -31,12 +31,12 @@ const DateSubFilter = ({ filter, config, setConfig }) => {
   }, []);
 
   const curVariant = config[filter.id]?.variant || 'unlimited';
-  const curDate = config[filter.id]?.date || null;
-  const curDateEnd = config[filter.id]?.dateEnd || null;
+  const curDate = config[filter.id]?.date || new Date();
+  const curDateEnd = config[filter.id]?.dateEnd || moment(curDate).add(1, 'day');
 
   const [isOpen, setOpen] = useState(false);
-  const [date, setDate] = useState(new Date());
-  const [dateEnd, setDateEnd] = useState(moment(date).add(1, 'day'));
+  const [date, setDate] = useState(curDate);
+  const [dateEnd, setDateEnd] = useState(curDateEnd);
   const [variant, setVariant] = useState(curVariant);
 
   const applyFilter = () => {
@@ -68,10 +68,10 @@ const DateSubFilter = ({ filter, config, setConfig }) => {
     <>
       <Button color='primary' onClick={() => setOpen(true)}>
         {curVariant}
-        {curDate && (
+        {variant !== 'unlimited' && (
           <Typography color='textPrimary' variant='h6' style={{ marginLeft: 10 }}>
             {moment(curDate).format('MM/DD/YYYY')}
-            {curDateEnd && ` - ${moment(curDateEnd).format('MM/DD/YYYY')}`}
+            {variant === 'between' && ` - ${moment(curDateEnd).format('MM/DD/YYYY')}`}
           </Typography>
         )}
       </Button>

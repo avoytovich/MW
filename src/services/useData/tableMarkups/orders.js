@@ -46,8 +46,8 @@ const generateData = (data, customers) => {
       currency: val.lineItems[0]?.currency,
       products: val.lineItems[0]?.name,
       country: val.endUser?.country,
-      paymentType: val.payments[0]?.methodType,
-      paymentStatus: val.payments[0]?.status,
+      paymentType: val.payments && val.payments[0]?.methodType,
+      paymentStatus: val.payments && val.payments[0]?.status,
     };
   });
 

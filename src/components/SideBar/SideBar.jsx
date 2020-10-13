@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Box,
   Drawer,
   List,
   ListSubheader,
 } from '@material-ui/core';
+
 import NavItem from './NavItem';
 import navConfig from './config';
 

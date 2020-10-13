@@ -10,6 +10,7 @@ import {
   SwapHorizontalCircle,
   PeopleOutline,
 } from '@material-ui/icons';
+
 import localization from '../../localization';
 
 const navConfig = [

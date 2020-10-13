@@ -3,7 +3,7 @@ import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import Routes from '../utils/Routes';
+import Routes from '../../services/Routes';
 import Auth from '../utils/Auth';
 import HttpNotifications from '../utils/HttpNotifications';
 

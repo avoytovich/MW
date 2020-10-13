@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {
-  ListItem,
-} from '@material-ui/core';
+
+import ListItem from '@material-ui/core/ListItem';
+
 import './NavItem.scss';
 
 const NavItem = ({

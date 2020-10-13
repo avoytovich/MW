@@ -21,11 +21,13 @@ const SelectSubFilter = ({ filter, config, setConfig }) => {
   }, []);
 
   const updateValues = (e) => {
-    const newConfig = { ...config };
+    if (e.target.value.length > 0) {
+      const newConfig = { ...config };
 
-    newConfig[filter.id].values = e.target.value;
-    setValues(e.target.value);
-    setConfig(newConfig);
+      newConfig[filter.id].values = e.target.value;
+      setValues(e.target.value);
+      setConfig(newConfig);
+    }
   };
 
   return (

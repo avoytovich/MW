@@ -25,8 +25,6 @@ import { setFilters } from '../../../../redux/actions/TableData';
 import availableFilters from '../../../../services/useData/tableMarkups/filters';
 import localization from '../../../../localization';
 
-import './Filters.scss';
-
 const Filters = ({ scope, hide }) => {
   const dispatch = useDispatch();
   const [activeFilters, setActiveFilter] = useState({});
