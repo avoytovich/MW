@@ -108,7 +108,7 @@ const TableRowComponent = ({
               checked={checked}
               name={rowItem.id}
               onClick={(e) => e.stopPropagation()}
-              onChange={() => handleCheck(rowItem.id)}
+              onChange={() => handleCheck(rowItem)}
             />
           </Box>
         </Grid>

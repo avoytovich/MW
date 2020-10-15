@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 
 import TableRowComponent from './TableRowComponent';
+import TableItemsActions from './TableItemsActions';
 import PaginationComponent from '../PaginationComponent';
 
 import localization from '../../localization';
@@ -26,21 +27,27 @@ const TableComponent = ({
 }) => {
   const [checked, setChecked] = useState([]);
 
-  const handleCheck = (itemId) => {
+  const handleCheck = (item) => {
     let newChecked = [];
-    if (checked.indexOf(itemId) === -1) {
-      newChecked = [...checked, itemId];
+
+    const [isChecked] = checked.filter((v) => v.id === item.id);
+
+    if (isChecked) {
+      newChecked = [...checked].filter((v) => v.id !== item.id);
     } else {
-      newChecked = [...checked].filter((item) => item !== itemId);
+      newChecked = [...checked, item];
     }
+
     setChecked(newChecked);
   };
 
   const handleCheckAll = () => {
     let newChecked = [];
+
     if (!checked.length) {
-      newChecked = tableData?.values.map((item) => item.id);
+      newChecked = tableData?.values;
     }
+
     setChecked(newChecked);
   };
 
@@ -48,6 +55,8 @@ const TableComponent = ({
 
   return tableData?.values?.length ? (
     <>
+      <TableItemsActions items={checked} headers={tableData.headers} onDelete={handleDeleteItem} />
+
       <Grid
         spacing={1}
         container
@@ -83,7 +92,7 @@ const TableComponent = ({
         {tableData.values.map((rowItem) => (
           <TableRowComponent
             handleDeleteItem={handleDeleteItem}
-            checked={checked.indexOf(rowItem.id) !== -1}
+            checked={checked.filter((v) => v.id === rowItem.id).length > 0}
             handleCheck={handleCheck}
             markupSequence={tableData.headers}
             showColumn={showColumn}
