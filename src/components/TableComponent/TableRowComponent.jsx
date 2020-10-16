@@ -17,10 +17,8 @@ import {
   Check as CheckIcon,
   Close as CloseIcon,
 } from '@material-ui/icons';
-
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import { MONTH_NAMES } from '../../services/constants';
-
+import formatDate from '../../services/dateFormatting';
 import './TableComponent.scss';
 
 const TableRowComponent = ({
@@ -34,16 +32,6 @@ const TableRowComponent = ({
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const formatDate = (formatingData) => {
-    const fullDate = new Date(formatingData);
-    const day = fullDate.getDay();
-    const month = MONTH_NAMES[fullDate.getMonth()].substring(0, 3);
-    const year = fullDate.getUTCFullYear();
-
-    return `${day} ${month} ${year}`;
-  };
-
   const copyUrl = () => {
     navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
       // ToDo: make message localized

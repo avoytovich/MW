@@ -4,11 +4,12 @@ import {
   Typography,
   Card,
   CardMedia,
-  Grid,
+  Box,
   CardActionArea,
   CardContent,
 } from '@material-ui/core';
 import PaginationComponent from '../../PaginationComponent';
+import './ThankDesc.scss';
 
 const ThankDesc = ({ bottom }) => {
   const totalPages = Math.ceil(bottom?.length / 4);
@@ -23,36 +24,44 @@ const ThankDesc = ({ bottom }) => {
   };
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        justify="space-around"
-        alignItems="center"
+      <Box
+        width="100%"
+        display="flex"
+        alignContent="center"
+        flexDirection="row"
+        justifyContent="space-around"
       >
         {showContent.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <Grid item sm={2} key={`${item?.image}${item.text}${index}`}>
-            <Card>
+          <Box
+            className="itemWrapper"
+            width="23%"
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${item?.image}${item.text}${index}`}
+          >
+            <Card className="cardItem">
               <CardActionArea>
                 {item?.image && (
                   <CardMedia
-                    style={{ height: 140 }}
+                    className="cardImage"
                     image={item.image}
                     title="Contemplative Reptile"
                   />
                 )}
                 <CardContent>
-                  <Typography
-                    dangerouslySetInnerHTML={{ __html: item?.text }}
-                    variant="body2"
-                    color="secondary"
-                  />
+                  <Box pt={3} pb={7}>
+                    <Typography
+                      className="cardText"
+                      dangerouslySetInnerHTML={{ __html: item?.text }}
+                      variant="body2"
+                      color="secondary"
+                    />
+                  </Box>
                 </CardContent>
               </CardActionArea>
             </Card>
-          </Grid>
+          </Box>
         ))}
-      </Grid>
+      </Box>
       <PaginationComponent
         location="center"
         updatePage={updatePage}

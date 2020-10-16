@@ -1,13 +1,18 @@
-$tablesEvenRow: #ffffff;
+@import '../../../styles/variables.scss';
 
 .paymentImageWrapper {
   width: 60px;
+  background-color: $tablesEvenRow;
 }
 
 .paymentImage {
   width: 100%;
 }
-.pricesBlock {
-  padding: 5;
-  background-color: $tablesEvenRow;
+.paymentBlock {
+  height: 100%;
+  .paymentItem {
+    width: 100%;
+    background-color: $tablesEvenRow;
+    border-radius: 10px;
+  }
 }

@@ -1,12 +1,14 @@
+@import '../../styles/variables.scss';
+
 .table {
   height: 100%;
   width: 100%;
   flex-grow: 1;
   padding: 20px 30px 20px 30px;
-  background-color: #f9f9f9;
+  background-color: $tableHeader;
 }
 .tableBorder {
-  border: 2px solid #f3f5fa;
+  border: 2px solid $mainTableBorder;
   border-radius: 10px;
   padding: 15px;
 }

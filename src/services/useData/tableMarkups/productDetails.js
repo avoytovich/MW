@@ -1,3 +1,5 @@
+import formatDate from '../../dateFormatting';
+
 const parseData = (data) => {
   const res = data.map((item) => ({
     image: item.url,
@@ -38,7 +40,23 @@ const generateData = (data, storeName) => {
           row: 'odd',
         },
       ],
-      other: [],
+      other: [
+        {
+          id: 'Last Update',
+          value: formatDate(data?.updateDate),
+          row: 'odd',
+        },
+        {
+          id: 'Life Time',
+          value: data?.lifeTime,
+          row: 'odd',
+        },
+        {
+          id: 'Trial Allowed',
+          value: `${data?.trialAllowed}`,
+          row: 'even',
+        },
+      ],
     },
     right: {
       paymentMethods: null,

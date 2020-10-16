@@ -1,3 +1,5 @@
+import formatDate from '../../dateFormatting';
+
 const generateData = (data, customer) => {
   const values = {
     header: 'Order',
@@ -24,17 +26,15 @@ const generateData = (data, customer) => {
           row: 'even',
         },
         {
-          id: 'Store name',
+          id: 'Store',
           value: data?.store?.name,
           row: 'odd',
         },
       ],
       other: [
-        // eslint-disable-next-line spaced-comment
-        //4????
         {
-          id: 'Transaction ID',
-          value: data?.processingEvent[0]?.metadata?.transactionId,
+          id: 'Payment ID',
+          value: data?.processingEvent[0]?.metadata?.paymentId,
           row: 'odd',
         },
         {
@@ -47,22 +47,17 @@ const generateData = (data, customer) => {
           value: data?.payment?.status,
           row: 'even',
         },
-        // eslint-disable-next-line spaced-comment
-        //7?????
         {
-          id: 'Fraud Check',
+          id: 'Fraud status',
           value: `${data?.payments[0]?.informativeFraudCheck}`,
           row: 'even',
         },
-        // eslint-disable-next-line spaced-comment
-        //8?????
+
         {
-          id: 'Fulfillment  Status',
+          id: 'Fulfillment',
           value: data?.lineItems[0]?.fulfillmentProcessingStatus,
           row: 'odd',
         },
-        // eslint-disable-next-line spaced-comment
-        //9?????
         {
           id: 'Subscription status',
           value: data?.lineItems[0]?.subscriptionProcessingStatus,
@@ -71,7 +66,30 @@ const generateData = (data, customer) => {
       ],
     },
     right: { paymentMethods: null, prices: null },
-    bottom: null,
+    bottom: [
+      {
+        text: `<p class='orderText'>${
+          data?.createDate && formatDate(data?.createDate)
+        }</p><p>${data?.updateDate && formatDate(data?.updateDate)}</p>`,
+      },
+      {
+        text: `<p class='orderText'>${data?.endUser?.firstName} ${
+          data?.endUser?.lastName
+        }</p><p>${
+          data?.endUser?.company?.companyName
+            ? data?.endUser?.company?.companyName
+            : ''
+        }</p>`,
+      },
+      {
+        text: `<p class='orderText'>${data?.payment?.transactionId}</p><p>${
+          data?.installments ? data?.installments : ''
+        }</p>`,
+      },
+      {
+        text: `<p class='orderText'>${data?.lineItems[0]?.name}</p><p>${data?.lineItems[0]?.productType}</p>`,
+      },
+    ],
   };
   return values;
 };

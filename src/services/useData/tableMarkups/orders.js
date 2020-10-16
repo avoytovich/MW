@@ -4,7 +4,7 @@ const defaultShow = {
   status: true,
   storeId: true,
   companyName: true,
-  id: true,
+  id: false,
   invoiceId: true,
   currency: true,
   products: true,

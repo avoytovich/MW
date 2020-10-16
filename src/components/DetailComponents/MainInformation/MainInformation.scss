@@ -1,5 +1,4 @@
-$tablesOddRow: #f7f7f7;
-$tablesEvenRow: #ffffff;
+@import '../../../styles/variables.scss';
 
 .mainContainer {
   background-color: $tablesEvenRow;
@@ -7,11 +6,13 @@ $tablesEvenRow: #ffffff;
   border-radius: 10px;
 }
 .mainRow {
-  width: 50%;
+  width: 45%;
 }
 .odd {
+  border-radius: 5px;
   background-color: $tablesOddRow;
 }
 .even {
+  border-radius: 5px;
   background-color: $tablesEvenRow;
 }
