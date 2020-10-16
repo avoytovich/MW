@@ -69,7 +69,7 @@ const TableRowComponent = ({
             >
               { // eslint-disable-next-line no-nested-ternary
                 valueToShow === 'ENABLED' ? <CheckIcon className="statusEnabled" />
-                  : valueToShow === 'DISABLE' ? <CloseIcon className="statusDisable" /> : valueToShow
+                  : valueToShow === 'DISABLED' ? <CloseIcon className="statusDisable" /> : valueToShow
               }
             </Typography>
           </Box>
