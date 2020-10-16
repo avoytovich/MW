@@ -52,7 +52,7 @@ const SignedRoutes = () => {
       <Route
         exact
         path='/settings/identities'
-        component={lazy(() => import('../../screens/OrderDetailsScreen'))}
+        component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
       <Redirect to='/overview/products' />
     </Switch>

@@ -72,6 +72,16 @@ const api = {
       url,
     });
   },
+  getIdentities(page, filters) {
+    let url = `/iam/identities?format=short&sort=firstName,desc&size=50&page=${page}`;
+
+    if (filters) { url += filters; }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // GET ALL BY ID
   getCustomersByIds(ids) {
@@ -119,7 +129,7 @@ const api = {
     });
   },
 
-  // DELETE ONE BY ID
+  // DELETE BY ID
   deleteProductById(id) {
     const url = `/products/${id}`;
     return axiosInstance({
@@ -135,6 +145,13 @@ const api = {
     });
   },
   deleteStoreById(id) {
+    const url = `/stores/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteIdentityById(id) {
     const url = `/stores/${id}`;
     return axiosInstance({
       method: 'delete',
