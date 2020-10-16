@@ -5,37 +5,40 @@ import getPaymentImages from './images';
 import './Payment.scss';
 
 const Payment = ({ right }) => (
-  <>
+  <Box
+    className="paymentBlock"
+    display="flex"
+    flexDirection="column"
+    flexWrap="wrap"
+    justifyContent="space-around"
+  >
     {right.prices && (
-      <Box
-        display="flex"
-        flexDirection="column"
-        flexWrap="wrap"
-        alignContent="center"
-      >
-        <Box p={2} className="pricesBlock">
-          {right.prices.map((item) => (
-            <Box
-              key={item.id}
-              display="flex"
-              flexDirection="row"
-              flexWrap="wrap"
-            >
-              <Box pr={2}>
-                <Typography variant="body2">{`${item.id}: `}</Typography>
+      <Box py={2} className="paymentItem" alignSelf="center">
+        <Box display="flex" flexDirection="column" flexWrap="wrap">
+          <Box p={3}>
+            {right.prices.map((item) => (
+              <Box
+                key={item.id}
+                display="flex"
+                flexDirection="row"
+                flexWrap="wrap"
+              >
+                <Box flexBasis="70%">
+                  <Typography variant="body2">{`${item.id}: `}</Typography>
+                </Box>
+                <Box flexGrow={1}>
+                  <Typography variant="body2">{item.value}</Typography>
+                </Box>
               </Box>
-              <Box>
-                <Typography variant="subtitle2">{item.value}</Typography>
-              </Box>
-            </Box>
-          ))}
+            ))}
+          </Box>
         </Box>
       </Box>
     )}
     {right.paymentMethods && (
-      <>
-        <Typography color="secondary">{right.paymentMethods.id}</Typography>
-        <Divider width="60%" />
+      <Box>
+        <Typography variant="overline">{right.paymentMethods.id}</Typography>
+        <Divider width="100%" />
         <Box
           display="flex"
           alignItems="center"
@@ -51,9 +54,9 @@ const Payment = ({ right }) => (
             );
           })}
         </Box>
-      </>
+      </Box>
     )}
-  </>
+  </Box>
 );
 
 Payment.propTypes = {

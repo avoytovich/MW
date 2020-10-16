@@ -47,7 +47,7 @@ const themeConfig = {
     primary: {
       main: colors.buttonPrimary,
     },
-    secondary: { main: colors.textPrimaryGray },
+    secondary: { main: colors.textPrimaryGray, dark: colors.textPrimaryDark },
     text: {
       primary: colors.textPrimaryDark,
       secondary: colors.mainBackground,

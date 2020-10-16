@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .listItem  {
   .listItemButton {
     width: 100%;
@@ -6,17 +8,17 @@
     align-items: flex-end;
     padding-left: 2px;
     text-decoration: none;
-    color: #c6c0c0;
+    color: $navItemButton;
   }
   .listItemButton:hover {
-    color: #719ded;
+    color: $navItemButtonHover;
     text-decoration: none;
   }
   .linkTitle {
     padding-left: 14px;
   }
   .active {
-    color: #719ded;
+    color: $navItemButtonActive;
   }
 }
 

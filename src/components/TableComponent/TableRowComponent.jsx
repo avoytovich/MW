@@ -15,7 +15,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
-import { MONTH_NAMES } from '../../services/constants';
+import formatDate from '../../services/dateFormatting';
 
 import './TableComponent.scss';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -31,16 +31,6 @@ const TableRowComponent = ({
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const formatDate = (formatingData) => {
-    const fullDate = new Date(formatingData);
-    const day = fullDate.getDay();
-    const month = MONTH_NAMES[fullDate.getMonth()].substring(0, 3);
-    const year = fullDate.getUTCFullYear();
-
-    return `${day} ${month} ${year}`;
-  };
-
   const copyUrl = () => {
     navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
       dispatch(showNotification('Item URL has been copied!'));

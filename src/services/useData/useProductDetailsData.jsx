@@ -12,6 +12,7 @@ const useProductDetailsData = (id, setLoading) => {
       .getProductById(id)
       .then(({ data }) => {
         if (!isCancelled) {
+          console.log('data.sellingStores', data.sellingStores);
           const storesId = data.sellingStores?.[0];
           if (storesId) {
             api.getStoreById(storesId).then((res) => {

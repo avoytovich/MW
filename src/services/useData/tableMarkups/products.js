@@ -1,5 +1,5 @@
 const defaultShow = {
-  id: true,
+  id: false,
   createDate: true,
   updateDate: true,
   customerId: true,

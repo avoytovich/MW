@@ -5,8 +5,6 @@ import Alert from '@material-ui/lab/Alert';
 
 import { hideNotification } from '../../../redux/actions/HttpNotifications';
 
-import './HttpNotifications.scss';
-
 const AUTO_HIDE_INTERVAL = 3000;
 
 const HttpActionNotification = () => {
