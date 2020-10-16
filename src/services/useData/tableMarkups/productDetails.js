@@ -73,8 +73,8 @@ const generateData = (data, storeName) => {
           id: 'Total',
           value: data?.prices?.priceByCountryByCurrency
             ? data?.prices?.priceByCountryByCurrency?.[
-                data?.prices?.defaultCurrency
-              ]?.default?.value
+              data?.prices?.defaultCurrency
+            ]?.default?.value
             : '-',
         },
       ],
