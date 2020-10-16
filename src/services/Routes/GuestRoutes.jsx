@@ -47,7 +47,7 @@ const SignedRoutes = () => {
             component={UpdatePasswordScreen}
           />
 
-          <Redirect to='/login' />
+          {/* <Redirect to='/login' /> */}
         </Switch>
       </CSSTransition>
     </SwitchTransition>

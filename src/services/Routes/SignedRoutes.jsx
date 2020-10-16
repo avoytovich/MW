@@ -54,7 +54,8 @@ const SignedRoutes = () => {
         path='/settings/identities'
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
-      <Redirect to='/overview/products' />
+
+      {/* <Redirect to='/overview/products' /> */}
     </Switch>
   );
 };
