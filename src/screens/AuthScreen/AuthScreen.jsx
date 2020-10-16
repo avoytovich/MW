@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import {
   Box,
   Container,
@@ -7,9 +9,10 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import localization from '../../localization';
+
 import LoginForm from '../../components/LoginForm';
+import localization from '../../localization';
+
 import './AuthScreen.scss';
 
 const AuthScreen = () => (

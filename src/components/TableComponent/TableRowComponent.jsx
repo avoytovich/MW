@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import {
   Typography,
   Grid,
   Box,
   Checkbox,
 } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import CheckIcon from '@material-ui/icons/Check';
-import CloseIcon from '@material-ui/icons/Close';
-
-import formatDate from '../../services/dateFormatting';
-
-import './TableComponent.scss';
+import {
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  FileCopy as FileCopyIcon,
+  Check as CheckIcon,
+  Close as CloseIcon,
+} from '@material-ui/icons';
 import { showNotification } from '../../redux/actions/HttpNotifications';
+import formatDate from '../../services/dateFormatting';
+import './TableComponent.scss';
 
 const TableRowComponent = ({
   rowItem,
@@ -33,6 +34,7 @@ const TableRowComponent = ({
   const dispatch = useDispatch();
   const copyUrl = () => {
     navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
+      // ToDo: make message localized
       dispatch(showNotification('Item URL has been copied!'));
     });
   };
@@ -40,6 +42,7 @@ const TableRowComponent = ({
   const drawTableCell = (item) => {
     if (showColumn[item.id]) {
       let valueToShow;
+
       if (item.id === 'createDate' || item.id === 'updateDate') {
         valueToShow = formatDate(rowItem[item.id]);
       } else {
@@ -64,7 +67,10 @@ const TableRowComponent = ({
               noWrap
               className="tableCellItem"
             >
-              { valueToShow === 'ENABLED' ? <CheckIcon className="statusEnabled"/> : valueToShow === 'DISABLE' ? <CloseIcon className="statusDisable"/> : valueToShow }
+              { // eslint-disable-next-line no-nested-ternary
+                valueToShow === 'ENABLED' ? <CheckIcon className="statusEnabled" />
+                  : valueToShow === 'DISABLE' ? <CloseIcon className="statusDisable" /> : valueToShow
+              }
             </Typography>
           </Box>
         </Grid>
@@ -90,11 +96,13 @@ const TableRowComponent = ({
               checked={checked}
               name={rowItem.id}
               onClick={(e) => e.stopPropagation()}
-              onChange={() => handleCheck(rowItem.id)}
+              onChange={() => handleCheck(rowItem)}
             />
           </Box>
         </Grid>
+
         {markupSequence.map((item) => drawTableCell(item))}
+
         {rowHover && (
           <Grid>
             <Box my={2}>

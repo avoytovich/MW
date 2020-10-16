@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { setUserData } from '../../../redux/actions/Account';
-import auth from '../../../services/auth';
-
 import LoadingScreen from '../../../screens/LoadingScreen';
+import auth from '../../../services/auth';
+import { setUserData } from '../../../redux/actions/Account';
 
 function Auth({ children }) {
   const dispatch = useDispatch();

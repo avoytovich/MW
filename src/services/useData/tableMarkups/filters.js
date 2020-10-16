@@ -29,10 +29,11 @@ const filters = {
     },
   ],
   orders: [
+    { id: 'payment.paymentTypeId', label: 'Payment Type', type: 'text' },
   ],
   stores: [
-    { id: 'genericName', label: 'Name', type: 'text' },
-    { id: 'storeId', label: 'Store ID', type: 'text' },
+    { id: 'name', label: 'Name', type: 'text' },
+    { id: 'id', label: 'Store ID', type: 'text' },
     { id: 'creationDate', label: 'Creation Date', type: 'date' },
     { id: 'updatingDate', label: 'Last Update', type: 'date' },
     {

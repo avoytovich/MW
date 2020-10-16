@@ -20,9 +20,8 @@ const login = (username, password) => async (dispatch) => {
   });
 
   dispatch(
-    showNotification(
-      `Welcome back${user.given_name ? `, ${user.given_name}` : ''}!`,
-    ),
+    // ToDo: make message localized
+    showNotification(`Welcome back${user.given_name ? `, ${user.given_name}` : ''}!`),
   );
 };
 
@@ -42,6 +41,7 @@ const logout = () => async (dispatch) => {
     type: LOGOUT,
   });
 
+  // ToDo: make message localized
   dispatch(showNotification('Session ended!'));
 };
 

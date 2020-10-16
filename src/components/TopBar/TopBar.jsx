@@ -22,7 +22,7 @@ import {
 } from '@material-ui/icons';
 
 import { logout } from '../../redux/actions/Account';
-import { refreshTable, setTableScope } from '../../redux/actions/TableData';
+import { refreshTable, setTableScope, setSearch } from '../../redux/actions/TableData';
 
 import Filters from '../utils/Modals/Filters';
 import FiltersChips from '../utils/FiltersChips/FiltersChips';
@@ -33,16 +33,21 @@ const TopBar = ({ toggleDrawer }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const [showFilters, setShowFilters] = useState(false);
+  const [searchVal, setSearchVal] = useState('');
+
   const scope = location.pathname.split('/').pop();
 
   const doLogout = () => dispatch(logout());
 
   const doRefresh = () => dispatch(refreshTable(scope));
 
+  const doSearch = () => dispatch(setSearch(searchVal));
+
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
 
   useEffect(() => {
     dispatch(setTableScope(scope));
+    setSearchVal('');
   }, [scope]);
 
   return (
@@ -59,9 +64,11 @@ const TopBar = ({ toggleDrawer }) => {
                 <Box flexGrow={1}>
                   <InputBase
                     fullWidth
+                    value={searchVal}
+                    onChange={(e) => setSearchVal(e.target.value)}
                     placeholder='Search...'
                     startAdornment={(
-                      <IconButton edge='start' aria-label='search' color='secondary'>
+                      <IconButton edge='start' aria-label='search' color='secondary' onClick={doSearch}>
                         <SearchIcon />
                       </IconButton>
                     )}
