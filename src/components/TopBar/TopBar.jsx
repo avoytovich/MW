@@ -25,7 +25,7 @@ import { logout } from '../../redux/actions/Account';
 import { refreshTable, setTableScope, setSearch } from '../../redux/actions/TableData';
 
 import Filters from '../utils/Modals/Filters';
-import FiltersChips from '../utils/FiltersChips/FiltersChips';
+import FiltersChips from '../utils/FiltersChips';
 
 import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
 

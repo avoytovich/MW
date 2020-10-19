@@ -82,6 +82,30 @@ const api = {
       url,
     });
   },
+  getPrivileges() {
+    const url = 'iam/privileges?format=short&size=150&page=0';
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getRoles() {
+    const url = 'iam/roles?format=short&size=150&page=0';
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getMetaRoles() {
+    const url = 'iam/meta-roles?format=short&size=150&page=0';
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // GET ALL BY ID
   getCustomersByIds(ids) {
@@ -126,6 +150,23 @@ const api = {
     return axiosInstance({
       method: 'get',
       url,
+    });
+  },
+  getIdentityById(id) {
+    const url = `/iam/identities/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  // PUT BY ID
+  updateIdentityById(id, data) {
+    const url = `/iam/identities/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
     });
   },
 
