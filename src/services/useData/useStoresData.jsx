@@ -1,4 +1,4 @@
-// ToDo: refactor all useData to reuse common logic
+// ToDo[major]: refactor all useData to reuse common logic
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { generateData } from './tableMarkups/stores';

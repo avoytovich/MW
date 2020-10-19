@@ -7,7 +7,7 @@ import { Typography, Grid } from '@material-ui/core';
 import localization from '../../localization';
 import './PaginationComponent.scss';
 
-// ToDo: refactor this component
+// ToDo[major]: refactor this component
 const PaginationComponent = ({
   updatePage,
   totalPages,

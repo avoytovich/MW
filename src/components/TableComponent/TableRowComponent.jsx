@@ -17,8 +17,11 @@ import {
   Check as CheckIcon,
   Close as CloseIcon,
 } from '@material-ui/icons';
+
+import FullNameAvatar from '../utils/FullNameAvatar';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import formatDate from '../../services/dateFormatting';
+
 import './TableComponent.scss';
 
 const TableRowComponent = ({
@@ -56,8 +59,16 @@ const TableRowComponent = ({
           xs
           zeroMinWidth
           key={`${item.id}_${rowItem.id}`}
+          style={{ overflow: 'hidden' }}
         >
-          <Box mt={2}>
+          <Box
+            display='flex'
+            height={1}
+            alignItems='center'
+            justifyContent={item.id === 'fullName' ? 'flex-start' : 'center'}
+            flexDirection='row'
+          >
+            {item.id === 'fullName' && <FullNameAvatar name={valueToShow} />}
             <Typography
               color={
                 item.id === 'genericName' || item.id === 'customerId'
