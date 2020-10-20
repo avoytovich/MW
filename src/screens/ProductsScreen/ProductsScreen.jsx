@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import useProductsData from '../../services/useData/useProductsData';
-import { defaultShow } from '../../services/useData/tableMarkups/products';
+import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
+import localization from '../../localization';
 
 import api from '../../api';
 
@@ -14,14 +14,13 @@ const ProductsScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
 
-  const products = useProductsData(currentPage - 1, setLoading, makeUpdate);
+  const products = useTableData(currentPage - 1, setLoading, makeUpdate, 'products');
 
   const handleDeleteProduct = (id) => api
     .deleteProductById(id)
     .then(() => {
       setMakeUpdate((v) => (v + 1));
-      // ToDo: make message localized
-      dispatch(showNotification(`Product ${id} has been successfully deleted!`));
+      dispatch(showNotification(`${localization.t('general.product')} ${id} ${localization.t('general.hasBeenSuccessfullyDeleted')}`));
     });
 
   const updatePage = (page) => setCurrentPage(page);
@@ -29,7 +28,7 @@ const ProductsScreen = () => {
   return (
     <TableComponent
       handleDeleteItem={handleDeleteProduct}
-      showColumn={defaultShow}
+      showColumn={products?.defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={products}

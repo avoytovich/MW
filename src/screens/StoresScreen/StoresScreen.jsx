@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import TableComponent from '../../components/TableComponent';
-import useStoresData from '../../services/useData/useStoresData';
-import { defaultShow } from '../../services/useData/tableMarkups/stores';
+import useTableData from '../../services/useData/useTableData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
+import localization from '../../localization';
 
 import api from '../../api';
 
@@ -14,14 +14,13 @@ const StoresScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
 
-  const stores = useStoresData(currentPage - 1, setLoading, makeUpdate);
+  const stores = useTableData(currentPage - 1, setLoading, makeUpdate, 'stores');
 
   const handleDeleteStore = (id) => api
     .deleteStoreById(id)
     .then(() => {
       setMakeUpdate((v) => (v + 1));
-      // ToDo: make message localized
-      dispatch(showNotification(`Store ${id} has been successfully deleted!`));
+      dispatch(showNotification(`${localization.t('general.store')} ${id} ${localization.t('general.hasBeenSuccessfullyDeleted')}`));
     });
 
   const updatePage = (page) => setCurrentPage(page);
@@ -29,7 +28,7 @@ const StoresScreen = () => {
   return (
     <TableComponent
       handleDeleteItem={handleDeleteStore}
-      showColumn={defaultShow}
+      showColumn={stores?.defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={stores}

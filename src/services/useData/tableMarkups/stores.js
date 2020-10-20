@@ -1,5 +1,7 @@
+import localization from '../../../localization';
+
 const defaultShow = {
-  customerId: false,
+  customer: true,
   name: true,
   createDate: true,
   updateDate: true,
@@ -8,36 +10,40 @@ const defaultShow = {
   gtmId: true,
   id: true,
 };
-
 const markUp = {
   headers: [
-    { value: 'Customer', id: 'customerId' }, // Temporary
-    { value: 'Name', id: 'name' },
-    { value: 'Creation Date', id: 'createDate' },
-    { value: 'Last update', id: 'updateDate' },
-    { value: 'Default Language', id: 'defaultLocale' },
-    { value: 'Status', id: 'status' },
-    { value: 'GTM ID', id: 'gtmId' },
-    { value: 'Store ID', id: 'id' },
+    { value: localization.t('labels.customer'), id: 'customer' },
+    { value: localization.t('labels.name'), id: 'name' },
+    { value: localization.t('labels.creationDate'), id: 'createDate' },
+    { value: localization.t('labels.lastUpdate'), id: 'updateDate' },
+    { value: localization.t('labels.defaultLanguage'), id: 'defaultLocale' },
+    { value: localization.t('labels.status'), id: 'status' },
+    { value: localization.t('labels.gtmId'), id: 'gtmId' },
+    { value: localization.t('labels.storeID'), id: 'id' },
   ],
 };
 
-const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    customerId: val.customerId,
-    name: val.name,
-    createDate: val.createDate,
-    updateDate: val.updateDate,
-    defaultLocale: val.defaultLocale,
-    status: val.status,
-    gtmId: val.gtmId,
-    id: val.id,
-  }));
+const stores = (data, customers) => {
+  const values = data.items.map((val) => {
+    const customer = customers.items.filter(
+      (item) => item.id === val.customerId,
+    )[0]?.name;
+    return {
+      customer,
+      name: val.name,
+      createDate: val.createDate,
+      updateDate: val.updateDate,
+      defaultLocale: val.defaultLocale,
+      status: val.status,
+      gtmId: val.gtmId,
+      id: val.id,
+    };
+  });
   const meta = {
     totalPages: data.totalPages,
   };
-  Object.assign(markUp, { values, meta });
+  Object.assign(markUp, { values, meta, defaultShow });
   return markUp;
 };
 
-export { generateData, defaultShow };
+export default stores;

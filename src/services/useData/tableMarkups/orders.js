@@ -1,3 +1,5 @@
+import localization from '../../../localization';
+
 const defaultShow = {
   customer: true,
   email: true,
@@ -15,22 +17,22 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: 'Customer', id: 'customer' },
-    { value: 'Email address', id: 'email' },
-    { value: 'Status', id: 'status' },
-    { value: 'Online store', id: 'storeId' },
-    { value: 'Company name', id: 'companyName' },
-    { value: 'Order ID', id: 'id' },
-    { value: 'InvoiceID', id: 'invoiceId' },
-    { value: 'Currency', id: 'currency' },
-    { value: 'Products', id: 'products' },
-    { value: 'Country', id: 'country' },
-    { value: 'Payment type', id: 'paymentType' },
-    { value: 'Payment status', id: 'paymentStatus' },
+    { value: localization.t('labels.customer'), id: 'customer' },
+    { value: localization.t('labels.email'), id: 'email' },
+    { value: localization.t('labels.status'), id: 'status' },
+    { value: localization.t('labels.onlineStore'), id: 'storeId' },
+    { value: localization.t('labels.companyName'), id: 'companyName' },
+    { value: localization.t('labels.orderID'), id: 'id' },
+    { value: localization.t('labels.invoiceID'), id: 'invoiceId' },
+    { value: localization.t('labels.currency'), id: 'currency' },
+    { value: localization.t('labels.products'), id: 'products' },
+    { value: localization.t('labels.country'), id: 'country' },
+    { value: localization.t('labels.paymentType'), id: 'paymentType' },
+    { value: localization.t('labels.paymentStatus'), id: 'paymentStatus' },
   ],
 };
 
-const generateData = (data, customers) => {
+const orders = (data, customers) => {
   const values = data.items.map((val) => {
     const customer = customers.items.filter(
       (item) => item.id === val.customer.id,
@@ -54,8 +56,8 @@ const generateData = (data, customers) => {
   const meta = {
     totalPages: data.totalPages,
   };
-  Object.assign(markUp, { values, meta });
+  Object.assign(markUp, { values, meta, defaultShow });
   return markUp;
 };
 
-export { generateData, defaultShow };
+export default orders;

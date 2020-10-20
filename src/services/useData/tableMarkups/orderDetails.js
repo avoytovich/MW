@@ -1,4 +1,5 @@
 import formatDate from '../../dateFormatting';
+import localization from '../../../localization';
 
 const generateData = (data, customer) => {
   const values = {
@@ -6,60 +7,60 @@ const generateData = (data, customer) => {
     left: {
       titles: [
         {
-          id: 'ID',
+          id: localization.t('labels.iD'),
           value: data?.id,
         },
         {
-          id: 'Customer',
+          id: localization.t('labels.customer'),
           value: customer,
         },
       ],
       main: [
         {
-          id: 'Status',
+          id: localization.t('labels.status'),
           value: data?.status,
           row: 'odd',
         },
         {
-          id: 'Amount',
+          id: localization.t('labels.amount'),
           value: data?.lineItems[0]?.amount,
           row: 'even',
         },
         {
-          id: 'Store',
+          id: localization.t('labels.store'),
           value: data?.store?.name,
           row: 'odd',
         },
       ],
       other: [
         {
-          id: 'Payment ID',
+          id: localization.t('labels.paymentID'),
           value: data?.processingEvent[0]?.metadata?.paymentId,
           row: 'odd',
         },
         {
-          id: 'Payment type',
+          id: localization.t('labels.paymentType'),
           value: data?.payment?.methodType,
           row: 'odd',
         },
         {
-          id: 'Payment status',
+          id: localization.t('labels.paymentStatus'),
           value: data?.payment?.status,
           row: 'even',
         },
         {
-          id: 'Fraud status',
+          id: localization.t('labels.fraudStatus'),
           value: `${data?.payments[0]?.informativeFraudCheck}`,
           row: 'even',
         },
 
         {
-          id: 'Fulfillment',
+          id: localization.t('labels.fulfillment'),
           value: data?.lineItems[0]?.fulfillmentProcessingStatus,
           row: 'odd',
         },
         {
-          id: 'Subscription status',
+          id: localization.t('labels.subscriptionStatus'),
           value: data?.lineItems[0]?.subscriptionProcessingStatus,
           row: 'odd',
         },

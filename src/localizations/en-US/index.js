@@ -3,6 +3,7 @@ import forms from './forms';
 import dataLists from './dataLists';
 import sideBar from './sideBar';
 import errorNotifications from './errorNotifications';
+import labels from './labels';
 
 export default {
   general,
@@ -10,4 +11,5 @@ export default {
   dataLists,
   sideBar,
   errorNotifications,
+  labels,
 };

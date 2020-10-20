@@ -1,8 +1,10 @@
+import localization from '../../../localization';
+
 const defaultShow = {
   id: false,
   createDate: true,
   updateDate: true,
-  customerId: true,
+  customer: true,
   genericName: true,
   publisherRefId: true,
   type: true,
@@ -10,42 +12,46 @@ const defaultShow = {
   status: true,
   family: false,
 };
-
 const markUp = {
   headers: [
-    { value: 'Product ID', id: 'id' },
-    { value: 'Creation Date', id: 'createDate' },
-    { value: 'Last Update', id: 'updateDate' },
-    { value: 'Customer', id: 'customerId' },
-    { value: 'Name', id: 'genericName' },
-    { value: 'Publisher Ref ID', id: 'publisherRefId' },
-    { value: 'Type', id: 'type' },
-    { value: 'Lifetime', id: 'lifeTime' },
-    { value: 'Status', id: 'status' },
-    { value: 'Family', id: 'family' },
-    { value: 'Price function', id: 'priseFunction' },
+    { value: localization.t('labels.productID'), id: 'id' },
+    { value: localization.t('labels.creationDate'), id: 'createDate' },
+    { value: localization.t('labels.lastUpdate'), id: 'updateDate' },
+    { value: localization.t('labels.customer'), id: 'customer' },
+    { value: localization.t('labels.name'), id: 'genericName' },
+    { value: localization.t('labels.publisherRefID'), id: 'publisherRefId' },
+    { value: localization.t('labels.type'), id: 'type' },
+    { value: localization.t('labels.lifeTime'), id: 'lifeTime' },
+    { value: localization.t('labels.status'), id: 'status' },
+    { value: localization.t('labels.family'), id: 'family' },
+    { value: localization.t('labels.priceFunction'), id: 'priseFunction' },
   ],
 };
 
-const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val.id,
-    createDate: val.createDate,
-    updateDate: val.updateDate,
-    customerId: val.customerId,
-    genericName: val.genericName,
-    publisherRefId: val.publisherRefId,
-    type: val.type,
-    lifeTime: val.lifeTime,
-    status: val.status,
-    family: val.family,
-  }));
+const products = (data, customers) => {
+  const values = data.items.map((val) => {
+    const customer = customers.items.filter(
+      (item) => item.id === val.customerId,
+    )[0]?.name;
+    return {
+      id: val.id,
+      createDate: val.createDate,
+      updateDate: val.updateDate,
+      customer,
+      genericName: val.genericName,
+      publisherRefId: val.publisherRefId,
+      type: val.type,
+      lifeTime: val.lifeTime,
+      status: val.status,
+      family: val.family,
+    };
+  });
 
   const meta = {
     totalPages: data.totalPages,
   };
-  Object.assign(markUp, { values, meta });
+  Object.assign(markUp, { values, meta, defaultShow });
   return markUp;
 };
 
-export { generateData, defaultShow };
+export default products;

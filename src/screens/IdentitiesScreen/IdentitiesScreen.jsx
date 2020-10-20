@@ -5,6 +5,7 @@ import useIdentitiesData from '../../services/useData/useIdentitiesData';
 import { defaultShow } from '../../services/useData/tableMarkups/identities';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
+import localization from '../../localization';
 
 import api from '../../api';
 
@@ -20,8 +21,7 @@ const IdentitiesScreen = () => {
     .deleteIdentityById(id)
     .then(() => {
       setMakeUpdate((v) => (v + 1));
-      // ToDo: make message localized
-      dispatch(showNotification(`Identity ${id} has been successfully deleted!`));
+      dispatch(showNotification(`${localization.t('general.identity')} ${id} ${localization.t('general.hasBeenSuccessfullyDeleted')}`));
     });
 
   const updatePage = (page) => setCurrentPage(page);

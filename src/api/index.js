@@ -40,42 +40,51 @@ const api = {
       data,
     });
   },
+  get: {
+    orders(page, filters) {
+      let url = `/orders?format=short&sort=updateDate,desc&size=50&page=${page}`;
 
-  // GET ALL
-  getProducts(page, filters) {
-    let url = `/products?format=short&sort=updateDate,desc&parentId=null&size=50&page=${page}`;
+      if (filters) {
+        url += filters;
+      }
 
-    if (filters) { url += filters; }
+      return axiosInstance({
+        method: 'get',
+        url,
+      });
+    },
+    stores(page, filters) {
+      let url = `/stores?format=short&sort=name,asc&size=50&page=${page}`;
 
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
+      if (filters) {
+        url += filters;
+      }
+
+      return axiosInstance({
+        method: 'get',
+        url,
+      });
+    },
+    products(page, filters) {
+      let url = `/products?format=short&sort=updateDate,desc&parentId=null&size=50&page=${page}`;
+
+      if (filters) {
+        url += filters;
+      }
+
+      return axiosInstance({
+        method: 'get',
+        url,
+      });
+    },
   },
-  getStores(page, filters) {
-    let url = `/stores?format=short&sort=name,asc&size=50&page=${page}`;
 
-    if (filters) { url += filters; }
-
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getOrders(page, filters) {
-    let url = `/orders?format=short&sort=updateDate,desc&size=50&page=${page}`;
-
-    if (filters) { url += filters; }
-
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
   getIdentities(page, filters) {
     let url = `/iam/identities?format=short&sort=firstName,desc&size=50&page=${page}`;
 
-    if (filters) { url += filters; }
+    if (filters) {
+      url += filters;
+    }
 
     return axiosInstance({
       method: 'get',

@@ -1,3 +1,5 @@
+import localization from '../../../localization';
+
 const defaultShow = {
   fullName: true,
   userName: true,
@@ -7,10 +9,10 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: 'Full Name', id: 'fullName' },
-    { value: 'User ID', id: 'userName' },
-    { value: 'Email', id: 'email' },
-    { value: 'Account Created', id: 'createDate' },
+    { value: localization.t('labels.fullName'), id: 'fullName' },
+    { value: localization.t('labels.userID'), id: 'userName' },
+    { value: localization.t('labels.email'), id: 'email' },
+    { value: localization.t('labels.accountCreated'), id: 'createDate' },
   ],
 };
 
@@ -27,7 +29,7 @@ const generateData = (data) => {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta });
+  Object.assign(markUp, { values, meta, defaultShow });
 
   return markUp;
 };
