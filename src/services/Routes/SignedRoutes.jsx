@@ -1,3 +1,4 @@
+// ToDo[major]: add exact routes for not staging env
 import React, { lazy, useEffect } from 'react';
 import {
   Switch, Redirect, Route, useHistory,
@@ -21,41 +22,38 @@ const SignedRoutes = () => {
   return (
     <Switch>
       <Route
-        exact
-        path='/overview/products'
-        component={lazy(() => import('../../screens/ProductsScreen'))}
-      />
-      <Route
         path='/overview/products/:id'
         component={lazy(() => import('../../screens/ProductDetailsScreen'))}
       />
       <Route
-        exact
-        path='/overview/stores'
-        component={lazy(() => import('../../screens/StoresScreen'))}
+        path='/overview/products'
+        component={lazy(() => import('../../screens/ProductsScreen'))}
       />
       <Route
-        exact
         path='/overview/stores/:id'
         component={lazy(() => import('../../screens/StoreDetailsScreen'))}
       />
       <Route
-        exact
-        path='/overview/orders'
-        component={lazy(() => import('../../screens/OrdersScreen'))}
+        path='/overview/stores'
+        component={lazy(() => import('../../screens/StoresScreen'))}
       />
       <Route
-        exact
         path='/overview/orders/:id'
         component={lazy(() => import('../../screens/OrderDetailsScreen'))}
       />
       <Route
-        exact
+        path='/overview/orders'
+        component={lazy(() => import('../../screens/OrdersScreen'))}
+      />
+      <Route
+        path='/settings/identities/:id'
+        component={lazy(() => import('../../screens/IdentityDetailsScreen'))}
+      />
+      <Route
         path='/settings/identities'
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
-
-      {/* <Redirect to='/overview/products' /> */}
+      <Redirect to='/overview/products' />
     </Switch>
   );
 };

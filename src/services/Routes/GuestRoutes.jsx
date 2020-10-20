@@ -1,3 +1,4 @@
+// ToDo[major]: add exact routes for not staging env
 import React, { useEffect } from 'react';
 import { SwitchTransition, CSSTransition } from 'react-transition-group';
 import {
@@ -30,24 +31,21 @@ const SignedRoutes = () => {
       >
         <Switch location={location}>
           <Route
-            exact
             path='/login'
             component={AuthScreen}
           />
 
           <Route
-            exact
             path='/recover-password'
             component={RecoveryPasswordScreen}
           />
 
           <Route
-            exact
             path='/update-password/:token'
             component={UpdatePasswordScreen}
           />
 
-          {/* <Redirect to='/login' /> */}
+          <Redirect to='/login' />
         </Switch>
       </CSSTransition>
     </SwitchTransition>
