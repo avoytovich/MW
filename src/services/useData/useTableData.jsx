@@ -28,18 +28,28 @@ const useTableData = (page, setLoading, makeUpdate, dataScope) => {
       api.get[dataScope](page, filtersUrl)
         .then(({ data }) => {
           if (!isCancelled) {
-            const costumersId = [];
+            const promiseArray = [];
+            const costumersIds = [];
+            const storeIds = [];
+
             data.items.forEach((item) => {
-              const res = dataScope === 'orders'
+              const costumer = dataScope === 'orders'
                 ? `id=${item.customer.id}`
                 : `id=${item.customerId}`;
-              if (!costumersId.includes(res)) {
-                costumersId.push(res);
+              if (!costumersIds.includes(costumer)) {
+                costumersIds.push(costumer);
+              }
+              if (dataScope === 'orders') {
+                storeIds.push(`id=${item.endUser?.storeId}`);
               }
             });
-            api.getCustomersByIds(costumersId.join('&')).then((customers) => {
+            promiseArray.push(api.getCustomersByIds(costumersIds.join('&')));
+            if (dataScope === 'orders') {
+              promiseArray.push(api.getStoresByIds(storeIds.join('&')));
+            }
+            Promise.all(promiseArray).then((values) => {
               if (!isCancelled) {
-                const payload = tableMarkup[dataScope](data, customers.data);
+                const payload = tableMarkup[dataScope](data, values[0].data, values[1]?.data);
                 setFetchedData(payload);
                 setLoading(false);
               }

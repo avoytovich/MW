@@ -28,24 +28,19 @@ const markUp = {
   ],
 };
 
-const products = (data, customers) => {
-  const values = data.items.map((val) => {
-    const customer = customers.items.filter(
-      (item) => item.id === val.customerId,
-    )[0]?.name;
-    return {
-      id: val.id,
-      createDate: val.createDate,
-      updateDate: val.updateDate,
-      customer,
-      genericName: val.genericName,
-      publisherRefId: val.publisherRefId,
-      type: val.type,
-      lifeTime: val.lifeTime,
-      status: val.status,
-      family: val.family,
-    };
-  });
+const products = (data) => {
+  const values = data.items.map((val) => ({
+    id: val.id,
+    createDate: val.createDate,
+    updateDate: val.updateDate,
+    customer: val.customerId,
+    genericName: val.genericName,
+    publisherRefId: val.publisherRefId,
+    type: val.type,
+    lifeTime: val.lifeTime,
+    status: val.status,
+    family: val.family,
+  }));
 
   const meta = {
     totalPages: data.totalPages,

@@ -70,7 +70,7 @@ const TableRowComponent = ({
             {item.id === 'fullName' && <FullNameAvatar name={valueToShow} />}
             <Typography
               color={
-                item.id === 'genericName' || item.id === 'customerId'
+                item.id === 'genericName' || item.id === 'customerId' || item.id === 'customer'
                   ? 'primary'
                   : 'secondary'
               }

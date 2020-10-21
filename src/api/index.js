@@ -125,7 +125,7 @@ const api = {
     });
   },
   getStoresByIds(id) {
-    const url = `/stores/${id}`;
+    const url = `/stores/?${id}`;
     return axiosInstance({
       method: 'get',
       url,

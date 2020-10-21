@@ -4,8 +4,7 @@ const defaultShow = {
   customer: true,
   email: true,
   status: true,
-  storeId: true,
-  companyName: true,
+  store: true,
   id: false,
   invoiceId: true,
   currency: true,
@@ -20,8 +19,7 @@ const markUp = {
     { value: localization.t('labels.customer'), id: 'customer' },
     { value: localization.t('labels.email'), id: 'email' },
     { value: localization.t('labels.status'), id: 'status' },
-    { value: localization.t('labels.onlineStore'), id: 'storeId' },
-    { value: localization.t('labels.companyName'), id: 'companyName' },
+    { value: localization.t('labels.onlineStore'), id: 'store' },
     { value: localization.t('labels.orderID'), id: 'id' },
     { value: localization.t('labels.invoiceID'), id: 'invoiceId' },
     { value: localization.t('labels.currency'), id: 'currency' },
@@ -32,17 +30,19 @@ const markUp = {
   ],
 };
 
-const orders = (data, customers) => {
+const orders = (data, customers, stores) => {
   const values = data.items.map((val) => {
     const customer = customers.items.filter(
-      (item) => item.id === val.customer.id,
+      (item) => item.id === val.customer?.id,
+    )[0]?.name;
+    const store = stores.items.filter(
+      (item) => item.id === val.endUser?.storeId,
     )[0]?.name;
     return {
       customer,
       email: val.endUser?.email,
       status: val.status,
-      storeId: val.endUser?.storeId,
-      companyName: val.customer?.id,
+      store,
       id: val.id,
       invoiceId: val.invoice?.id,
       currency: val.lineItems[0]?.currency,
