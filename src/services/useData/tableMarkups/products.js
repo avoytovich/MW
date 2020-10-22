@@ -28,7 +28,7 @@ const markUp = {
   ],
 };
 
-const products = (data) => {
+const generateData = (data) => {
   const values = data.items.map((val) => ({
     id: val.id,
     createDate: val.createDate,
@@ -45,8 +45,8 @@ const products = (data) => {
   const meta = {
     totalPages: data.totalPages,
   };
-  Object.assign(markUp, { values, meta, defaultShow });
+  Object.assign(markUp, { values, meta });
   return markUp;
 };
 
-export default products;
+export { generateData, defaultShow };

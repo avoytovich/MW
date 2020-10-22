@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import api from '../../api';
+import {
+  generateData,
+  defaultShow,
+} from '../../services/useData/tableMarkups/products';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-
-import api from '../../api';
 
 const ProductsScreen = () => {
   const dispatch = useDispatch();
@@ -14,13 +16,33 @@ const ProductsScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
 
-  const products = useTableData(currentPage - 1, setLoading, makeUpdate, 'products');
+  const requests = async (filtersUrl, isCancelled) => {
+    let payload = null;
+    const res = await api.getProducts(currentPage - 1, filtersUrl);
+    if (!isCancelled) {
+      payload = generateData(res.data);
+    }
+    return payload;
+  };
 
-  const handleDeleteProduct = (id) => api
-    .deleteProductById(id)
-    .then(() => {
-      setMakeUpdate((v) => (v + 1));
-      dispatch(showNotification(`${localization.t('general.product')} ${id} ${localization.t('general.hasBeenSuccessfullyDeleted')}`));
+  const products = useTableData(
+    currentPage - 1,
+    setLoading,
+    makeUpdate,
+    'products',
+    requests,
+  );
+
+  const handleDeleteProduct = (id) =>
+    api.deleteProductById(id).then(() => {
+      setMakeUpdate((v) => v + 1);
+      dispatch(
+        showNotification(
+          `${localization.t('general.product')} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
+        ),
+      );
     });
 
   const updatePage = (page) => setCurrentPage(page);
@@ -28,7 +50,7 @@ const ProductsScreen = () => {
   return (
     <TableComponent
       handleDeleteItem={handleDeleteProduct}
-      showColumn={products?.defaultShow}
+      showColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={products}

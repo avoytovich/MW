@@ -23,7 +23,7 @@ const labels = {
   paymentStatus: 'Payment Status',
   fraudStatus: 'Fraud Status',
   fulfillment: 'Fulfillment',
-  subscriptionStatus: 'Subscription Status',
+  subscription: 'Subscription',
   email: 'Email ',
   onlineStore: 'Online Store',
   companyName: 'Company Name',
@@ -50,6 +50,15 @@ const labels = {
   checkoutTheme: 'Checkout theme',
   paymentMethods: 'Payment methods',
   gtmId: 'GTM ID',
+  updateReason: 'Update Reason',
+  emailDate: 'Email Date',
+  invoiceDate: 'Invoice Date',
+  endUser: 'End User',
+  address: 'Address',
+  zipCode: 'Zip Code',
+  transactionID: 'Transaction ID',
+  installments: 'Installments',
+  paymentDeadline: 'Payment Deadline',
 };
 
 export default labels;

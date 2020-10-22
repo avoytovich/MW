@@ -15,7 +15,7 @@ const MainInformation = ({ left }) => (
       pb={10}
       justifyContent="space-between"
       display="flex"
-      flexDirection='row'
+      flexDirection="row"
       alignItems="flex-end"
     >
       <Box
@@ -35,7 +35,7 @@ const MainInformation = ({ left }) => (
         display="flex"
         className="mainRow"
         flexDirection="column"
-        flexWrap="wrap"
+        flexWrap="nowrap"
       >
         {left.main.map((item) => (
           <Box
@@ -44,14 +44,14 @@ const MainInformation = ({ left }) => (
             key={item.id}
             display="flex"
             flexDirection="row"
-            flexWrap="wrap"
+            flexWrap="nowrap"
           >
-            <Box flexBasis="40%" pr={2}>
+            <Box width="40%" pr={2}>
               <Typography color="secondary" variant="body2">
                 {item.id}
               </Typography>
             </Box>
-            <Box flexGrow={1}>
+            <Box width='60%'>
               <Typography variant="body2">{item.value}</Typography>
             </Box>
           </Box>
@@ -68,18 +68,18 @@ const MainInformation = ({ left }) => (
       {left.other.map((item) => (
         <Box
           width="100%"
-          flexWrap="wrap"
+          flexWrap="nowrap"
           className={`mainRow ${item.row}`}
           key={item.id}
           display="flex"
           flexDirection="row"
         >
-          <Box flexBasis="40%" pr={4}>
+          <Box width="40%" pr={4}>
             <Typography color="secondary" variant="body2">
               {item.id}
             </Typography>
           </Box>
-          <Box flexGrow={1}>
+          <Box width="60%">
             <Typography variant="body2">{item.value}</Typography>
           </Box>
         </Box>

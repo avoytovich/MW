@@ -23,7 +23,7 @@ const markUp = {
   ],
 };
 
-const stores = (data, customers) => {
+const generateData = (data, customers) => {
   const values = data.items.map((val) => {
     const customer = customers.items.filter(
       (item) => item.id === val.customerId,
@@ -42,8 +42,8 @@ const stores = (data, customers) => {
   const meta = {
     totalPages: data.totalPages,
   };
-  Object.assign(markUp, { values, meta, defaultShow });
+  Object.assign(markUp, { values, meta });
   return markUp;
 };
 
-export default stores;
+export { generateData, defaultShow };
