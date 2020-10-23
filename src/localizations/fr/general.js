@@ -24,6 +24,7 @@ const general = {
   product: 'Product',
   store: 'Store',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
+  updatesHaveBeenSaved: 'Updates have been saved!',
 };
 
 export default general;

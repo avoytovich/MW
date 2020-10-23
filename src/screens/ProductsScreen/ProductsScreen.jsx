@@ -16,13 +16,9 @@ const ProductsScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
 
-  const requests = async (filtersUrl, isCancelled) => {
-    let payload = null;
+  const requests = async (filtersUrl) => {
     const res = await api.getProducts(currentPage - 1, filtersUrl);
-    if (!isCancelled) {
-      payload = generateData(res.data);
-    }
-    return payload;
+    return generateData(res.data);
   };
 
   const products = useTableData(
@@ -33,17 +29,16 @@ const ProductsScreen = () => {
     requests,
   );
 
-  const handleDeleteProduct = (id) =>
-    api.deleteProductById(id).then(() => {
-      setMakeUpdate((v) => v + 1);
-      dispatch(
-        showNotification(
-          `${localization.t('general.product')} ${id} ${localization.t(
-            'general.hasBeenSuccessfullyDeleted',
-          )}`,
-        ),
-      );
-    });
+  const handleDeleteProduct = (id) => api.deleteProductById(id).then(() => {
+    setMakeUpdate((v) => v + 1);
+    dispatch(
+      showNotification(
+        `${localization.t('general.product')} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`,
+      ),
+    );
+  });
 
   const updatePage = (page) => setCurrentPage(page);
 

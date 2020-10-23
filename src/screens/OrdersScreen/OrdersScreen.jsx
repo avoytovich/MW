@@ -17,28 +17,23 @@ const OrdersScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
 
-  const requests = async (filtersUrl, isCancelled) => {
+  const requests = async (filtersUrl) => {
     const costumersIds = [];
     const storeIds = [];
-    let payload = null;
     const res = await api.getOrders(currentPage - 1, filtersUrl);
-
-    if (!isCancelled) {
-      res.data.items.forEach((item) => {
-        const costumer = `id=${item.customer.id}`;
-        const store = `id=${item.endUser?.storeId}`;
-        if (!costumersIds.includes(costumer)) {
-          costumersIds.push(costumer);
-        }
-        if (!storeIds.includes(store)) {
-          storeIds.push(store);
-        }
-      });
-      const customers = await api.getCustomersByIds(costumersIds.join('&'));
-      const stores = await api.getStoresByIds(storeIds.join('&'));
-      payload = generateData(res.data, customers.data, stores.data);
-    }
-    return payload;
+    res.data.items.forEach((item) => {
+      const costumer = `id=${item.customer.id}`;
+      const store = `id=${item.endUser?.storeId}`;
+      if (!costumersIds.includes(costumer)) {
+        costumersIds.push(costumer);
+      }
+      if (!storeIds.includes(store)) {
+        storeIds.push(store);
+      }
+    });
+    const customers = await api.getCustomersByIds(costumersIds.join('&'));
+    const stores = await api.getStoresByIds(storeIds.join('&'));
+    return generateData(res.data, customers.data, stores.data);
   };
 
   const orders = useTableData(

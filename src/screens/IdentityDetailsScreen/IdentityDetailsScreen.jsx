@@ -1,10 +1,16 @@
-// ToDo: localize texts
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { LinearProgress, Tabs, Tab, Button, Zoom } from '@material-ui/core';
+import {
+  LinearProgress,
+  Tabs,
+  Tab,
+  Button,
+  Zoom,
+} from '@material-ui/core';
 
+import localization from '../../localization';
 import ProfileDetails from './ProfileDetails';
 import RightsDetails from './RightsDetails';
 import { useDetailsData } from '../../services/useData';
@@ -30,7 +36,9 @@ const IdentityDetailsScreen = () => {
 
   const saveIdentity = () => {
     api.updateIdentityById(id, curIdentity).then(() => {
-      dispatch(showNotification('Updates have been saved!'));
+      dispatch(
+        showNotification(localization.t('general.updatesHaveBeenSaved')),
+      );
       setUpdate((u) => u + 1);
     });
   };

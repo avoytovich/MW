@@ -1,4 +1,3 @@
-// ToDo: refactor all useData to reuse common logic
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { generateFilterUrl } from '../helpers/filters';
@@ -22,10 +21,12 @@ const useTableData = (page, setLoading, makeUpdate, dataScope, requests) => {
         ? generateFilterUrl(activeFilters, searchTerm)
         : null;
       setLoading(true);
-      requests(filtersUrl, isCancelled)
+      requests(filtersUrl)
         .then((payload) => {
-          setFetchedData(payload);
-          setLoading(false);
+          if (!isCancelled) {
+            setFetchedData(payload);
+            setLoading(false);
+          }
         })
         .catch(() => {
           if (!isCancelled) {

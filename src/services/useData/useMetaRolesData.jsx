@@ -1,4 +1,3 @@
-// ToDo[major]: refactor all useData to reuse common logic
 import { useState, useEffect } from 'react';
 
 import api from '../../api';

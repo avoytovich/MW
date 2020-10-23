@@ -17,36 +17,29 @@ const StoresScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
 
-  const requests = async (filtersUrl, isCancelled) => {
+  const requests = async (filtersUrl) => {
     const costumersIds = [];
-    let payload = null;
     const res = await api.getStores(currentPage - 1, filtersUrl);
-    if (!isCancelled) {
-      res.data.items.forEach((item) => {
-        const costumer = `id=${item.customerId}`;
-        if (!costumersIds.includes(costumer)) {
-          costumersIds.push(costumer);
-        }
-      });
-      const customers = await api.getCustomersByIds(costumersIds.join('&'));
-      if (!isCancelled) {
-        payload = generateData(res.data, customers.data);
+    res.data.items.forEach((item) => {
+      const costumer = `id=${item.customerId}`;
+      if (!costumersIds.includes(costumer)) {
+        costumersIds.push(costumer);
       }
-    }
-    return payload;
+    });
+    const customers = await api.getCustomersByIds(costumersIds.join('&'));
+    return generateData(res.data, customers.data);
   };
 
-  const handleDeleteStore = (id) => api.deleteStoreById(id)
-    .then(() => {
-      setMakeUpdate((v) => v + 1);
-      dispatch(
-        showNotification(
-          `${localization.t('general.store')} ${id} ${localization.t(
-            'general.hasBeenSuccessfullyDeleted',
-          )}`,
-        ),
-      );
-    });
+  const handleDeleteStore = (id) => api.deleteStoreById(id).then(() => {
+    setMakeUpdate((v) => v + 1);
+    dispatch(
+      showNotification(
+        `${localization.t('general.store')} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`,
+      ),
+    );
+  });
 
   const stores = useTableData(
     currentPage - 1,

@@ -1,9 +1,8 @@
-// ToDo[major]: refactor all useData to reuse common logic
 import { useState, useEffect } from 'react';
 
 import api from '../../api';
 
-const usePrivelegesData = () => {
+const usePrivilegesData = () => {
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -23,4 +22,4 @@ const usePrivelegesData = () => {
   return data;
 };
 
-export default usePrivelegesData;
+export default usePrivilegesData;
