@@ -1,16 +1,23 @@
 import formatDate from '../../dateFormatting';
 import localization from '../../../localization';
 
-const formBottom = (array) => {
+const formBottom = (array, products) => {
   const res = array.map((item) => {
-    const text = `<p class='orderText'>${item.productId}</p>
+    let product = '';
+    products.items.forEach((val) => {
+      if (val?.id === item.productId) {
+        product = val.genericName;
+      }
+    });
+    const text = `<p class='orderText'>${product}</p>
  <p> ${item.shortDesc ? item.shortDesc : ''}</p>`;
     return { image: null, text };
   });
   return res;
 };
 
-const generateData = (data, customer) => {
+const generateData = (data, customer, products) => {
+
   const values = {
     header: 'Order',
     left: {
@@ -90,7 +97,9 @@ const generateData = (data, customer) => {
         },
         {
           id: localization.t('labels.emailDate'),
-          value: formatDate(data?.emails[data?.emails.length - 1].createDate),
+          value:
+            data?.emails
+            && formatDate(data?.emails[data?.emails.length - 1].createDate),
           row: 'odd',
         },
         {
@@ -143,7 +152,7 @@ const generateData = (data, customer) => {
       ],
     },
     right: { paymentMethods: null, prices: null },
-    bottom: data?.lineItems ? formBottom(data?.lineItems) : null,
+    bottom: data?.lineItems ? formBottom(data?.lineItems, products) : null,
   };
   return values;
 };

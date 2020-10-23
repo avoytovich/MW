@@ -130,9 +130,16 @@ const api = {
       url,
     });
   },
-
+  getProductsByIds(id) {
+    const url = `/products/?${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET ONE BY ID
   getProductById(id) {
+    console.log('id', id);
     const url = `/products/${id}`;
     return axiosInstance({
       method: 'get',
