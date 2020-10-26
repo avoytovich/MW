@@ -1,22 +1,12 @@
-import useProductsData from './useProductsData';
-import useStoresData from './useStoresData';
-import useOrdersData from './useOrdersData';
-import useProductDetailsData from './useProductDetailsData';
-import useStoreDetailsData from './useStoreDetailsData';
-import useOrderDetailsData from './useOrderDetailsData';
-import useIdentityDetailsData from './useIdentityDetailsData';
+import useTableData from './useTableData';
+import useDetailsData from './useDetailsData';
 import usePrivilegesData from './usePrivilegesData';
 import useRolesData from './useRolesData';
 import useMetaRolesData from './useMetaRolesData';
 
 export {
-  useProductsData,
-  useStoresData,
-  useOrdersData,
-  useProductDetailsData,
-  useStoreDetailsData,
-  useOrderDetailsData,
-  useIdentityDetailsData,
+  useTableData,
+  useDetailsData,
   usePrivilegesData,
   useRolesData,
   useMetaRolesData,

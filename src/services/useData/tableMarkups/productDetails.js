@@ -1,4 +1,5 @@
 import formatDate from '../../dateFormatting';
+import localization from '../../../localization';
 
 const parseData = (data) => {
   const res = data.map((item) => ({
@@ -14,25 +15,25 @@ const generateData = (data, storeName) => {
     left: {
       titles: [
         {
-          id: 'Name',
+          id: localization.t('labels.name'),
           value: data?.genericName,
         },
       ],
       main: [
         {
-          id: 'Type',
+          id: localization.t('labels.type'),
           value: data?.type,
           row: 'odd',
         },
         // eslint-disable-next-line spaced-comment
         //3???
         {
-          id: 'Selling Stores',
+          id: localization.t('labels.sellingStores'),
           value: storeName,
           row: 'even',
         },
         {
-          id: 'Currency',
+          id: localization.t('labels.currency'),
           value:
             data?.prices && data?.prices?.priceByCountryByCurrency
               ? Object.keys(data?.prices?.priceByCountryByCurrency).join(', ')
@@ -42,17 +43,17 @@ const generateData = (data, storeName) => {
       ],
       other: [
         {
-          id: 'Last Update',
+          id: localization.t('labels.lastUpdate'),
           value: formatDate(data?.updateDate),
           row: 'odd',
         },
         {
-          id: 'Life Time',
+          id: localization.t('labels.lifeTime'),
           value: data?.lifeTime,
           row: 'odd',
         },
         {
-          id: 'Trial Allowed',
+          id: localization.t('labels.trialAllowed'),
           value: `${data?.trialAllowed}`,
           row: 'even',
         },
@@ -62,7 +63,7 @@ const generateData = (data, storeName) => {
       paymentMethods: null,
       prices: [
         {
-          id: 'Total price',
+          id: localization.t('labels.totalPrice'),
           value: data?.prices?.priceByCountryByCurrency
             ? data?.prices?.priceByCountryByCurrency?.[
               data?.prices?.defaultCurrency
@@ -70,7 +71,7 @@ const generateData = (data, storeName) => {
             : '-',
         },
         {
-          id: 'Total',
+          id: localization.t('labels.total'),
           value: data?.prices?.priceByCountryByCurrency
             ? data?.prices?.priceByCountryByCurrency?.[
               data?.prices?.defaultCurrency

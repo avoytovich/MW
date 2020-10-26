@@ -1,95 +1,158 @@
 import formatDate from '../../dateFormatting';
+import localization from '../../../localization';
 
-const generateData = (data, customer) => {
+const formBottom = (array, products) => {
+  const res = array.map((item) => {
+    let product = '';
+    products.items.forEach((val) => {
+      if (val?.id === item.productId) {
+        product = val.genericName;
+      }
+    });
+    const text = `<p class='orderText'>${product}</p>
+ <p> ${item.shortDesc ? item.shortDesc : ''}</p>`;
+    return { image: null, text };
+  });
+  return res;
+};
+
+const generateData = (data, customer, products) => {
+
   const values = {
     header: 'Order',
     left: {
       titles: [
         {
-          id: 'ID',
+          id: localization.t('labels.iD'),
           value: data?.id,
         },
         {
-          id: 'Customer',
+          id: localization.t('labels.customer'),
           value: customer,
         },
       ],
       main: [
         {
-          id: 'Status',
+          id: localization.t('labels.status'),
           value: data?.status,
           row: 'odd',
         },
         {
-          id: 'Amount',
-          value: data?.lineItems[0]?.amount,
+          id: localization.t('labels.amount'),
+          value: data?.lineItems && data?.lineItems[0]?.amount,
           row: 'even',
         },
         {
-          id: 'Store',
+          id: localization.t('labels.store'),
           value: data?.store?.name,
           row: 'odd',
         },
       ],
       other: [
         {
-          id: 'Payment ID',
+          id: localization.t('labels.paymentID'),
           value: data?.processingEvent[0]?.metadata?.paymentId,
           row: 'odd',
         },
         {
-          id: 'Payment type',
-          value: data?.payment?.methodType,
-          row: 'odd',
-        },
-        {
-          id: 'Payment status',
-          value: data?.payment?.status,
-          row: 'even',
-        },
-        {
-          id: 'Fraud status',
+          id: localization.t('labels.fraudStatus'),
           value: `${data?.payments[0]?.informativeFraudCheck}`,
-          row: 'even',
+          row: 'odd',
         },
 
         {
-          id: 'Fulfillment',
+          id: localization.t('labels.paymentType'),
+          value: data?.payment?.methodType,
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.fulfillment'),
           value: data?.lineItems[0]?.fulfillmentProcessingStatus,
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.paymentStatus'),
+          value: data?.payment?.status,
           row: 'odd',
         },
         {
-          id: 'Subscription status',
+          id: localization.t('labels.subscription'),
           value: data?.lineItems[0]?.subscriptionProcessingStatus,
           row: 'odd',
+        },
+        {
+          id: localization.t('labels.creationDate'),
+          value: formatDate(data?.createDate),
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.lastUpdate'),
+          value: formatDate(data?.updateDate),
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.updateReason'),
+          value: data?.lastUpdateReason,
+          row: 'odd',
+        },
+        {
+          id: localization.t('labels.emailDate'),
+          value:
+            data?.emails
+            && formatDate(data?.emails[data?.emails.length - 1].createDate),
+          row: 'odd',
+        },
+        {
+          id: localization.t('labels.invoiceDate'),
+          value: formatDate(data?.invoice?.date),
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.endUser'),
+          value: `${data?.endUser?.firstName} ${data?.endUser?.lastName}`,
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.companyName'),
+          value: data?.endUser?.company?.companyName
+            ? data?.endUser?.company?.companyName
+            : '',
+          row: 'odd',
+        },
+        {
+          id: localization.t('labels.address'),
+          value: data?.endUser?.streetAddress,
+          row: 'odd',
+        },
+        {
+          id: localization.t('labels.zipCode'),
+          value: data?.endUser?.zipCode,
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.country'),
+          value: data?.endUser?.country,
+          row: 'even',
+        },
+        {
+          id: localization.t('labels.transactionID'),
+          value: data?.payment?.transactionId,
+          row: 'odd',
+        },
+        {
+          id: localization.t('labels.installments'),
+          value: data?.maxPaymentsParts,
+          row: 'odd',
+        },
+        {
+          id: localization.t('labels.paymentDeadline'),
+          value: data?.paymentDeadline,
+          row: 'even',
         },
       ],
     },
     right: { paymentMethods: null, prices: null },
-    bottom: [
-      {
-        text: `<p class='orderText'>${
-          data?.createDate && formatDate(data?.createDate)
-        }</p><p>${data?.updateDate && formatDate(data?.updateDate)}</p>`,
-      },
-      {
-        text: `<p class='orderText'>${data?.endUser?.firstName} ${
-          data?.endUser?.lastName
-        }</p><p>${
-          data?.endUser?.company?.companyName
-            ? data?.endUser?.company?.companyName
-            : ''
-        }</p>`,
-      },
-      {
-        text: `<p class='orderText'>${data?.payment?.transactionId}</p><p>${
-          data?.installments ? data?.installments : ''
-        }</p>`,
-      },
-      {
-        text: `<p class='orderText'>${data?.lineItems[0]?.name}</p><p>${data?.lineItems[0]?.productType}</p>`,
-      },
-    ],
+    bottom: data?.lineItems ? formBottom(data?.lineItems, products) : null,
   };
   return values;
 };

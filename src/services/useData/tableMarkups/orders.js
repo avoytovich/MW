@@ -1,9 +1,10 @@
+import localization from '../../../localization';
+
 const defaultShow = {
   customer: true,
   email: true,
   status: true,
-  storeId: true,
-  companyName: true,
+  store: true,
   id: false,
   invoiceId: true,
   currency: true,
@@ -15,32 +16,33 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: 'Customer', id: 'customer' },
-    { value: 'Email address', id: 'email' },
-    { value: 'Status', id: 'status' },
-    { value: 'Online store', id: 'storeId' },
-    { value: 'Company name', id: 'companyName' },
-    { value: 'Order ID', id: 'id' },
-    { value: 'InvoiceID', id: 'invoiceId' },
-    { value: 'Currency', id: 'currency' },
-    { value: 'Products', id: 'products' },
-    { value: 'Country', id: 'country' },
-    { value: 'Payment type', id: 'paymentType' },
-    { value: 'Payment status', id: 'paymentStatus' },
+    { value: localization.t('labels.customer'), id: 'customer' },
+    { value: localization.t('labels.email'), id: 'email' },
+    { value: localization.t('labels.status'), id: 'status' },
+    { value: localization.t('labels.onlineStore'), id: 'store' },
+    { value: localization.t('labels.orderID'), id: 'id' },
+    { value: localization.t('labels.invoiceID'), id: 'invoiceId' },
+    { value: localization.t('labels.currency'), id: 'currency' },
+    { value: localization.t('labels.products'), id: 'products' },
+    { value: localization.t('labels.country'), id: 'country' },
+    { value: localization.t('labels.paymentType'), id: 'paymentType' },
+    { value: localization.t('labels.paymentStatus'), id: 'paymentStatus' },
   ],
 };
 
-const generateData = (data, customers) => {
+const generateData = (data, customers, stores) => {
   const values = data.items.map((val) => {
     const customer = customers.items.filter(
-      (item) => item.id === val.customer.id,
+      (item) => item.id === val.customer?.id,
+    )[0]?.name;
+    const store = stores.items.filter(
+      (item) => item.id === val.endUser?.storeId,
     )[0]?.name;
     return {
       customer,
       email: val.endUser?.email,
       status: val.status,
-      storeId: val.endUser?.storeId,
-      companyName: val.customer?.id,
+      store,
       id: val.id,
       invoiceId: val.invoice?.id,
       currency: val.lineItems[0]?.currency,

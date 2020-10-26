@@ -1,3 +1,5 @@
+import localization from '../../../localization';
+
 const parseData = (data) => {
   const res = Object.keys(data).map((key) => {
     const image = data[key].match(/(?<=<p>)<img src="(?<url>.[^"]+)".+>(?=.+)/)
@@ -15,49 +17,49 @@ const parseData = (data) => {
 
 const generateData = (data, customer) => {
   const values = {
-    header: 'Store',
+    header: localization.t('labels.store'),
     left: {
       titles: [
         {
-          id: 'Name',
+          id: localization.t('labels.name'),
           value: data?.name,
         },
         {
-          id: 'Customer',
+          id: localization.t('labels.customer'),
           value: customer,
         },
       ],
       main: [
         {
-          id: 'Status',
+          id: localization.t('labels.status'),
           value: data?.status,
           row: 'odd',
         },
 
         {
-          id: 'Hostnames',
+          id: localization.t('labels.hostnames'),
           value: data?.routes[0]?.hostname,
           row: 'even',
         },
       ],
       other: [
         {
-          id: 'Default language',
+          id: localization.t('labels.defaultLanguage'),
           value: data?.defaultLocale,
           row: 'odd',
         },
         {
-          id: 'Sales languages',
+          id: localization.t('labels.salesLanguages'),
           value: data?.saleLocales?.join(', '),
           row: 'odd',
         },
         {
-          id: 'Enduser portal theme',
+          id: localization.t('labels.enduserPortalTheme'),
           value: data?.designs?.checkout?.themeRef?.name,
           row: 'even',
         },
         {
-          id: 'Checkout theme',
+          id: localization.t('labels.checkoutTheme'),
           value: data?.designs?.resellerCheckout?.themeRef?.name,
           row: 'even',
         },
@@ -67,7 +69,7 @@ const generateData = (data, customer) => {
       paymentMethods: data?.designs?.paymentComponent
         ?.rankedPaymentTabsByCountriesList[0]?.rankedPaymentTabs
         ? {
-          id: 'Payment methods',
+          id: localization.t('labels.paymentMethods'),
           value:
           data?.designs?.paymentComponent
             ?.rankedPaymentTabsByCountriesList[0]?.rankedPaymentTabs,

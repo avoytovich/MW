@@ -5,6 +5,7 @@ import {
   LOGOUT,
 } from '../constants/actionTypes';
 import { showNotification } from './HttpNotifications';
+import localization from '../../localization';
 
 const login = (username, password) => async (dispatch) => {
   const result = await auth.loginWithEmailAndPassword(username, password);
@@ -20,8 +21,7 @@ const login = (username, password) => async (dispatch) => {
   });
 
   dispatch(
-    // ToDo: make message localized
-    showNotification(`Welcome back${user.given_name ? `, ${user.given_name}` : ''}!`),
+    showNotification(`localization.t('general.welcomeBack')${user.given_name ? `, ${user.given_name}` : ''}!`),
   );
 };
 
@@ -41,8 +41,7 @@ const logout = () => async (dispatch) => {
     type: LOGOUT,
   });
 
-  // ToDo: make message localized
-  dispatch(showNotification('Session ended!'));
+  dispatch(showNotification(localization.t('general.sessionEnded')));
 };
 
 export {

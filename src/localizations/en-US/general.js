@@ -15,6 +15,16 @@ const general = {
   first: 'First',
   last: 'Last',
   next: 'Next',
+  passwordUpdated: 'Password Updated!',
+  itemURLHasBeenCopied: 'Item URL has been copied!',
+  welcomeBack: 'Welcome back',
+  sessionEnded: 'Session ended!',
+  identity: 'Identity',
+  order: 'Order',
+  product: 'Product',
+  store: 'Store',
+  hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
+  updatesHaveBeenSaved: 'Updates have been saved!',
 };
 
 export default general;

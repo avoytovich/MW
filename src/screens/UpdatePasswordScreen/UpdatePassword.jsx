@@ -29,8 +29,7 @@ const UpdatePassword = () => {
     api
       .setNewPassword(token, { password: values.newPassword })
       .then(() => {
-        // ToDo: make message localized
-        dispatch(showNotification('Password updated!'));
+        dispatch(showNotification(localization.t('general.passwordUpdated')));
         history.push('/');
       })
       .catch((error) => {

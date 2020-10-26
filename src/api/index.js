@@ -40,42 +40,50 @@ const api = {
       data,
     });
   },
-
-  // GET ALL
-  getProducts(page, filters) {
-    let url = `/products?format=short&sort=updateDate,desc&parentId=null&size=50&page=${page}`;
-
-    if (filters) { url += filters; }
-
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getStores(page, filters) {
-    let url = `/stores?format=short&sort=name,asc&size=50&page=${page}`;
-
-    if (filters) { url += filters; }
-
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
   getOrders(page, filters) {
     let url = `/orders?format=short&sort=updateDate,desc&size=50&page=${page}`;
 
-    if (filters) { url += filters; }
+    if (filters) {
+      url += filters;
+    }
 
     return axiosInstance({
       method: 'get',
       url,
     });
   },
+  // GET ALL
+  getStores(page, filters) {
+    let url = `/stores?format=short&sort=name,asc&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getProducts(page, filters) {
+    let url = `/products?format=short&sort=updateDate,desc&parentId=null&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   getIdentities(page, filters) {
     let url = `/iam/identities?format=short&sort=firstName,desc&size=50&page=${page}`;
 
-    if (filters) { url += filters; }
+    if (filters) {
+      url += filters;
+    }
 
     return axiosInstance({
       method: 'get',
@@ -107,7 +115,7 @@ const api = {
     });
   },
 
-  // GET ALL BY ID
+  // GET FEW BY IDs
   getCustomersByIds(ids) {
     const url = `/customers/public?format=short/${ids}`;
     return axiosInstance({
@@ -116,15 +124,22 @@ const api = {
     });
   },
   getStoresByIds(id) {
-    const url = `/stores/${id}`;
+    const url = `/stores/?${id}`;
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-
+  getProductsByIds(id) {
+    const url = `/products/?${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET ONE BY ID
   getProductById(id) {
+    console.log('id', id);
     const url = `/products/${id}`;
     return axiosInstance({
       method: 'get',

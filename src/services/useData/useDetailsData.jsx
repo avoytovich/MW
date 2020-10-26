@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
-import api from '../../api';
 
-const useIdentityDetailsData = (id, setLoading, needUpdate) => {
-  const [identityData, setIdentityData] = useState();
+const useDetailsData = (setLoading, requests, needUpdate) => {
+  const [fetchedData, setFetchedData] = useState();
 
   useEffect(() => {
     let isCancelled = false;
     setLoading(true);
-    api
-      .getIdentityById(id)
-      .then(({ data }) => {
+    requests()
+      .then((payload) => {
         if (!isCancelled) {
-          setIdentityData(data);
+          setFetchedData(payload);
           setLoading(false);
         }
       })
@@ -26,7 +24,7 @@ const useIdentityDetailsData = (id, setLoading, needUpdate) => {
     };
   }, [needUpdate]);
 
-  return identityData;
+  return fetchedData;
 };
 
-export default useIdentityDetailsData;
+export default useDetailsData;

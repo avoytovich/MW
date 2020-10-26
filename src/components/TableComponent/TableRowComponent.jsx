@@ -21,7 +21,7 @@ import {
 import FullNameAvatar from '../utils/FullNameAvatar';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import formatDate from '../../services/dateFormatting';
-
+import localization from '../../localization';
 import './TableComponent.scss';
 
 const TableRowComponent = ({
@@ -37,8 +37,7 @@ const TableRowComponent = ({
   const dispatch = useDispatch();
   const copyUrl = () => {
     navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
-      // ToDo: make message localized
-      dispatch(showNotification('Item URL has been copied!'));
+      dispatch(showNotification(localization.t('general.itemURLHasBeenCopied')));
     });
   };
 
@@ -71,7 +70,7 @@ const TableRowComponent = ({
             {item.id === 'fullName' && <FullNameAvatar name={valueToShow} />}
             <Typography
               color={
-                item.id === 'genericName' || item.id === 'customerId'
+                item.id === 'genericName' || item.id === 'customerId' || item.id === 'customer'
                   ? 'primary'
                   : 'secondary'
               }

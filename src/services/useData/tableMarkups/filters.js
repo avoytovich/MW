@@ -1,48 +1,73 @@
-// ToDo: add filter labels localizations
+import localization from '../../../localization';
+
 const filters = {
   products: [
-    { id: 'creationDate', label: 'Creation Date', type: 'date' },
-    { id: 'updatingDate', label: 'Last Update', type: 'date' },
-    { id: 'genericName', label: 'Name', type: 'text' },
-    { id: 'publisherRefId', label: 'Publisher Ref ID', type: 'text' },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.lastUpdate'),
+      type: 'date',
+    },
+    { id: 'genericName', label: localization.t('labels.name'), type: 'text' },
+    {
+      id: 'publisherRefId',
+      label: localization.t('labels.publisherRefID'),
+      type: 'text',
+    },
     {
       id: 'type',
-      label: 'Type',
+      label: localization.t('labels.type'),
       type: 'select',
       values: [
-        { label: 'Software', value: 'SOFTWARE' },
-        { label: 'Games', value: 'GAMES' },
-        { label: 'Casual', value: 'CASUAL' },
-        { label: 'Service', value: 'SERVICE' },
-        { label: 'B2B', value: 'B2B' },
-        { label: 'B2C', value: 'B2C' },
+        { label: localization.t('labels.software'), value: 'SOFTWARE' },
+        { label: localization.t('labels.games'), value: 'GAMES' },
+        { label: localization.t('labels.casual'), value: 'CASUAL' },
+        { label: localization.t('labels.service'), value: 'SERVICE' },
+        { label: localization.t('labels.b2B'), value: 'B2B' },
+        { label: localization.t('labels.b2C'), value: 'B2C' },
       ],
     },
     {
       id: 'status',
-      label: 'Status',
+      label: localization.t('labels.status'),
       type: 'select',
       values: [
-        { label: 'Enabled', value: 'ENABLED' },
-        { label: 'Disabled', value: 'DISABLED' },
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
       ],
     },
   ],
   orders: [
-    { id: 'payment.paymentTypeId', label: 'Payment Type', type: 'text' },
+    {
+      id: 'payment.paymentTypeId',
+      label: localization.t('labels.paymentType'),
+      type: 'text',
+    },
   ],
   stores: [
-    { id: 'name', label: 'Name', type: 'text' },
-    { id: 'id', label: 'Store ID', type: 'text' },
-    { id: 'creationDate', label: 'Creation Date', type: 'date' },
-    { id: 'updatingDate', label: 'Last Update', type: 'date' },
+    { id: 'name', label: localization.t('labels.name'), type: 'text' },
+    { id: 'id', label: localization.t('labels.storeID'), type: 'text' },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.lastUpdate'),
+      type: 'date',
+    },
     {
       id: 'status',
-      label: 'Status',
+      label: localization.t('labels.status'),
       type: 'select',
       values: [
-        { label: 'Enabled', value: 'ENABLED' },
-        { label: 'Disabled', value: 'DISABLED' },
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
       ],
     },
   ],

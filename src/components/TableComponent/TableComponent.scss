@@ -1,4 +1,4 @@
- @import '../../styles/variables.scss';
+@import '../../styles/variables.scss';
 
 .tableRowGrid {
   padding: 8px 15px;
@@ -10,7 +10,7 @@
   }
   &:hover {
     transform: scale(1.03);
-    transition: all .3s ease-in-out .0s;
+    transition: all 0.3s ease-in-out 0s;
   }
   .tableCellItemGrid {
     overflow-x: hidden;
@@ -47,5 +47,27 @@
   .tableHeader {
     display: inherit;
     white-space: nowrap;
+  }
+}
+.CSVLinkBlock {
+  text-decoration: 'none';
+  .importExportFab {
+    margin: 20;
+    padding: 15;
+    // color: '#fff';
+    .importExportIcon {
+      left: -4;
+      position: 'relative';
+    }
+  }
+}
+.deleteFab {
+  margin: 20;
+  padding: 15;
+  margin-left: -10;
+  background-color: $buttonRed;
+  .deleteIcon {
+    left: -4;
+    position: 'relative';
   }
 }
