@@ -33,54 +33,58 @@ const generateData = (data, customer) => {
   const values = {
     header: localization.t('labels.store'),
     name: {
-      id: localization.t('labels.name'),
+      id: 'name',
+      label: localization.t('labels.name'),
       value: data?.name,
     },
     customer: {
-      id: localization.t('labels.customer'),
+      id: 'customer',
+      label: localization.t('labels.customer'),
       value: customer,
     },
 
     status: {
-      id: localization.t('labels.status'),
+      id: 'status',
+      label: localization.t('labels.status'),
       value: data?.status,
-      row: 'odd',
     },
     hostnames: {
-      id: localization.t('labels.hostnames'),
+      id: 'hostnames',
+
+      label: localization.t('labels.hostnames'),
       value: data?.routes[0]?.hostname,
-      row: 'even',
     },
 
     defaultLanguage: {
-      id: localization.t('labels.defaultLanguage'),
+      id: 'defaultLanguage',
+      label: localization.t('labels.defaultLanguage'),
       value: data?.defaultLocale,
-      row: 'odd',
     },
     salesLanguages: {
-      id: localization.t('labels.salesLanguages'),
-      value: data?.saleLocales?.join(', '),
-      row: 'odd',
+      id: 'salesLanguages',
+      label: localization.t('labels.salesLanguages'),
+      value: data?.saleLocales,
     },
     enduserPortalTheme: {
-      id: localization.t('labels.enduserPortalTheme'),
+      id: 'enduserPortalTheme',
+      label: localization.t('labels.enduserPortalTheme'),
       value: data?.designs?.checkout?.themeRef?.name,
-      row: 'even',
     },
     checkoutTheme: {
-      id: localization.t('labels.checkoutTheme'),
+      id: 'checkoutTheme',
+      label: localization.t('labels.checkoutTheme'),
       value: data?.designs?.resellerCheckout?.themeRef?.name,
-      row: 'even',
     },
 
     paymentMethods: data?.designs?.paymentComponent
       ?.rankedPaymentTabsByCountriesList[0]?.rankedPaymentTabs
       ? {
-          id: localization.t('labels.paymentMethods'),
-          value:
+        id: 'paymentMethods',
+        label: localization.t('labels.paymentMethods'),
+        value:
             data?.designs?.paymentComponent?.rankedPaymentTabsByCountriesList[0]
               ?.rankedPaymentTabs,
-        }
+      }
       : null,
     imagesBlock,
   };

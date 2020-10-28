@@ -1,0 +1,25 @@
+@import '../../styles/variables.scss';
+
+.mainContainer {
+  background-color: $tablesEvenRow;
+  width: 100%;
+  border-radius: 10px;
+  position: relative;
+  .actionBlock {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+}
+.mainRow {
+  width: 45%;
+}
+
+.odd {
+  border-radius: 5px;
+  background-color: $tablesOddRow;
+}
+.even {
+  border-radius: 5px;
+  background-color: $tablesEvenRow;
+}

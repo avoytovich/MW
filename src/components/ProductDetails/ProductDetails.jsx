@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Box, Typography, Zoom, Button,
-} from '@material-ui/core';
+import { Box, Typography, Zoom, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import { languages, status, theme } from '../../services/selectOptions';
-import {
-  DetailsInputRow,
-  DetailsSelectRow,
-  DetailsMultipleSelect,
-} from '../DetailComponents/DetailInputs';
-import PaymentMethods from '../DetailComponents/PaymentMethods';
-import ImagesBlock from '../DetailComponents/ImagesBlock';
-import './StoreDetails.scss';
+import { DetailsInputRow } from '../DetailComponents/DetailInputs';
 
-const StoreDetails = ({ data }) => {
+import ImagesBlock from '../DetailComponents/ImagesBlock';
+import './ProductDetails.scss';
+
+const ProductDetails = ({ data }) => {
   const [hasChanges, setHasChanges] = useState(false);
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
@@ -25,6 +18,7 @@ const StoreDetails = ({ data }) => {
       [editValue.name]: editValue.value,
     });
   };
+
   useEffect(() => {
     setCurrentData({ ...data });
     return () => setCurrentData(null);
@@ -84,11 +78,6 @@ const StoreDetails = ({ data }) => {
                           {currentData.name.value}
                         </Typography>
                       </Box>
-                      <Box>
-                        <Typography variant="h1">
-                          {currentData.customer.value}
-                        </Typography>
-                      </Box>
                     </Box>
                     <Box
                       display="flex"
@@ -96,17 +85,24 @@ const StoreDetails = ({ data }) => {
                       flexDirection="column"
                       flexWrap="nowrap"
                     >
-                      <DetailsSelectRow
-                        rowType="odd"
+                      <DetailsInputRow
                         handleEditDetails={handleEditDetails}
-                        options={status}
-                        item={currentData.status}
+                        rowType="odd"
+                        item={currentData.type}
+                        inputType="text"
                         editable={editable}
                       />
                       <DetailsInputRow
                         handleEditDetails={handleEditDetails}
                         rowType="odd"
-                        item={currentData.hostnames}
+                        item={currentData.sellingStores}
+                        inputType="text"
+                        editable={editable}
+                      />
+                      <DetailsInputRow
+                        handleEditDetails={handleEditDetails}
+                        rowType="odd"
+                        item={currentData.currency}
                         inputType="text"
                         editable={editable}
                       />
@@ -119,32 +115,25 @@ const StoreDetails = ({ data }) => {
                     pb={5}
                     justifyContent="space-between"
                   >
-                    <DetailsSelectRow
-                      rowType="even"
-                      options={languages}
+                    <DetailsInputRow
                       handleEditDetails={handleEditDetails}
-                      item={currentData.defaultLanguage}
-                      editable={editable}
-                    />
-                    <DetailsMultipleSelect
-                      rowType="even"
-                      handleEditDetails={handleEditDetails}
-                      options={languages}
-                      item={currentData.salesLanguages}
-                      editable={editable}
-                    />
-                    <DetailsSelectRow
                       rowType="odd"
-                      options={theme}
-                      handleEditDetails={handleEditDetails}
-                      item={currentData.enduserPortalTheme}
+                      item={currentData.updateDate}
+                      inputType="text"
                       editable={editable}
                     />
-                    <DetailsSelectRow
-                      options={theme}
-                      rowType="odd"
+                    <DetailsInputRow
                       handleEditDetails={handleEditDetails}
-                      item={currentData.checkoutTheme}
+                      rowType="odd"
+                      item={currentData.lifeTime}
+                      inputType="text"
+                      editable={editable}
+                    />
+                    <DetailsInputRow
+                      handleEditDetails={handleEditDetails}
+                      rowType="odd"
+                      item={currentData.trialAllowed}
+                      inputType="text"
                       editable={editable}
                     />
                   </Box>
@@ -171,10 +160,46 @@ const StoreDetails = ({ data }) => {
                 flexWrap="wrap"
                 justifyContent="space-around"
               >
-                <PaymentMethods
-                  setHasChanges={setHasChanges}
-                  paymentMethods={data?.paymentMethods}
-                />
+                <Box
+                  onMouseOver={() => setHoverBlock(true)}
+                  onMouseLeave={() => setHoverBlock(false)}
+                  className="paymentItem actionBlockWrapper"
+                  alignSelf="center"
+                >
+                  <Zoom in={hoverBlock}>
+                    <Box className="actionBlock">
+                      <EditIcon
+                        color="primary"
+                        className="editIcon icons"
+                        onClick={() => setEditable(true)}
+                      />
+                      <DeleteIcon
+                        color="primary"
+                        onClick={handleDeleteAll}
+                        className="deleteIcon icons"
+                      />
+                    </Box>
+                  </Zoom>
+                  <Box
+                    my={2}
+                    display="flex"
+                    flexDirection="column"
+                    flexWrap="wrap"
+                  >
+                    <Box p={3}>
+                      {currentData.prices.map((price) => (
+                        <DetailsInputRow
+                          key={price.id}
+                          handleEditDetails={handleEditDetails}
+                          rowType="odd"
+                          item={price}
+                          inputType="number"
+                          editable={editable}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </Box>
@@ -189,8 +214,8 @@ const StoreDetails = ({ data }) => {
     )
   );
 };
-StoreDetails.propTypes = {
+ProductDetails.propTypes = {
   data: PropTypes.object,
 };
 
-export default StoreDetails;
+export default ProductDetails;

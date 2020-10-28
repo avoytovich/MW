@@ -1,50 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Typography, Box, TextField } from '@material-ui/core';
-import './StoreDetails.scss';
+import './DetailsInput.scss';
 
 const DetailsInputRow = ({
   item,
   inputType,
   editable,
-  setHasChanges,
+  handleEditDetails,
   rowType,
 }) => {
-  const [curRow, setCurRow] = useState(null);
-
-  useEffect(() => {
-    setCurRow({ ...item });
-    return () => setCurRow(null);
-  }, [item]);
-
-  useEffect(() => {
-    setHasChanges(JSON.stringify(curRow) !== JSON.stringify(item));
-    return () => setHasChanges(false);
-  }, [curRow]);
-
   const handleChange = (e) => {
     e.persist();
     let newValue = e.target.value;
     if (inputType === 'number') {
       newValue = Number(newValue);
     }
-    setCurRow({ ...item, value: newValue });
+    handleEditDetails({
+      name: e.target.name,
+      value: { ...item, value: newValue },
+    });
   };
-
   return (
-    curRow && (
+    item && (
       <Box
         width="100%"
         flexWrap="nowrap"
         className={rowType}
-        key={curRow.id}
+        key={item.id}
         display="flex"
         flexDirection="row"
       >
         <Box width="40%" pr={4}>
           <Typography color="secondary" variant="body2">
-            {curRow.id}
+            {item.label}
           </Typography>
         </Box>
         <Box width="60%">
@@ -53,10 +43,10 @@ const DetailsInputRow = ({
             fullWidth
             multiple
             margin="normal"
-            name={curRow.id}
+            name={item.id}
             onChange={handleChange}
             type={inputType}
-            value={curRow.value}
+            value={item.value}
             inputProps={{ form: { autocomplete: 'off' } }}
           />
         </Box>
@@ -68,7 +58,7 @@ const DetailsInputRow = ({
 DetailsInputRow.propTypes = {
   item: PropTypes.object,
   editable: PropTypes.bool,
-  setHasChanges: PropTypes.func,
+  handleEditDetails: PropTypes.func,
   inputType: PropTypes.string,
   rowType: PropTypes.string,
 };
