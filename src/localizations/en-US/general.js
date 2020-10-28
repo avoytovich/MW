@@ -25,6 +25,7 @@ const general = {
   store: 'Store',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
+  uploadImage: ' Upload image',
 };
 
 export default general;

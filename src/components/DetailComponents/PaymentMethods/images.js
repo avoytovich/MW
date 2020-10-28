@@ -35,4 +35,4 @@ const getPaymentImages = (value) => {
   return null;
 };
 
-export default getPaymentImages;
+export { getPaymentImages, paymentImages };

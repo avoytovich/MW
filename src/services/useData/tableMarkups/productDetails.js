@@ -4,7 +4,7 @@ import localization from '../../../localization';
 const parseData = (data) => {
   const res = data.map((item) => ({
     image: item.url,
-    text: `<p>${item.label}</p>`,
+    textTitle: item.label,
   }));
   return res;
 };
@@ -66,16 +66,16 @@ const generateData = (data, storeName) => {
           id: localization.t('labels.totalPrice'),
           value: data?.prices?.priceByCountryByCurrency
             ? data?.prices?.priceByCountryByCurrency?.[
-              data?.prices?.defaultCurrency
-            ]?.default?.value
+                data?.prices?.defaultCurrency
+              ]?.default?.value
             : '-',
         },
         {
           id: localization.t('labels.total'),
           value: data?.prices?.priceByCountryByCurrency
             ? data?.prices?.priceByCountryByCurrency?.[
-              data?.prices?.defaultCurrency
-            ]?.default?.value
+                data?.prices?.defaultCurrency
+              ]?.default?.value
             : '-',
         },
       ],

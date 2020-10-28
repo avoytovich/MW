@@ -1,9 +1,5 @@
 import auth from '../../services/auth';
-import {
-  LOGIN_SUCCESS,
-  SILENT_LOGIN,
-  LOGOUT,
-} from '../constants/actionTypes';
+import { LOGIN_SUCCESS, SILENT_LOGIN, LOGOUT } from '../constants/actionTypes';
 import { showNotification } from './HttpNotifications';
 import localization from '../../localization';
 
@@ -21,7 +17,11 @@ const login = (username, password) => async (dispatch) => {
   });
 
   dispatch(
-    showNotification(`localization.t('general.welcomeBack')${user.given_name ? `, ${user.given_name}` : ''}!`),
+    showNotification(
+      `${localization.t('general.welcomeBack')} ${
+        user.given_name ? `, ${user.given_name}` : ''
+      }!`,
+    ),
   );
 };
 
@@ -44,8 +44,4 @@ const logout = () => async (dispatch) => {
   dispatch(showNotification(localization.t('general.sessionEnded')));
 };
 
-export {
-  login,
-  logout,
-  setUserData,
-};
+export { login, logout, setUserData };

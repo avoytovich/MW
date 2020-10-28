@@ -9,15 +9,14 @@ const formBottom = (array, products) => {
         product = val.genericName;
       }
     });
-    const text = `<p class='orderText'>${product}</p>
- <p> ${item.shortDesc ? item.shortDesc : ''}</p>`;
-    return { image: null, text };
+    const textTitle = product; // toDo class='orderText'
+    const text = item?.shortDesc;
+    return { image: null, textTitle, text };
   });
   return res;
 };
 
 const generateData = (data, customer, products) => {
-
   const values = {
     header: 'Order',
     left: {
@@ -98,8 +97,8 @@ const generateData = (data, customer, products) => {
         {
           id: localization.t('labels.emailDate'),
           value:
-            data?.emails
-            && formatDate(data?.emails[data?.emails.length - 1].createDate),
+            data?.emails &&
+            formatDate(data?.emails[data?.emails.length - 1].createDate),
           row: 'odd',
         },
         {
