@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -19,32 +19,27 @@ import {
 import localization from '../../../localization';
 import './ImagesBlock.scss';
 
-const CardComponent = ({ item, setHasChanges }) => {
+const CardComponent = ({ item, handleChange }) => {
   const [editable, setEditable] = useState(false);
   const [upload, setUpload] = useState(false);
   const [curData, setCurData] = useState(null);
   const [hoverBlock, setHoverBlock] = useState(false);
   const handleRemoveImage = () => {
     setUpload(true);
+    handleChange({ ...item, image: '' });
+
     setCurData({ ...curData, image: null });
   };
-  const handleDeleteAll = () => {
-  };
-  const handleChange = (e) => {
-    e.persist();
-    setCurData({ ...curData, textTitle: e.target.value });
-  };
-  useEffect(() => {
-    setHasChanges(JSON.stringify(curData) !== JSON.stringify(item));
-    return () => setHasChanges(false);
-  }, [curData]);
 
-  useEffect(() => {
-    setCurData({ ...item });
-    return () => setCurData(null);
-  }, [item]);
+  const handleDeleteAll = () => {};
+  const onChange = (e) => {
+    e.persist();
+    const { name, value } = e.target;
+    handleChange({ ...item, [name]: value });
+  };
+
   return (
-    curData && (
+    item && (
       <Box
         onMouseOver={() => setHoverBlock(true)}
         onMouseLeave={() => setHoverBlock(false)}
@@ -63,52 +58,52 @@ const CardComponent = ({ item, setHasChanges }) => {
               {item.image && (
                 <CardMedia
                   className="cardImage"
-                  image={curData.image}
+                  image={item.image}
                   title="Contemplative Reptile"
                 >
-                  <Zoom in={curData.image && editable}>
+                  <Zoom in={item.image && editable}>
                     <Box className="actionBlock">
-                      <CloseIcon
-                        color="primary"
-                        onClick={() => handleRemoveImage(true)}
-                      />
+                      <CloseIcon color="primary" onClick={handleRemoveImage} />
                     </Box>
-                  </Zoom>
-                  <Zoom in={upload}>
-                    <Button
-                      id="upload-image-button"
-                      color="primary"
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                      component="label"
-                    >
-                      {localization.t('general.uploadImage')}
-                      <input type="file" style={{ display: 'none' }} />
-                    </Button>
                   </Zoom>
                 </CardMedia>
               )}
+              <Zoom in={upload}>
+                <Button
+                  id="upload-image-button"
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  component="label"
+                >
+                  {localization.t('general.uploadImage')}
+                  <input type="file" style={{ display: 'none' }} />
+                </Button>
+              </Zoom>
               <CardContent>
                 <Box pt={3} pb={7}>
-                  {item.textTitle && (
+                  {(item.textTitle || item.textTitle === '') && (
                     <TextField
                       disabled={!editable}
                       fullWidth
+                      multiple
                       margin="normal"
-                      onChange={handleChange}
+                      name="textTitle"
+                      onChange={onChange}
                       type="text"
-                      value={curData.textTitle}
+                      value={item.textTitle}
                       inputProps={{ form: { autocomplete: 'off' } }}
                     />
                   )}
                   {item.text && (
                     <TextareaAutosize
+                      name="text"
                       disabled={!editable}
                       margin="normal"
-                      onChange={handleChange}
+                      onChange={onChange}
                       type="text"
-                      value={curData.text}
+                      value={item.text}
                     />
                   )}
                 </Box>
@@ -122,7 +117,7 @@ const CardComponent = ({ item, setHasChanges }) => {
 };
 CardComponent.propTypes = {
   item: PropTypes.object,
-  setHasChanges: PropTypes.func,
+  handleChange: PropTypes.func,
 };
 
 export default CardComponent;

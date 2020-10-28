@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box, Chip, Select, MenuItem } from '@material-ui/core';
+import {
+  Typography, Box, Chip, Select, MenuItem,
+} from '@material-ui/core';
 import './DetailsInput.scss';
 
 const DetailsMultipleSelect = ({
@@ -17,8 +19,13 @@ const DetailsMultipleSelect = ({
       value: { ...item, value: e.target.value },
     });
   };
-  const handleDeleteChip = () => {};
-  // console.log('item', item);
+  const handleDeleteChip = (chip) => {
+    const newValue = [...item.value].filter((val) => val !== chip);
+    handleEditDetails({
+      name: item.id,
+      value: { ...item, value: newValue },
+    });
+  };
   return (
     item && (
       <Box

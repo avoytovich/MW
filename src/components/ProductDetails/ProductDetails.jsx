@@ -49,7 +49,7 @@ const ProductDetails = ({ data }) => {
         <Box className="detailContainer" display="flex" flexDirection="row">
           <Box>
             <Box display="flex" justify="space-between">
-              <Box sm={9} item className="actionBlockWrapper">
+              <Box sm={9} className="actionBlockWrapper">
                 <Box
                   pb={5}
                   pl={7}

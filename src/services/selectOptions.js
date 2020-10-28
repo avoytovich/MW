@@ -10,40 +10,49 @@ const theme = [
 const languages = [
   {
     id: 'ar',
-    value: 'Arabic (العربية)',
+    value: 'ar',
   },
   {
     id: 'ar-AE',
-    value: 'Arabic (United Arab Emirates)',
+    value: 'ar-AE',
   },
   {
     id: 'zh-TW',
-    value: 'Chinese (Taiwan)',
+    value: 'zh-TW',
   },
   {
     id: 'es-ES',
-    value: 'Spanish (Spain)',
+    value: 'es-ES',
   },
   {
     id: 'pt-BR',
-    value: 'Portuguese (Brazil)',
+    value: 'pt-BR',
   },
   {
     id: 'da-DK',
-    value: 'Danish (Denmark)',
+    value: 'da-DK',
   },
   {
     id: 'be',
-    value: 'Belarusian (беларускі)',
+    value: 'be',
   },
   {
     id: 'de-DE',
-    value: 'German (Germany)',
+    value: 'de-DE',
   },
 
   {
     id: 'ca',
-    value: 'Catalan (català)',
+    value: 'ca',
+  },
+  {
+    id: 'nb-NO',
+    value: 'nb-NO',
+  },
+
+  {
+    id: 'sv-SE',
+    value: 'sv-SE',
   },
 ];
 // {

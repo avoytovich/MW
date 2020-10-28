@@ -55,7 +55,7 @@ const StoreDetails = ({ data }) => {
         <Box className="detailContainer" display="flex" flexDirection="row">
           <Box>
             <Box display="flex" justify="space-between">
-              <Box sm={9} item className="actionBlockWrapper">
+              <Box sm={9} className="actionBlockWrapper">
                 <Box
                   pb={5}
                   pl={7}
@@ -180,8 +180,8 @@ const StoreDetails = ({ data }) => {
           </Box>
           <Box>
             <ImagesBlock
-              setHasChanges={setHasChanges}
-              bottom={data.imagesBlock}
+              handleEditDetails={handleEditDetails}
+              imagesData={currentData.imagesBlock}
             />
           </Box>
         </Box>
