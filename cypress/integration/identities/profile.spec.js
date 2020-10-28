@@ -27,8 +27,6 @@ describe('Profile tab', () => {
     cy
       .get('.identity-details-screen .MuiTab-wrapper').contains('Profile').parent()
       .should('have.class', 'Mui-selected');
-    
-      console.log(identityData);
   });
 
   it('should have identity basic information in Basic Profile section', () => {
