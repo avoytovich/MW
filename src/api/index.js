@@ -139,7 +139,6 @@ const api = {
   },
   // GET ONE BY ID
   getProductById(id) {
-    console.log('id', id);
     const url = `/products/${id}`;
     return axiosInstance({
       method: 'get',

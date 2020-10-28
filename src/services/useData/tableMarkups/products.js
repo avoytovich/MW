@@ -49,4 +49,4 @@ const generateData = (data) => {
   return markUp;
 };
 
-export { generateData, defaultShow };
+export { generateData, defaultShow, markUp };

@@ -69,7 +69,7 @@ const RightsDetails = ({ initIdentity, identity, changeIdentity }) => {
   return (
     <Box display='flex' mx={-3}>
       <CustomCard title='Privileges' width={1 / 3} mx={3}>
-        <Box display='flex' flexDirection='column' py={1}>
+        <Box display='flex' flexDirection='column' py={1} className='rights-details-privileges'>
           {privileges && curPrivileges !== null ? privileges.items.map((privilage) => (
             <FormControlLabel
               key={privilage.id}
@@ -88,7 +88,7 @@ const RightsDetails = ({ initIdentity, identity, changeIdentity }) => {
       </CustomCard>
 
       <CustomCard title='Roles' width={1 / 3} mx={3}>
-        <Box display='flex' flexDirection='column' py={1}>
+        <Box display='flex' flexDirection='column' py={1} className='rights-details-roles'>
           {roles ? roles.items.map((role) => (
             <FormControlLabel
               key={role.id}
@@ -107,7 +107,7 @@ const RightsDetails = ({ initIdentity, identity, changeIdentity }) => {
       </CustomCard>
 
       <CustomCard title='Meta-roles' width={1 / 3} mx={3}>
-        <Box display='flex' flexDirection='column' py={1}>
+        <Box display='flex' flexDirection='column' py={1} className='rights-details-meta-roles'>
           {metaRoles ? metaRoles.items.map((meta) => (
             <FormControlLabel
               key={meta.id}
