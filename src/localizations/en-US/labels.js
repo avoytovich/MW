@@ -24,7 +24,7 @@ const labels = {
   fraudStatus: 'Fraud Status',
   fulfillment: 'Fulfillment',
   subscription: 'Subscription',
-  email: 'Email ',
+  email: 'Email',
   onlineStore: 'Online Store',
   companyName: 'Company Name',
   orderID: 'Order ID',

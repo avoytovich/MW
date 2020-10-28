@@ -10,6 +10,7 @@ const defaultShow = {
   gtmId: true,
   id: true,
 };
+
 const markUp = {
   headers: [
     { value: localization.t('labels.customer'), id: 'customer' },
@@ -46,4 +47,4 @@ const generateData = (data, customers) => {
   return markUp;
 };
 
-export { generateData, defaultShow };
+export { generateData, defaultShow, markUp };

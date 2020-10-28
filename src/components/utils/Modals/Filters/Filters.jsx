@@ -75,7 +75,7 @@ const Filters = ({ scope, hide }) => {
   };
 
   return (
-    <>
+    <div className='filters-modal'>
       <DialogTitle id='filters-dialog-title' disableTypography>
         <Typography variant='h4'>{localization.t('forms.headers.tableFilters')}</Typography>
       </DialogTitle>
@@ -129,7 +129,7 @@ const Filters = ({ scope, hide }) => {
           {localization.t('forms.buttons.apply')}
         </Button>
       </DialogActions>
-    </>
+    </div>
   );
 };
 
