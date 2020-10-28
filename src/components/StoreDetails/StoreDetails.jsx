@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-  Zoom,
-  Button,
-  Switch,
-  FormControlLabel,
-} from '@material-ui/core';
+import { Box, Typography, Zoom, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import DetailsInputRow from './DetailsInputRow';
@@ -79,18 +72,11 @@ const StoreDetails = ({ data }) => {
                       flexDirection="column"
                       flexWrap="nowrap"
                     >
-                      <FormControlLabel
-                        control={
-                          (
-                            <Switch
-                              checked={!data.status.value}
-                              onChange={handleChange}
-                              name={data.status.id}
-                              color="primary"
-                            />
-                          )
-                        }
-                        label={data.status.id}
+                      <DetailsSelectRow
+                        rowType="odd"
+                        setHasChanges={setHasChanges}
+                        item={data.status}
+                        editable={editable}
                       />
                       <DetailsInputRow
                         rowType="odd"
