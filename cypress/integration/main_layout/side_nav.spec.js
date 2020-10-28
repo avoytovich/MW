@@ -37,9 +37,9 @@ describe('Side Navigation', () => {
   });
 
   context('Nav items actions', () => {
-    it('should have the active navigation changed and highlited on click', () => {
-      cy.get('.listItem a[href="/overview/stores"]').click().should('have.class', 'active');
-      cy.url().should('contain', '/overview/stores');
+    it('should have the active navigation changed and highlighted on click', () => {
+      cy.get(`.listItem a[href="${navigationItems[0].items[1].href}"]`).click().should('have.class', 'active');
+      cy.url().should('contain', navigationItems[0].items[1].href);
     });
   });
 });
