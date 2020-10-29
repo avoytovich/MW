@@ -22,6 +22,10 @@ const themeConfig = {
     },
     MuiFormLabel: { root: { color: colors.textPrimaryGray } },
     MuiCheckbox: { root: { color: colors.textPrimaryGray } },
+    MuiFormHelperText: {
+      root: { color: colors.textPrimaryGray },
+      contained: { margin: '5px', marginLeft: '5px', marginRight: '5px' }
+    },
     MuiTab: {
       root: {
         '&.MuiTab-textColorPrimary': {

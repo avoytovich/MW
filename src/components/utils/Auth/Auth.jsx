@@ -17,7 +17,7 @@ function Auth({ children }) {
       if (auth.isSignedIn()) {
         // eslint-disable-next-line camelcase
         const access_token = auth.getAccessToken();
-        dispatch(setUserData({ access_token }));
+        dispatch(setUserData(access_token));
         auth.setAxiosInterceptors();
       }
 
