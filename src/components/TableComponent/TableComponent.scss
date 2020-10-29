@@ -49,25 +49,28 @@
     white-space: nowrap;
   }
 }
-.CSVLinkBlock {
-  text-decoration: 'none';
-  .importExportFab {
-    margin: 20;
-    padding: 15;
-    // color: '#fff';
-    .importExportIcon {
-      left: -4;
-      position: 'relative';
+
+.table-items-actions{
+  .CSVLinkBlock {
+    text-decoration: none;
+    .importExportFab {
+      margin: 20px;
+      padding: 15px;
+      color: #fff;
+      .importExportIcon {
+        left: -4px;
+        position: relative;
+      }
     }
   }
-}
-.deleteFab {
-  margin: 20;
-  padding: 15;
-  margin-left: -10;
-  background-color: $buttonRed;
-  .deleteIcon {
-    left: -4;
-    position: 'relative';
+  .deleteFab {
+    margin: 20px;
+    padding: 15px;
+    margin-left: -10px;
+    background-color: $deleteIcon;
+    .deleteIcon {
+      left: -4px;
+      position: relative;
+    }
   }
 }
