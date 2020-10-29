@@ -21,7 +21,7 @@ const TableItemsActions = ({ items, headers, onDelete }) => {
   };
 
   return (
-    <Collapse in={items.length > 0} timeout={150}>
+    <Collapse in={items.length > 0} timeout={150} className='table-items-actions'>
       <CSVLink
         className="CSVLinkBlock"
         data={items}

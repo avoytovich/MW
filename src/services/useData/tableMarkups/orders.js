@@ -60,4 +60,4 @@ const generateData = (data, customers, stores) => {
   return markUp;
 };
 
-export { generateData, defaultShow };
+export { generateData, defaultShow, markUp };

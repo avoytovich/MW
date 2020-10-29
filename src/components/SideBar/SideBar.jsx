@@ -16,6 +16,7 @@ const SideBar = ({ open }) => (
     anchor="left"
     open={open}
     variant="persistent"
+    className='side-bar'
   >
     <Box
       height="100%"
