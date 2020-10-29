@@ -195,8 +195,10 @@ const StoreDetails = ({ data }) => {
                 justifyContent="space-around"
               >
                 <PaymentMethods
+                  hasChanges={hasChanges}
+                  handleEditDetails={handleEditDetails}
                   setHasChanges={setHasChanges}
-                  paymentMethods={data?.paymentMethods}
+                  paymentMethods={currentData?.paymentMethods}
                 />
               </Box>
             </Box>

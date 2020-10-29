@@ -13,33 +13,34 @@ import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { getPaymentImages, paymentImages } from './images';
 import './PaymentMethods.scss';
 
-// todoL move setFunc to parent
-const PaymentMethods = ({ paymentMethods, setHasChanges }) => {
+const PaymentMethods = ({ paymentMethods, handleEditDetails, hasChanges }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
-  const [curData, setCurData] = useState(null);
+
+  const handleChange = (newValue) => {
+    handleEditDetails({ name: 'paymentMethods', value: newValue });
+  };
   const handleDeleteBlock = () => {
-    setCurData({ ...curData, value: [] });
+    handleChange({ ...paymentMethods, value: [] });
   };
+
   const handleDeleteChip = (value) => {
-    const res = [...curData.value].filter((item) => item !== value);
-    setCurData({ ...curData, value: res });
+    const newValue = [...paymentMethods.value].filter((item) => item !== value);
+    handleChange({ ...paymentMethods, value: newValue });
   };
-  const handleChange = (event) => {
-    setCurData({ ...curData, value: event.target.value });
+  const onChange = (event) => {
+    const newValue = { ...paymentMethods, value: event.target.value };
+    handleChange(newValue);
   };
 
   useEffect(() => {
-    setHasChanges(JSON.stringify(curData) !== JSON.stringify(paymentMethods));
-    return () => setHasChanges(false);
-  }, [curData]);
+    if (!hasChanges && editable) {
+      setEditable(false);
+    }
+  }, [hasChanges]);
 
-  useEffect(() => {
-    setCurData({ ...paymentMethods });
-    return () => setCurData(null);
-  }, [paymentMethods]);
   return (
-    curData && (
+    paymentMethods && (
       <Box
         pt={5}
         className=" actionBlockWrapper"
@@ -71,8 +72,8 @@ const PaymentMethods = ({ paymentMethods, setHasChanges }) => {
           ) : (
             <Select
               multiple
-              value={curData.value}
-              onChange={handleChange}
+              value={paymentMethods.value}
+              onChange={onChange}
               renderValue={(selected) => (
                 <Box
                   display="flex"
@@ -128,7 +129,8 @@ const PaymentMethods = ({ paymentMethods, setHasChanges }) => {
 
 PaymentMethods.propTypes = {
   paymentMethods: PropTypes.object,
-  setHasChanges: PropTypes.func,
+  hasChanges: PropTypes.bool,
+  handleEditDetails: PropTypes.func,
 };
 
 export default PaymentMethods;
