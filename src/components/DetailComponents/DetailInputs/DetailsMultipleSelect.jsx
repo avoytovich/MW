@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box, Chip, Select, MenuItem } from '@material-ui/core';
+import {
+  Typography, Box, Chip, Select, MenuItem,
+} from '@material-ui/core';
 import './DetailsInput.scss';
 
 const DetailsMultipleSelect = ({
@@ -17,8 +19,13 @@ const DetailsMultipleSelect = ({
       value: { ...item, value: e.target.value },
     });
   };
-  const handleDeleteChip = () => {};
-  // console.log('item', item);
+  const handleDeleteChip = (chip) => {
+    const newValue = [...item.value].filter((val) => val !== chip);
+    handleEditDetails({
+      name: item.id,
+      value: { ...item, value: newValue },
+    });
+  };
   return (
     item && (
       <Box
@@ -30,12 +37,12 @@ const DetailsMultipleSelect = ({
       >
         <Box width="40%" pr={4} pt="7px" pl="4px">
           <Typography color="secondary" variant="body2">
-            {item.id}
+            {item.label}
           </Typography>
         </Box>
-        <Box width="60%">
+        <Box >
           {!editable ? (
-            <Typography color="secondary">{item.value.join(', ')}</Typography>
+            <Typography color="secondary">{item.value?.join(', ')}</Typography>
           ) : (
             <Select
               name={item.id}
@@ -53,6 +60,7 @@ const DetailsMultipleSelect = ({
                     <Chip
                       variant="outlined"
                       color="primary"
+                      marginTop="3px"
                       onDelete={() => handleDeleteChip(chip)}
                       onMouseDown={(event) => {
                         event.stopPropagation();

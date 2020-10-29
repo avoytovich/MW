@@ -2,24 +2,28 @@ import localization from '../../../localization';
 
 const parseData = (data) => {
   const res = [];
-  Object.keys(data).forEach((key) => {
+  Object.keys(data).forEach((key, index) => {
     if (key === 'logoStore') {
       res.push({
+        id: `${key}_${index}`,
         image: data[key],
         textTitle: 'Logo',
       });
     } else if (key === 'bannerInvoice') {
       res.push({
+        id: `${key}_${index}`,
         image: data[key],
         textTitle: 'Invoice banner',
       });
     } else if (key === 'bannerOrderConfEmail') {
       res.push({
+        id: `${key}_${index}`,
         image: data[key],
         textTitle: 'Confirmation email banner',
       });
     } else if (key === 'logoFavicon') {
       res.push({
+        id: `${key}_${index}`,
         image: data[key],
         textTitle: 'Favicon',
       });

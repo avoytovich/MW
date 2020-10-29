@@ -18,7 +18,7 @@ import moment from 'moment';
 
 import localization from '../../../../localization';
 
-const DATE_VARIANTS = ['unlimited', 'after', 'before', 'between'];
+export const DATE_VARIANTS = ['unlimited', 'after', 'before', 'between'];
 
 const DateSubFilter = ({ filter, config, setConfig }) => {
   useEffect(() => {
@@ -68,7 +68,7 @@ const DateSubFilter = ({ filter, config, setConfig }) => {
     <>
       <Button color='primary' onClick={() => setOpen(true)}>
         {curVariant}
-        {variant !== 'unlimited' && (
+        {curVariant !== 'unlimited' && (
           <Typography color='textPrimary' variant='h6' style={{ marginLeft: 10 }}>
             {moment(curDate).format('MM/DD/YYYY')}
             {variant === 'between' && ` - ${moment(curDateEnd).format('MM/DD/YYYY')}`}

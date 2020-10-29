@@ -19,42 +19,53 @@ import {
 import localization from '../../../localization';
 import './ImagesBlock.scss';
 
-const CardComponent = ({ item, setHasChanges }) => {
+const CardComponent = ({ item, handleChange, hasChanges }) => {
   const [editable, setEditable] = useState(false);
   const [upload, setUpload] = useState(false);
-  const [curData, setCurData] = useState(null);
   const [hoverBlock, setHoverBlock] = useState(false);
   const handleRemoveImage = () => {
     setUpload(true);
-    setCurData({ ...curData, image: null });
+    handleChange({ ...item, image: null });
   };
-  const handleDeleteAll = () => {
+  const uploadNewImage = () => {};
+  const handleDeleteBlock = () => {
+    const newData = { ...item };
+    Object.keys(newData).forEach((key) => {
+      if (key === 'image') {
+        newData[key] = null;
+      } else if (key !== 'id') {
+        newData[key] = '';
+      }
+    });
+    handleChange({ ...newData });
   };
-  const handleChange = (e) => {
+  const onChange = (e) => {
     e.persist();
-    setCurData({ ...curData, textTitle: e.target.value });
+    const { name, value } = e.target;
+    handleChange({ ...item, [name]: value });
   };
   useEffect(() => {
-    setHasChanges(JSON.stringify(curData) !== JSON.stringify(item));
-    return () => setHasChanges(false);
-  }, [curData]);
+    if (!hasChanges && editable) {
+      setEditable(false);
+    }
+  }, [hasChanges]);
 
-  useEffect(() => {
-    setCurData({ ...item });
-    return () => setCurData(null);
-  }, [item]);
   return (
-    curData && (
+    item && (
       <Box
         onMouseOver={() => setHoverBlock(true)}
         onMouseLeave={() => setHoverBlock(false)}
         className="itemWrapper"
         width="23%"
       >
-        <Zoom in={hoverBlock}>
+        <Zoom in={hoverBlock && !editable}>
           <Box className="actionBlock">
             <EditIcon color="primary" onClick={() => setEditable(true)} />
-            <DeleteIcon color="primary" onClick={handleDeleteAll} />
+          </Box>
+        </Zoom>
+        <Zoom in={editable}>
+          <Box className="actionBlock">
+            <DeleteIcon color="primary" onClick={handleDeleteBlock} />
           </Box>
         </Zoom>
         <Box mt={8} mx={3}>
@@ -63,52 +74,56 @@ const CardComponent = ({ item, setHasChanges }) => {
               {item.image && (
                 <CardMedia
                   className="cardImage"
-                  image={curData.image}
+                  image={item.image}
                   title="Contemplative Reptile"
                 >
-                  <Zoom in={curData.image && editable}>
+                  <Zoom in={item.image && editable}>
                     <Box className="actionBlock">
-                      <CloseIcon
-                        color="primary"
-                        onClick={() => handleRemoveImage(true)}
-                      />
+                      <CloseIcon color="primary" onClick={handleRemoveImage} />
                     </Box>
-                  </Zoom>
-                  <Zoom in={upload}>
-                    <Button
-                      id="upload-image-button"
-                      color="primary"
-                      size="large"
-                      type="submit"
-                      variant="contained"
-                      component="label"
-                    >
-                      {localization.t('general.uploadImage')}
-                      <input type="file" style={{ display: 'none' }} />
-                    </Button>
                   </Zoom>
                 </CardMedia>
               )}
+              <Zoom in={upload && editable}>
+                <Button
+                  id="upload-image-button"
+                  color="primary"
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  component="label"
+                >
+                  {localization.t('general.uploadImage')}
+                  <input
+                    type="file"
+                    onChange={uploadNewImage}
+                    style={{ display: 'none' }}
+                  />
+                </Button>
+              </Zoom>
               <CardContent>
                 <Box pt={3} pb={7}>
-                  {item.textTitle && (
+                  {(item.textTitle || item.textTitle === '') && (
                     <TextField
                       disabled={!editable}
                       fullWidth
+                      multiple
                       margin="normal"
-                      onChange={handleChange}
+                      name="textTitle"
+                      onChange={onChange}
                       type="text"
-                      value={curData.textTitle}
+                      value={item.textTitle}
                       inputProps={{ form: { autocomplete: 'off' } }}
                     />
                   )}
                   {item.text && (
                     <TextareaAutosize
+                      name="text"
                       disabled={!editable}
                       margin="normal"
-                      onChange={handleChange}
+                      onChange={onChange}
                       type="text"
-                      value={curData.text}
+                      value={item.text}
                     />
                   )}
                 </Box>
@@ -122,7 +137,8 @@ const CardComponent = ({ item, setHasChanges }) => {
 };
 CardComponent.propTypes = {
   item: PropTypes.object,
-  setHasChanges: PropTypes.func,
+  handleChange: PropTypes.func,
+  hasChanges: PropTypes.bool,
 };
 
 export default CardComponent;
