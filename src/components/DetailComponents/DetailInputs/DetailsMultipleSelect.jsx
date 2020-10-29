@@ -35,12 +35,12 @@ const DetailsMultipleSelect = ({
         display="flex"
         flexDirection="row"
       >
-        <Box width="40%" pr={4}>
+        <Box width="40%" pr={4} pt="7px" pl="4px">
           <Typography color="secondary" variant="body2">
             {item.label}
           </Typography>
         </Box>
-        <Box width="60%">
+        <Box >
           {!editable ? (
             <Typography color="secondary">{item.value?.join(', ')}</Typography>
           ) : (
@@ -60,6 +60,7 @@ const DetailsMultipleSelect = ({
                     <Chip
                       variant="outlined"
                       color="primary"
+                      marginTop="3px"
                       onDelete={() => handleDeleteChip(chip)}
                       onMouseDown={(event) => {
                         event.stopPropagation();

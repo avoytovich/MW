@@ -42,6 +42,7 @@ const ImagesBlock = ({ imagesData, handleEditDetails, hasChanges }) => {
         alignContent="center"
         flexDirection="row"
         justifyContent="space-around"
+        pt="1%"
       >
         {showContent
         && showContent.map((item) => (

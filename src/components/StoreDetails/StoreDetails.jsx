@@ -71,10 +71,10 @@ const StoreDetails = ({ data }) => {
             Save
           </Button>
         </Zoom>
-        <Box className="detailContainer" display="flex" flexDirection="row">
+        <Box className="detailContainer" display="flex" flexDirection="column">
           <Box>
             <Box display="flex" justify="space-between">
-              <Box sm={9} className="actionBlockWrapper">
+              <Box width="60%" sm={9} className="actionBlockWrapper">
                 <Box
                   pb={5}
                   pl={7}
@@ -193,6 +193,9 @@ const StoreDetails = ({ data }) => {
                 flexDirection="column"
                 flexWrap="wrap"
                 justifyContent="space-around"
+                alignSelf="flex-end"
+                pl="10%"
+                pb="10%"
               >
                 <PaymentMethods
                   hasChanges={hasChanges}

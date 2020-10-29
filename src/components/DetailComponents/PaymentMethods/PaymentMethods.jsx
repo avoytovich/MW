@@ -47,7 +47,7 @@ const PaymentMethods = ({ paymentMethods, handleEditDetails, hasChanges }) => {
         onMouseOver={() => setHoverBlock(true)}
         onMouseLeave={() => setHoverBlock(false)}
       >
-        <Typography variant="overline">{paymentMethods.label}</Typography>
+        <Typography variant="overline" color="secondary">{paymentMethods.label}</Typography>
         <Divider width="100%" />
         <Box
           display="flex"
