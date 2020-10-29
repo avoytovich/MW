@@ -25,6 +25,7 @@ const ImagesBlock = ({ bottom, setHasChanges }) => {
         alignContent="center"
         flexDirection="row"
         justifyContent="space-around"
+        pt="1%"
       >
         {showContent.map((item, index) => (
           <CardComponent // eslint-disable-next-line react/no-array-index-key

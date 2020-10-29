@@ -48,7 +48,7 @@ const labels = {
   salesLanguages: 'Sales Languages',
   enduserPortalTheme: 'Enduser Portal Theme',
   checkoutTheme: 'Checkout theme',
-  paymentMethods: 'Payment methods',
+  paymentMethods: 'Available Payment methods',
   gtmId: 'GTM ID',
   updateReason: 'Update Reason',
   emailDate: 'Email Date',

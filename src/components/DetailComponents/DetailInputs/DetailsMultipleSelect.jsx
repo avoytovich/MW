@@ -28,7 +28,7 @@ const DetailsMultipleSelect = ({
         display="flex"
         flexDirection="row"
       >
-        <Box width="40%" pr={4}>
+        <Box width="40%" pr={4} pt="7px" pl="4px">
           <Typography color="secondary" variant="body2">
             {item.id}
           </Typography>

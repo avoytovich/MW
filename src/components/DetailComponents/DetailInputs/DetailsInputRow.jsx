@@ -32,7 +32,7 @@ const DetailsInputRow = ({
         display="flex"
         flexDirection="row"
       >
-        <Box width="40%" pr={4}>
+        <Box width="40%" pr={4} pt="7px" pl="4px">
           <Typography color="secondary" variant="body2">
             {item.label}
           </Typography>
@@ -42,7 +42,6 @@ const DetailsInputRow = ({
             disabled={!editable}
             fullWidth
             multiple
-            margin="normal"
             name={item.id}
             onChange={handleChange}
             type={inputType}
