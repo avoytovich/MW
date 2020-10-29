@@ -1,95 +1,105 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box } from '@material-ui/core';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import { Typography, Box, Zoom } from '@material-ui/core';
+import DetailRow from '../DetailRow';
 import './MainInformation.scss';
 
-const MainInformation = ({ left }) => (
-  <Box
-    pb={5}
-    pl={7}
-    display="flex"
-    flexDirection="column"
-    className="mainContainer"
-  >
+const MainInformation = ({ left, setHasChanges }) => {
+  const [editable, setEditable] = useState(false);
+  const [hoverBlock, setHoverBlock] = useState(false);
+  const handleDeleteAll = () => {};
+
+  return (
     <Box
-      pb={10}
-      justifyContent="space-between"
+      pb={5}
+      pl={7}
       display="flex"
-      flexDirection="row"
-      alignItems="flex-end"
+      flexDirection="column"
+      className="mainContainer"
+      onMouseOver={() => setHoverBlock(true)}
+      onMouseLeave={() => setHoverBlock(false)}
     >
       <Box
-        className="mainRow"
-        pb={20}
-        pt={7}
+        pb={10}
+        justifyContent="space-between"
         display="flex"
-        flexDirection="column"
+        flexDirection="row"
+        alignItems="flex-end"
       >
-        {left.titles.map((item) => (
-          <Box key={item.id}>
-            <Typography variant="h1">{item.value}</Typography>
-          </Box>
-        ))}
-      </Box>
-      <Box
-        display="flex"
-        className="mainRow"
-        flexDirection="column"
-        flexWrap="nowrap"
-      >
-        {left.main.map((item) => (
+        {left?.titles && (
           <Box
-            width="100%"
-            className={`${item.row}`}
-            key={item.id}
+            className="mainRow"
+            pb={20}
+            pt={7}
             display="flex"
-            flexDirection="row"
+            flexDirection="column"
+          >
+            {left.titles.map((item) => (
+              <Box key={item.id}>
+                <Typography variant="h1">{item.value}</Typography>
+              </Box>
+            ))}
+          </Box>
+        )}
+        {left?.main && (
+          <Box
+            display="flex"
+            className="mainRow"
+            flexDirection="column"
             flexWrap="nowrap"
           >
-            <Box width="40%" pr={2}>
-              <Typography color="secondary" variant="body2">
-                {item.id}
-              </Typography>
-            </Box>
-            <Box width='60%'>
-              <Typography variant="body2">{item.value}</Typography>
-            </Box>
+            {left.main.map((item) => (
+              <DetailRow
+                setHasChanges={setHasChanges}
+                key={item.id}
+                item={item}
+                inputType="text"
+                editable={editable}
+              />
+            ))}
           </Box>
-        ))}
+        )}
       </Box>
-    </Box>
-    <Box
-      display="flex"
-      flexDirection="row"
-      flexWrap="wrap"
-      pb={5}
-      justifyContent="space-between"
-    >
-      {left.other.map((item) => (
+      {left?.other && (
         <Box
-          width="100%"
-          flexWrap="nowrap"
-          className={`mainRow ${item.row}`}
-          key={item.id}
           display="flex"
           flexDirection="row"
+          flexWrap="wrap"
+          pb={5}
+          justifyContent="space-between"
         >
-          <Box width="40%" pr={4}>
-            <Typography color="secondary" variant="body2">
-              {item.id}
-            </Typography>
-          </Box>
-          <Box width="60%">
-            <Typography variant="body2">{item.value}</Typography>
-          </Box>
+          {left.other.map((item) => (
+            <DetailRow
+              setHasChanges={setHasChanges}
+              key={item.id}
+              item={item}
+              inputType="text"
+              editable={editable}
+            />
+          ))}
         </Box>
-      ))}
+      )}
+      <Zoom in={hoverBlock}>
+        <Box className="actionBlock">
+          <EditIcon
+            color="primary"
+            className="editIcon icons"
+            onClick={() => setEditable(true)}
+          />
+          <DeleteIcon
+            color="primary"
+            onClick={handleDeleteAll}
+            className="deleteIcon icons"
+          />
+        </Box>
+      </Zoom>
     </Box>
-  </Box>
-);
-
+  );
+};
 MainInformation.propTypes = {
   left: PropTypes.object,
+  setHasChanges: PropTypes.func,
 };
 
 export default MainInformation;

@@ -9,15 +9,14 @@ const formBottom = (array, products) => {
         product = val.genericName;
       }
     });
-    const text = `<p class='orderText'>${product}</p>
- <p> ${item.shortDesc ? item.shortDesc : ''}</p>`;
-    return { image: null, text };
+    const textTitle = product; // toDoL class='orderText'
+    const text = item?.shortDesc;
+    return { image: null, textTitle, text };
   });
   return res;
 };
 
 const generateData = (data, customer, products) => {
-
   const values = {
     header: 'Order',
     left: {
