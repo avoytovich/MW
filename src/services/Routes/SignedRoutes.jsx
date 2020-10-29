@@ -46,6 +46,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/OrdersScreen'))}
       />
       <Route
+        path='/my-account'
+        component={lazy(() => import('../../screens/MyAccountScreen'))}
+      />
+      <Route
         path='/settings/identities/:id'
         component={lazy(() => import('../../screens/IdentityDetailsScreen'))}
       />

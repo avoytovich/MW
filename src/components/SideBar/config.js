@@ -79,7 +79,7 @@ const navConfig = [
       {
         id: 'myaccount',
         title: localization.t('sideBar.titles.myAccount'),
-        href: '/tobedefined/myaccount',
+        href: '/my-account',
         icon: FormatQuote,
       },
     ],

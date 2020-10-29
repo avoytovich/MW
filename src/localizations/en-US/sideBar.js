@@ -14,7 +14,7 @@ const sideBar = {
     marketing: 'Marketing',
     checkoutExperience: 'Checkout Experience',
     reports: 'Reports',
-    myAccount: 'MyAccount',
+    myAccount: 'My Account',
     api: 'API',
     servicesConfiguration: 'Services Configuration',
     administration: 'Administration',
