@@ -37,12 +37,12 @@ const DetailsMultipleSelect = ({
       >
         <Box width="40%" pr={4}>
           <Typography color="secondary" variant="body2">
-            {item.id}
+            {item.label}
           </Typography>
         </Box>
         <Box width="60%">
           {!editable ? (
-            <Typography color="secondary">{item.value.join(', ')}</Typography>
+            <Typography color="secondary">{item.value?.join(', ')}</Typography>
           ) : (
             <Select
               name={item.id}

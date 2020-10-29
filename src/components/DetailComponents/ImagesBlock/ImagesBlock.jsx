@@ -4,8 +4,9 @@ import { Box } from '@material-ui/core';
 import PaginationComponent from '../../PaginationComponent';
 import CardComponent from './CardComponent';
 import './ImagesBlock.scss';
-// todo on pagination on editing
-const ImagesBlock = ({ imagesData, handleEditDetails }) => {
+
+// todoL on pagination on editing
+const ImagesBlock = ({ imagesData, handleEditDetails, hasChanges }) => {
   const totalPages = Math.ceil(imagesData?.length / 4);
   const [currentPage, setCurrentPage] = useState(1);
   const [showContent, setShowContent] = useState(null);
@@ -49,6 +50,7 @@ const ImagesBlock = ({ imagesData, handleEditDetails }) => {
             key={item.id}
             item={item}
             handleEditDetails={handleEditDetails}
+            hasChanges={hasChanges}
           />
         ))}
       </Box>
@@ -64,6 +66,7 @@ const ImagesBlock = ({ imagesData, handleEditDetails }) => {
 ImagesBlock.propTypes = {
   imagesData: PropTypes.array,
   handleEditDetails: PropTypes.func,
+  hasChanges: PropTypes.bool,
 };
 
 export default ImagesBlock;

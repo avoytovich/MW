@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography, Box, Select, MenuItem } from '@material-ui/core';
+import {
+  Typography, Box, Select, MenuItem,
+} from '@material-ui/core';
 import './DetailsInput.scss';
 
 const DetailsSelectRow = ({
@@ -28,7 +30,7 @@ const DetailsSelectRow = ({
       >
         <Box width="40%" pr={4}>
           <Typography color="secondary" variant="body2">
-            {item.id}
+            {item.label}
           </Typography>
         </Box>
         <Box width="60%">

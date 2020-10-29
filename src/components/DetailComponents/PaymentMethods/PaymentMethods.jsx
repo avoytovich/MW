@@ -13,11 +13,12 @@ import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { getPaymentImages, paymentImages } from './images';
 import './PaymentMethods.scss';
 
+// todoL move setFunc to parent
 const PaymentMethods = ({ paymentMethods, setHasChanges }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
   const [curData, setCurData] = useState(null);
-  const handleDeleteAll = () => {
+  const handleDeleteBlock = () => {
     setCurData({ ...curData, value: [] });
   };
   const handleDeleteChip = (value) => {
@@ -45,7 +46,7 @@ const PaymentMethods = ({ paymentMethods, setHasChanges }) => {
         onMouseOver={() => setHoverBlock(true)}
         onMouseLeave={() => setHoverBlock(false)}
       >
-        <Typography variant="overline">{paymentMethods.id}</Typography>
+        <Typography variant="overline">{paymentMethods.label}</Typography>
         <Divider width="100%" />
         <Box
           display="flex"
@@ -102,16 +103,20 @@ const PaymentMethods = ({ paymentMethods, setHasChanges }) => {
             </Select>
           )}
         </Box>
-        <Zoom in={hoverBlock}>
+        <Zoom in={hoverBlock && !editable}>
           <Box className="actionBlock">
             <EditIcon
               color="primary"
               className="editIcon icons"
               onClick={() => setEditable(true)}
             />
+          </Box>
+        </Zoom>
+        <Zoom in={editable}>
+          <Box className="actionBlock">
             <DeleteIcon
               color="primary"
-              onClick={handleDeleteAll}
+              onClick={handleDeleteBlock}
               className="deleteIcon icons"
             />
           </Box>

@@ -35,8 +35,27 @@ const StoreDetails = ({ data }) => {
     return () => setHasChanges(false);
   }, [currentData]);
 
-  const handleDeleteAll = () => {};
-  const saveDetail = () => {};
+  const handleDeleteBlock = () => {
+    const newData = { ...data };
+    Object.keys(newData).forEach((key) => {
+      if (
+        key === 'status'
+        || key === 'hostnames'
+        || key === 'defaultLanguage'
+        || key === 'enduserPortalTheme'
+        || key === 'checkoutTheme'
+      ) {
+        newData[key].value = '';
+      } else if (key === 'salesLanguages') {
+        newData[key].value = [];
+      }
+    });
+    setCurrentData({ ...newData });
+  };
+  const saveDetail = () => {
+    setEditable(false);
+    setHasChanges(false);
+  };
   return (
     currentData && (
       <>
@@ -148,16 +167,20 @@ const StoreDetails = ({ data }) => {
                       editable={editable}
                     />
                   </Box>
-                  <Zoom in={hoverBlock}>
+                  <Zoom in={hoverBlock && !editable}>
                     <Box className="actionBlock">
                       <EditIcon
                         color="primary"
                         className="editIcon icons"
                         onClick={() => setEditable(true)}
                       />
+                    </Box>
+                  </Zoom>
+                  <Zoom in={editable}>
+                    <Box className="actionBlock">
                       <DeleteIcon
                         color="primary"
-                        onClick={handleDeleteAll}
+                        onClick={handleDeleteBlock}
                         className="deleteIcon icons"
                       />
                     </Box>
@@ -180,6 +203,7 @@ const StoreDetails = ({ data }) => {
           </Box>
           <Box>
             <ImagesBlock
+              hasChanges={hasChanges}
               handleEditDetails={handleEditDetails}
               imagesData={currentData.imagesBlock}
             />

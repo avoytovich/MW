@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -19,24 +19,36 @@ import {
 import localization from '../../../localization';
 import './ImagesBlock.scss';
 
-const CardComponent = ({ item, handleChange }) => {
+const CardComponent = ({ item, handleChange, hasChanges }) => {
   const [editable, setEditable] = useState(false);
   const [upload, setUpload] = useState(false);
-  const [curData, setCurData] = useState(null);
   const [hoverBlock, setHoverBlock] = useState(false);
   const handleRemoveImage = () => {
     setUpload(true);
-    handleChange({ ...item, image: '' });
-
-    setCurData({ ...curData, image: null });
+    handleChange({ ...item, image: null });
   };
-
-  const handleDeleteAll = () => {};
+  const uploadNewImage = () => {};
+  const handleDeleteBlock = () => {
+    const newData = { ...item };
+    Object.keys(newData).forEach((key) => {
+      if (key === 'image') {
+        newData[key] = null;
+      } else if (key !== 'id') {
+        newData[key] = '';
+      }
+    });
+    handleChange({ ...newData });
+  };
   const onChange = (e) => {
     e.persist();
     const { name, value } = e.target;
     handleChange({ ...item, [name]: value });
   };
+  useEffect(() => {
+    if (!hasChanges && editable) {
+      setEditable(false);
+    }
+  }, [hasChanges]);
 
   return (
     item && (
@@ -46,10 +58,14 @@ const CardComponent = ({ item, handleChange }) => {
         className="itemWrapper"
         width="23%"
       >
-        <Zoom in={hoverBlock}>
+        <Zoom in={hoverBlock && !editable}>
           <Box className="actionBlock">
             <EditIcon color="primary" onClick={() => setEditable(true)} />
-            <DeleteIcon color="primary" onClick={handleDeleteAll} />
+          </Box>
+        </Zoom>
+        <Zoom in={editable}>
+          <Box className="actionBlock">
+            <DeleteIcon color="primary" onClick={handleDeleteBlock} />
           </Box>
         </Zoom>
         <Box mt={8} mx={3}>
@@ -68,7 +84,7 @@ const CardComponent = ({ item, handleChange }) => {
                   </Zoom>
                 </CardMedia>
               )}
-              <Zoom in={upload}>
+              <Zoom in={upload && editable}>
                 <Button
                   id="upload-image-button"
                   color="primary"
@@ -78,7 +94,11 @@ const CardComponent = ({ item, handleChange }) => {
                   component="label"
                 >
                   {localization.t('general.uploadImage')}
-                  <input type="file" style={{ display: 'none' }} />
+                  <input
+                    type="file"
+                    onChange={uploadNewImage}
+                    style={{ display: 'none' }}
+                  />
                 </Button>
               </Zoom>
               <CardContent>
@@ -118,6 +138,7 @@ const CardComponent = ({ item, handleChange }) => {
 CardComponent.propTypes = {
   item: PropTypes.object,
   handleChange: PropTypes.func,
+  hasChanges: PropTypes.bool,
 };
 
 export default CardComponent;

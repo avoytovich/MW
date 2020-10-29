@@ -9,7 +9,7 @@ const formBottom = (array, products) => {
         product = val.genericName;
       }
     });
-    const textTitle = product; // toDo class='orderText'
+    const textTitle = product; // toDoL class='orderText'
     const text = item?.shortDesc;
     return { image: null, textTitle, text };
   });
@@ -97,8 +97,8 @@ const generateData = (data, customer, products) => {
         {
           id: localization.t('labels.emailDate'),
           value:
-            data?.emails &&
-            formatDate(data?.emails[data?.emails.length - 1].createDate),
+            data?.emails
+            && formatDate(data?.emails[data?.emails.length - 1].createDate),
           row: 'odd',
         },
         {
