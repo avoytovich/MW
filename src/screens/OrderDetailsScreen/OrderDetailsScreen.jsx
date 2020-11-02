@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import {
-  LinearProgress,
-  Zoom,
-  Box,
-  Typography,
-  Button,
-} from '@material-ui/core';
+import { LinearProgress, Box, Typography } from '@material-ui/core';
 import { FolderOpen } from '@material-ui/icons';
 import OrderDetails from '../../components/OrderDetails';
 import api from '../../api';
@@ -14,15 +8,11 @@ import api from '../../api';
 const OrderDetailsScreen = () => {
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
-  const [storeHasChanges, setStoreChanges] = useState(false);
 
-  const [orderData, setOrderData] = useState(null);
   const [currentOrderData, setCurrentOrderData] = useState(null);
 
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [currentProductsData, setCurrentProductsData] = useState(null);
-  const saveDetails = () => {};
-
   useEffect(() => {
     let isCancelled = false;
     const productsIds = [];
@@ -40,7 +30,6 @@ const OrderDetailsScreen = () => {
         const customer = await api.getCustomerById(order?.data?.customer?.id);
 
         if (!isCancelled) {
-          setOrderData(order.data);
           setCurrentOrderData(order.data);
           setCurrentCustomer(customer.data.name);
           setCurrentProductsData(products.data);
@@ -58,15 +47,6 @@ const OrderDetailsScreen = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setStoreChanges(
-      JSON.stringify(currentOrderData) !== JSON.stringify(orderData),
-    );
-    return () => {
-      setStoreChanges(false);
-    };
-  }, [currentOrderData]);
-
   if (isLoading) return <LinearProgress />;
   return (
     <>
@@ -77,22 +57,10 @@ const OrderDetailsScreen = () => {
         <Box>
           <Typography component="div" color="primary">
             {/* toDo Add localization */}
-            <Box fontWeight={500}> Store</Box>
+            <Box fontWeight={500}> Order</Box>
           </Typography>
         </Box>
       </Box>
-      <Zoom in={storeHasChanges}>
-        <Button
-          id="save-detail-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={saveDetails}
-        >
-          Save
-        </Button>
-      </Zoom>
       <OrderDetails
         orderData={currentOrderData}
         setOrderData={setCurrentOrderData}
