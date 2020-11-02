@@ -150,7 +150,6 @@ const generateData = (data, customer, products) => {
         },
       ],
     },
-    right: { paymentMethods: null, prices: null },
     bottom: data?.lineItems ? formBottom(data?.lineItems, products) : null,
   };
   return values;

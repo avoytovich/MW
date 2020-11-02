@@ -1,0 +1,26 @@
+@import '../../../styles/variables.scss';
+
+.itemWrapper {
+  background-color: $tablesEvenRow;
+  border-radius: 10px;
+  position: relative;
+  .actionBlock {
+    position: absolute;
+    right: 5px;
+    top: 5px;  }
+}
+.cardImage {
+  height: 140px;
+  border-radius: 10px;
+  position: relative;
+}
+.cardItem {
+  box-shadow: none;
+}
+.cardText {
+  text-align: center;
+  .orderText {
+    font-size: larger;
+    color: $darkGray;
+  }
+}

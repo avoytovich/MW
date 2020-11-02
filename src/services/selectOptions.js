@@ -6,7 +6,22 @@ const theme = [
   { id: 'default', value: 'default' },
   { id: 'ww', value: 'ww' },
 ];
-
+const type = [
+  { id: 'SOFTWARE', value: 'SOFTWARE' },
+  { id: 'ww', value: 'ww' },
+];
+const storeNames = [
+  { id: 'Nexway regularization store', value: 'Nexway regularization store' },
+  { id: 'ww', value: 'ww' },
+];
+const lifeTime = [
+  { id: '1YEAR', value: '1YEAR' },
+  { id: 'ww', value: 'ww' },
+];
+const trialAllowed = [
+  { id: 'default', value: 'default' },
+  { id: 'ww', value: 'ww' },
+];
 const languages = [
   {
     id: 'ar',
@@ -287,4 +302,4 @@ const languages = [
 //   localName: '中文',
 // },
 
-export { languages, status, theme };
+export { languages, status, theme, lifeTime, trialAllowed, storeNames, type };
