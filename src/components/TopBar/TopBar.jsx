@@ -50,7 +50,7 @@ const TopBar = ({ toggleDrawer }) => {
     setSearchVal('');
   }, [scope]);
 
-  const build = process.env.BUILD_NUMBER || 'not found';
+  const build = process.env.BUILD_TIME || 'not found';
 
   return (
     <AppBar position='static' className='top-bar' elevation={1}>
