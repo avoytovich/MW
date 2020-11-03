@@ -183,6 +183,14 @@ const api = {
       data,
     });
   },
+  updateStoreById(id, data) {
+    const url = `/stores/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
 
   // DELETE BY ID
   deleteProductById(id) {
@@ -210,6 +218,13 @@ const api = {
     const url = `/stores/${id}`;
     return axiosInstance({
       method: 'delete',
+      url,
+    });
+  },
+  getThemeOptions() {
+    const url = '/designs/themes?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
       url,
     });
   },

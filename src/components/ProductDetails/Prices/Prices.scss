@@ -1,0 +1,20 @@
+@import '../../../styles/variables.scss';
+
+.paymentItem {
+  width: 100%;
+  background-color: $tablesEvenRow;
+  border-radius: 10px;
+}
+.actionBlockWrapper {
+  position: relative;
+  .actionBlock {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
+}
+
+.icons {
+  cursor: pointer;
+  margin-left: 10px;
+}
