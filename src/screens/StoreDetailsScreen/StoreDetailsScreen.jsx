@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FolderOpen } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 import {
   LinearProgress,
   Zoom,
@@ -8,20 +9,31 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import localization from '../../localization';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 import StoreDetails from '../../components/StoreDetails';
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
+  const dispatch = useDispatch();
+
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [storeHasChanges, setStoreChanges] = useState(false);
-
+  const [selectOptions, setSelectOptions] = useState({ theme: null });
   const [storeData, setStoreData] = useState(null);
   const [currentStoreData, setCurrentStoreData] = useState(null);
 
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
 
   const saveDetails = () => {
+    api.updateStoreById(currentStoreData.id, currentStoreData).then(() => {
+      dispatch(
+        showNotification(localization.t('general.updatesHaveBeenSaved')),
+      );
+      setStoreData(currentStoreData);
+      setCurrentStoreData(currentStoreData);
+    });
   };
 
   useEffect(() => {
@@ -30,10 +42,15 @@ const StoreDetailsScreen = () => {
       try {
         const store = await api.getStoreById(id);
         const customer = await api.getCustomerById(store?.data?.customerId);
+        const themeOptions = await api.getThemeOptions();
         if (!isCancelled) {
           setStoreData(store.data);
           setCurrentStoreData(store.data);
           setCurrentCustomerData(customer.data);
+          setSelectOptions({
+            ...selectOptions,
+            theme: themeOptions.data.items,
+          });
           setLoading(false);
         }
       } catch (error) {
@@ -55,7 +72,7 @@ const StoreDetailsScreen = () => {
     return () => {
       setStoreChanges(false);
     };
-  }, [currentStoreData]);
+  }, [currentStoreData, storeData]);
 
   if (isLoading) return <LinearProgress />;
 
@@ -84,11 +101,15 @@ const StoreDetailsScreen = () => {
           Save
         </Button>
       </Zoom>
-      <StoreDetails
-        setStoreData={setCurrentStoreData}
-        customerData={currentCustomerData}
-        storeData={currentStoreData}
-      />
+      {currentStoreData && (
+        <StoreDetails
+          storeData={storeData}
+          selectOptions={selectOptions}
+          setCurrentStoreData={setCurrentStoreData}
+          customerData={currentCustomerData}
+          currentStoreData={currentStoreData}
+        />
+      )}
     </>
   );
 };

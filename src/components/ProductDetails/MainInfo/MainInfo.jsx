@@ -12,7 +12,7 @@ import {
   trialAllowed,
   storeNames,
   type,
-} from '../../../services/selectOptions';
+} from '../../../services/selectOptions/selectOptions';
 import './MainInfo.scss';
 
 const MainInfo = ({

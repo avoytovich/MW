@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -11,40 +11,51 @@ import {
 import PropTypes from 'prop-types';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import localization from '../../../localization';
-import { languages, status, theme } from '../../../services/selectOptions';
+import selectLanguages from '../../../services/selectOptions/selectLanguages';
+import { status } from '../../../services/selectOptions/selectOptions';
 import './MainInfo.scss';
 
-const MainInfo = ({ storeData, customerData, setStoreData }) => {
+const MainInfo = ({
+  currentStoreData,
+  customerData,
+  setCurrentStoreData,
+  selectOptions,
+  storeData,
+}) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
+  useEffect(() => {
+    setEditable(false);
+  }, [storeData]);
+
   const handleDeleteBlock = () => {
-    const newRoutes = [...storeData.routes];
+    const newRoutes = [...currentStoreData.routes];
     newRoutes[0] = { ...newRoutes[0], hostname: '' };
     const newData = {
-      ...storeData,
+      ...currentStoreData,
       status: '',
       defaultLocale: '',
       saleLocales: [],
       routes: newRoutes,
       designs: {
-        ...storeData.designs,
+        ...currentStoreData.designs,
         checkout: {
-          ...storeData.designs.checkout,
+          ...currentStoreData.designs.checkout,
           themeRef: {
-            ...storeData.designs.checkout.themeRef,
+            ...currentStoreData.designs.checkout.themeRef,
             name: '',
           },
         },
-        resellerCheckout: {
-          ...storeData.designs.resellerCheckout,
+        endUserPortal: {
+          ...currentStoreData.designs.endUserPortal,
           themeRef: {
-            ...storeData.designs.resellerCheckout.themeRef,
+            ...currentStoreData.designs.endUserPortal.themeRef,
             name: '',
           },
         },
       },
     };
-    setStoreData(newData);
+    setCurrentStoreData(newData);
   };
 
   return (
@@ -72,7 +83,7 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
           flexDirection="column"
         >
           <Box>
-            <Typography variant="h1">{storeData.name}</Typography>
+            <Typography variant="h1">{currentStoreData.name}</Typography>
           </Box>
           <Box>
             <Typography variant="h1">{customerData.name}</Typography>
@@ -99,11 +110,16 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
             <Box width="60%">
               <Select
                 disabled={!editable}
-                value={storeData.status}
-                onChange={(e) => setStoreData({ ...storeData, status: e.target.value })}
+                value={currentStoreData.status}
+                onChange={(e) => setCurrentStoreData({
+                  ...currentStoreData, status: e.target.value,
+                })}
               >
+                <MenuItem value=" ">
+                  <em />
+                </MenuItem>
                 {status.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
+                  <MenuItem key={option.id} value={option.value}>
                     {option.value}
                   </MenuItem>
                 ))}
@@ -128,12 +144,12 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
                 fullWidth
                 multiple
                 onChange={(e) => {
-                  const newArray = [...storeData.routes];
+                  const newArray = [...currentStoreData.routes];
                   newArray[0] = { ...newArray[0], hostname: e.target.value };
-                  setStoreData({ ...storeData, routes: newArray });
+                  setCurrentStoreData({ ...currentStoreData, routes: newArray });
                 }}
                 type="text"
-                value={storeData.routes[0]?.hostname}
+                value={currentStoreData.routes[0]?.hostname}
                 inputProps={{ form: { autocomplete: 'off' } }}
               />
             </Box>
@@ -162,12 +178,18 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
           <Box width="60%">
             <Select
               disabled={!editable}
-              value={storeData?.defaultLocale}
-              onChange={(e) => setStoreData({ ...storeData, defaultLocale: e.target.value })}
+              value={currentStoreData?.defaultLocale}
+              onChange={(e) => setCurrentStoreData({
+                ...currentStoreData,
+                defaultLocale: e.target.value,
+              })}
             >
-              {languages.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.value}
+              <MenuItem value=" ">
+                <em />
+              </MenuItem>
+              {selectLanguages.map((option) => (
+                <MenuItem key={option.locale} value={option.locale}>
+                  {`${option.locale}: ${option.localName}`}
                 </MenuItem>
               ))}
             </Select>
@@ -188,13 +210,16 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
           <Box>
             {!editable ? (
               <Typography color="secondary">
-                {storeData?.saleLocales?.join(', ')}
+                {currentStoreData?.saleLocales?.join(', ')}
               </Typography>
             ) : (
               <Select
                 multiple
-                value={storeData?.saleLocales}
-                onChange={(e) => setStoreData({ ...storeData, saleLocales: e.target.value })}
+                value={currentStoreData?.saleLocales}
+                onChange={(e) => setCurrentStoreData({
+                  ...currentStoreData,
+                  saleLocales: e.target.value,
+                })}
                 renderValue={(selected) => (
                   <Box
                     display="flex"
@@ -202,15 +227,21 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
                     flexDirection="row"
                     flexWrap="wrap"
                   >
+                    <MenuItem value=" ">
+                      <em />
+                    </MenuItem>
                     {selected.map((chip) => (
                       <Chip
                         variant="outlined"
                         color="primary"
                         onDelete={() => {
-                          const newValue = [...storeData?.saleLocales].filter(
-                            (val) => val !== chip,
-                          );
-                          setStoreData({ ...storeData, saleLocales: newValue });
+                          const newValue = [
+                            ...currentStoreData?.saleLocales,
+                          ].filter((val) => val !== chip);
+                          setCurrentStoreData({
+                            ...currentStoreData,
+                            saleLocales: newValue,
+                          });
                         }}
                         onMouseDown={(event) => {
                           event.stopPropagation();
@@ -222,9 +253,12 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
                   </Box>
                 )}
               >
-                {languages.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.value}
+                <MenuItem value=" ">
+                  <em />
+                </MenuItem>
+                {selectLanguages.map((option) => (
+                  <MenuItem value={option.locale} key={option.locale}>
+                    {`${option.locale}: ${option.localName}`}
                   </MenuItem>
                 ))}
               </Select>
@@ -246,24 +280,33 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
           <Box width="60%">
             <Select
               disabled={!editable}
-              value={storeData?.designs?.checkout?.themeRef?.name}
-              onChange={(e) => setStoreData({
-                ...storeData,
-                designs: {
-                  ...storeData.designs,
-                  checkout: {
-                    ...storeData.designs.checkout,
-                    themeRef: {
-                      ...storeData.designs.checkout.themeRef,
-                      name: e.target.value,
+              value={`${currentStoreData.designs.endUserPortal.themeRef.customerId}: ${currentStoreData.designs.endUserPortal.themeRef.name}`}
+              onChange={(e) => {
+                const newValue = e.target.value.split(':');
+                setCurrentStoreData({
+                  ...currentStoreData,
+                  designs: {
+                    ...currentStoreData.designs,
+                    endUserPortal: {
+                      ...currentStoreData.designs.endUserPortal,
+                      themeRef: {
+                        customerId: newValue[0],
+                        name: newValue[1].trim(),
+                      },
                     },
                   },
-                },
-              })}
+                });
+              }}
             >
-              {theme.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.value}
+              <MenuItem value=" ">
+                <em />
+              </MenuItem>
+              {selectOptions.theme.map((option) => (
+                <MenuItem
+                  key={option.id}
+                  value={`${option.customerId}: ${option.name}`}
+                >
+                  {`${option.customerId}: ${option.name}`}
                 </MenuItem>
               ))}
             </Select>
@@ -284,25 +327,34 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
           </Box>
           <Box width="60%">
             <Select
+              value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
               disabled={!editable}
-              value={storeData?.designs?.resellerCheckout?.themeRef?.name}
-              onChange={(e) => setStoreData({
-                ...storeData,
-                designs: {
-                  ...storeData.designs,
-                  resellerCheckout: {
-                    ...storeData.designs.resellerCheckout,
-                    themeRef: {
-                      ...storeData.designs.resellerCheckout.themeRef,
-                      name: e.target.value,
+              onChange={(e) => {
+                const newValue = e.target.value.split(':');
+                setCurrentStoreData({
+                  ...currentStoreData,
+                  designs: {
+                    ...currentStoreData.designs,
+                    checkout: {
+                      ...currentStoreData.designs.checkout,
+                      themeRef: {
+                        customerId: newValue[0],
+                        name: newValue[1].trim(),
+                      },
                     },
                   },
-                },
-              })}
+                });
+              }}
             >
-              {theme.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.value}
+              <MenuItem value=" ">
+                <em />
+              </MenuItem>
+              {selectOptions.theme.map((option) => (
+                <MenuItem
+                  key={option.id}
+                  value={`${option.customerId}: ${option.name}`}
+                >
+                  {`${option.customerId}: ${option.name}`}
                 </MenuItem>
               ))}
             </Select>
@@ -331,9 +383,11 @@ const MainInfo = ({ storeData, customerData, setStoreData }) => {
   );
 };
 MainInfo.propTypes = {
-  storeData: PropTypes.object,
+  selectOptions: PropTypes.object,
+  currentStoreData: PropTypes.object,
   customerData: PropTypes.object,
-  setStoreData: PropTypes.func,
+  setCurrentStoreData: PropTypes.func,
+  storeData: PropTypes.object,
 };
 
 export default MainInfo;

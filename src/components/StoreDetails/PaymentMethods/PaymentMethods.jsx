@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Typography,
@@ -15,24 +15,30 @@ import localization from '../../../localization';
 import { getPaymentImages, paymentImages } from './images';
 import './PaymentMethods.scss';
 
-const PaymentMethods = ({ storeData, setStoreData }) => {
+const PaymentMethods = ({ currentStoreData, setCurrentStoreData, storeData }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
 
+  useEffect(() => {
+    setEditable(false);
+  }, [storeData]);
+
   const onChange = (val) => {
     const newArray = [
-      ...storeData.designs.paymentComponent.rankedPaymentTabsByCountriesList,
+      ...currentStoreData.designs.paymentComponent
+        .rankedPaymentTabsByCountriesList,
     ];
     newArray[0] = {
-      ...storeData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0],
+      ...currentStoreData.designs.paymentComponent
+        .rankedPaymentTabsByCountriesList[0],
       rankedPaymentTabs: val,
     };
-    setStoreData({
-      ...storeData,
+    setCurrentStoreData({
+      ...currentStoreData,
       designs: {
-        ...storeData.designs,
+        ...currentStoreData.designs,
         paymentComponent: {
-          ...storeData.designs.paymentComponent,
+          ...currentStoreData.designs.paymentComponent,
           rankedPaymentTabsByCountriesList: newArray,
         },
       },
@@ -41,8 +47,8 @@ const PaymentMethods = ({ storeData, setStoreData }) => {
 
   const handleDeleteChip = (value) => {
     const newValue = [
-      ...storeData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0]
-        .rankedPaymentTabs,
+      ...currentStoreData.designs.paymentComponent
+        .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs,
     ].filter((item) => item !== value);
     onChange(newValue);
   };
@@ -65,27 +71,27 @@ const PaymentMethods = ({ storeData, setStoreData }) => {
         flexWrap="wrap"
       >
         {!editable ? (
-          storeData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0].rankedPaymentTabs
-            .map(
-              (item) => {
-                const src = getPaymentImages(item);
-                return (
-                  <Box key={item} className="paymentImageWrapper">
-                    <img
-                      className="paymentImage"
-                      label="Clickable"
-                      src={src}
-                      alt={item}
-                    />
-                  </Box>
-                );
-              },
-            )
+          // eslint-disable-next-line max-len
+          currentStoreData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0].rankedPaymentTabs.map(
+            (item) => {
+              const src = getPaymentImages(item);
+              return (
+                <Box key={item} className="paymentImageWrapper">
+                  <img
+                    className="paymentImage"
+                    label="Clickable"
+                    src={src}
+                    alt={item}
+                  />
+                </Box>
+              );
+            },
+          )
         ) : (
           <Select
             multiple
             value={
-              storeData.designs.paymentComponent
+              currentStoreData.designs.paymentComponent
                 .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs
             }
             onChange={(e) => onChange(e.target.value)}
@@ -142,8 +148,9 @@ const PaymentMethods = ({ storeData, setStoreData }) => {
 };
 
 PaymentMethods.propTypes = {
+  currentStoreData: PropTypes.object,
+  setCurrentStoreData: PropTypes.func,
   storeData: PropTypes.object,
-  setStoreData: PropTypes.func,
 };
 
 export default PaymentMethods;

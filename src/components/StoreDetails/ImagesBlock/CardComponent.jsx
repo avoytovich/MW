@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -8,13 +8,12 @@ import {
   CardContent,
   Zoom,
   Button,
-  TextField,
+  Select,
+  MenuItem,
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Close as CloseIcon,
-} from '@material-ui/icons';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import { storeDetailsCardText } from '../../../services/selectOptions/selectOptions';
+
 import localization from '../../../localization';
 import './ImagesBlock.scss';
 
@@ -24,11 +23,21 @@ const CardComponent = ({
   updateKey,
   handleUpdate,
   handleDeleteCard,
+  storeData,
+  handleUpdateText,
+  updated,
 }) => {
   const [editable, setEditable] = useState(false);
-  const [upload, setUpload] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
+  useEffect(() => {
+    setEditable(false);
+  }, [storeData]);
 
+  useEffect(() => {
+    if (updated?.[updateKey]) {
+      setEditable(true);
+    }
+  }, [updated]);
   return (
     <Box
       onMouseOver={() => setHoverBlock(true)}
@@ -58,20 +67,8 @@ const CardComponent = ({
               className="cardImage"
               image={imageSrc}
               title="Contemplative Reptile"
-            >
-              <Zoom in={imageSrc && editable}>
-                <Box className="actionBlock">
-                  <CloseIcon
-                    color="primary"
-                    onClick={() => {
-                      setUpload(true);
-                      handleUpdate(updateKey, '');
-                    }}
-                  />
-                </Box>
-              </Zoom>
-            </CardMedia>
-            <Zoom in={upload && editable}>
+            />
+            <Zoom in={hoverBlock && editable}>
               <Button
                 id="upload-image-button"
                 color="primary"
@@ -90,15 +87,20 @@ const CardComponent = ({
             </Zoom>
             <CardContent>
               <Box pt={3} pb={7}>
-                <TextField
-                  disabled
-                  fullWidth
-                  multiple
-                  margin="normal"
-                  type="text"
+                <Select
+                  disabled={!editable}
                   value={cardText}
-                  inputProps={{ form: { autocomplete: 'off' } }}
-                />
+                  onChange={(e) => handleUpdateText(updateKey, e.target.value)}
+                >
+                  <MenuItem value=" ">
+                    <em />
+                  </MenuItem>
+                  {storeDetailsCardText.map((option) => (
+                    <MenuItem key={option.id} value={option.value}>
+                      {option.value}
+                    </MenuItem>
+                  ))}
+                </Select>
               </Box>
             </CardContent>
           </CardActionArea>
@@ -113,6 +115,9 @@ CardComponent.propTypes = {
   updateKey: PropTypes.string,
   handleUpdate: PropTypes.func,
   handleDeleteCard: PropTypes.func,
+  storeData: PropTypes.object,
+  handleUpdateText: PropTypes.func,
+  updated: PropTypes.object,
 };
 
 export default CardComponent;

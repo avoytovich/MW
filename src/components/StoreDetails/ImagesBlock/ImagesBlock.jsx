@@ -1,19 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@material-ui/core';
 import CardComponent from './CardComponent';
+import { storeDetailsCardText } from '../../../services/selectOptions/selectOptions';
 import './ImagesBlock.scss';
 
-const ImagesBlock = ({ storeData, setStoreData }) => {
+const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
+  const [updated, setUpdated] = useState(null);
+
   const handleUpdate = (key, src) => {
-    setStoreData({ ...storeData, [key]: src });
+    setCurrentStoreData({ ...currentStoreData, [key]: src });
   };
   const handleDeleteCard = (key) => {
-    const newData = { ...storeData };
+    const newData = { ...currentStoreData };
     delete newData[key];
-    setStoreData({ ...newData });
+    setCurrentStoreData({ ...newData });
   };
-
+  const handleUpdateText = (updateKey, value) => {
+    const index = storeDetailsCardText.findIndex((i) => i.value === value);
+    if (!currentStoreData[storeDetailsCardText[index].id]) {
+      const itemSrc = currentStoreData[updateKey];
+      const newData = {
+        ...currentStoreData,
+        [storeDetailsCardText[index].id]: itemSrc,
+      };
+      delete newData[updateKey];
+      setUpdated({ [storeDetailsCardText[index].id]: true });
+      setCurrentStoreData({ ...newData });
+    }
+  };
   return (
     <>
       <Box
@@ -24,40 +39,54 @@ const ImagesBlock = ({ storeData, setStoreData }) => {
         justifyContent="space-around"
         pt="1%"
       >
-        {(storeData.logoStore || storeData.logoStore === '') && (
+        {(currentStoreData.logoStore || currentStoreData.logoStore === '') && (
           <CardComponent
+            updated={updated}
+            handleUpdateText={handleUpdateText}
+            storeData={storeData}
             handleDeleteCard={handleDeleteCard}
             updateKey="logoStore"
             cardText="Logo"
-            imageSrc={storeData.logoStore}
+            imageSrc={currentStoreData.logoStore}
             handleUpdate={handleUpdate}
           />
         )}
-        {(storeData.bannerInvoice || storeData.bannerInvoice === '') && (
+        {(currentStoreData.bannerInvoice
+          || currentStoreData.bannerInvoice === '') && (
           <CardComponent
+            updated={updated}
+            handleUpdateText={handleUpdateText}
+            storeData={storeData}
             handleDeleteCard={handleDeleteCard}
             updateKey="bannerInvoice"
             cardText="Invoice banner"
-            imageSrc={storeData.bannerInvoice}
+            imageSrc={currentStoreData.bannerInvoice}
             handleUpdate={handleUpdate}
           />
         )}
-        {(storeData.bannerOrderConfEmail
-          || storeData.bannerOrderConfEmail === '') && (
+        {(currentStoreData.bannerOrderConfEmail
+          || currentStoreData.bannerOrderConfEmail === '') && (
           <CardComponent
+            updated={updated}
+            handleUpdateText={handleUpdateText}
+            storeData={storeData}
             handleDeleteCard={handleDeleteCard}
             updateKey="bannerOrderConfEmail"
             cardText="Confirmation email banner"
-            imageSrc={storeData.bannerOrderConfEmail}
+            imageSrc={currentStoreData.bannerOrderConfEmail}
             handleUpdate={handleUpdate}
           />
         )}
-        {(storeData.logoFavicon || storeData.logoFavicon === '') && (
+        {(currentStoreData.logoFavicon
+          || currentStoreData.logoFavicon === '') && (
           <CardComponent
+            updated={updated}
+            handleUpdateText={handleUpdateText}
+            storeData={storeData}
             handleDeleteCard={handleDeleteCard}
             updateKey="logoFavicon"
             cardText="Favicon"
-            imageSrc={storeData.logoFavicon}
+            imageSrc={currentStoreData.logoFavicon}
             handleUpdate={handleUpdate}
           />
         )}
@@ -66,8 +95,9 @@ const ImagesBlock = ({ storeData, setStoreData }) => {
   );
 };
 ImagesBlock.propTypes = {
+  currentStoreData: PropTypes.object,
+  setCurrentStoreData: PropTypes.func,
   storeData: PropTypes.object,
-  setStoreData: PropTypes.func,
 };
 
 export default ImagesBlock;
