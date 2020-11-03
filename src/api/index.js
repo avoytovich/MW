@@ -9,7 +9,6 @@ const api = {
     if (reason) {
       url += `?reason=${reason}`;
     }
-
     return axiosInstance({
       method: 'post',
       url,
@@ -33,7 +32,6 @@ const api = {
     if (reason) {
       url += `?reason=${reason}`;
     }
-
     return axiosInstance({
       method: 'post',
       url,
@@ -124,7 +122,7 @@ const api = {
     });
   },
   getStoresByIds(id) {
-    const url = `/stores/?${id}`;
+    const url = `/stores/?id=${id}`;
     return axiosInstance({
       method: 'get',
       url,
@@ -191,7 +189,14 @@ const api = {
       data,
     });
   },
-
+  updateOrderById(id, data) {
+    const url = `/orders/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   // DELETE BY ID
   deleteProductById(id) {
     const url = `/products/${id}`;
@@ -223,6 +228,13 @@ const api = {
   },
   getThemeOptions() {
     const url = '/designs/themes?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSellingStoreOptions(customerId) {
+    const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
     return axiosInstance({
       method: 'get',
       url,

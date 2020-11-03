@@ -16,11 +16,13 @@ const ProductDetailsScreen = () => {
   const { id } = useParams();
 
   const [productHasChanges, setProductChanges] = useState(false);
+  const [selectOptions, setSelectOptions] = useState({
+    sellingStores: null,
+  });
 
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
 
-  const [storeData, setStoreData] = useState(null);
   const [currentStoreData, setCurrentStoreData] = useState(null);
 
   const saveDetails = () => {
@@ -28,28 +30,45 @@ const ProductDetailsScreen = () => {
     const sendObj = { ...currentProductData, updateDate: Date.now() };
   };
   useEffect(() => {
-    let store = null;
+    let stores = null;
+    let resourcesKeys = null;
     let isCancelled = false;
     const requests = async () => {
       try {
         const product = await api.getProductById(id);
-        const storesId = product.data?.sellingStores?.[0];
-        const resourcesKeys = [...product.data.resources].map(
-          (resource, index) => ({
-            ...resource,
-            index,
-          }),
+        const storesIds = product.data?.sellingStores?.join('&id=');
+        const sellingStoreOptions = await api.getSellingStoreOptions(
+          product.data?.customerId,
         );
-        if (storesId) {
-          store = await api.getStoreById(storesId);
+        if (product.data.resources) {
+          resourcesKeys = [...product.data.resources].map(
+            (resource, index) => ({
+              ...resource,
+              index,
+            }),
+          );
+        }
+        if (storesIds) {
+          stores = await api.getStoresByIds(storesIds);
         }
         if (!isCancelled) {
-          if (store) {
-            setStoreData(store.data);
-            setCurrentStoreData(store.data);
+          if (stores) {
+            setCurrentStoreData(stores.data);
           }
-          setProductData({ ...product.data, resources: resourcesKeys });
-          setCurrentProductData({ ...product.data, resources: resourcesKeys });
+          if (resourcesKeys) {
+            setProductData({ ...product.data, resources: resourcesKeys });
+            setCurrentProductData({
+              ...product.data,
+              resources: resourcesKeys,
+            });
+          } else {
+            setProductData(product.data);
+            setCurrentProductData(product.data);
+          }
+          setSelectOptions({
+            ...selectOptions,
+            sellingStores: sellingStoreOptions.data.items,
+          });
           setLoading(false);
         }
       } catch (error) {
@@ -65,13 +84,12 @@ const ProductDetailsScreen = () => {
   }, []);
   useEffect(() => {
     setProductChanges(
-      JSON.stringify(currentProductData) !== JSON.stringify(productData)
-        || JSON.stringify(currentStoreData) !== JSON.stringify(storeData),
+      JSON.stringify(currentProductData) !== JSON.stringify(productData),
     );
     return () => {
       setProductChanges(false);
     };
-  }, [currentProductData, currentStoreData]);
+  }, [currentProductData]);
 
   if (isLoading) return <LinearProgress />;
 
@@ -103,6 +121,7 @@ const ProductDetailsScreen = () => {
       </Zoom>
       {currentProductData && (
         <ProductDetails
+          selectOptions={selectOptions}
           setStoreData={setCurrentStoreData}
           setProductData={setCurrentProductData}
           productData={currentProductData}

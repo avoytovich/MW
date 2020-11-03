@@ -6,22 +6,40 @@ import RelatedProducts from './RelatedProducts';
 import MainInfo from './MainInfo';
 import './OrderDetails.scss';
 
-const OrderDetails = ({ orderData, customer, productsData }) => (
+const OrderDetails = ({
+  currentOrderData,
+  orderData,
+  customer,
+  productsData,
+  setCurrentOrderData,
+}) => (
   <Box className="detailContainer" display="flex" flexDirection="column">
     <Box>
       <Box display="flex" justify="space-between">
         <Box width="60%" sm={9} className="actionBlockWrapper">
-          <MainInfo orderData={orderData} customer={customer} />
+          <MainInfo
+            orderData={orderData}
+            setCurrentOrderData={setCurrentOrderData}
+            currentOrderData={currentOrderData}
+            customer={customer}
+          />
         </Box>
       </Box>
     </Box>
-    <Box>{/* <RelatedProducts productsData={productsData} /> */}</Box>
+    <Box>
+      <RelatedProducts
+        currentOrderData={currentOrderData}
+        productsData={productsData}
+      />
+    </Box>
   </Box>
 );
 OrderDetails.propTypes = {
-  orderData: PropTypes.object,
+  currentOrderData: PropTypes.object,
   customer: PropTypes.string,
   productsData: PropTypes.object,
+  setCurrentOrderData: PropTypes.func,
+  orderData: PropTypes.object,
 };
 
 export default OrderDetails;

@@ -30,68 +30,66 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
     }
   };
   return (
-    <>
-      <Box
-        width="100%"
-        display="flex"
-        alignContent="center"
-        flexDirection="row"
-        justifyContent="space-around"
-        pt="1%"
-      >
-        {(currentStoreData.logoStore || currentStoreData.logoStore === '') && (
-          <CardComponent
-            updated={updated}
-            handleUpdateText={handleUpdateText}
-            storeData={storeData}
-            handleDeleteCard={handleDeleteCard}
-            updateKey="logoStore"
-            cardText="Logo"
-            imageSrc={currentStoreData.logoStore}
-            handleUpdate={handleUpdate}
-          />
-        )}
-        {(currentStoreData.bannerInvoice
-          || currentStoreData.bannerInvoice === '') && (
-          <CardComponent
-            updated={updated}
-            handleUpdateText={handleUpdateText}
-            storeData={storeData}
-            handleDeleteCard={handleDeleteCard}
-            updateKey="bannerInvoice"
-            cardText="Invoice banner"
-            imageSrc={currentStoreData.bannerInvoice}
-            handleUpdate={handleUpdate}
-          />
-        )}
-        {(currentStoreData.bannerOrderConfEmail
-          || currentStoreData.bannerOrderConfEmail === '') && (
-          <CardComponent
-            updated={updated}
-            handleUpdateText={handleUpdateText}
-            storeData={storeData}
-            handleDeleteCard={handleDeleteCard}
-            updateKey="bannerOrderConfEmail"
-            cardText="Confirmation email banner"
-            imageSrc={currentStoreData.bannerOrderConfEmail}
-            handleUpdate={handleUpdate}
-          />
-        )}
-        {(currentStoreData.logoFavicon
-          || currentStoreData.logoFavicon === '') && (
-          <CardComponent
-            updated={updated}
-            handleUpdateText={handleUpdateText}
-            storeData={storeData}
-            handleDeleteCard={handleDeleteCard}
-            updateKey="logoFavicon"
-            cardText="Favicon"
-            imageSrc={currentStoreData.logoFavicon}
-            handleUpdate={handleUpdate}
-          />
-        )}
-      </Box>
-    </>
+    <Box
+      width="100%"
+      display="flex"
+      alignContent="center"
+      flexDirection="row"
+      justifyContent="space-around"
+      pt="1%"
+    >
+      {(currentStoreData.logoStore || currentStoreData.logoStore === '') && (
+        <CardComponent
+          updated={updated}
+          handleUpdateText={handleUpdateText}
+          storeData={storeData}
+          handleDeleteCard={handleDeleteCard}
+          updateKey="logoStore"
+          cardText="Logo"
+          imageSrc={currentStoreData.logoStore}
+          handleUpdate={handleUpdate}
+        />
+      )}
+      {(currentStoreData.bannerInvoice
+        || currentStoreData.bannerInvoice === '') && (
+        <CardComponent
+          updated={updated}
+          handleUpdateText={handleUpdateText}
+          storeData={storeData}
+          handleDeleteCard={handleDeleteCard}
+          updateKey="bannerInvoice"
+          cardText="Invoice banner"
+          imageSrc={currentStoreData.bannerInvoice}
+          handleUpdate={handleUpdate}
+        />
+      )}
+      {(currentStoreData.bannerOrderConfEmail
+        || currentStoreData.bannerOrderConfEmail === '') && (
+        <CardComponent
+          updated={updated}
+          handleUpdateText={handleUpdateText}
+          storeData={storeData}
+          handleDeleteCard={handleDeleteCard}
+          updateKey="bannerOrderConfEmail"
+          cardText="Confirmation email banner"
+          imageSrc={currentStoreData.bannerOrderConfEmail}
+          handleUpdate={handleUpdate}
+        />
+      )}
+      {(currentStoreData.logoFavicon
+        || currentStoreData.logoFavicon === '') && (
+        <CardComponent
+          updated={updated}
+          handleUpdateText={handleUpdateText}
+          storeData={storeData}
+          handleDeleteCard={handleDeleteCard}
+          updateKey="logoFavicon"
+          cardText="Favicon"
+          imageSrc={currentStoreData.logoFavicon}
+          handleUpdate={handleUpdate}
+        />
+      )}
+    </Box>
   );
 };
 ImagesBlock.propTypes = {

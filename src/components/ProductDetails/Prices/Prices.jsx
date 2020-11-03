@@ -70,6 +70,10 @@ const Prices = ({ setProductData, productData }) => {
             </Box>
             <Box width="60%">
               <TextField
+                InputProps={{
+                  inputProps: { min: 0 },
+                  form: { autocomplete: 'off' },
+                }}
                 disabled={!editable}
                 fullWidth
                 onChange={(e) => {
@@ -101,7 +105,6 @@ const Prices = ({ setProductData, productData }) => {
                     productData?.prices?.defaultCurrency
                   ]?.default?.value
                 }
-                inputProps={{ form: { autocomplete: 'off' } }}
               />
             </Box>
           </Box>
@@ -118,6 +121,10 @@ const Prices = ({ setProductData, productData }) => {
             </Box>
             <Box width="60%">
               <TextField
+                InputProps={{
+                  inputProps: { min: 0 },
+                  form: { autocomplete: 'off' },
+                }}
                 disabled={!editable}
                 fullWidth
                 onChange={(e) => {
@@ -149,7 +156,6 @@ const Prices = ({ setProductData, productData }) => {
                     productData.prices.defaultCurrency
                   ].default.value
                 }
-                inputProps={{ form: { autocomplete: 'off' } }}
               />
             </Box>
           </Box>

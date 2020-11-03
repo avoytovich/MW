@@ -11,12 +11,14 @@ const ProductDetails = ({
   setStoreData,
   productData,
   storeData,
+  selectOptions,
 }) => (
   <Box className="detailContainer" display="flex" flexDirection="column">
     <Box>
       <Box display="flex" justify="space-between">
         <Box width="60%" sm={9} className="actionBlockWrapper">
           <MainInfo
+            selectOptions={selectOptions}
             setStoreData={setStoreData}
             setProductData={setProductData}
             productData={productData}
@@ -53,6 +55,7 @@ ProductDetails.propTypes = {
   productData: PropTypes.object,
   storeData: PropTypes.object,
   setStoreData: PropTypes.func,
+  selectOptions: PropTypes.object,
 };
 
 export default ProductDetails;

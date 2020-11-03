@@ -32,7 +32,6 @@ const StoreDetailsScreen = () => {
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
       setStoreData(currentStoreData);
-      setCurrentStoreData(currentStoreData);
     });
   };
 

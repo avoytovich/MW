@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Box, Typography, Zoom, Select, MenuItem,
+  Box,
+  Typography,
+  Zoom,
+  Select,
+  MenuItem,
+  Chip,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
@@ -10,13 +15,15 @@ import formatDate from '../../../services/dateFormatting';
 import {
   lifeTime,
   trialAllowed,
-  storeNames,
   type,
 } from '../../../services/selectOptions/selectOptions';
 import './MainInfo.scss';
 
 const MainInfo = ({
-  setProductData, productData, storeData, setStoreData,
+  setProductData,
+  productData,
+  storeData,
+  selectOptions,
 }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
@@ -34,6 +41,17 @@ const MainInfo = ({
     };
     setProductData(newProductData);
   };
+
+  const formStoreNames = () => {
+    const storesArray = [];
+    productData.sellingStores.forEach((item) => {
+      const storeName = storeData.items.filter((name) => name.id === item)[0]
+        .displayName;
+      storesArray.push(storeName);
+    });
+    return storesArray.join(', ');
+  };
+
   return (
     <Box
       pb={5}
@@ -87,8 +105,13 @@ const MainInfo = ({
                 defaultValue=" "
                 disabled={!editable}
                 value={productData?.type}
-                onChange={(e) => setProductData({ ...productData, type: e.target.value })}
+                onChange={(e) =>
+                  setProductData({ ...productData, type: e.target.value })
+                }
               >
+                <MenuItem value=" ">
+                  <em />
+                </MenuItem>
                 {type.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.value}
@@ -111,17 +134,63 @@ const MainInfo = ({
               </Typography>
             </Box>
             <Box width="60%">
-              <Select
-                disabled={!editable}
-                value={storeData?.name}
-                // onChange={}
-              >
-                {storeNames.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.value}
-                  </MenuItem>
-                ))}
-              </Select>
+              {!editable ? (
+                <Typography>{formStoreNames()}</Typography>
+              ) : (
+                <Select
+                  multiple
+                  value={productData.sellingStores}
+                  onChange={(e) =>
+                    setProductData({
+                      ...productData,
+                      sellingStores: e.target.value,
+                    })
+                  }
+                  renderValue={(selected) => (
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      flexDirection="row"
+                      flexWrap="wrap"
+                    >
+                      <MenuItem value=" ">
+                        <em />
+                      </MenuItem>
+                      {selected.map((chip) => {
+                        const storeName = storeData.items.filter(
+                          (item) => item.id === chip,
+                        )[0];
+                        return (
+                          <Chip
+                            variant="outlined"
+                            color="primary"
+                            onDelete={() => {
+                              const newValue = [
+                                ...productData.sellingStores,
+                              ].filter((val) => val !== chip);
+                              setProductData({
+                                ...productData,
+                                sellingStores: newValue,
+                              });
+                            }}
+                            onMouseDown={(event) => {
+                              event.stopPropagation();
+                            }}
+                            key={chip}
+                            label={storeName.displayName}
+                          />
+                        );
+                      })}
+                    </Box>
+                  )}
+                >
+                  {selectOptions.sellingStores.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.displayName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
             </Box>
           </Box>
         </Box>
@@ -179,11 +248,16 @@ const MainInfo = ({
             <Select
               disabled={!editable}
               value={productData?.lifeTime}
-              onChange={(e) => setProductData({
-                ...productData,
-                lifeTime: e.target.value,
-              })}
+              onChange={(e) =>
+                setProductData({
+                  ...productData,
+                  lifeTime: e.target.value,
+                })
+              }
             >
+              <MenuItem value=" ">
+                <em />
+              </MenuItem>
               {lifeTime.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.value}
@@ -208,11 +282,16 @@ const MainInfo = ({
             <Select
               disabled={!editable}
               value={productData?.trialAllowed}
-              onChange={(e) => setProductData({
-                ...productData,
-                trialAllowed: e.target.value,
-              })}
+              onChange={(e) =>
+                setProductData({
+                  ...productData,
+                  trialAllowed: e.target.value,
+                })
+              }
             >
+              <MenuItem value=" ">
+                <em />
+              </MenuItem>
               {trialAllowed.map((option) => (
                 <MenuItem key={option.id} value={option.id}>
                   {option.value}
@@ -247,7 +326,7 @@ MainInfo.propTypes = {
   setProductData: PropTypes.func,
   productData: PropTypes.object,
   storeData: PropTypes.object,
-  setStoreData: PropTypes.func,
+  selectOptions: PropTypes.object,
 };
 
 export default MainInfo;
