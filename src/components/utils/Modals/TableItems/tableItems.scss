@@ -1,0 +1,41 @@
+@import '../../../../styles/variables.scss';
+
+.table-items-modal{
+  h4{
+    text-transform: capitalize;
+  }
+
+  .table-item-row{
+    height: 55px;
+    display: flex;
+
+    .icons {
+      cursor: pointer;
+      margin-left: 10px;
+  
+      &.deleteIcon {
+        color: $deleteIcon;
+      }
+      &.copyIcon {
+        color: $copyIcon;
+      }
+      &.editIcon {
+        color: $editIcon;
+      }
+    }
+  
+    .action-items{
+      display: none;
+    }
+
+    &:hover {
+      box-shadow:
+        rgba(63, 63, 68, 0.05) 0px 0px 0px 1px,
+        rgba(63, 63, 68, 0.15) 0px 1px 2px 0px;
+
+      .action-items{
+        display: flex;
+      }     
+    }
+  }
+}
