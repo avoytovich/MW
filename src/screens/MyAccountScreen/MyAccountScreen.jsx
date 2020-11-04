@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
-  Typography,
   Box,
   TextField,
   LinearProgress,
@@ -11,11 +10,17 @@ import {
   Button,
   Tabs,
   Tab,
+  Dialog,
+  InputAdornment,
+  CircularProgress,
 } from '@material-ui/core';
+
+import EditIcon from '@material-ui/icons/Edit';
 
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import CustomCard from '../../components/utils/CustomCard';
+import TableItems from '../../components/utils/Modals/TableItems';
 import localization from '../../localization';
 
 import './myAccountScreen.scss';
@@ -25,6 +30,10 @@ const MyAccountScreen = () => {
   const [identity, setIdentity] = useState(null);
   const [curIdentity, setCurIdentity] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [curStores, setStores] = useState(null);
+  const [curProducts, setProducts] = useState(null);
+  const [productsModal, setProductsModalOpen] = useState(false);
+  const [storesModal, setStoresModalOpen] = useState(false);
   const account = useSelector(({ account: { user } }) => user);
   
   const handleChange = (e) => {
@@ -42,6 +51,14 @@ const MyAccountScreen = () => {
     });
   };
 
+  const removeItem = (id, type) => {
+    if(type === 'products') {
+      setProducts((cur) => cur.filter(product => product.id !== id));
+    } else if(type === 'stores') {
+      setStores((cur) => cur.filter(store => store.id !== id));
+    }
+  };
+
   useEffect(() => {
     setHasChanges(JSON.stringify(curIdentity) !== JSON.stringify(identity));
 
@@ -54,6 +71,20 @@ const MyAccountScreen = () => {
       .then(({ data }) => {
         setIdentity(data);
         setCurIdentity(data);
+
+        api
+          .getStores(0, `&customerId=${data.customerId}`)
+          .then(({ data: { items: stores } }) => {
+            const storesObj = stores.map((store) => ({ id: store.id, name: store.name }));
+            setStores(storesObj);
+          });
+
+        api
+          .getProducts(0, `&customerId=${data.customerId}`)
+          .then(({ data: { items: products } }) => {
+            const productsObj = products.map((product) => ({ id: product.id, name: product.genericName }));
+            setProducts(productsObj);
+          });
       });
   }, []);
 
@@ -131,37 +162,67 @@ const MyAccountScreen = () => {
 
       <CustomCard title='Configuration'>
         <Box display='flex' py={5} pb={2}>
-          <TextField
-            fullWidth
-            label='Stores'
-            name='stores'
-            type='text'
-            placeholder='Stores list'
-            // value={account.given_name}
-            // onChange={handleChange}
-            variant='outlined'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            helperText='Please specify the stores you manage'
-          />
+          {curStores === null ? (
+            <Box width={1} m='10px' pt='8px'><CircularProgress /></Box>
+          ) : (
+            <TextField
+              fullWidth
+              label='Stores'
+              name='stores'
+              type='text'
+              placeholder='Stores list'
+              value={curStores.map((store) => store.name)}
+              contentEditable={false}
+              onClick={() => setStoresModalOpen(true)}
+              variant='outlined'
+              disabled
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
+              helperText='Please specify the stores you manage'
+            />
+          )}
 
-          <TextField
-            fullWidth
-            label='Catalogs & products'
-            name='catalogs'
-            type='text'
-            placeholder='Catalogs and/or products'
-            // value={account.family_name}
-            // onChange={handleChange}
-            variant='outlined'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            helperText='Please specify the catalogs you manage'
-          />
+          {curProducts === null ? (
+            <Box width={1} m='10px' pt='8px'><CircularProgress /></Box>
+          ) : (
+            <TextField
+              fullWidth
+              label='Catalogs & products'
+              name='catalogs'
+              type='text'
+              placeholder='Catalogs and/or products'
+              value={curProducts.map((product) => product.name)}
+              contentEditable={false}
+              onClick={() => setProductsModalOpen(true)}
+              variant='outlined'
+              disabled
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
+              helperText='Please specify the catalogs you manage'
+            />
+          )}
         </Box>
       </CustomCard>
+
+      <Dialog
+        open={productsModal}
+        onClose={() => setProductsModalOpen(false)}
+        aria-labelledby='table-items-dialog-title'
+        fullWidth
+        maxWidth='sm'
+      >
+        <TableItems values={curProducts} type='products' removeItem={removeItem} />
+      </Dialog>
+
+      <Dialog
+        open={storesModal}
+        onClose={() => setStoresModalOpen(false)}
+        aria-labelledby='table-items-dialog-title'
+        fullWidth
+        maxWidth='sm'
+      >
+        <TableItems values={curStores} type='stores' removeItem={removeItem} />
+      </Dialog>
     </div>
   );
 };
