@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -6,6 +6,7 @@ import {
   Select,
   MenuItem,
   Chip,
+  TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
@@ -25,14 +26,14 @@ const MainInfo = ({
   storeData,
   selectOptions,
 }) => {
+  const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
+    number: 1,
+    value: '',
+  });
+  const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
   const handleDeleteBlock = () => {
-    const newStoreData = {
-      ...storeData,
-      name: ' ',
-    };
-    setStoreData(newStoreData);
     const newProductData = {
       ...productData,
       type: ' ',
@@ -42,9 +43,32 @@ const MainInfo = ({
     setProductData(newProductData);
   };
 
+  useEffect(() => {
+    let LifeTimeNumber = false;
+    const res = productData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
+    if (res.length > 1) {
+      setLifeTimeUpdateValue({ number: res[0], value: res[1] });
+      LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEARS';
+    } else {
+      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: res[0] });
+      LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEARS';
+    }
+    setShowLifeTimeNumber(LifeTimeNumber);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    if (editable) {
+      const newLifeTime = showLifeTimeNumber
+        ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
+        : lifeTimeUpdateValue.value;
+      setProductData({ ...productData, lifeTime: newLifeTime });
+    }
+  }, [lifeTimeUpdateValue]);
+
   const formStoreNames = () => {
     const storesArray = [];
-    productData.sellingStores.forEach((item) => {
+    productData.sellingStores?.forEach((item) => {
       const storeName = storeData.items.filter((name) => name.id === item)[0]
         .displayName;
       storesArray.push(storeName);
@@ -105,9 +129,7 @@ const MainInfo = ({
                 defaultValue=" "
                 disabled={!editable}
                 value={productData?.type}
-                onChange={(e) =>
-                  setProductData({ ...productData, type: e.target.value })
-                }
+                onChange={(e) => setProductData({ ...productData, type: e.target.value })}
               >
                 <MenuItem value=" ">
                   <em />
@@ -138,14 +160,11 @@ const MainInfo = ({
                 <Typography>{formStoreNames()}</Typography>
               ) : (
                 <Select
-                  multiple
                   value={productData.sellingStores}
-                  onChange={(e) =>
-                    setProductData({
-                      ...productData,
-                      sellingStores: e.target.value,
-                    })
-                  }
+                  onChange={(e) => setProductData({
+                    ...productData,
+                    sellingStores: e.target.value,
+                  })}
                   renderValue={(selected) => (
                     <Box
                       display="flex"
@@ -245,25 +264,48 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Select
-              disabled={!editable}
-              value={productData?.lifeTime}
-              onChange={(e) =>
-                setProductData({
-                  ...productData,
-                  lifeTime: e.target.value,
-                })
-              }
-            >
-              <MenuItem value=" ">
-                <em />
-              </MenuItem>
-              {lifeTime.map((option) => (
-                <MenuItem key={option.id} value={option.id}>
-                  {option.value}
-                </MenuItem>
-              ))}
-            </Select>
+            {!editable ? (
+              <Typography>{productData?.lifeTime}</Typography>
+            ) : (
+              <>
+                {showLifeTimeNumber && (
+                  <TextField
+                    fullWidth
+                    onChange={(e) => setLifeTimeUpdateValue({
+                      ...lifeTimeUpdateValue,
+                      number: e.target.value,
+                    })}
+                    type="number"
+                    value={lifeTimeUpdateValue.number}
+                    InputProps={{
+                      inputProps: { min: 1, max: 11 },
+                      form: { autocomplete: 'off' },
+                    }}
+                  />
+                )}
+                <Select
+                  value={lifeTimeUpdateValue.value}
+                  onChange={(e) => {
+                    setShowLifeTimeNumber(
+                      e.target.value === 'MONTH' || e.target.value === 'YEARS',
+                    );
+                    setLifeTimeUpdateValue({
+                      ...lifeTimeUpdateValue,
+                      value: e.target.value,
+                    });
+                  }}
+                >
+                  <MenuItem value="">
+                    <em />
+                  </MenuItem>
+                  {lifeTime.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.value}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </>
+            )}
           </Box>
         </Box>
         <Box
@@ -282,14 +324,12 @@ const MainInfo = ({
             <Select
               disabled={!editable}
               value={productData?.trialAllowed}
-              onChange={(e) =>
-                setProductData({
-                  ...productData,
-                  trialAllowed: e.target.value,
-                })
-              }
+              onChange={(e) => setProductData({
+                ...productData,
+                trialAllowed: e.target.value,
+              })}
             >
-              <MenuItem value=" ">
+              <MenuItem value="">
                 <em />
               </MenuItem>
               {trialAllowed.map((option) => (

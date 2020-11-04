@@ -21,10 +21,7 @@ const orderDetailStatus = [
   { id: 'FORCE_CANCELED', value: 'FORCE_CANCELED' },
   { id: 'FORCE_ABORTED', value: 'FORCE_ABORTED' },
 ];
-const theme = [
-  { id: 'default', value: 'default' },
-  { id: 'ww', value: 'ww' },
-];
+
 const type = [
   { id: 'SOFTWARE', value: 'SOFTWARE' },
   { id: 'GAMES', value: 'GAMES' },
@@ -35,15 +32,14 @@ const type = [
 ];
 
 const lifeTime = [
-  { id: 'Permanent', value: 'Permanent' },
-  { id: 'Weekly renewal', value: 'Weekly renewal' },
-  { id: 'Month(s)', value: 'Month(s)' },
-  { id: 'Year(s)', value: 'Year(s)' },
-
+  { id: 'PERMANENT', value: 'PERMANENT' },
+  { id: '7DAY', value: 'Weekly renewal' },
+  { id: 'MONTH', value: 'Month(s)' },
+  { id: 'YEARS', value: 'Year(s)' },
 ];
 const trialAllowed = [
-  { id: 'default', value: 'default' },
-  { id: 'ww', value: 'ww' },
+  { id: 'true', value: 'true' },
+  { id: 'false', value: 'false' },
 ];
 const storeDetailsCardText = [
   { id: 'logoStore', value: 'Logo' },
@@ -53,7 +49,6 @@ const storeDetailsCardText = [
 ];
 export {
   status,
-  theme,
   lifeTime,
   trialAllowed,
   type,
