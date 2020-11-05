@@ -35,7 +35,7 @@ const lifeTime = [
   { id: 'PERMANENT', value: 'PERMANENT' },
   { id: '7DAY', value: 'Weekly renewal' },
   { id: 'MONTH', value: 'Month(s)' },
-  { id: 'YEARS', value: 'Year(s)' },
+  { id: 'YEAR', value: 'Year(s)' },
 ];
 const trialAllowed = [
   { id: 'true', value: 'true' },

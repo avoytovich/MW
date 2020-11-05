@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Zoom, TextField, Typography,
@@ -7,22 +7,23 @@ import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import localization from '../../../localization';
 import './Prices.scss';
 
-const Prices = ({ setProductData, productData }) => {
+const Prices = ({ setProductData, currentProductData, productData }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
 
   const handleDeleteBlock = () => {
-    const defCur = productData.prices.defaultCurrency;
+    const defCur = currentProductData.prices.defaultCurrency;
     setProductData({
-      ...productData,
+      ...currentProductData,
       prices: {
-        ...productData.prices,
+        ...currentProductData.prices,
         priceByCountryByCurrency: {
-          ...productData.prices.priceByCountryByCurrency,
+          ...currentProductData.prices.priceByCountryByCurrency,
           [defCur]: {
-            ...productData.prices.priceByCountryByCurrency[defCur],
+            ...currentProductData.prices.priceByCountryByCurrency[defCur],
             default: {
-              ...productData.prices.priceByCountryByCurrency[defCur].default,
+              ...currentProductData.prices.priceByCountryByCurrency[defCur]
+                .default,
               value: 0,
             },
           },
@@ -30,6 +31,11 @@ const Prices = ({ setProductData, productData }) => {
       },
     });
   };
+
+  useEffect(() => {
+    setEditable(false);
+  }, [productData]);
+
   return (
     <Box
       onMouseOver={() => setHoverBlock(true)}
@@ -77,21 +83,20 @@ const Prices = ({ setProductData, productData }) => {
                 disabled={!editable}
                 fullWidth
                 onChange={(e) => {
-                  const defCur = productData.prices.defaultCurrency;
+                  const defCur = currentProductData.prices.defaultCurrency;
                   setProductData({
-                    ...productData,
+                    ...currentProductData,
                     prices: {
-                      ...productData.prices,
+                      ...currentProductData.prices,
                       priceByCountryByCurrency: {
-                        ...productData.prices.priceByCountryByCurrency,
+                        ...currentProductData.prices.priceByCountryByCurrency,
                         [defCur]: {
-                          ...productData.prices.priceByCountryByCurrency[
+                          ...currentProductData.prices.priceByCountryByCurrency[
                             defCur
                           ],
                           default: {
-                            ...productData.prices.priceByCountryByCurrency[
-                              defCur
-                            ].default,
+                            ...currentProductData.prices
+                              .priceByCountryByCurrency[defCur].default,
                             value: e.target.value,
                           },
                         },
@@ -101,8 +106,8 @@ const Prices = ({ setProductData, productData }) => {
                 }}
                 type="number"
                 value={
-                  productData?.prices?.priceByCountryByCurrency?.[
-                    productData?.prices?.defaultCurrency
+                  currentProductData?.prices?.priceByCountryByCurrency?.[
+                    currentProductData?.prices?.defaultCurrency
                   ]?.default?.value
                 }
               />
@@ -128,21 +133,20 @@ const Prices = ({ setProductData, productData }) => {
                 disabled={!editable}
                 fullWidth
                 onChange={(e) => {
-                  const defCur = productData.prices.defaultCurrency;
+                  const defCur = currentProductData.prices.defaultCurrency;
                   setProductData({
-                    ...productData,
+                    ...currentProductData,
                     prices: {
-                      ...productData.prices,
+                      ...currentProductData.prices,
                       priceByCountryByCurrency: {
-                        ...productData.prices.priceByCountryByCurrency,
+                        ...currentProductData.prices.priceByCountryByCurrency,
                         [defCur]: {
-                          ...productData.prices.priceByCountryByCurrency[
+                          ...currentProductData.prices.priceByCountryByCurrency[
                             defCur
                           ],
                           default: {
-                            ...productData.prices.priceByCountryByCurrency[
-                              defCur
-                            ].default,
+                            ...currentProductData.prices
+                              .priceByCountryByCurrency[defCur].default,
                             value: e.target.value,
                           },
                         },
@@ -152,8 +156,8 @@ const Prices = ({ setProductData, productData }) => {
                 }}
                 type="number"
                 value={
-                  productData.prices.priceByCountryByCurrency[
-                    productData.prices.defaultCurrency
+                  currentProductData.prices.priceByCountryByCurrency[
+                    currentProductData.prices.defaultCurrency
                   ].default.value
                 }
               />
@@ -166,8 +170,9 @@ const Prices = ({ setProductData, productData }) => {
 };
 
 Prices.propTypes = {
-  productData: PropTypes.object,
+  currentProductData: PropTypes.object,
   setProductData: PropTypes.func,
+  productData: PropTypes.object,
 };
 
 export default Prices;

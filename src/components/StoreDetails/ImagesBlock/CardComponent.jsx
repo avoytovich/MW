@@ -13,7 +13,6 @@ import {
 } from '@material-ui/core';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { storeDetailsCardText } from '../../../services/selectOptions/selectOptions';
-
 import localization from '../../../localization';
 import './ImagesBlock.scss';
 
@@ -77,7 +76,7 @@ const CardComponent = ({
                 variant="contained"
                 component="label"
               >
-                {localization.t('general.uploadImage')}
+                {localization.t('general.selectImage')}
                 <input
                   type="file"
                   onChange={(e) => handleUpdate(updateKey, e.target.value)}

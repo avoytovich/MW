@@ -5,19 +5,18 @@ import CardComponent from './CardComponent';
 import PaginationComponent from '../../PaginationComponent';
 import './ImagesBlock.scss';
 
-// todoL updating inputs
-const ImagesBlock = ({ productData, setProductData }) => {
+const ImagesBlock = ({ currentProductData, setProductData, productData }) => {
   const handleDeleteCard = (key) => {
-    const newResources = [...productData.resources];
+    const newResources = [...currentProductData.resources];
     newResources.splice(key, 1);
-    setProductData({ ...productData, resources: newResources });
+    setProductData({ ...currentProductData, resources: newResources });
   };
-  const totalPages = Math.ceil(productData.resources?.length / 4);
+  const totalPages = Math.ceil(currentProductData.resources?.length / 4);
   const [currentPage, setCurrentPage] = useState(1);
   const [firstPage, setFirstPage] = useState(null);
 
   useEffect(() => {
-    if (productData.resources) {
+    if (currentProductData.resources) {
       setFirstPage(currentPage === 1 ? 0 : (currentPage - 1) * 4);
     }
     return () => {
@@ -26,7 +25,7 @@ const ImagesBlock = ({ productData, setProductData }) => {
   }, [currentPage]);
 
   const handleChange = (newValue, updateKey) => {
-    const newData = [...productData.resources].map((data) => {
+    const newData = [...currentProductData.resources].map((data) => {
       let val = { ...data };
       if (data.index === updateKey) {
         if (newValue.label) {
@@ -38,7 +37,7 @@ const ImagesBlock = ({ productData, setProductData }) => {
       }
       return val;
     });
-    setProductData({ ...productData, resources: [...newData] });
+    setProductData({ ...currentProductData, resources: [...newData] });
   };
 
   return (
@@ -51,10 +50,11 @@ const ImagesBlock = ({ productData, setProductData }) => {
         justifyContent="space-around"
         pt="1%"
       >
-        {[...productData.resources]
+        {[...currentProductData.resources]
           .slice(firstPage, firstPage + 4)
           .map((item) => (
             <CardComponent
+              productData={productData}
               handleDeleteCard={handleDeleteCard}
               key={item.index}
               updateKey={item.index}
@@ -75,6 +75,7 @@ const ImagesBlock = ({ productData, setProductData }) => {
 };
 ImagesBlock.propTypes = {
   productData: PropTypes.object,
+  currentProductData: PropTypes.object,
   setProductData: PropTypes.func,
 };
 

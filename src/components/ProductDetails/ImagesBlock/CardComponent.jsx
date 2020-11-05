@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -19,15 +19,21 @@ import localization from '../../../localization';
 import './ImagesBlock.scss';
 
 const CardComponent = ({
+  productData,
   cardText,
   imageSrc,
   updateKey,
   handleChange,
   handleDeleteCard,
 }) => {
+  const [imagePreview, setImagePreview] = useState(null);
   const [editable, setEditable] = useState(false);
   const [upload, setUpload] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
+
+  useEffect(() => {
+    setEditable(false);
+  }, [productData]);
 
   return (
     <Box
@@ -56,15 +62,16 @@ const CardComponent = ({
           <CardActionArea>
             <CardMedia
               className="cardImage"
-              image={imageSrc}
+              image={imagePreview || imageSrc}
               title="Contemplative Reptile"
             >
-              <Zoom in={imageSrc && editable}>
+              <Zoom in={imageSrc && imageSrc !== ' ' && editable}>
                 <Box className="actionBlock">
                   <CloseIcon
                     color="primary"
                     onClick={() => {
                       setUpload(true);
+                      setImagePreview(null);
                       handleChange({ url: ' ' }, updateKey);
                     }}
                   />
@@ -80,10 +87,14 @@ const CardComponent = ({
                 variant="contained"
                 component="label"
               >
-                {localization.t('general.uploadImage')}
+                {localization.t('general.selectImage')}
                 <input
                   type="file"
-                  onChange={(e) => handleChange({ url: e.target.value }, updateKey)}
+                  onChange={(e) => {
+                    setImagePreview(URL.createObjectURL(e.target.files[0]));
+                    setUpload(false);
+                    handleChange({ url: e.target.files[0] }, updateKey);
+                  }}
                   style={{ display: 'none' }}
                 />
               </Button>
@@ -109,8 +120,9 @@ const CardComponent = ({
   );
 };
 CardComponent.propTypes = {
+  productData: PropTypes.object,
   cardText: PropTypes.string,
-  imageSrc: PropTypes.string,
+  imageSrc: PropTypes.any,
   updateKey: PropTypes.number,
   handleDeleteCard: PropTypes.func,
   handleChange: PropTypes.func,

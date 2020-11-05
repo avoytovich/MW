@@ -112,7 +112,8 @@ const MainInfo = ({
                 disabled={!editable}
                 value={currentStoreData.status}
                 onChange={(e) => setCurrentStoreData({
-                  ...currentStoreData, status: e.target.value,
+                  ...currentStoreData,
+                  status: e.target.value,
                 })}
               >
                 <MenuItem value=" ">
@@ -140,13 +141,22 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <TextField
+                required
+                error={currentStoreData.routes[0]?.hostname === ''}
+                helperText={
+                  currentStoreData.routes[0]?.hostname === ''
+                    ? 'Incorrect entry.'
+                    : ''
+                }
                 disabled={!editable}
                 fullWidth
-                multiple
                 onChange={(e) => {
                   const newArray = [...currentStoreData.routes];
                   newArray[0] = { ...newArray[0], hostname: e.target.value };
-                  setCurrentStoreData({ ...currentStoreData, routes: newArray });
+                  setCurrentStoreData({
+                    ...currentStoreData,
+                    routes: newArray,
+                  });
                 }}
                 type="text"
                 value={currentStoreData.routes[0]?.hostname}
@@ -215,7 +225,11 @@ const MainInfo = ({
             ) : (
               <Select
                 multiple
-                value={currentStoreData?.saleLocales}
+                value={
+                  currentStoreData.saleLocales
+                    ? currentStoreData.saleLocales
+                    : []
+                }
                 onChange={(e) => setCurrentStoreData({
                   ...currentStoreData,
                   saleLocales: e.target.value,
@@ -280,7 +294,11 @@ const MainInfo = ({
           <Box width="60%">
             <Select
               disabled={!editable}
-              value={`${currentStoreData.designs.endUserPortal.themeRef.customerId}: ${currentStoreData.designs.endUserPortal.themeRef.name}`}
+              value={
+                currentStoreData.designs?.endUserPortal
+                  ? `${currentStoreData.designs.endUserPortal.themeRef.customerId}: ${currentStoreData.designs.endUserPortal.themeRef.name}`
+                  : ''
+              }
               onChange={(e) => {
                 const newValue = e.target.value.split(':');
                 setCurrentStoreData({
@@ -327,7 +345,11 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
-              value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
+              value={
+                currentStoreData.designs?.checkout
+                  ? `${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`
+                  : ''
+              }
               disabled={!editable}
               onChange={(e) => {
                 const newValue = e.target.value.split(':');

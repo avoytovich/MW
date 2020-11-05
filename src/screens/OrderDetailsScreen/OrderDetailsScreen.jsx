@@ -16,6 +16,7 @@ import api from '../../api';
 
 const OrderDetailsScreen = () => {
   const dispatch = useDispatch();
+  const [makeUpdate, setMakeUpdate] = useState(true);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -32,7 +33,7 @@ const OrderDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setOrderData(currentOrderData);
+      setTimeout(() => setMakeUpdate(true), 1000);
     });
   };
 
@@ -62,6 +63,7 @@ const OrderDetailsScreen = () => {
       } catch (error) {
         if (!isCancelled) {
           setLoading(false);
+          setMakeUpdate(false);
         }
       }
     };
@@ -69,7 +71,7 @@ const OrderDetailsScreen = () => {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [makeUpdate]);
 
   useEffect(() => {
     setOrderChanges(

@@ -16,6 +16,7 @@ import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
+  const [makeUpdate, setMakeUpdate] = useState(true);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -31,7 +32,7 @@ const StoreDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setStoreData(currentStoreData);
+      setTimeout(() => setMakeUpdate(true), 1000);
     });
   };
 
@@ -55,6 +56,7 @@ const StoreDetailsScreen = () => {
       } catch (error) {
         if (!isCancelled) {
           setLoading(false);
+          setMakeUpdate(false);
         }
       }
     };
@@ -62,7 +64,7 @@ const StoreDetailsScreen = () => {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [makeUpdate]);
 
   useEffect(() => {
     setStoreChanges(

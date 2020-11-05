@@ -15,7 +15,11 @@ import localization from '../../../localization';
 import { getPaymentImages, paymentImages } from './images';
 import './PaymentMethods.scss';
 
-const PaymentMethods = ({ currentStoreData, setCurrentStoreData, storeData }) => {
+const PaymentMethods = ({
+  currentStoreData,
+  setCurrentStoreData,
+  storeData,
+}) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
 
@@ -24,25 +28,39 @@ const PaymentMethods = ({ currentStoreData, setCurrentStoreData, storeData }) =>
   }, [storeData]);
 
   const onChange = (val) => {
-    const newArray = [
-      ...currentStoreData.designs.paymentComponent
-        .rankedPaymentTabsByCountriesList,
-    ];
-    newArray[0] = {
-      ...currentStoreData.designs.paymentComponent
-        .rankedPaymentTabsByCountriesList[0],
-      rankedPaymentTabs: val,
-    };
-    setCurrentStoreData({
-      ...currentStoreData,
-      designs: {
-        ...currentStoreData.designs,
-        paymentComponent: {
-          ...currentStoreData.designs.paymentComponent,
-          rankedPaymentTabsByCountriesList: newArray,
+    let newArray;
+    let newData;
+    if (currentStoreData.designs) {
+      newArray = [
+        ...currentStoreData.designs.paymentComponent
+          .rankedPaymentTabsByCountriesList,
+      ];
+      newArray[0] = {
+        ...currentStoreData.designs.paymentComponent
+          .rankedPaymentTabsByCountriesList[0],
+        rankedPaymentTabs: val,
+      };
+      newData = {
+        ...currentStoreData,
+        designs: {
+          ...currentStoreData.designs,
+          paymentComponent: {
+            ...currentStoreData.designs.paymentComponent,
+            rankedPaymentTabsByCountriesList: newArray,
+          },
         },
-      },
-    });
+      };
+    } else {
+      newArray = [{ rankedPaymentTabs: val }];
+
+      newData = {
+        ...currentStoreData,
+        designs: {
+          paymentComponent: { rankedPaymentTabsByCountriesList: newArray },
+        },
+      };
+    }
+    setCurrentStoreData(newData);
   };
 
   const handleDeleteChip = (value) => {
@@ -72,7 +90,7 @@ const PaymentMethods = ({ currentStoreData, setCurrentStoreData, storeData }) =>
       >
         {!editable ? (
           // eslint-disable-next-line max-len
-          currentStoreData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0].rankedPaymentTabs.map(
+          currentStoreData.designs?.paymentComponent.rankedPaymentTabsByCountriesList[0].rankedPaymentTabs.map(
             (item) => {
               const src = getPaymentImages(item);
               return (

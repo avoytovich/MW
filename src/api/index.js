@@ -197,6 +197,14 @@ const api = {
       data,
     });
   },
+  updateProductById(id, data) {
+    const url = `/products/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   // DELETE BY ID
   deleteProductById(id) {
     const url = `/products/${id}`;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FolderOpen } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 import {
   LinearProgress,
   Zoom,
@@ -8,10 +9,15 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import localization from '../../localization';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import ProductDetails from '../../components/ProductDetails';
 
 const ProductDetailsScreen = () => {
+  const dispatch = useDispatch();
+  const [makeUpdate, setMakeUpdate] = useState(true);
+
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
 
@@ -23,20 +29,22 @@ const ProductDetailsScreen = () => {
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
 
-  const [currentStoreData, setCurrentStoreData] = useState(null);
-
   const saveDetails = () => {
-    // eslint-disable-next-line no-unused-vars
     const sendObj = { ...currentProductData, updateDate: Date.now() };
+    api.updateProductById(currentProductData.id, sendObj).then(() => {
+      dispatch(
+        showNotification(localization.t('general.updatesHaveBeenSaved')),
+      );
+      setTimeout(() => setMakeUpdate(true), 1000);
+    });
   };
   useEffect(() => {
-    let stores = null;
     let resourcesKeys = null;
     let isCancelled = false;
+
     const requests = async () => {
       try {
         const product = await api.getProductById(id);
-        const storesIds = product.data?.sellingStores?.join('&id=');
         const sellingStoreOptions = await api.getSellingStoreOptions(
           product.data?.customerId,
         );
@@ -48,13 +56,7 @@ const ProductDetailsScreen = () => {
             }),
           );
         }
-        if (storesIds) {
-          stores = await api.getStoresByIds(storesIds);
-        }
         if (!isCancelled) {
-          if (stores) {
-            setCurrentStoreData(stores.data);
-          }
           if (resourcesKeys) {
             setProductData({ ...product.data, resources: resourcesKeys });
             setCurrentProductData({
@@ -70,6 +72,7 @@ const ProductDetailsScreen = () => {
             sellingStores: sellingStoreOptions.data.items,
           });
           setLoading(false);
+          setMakeUpdate(false);
         }
       } catch (error) {
         if (!isCancelled) {
@@ -77,11 +80,13 @@ const ProductDetailsScreen = () => {
         }
       }
     };
-    requests();
+    if (makeUpdate) {
+      requests();
+    }
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [makeUpdate]);
   useEffect(() => {
     setProductChanges(
       JSON.stringify(currentProductData) !== JSON.stringify(productData),
@@ -122,10 +127,9 @@ const ProductDetailsScreen = () => {
       {currentProductData && (
         <ProductDetails
           selectOptions={selectOptions}
-          setStoreData={setCurrentStoreData}
           setProductData={setCurrentProductData}
-          productData={currentProductData}
-          storeData={currentStoreData}
+          currentProductData={currentProductData}
+          productData={productData}
         />
       )}
     </>

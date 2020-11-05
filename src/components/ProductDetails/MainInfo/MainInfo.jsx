@@ -23,7 +23,7 @@ import './MainInfo.scss';
 const MainInfo = ({
   setProductData,
   productData,
-  storeData,
+  currentProductData,
   selectOptions,
 }) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
@@ -35,47 +35,50 @@ const MainInfo = ({
   const [hoverBlock, setHoverBlock] = useState(false);
   const handleDeleteBlock = () => {
     const newProductData = {
-      ...productData,
+      ...currentProductData,
       type: ' ',
       lifeTime: ' ',
       trialAllowed: ' ',
     };
     setProductData(newProductData);
   };
-
   useEffect(() => {
     let LifeTimeNumber = false;
-    const res = productData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
+    const res = currentProductData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
+
     if (res.length > 1) {
       setLifeTimeUpdateValue({ number: res[0], value: res[1] });
-      LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEARS';
+      LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR';
     } else {
       setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: res[0] });
-      LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEARS';
+      LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR';
     }
     setShowLifeTimeNumber(LifeTimeNumber);
     return () => {};
   }, []);
-
   useEffect(() => {
     if (editable) {
       const newLifeTime = showLifeTimeNumber
         ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
         : lifeTimeUpdateValue.value;
-      setProductData({ ...productData, lifeTime: newLifeTime });
+      setProductData({ ...currentProductData, lifeTime: newLifeTime });
     }
   }, [lifeTimeUpdateValue]);
 
+  useEffect(() => {
+    setEditable(false);
+  }, [productData]);
+
   const formStoreNames = () => {
     const storesArray = [];
-    productData.sellingStores?.forEach((item) => {
-      const storeName = storeData.items.filter((name) => name.id === item)[0]
-        .displayName;
+    currentProductData.sellingStores?.forEach((item) => {
+      const storeName = selectOptions.sellingStores.filter(
+        (store) => store.id === item,
+      )[0].displayName;
       storesArray.push(storeName);
     });
     return storesArray.join(', ');
   };
-
   return (
     <Box
       pb={5}
@@ -101,8 +104,10 @@ const MainInfo = ({
           flexDirection="column"
         >
           <Box>
-            {productData.genericName && (
-              <Typography variant="h1">{productData.genericName}</Typography>
+            {currentProductData.genericName && (
+              <Typography variant="h1">
+                {currentProductData.genericName}
+              </Typography>
             )}
           </Box>
         </Box>
@@ -128,8 +133,11 @@ const MainInfo = ({
               <Select
                 defaultValue=" "
                 disabled={!editable}
-                value={productData?.type}
-                onChange={(e) => setProductData({ ...productData, type: e.target.value })}
+                value={currentProductData?.type}
+                onChange={(e) => setProductData({
+                  ...currentProductData,
+                  type: e.target.value,
+                })}
               >
                 <MenuItem value=" ">
                   <em />
@@ -160,11 +168,18 @@ const MainInfo = ({
                 <Typography>{formStoreNames()}</Typography>
               ) : (
                 <Select
-                  value={productData.sellingStores}
-                  onChange={(e) => setProductData({
-                    ...productData,
-                    sellingStores: e.target.value,
-                  })}
+                  multiple
+                  value={
+                    currentProductData.sellingStores
+                      ? currentProductData.sellingStores
+                      : []
+                  }
+                  onChange={(e) => {
+                    setProductData({
+                      ...currentProductData,
+                      sellingStores: e.target.value,
+                    });
+                  }}
                   renderValue={(selected) => (
                     <Box
                       display="flex"
@@ -172,11 +187,8 @@ const MainInfo = ({
                       flexDirection="row"
                       flexWrap="wrap"
                     >
-                      <MenuItem value=" ">
-                        <em />
-                      </MenuItem>
                       {selected.map((chip) => {
-                        const storeName = storeData.items.filter(
+                        const storeName = selectOptions.sellingStores.filter(
                           (item) => item.id === chip,
                         )[0];
                         return (
@@ -185,10 +197,10 @@ const MainInfo = ({
                             color="primary"
                             onDelete={() => {
                               const newValue = [
-                                ...productData.sellingStores,
+                                ...currentProductData.sellingStores,
                               ].filter((val) => val !== chip);
                               setProductData({
-                                ...productData,
+                                ...currentProductData,
                                 sellingStores: newValue,
                               });
                             }}
@@ -233,7 +245,13 @@ const MainInfo = ({
               {localization.t('labels.currency')}
             </Typography>
           </Box>
-          <Box width="60%">{/* currency input */}</Box>
+          <Box width="60%">
+            <Typography>
+              {Object.keys(
+                currentProductData?.prices?.priceByCountryByCurrency,
+              ).join(', ')}
+            </Typography>
+          </Box>
         </Box>
         <Box
           width="100%"
@@ -248,7 +266,7 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{formatDate(productData.updateDate)}</Typography>
+            <Typography>{formatDate(currentProductData.updateDate)}</Typography>
           </Box>
         </Box>
         <Box
@@ -265,7 +283,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             {!editable ? (
-              <Typography>{productData?.lifeTime}</Typography>
+              <Typography>{currentProductData?.lifeTime}</Typography>
             ) : (
               <>
                 {showLifeTimeNumber && (
@@ -287,7 +305,7 @@ const MainInfo = ({
                   value={lifeTimeUpdateValue.value}
                   onChange={(e) => {
                     setShowLifeTimeNumber(
-                      e.target.value === 'MONTH' || e.target.value === 'YEARS',
+                      e.target.value === 'MONTH' || e.target.value === 'YEAR',
                     );
                     setLifeTimeUpdateValue({
                       ...lifeTimeUpdateValue,
@@ -323,9 +341,13 @@ const MainInfo = ({
           <Box width="60%">
             <Select
               disabled={!editable}
-              value={productData?.trialAllowed}
+              value={
+                currentProductData.trialAllowed === undefined
+                  ? ''
+                  : currentProductData.trialAllowed
+              }
               onChange={(e) => setProductData({
-                ...productData,
+                ...currentProductData,
                 trialAllowed: e.target.value,
               })}
             >
@@ -364,9 +386,9 @@ const MainInfo = ({
 };
 MainInfo.propTypes = {
   setProductData: PropTypes.func,
-  productData: PropTypes.object,
-  storeData: PropTypes.object,
+  currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
+  productData: PropTypes.object,
 };
 
 export default MainInfo;
