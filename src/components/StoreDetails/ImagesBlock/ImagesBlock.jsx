@@ -8,9 +8,6 @@ import './ImagesBlock.scss';
 const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
   const [updated, setUpdated] = useState(null);
 
-  const handleUpdate = (key, src) => {
-    setCurrentStoreData({ ...currentStoreData, [key]: src });
-  };
   const handleDeleteCard = (key) => {
     const newData = { ...currentStoreData };
     delete newData[key];
@@ -47,7 +44,6 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
           updateKey="logoStore"
           cardText="Logo"
           imageSrc={currentStoreData.logoStore}
-          handleUpdate={handleUpdate}
         />
       )}
       {(currentStoreData.bannerInvoice
@@ -60,7 +56,6 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
           updateKey="bannerInvoice"
           cardText="Invoice banner"
           imageSrc={currentStoreData.bannerInvoice}
-          handleUpdate={handleUpdate}
         />
       )}
       {(currentStoreData.bannerOrderConfEmail
@@ -73,7 +68,6 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
           updateKey="bannerOrderConfEmail"
           cardText="Confirmation email banner"
           imageSrc={currentStoreData.bannerOrderConfEmail}
-          handleUpdate={handleUpdate}
         />
       )}
       {(currentStoreData.logoFavicon
@@ -86,7 +80,6 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
           updateKey="logoFavicon"
           cardText="Favicon"
           imageSrc={currentStoreData.logoFavicon}
-          handleUpdate={handleUpdate}
         />
       )}
     </Box>

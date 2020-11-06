@@ -28,12 +28,7 @@ const ImagesBlock = ({ currentProductData, setProductData, productData }) => {
     const newData = [...currentProductData.resources].map((data) => {
       let val = { ...data };
       if (data.index === updateKey) {
-        if (newValue.label) {
-          val = { ...val, label: newValue.label };
-        }
-        if (newValue.url) {
-          val = { ...val, url: newValue.url };
-        }
+        val = { ...val, label: newValue };
       }
       return val;
     });

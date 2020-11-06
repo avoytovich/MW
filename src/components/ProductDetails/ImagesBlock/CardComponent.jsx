@@ -7,15 +7,9 @@ import {
   CardActionArea,
   CardContent,
   Zoom,
-  Button,
   TextField,
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Close as CloseIcon,
-} from '@material-ui/icons';
-import localization from '../../../localization';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import './ImagesBlock.scss';
 
 const CardComponent = ({
@@ -26,9 +20,7 @@ const CardComponent = ({
   handleChange,
   handleDeleteCard,
 }) => {
-  const [imagePreview, setImagePreview] = useState(null);
   const [editable, setEditable] = useState(false);
-  const [upload, setUpload] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
 
   useEffect(() => {
@@ -62,47 +54,13 @@ const CardComponent = ({
           <CardActionArea>
             <CardMedia
               className="cardImage"
-              image={imagePreview || imageSrc}
+              image={imageSrc}
               title="Contemplative Reptile"
-            >
-              <Zoom in={imageSrc && imageSrc !== ' ' && editable}>
-                <Box className="actionBlock">
-                  <CloseIcon
-                    color="primary"
-                    onClick={() => {
-                      setUpload(true);
-                      setImagePreview(null);
-                      handleChange({ url: ' ' }, updateKey);
-                    }}
-                  />
-                </Box>
-              </Zoom>
-            </CardMedia>
-            <Zoom in={upload && editable}>
-              <Button
-                id="upload-image-button"
-                color="primary"
-                size="large"
-                type="submit"
-                variant="contained"
-                component="label"
-              >
-                {localization.t('general.selectImage')}
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    setImagePreview(URL.createObjectURL(e.target.files[0]));
-                    setUpload(false);
-                    handleChange({ url: e.target.files[0] }, updateKey);
-                  }}
-                  style={{ display: 'none' }}
-                />
-              </Button>
-            </Zoom>
+            />
             <CardContent>
               <Box pt={3} pb={7}>
                 <TextField
-                  onChange={(e) => handleChange({ label: e.target.value }, updateKey)}
+                  onChange={(e) => handleChange(e.target.value, updateKey)}
                   disabled={!editable}
                   fullWidth
                   multiple
