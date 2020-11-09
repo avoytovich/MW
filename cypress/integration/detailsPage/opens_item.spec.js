@@ -16,12 +16,21 @@ describe('On click open appropriate item', () => {
       .then(($element) => {
         id = $element.attr('data-id');
       })
-      .click();
-    cy.wait('@requestProductData').then((request) => {
-      expect(request.status).to.be.equal(200);
-      expect(request.response.body.id).to.be.equal(id);
-      cy.url().should('include', id);
-    });
+      .click()
+      .then(() => {
+        cy.wait('@requestProductData').then((xhr) => {
+          cy.wrap(xhr).then((data) => {
+            if (data.status === 200) {
+              expect(data.response.body.id).to.be.equal(id);
+            } else {
+              cy.get('#error-notification')
+                .should('exist')
+                .and('have.text', data.response.body.message);
+            }
+          });
+        });
+        cy.url().should('include', id);
+      });
   });
 
   it('Open selected store', () => {
@@ -33,12 +42,21 @@ describe('On click open appropriate item', () => {
       .then(($element) => {
         id = $element.attr('data-id');
       })
-      .click();
-    cy.wait('@requestStoreData').then((request) => {
-      expect(request.status).to.be.equal(200);
-      expect(request.response.body.id).to.be.equal(id);
-      cy.url().should('include', id);
-    });
+      .click()
+      .then(() => {
+        cy.wait('@requestStoreData').then((xhr) => {
+          cy.wrap(xhr).then((data) => {
+            if (data.status === 200) {
+              expect(data.response.body.id).to.be.equal(id);
+            } else {
+              cy.get('#error-notification')
+                .should('exist')
+                .and('have.text', data.response.body.message);
+            }
+          });
+        });
+        cy.url().should('include', id);
+      });
   });
 
   it('Open selected order', () => {
@@ -50,11 +68,20 @@ describe('On click open appropriate item', () => {
       .then(($element) => {
         id = $element.attr('data-id');
       })
-      .click();
-    cy.wait('@requestOrderData').then((request) => {
-      expect(request.status).to.be.equal(200);
-      expect(request.response.body.id).to.be.equal(id);
-      cy.url().should('include', id);
-    });
+      .click()
+      .then(() => {
+        cy.wait('@requestOrderData').then((xhr) => {
+          cy.wrap(xhr).then((data) => {
+            if (data.status === 200) {
+              expect(data.response.body.id).to.be.equal(id);
+            } else {
+              cy.get('#error-notification')
+                .should('exist')
+                .and('have.text', data.response.body.message);
+            }
+          });
+        });
+        cy.url().should('include', id);
+      });
   });
 });
