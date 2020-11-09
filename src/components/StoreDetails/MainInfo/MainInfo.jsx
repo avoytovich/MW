@@ -116,7 +116,7 @@ const MainInfo = ({
                   status: e.target.value,
                 })}
               >
-                <MenuItem value=" ">
+                <MenuItem value="">
                   <em />
                 </MenuItem>
                 {status.map((option) => (
@@ -142,12 +142,6 @@ const MainInfo = ({
             <Box width="60%">
               <TextField
                 required
-                error={currentStoreData.routes[0]?.hostname === ''}
-                helperText={
-                  currentStoreData.routes[0]?.hostname === ''
-                    ? 'Incorrect entry.'
-                    : ''
-                }
                 disabled
                 fullWidth
                 onChange={(e) => {
@@ -159,7 +153,7 @@ const MainInfo = ({
                   });
                 }}
                 type="text"
-                value={currentStoreData.routes[0]?.hostname}
+                value={currentStoreData.routes[0].hostname}
                 inputProps={{ form: { autocomplete: 'off' } }}
               />
             </Box>
@@ -194,7 +188,7 @@ const MainInfo = ({
                 defaultLocale: e.target.value,
               })}
             >
-              <MenuItem value=" ">
+              <MenuItem value="">
                 <em />
               </MenuItem>
               {selectLanguages.map((option) => (
@@ -225,11 +219,7 @@ const MainInfo = ({
             ) : (
               <Select
                 multiple
-                value={
-                  currentStoreData.saleLocales
-                    ? currentStoreData.saleLocales
-                    : []
-                }
+                value={currentStoreData.saleLocales}
                 onChange={(e) => setCurrentStoreData({
                   ...currentStoreData,
                   saleLocales: e.target.value,
@@ -241,7 +231,7 @@ const MainInfo = ({
                     flexDirection="row"
                     flexWrap="wrap"
                   >
-                    <MenuItem value=" ">
+                    <MenuItem value="">
                       <em />
                     </MenuItem>
                     {selected.map((chip) => (
@@ -267,7 +257,7 @@ const MainInfo = ({
                   </Box>
                 )}
               >
-                <MenuItem value=" ">
+                <MenuItem value="">
                   <em />
                 </MenuItem>
                 {selectLanguages.map((option) => (
@@ -294,11 +284,7 @@ const MainInfo = ({
           <Box width="60%">
             <Select
               disabled={!editable}
-              value={
-                currentStoreData.designs?.endUserPortal
-                  ? `${currentStoreData.designs.endUserPortal.themeRef.customerId}: ${currentStoreData.designs.endUserPortal.themeRef.name}`
-                  : ''
-              }
+              value={`${currentStoreData.designs.endUserPortal.themeRef.customerId}: ${currentStoreData.designs.endUserPortal.themeRef.name}`}
               onChange={(e) => {
                 const newValue = e.target.value.split(':');
                 setCurrentStoreData({
@@ -316,7 +302,7 @@ const MainInfo = ({
                 });
               }}
             >
-              <MenuItem value=" ">
+              <MenuItem value=': '>
                 <em />
               </MenuItem>
               {selectOptions.theme.map((option) => (
@@ -345,11 +331,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
-              value={
-                currentStoreData.designs?.checkout
-                  ? `${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`
-                  : ''
-              }
+              value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
               disabled={!editable}
               onChange={(e) => {
                 const newValue = e.target.value.split(':');
@@ -368,7 +350,7 @@ const MainInfo = ({
                 });
               }}
             >
-              <MenuItem value=" ">
+              <MenuItem value=': '>
                 <em />
               </MenuItem>
               {selectOptions.theme.map((option) => (

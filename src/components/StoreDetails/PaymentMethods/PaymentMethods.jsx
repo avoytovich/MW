@@ -28,38 +28,25 @@ const PaymentMethods = ({
   }, [storeData]);
 
   const onChange = (val) => {
-    let newArray;
-    let newData;
-    if (currentStoreData.designs) {
-      newArray = [
-        ...currentStoreData.designs.paymentComponent
-          .rankedPaymentTabsByCountriesList,
-      ];
-      newArray[0] = {
-        ...currentStoreData.designs.paymentComponent
-          .rankedPaymentTabsByCountriesList[0],
-        rankedPaymentTabs: val,
-      };
-      newData = {
-        ...currentStoreData,
-        designs: {
-          ...currentStoreData.designs,
-          paymentComponent: {
-            ...currentStoreData.designs.paymentComponent,
-            rankedPaymentTabsByCountriesList: newArray,
-          },
+    const newArray = [
+      ...currentStoreData.designs.paymentComponent
+        .rankedPaymentTabsByCountriesList,
+    ];
+    newArray[0] = {
+      ...currentStoreData.designs.paymentComponent
+        .rankedPaymentTabsByCountriesList[0],
+      rankedPaymentTabs: val,
+    };
+    const newData = {
+      ...currentStoreData,
+      designs: {
+        ...currentStoreData.designs,
+        paymentComponent: {
+          ...currentStoreData.designs.paymentComponent,
+          rankedPaymentTabsByCountriesList: newArray,
         },
-      };
-    } else {
-      newArray = [{ rankedPaymentTabs: val }];
-
-      newData = {
-        ...currentStoreData,
-        designs: {
-          paymentComponent: { rankedPaymentTabsByCountriesList: newArray },
-        },
-      };
-    }
+      },
+    };
     setCurrentStoreData(newData);
   };
 

@@ -36,9 +36,10 @@ const MainInfo = ({
   const handleDeleteBlock = () => {
     const newProductData = {
       ...currentProductData,
-      type: ' ',
-      lifeTime: ' ',
-      trialAllowed: ' ',
+      type: '',
+      lifeTime: '',
+      trialAllowed: '',
+      sellingStores: [],
     };
     setProductData(newProductData);
   };
@@ -46,16 +47,21 @@ const MainInfo = ({
     let LifeTimeNumber = false;
     const res = currentProductData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
 
-    if (res.length > 1) {
+    if (res && res.length > 1 && res[1] !== 'DAY') {
       setLifeTimeUpdateValue({ number: res[0], value: res[1] });
       LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR';
-    } else {
-      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: res[0] });
+    } else if (res) {
+      setLifeTimeUpdateValue({
+        ...lifeTimeUpdateValue,
+        value: currentProductData.lifeTime,
+      });
       LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR';
+    } else {
+      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: '' });
     }
     setShowLifeTimeNumber(LifeTimeNumber);
     return () => {};
-  }, []);
+  }, [currentProductData.lifeTime]);
   useEffect(() => {
     if (editable) {
       const newLifeTime = showLifeTimeNumber
@@ -71,7 +77,7 @@ const MainInfo = ({
 
   const formStoreNames = () => {
     const storesArray = [];
-    currentProductData.sellingStores?.forEach((item) => {
+    currentProductData.sellingStores.forEach((item) => {
       const storeName = selectOptions.sellingStores.filter(
         (store) => store.id === item,
       )[0]?.name;
@@ -131,15 +137,14 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
-                defaultValue=" "
                 disabled={!editable}
-                value={currentProductData?.type}
+                value={currentProductData.type}
                 onChange={(e) => setProductData({
                   ...currentProductData,
                   type: e.target.value,
                 })}
               >
-                <MenuItem value=" ">
+                <MenuItem value="">
                   <em />
                 </MenuItem>
                 {type.map((option) => (
@@ -283,7 +288,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             {!editable ? (
-              <Typography>{currentProductData?.lifeTime}</Typography>
+              <Typography>{currentProductData.lifeTime}</Typography>
             ) : (
               <>
                 {showLifeTimeNumber && (
@@ -341,11 +346,7 @@ const MainInfo = ({
           <Box width="60%">
             <Select
               disabled={!editable}
-              value={
-                currentProductData.trialAllowed === undefined
-                  ? ''
-                  : currentProductData.trialAllowed
-              }
+              value={currentProductData.trialAllowed}
               onChange={(e) => setProductData({
                 ...currentProductData,
                 trialAllowed: e.target.value,

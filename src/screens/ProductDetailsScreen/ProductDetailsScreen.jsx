@@ -28,8 +28,37 @@ const ProductDetailsScreen = () => {
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
 
+  const checkRequiredFields = (product) => {
+    let resourcesKeys = null;
+    let resObj = { ...product };
+
+    if (resObj.resources) {
+      resourcesKeys = [...resObj.resources].map((resource, index) => ({
+        ...resource,
+        index,
+      }));
+    }
+    if (resourcesKeys) {
+      resObj = { ...resObj, resources: resourcesKeys };
+    }
+    if (!resObj.type) {
+      resObj = { ...resObj, type: '' };
+    }
+    if (!resObj.sellingStores) {
+      resObj = { ...resObj, sellingStores: [] };
+    }
+    if (!resObj.lifeTime) {
+      resObj = { ...resObj, lifeTime: '' };
+    }
+    if (!resObj.trialAllowed) {
+      resObj = { ...resObj, trialAllowed: '' };
+    }
+    return resObj;
+  };
+
   const saveDetails = () => {
-    const sendObj = { ...currentProductData, updateDate: Date.now() };
+    const updateDate = Date.now();
+    const sendObj = { ...currentProductData, updateDate };
     api.updateProductById(currentProductData.id, sendObj).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
@@ -38,7 +67,6 @@ const ProductDetailsScreen = () => {
     });
   };
   useEffect(() => {
-    let resourcesKeys = null;
     let isCancelled = false;
 
     const requests = async () => {
@@ -47,25 +75,11 @@ const ProductDetailsScreen = () => {
         const sellingStoreOptions = await api.getSellingStoreOptions(
           product.data?.customerId,
         );
-        if (product.data.resources) {
-          resourcesKeys = [...product.data.resources].map(
-            (resource, index) => ({
-              ...resource,
-              index,
-            }),
-          );
-        }
+
         if (!isCancelled) {
-          if (resourcesKeys) {
-            setProductData({ ...product.data, resources: resourcesKeys });
-            setCurrentProductData({
-              ...product.data,
-              resources: resourcesKeys,
-            });
-          } else {
-            setProductData(product.data);
-            setCurrentProductData(product.data);
-          }
+          const checkedProduct = checkRequiredFields(product.data);
+          setProductData(checkedProduct);
+          setCurrentProductData(checkedProduct);
           setSelectOptions({
             ...selectOptions,
             sellingStores: sellingStoreOptions.data.items,
