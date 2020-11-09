@@ -18,7 +18,12 @@ const CardComponent = ({ text, title }) => (
               <Typography>{title}</Typography>
             </Box>
             <Box pt={3} pb={7}>
-              <Typography>{text}</Typography>
+              <Typography
+                className="cardText"
+                dangerouslySetInnerHTML={{ __html: text }}
+                variant="body2"
+                color="secondary"
+              />
             </Box>
           </CardContent>
         </CardActionArea>

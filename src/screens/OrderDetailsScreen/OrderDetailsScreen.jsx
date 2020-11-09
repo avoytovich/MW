@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import {
   LinearProgress,
   Box,
@@ -15,6 +15,8 @@ import OrderDetails from '../../components/OrderDetails';
 import api from '../../api';
 
 const OrderDetailsScreen = () => {
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const [makeUpdate, setMakeUpdate] = useState(true);
 
@@ -33,7 +35,11 @@ const OrderDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setTimeout(() => setMakeUpdate(true), 1000);
+      const currentRout = history.location.pathname;
+      history.push({ pathname: '/' });
+      history.replace({
+        pathname: currentRout,
+      });
     });
   };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { FolderOpen } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,6 +15,8 @@ import StoreDetails from '../../components/StoreDetails';
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const [makeUpdate, setMakeUpdate] = useState(true);
 
@@ -32,7 +34,11 @@ const StoreDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setTimeout(() => setMakeUpdate(true), 1000);
+      const currentRout = history.location.pathname;
+      history.push({ pathname: '/' });
+      history.replace({
+        pathname: currentRout,
+      });
     });
   };
 
