@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint ./src/* --no-error-on-unmatched-pattern",
     "dev": "webpack-dev-server --mode=development --env.NODE_ENV=development",
-    "prod": "webpack --mode=production --env.NODE_ENV=production --env.BUILD_TIME=$(date)",
+    "prod": "webpack --mode=production --env.NODE_ENV=production",
     "cy:local": "CYPRESS_BASE_URL=http://localhost:8080 cypress run",
     "cy:open:local": "CYPRESS_BASE_URL=http://localhost:8080 cypress open"
   },
