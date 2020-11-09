@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FolderOpen } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,10 +15,7 @@ import api from '../../api';
 import ProductDetails from '../../components/ProductDetails';
 
 const ProductDetailsScreen = () => {
-  const history = useHistory();
-
   const dispatch = useDispatch();
-  const [makeUpdate, setMakeUpdate] = useState(true);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -37,11 +34,7 @@ const ProductDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      const currentRout = history.location.pathname;
-      history.push({ pathname: '/' });
-      history.replace({
-        pathname: currentRout,
-      });
+      window.location.reload();
     });
   };
   useEffect(() => {
@@ -78,7 +71,6 @@ const ProductDetailsScreen = () => {
             sellingStores: sellingStoreOptions.data.items,
           });
           setLoading(false);
-          setMakeUpdate(false);
         }
       } catch (error) {
         if (!isCancelled) {
@@ -86,13 +78,11 @@ const ProductDetailsScreen = () => {
         }
       }
     };
-    if (makeUpdate) {
-      requests();
-    }
+    requests();
     return () => {
       isCancelled = true;
     };
-  }, [makeUpdate]);
+  }, []);
   useEffect(() => {
     setProductChanges(
       JSON.stringify(currentProductData) !== JSON.stringify(productData),

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   LinearProgress,
   Box,
@@ -15,10 +15,7 @@ import OrderDetails from '../../components/OrderDetails';
 import api from '../../api';
 
 const OrderDetailsScreen = () => {
-  const history = useHistory();
-
   const dispatch = useDispatch();
-  const [makeUpdate, setMakeUpdate] = useState(true);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -35,11 +32,7 @@ const OrderDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      const currentRout = history.location.pathname;
-      history.push({ pathname: '/' });
-      history.replace({
-        pathname: currentRout,
-      });
+      window.location.reload();
     });
   };
 
@@ -69,7 +62,6 @@ const OrderDetailsScreen = () => {
       } catch (error) {
         if (!isCancelled) {
           setLoading(false);
-          setMakeUpdate(false);
         }
       }
     };
@@ -77,7 +69,7 @@ const OrderDetailsScreen = () => {
     return () => {
       isCancelled = true;
     };
-  }, [makeUpdate]);
+  }, []);
 
   useEffect(() => {
     setOrderChanges(

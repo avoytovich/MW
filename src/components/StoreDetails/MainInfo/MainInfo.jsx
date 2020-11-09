@@ -148,7 +148,7 @@ const MainInfo = ({
                     ? 'Incorrect entry.'
                     : ''
                 }
-                disabled={!editable}
+                disabled
                 fullWidth
                 onChange={(e) => {
                   const newArray = [...currentStoreData.routes];

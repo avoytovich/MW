@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { FolderOpen } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import {
@@ -15,10 +15,7 @@ import StoreDetails from '../../components/StoreDetails';
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
-  const history = useHistory();
-
   const dispatch = useDispatch();
-  const [makeUpdate, setMakeUpdate] = useState(true);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -34,11 +31,7 @@ const StoreDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      const currentRout = history.location.pathname;
-      history.push({ pathname: '/' });
-      history.replace({
-        pathname: currentRout,
-      });
+      window.location.reload();
     });
   };
 
@@ -62,7 +55,6 @@ const StoreDetailsScreen = () => {
       } catch (error) {
         if (!isCancelled) {
           setLoading(false);
-          setMakeUpdate(false);
         }
       }
     };
@@ -70,7 +62,7 @@ const StoreDetailsScreen = () => {
     return () => {
       isCancelled = true;
     };
-  }, [makeUpdate]);
+  }, []);
 
   useEffect(() => {
     setStoreChanges(

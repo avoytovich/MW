@@ -74,7 +74,7 @@ const MainInfo = ({
     currentProductData.sellingStores?.forEach((item) => {
       const storeName = selectOptions.sellingStores.filter(
         (store) => store.id === item,
-      )[0].displayName;
+      )[0]?.name;
       storesArray.push(storeName);
     });
     return storesArray.join(', ');
