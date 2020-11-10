@@ -49,13 +49,13 @@ const PaginationComponent = ({
       <Grid spacing={5} container justify={location} direction="row">
         {currentPage !== 1 && (
         <Grid item>
-          <Typography color="secondary" onClick={() => updatePage(1)}>
+          <Typography color="secondary" onClick={() => updatePage(1)} className="firstPaginationPage">
             {localization.t('general.first')}
           </Typography>
         </Grid>
         )}
         <Grid item>
-          <Grid spacing={3} container justify="center" direction="row">
+          <Grid spacing={3} container justify="center" direction="row" className="paginationNumbers">
             {pageNumbers.map((item) => (
               <Grid item key={`page ${item}`}>
                 <Typography
@@ -74,6 +74,7 @@ const PaginationComponent = ({
           <Typography
             color="secondary"
             onClick={() => updatePage(totalPages)}
+            className="lastPaginationPage"
           >
             {localization.t('general.last')}
           </Typography>
@@ -81,7 +82,7 @@ const PaginationComponent = ({
         )}
         {pageNumbers[pageNumbers.length - 1] !== currentPage && (
         <Grid item>
-          <Typography onClick={() => updatePage(currentPage + 1)}>
+          <Typography onClick={() => updatePage(currentPage + 1)} className="nextPaginationPage">
             {localization.t('general.next')}
           </Typography>
         </Grid>
