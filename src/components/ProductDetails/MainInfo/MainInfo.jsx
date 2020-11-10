@@ -25,6 +25,8 @@ const MainInfo = ({
   productData,
   currentProductData,
   selectOptions,
+  inputErrors,
+  setInputErrors,
 }) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
     number: 1,
@@ -41,6 +43,7 @@ const MainInfo = ({
       trialAllowed: '',
       sellingStores: [],
     };
+    setInputErrors({ type: true, lifeTime: true });
     setProductData(newProductData);
   };
   useEffect(() => {
@@ -137,16 +140,21 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                error={inputErrors?.type}
                 disabled={!editable}
                 value={currentProductData.type}
-                onChange={(e) => setProductData({
-                  ...currentProductData,
-                  type: e.target.value,
-                })}
+                onChange={(e) => {
+                  setProductData({
+                    ...currentProductData,
+                    type: e.target.value,
+                  });
+                  if (inputErrors?.type) {
+                    const newObj = { ...inputErrors };
+                    delete newObj.type;
+                    setInputErrors(newObj);
+                  }
+                }}
               >
-                <MenuItem value="">
-                  <em />
-                </MenuItem>
                 {type.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.value}
@@ -294,10 +302,12 @@ const MainInfo = ({
                 {showLifeTimeNumber && (
                   <TextField
                     fullWidth
-                    onChange={(e) => setLifeTimeUpdateValue({
-                      ...lifeTimeUpdateValue,
-                      number: e.target.value,
-                    })}
+                    onChange={(e) => {
+                      setLifeTimeUpdateValue({
+                        ...lifeTimeUpdateValue,
+                        number: e.target.value,
+                      });
+                    }}
                     type="number"
                     value={lifeTimeUpdateValue.number}
                     InputProps={{
@@ -307,6 +317,7 @@ const MainInfo = ({
                   />
                 )}
                 <Select
+                  error={inputErrors?.lifeTime}
                   value={lifeTimeUpdateValue.value}
                   onChange={(e) => {
                     setShowLifeTimeNumber(
@@ -316,11 +327,14 @@ const MainInfo = ({
                       ...lifeTimeUpdateValue,
                       value: e.target.value,
                     });
+
+                    if (inputErrors?.lifeTime) {
+                      const newObj = { ...inputErrors };
+                      delete newObj.lifeTime;
+                      setInputErrors(newObj);
+                    }
                   }}
                 >
-                  <MenuItem value="">
-                    <em />
-                  </MenuItem>
                   {lifeTime.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
                       {option.value}
@@ -390,6 +404,8 @@ MainInfo.propTypes = {
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   productData: PropTypes.object,
+  inputErrors: PropTypes.object,
+  setInputErrors: PropTypes.func,
 };
 
 export default MainInfo;

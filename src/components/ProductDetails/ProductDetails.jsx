@@ -11,12 +11,16 @@ const ProductDetails = ({
   productData,
   currentProductData,
   selectOptions,
+  setInputErrors,
+  inputErrors,
 }) => (
   <Box className="detailContainer" display="flex" flexDirection="column">
     <Box>
       <Box display="flex" justify="space-between">
         <Box width="60%" sm={9} className="actionBlockWrapper">
           <MainInfo
+            inputErrors={inputErrors}
+            setInputErrors={setInputErrors}
             productData={productData}
             selectOptions={selectOptions}
             setProductData={setProductData}
@@ -58,6 +62,8 @@ ProductDetails.propTypes = {
   productData: PropTypes.object,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
+  inputErrors: PropTypes.object,
+  setInputErrors: PropTypes.func,
 };
 
 export default ProductDetails;

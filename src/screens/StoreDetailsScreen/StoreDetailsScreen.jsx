@@ -16,6 +16,7 @@ import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
+  const [inputErrors, setInputErrors] = useState({});
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -149,6 +150,7 @@ const StoreDetailsScreen = () => {
       </Box>
       <Zoom in={storeHasChanges}>
         <Button
+          disabled={Object.keys(inputErrors).length !== 0}
           id="save-detail-button"
           color="primary"
           size="large"
@@ -156,11 +158,14 @@ const StoreDetailsScreen = () => {
           variant="contained"
           onClick={saveDetails}
         >
+          {/* toDo Add localization */}
           Save
         </Button>
       </Zoom>
       {currentStoreData && (
         <StoreDetails
+          inputErrors={inputErrors}
+          setInputErrors={setInputErrors}
           storeData={storeData}
           selectOptions={selectOptions}
           setCurrentStoreData={setCurrentStoreData}

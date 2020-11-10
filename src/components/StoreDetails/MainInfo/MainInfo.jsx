@@ -21,6 +21,8 @@ const MainInfo = ({
   setCurrentStoreData,
   selectOptions,
   storeData,
+  inputErrors,
+  setInputErrors,
 }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
@@ -29,14 +31,11 @@ const MainInfo = ({
   }, [storeData]);
 
   const handleDeleteBlock = () => {
-    const newRoutes = [...currentStoreData.routes];
-    newRoutes[0] = { ...newRoutes[0], hostname: '' };
     const newData = {
       ...currentStoreData,
       status: '',
       defaultLocale: '',
       saleLocales: [],
-      routes: newRoutes,
       designs: {
         ...currentStoreData.designs,
         checkout: {
@@ -55,9 +54,10 @@ const MainInfo = ({
         },
       },
     };
+    setInputErrors({ defaultLocale: true, status: true });
+
     setCurrentStoreData(newData);
   };
-
   return (
     <Box
       pb={5}
@@ -109,16 +109,23 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                error={inputErrors?.status}
                 disabled={!editable}
                 value={currentStoreData.status}
-                onChange={(e) => setCurrentStoreData({
-                  ...currentStoreData,
-                  status: e.target.value,
-                })}
+                onChange={(e) => {
+                  if (e.target.value.trim()) {
+                    setCurrentStoreData({
+                      ...currentStoreData,
+                      status: e.target.value,
+                    });
+                    if (inputErrors?.status) {
+                      const newObj = { ...inputErrors };
+                      delete newObj.status;
+                      setInputErrors(newObj);
+                    }
+                  }
+                }}
               >
-                <MenuItem value="">
-                  <em />
-                </MenuItem>
                 {status.map((option) => (
                   <MenuItem key={option.id} value={option.value}>
                     {option.value}
@@ -181,16 +188,21 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              error={inputErrors.defaultLocale}
               disabled={!editable}
               value={currentStoreData?.defaultLocale}
-              onChange={(e) => setCurrentStoreData({
-                ...currentStoreData,
-                defaultLocale: e.target.value,
-              })}
+              onChange={(e) => {
+                setCurrentStoreData({
+                  ...currentStoreData,
+                  defaultLocale: e.target.value,
+                });
+                if (inputErrors.defaultLocale) {
+                  const newObj = { ...inputErrors };
+                  delete newObj.defaultLocale;
+                  setInputErrors(newObj);
+                }
+              }}
             >
-              <MenuItem value="">
-                <em />
-              </MenuItem>
               {selectLanguages.map((option) => (
                 <MenuItem key={option.locale} value={option.locale}>
                   {`${option.locale}: ${option.localName}`}
@@ -220,10 +232,12 @@ const MainInfo = ({
               <Select
                 multiple
                 value={currentStoreData.saleLocales}
-                onChange={(e) => setCurrentStoreData({
-                  ...currentStoreData,
-                  saleLocales: e.target.value,
-                })}
+                onChange={(e) => {
+                  setCurrentStoreData({
+                    ...currentStoreData,
+                    saleLocales: e.target.value,
+                  });
+                }}
                 renderValue={(selected) => (
                   <Box
                     display="flex"
@@ -231,9 +245,6 @@ const MainInfo = ({
                     flexDirection="row"
                     flexWrap="wrap"
                   >
-                    <MenuItem value="">
-                      <em />
-                    </MenuItem>
                     {selected.map((chip) => (
                       <Chip
                         variant="outlined"
@@ -257,9 +268,6 @@ const MainInfo = ({
                   </Box>
                 )}
               >
-                <MenuItem value="">
-                  <em />
-                </MenuItem>
                 {selectLanguages.map((option) => (
                   <MenuItem value={option.locale} key={option.locale}>
                     {`${option.locale}: ${option.localName}`}
@@ -302,7 +310,7 @@ const MainInfo = ({
                 });
               }}
             >
-              <MenuItem value=': '>
+              <MenuItem value=": ">
                 <em />
               </MenuItem>
               {selectOptions.theme.map((option) => (
@@ -350,7 +358,7 @@ const MainInfo = ({
                 });
               }}
             >
-              <MenuItem value=': '>
+              <MenuItem value=": ">
                 <em />
               </MenuItem>
               {selectOptions.theme.map((option) => (
@@ -392,6 +400,8 @@ MainInfo.propTypes = {
   customerData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
   storeData: PropTypes.object,
+  inputErrors: PropTypes.object,
+  setInputErrors: PropTypes.func,
 };
 
 export default MainInfo;

@@ -16,7 +16,7 @@ import ProductDetails from '../../components/ProductDetails';
 
 const ProductDetailsScreen = () => {
   const dispatch = useDispatch();
-
+  const [inputErrors, setInputErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
 
@@ -123,6 +123,7 @@ const ProductDetailsScreen = () => {
       </Box>
       <Zoom in={productHasChanges}>
         <Button
+          disabled={Object.keys(inputErrors).length !== 0}
           id="save-detail-button"
           color="primary"
           size="large"
@@ -136,6 +137,8 @@ const ProductDetailsScreen = () => {
       </Zoom>
       {currentProductData && (
         <ProductDetails
+          inputErrors={inputErrors}
+          setInputErrors={setInputErrors}
           selectOptions={selectOptions}
           setProductData={setCurrentProductData}
           currentProductData={currentProductData}
