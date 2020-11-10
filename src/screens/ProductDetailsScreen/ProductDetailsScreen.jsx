@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { FolderOpen } from '@material-ui/icons';
+import { useDispatch } from 'react-redux';
 import {
   LinearProgress,
   Zoom,
@@ -8,48 +9,81 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import localization from '../../localization';
+import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import ProductDetails from '../../components/ProductDetails';
 
 const ProductDetailsScreen = () => {
+  const dispatch = useDispatch();
+  const [inputErrors, setInputErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
 
   const [productHasChanges, setProductChanges] = useState(false);
+  const [selectOptions, setSelectOptions] = useState({
+    sellingStores: null,
+  });
 
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
 
-  const [storeData, setStoreData] = useState(null);
-  const [currentStoreData, setCurrentStoreData] = useState(null);
+  const checkRequiredFields = (product) => {
+    let resourcesKeys = null;
+    let resObj = { ...product };
+
+    if (resObj.resources) {
+      resourcesKeys = [...resObj.resources].map((resource, index) => ({
+        ...resource,
+        index,
+      }));
+    }
+    if (resourcesKeys) {
+      resObj = { ...resObj, resources: resourcesKeys };
+    }
+    if (!resObj.type) {
+      resObj = { ...resObj, type: '' };
+    }
+    if (!resObj.sellingStores) {
+      resObj = { ...resObj, sellingStores: [] };
+    }
+    if (!resObj.lifeTime) {
+      resObj = { ...resObj, lifeTime: '' };
+    }
+    if (!resObj.trialAllowed) {
+      resObj = { ...resObj, trialAllowed: '' };
+    }
+    return resObj;
+  };
 
   const saveDetails = () => {
-    // eslint-disable-next-line no-unused-vars
-    const sendObj = { ...currentProductData, updateDate: Date.now() };
+    const updateDate = Date.now();
+    const sendObj = { ...currentProductData, updateDate };
+    api.updateProductById(currentProductData.id, sendObj).then(() => {
+      dispatch(
+        showNotification(localization.t('general.updatesHaveBeenSaved')),
+      );
+      window.location.reload();
+    });
   };
   useEffect(() => {
-    let store = null;
     let isCancelled = false;
+
     const requests = async () => {
       try {
         const product = await api.getProductById(id);
-        const storesId = product.data?.sellingStores?.[0];
-        const resourcesKeys = [...product.data.resources].map(
-          (resource, index) => ({
-            ...resource,
-            index,
-          }),
+        const sellingStoreOptions = await api.getSellingStoreOptions(
+          product.data?.customerId,
         );
-        if (storesId) {
-          store = await api.getStoreById(storesId);
-        }
+
         if (!isCancelled) {
-          if (store) {
-            setStoreData(store.data);
-            setCurrentStoreData(store.data);
-          }
-          setProductData({ ...product.data, resources: resourcesKeys });
-          setCurrentProductData({ ...product.data, resources: resourcesKeys });
+          const checkedProduct = checkRequiredFields(product.data);
+          setProductData(checkedProduct);
+          setCurrentProductData(checkedProduct);
+          setSelectOptions({
+            ...selectOptions,
+            sellingStores: sellingStoreOptions.data.items,
+          });
           setLoading(false);
         }
       } catch (error) {
@@ -65,13 +99,12 @@ const ProductDetailsScreen = () => {
   }, []);
   useEffect(() => {
     setProductChanges(
-      JSON.stringify(currentProductData) !== JSON.stringify(productData)
-        || JSON.stringify(currentStoreData) !== JSON.stringify(storeData),
+      JSON.stringify(currentProductData) !== JSON.stringify(productData),
     );
     return () => {
       setProductChanges(false);
     };
-  }, [currentProductData, currentStoreData]);
+  }, [currentProductData]);
 
   if (isLoading) return <LinearProgress />;
 
@@ -90,6 +123,7 @@ const ProductDetailsScreen = () => {
       </Box>
       <Zoom in={productHasChanges}>
         <Button
+          disabled={Object.keys(inputErrors).length !== 0}
           id="save-detail-button"
           color="primary"
           size="large"
@@ -103,10 +137,12 @@ const ProductDetailsScreen = () => {
       </Zoom>
       {currentProductData && (
         <ProductDetails
-          setStoreData={setCurrentStoreData}
+          inputErrors={inputErrors}
+          setInputErrors={setInputErrors}
+          selectOptions={selectOptions}
           setProductData={setCurrentProductData}
-          productData={currentProductData}
-          storeData={currentStoreData}
+          currentProductData={currentProductData}
+          productData={productData}
         />
       )}
     </>

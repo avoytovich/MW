@@ -16,6 +16,7 @@ import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
+  const [inputErrors, setInputErrors] = useState({});
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -25,14 +26,71 @@ const StoreDetailsScreen = () => {
   const [currentStoreData, setCurrentStoreData] = useState(null);
 
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
+  const checkRequiredFields = (store) => {
+    let resObj = { ...store };
+
+    if (!resObj.status) {
+      resObj = { ...resObj, status: '' };
+    }
+    if (!resObj.routes) {
+      resObj = { ...resObj, routes: [] };
+    }
+    if (!resObj.routes[0]) {
+      resObj = { ...resObj, routes: [{ hostname: '' }] };
+    }
+    if (!resObj.routes[0].hostname) {
+      const newArr = [!resObj.routes];
+      newArr[0] = { ...newArr[0], hostname: '' };
+      resObj = { ...resObj, routes: newArr };
+    }
+    if (!resObj.defaultLocale) {
+      resObj = { ...resObj, defaultLocale: '' };
+    }
+    if (!resObj.saleLocales) {
+      resObj = { ...resObj, saleLocales: [] };
+    }
+    if (!resObj.designs) {
+      resObj = { ...resObj, designs: {} };
+    }
+    if (!resObj.designs.endUserPortal) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          endUserPortal: { themeRef: { customerId: '', name: '' } },
+        },
+      };
+    }
+    if (!resObj.designs.checkout) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          checkout: { themeRef: { customerId: '', name: '' } },
+        },
+      };
+    }
+    if (!resObj.designs.paymentComponent) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          paymentComponent: {
+            rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
+          },
+        },
+      };
+    }
+
+    return resObj;
+  };
 
   const saveDetails = () => {
     api.updateStoreById(currentStoreData.id, currentStoreData).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setStoreData(currentStoreData);
-      setCurrentStoreData(currentStoreData);
+      window.location.reload();
     });
   };
 
@@ -44,8 +102,9 @@ const StoreDetailsScreen = () => {
         const customer = await api.getCustomerById(store?.data?.customerId);
         const themeOptions = await api.getThemeOptions();
         if (!isCancelled) {
-          setStoreData(store.data);
-          setCurrentStoreData(store.data);
+          const checkedStore = checkRequiredFields(store.data);
+          setStoreData(checkedStore);
+          setCurrentStoreData(checkedStore);
           setCurrentCustomerData(customer.data);
           setSelectOptions({
             ...selectOptions,
@@ -91,6 +150,7 @@ const StoreDetailsScreen = () => {
       </Box>
       <Zoom in={storeHasChanges}>
         <Button
+          disabled={Object.keys(inputErrors).length !== 0}
           id="save-detail-button"
           color="primary"
           size="large"
@@ -98,11 +158,14 @@ const StoreDetailsScreen = () => {
           variant="contained"
           onClick={saveDetails}
         >
+          {/* toDo Add localization */}
           Save
         </Button>
       </Zoom>
       {currentStoreData && (
         <StoreDetails
+          inputErrors={inputErrors}
+          setInputErrors={setInputErrors}
           storeData={storeData}
           selectOptions={selectOptions}
           setCurrentStoreData={setCurrentStoreData}
