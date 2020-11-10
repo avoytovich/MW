@@ -8,6 +8,16 @@ const errorNotifications = {
   containsNoSpace: 'contains no space',
   required: 'Required',
   invalidEmailAddress: 'Invalid email address',
+  badRequest: 'Bad Request',
+  unauthorized: 'Unauthorized',
+  forbidden: 'Forbidden',
+  notFound: 'Not Found',
+  conflict: 'Conflict',
+  preconditionFailed: 'Precondition Failed',
+  internalServerError: 'Internal Server Error',
+  timeout: 'Timeout',
+  network: 'Network',
+  otherError: 'Something went wrong, please try again later!'
 };
 
 export default errorNotifications;
