@@ -8,19 +8,23 @@ import './ProductDetails.scss';
 
 const ProductDetails = ({
   setProductData,
-  setStoreData,
   productData,
-  storeData,
+  currentProductData,
+  selectOptions,
+  setInputErrors,
+  inputErrors,
 }) => (
   <Box className="detailContainer" display="flex" flexDirection="column">
     <Box>
       <Box display="flex" justify="space-between">
         <Box width="60%" sm={9} className="actionBlockWrapper">
           <MainInfo
-            setStoreData={setStoreData}
-            setProductData={setProductData}
+            inputErrors={inputErrors}
+            setInputErrors={setInputErrors}
             productData={productData}
-            storeData={storeData}
+            selectOptions={selectOptions}
+            setProductData={setProductData}
+            currentProductData={currentProductData}
           />
         </Box>
         <Box
@@ -33,14 +37,19 @@ const ProductDetails = ({
           pl="10%"
           pb="10%"
         >
-          <Prices setProductData={setProductData} productData={productData} />
+          <Prices
+            productData={productData}
+            setProductData={setProductData}
+            currentProductData={currentProductData}
+          />
         </Box>
       </Box>
     </Box>
     <Box>
-      {productData?.resources && (
+      {currentProductData?.resources && (
         <ImagesBlock
           productData={productData}
+          currentProductData={currentProductData}
           setProductData={setProductData}
         />
       )}
@@ -51,8 +60,10 @@ const ProductDetails = ({
 ProductDetails.propTypes = {
   setProductData: PropTypes.func,
   productData: PropTypes.object,
-  storeData: PropTypes.object,
-  setStoreData: PropTypes.func,
+  currentProductData: PropTypes.object,
+  selectOptions: PropTypes.object,
+  inputErrors: PropTypes.object,
+  setInputErrors: PropTypes.func,
 };
 
 export default ProductDetails;

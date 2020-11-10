@@ -7,21 +7,17 @@ import {
   CardActionArea,
   CardContent,
   Zoom,
-  Button,
   Select,
   MenuItem,
 } from '@material-ui/core';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import { storeDetailsCardText } from '../../../services/selectOptions/selectOptions';
-
-import localization from '../../../localization';
 import './ImagesBlock.scss';
 
 const CardComponent = ({
   cardText,
   imageSrc,
   updateKey,
-  handleUpdate,
   handleDeleteCard,
   storeData,
   handleUpdateText,
@@ -68,23 +64,6 @@ const CardComponent = ({
               image={imageSrc}
               title="Contemplative Reptile"
             />
-            <Zoom in={hoverBlock && editable}>
-              <Button
-                id="upload-image-button"
-                color="primary"
-                size="large"
-                type="submit"
-                variant="contained"
-                component="label"
-              >
-                {localization.t('general.uploadImage')}
-                <input
-                  type="file"
-                  onChange={(e) => handleUpdate(updateKey, e.target.value)}
-                  style={{ display: 'none' }}
-                />
-              </Button>
-            </Zoom>
             <CardContent>
               <Box pt={3} pb={7}>
                 <Select
@@ -113,7 +92,6 @@ CardComponent.propTypes = {
   cardText: PropTypes.string,
   imageSrc: PropTypes.string,
   updateKey: PropTypes.string,
-  handleUpdate: PropTypes.func,
   handleDeleteCard: PropTypes.func,
   storeData: PropTypes.object,
   handleUpdateText: PropTypes.func,

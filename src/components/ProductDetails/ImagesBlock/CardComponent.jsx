@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -7,18 +7,13 @@ import {
   CardActionArea,
   CardContent,
   Zoom,
-  Button,
   TextField,
 } from '@material-ui/core';
-import {
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Close as CloseIcon,
-} from '@material-ui/icons';
-import localization from '../../../localization';
+import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import './ImagesBlock.scss';
 
 const CardComponent = ({
+  productData,
   cardText,
   imageSrc,
   updateKey,
@@ -26,8 +21,11 @@ const CardComponent = ({
   handleDeleteCard,
 }) => {
   const [editable, setEditable] = useState(false);
-  const [upload, setUpload] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
+
+  useEffect(() => {
+    setEditable(false);
+  }, [productData]);
 
   return (
     <Box
@@ -58,40 +56,11 @@ const CardComponent = ({
               className="cardImage"
               image={imageSrc}
               title="Contemplative Reptile"
-            >
-              <Zoom in={imageSrc && editable}>
-                <Box className="actionBlock">
-                  <CloseIcon
-                    color="primary"
-                    onClick={() => {
-                      setUpload(true);
-                      handleChange({ url: ' ' }, updateKey);
-                    }}
-                  />
-                </Box>
-              </Zoom>
-            </CardMedia>
-            <Zoom in={upload && editable}>
-              <Button
-                id="upload-image-button"
-                color="primary"
-                size="large"
-                type="submit"
-                variant="contained"
-                component="label"
-              >
-                {localization.t('general.uploadImage')}
-                <input
-                  type="file"
-                  onChange={(e) => handleChange({ url: e.target.value }, updateKey)}
-                  style={{ display: 'none' }}
-                />
-              </Button>
-            </Zoom>
+            />
             <CardContent>
               <Box pt={3} pb={7}>
                 <TextField
-                  onChange={(e) => handleChange({ label: e.target.value }, updateKey)}
+                  onChange={(e) => handleChange(e.target.value, updateKey)}
                   disabled={!editable}
                   fullWidth
                   multiple
@@ -109,8 +78,9 @@ const CardComponent = ({
   );
 };
 CardComponent.propTypes = {
+  productData: PropTypes.object,
   cardText: PropTypes.string,
-  imageSrc: PropTypes.string,
+  imageSrc: PropTypes.any,
   updateKey: PropTypes.number,
   handleDeleteCard: PropTypes.func,
   handleChange: PropTypes.func,
