@@ -90,7 +90,7 @@ const TableRowComponent = ({
   };
 
   return (
-    <Box className="tableRowGrid" boxShadow={rowHover ? 2 : 0}>
+    <Box className="tableRowGrid" data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
       <Grid
         spacing={1}
         onClick={() => history.push(`${history.location.pathname}/${rowItem.id}`)}
