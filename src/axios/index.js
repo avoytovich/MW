@@ -4,6 +4,8 @@ import store from '../redux/store';
 import { showNotification } from '../redux/actions/HttpNotifications';
 import localization from '../localization';
 
+const cors = 'https://cors-anywhere.herokuapp.com/';
+
 const { dispatch } = store;
 
 const errorHandler = (error) => {
@@ -35,7 +37,7 @@ const errorHandler = (error) => {
 export const SERVER = process.env.API_SERVER || 'https://api.staging.nexway.build';
 
 export const axiosInstance = axios.create({
-  baseURL: `${SERVER}`,
+  baseURL: `${cors}${SERVER}`,
   headers: {
     'Content-Type': 'application/json',
     accept: 'application/json',
