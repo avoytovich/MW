@@ -50,16 +50,12 @@ const TopBar = ({ toggleDrawer }) => {
     setSearchVal('');
   }, [scope]);
 
-  const build = process.env.BUILD_TIME || 'not found';
-
   return (
     <AppBar position='static' className='top-bar' elevation={1}>
       <Toolbar>
         <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
           <MenuIcon />
         </IconButton>
-
-        <div style={{ position: 'absolute', visibility: 'hidden' }}>{build}</div>
 
         <Box flexGrow={1}>
           {
