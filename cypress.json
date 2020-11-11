@@ -2,6 +2,6 @@
   "baseUrl": "https://mynexway.staging.nexway.build/",
   "chromeWebSecurity": false,
   "env": {
-    "apiUrl": "https://cors-anywhere.herokuapp.com/https://api.staging.nexway.build"
+    "apiUrl": "https://api.staging.nexway.build"
   }
 }

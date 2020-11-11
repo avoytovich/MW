@@ -20,7 +20,7 @@ const SideBar = ({ open }) => (
     variant="persistent"
     className='side-bar'
   >
-    {process.env.BUILT_AT && (
+    {process?.env?.BUILT_AT && (
       <Box
         display='flex'
         flexDirection='column'
