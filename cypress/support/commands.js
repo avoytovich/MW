@@ -39,6 +39,6 @@ Cypress.Commands.add('login', (valid) => {
     cy.get('input[name=password]').clear().type(password);
     cy.get('form').submit();
     
-    cy.wait('@loginRequest');
+    cy.wait('@loginRequest', { timeout: 40000 });
   });
 });
