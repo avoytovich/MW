@@ -1,5 +1,8 @@
+const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const path = require('path');
+
+const fileDep = path.resolve(__dirname, 'dist');
 
 module.exports = {
   context: __dirname,
@@ -32,6 +35,11 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, 'public/index.html'),
       filename: 'index.html',
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        BUILT_AT: webpack.DefinePlugin.runtimeValue(Date.now, [fileDep]),
+      },
     }),
   ],
   resolve: {
