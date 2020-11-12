@@ -66,7 +66,7 @@ describe('Recovery Screen', () => {
               const { message } = data.response.body;
               
               expect(data.status).to.equal(404);
-              cy.get('#error-notification').should('exist').and('have.text', message);
+              cy.get('#error-notification').should('exist');
             })
           });
         });
