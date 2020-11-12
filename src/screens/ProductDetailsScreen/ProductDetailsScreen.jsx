@@ -13,6 +13,7 @@ import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import ProductDetails from '../../components/ProductDetails';
+import CheckoutMenu from '../../components/ProductDetails/CheckoutMenu';
 
 const ProductDetailsScreen = () => {
   const dispatch = useDispatch();
@@ -110,15 +111,23 @@ const ProductDetailsScreen = () => {
 
   return (
     <>
-      <Box display="flex" flexDirection="row">
-        <Box>
-          <FolderOpen color="secondary" />
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Box display="flex" flexDirection="row">
+          <Box>
+            <FolderOpen color="secondary" />
+          </Box>
+          <Box>
+            <Typography component="div" color="primary">
+              {/* toDo Add localization */}
+              <Box fontWeight={500}> Product</Box>
+            </Typography>
+          </Box>
         </Box>
         <Box>
-          <Typography component="div" color="primary">
-            {/* toDo Add localization */}
-            <Box fontWeight={500}> Product</Box>
-          </Typography>
+          <CheckoutMenu
+            currentProductData={currentProductData}
+            sellingStores={selectOptions.sellingStores}
+          />
         </Box>
       </Box>
       <Zoom in={productHasChanges}>
