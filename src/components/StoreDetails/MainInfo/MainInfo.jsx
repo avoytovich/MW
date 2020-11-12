@@ -112,6 +112,7 @@ const MainInfo = ({
                 error={inputErrors?.status}
                 disabled={!editable}
                 value={currentStoreData.status}
+                disableUnderline
                 onChange={(e) => {
                   if (e.target.value.trim()) {
                     setCurrentStoreData({
@@ -151,6 +152,9 @@ const MainInfo = ({
                 required
                 disabled
                 fullWidth
+                InputProps={{
+                  disableUnderline: true,
+                }}
                 onChange={(e) => {
                   const newArray = [...currentStoreData.routes];
                   newArray[0] = { ...newArray[0], hostname: e.target.value };
@@ -188,9 +192,11 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              className="storeDefaultLanuage"
               error={inputErrors.defaultLocale}
               disabled={!editable}
               value={currentStoreData?.defaultLocale}
+              disableUnderline
               onChange={(e) => {
                 setCurrentStoreData({
                   ...currentStoreData,
@@ -232,6 +238,7 @@ const MainInfo = ({
               <Select
                 multiple
                 value={currentStoreData.saleLocales}
+                disableUnderline
                 onChange={(e) => {
                   setCurrentStoreData({
                     ...currentStoreData,
@@ -291,7 +298,9 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              className="storeEnduserPortalTheme"
               disabled={!editable}
+              disableUnderline
               value={`${currentStoreData.designs.endUserPortal.themeRef.customerId}: ${currentStoreData.designs.endUserPortal.themeRef.name}`}
               onChange={(e) => {
                 const newValue = e.target.value.split(':');
@@ -339,8 +348,10 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+            className="storeCheckoutTheme"
               value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
               disabled={!editable}
+              disableUnderline
               onChange={(e) => {
                 const newValue = e.target.value.split(':');
                 setCurrentStoreData({
