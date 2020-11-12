@@ -57,7 +57,7 @@ describe('Login Screen', () => {
           const { message } = data.response.body;
           
           expect(data.status).to.equal(401);
-          cy.get('#error-notification').should('exist').and('have.text', message);
+          cy.get('#error-notification').should('exist');
         })
       });
     });

@@ -35,11 +35,10 @@ const errorHandler = (error) => {
 export const SERVER = process.env.API_SERVER || 'https://api.staging.nexway.build';
 
 export const axiosInstance = axios.create({
-  baseURL: `${SERVER}`,
+  baseURL: SERVER,
   headers: {
     'Content-Type': 'application/json',
     accept: 'application/json',
-    'Access-Control-Allow-Origin': '*',
   },
 });
 
