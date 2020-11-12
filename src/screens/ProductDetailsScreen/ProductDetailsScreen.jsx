@@ -131,18 +131,20 @@ const ProductDetailsScreen = () => {
         </Box>
       </Box>
       <Zoom in={productHasChanges}>
-        <Button
-          disabled={Object.keys(inputErrors).length !== 0}
-          id="save-detail-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={saveDetails}
-        >
-          {/* toDo Add localization */}
-          Save
-        </Button>
+        <Box mb={1}>
+          <Button
+            disabled={Object.keys(inputErrors).length !== 0}
+            id="save-detail-button"
+            color="primary"
+            size="large"
+            type="submit"
+            variant="contained"
+            onClick={saveDetails}
+          >
+            {/* toDo Add localization */}
+            Save
+          </Button>
+        </Box>
       </Zoom>
       {currentProductData && (
         <ProductDetails
