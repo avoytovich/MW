@@ -112,6 +112,13 @@ const api = {
       url,
     });
   },
+  getCustomers(page) {
+    const url = `https://api.staging.nexway.build/customers?format=short&sort=name%2Casc&size=50&page=${page}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // GET FEW BY IDs
   getCustomersByIds(ids) {
@@ -173,6 +180,14 @@ const api = {
   },
 
   // PUT BY ID
+  updateCustomerById(id, data) {
+    const url = `/customers/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateIdentityById(id, data) {
     const url = `/iam/identities/${id}`;
     return axiosInstance({
@@ -234,6 +249,21 @@ const api = {
       url,
     });
   },
+  getPaymentMethodsOptions() {
+    const url = '/payment-proxy/available-payment-types';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getPaymentConfigOptions() {
+    const url = '/payment-proxy/service/config';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   getThemeOptions() {
     const url = '/designs/themes?format=short&size=30&page=0';
     return axiosInstance({
@@ -243,6 +273,20 @@ const api = {
   },
   getSellingStoreOptions(customerId) {
     const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getFulfillmentsOptions() {
+    const url = '/fulfillments/partners?size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubscriptionsOptions() {
+    const url = '/subscriptions/models?format=short&size=30&page=0';
     return axiosInstance({
       method: 'get',
       url,
