@@ -74,6 +74,7 @@ const MainInfo = ({
               <Select
                 disabled={!editable}
                 value={currentOrderData.status}
+                disableUnderline
                 onChange={(e) => setCurrentOrderData({
                   ...currentOrderData,
                   status: e.target.value,

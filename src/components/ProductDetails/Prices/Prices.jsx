@@ -78,6 +78,7 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
               <TextField
                 InputProps={{
                   inputProps: { min: 0 },
+                  disableUnderline: true,
                   form: { autocomplete: 'off' },
                 }}
                 disabled={!editable}
@@ -128,6 +129,7 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
               <TextField
                 InputProps={{
                   inputProps: { min: 0 },
+                  disableUnderline: true,
                   form: { autocomplete: 'off' },
                 }}
                 disabled={!editable}

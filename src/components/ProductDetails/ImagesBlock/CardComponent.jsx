@@ -67,7 +67,13 @@ const CardComponent = ({
                   margin="normal"
                   type="text"
                   value={cardText}
-                  inputProps={{ form: { autocomplete: 'off' } }}
+                  InputProps={{
+                    inputProps: {
+                      form: { autocomplete: 'off' },
+                    },
+                    disableUnderline: true,
+                  }}
+
                 />
               </Box>
             </CardContent>

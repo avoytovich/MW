@@ -143,6 +143,7 @@ const MainInfo = ({
                 error={inputErrors?.type}
                 disabled={!editable}
                 value={currentProductData.type}
+                disableUnderline
                 onChange={(e) => {
                   setProductData({
                     ...currentProductData,
@@ -176,12 +177,13 @@ const MainInfo = ({
                 {localization.t('labels.sellingStores')}
               </Typography>
             </Box>
-            <Box width="60%">
+            <Box width="60%" pt="4px">
               {!editable ? (
                 <Typography>{formStoreNames()}</Typography>
               ) : (
                 <Select
                   multiple
+                  disableUnderline
                   value={
                     currentProductData.sellingStores
                       ? currentProductData.sellingStores
@@ -258,7 +260,7 @@ const MainInfo = ({
               {localization.t('labels.currency')}
             </Typography>
           </Box>
-          <Box width="60%">
+          <Box width="60%" pt="5px" pl="4px">
             <Typography>
               {Object.keys(
                 currentProductData?.prices?.priceByCountryByCurrency,
@@ -278,7 +280,7 @@ const MainInfo = ({
               {localization.t('labels.lastUpdate')}
             </Typography>
           </Box>
-          <Box width="60%">
+          <Box width="60%" pt="5px" pl="4px">
             <Typography>{formatDate(currentProductData.updateDate)}</Typography>
           </Box>
         </Box>
@@ -294,7 +296,7 @@ const MainInfo = ({
               {localization.t('labels.lifeTime')}
             </Typography>
           </Box>
-          <Box width="60%">
+          <Box width="60%" pt="5px" pl="4px">
             {!editable ? (
               <Typography>{currentProductData.lifeTime}</Typography>
             ) : (
@@ -334,6 +336,7 @@ const MainInfo = ({
                       setInputErrors(newObj);
                     }
                   }}
+                  disableUnderline
                 >
                   {lifeTime.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
@@ -365,6 +368,7 @@ const MainInfo = ({
                 ...currentProductData,
                 trialAllowed: e.target.value,
               })}
+              disableUnderline
             >
               <MenuItem value="">
                 <em />

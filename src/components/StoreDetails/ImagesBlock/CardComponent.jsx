@@ -69,6 +69,7 @@ const CardComponent = ({
                 <Select
                   disabled={!editable}
                   value={cardText}
+                  disableUnderline
                   onChange={(e) => handleUpdateText(updateKey, e.target.value)}
                 >
                   <MenuItem value=" ">

@@ -95,17 +95,19 @@ const OrderDetailsScreen = () => {
         </Box>
       </Box>
       <Zoom in={orderHasChanges}>
-        <Button
-          id="save-detail-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={saveDetails}
-        >
-          {/* toDo Add localization */}
-          Save
-        </Button>
+        <Box mb={1}>
+          <Button
+            id="save-detail-button"
+            color="primary"
+            size="large"
+            type="submit"
+            variant="contained"
+            onClick={saveDetails}
+          >
+            {/* toDo Add localization */}
+            Save
+          </Button>
+        </Box>
       </Zoom>
       {currentOrderData && (
         <OrderDetails
