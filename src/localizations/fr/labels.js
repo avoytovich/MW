@@ -59,6 +59,23 @@ const labels = {
   transactionID: 'Transaction ID',
   installments: 'Installments',
   paymentDeadline: 'Payment Deadline',
+  reseller: 'Reseller',
+  onboarding: 'Onboarding',
+  remittance: 'Remittance',
+  product: 'Product',
+  seller: 'Seller',
+  sellerOnBehalf: 'Seller on Behalf',
+  createInvoice: 'Create Invoice',
+  orderConfirmation: 'Order confirmation',
+  subscriptionUpgrade: 'Subscription Upgrade',
+  subscriptionV1: 'Subscription v1',
+  fulfillmentV1: 'Fulfillment v1',
+  fulfillmentTemplates: 'Fulfillment templates',
+  subscriptionsModels: 'Subscriptions models',
+  availablePayments: 'Available payments',
+  blockedPayments: 'Blocked payments',
+  maxPaymentsPart: 'Max payments part',
+  oneClickPayment: 'One Click Payment',
 };
 
 export default labels;

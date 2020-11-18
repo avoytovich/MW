@@ -22,42 +22,51 @@ const SignedRoutes = () => {
   return (
     <Switch>
       <Route
-        path='/overview/products/:id'
+        path="/overview/products/:id"
         component={lazy(() => import('../../screens/ProductDetailsScreen'))}
       />
       <Route
-        path='/overview/products'
+        path="/overview/products"
         component={lazy(() => import('../../screens/ProductsScreen'))}
       />
       <Route
-        path='/overview/stores/:id'
+        path="/overview/stores/:id"
         component={lazy(() => import('../../screens/StoreDetailsScreen'))}
       />
       <Route
-        path='/overview/stores'
+        path="/overview/stores"
         component={lazy(() => import('../../screens/StoresScreen'))}
       />
       <Route
-        path='/overview/orders/:id'
+        path="/overview/orders/:id"
         component={lazy(() => import('../../screens/OrderDetailsScreen'))}
       />
       <Route
-        path='/overview/orders'
+        path="/overview/orders"
         component={lazy(() => import('../../screens/OrdersScreen'))}
       />
       <Route
-        path='/my-account'
+        path="/my-account"
         component={lazy(() => import('../../screens/MyAccountScreen'))}
       />
       <Route
-        path='/settings/identities/:id'
+        path="/settings/identities/:id"
         component={lazy(() => import('../../screens/IdentityDetailsScreen'))}
       />
       <Route
-        path='/settings/identities'
+        path="/settings/identities"
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
-      <Redirect to='/overview/products' />
+      <Route
+        path="/settings/administration/:id"
+        component={lazy(() => import('../../screens/AdministrationDetailsScreen'))}
+      />
+      <Route
+        path="/settings/administration"
+        component={lazy(() => import('../../screens/AdministrationScreen'))}
+      />
+
+      <Redirect to="/overview/products" />
     </Switch>
   );
 };
