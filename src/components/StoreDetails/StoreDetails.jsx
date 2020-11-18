@@ -41,6 +41,7 @@ const StoreDetails = ({
           pb="10%"
         >
           <PaymentMethods
+            selectOptions={selectOptions}
             setCurrentStoreData={setCurrentStoreData}
             storeData={storeData}
             currentStoreData={currentStoreData}

@@ -12,13 +12,14 @@ import {
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 import localization from '../../../localization';
 
-import { getPaymentImages, paymentImages } from './images';
+import { getPaymentImages } from './images';
 import './PaymentMethods.scss';
 
 const PaymentMethods = ({
   currentStoreData,
   setCurrentStoreData,
   storeData,
+  selectOptions,
 }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
@@ -122,7 +123,7 @@ const PaymentMethods = ({
               </Box>
             )}
           >
-            {paymentImages.map((item) => (
+            {selectOptions.paymentMethods.map((item) => (
               <MenuItem key={item.id} value={item.id}>
                 {item.id}
               </MenuItem>
@@ -156,6 +157,7 @@ PaymentMethods.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
   storeData: PropTypes.object,
+  selectOptions: PropTypes.object,
 };
 
 export default PaymentMethods;
