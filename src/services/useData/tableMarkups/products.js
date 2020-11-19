@@ -45,6 +45,7 @@ const generateData = (data) => {
   const meta = {
     totalPages: data.totalPages,
   };
+
   Object.assign(markUp, { values, meta });
   return markUp;
 };

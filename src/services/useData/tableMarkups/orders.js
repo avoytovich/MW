@@ -32,12 +32,9 @@ const markUp = {
 
 const generateData = (data, customers, stores) => {
   const values = data.items.map((val) => {
-    const customer = customers.items.filter(
-      (item) => item.id === val.customer?.id,
-    )[0]?.name;
-    const store = stores.items.filter(
-      (item) => item.id === val.endUser?.storeId,
-    )[0]?.name;
+    const customer = customers.items.filter((item) => item.id === val.customer?.id)[0]?.name;
+    const store = stores.items.filter((item) => item.id === val.endUser?.storeId)[0]?.name;
+
     return {
       customer,
       email: val.endUser?.email,

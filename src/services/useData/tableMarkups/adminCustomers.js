@@ -1,5 +1,4 @@
 import localization from '../../../localization';
-import labels from '../../../localizations/en-US/labels';
 
 const defaultShow = {
   name: true,

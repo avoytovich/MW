@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Box, Zoom, TextField, Typography,
 } from '@material-ui/core';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
+
 import localization from '../../../localization';
+
 import './Prices.scss';
 
 const Prices = ({ setProductData, currentProductData, productData }) => {

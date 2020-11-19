@@ -1,7 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { Box } from '@material-ui/core';
+
 import CardComponent from './CardComponent';
+
 import './RelatedProducts.scss';
 
 const RelatedProducts = ({ currentOrderData, productsData }) => {

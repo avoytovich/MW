@@ -1,10 +1,13 @@
 import React from 'react';
-import { Typography, Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
+
+import { Typography, Box } from '@material-ui/core';
 import { FolderOpen } from '@material-ui/icons';
-import './DetailLayout.scss';
+
 import ProductDetails from '../../components/ProductDetails';
 import StoreDetails from '../../components/StoreDetails';
+
+import './DetailLayout.scss';
 
 const DetailLayout = ({ data }) => (
   <>
@@ -18,6 +21,7 @@ const DetailLayout = ({ data }) => (
         </Typography>
       </Box>
     </Box>
+
     {data.header === 'Product' && <ProductDetails data={data} />}
     {data.header === 'Store' && <StoreDetails data={data} />}
   </>

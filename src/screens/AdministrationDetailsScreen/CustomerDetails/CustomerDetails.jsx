@@ -1,7 +1,8 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
+
 import { Box } from '@material-ui/core';
+
 import MainSection from './MainSection';
 import PaymentSection from './PaymentSection';
 import FeaturesSection from './FeaturesSection';

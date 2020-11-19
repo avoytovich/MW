@@ -1,12 +1,18 @@
+// ToDo: move out and reuse common blocks for procuts/stores/orders details
+
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Box, Typography, Select, MenuItem, Zoom,
 } from '@material-ui/core';
 import { Edit as EditIcon } from '@material-ui/icons';
-import PropTypes from 'prop-types';
+
 import { orderDetailStatus } from '../../../services/selectOptions/selectOptions';
-import localization from '../../../localization';
 import formatDate from '../../../services/dateFormatting';
+
+import localization from '../../../localization';
+
 import './MainInfo.scss';
 
 const MainInfo = ({

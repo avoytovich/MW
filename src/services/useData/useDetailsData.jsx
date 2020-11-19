@@ -6,6 +6,7 @@ const useDetailsData = (setLoading, requests, needUpdate) => {
   useEffect(() => {
     let isCancelled = false;
     setLoading(true);
+
     requests()
       .then((payload) => {
         if (!isCancelled) {
@@ -19,9 +20,7 @@ const useDetailsData = (setLoading, requests, needUpdate) => {
         }
       });
 
-    return () => {
-      isCancelled = true;
-    };
+    return () => { isCancelled = true; };
   }, [needUpdate]);
 
   return fetchedData;

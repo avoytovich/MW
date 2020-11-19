@@ -13,6 +13,7 @@ const MONTH_NAMES = [
   'December',
 ];
 
+// ToDo: moment lib is used among the project, formatDate can be replaced with moment methods
 const formatDate = (formattingData) => {
   let res = '';
   if (formattingData) {
