@@ -1,5 +1,8 @@
+// ToDo: move out and reuse common blocks for procuts/stores details
+
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Card,
   CardMedia,
@@ -10,6 +13,7 @@ import {
   TextField,
 } from '@material-ui/core';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
+
 import './ImagesBlock.scss';
 
 const CardComponent = ({

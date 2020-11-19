@@ -25,9 +25,9 @@ const login = (username, password) => async (dispatch) => {
   );
 };
 
-const setUserData = (access_token) => (dispatch) => {
-  const user = { access_token, ...auth.decodeToken(access_token) };
-  
+const setUserData = (token) => (dispatch) => {
+  const user = { access_token: token, ...auth.decodeToken(token) };
+
   dispatch({
     type: SILENT_LOGIN,
     payload: {

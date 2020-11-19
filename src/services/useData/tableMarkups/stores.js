@@ -26,9 +26,8 @@ const markUp = {
 
 const generateData = (data, customers) => {
   const values = data.items.map((val) => {
-    const customer = customers.items.filter(
-      (item) => item.id === val.customerId,
-    )[0]?.name;
+    const customer = customers.items.filter((item) => item.id === val.customerId)[0]?.name;
+
     return {
       customer,
       name: val.name,
@@ -40,9 +39,11 @@ const generateData = (data, customers) => {
       id: val.id,
     };
   });
+
   const meta = {
     totalPages: data.totalPages,
   };
+
   Object.assign(markUp, { values, meta });
   return markUp;
 };

@@ -1,4 +1,8 @@
+// ToDo: move out and reuse common blocks for procuts/stores/orders details
+
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Box,
   Typography,
@@ -8,16 +12,17 @@ import {
   Chip,
   TextField,
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import localization from '../../../localization';
-import formatDate from '../../../services/dateFormatting';
 
+import formatDate from '../../../services/dateFormatting';
 import {
   lifeTime,
   trialAllowed,
   type,
 } from '../../../services/selectOptions/selectOptions';
+
+import localization from '../../../localization';
+
 import './MainInfo.scss';
 
 const MainInfo = ({
@@ -35,6 +40,7 @@ const MainInfo = ({
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
+
   const handleDeleteBlock = () => {
     const newProductData = {
       ...currentProductData,
@@ -46,6 +52,7 @@ const MainInfo = ({
     setInputErrors({ type: true, lifeTime: true });
     setProductData(newProductData);
   };
+
   useEffect(() => {
     let LifeTimeNumber = false;
     const res = currentProductData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
@@ -65,6 +72,7 @@ const MainInfo = ({
     setShowLifeTimeNumber(LifeTimeNumber);
     return () => {};
   }, [currentProductData.lifeTime]);
+
   useEffect(() => {
     if (editable) {
       const newLifeTime = showLifeTimeNumber
@@ -88,6 +96,7 @@ const MainInfo = ({
     });
     return storesArray.join(', ');
   };
+
   return (
     <Box
       pb={5}
@@ -403,6 +412,7 @@ const MainInfo = ({
     </Box>
   );
 };
+
 MainInfo.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,

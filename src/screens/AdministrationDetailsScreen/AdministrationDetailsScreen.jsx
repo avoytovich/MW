@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
 import {
   LinearProgress, Tabs, Tab, Zoom, Button,
 } from '@material-ui/core';
+
 import CustomerDetails from './CustomerDetails';
+import api from '../../api';
 import localization from '../../localization';
 
-import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 
 import './AdministrationDetailsScreen.scss';

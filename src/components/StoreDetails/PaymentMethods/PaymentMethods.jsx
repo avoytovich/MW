@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Typography,
   Box,
@@ -10,9 +11,10 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import localization from '../../../localization';
 
 import { getPaymentImages, paymentImages } from './images';
+import localization from '../../../localization';
+
 import './PaymentMethods.scss';
 
 const PaymentMethods = ({
@@ -130,6 +132,8 @@ const PaymentMethods = ({
           </Select>
         )}
       </Box>
+
+      {/* ToDo: this is often copy-pasted in different components - should move it out */}
       <Zoom in={hoverBlock && !editable}>
         <Box className="actionBlock">
           <EditIcon

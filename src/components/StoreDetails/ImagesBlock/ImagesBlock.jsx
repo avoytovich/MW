@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { Box } from '@material-ui/core';
+
 import CardComponent from './CardComponent';
 import { storeDetailsCardText } from '../../../services/selectOptions/selectOptions';
+
 import './ImagesBlock.scss';
 
 const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
@@ -13,6 +16,7 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
     delete newData[key];
     setCurrentStoreData({ ...newData });
   };
+
   const handleUpdateText = (updateKey, value) => {
     const index = storeDetailsCardText.findIndex((i) => i.value === value);
     if (!currentStoreData[storeDetailsCardText[index].id]) {
@@ -26,6 +30,7 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
       setCurrentStoreData({ ...newData });
     }
   };
+
   return (
     <Box
       width="100%"
@@ -46,8 +51,8 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
           imageSrc={currentStoreData.logoStore}
         />
       )}
-      {(currentStoreData.bannerInvoice
-        || currentStoreData.bannerInvoice === '') && (
+
+      {(currentStoreData.bannerInvoice || currentStoreData.bannerInvoice === '') && (
         <CardComponent
           updated={updated}
           handleUpdateText={handleUpdateText}
@@ -58,8 +63,8 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
           imageSrc={currentStoreData.bannerInvoice}
         />
       )}
-      {(currentStoreData.bannerOrderConfEmail
-        || currentStoreData.bannerOrderConfEmail === '') && (
+
+      {(currentStoreData.bannerOrderConfEmail || currentStoreData.bannerOrderConfEmail === '') && (
         <CardComponent
           updated={updated}
           handleUpdateText={handleUpdateText}
@@ -70,8 +75,8 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
           imageSrc={currentStoreData.bannerOrderConfEmail}
         />
       )}
-      {(currentStoreData.logoFavicon
-        || currentStoreData.logoFavicon === '') && (
+
+      {(currentStoreData.logoFavicon || currentStoreData.logoFavicon === '') && (
         <CardComponent
           updated={updated}
           handleUpdateText={handleUpdateText}
@@ -85,6 +90,7 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
     </Box>
   );
 };
+
 ImagesBlock.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,

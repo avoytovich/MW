@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import api from '../../api';
+import TableComponent from '../../components/TableComponent';
 import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/adminCustomers';
 import { useTableData } from '../../services/useData';
-import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+import api from '../../api';
 import localization from '../../localization';
+
+import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const AdministrationScreen = () => {
   const dispatch = useDispatch();
