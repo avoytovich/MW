@@ -29,7 +29,7 @@ const general = {
   features: ' Features',
   live: 'Live',
   test: ' Test',
-  payment: 'Payment'
+  payment: 'Payment',
 };
 
 export default general;
