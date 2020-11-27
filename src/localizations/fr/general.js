@@ -23,6 +23,8 @@ const general = {
   order: 'Order',
   product: 'Product',
   store: 'Store',
+  recommendation: 'Recommendation',
+  discount: 'Discount',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
   selectImage: ' Select image',

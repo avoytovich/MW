@@ -65,6 +65,10 @@ const SignedRoutes = () => {
         path="/settings/administration"
         component={lazy(() => import('../../screens/AdministrationScreen'))}
       />
+      <Route
+        path="/marketing"
+        component={lazy(() => import('../../screens/MarketingScreen'))}
+      />
 
       <Redirect to="/overview/products" />
     </Switch>

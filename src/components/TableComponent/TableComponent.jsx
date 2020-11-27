@@ -24,6 +24,7 @@ const TableComponent = ({
   isLoading,
   showColumn,
   handleDeleteItem,
+  noActions,
 }) => {
   const [checked, setChecked] = useState([]);
 
@@ -55,7 +56,13 @@ const TableComponent = ({
 
   return tableData?.values?.length ? (
     <>
-      <TableItemsActions items={checked} headers={tableData.headers} onDelete={handleDeleteItem} />
+      {!noActions && (
+        <TableItemsActions
+          items={checked}
+          headers={tableData.headers}
+          onDelete={handleDeleteItem}
+        />
+      )}
 
       <Grid
         spacing={1}
@@ -64,13 +71,16 @@ const TableComponent = ({
         justify="center"
         className="tableHeaderGrid"
       >
-        <Grid>
-          <Checkbox
-            checked={tableData?.values.length === checked.length}
-            name="checkAll"
-            onChange={handleCheckAll}
-          />
-        </Grid>
+        {!noActions && (
+          <Grid>
+            <Checkbox
+              checked={tableData?.values.length === checked.length}
+              name="checkAll"
+              onChange={handleCheckAll}
+            />
+          </Grid>
+        )}
+
         {tableData.headers.map(
           (header) => showColumn[header.id] && (
             <Grid item xs zeroMinWidth key={header.value}>
@@ -88,6 +98,7 @@ const TableComponent = ({
           ),
         )}
       </Grid>
+
       <Box className="tableBodyGrid">
         {tableData.values.map((rowItem) => (
           <TableRowComponent
@@ -98,9 +109,11 @@ const TableComponent = ({
             showColumn={showColumn}
             key={rowItem.id}
             rowItem={rowItem}
+            noActions={noActions}
           />
         ))}
       </Box>
+
       <PaginationComponent
         location="flex-end"
         currentPage={currentPage}
@@ -120,6 +133,7 @@ TableComponent.propTypes = {
   currentPage: PropTypes.number,
   isLoading: PropTypes.bool,
   showColumn: PropTypes.object,
+  noActions: PropTypes.bool,
 };
 
 export default TableComponent;

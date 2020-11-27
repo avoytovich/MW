@@ -19,7 +19,7 @@ const NavItem = ({
       className='listItemButton'
       color='secondary'
       activeClassName='active'
-      exact
+      // exact
       to={href}
     >
       {Icon && <Icon size="20" />}
