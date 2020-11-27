@@ -76,6 +76,8 @@ const labels = {
   blockedPayments: 'Blocked payments',
   maxPaymentsPart: 'Max payments part',
   oneClickPayment: 'One Click Payment',
+  startDate: 'Start Date',
+  endDate: 'End Date',
 };
 
 export default labels;

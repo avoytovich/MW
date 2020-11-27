@@ -31,6 +31,7 @@ const TableRowComponent = ({
   handleCheck,
   checked,
   handleDeleteItem,
+  noActions,
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
@@ -100,26 +101,30 @@ const TableRowComponent = ({
         wrap="nowrap"
         justify="center"
       >
-        <Grid>
-          <Box my={1}>
-            <Checkbox
-              checked={checked}
-              name={rowItem.id}
-              onClick={(e) => e.stopPropagation()}
-              onChange={() => handleCheck(rowItem)}
-            />
-          </Box>
-        </Grid>
+        {!noActions && (
+          <Grid>
+            <Box my={1}>
+              <Checkbox
+                checked={checked}
+                name={rowItem.id}
+                onClick={(e) => e.stopPropagation()}
+                onChange={() => handleCheck(rowItem)}
+              />
+            </Box>
+          </Grid>
+        )}
 
         {markupSequence.map((item) => drawTableCell(item))}
 
         {rowHover && (
           <Grid>
             <Box my={2}>
-              <DeleteIcon
-                onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-                className="deleteIcon icons"
-              />
+              {!noActions && (
+                <DeleteIcon
+                  onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                  className="deleteIcon icons"
+                />
+              )}
               <EditIcon className="editIcon icons" />
               <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
             </Box>
@@ -142,6 +147,7 @@ TableRowComponent.propTypes = {
       cell: PropTypes.string,
     }),
   ),
+  noActions: PropTypes.bool,
 };
 
 export default TableRowComponent;
