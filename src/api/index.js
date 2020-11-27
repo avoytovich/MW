@@ -144,6 +144,18 @@ const api = {
       url,
     });
   },
+  getDiscounts(page, filters) {
+    let url = `/discounts?format=short&customerId=Nexway&sort=name,asc&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   getPaymentMethodsOptions() {
     const url = '/payment-proxy/available-payment-types';
@@ -319,6 +331,13 @@ const api = {
   },
   deleteRecommendationById(id) {
     const url = `/product-recommendations/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteDiscountById(id) {
+    const url = `/discounts/${id}`;
     return axiosInstance({
       method: 'delete',
       url,
