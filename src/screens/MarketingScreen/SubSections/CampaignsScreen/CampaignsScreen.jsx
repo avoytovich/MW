@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import api from '../../api';
+
+import TableComponent from '../../../../components/TableComponent';
+
 import {
   generateData,
   defaultShow,
-} from '../../services/useData/tableMarkups/campaigns';
-import { useTableData } from '../../services/useData';
-import TableComponent from '../../components/TableComponent';
+} from '../../../../services/useData/tableMarkups/campaigns';
+import { useTableData } from '../../../../services/useData';
+import api from '../../../../api';
 
 const CampaignsScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);

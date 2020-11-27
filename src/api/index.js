@@ -132,7 +132,62 @@ const api = {
       url,
     });
   },
+  getRecommendations(page, filters) {
+    let url = `/product-recommendations?format=short&customerId=Nexway&sort=name,asc&size=50&page=${page}`;
 
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getPaymentMethodsOptions() {
+    const url = '/payment-proxy/available-payment-types';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getPaymentConfigOptions() {
+    const url = '/payment-proxy/service/config';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getThemeOptions() {
+    const url = '/designs/themes?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSellingStoreOptions(customerId) {
+    const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getFulfillmentsOptions() {
+    const url = '/fulfillments/partners?size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubscriptionsOptions() {
+    const url = '/subscriptions/models?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET FEW BY IDs
   getCustomersByIds(ids) {
     const url = `/customers/public?format=short/${ids}`;
@@ -262,46 +317,10 @@ const api = {
       url,
     });
   },
-  getPaymentMethodsOptions() {
-    const url = '/payment-proxy/available-payment-types';
+  deleteRecommendationById(id) {
+    const url = `/product-recommendations/${id}`;
     return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getPaymentConfigOptions() {
-    const url = '/payment-proxy/service/config';
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-
-  getThemeOptions() {
-    const url = '/designs/themes?format=short&size=30&page=0';
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getSellingStoreOptions(customerId) {
-    const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getFulfillmentsOptions() {
-    const url = '/fulfillments/partners?size=30&page=0';
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getSubscriptionsOptions() {
-    const url = '/subscriptions/models?format=short&size=30&page=0';
-    return axiosInstance({
-      method: 'get',
+      method: 'delete',
       url,
     });
   },

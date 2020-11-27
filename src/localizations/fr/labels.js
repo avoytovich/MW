@@ -78,6 +78,10 @@ const labels = {
   oneClickPayment: 'One Click Payment',
   startDate: 'Start Date',
   endDate: 'End Date',
+  ruleName: 'Rule Name',
+  levels: 'Level(s)',
+  sources: 'Source(s)',
+  weight: 'Weight',
 };
 
 export default labels;
