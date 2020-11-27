@@ -82,6 +82,10 @@ const labels = {
   levels: 'Level(s)',
   sources: 'Source(s)',
   weight: 'Weight',
+  discountRuleName: 'Discount Rule Name',
+  model: 'Model',
+  discountAmount: 'Discount Amount',
+  maximumUses: 'Maximum Uses',
 };
 
 export default labels;

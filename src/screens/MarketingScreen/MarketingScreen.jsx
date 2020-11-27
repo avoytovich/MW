@@ -5,6 +5,7 @@ import { Tabs, Tab, Box } from '@material-ui/core';
 
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
+import DiscountsScreen from './SubSections/DiscountsScreen';
 
 import './marketingScreen.scss';
 
@@ -48,9 +49,7 @@ const MarketingScreen = () => {
 
         {curTab === 1 && <RecommendationsScreen />}
 
-        {curTab === 2 && (
-          <div>Discounts</div>
-        )}
+        {curTab === 2 && <DiscountsScreen />}
       </Box>
     </div>
   );

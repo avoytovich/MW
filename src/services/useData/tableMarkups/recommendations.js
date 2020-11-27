@@ -36,9 +36,9 @@ const generateData = (data) => {
     customer: val.customerId,
     ruleName: val.name,
     status: val.status,
-    type: val.type.replace('_', ' '),
-    levels: val.levels.join(', '),
-    sources: val.sources.join(', '),
+    type: val.type.replaceAll('_', ' '),
+    levels: val.levels ? val.levels.join(', ') : null,
+    sources: val.sources ? val.sources.join(', ') : null,
     weight: val.weight,
   }));
 
