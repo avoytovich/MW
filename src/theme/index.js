@@ -20,6 +20,17 @@ const themeConfig = {
         },
       },
     },
+    MuiCardActionArea:
+      { root:
+        {
+          boxSizing: 'border-box',
+          border: "3px solid transparent",
+          "&:hover": {
+            borderRadius: '10px',
+            border: "3px solid white",
+          },
+        }
+      },
     MuiFormLabel: { root: { color: colors.textPrimaryGray } },
     MuiCheckbox: { root: { color: colors.textPrimaryGray } },
     MuiFormHelperText: {

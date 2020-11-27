@@ -411,7 +411,7 @@ const MainInfo = ({
         </Box>
       </Box>
       <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <EditIcon
             color="primary"
             className="editIcon icons"

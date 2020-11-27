@@ -34,37 +34,36 @@ const CardComponent = ({
       className="itemWrapper"
       width="23%"
     >
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
-          <EditIcon color="primary" onClick={() => setEditable(true)} />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock">
-          <DeleteIcon
-            color="primary"
-            onClick={() => {
-              handleDeleteCard(updateKey);
-            }}
-          />
-        </Box>
-      </Zoom>
-      <Box mt={8} mx={3}>
-        <Card className="cardItem">
-          <CardActionArea>
+      <CardActionArea>
+        <Zoom in={hoverBlock && !editable}>
+          <Box className="actionBlock" mt="15px" mr="15px">
+            <EditIcon color="primary" onClick={() => setEditable(true)} />
+          </Box>
+        </Zoom>
+        <Zoom in={editable}>
+          <Box className="actionBlock" mt="15px" mr="15px">
+            <DeleteIcon
+              color="primary"
+              onClick={() => {
+                handleDeleteCard(updateKey);
+              }}
+            />
+          </Box>
+        </Zoom>
+        <Box mt={8} mx={3}>
+          <Card className="cardItem">
             <CardMedia
               className="cardImage"
               image={imageSrc}
               title="Contemplative Reptile"
             />
             <CardContent>
-              <Box pt={3} pb={7}>
+              <Box>
                 <TextField
                   onChange={(e) => handleChange(e.target.value, updateKey)}
                   disabled={!editable}
                   fullWidth
                   multiple
-                  margin="normal"
                   type="text"
                   value={cardText}
                   InputProps={{
@@ -77,9 +76,9 @@ const CardComponent = ({
                 />
               </Box>
             </CardContent>
-          </CardActionArea>
-        </Card>
-      </Box>
+          </Card>
+        </Box>
+      </CardActionArea>
     </Box>
   );
 };

@@ -45,6 +45,7 @@ const CheckoutMenu = ({ currentProductData, sellingStores }) => {
         color="primary"
         aria-controls="checkoutMenu"
         onClick={handleClick}
+        size="large"
       >
         {/* toDo Add localization */}
         CHECKOUT

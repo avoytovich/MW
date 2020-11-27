@@ -137,33 +137,35 @@ const StoreDetailsScreen = () => {
 
   return (
     <>
-      <Box display="flex" flexDirection="row">
-        <Box>
-          <FolderOpen color="secondary" />
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Box display="flex" flexDirection="row">
+          <Box>
+            <FolderOpen color="secondary" />
+          </Box>
+          <Box>
+            <Typography component="div" color="primary">
+              {/* toDo Add localization */}
+              <Box fontWeight={500}> Store</Box>
+            </Typography>
+          </Box>
         </Box>
-        <Box>
-          <Typography component="div" color="primary">
-            {/* toDo Add localization */}
-            <Box fontWeight={500}> Store</Box>
-          </Typography>
-        </Box>
+        <Zoom in={storeHasChanges}>
+          <Box mb={1}>
+            <Button
+              disabled={Object.keys(inputErrors).length !== 0}
+              id="save-detail-button"
+              color="primary"
+              size="large"
+              type="submit"
+              variant="contained"
+              onClick={saveDetails}
+            >
+              {/* toDo Add localization */}
+              Save
+            </Button>
+          </Box>
+        </Zoom>
       </Box>
-      <Zoom in={storeHasChanges}>
-        <Box mb={1}>
-          <Button
-            disabled={Object.keys(inputErrors).length !== 0}
-            id="save-detail-button"
-            color="primary"
-            size="large"
-            type="submit"
-            variant="contained"
-            onClick={saveDetails}
-          >
-            {/* toDo Add localization */}
-            Save
-          </Button>
-        </Box>
-      </Zoom>
       {currentStoreData && (
         <StoreDetails
           inputErrors={inputErrors}

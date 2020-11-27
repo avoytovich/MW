@@ -40,9 +40,9 @@ const ImagesBlock = ({ currentProductData, setProductData, productData }) => {
       <Box
         width="100%"
         display="flex"
-        alignContent="center"
+        // alignContent="center"
         flexDirection="row"
-        justifyContent="space-around"
+        // justifyContent="space-around"
         pt="1%"
       >
         {[...currentProductData.resources]

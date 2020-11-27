@@ -16,7 +16,7 @@ const OrderDetails = ({
   <Box className="detailContainer" display="flex" flexDirection="column">
     <Box>
       <Box display="flex" justify="space-between">
-        <Box width="60%" sm={9} className="actionBlockWrapper">
+        <Box width="100%" sm={9} className="actionBlockWrapper">
           <MainInfo
             orderData={orderData}
             setCurrentOrderData={setCurrentOrderData}

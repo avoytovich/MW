@@ -58,6 +58,17 @@ const MainInfo = ({
 
     setCurrentStoreData(newData);
   };
+
+  const formStoreNames = () => {
+    const storesArray = [];
+    currentStoreData.saleLocales.forEach((item) => {
+      const storeName = selectOptions.sellingStores.filter(
+        (store) => store.id === item,
+      )[0]?.name;
+      storesArray.push(storeName);
+    });
+    return storesArray.join(', ');
+  };
   return (
     <Box
       pb={5}
@@ -230,10 +241,11 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box>
-            {!editable ? (
-              <Typography color="secondary">
-                {currentStoreData?.saleLocales?.join(', ')}
-              </Typography>
+            {!editable ? (currentStoreData.saleLocales.length === 0
+              ? <Typography color="secondary">---</Typography>
+              : (<Typography color="secondary">
+                  {currentStoreData?.saleLocales?.join(', ')}
+                </Typography>)
             ) : (
               <Select
                 multiple
@@ -320,7 +332,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem
@@ -348,7 +360,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
-            className="storeCheckoutTheme"
+              className="storeCheckoutTheme"
               value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
               disabled={!editable}
               disableUnderline
@@ -370,7 +382,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem
@@ -385,7 +397,7 @@ const MainInfo = ({
         </Box>
       </Box>
       <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <EditIcon
             color="primary"
             className="editIcon icons"
@@ -394,7 +406,7 @@ const MainInfo = ({
         </Box>
       </Zoom>
       <Zoom in={editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <DeleteIcon
             color="primary"
             onClick={handleDeleteBlock}

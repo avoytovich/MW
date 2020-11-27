@@ -207,24 +207,26 @@ const MainInfo = ({
                           (item) => item.id === chip,
                         )[0];
                         return (
-                          <Chip
-                            variant="outlined"
-                            color="primary"
-                            onDelete={() => {
-                              const newValue = [
-                                ...currentProductData.sellingStores,
-                              ].filter((val) => val !== chip);
-                              setProductData({
-                                ...currentProductData,
-                                sellingStores: newValue,
-                              });
-                            }}
-                            onMouseDown={(event) => {
-                              event.stopPropagation();
-                            }}
-                            key={chip}
-                            label={storeName.displayName}
-                          />
+                          <Box mb="2px" mr="2px">
+                            <Chip
+                              variant="outlined"
+                              color="primary"
+                              onDelete={() => {
+                                const newValue = [
+                                  ...currentProductData.sellingStores,
+                                ].filter((val) => val !== chip);
+                                setProductData({
+                                  ...currentProductData,
+                                  sellingStores: newValue,
+                                });
+                              }}
+                              onMouseDown={(event) => {
+                                event.stopPropagation();
+                              }}
+                              key={chip}
+                              label={storeName.displayName}
+                            />
+                          </Box>
                         );
                       })}
                     </Box>
@@ -383,7 +385,7 @@ const MainInfo = ({
         </Box>
       </Box>
       <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <EditIcon
             color="primary"
             className="editIcon icons"
@@ -392,7 +394,7 @@ const MainInfo = ({
         </Box>
       </Zoom>
       <Zoom in={editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <DeleteIcon
             color="primary"
             onClick={handleDeleteBlock}

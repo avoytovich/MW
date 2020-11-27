@@ -25,9 +25,7 @@ const RelatedProducts = ({ currentOrderData, productsData }) => {
     <Box
       width="100%"
       display="flex"
-      alignContent="center"
       flexDirection="row"
-      justifyContent="space-around"
       pt="1%"
     >
       {formBottom().map((item) => (

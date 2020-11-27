@@ -41,13 +41,14 @@ const CardComponent = ({
       className="itemWrapper"
       width="23%"
     >
+    <CardActionArea>
       <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <EditIcon color="primary" onClick={() => setEditable(true)} />
         </Box>
       </Zoom>
       <Zoom in={editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <DeleteIcon
             color="primary"
             onClick={() => {
@@ -56,16 +57,15 @@ const CardComponent = ({
           />
         </Box>
       </Zoom>
-      <Box mt={8} mx={3}>
-        <Card className="cardItem">
-          <CardActionArea>
+        <Box mt={8} mx={3}>
+          <Card className="cardItem">
             <CardMedia
               className="cardImage"
               image={imageSrc}
               title="Contemplative Reptile"
             />
             <CardContent>
-              <Box pt={3} pb={7}>
+              <Box>
                 <Select
                   disabled={!editable}
                   value={cardText}
@@ -83,9 +83,9 @@ const CardComponent = ({
                 </Select>
               </Box>
             </CardContent>
-          </CardActionArea>
-        </Card>
-      </Box>
+          </Card>
+        </Box>
+      </CardActionArea>
     </Box>
   );
 };
