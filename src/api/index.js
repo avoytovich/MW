@@ -120,6 +120,19 @@ const api = {
     });
   },
 
+  getCampaigns(page, filters) {
+    let url = `/marketing-campaign/campaigns?format=short&customerId=Nexway&sort=updateDate,desc&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   // GET FEW BY IDs
   getCustomersByIds(ids) {
     const url = `/customers/public?format=short/${ids}`;
