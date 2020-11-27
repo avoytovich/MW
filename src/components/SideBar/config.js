@@ -61,7 +61,7 @@ const navConfig = [
       {
         id: 'marketing',
         title: localization.t('sideBar.titles.marketing'),
-        href: '/marketing/campaigns',
+        href: '/marketing',
         icon: EmojiObjects,
       },
       {
