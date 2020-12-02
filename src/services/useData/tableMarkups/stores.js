@@ -15,10 +15,22 @@ const markUp = {
   headers: [
     { value: localization.t('labels.customer'), id: 'customer' },
     { value: localization.t('labels.name'), id: 'name' },
-    { value: localization.t('labels.creationDate'), id: 'createDate' },
-    { value: localization.t('labels.lastUpdate'), id: 'updateDate' },
+    {
+      value: localization.t('labels.creationDate'),
+      id: 'createDate',
+      sortParam: 'createDate',
+    },
+    {
+      value: localization.t('labels.lastUpdate'),
+      id: 'updateDate',
+      sortParam: 'updateDate',
+    },
     { value: localization.t('labels.defaultLanguage'), id: 'defaultLocale' },
-    { value: localization.t('labels.status'), id: 'status' },
+    {
+      value: localization.t('labels.status'),
+      id: 'status',
+      sortParam: 'status',
+    },
     { value: localization.t('labels.gtmId'), id: 'gtmId' },
     { value: localization.t('labels.storeID'), id: 'id' },
   ],
@@ -26,7 +38,9 @@ const markUp = {
 
 const generateData = (data, customers) => {
   const values = data.items.map((val) => {
-    const customer = customers.items.filter((item) => item.id === val.customerId)[0]?.name;
+    const customer = customers.items.filter(
+      (item) => item.id === val.customerId,
+    )[0]?.name;
 
     return {
       customer,

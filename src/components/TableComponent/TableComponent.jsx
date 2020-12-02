@@ -25,6 +25,8 @@ const TableComponent = ({
   showColumn,
   handleDeleteItem,
   noActions,
+  setSortParams,
+  sortParams,
 }) => {
   const [checked, setChecked] = useState([]);
 
@@ -80,9 +82,29 @@ const TableComponent = ({
             />
           </Grid>
         )}
-
         {tableData.headers.map(
-          (header) => showColumn[header.id] && (
+          (header) => showColumn[header.id]
+          && (header.sortParam ? (
+            <Grid item xs zeroMinWidth key={header.value}>
+              <Box
+                className="sortableHeader"
+                my={1}
+                onClick={() => {
+                  const type = sortParams.type === 'desc' ? 'asc' : 'desc';
+                  setSortParams({ value: header.sortParam, type });
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  className="tableHeader"
+                  noWrap
+                  align="center"
+                >
+                  {header.value}
+                </Typography>
+              </Box>
+            </Grid>
+          ) : (
             <Grid item xs zeroMinWidth key={header.value}>
               <Box my={1}>
                 <Typography
@@ -95,7 +117,7 @@ const TableComponent = ({
                 </Typography>
               </Box>
             </Grid>
-          ),
+          )),
         )}
       </Grid>
 
@@ -134,6 +156,8 @@ TableComponent.propTypes = {
   isLoading: PropTypes.bool,
   showColumn: PropTypes.object,
   noActions: PropTypes.bool,
+  setSortParams: PropTypes.func,
+  sortParams: PropTypes.object,
 };
 
 export default TableComponent;

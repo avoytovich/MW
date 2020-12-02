@@ -38,8 +38,8 @@ const api = {
       data,
     });
   },
-  getOrders(page, filters) {
-    let url = `/orders?format=short&sort=updateDate,desc&size=50&page=${page}`;
+  getOrders(page, filters, sortParams) {
+    let url = `/orders?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -51,8 +51,8 @@ const api = {
     });
   },
   // GET ALL
-  getStores(page, filters) {
-    let url = `/stores?format=short&sort=name,asc&size=50&page=${page}`;
+  getStores(page, filters, sortParams) {
+    let url = `/stores?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -63,9 +63,9 @@ const api = {
       url,
     });
   },
-  getProducts(page, filters) {
-    let url = `/products?format=short&sort=updateDate,desc&parentId=null&size=50&page=${page}`;
 
+  getProducts(page, filters, sortParams) {
+    let url = `/products?format=short&sort=${sortParams.value},${sortParams.type}&parentId=null&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
