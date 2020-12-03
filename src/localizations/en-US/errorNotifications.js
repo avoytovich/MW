@@ -17,7 +17,7 @@ const errorNotifications = {
   internalServerError: 'Internal Server Error',
   timeout: 'Timeout',
   network: 'Network',
-  otherError: 'Something went wrong, please try again later!'
+  otherError: 'Something went wrong, please try again later!',
 };
 
 export default errorNotifications;
