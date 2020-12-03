@@ -96,6 +96,7 @@ const PaymentMethods = ({
           )
         ) : (
           <Select
+            name="paymentMethods"
             multiple
             value={
               currentStoreData.designs.paymentComponent
@@ -137,6 +138,7 @@ const PaymentMethods = ({
       <Zoom in={hoverBlock && !editable}>
         <Box className="actionBlock">
           <EditIcon
+            data-test="editIcon"
             color="primary"
             className="editIcon icons"
             onClick={() => setEditable(true)}
@@ -146,6 +148,7 @@ const PaymentMethods = ({
       <Zoom in={editable}>
         <Box className="actionBlock">
           <DeleteIcon
+            data-test="deleteIcon"
             color="primary"
             onClick={() => onChange([])}
             className="deleteIcon icons"

@@ -49,6 +49,7 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
       <Zoom in={hoverBlock && !editable}>
         <Box className="actionBlock">
           <EditIcon
+            data-test="editIcon"
             color="primary"
             className="editIcon icons"
             onClick={() => setEditable(true)}
@@ -79,6 +80,7 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
             </Box>
             <Box width="60%">
               <TextField
+                name="totalPrice"
                 InputProps={{
                   inputProps: { min: 0 },
                   disableUnderline: true,
@@ -130,6 +132,7 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
             </Box>
             <Box width="60%">
               <TextField
+                name="total"
                 InputProps={{
                   inputProps: { min: 0 },
                   disableUnderline: true,

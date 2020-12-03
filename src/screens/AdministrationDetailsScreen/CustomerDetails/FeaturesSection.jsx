@@ -24,6 +24,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.reseller')}
           control={(
             <Checkbox
+              name='resellerManagement'
               color="primary"
               checked={currentCustomer.features.resellerManagement}
               onChange={(e) => {
@@ -42,6 +43,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.onboarding')}
           control={(
             <Checkbox
+              name='onboardingManagement'
               color="primary"
               checked={currentCustomer.features.onboardingManagement}
               onChange={(e) => {
@@ -60,6 +62,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.remittance')}
           control={(
             <Checkbox
+              name='remittanceManagement'
               color="primary"
               checked={currentCustomer.features.remittanceManagement}
               onChange={(e) => {
@@ -78,6 +81,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.product')}
           control={(
             <Checkbox
+              name='productManagement'
               color="primary"
               checked={currentCustomer.features.productManagement}
               onChange={(e) => {
@@ -105,6 +109,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.seller')}
           control={(
             <Checkbox
+              name='seller'
               color="primary"
               checked={currentCustomer.features.seller}
               onChange={(e) => {
@@ -123,6 +128,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.sellerOnBehalf')}
           control={(
             <Checkbox
+              name='sellOnBehalf'
               color="primary"
               checked={currentCustomer.features.sellOnBehalf}
               onChange={(e) => {
@@ -141,6 +147,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.createInvoice')}
           control={(
             <Checkbox
+              name='createInvoice'
               color="primary"
               checked={currentCustomer.features.createInvoice}
               onChange={(e) => {
@@ -159,6 +166,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.orderConfirmation')}
           control={(
             <Checkbox
+              name='sendOrderConfirmationEmail'
               color="primary"
               checked={currentCustomer.features.sendOrderConfirmationEmail}
               onChange={(e) => {
@@ -186,6 +194,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.subscriptionUpgrade')}
           control={(
             <Checkbox
+              name='subscriptionUpgradeAuthorized'
               color="primary"
               checked={
                 currentCustomer.features.subscriptionUpgradeAuthorized
@@ -206,6 +215,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.subscriptionV1')}
           control={(
             <Checkbox
+              name='usingSubscriptionV1'
               color="primary"
               checked={currentCustomer.features.usingSubscriptionV1}
               onChange={(e) => {
@@ -224,6 +234,7 @@ const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
           label={localization.t('labels.fulfillmentV1')}
           control={(
             <Checkbox
+              name='usingFulfillmentV1'
               color="primary"
               checked={currentCustomer.features.usingFulfillmentV1}
               onChange={(e) => {

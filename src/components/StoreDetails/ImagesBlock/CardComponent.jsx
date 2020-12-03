@@ -43,6 +43,7 @@ const CardComponent = ({
 
   return (
     <Box
+      data-test="cardSection"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
       className="itemWrapper"
@@ -50,7 +51,11 @@ const CardComponent = ({
     >
       <Zoom in={hoverBlock && !editable}>
         <Box className="actionBlock">
-          <EditIcon color="primary" onClick={() => setEditable(true)} />
+          <EditIcon
+            color="primary"
+            data-test="editIcon"
+            onClick={() => setEditable(true)}
+          />
         </Box>
       </Zoom>
       <Zoom in={editable}>
@@ -74,6 +79,7 @@ const CardComponent = ({
             <CardContent>
               <Box pt={3} pb={7}>
                 <Select
+                  name="cardText"
                   disabled={!editable}
                   value={cardText}
                   disableUnderline

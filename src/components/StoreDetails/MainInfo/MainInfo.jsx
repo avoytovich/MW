@@ -35,7 +35,6 @@ const MainInfo = ({
   useEffect(() => {
     setEditable(false);
   }, [storeData]);
-
   const handleDeleteBlock = () => {
     const newData = {
       ...currentStoreData,
@@ -49,6 +48,7 @@ const MainInfo = ({
           themeRef: {
             ...currentStoreData.designs.checkout.themeRef,
             name: '',
+            customerId: '',
           },
         },
         endUserPortal: {
@@ -56,15 +56,14 @@ const MainInfo = ({
           themeRef: {
             ...currentStoreData.designs.endUserPortal.themeRef,
             name: '',
+            customerId: '',
           },
         },
       },
     };
     setInputErrors({ defaultLocale: true, status: true });
-
     setCurrentStoreData(newData);
   };
-
   return (
     <Box
       pb={5}
@@ -74,6 +73,7 @@ const MainInfo = ({
       className="mainContainer"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
+      data-test="mainSection"
     >
       <Box
         pb={10}
@@ -90,10 +90,14 @@ const MainInfo = ({
           flexDirection="column"
         >
           <Box>
-            <Typography variant="h1">{currentStoreData.name}</Typography>
+            <Typography data-test="storeName" variant="h1">
+              {currentStoreData.name}
+            </Typography>
           </Box>
           <Box>
-            <Typography variant="h1">{customerData.name}</Typography>
+            <Typography data-test="customerName" variant="h1">
+              {customerData.name}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -116,6 +120,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                name="status"
                 error={inputErrors?.status}
                 disabled={!editable}
                 value={currentStoreData.status}
@@ -156,6 +161,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <TextField
+                name="hostname"
                 required
                 disabled
                 fullWidth
@@ -199,6 +205,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              name="defaultLocale"
               className="storeDefaultLanuage"
               error={inputErrors.defaultLocale}
               disabled={!editable}
@@ -238,11 +245,12 @@ const MainInfo = ({
           </Box>
           <Box>
             {!editable ? (
-              <Typography color="secondary">
+              <Typography data-test="saleLocales" color="secondary">
                 {currentStoreData?.saleLocales?.join(', ')}
               </Typography>
             ) : (
               <Select
+                name="saleLocales"
                 multiple
                 value={currentStoreData.saleLocales}
                 disableUnderline
@@ -305,6 +313,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              name="enduserPortalTheme"
               className="storeEnduserPortalTheme"
               disabled={!editable}
               disableUnderline
@@ -355,6 +364,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              name="checkoutTheme"
               className="storeCheckoutTheme"
               value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
               disabled={!editable}
@@ -394,6 +404,7 @@ const MainInfo = ({
       <Zoom in={hoverBlock && !editable}>
         <Box className="actionBlock">
           <EditIcon
+            data-test="editIcon"
             color="primary"
             className="editIcon icons"
             onClick={() => setEditable(true)}
@@ -403,6 +414,7 @@ const MainInfo = ({
       <Zoom in={editable}>
         <Box className="actionBlock">
           <DeleteIcon
+            data-test="deleteIcon"
             color="primary"
             onClick={handleDeleteBlock}
             className="deleteIcon icons"

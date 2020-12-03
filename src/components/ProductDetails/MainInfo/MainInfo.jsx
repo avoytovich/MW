@@ -104,6 +104,7 @@ const MainInfo = ({
       display="flex"
       flexDirection="column"
       className="mainContainer"
+      data-test="mainSection"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
     >
@@ -149,6 +150,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                name="type"
                 error={inputErrors?.type}
                 disabled={!editable}
                 value={currentProductData.type}
@@ -191,6 +193,7 @@ const MainInfo = ({
                 <Typography>{formStoreNames()}</Typography>
               ) : (
                 <Select
+                  name="sellingStores"
                   multiple
                   disableUnderline
                   value={
@@ -307,7 +310,9 @@ const MainInfo = ({
           </Box>
           <Box width="60%" pt="5px" pl="4px">
             {!editable ? (
-              <Typography>{currentProductData.lifeTime}</Typography>
+              <Typography data-test="lifeTime">
+                {currentProductData.lifeTime}
+              </Typography>
             ) : (
               <>
                 {showLifeTimeNumber && (
@@ -328,6 +333,7 @@ const MainInfo = ({
                   />
                 )}
                 <Select
+                  name="lifeTime"
                   error={inputErrors?.lifeTime}
                   value={lifeTimeUpdateValue.value}
                   onChange={(e) => {
@@ -371,6 +377,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              name="trialAllowed"
               disabled={!editable}
               value={currentProductData.trialAllowed}
               onChange={(e) => setProductData({
@@ -394,6 +401,7 @@ const MainInfo = ({
       <Zoom in={hoverBlock && !editable}>
         <Box className="actionBlock">
           <EditIcon
+            data-test="editIcon"
             color="primary"
             className="editIcon icons"
             onClick={() => setEditable(true)}
@@ -403,6 +411,7 @@ const MainInfo = ({
       <Zoom in={editable}>
         <Box className="actionBlock">
           <DeleteIcon
+            data-test="deleteIcon"
             color="primary"
             onClick={handleDeleteBlock}
             className="deleteIcon icons"
