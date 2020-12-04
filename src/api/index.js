@@ -76,8 +76,8 @@ const api = {
     });
   },
 
-  getIdentities(page, filters) {
-    let url = `/iam/identities?format=short&sort=firstName,desc&size=50&page=${page}`;
+  getIdentities(page, filters, sortParams) {
+    let url = `/iam/identities?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -112,8 +112,8 @@ const api = {
       url,
     });
   },
-  getCustomers(page) {
-    const url = `https://api.staging.nexway.build/customers?format=short&sort=name%2Casc&size=50&page=${page}`;
+  getCustomers(page, sortParams) {
+    const url = `https://api.staging.nexway.build/customers?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,

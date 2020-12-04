@@ -7,3 +7,13 @@ export const initialSortParams = {
   value: 'updateDate',
   type: 'desc',
 };
+
+export const initialIdentitiesSortParams = {
+  value: 'firstName',
+  type: 'desc',
+};
+
+export const initialCustomerAdminSortParams = {
+  value: 'name',
+  type: 'desc',
+};
