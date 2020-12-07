@@ -15,14 +15,38 @@ const defaultShow = {
 const markUp = {
   headers: [
     { value: localization.t('labels.productID'), id: 'id' },
-    { value: localization.t('labels.creationDate'), id: 'createDate' },
-    { value: localization.t('labels.lastUpdate'), id: 'updateDate' },
+    {
+      value: localization.t('labels.creationDate'),
+      id: 'createDate',
+      sortParam: 'createDate',
+    },
+    {
+      value: localization.t('labels.lastUpdate'),
+      id: 'updateDate',
+      sortParam: 'updateDate',
+    },
     { value: localization.t('labels.customer'), id: 'customer' },
-    { value: localization.t('labels.name'), id: 'genericName' },
-    { value: localization.t('labels.publisherRefID'), id: 'publisherRefId' },
+    {
+      value: localization.t('labels.name'),
+      id: 'genericName',
+      sortParam: 'genericName',
+    },
+    {
+      value: localization.t('labels.publisherRefID'),
+      id: 'publisherRefId',
+      sortParam: 'publisherRefId',
+    },
     { value: localization.t('labels.type'), id: 'type' },
-    { value: localization.t('labels.lifeTime'), id: 'lifeTime' },
-    { value: localization.t('labels.status'), id: 'status' },
+    {
+      value: localization.t('labels.lifeTime'),
+      id: 'lifeTime',
+      sortParam: 'lifeTime',
+    },
+    {
+      value: localization.t('labels.status'),
+      id: 'status',
+      sortParam: 'status',
+    },
     { value: localization.t('labels.family'), id: 'family' },
     { value: localization.t('labels.priceFunction'), id: 'priseFunction' },
   ],
