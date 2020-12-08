@@ -171,7 +171,6 @@ const api = {
       url,
     });
   },
-
   getThemeOptions() {
     const url = '/designs/themes?format=short&size=30&page=0';
     return axiosInstance({
@@ -195,6 +194,34 @@ const api = {
   },
   getSubscriptionsOptions() {
     const url = '/subscriptions/models?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsTranslations(page) {
+    const url = `/designs/i18ns?format=short&size=50&page=${page}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsFonts(page) {
+    const url = `/designs/fonts?format=short&size=50&page=${page}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsThemes(page) {
+    const url = `/designs/themes?format=short&size=50&page=${page}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsLayouts(page) {
+    const url = `/designs/layouts?format=short&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,
@@ -338,6 +365,34 @@ const api = {
   },
   deleteDiscountById(id) {
     const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteTranslationById(id) {
+    const url = `/designs/i18ns/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteThemeById(id) {
+    const url = `/designs/themes/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteFontById(id) {
+    const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteLayoutById(id) {
+    const url = `/designs/layouts/${id}`;
     return axiosInstance({
       method: 'delete',
       url,

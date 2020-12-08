@@ -69,7 +69,10 @@ const SignedRoutes = () => {
         path="/marketing"
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />
-
+      <Route
+        path="/checkout-experience"
+        component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}
+      />
       <Redirect to="/overview/products" />
     </Switch>
   );
