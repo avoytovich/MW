@@ -11,19 +11,28 @@ const defaultShow = {
 const markUp = {
   headers: [
     { value: localization.t('labels.id'), id: 'id' },
-    { value: localization.t('labels.name'), id: 'name' },
+    { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     { value: localization.t('labels.customer'), id: 'customer' },
-    { value: localization.t('labels.lastUpdate'), id: 'updateDate' },
-    { value: localization.t('labels.creationDate'), id: 'createDate' },
+    {
+      value: localization.t('labels.lastUpdate'),
+      id: 'updateDate',
+      sortParam: 'updateDate',
+    },
+    {
+      value: localization.t('labels.creationDate'),
+      id: 'createDate',
+      sortParam: 'createDate',
+    },
   ],
 };
 
 const generateData = (data, customers) => {
   let customer;
   const values = data.items.map((val) => {
-    customer = val.customerId === 'Nexway'
-      ? val.customerId
-      : customers.find((item) => item.id === val.customerId)?.name;
+    customer =
+      val.customerId === 'Nexway'
+        ? val.customerId
+        : customers.find((item) => item.id === val.customerId)?.name;
 
     return {
       id: val.id,

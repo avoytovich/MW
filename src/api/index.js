@@ -199,29 +199,29 @@ const api = {
       url,
     });
   },
-  getDesignsTranslations(page) {
-    const url = `/designs/i18ns?format=short&size=50&page=${page}`;
+  getDesignsTranslations(page, sortParams) {
+    const url = `/designs/i18ns?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getDesignsFonts(page) {
-    const url = `/designs/fonts?format=short&size=50&page=${page}`;
+  getDesignsFonts(page, sortParams) {
+    const url = `/designs/fonts?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getDesignsThemes(page) {
-    const url = `/designs/themes?format=short&size=50&page=${page}`;
+  getDesignsThemes(page, sortParams) {
+    const url = `/designs/themes?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getDesignsLayouts(page) {
-    const url = `/designs/layouts?format=short&size=50&page=${page}`;
+  getDesignsLayouts(page, sortParams) {
+    const url = `/designs/layouts?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,

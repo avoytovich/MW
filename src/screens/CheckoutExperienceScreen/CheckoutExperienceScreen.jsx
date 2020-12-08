@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab, Box } from '@material-ui/core';
 
 import TranslationsTab from './TranslationsTab';
 import FontsTab from './FontsTab';
@@ -23,10 +23,12 @@ const CheckoutExperienceScreen = () => {
         <Tab label="Translations" />
         <Tab label="Fonts" />
       </Tabs>
-      {curTab === 0 && <ThemesTab />}
-      {curTab === 1 && <LayoutsTab />}
-      {curTab === 2 && <TranslationsTab />}
-      {curTab === 3 && <FontsTab />}
+      <Box mt={3}>
+        {curTab === 0 && <ThemesTab />}
+        {curTab === 1 && <LayoutsTab />}
+        {curTab === 2 && <TranslationsTab />}
+        {curTab === 3 && <FontsTab />}
+      </Box>
     </div>
   );
 };

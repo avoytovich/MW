@@ -9,15 +9,18 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import { initialSortParams } from '../../services/constants';
 
 const ThemesTab = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [sortParams, setSortParams] = useState(initialSortParams);
+
   const requests = async () => {
     const costumersIds = [];
-    const res = await api.getDesignsThemes(currentPage - 1);
+    const res = await api.getDesignsThemes(currentPage - 1, sortParams);
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -34,6 +37,7 @@ const ThemesTab = () => {
     makeUpdate,
     'checkout-experience',
     requests,
+    sortParams,
   );
 
   const handleDeleteTheme = (id) => api.deleteThemeById(id).then(() => {
@@ -51,6 +55,8 @@ const ThemesTab = () => {
 
   return (
     <TableComponent
+      sortParams={sortParams}
+      setSortParams={setSortParams}
       handleDeleteItem={handleDeleteTheme}
       showColumn={defaultShow}
       currentPage={currentPage}
