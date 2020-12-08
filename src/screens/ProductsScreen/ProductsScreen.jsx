@@ -9,15 +9,17 @@ import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import { initialSortParams } from '../../services/constants';
 
 const ProductsScreen = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [sortParams, setSortParams] = useState(initialSortParams);
 
   const requests = async (filtersUrl) => {
-    const res = await api.getProducts(currentPage - 1, filtersUrl);
+    const res = await api.getProducts(currentPage - 1, filtersUrl, sortParams);
     return generateData(res.data);
   };
 
@@ -27,6 +29,7 @@ const ProductsScreen = () => {
     makeUpdate,
     'products',
     requests,
+    sortParams,
   );
 
   const handleDeleteProduct = (id) => api.deleteProductById(id).then(() => {
@@ -43,14 +46,18 @@ const ProductsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
 
   return (
-    <TableComponent
-      handleDeleteItem={handleDeleteProduct}
-      showColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
-      tableData={products}
-      isLoading={isLoading}
-    />
+    <>
+      <TableComponent
+        sortParams={sortParams}
+        setSortParams={setSortParams}
+        handleDeleteItem={handleDeleteProduct}
+        showColumn={defaultShow}
+        currentPage={currentPage}
+        updatePage={updatePage}
+        tableData={products}
+        isLoading={isLoading}
+      />
+    </>
   );
 };
 
