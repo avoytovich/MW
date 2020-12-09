@@ -32,7 +32,10 @@ const general = {
   live: 'Live',
   test: ' Test',
   payment: 'Payment',
-
+  translation: 'Translation',
+  theme: 'Theme',
+  font: 'Font',
+  layout: 'Layout',
 };
 
 export default general;
