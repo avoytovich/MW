@@ -9,10 +9,22 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.fullName'), id: 'fullName' },
-    { value: localization.t('labels.userID'), id: 'userName' },
-    { value: localization.t('labels.email'), id: 'email' },
-    { value: localization.t('labels.accountCreated'), id: 'createDate' },
+    {
+      value: localization.t('labels.fullName'),
+      id: 'fullName',
+      sortParam: 'firstName',
+    },
+    {
+      value: localization.t('labels.userID'),
+      id: 'userName',
+      sortParam: 'userName',
+    },
+    { value: localization.t('labels.email'), id: 'email', sortParam: 'email' },
+    {
+      value: localization.t('labels.accountCreated'),
+      id: 'createDate',
+      sortParam: 'createDate',
+    },
   ],
 };
 
