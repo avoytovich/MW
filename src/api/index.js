@@ -305,6 +305,13 @@ const api = {
       url,
     });
   },
+  getDiscountById(id) {
+    const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // PUT BY ID
   updateCustomerById(id, data) {
@@ -347,6 +354,15 @@ const api = {
       data,
     });
   },
+  updateDiscountById(id, data) {
+    const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+
   // DELETE BY ID
   deleteProductById(id) {
     const url = `/products/${id}`;
