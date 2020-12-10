@@ -241,11 +241,10 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box>
-            {!editable ? (currentStoreData.saleLocales.length === 0
-              ? <Typography color="secondary">---</Typography>
-              : (<Typography color="secondary">
-                  {currentStoreData?.saleLocales?.join(', ')}
-                </Typography>)
+            {!editable ? (
+              <Typography color="secondary">
+                {currentStoreData?.saleLocales?.join(', ') || '---'}
+              </Typography>
             ) : (
               <Select
                 multiple
