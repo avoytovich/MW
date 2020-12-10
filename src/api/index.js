@@ -51,7 +51,7 @@ const api = {
     });
   },
   // GET ALL
-  getStores(page, filters, sortParams) {
+  getStores(page, filters, sortParams = { value: 'name', type: 'asc' }) {
     let url = `/stores?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
 
     if (filters) {
@@ -64,8 +64,9 @@ const api = {
     });
   },
 
-  getProducts(page, filters, sortParams) {
+  getProducts(page, filters, sortParams = { value: 'name', type: 'asc' }) {
     let url = `/products?format=short&sort=${sortParams.value},${sortParams.type}&parentId=null&size=50&page=${page}`;
+
     if (filters) {
       url += filters;
     }
@@ -285,6 +286,13 @@ const api = {
       url,
     });
   },
+  getDiscountById(id) {
+    const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // PUT BY ID
   updateCustomerById(id, data) {
@@ -327,6 +335,15 @@ const api = {
       data,
     });
   },
+  updateDiscountById(id, data) {
+    const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+
   // DELETE BY ID
   deleteProductById(id) {
     const url = `/products/${id}`;
