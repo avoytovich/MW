@@ -293,6 +293,13 @@ const api = {
       url,
     });
   },
+  getRecoById(id) {
+    const url = `/product-recommendations/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // PUT BY ID
   updateCustomerById(id, data) {
@@ -337,6 +344,14 @@ const api = {
   },
   updateDiscountById(id, data) {
     const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateRecoById(id, data) {
+    const url = `/product-recommendations/${id}`;
     return axiosInstance({
       method: 'put',
       url,
