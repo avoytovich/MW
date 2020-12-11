@@ -87,7 +87,12 @@ const TableComponent = ({
             && (header.sortParam ? (
               <Grid item xs zeroMinWidth key={header.value}>
                 <Box
-                  className="sortableHeader"
+                  className={`sortableHeader ${
+                    sortParams?.value === header.sortParam
+                    && (sortParams.type === 'desc'
+                      ? 'sortActiveDesc'
+                      : 'sortActiveAsc')
+                  }`}
                   my={1}
                   onClick={() => {
                     let type;
