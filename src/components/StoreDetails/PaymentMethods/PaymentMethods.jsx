@@ -82,13 +82,17 @@ const PaymentMethods = ({
             (item) => {
               const src = getPaymentImages(item);
               return (
-                <Box key={item} className="paymentImageWrapper">
-                  <img
-                    className="paymentImage"
-                    label="Clickable"
-                    src={src}
-                    alt={item}
-                  />
+                <Box key={item} className="paymentImageWrapper" p={1}>
+                  {src ? (
+                    <img
+                      className="paymentImage"
+                      label="Clickable"
+                      src={src}
+                      alt={item}
+                    />
+                  ) : (
+                    <span>{item}</span>
+                  )}
                 </Box>
               );
             },
