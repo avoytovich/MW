@@ -61,9 +61,7 @@ const IdentityDetailsScreen = () => {
     <div className="identity-details-screen">
       <Tabs
         value={curTab}
-        onChange={(e, newTab) => {
-          setCurTab(newTab);
-        }}
+        onChange={(e, newTab) => setCurTab(newTab)}
         indicatorColor="primary"
         textColor="primary"
       >

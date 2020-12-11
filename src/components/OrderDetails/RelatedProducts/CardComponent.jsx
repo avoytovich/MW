@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Card,
   Box,
@@ -31,6 +32,7 @@ const CardComponent = ({ text, title }) => (
     </Box>
   </Box>
 );
+
 CardComponent.propTypes = {
   text: PropTypes.string,
   title: PropTypes.string,

@@ -1,5 +1,8 @@
+// ToDo: move out and reuse common blocks for procuts/stores details
+
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import {
   Card,
   CardMedia,
@@ -11,7 +14,9 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
+
 import { storeDetailsCardText } from '../../../services/selectOptions/selectOptions';
+
 import './ImagesBlock.scss';
 
 const CardComponent = ({
@@ -25,6 +30,7 @@ const CardComponent = ({
 }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
+
   useEffect(() => {
     setEditable(false);
   }, [storeData]);
@@ -34,6 +40,7 @@ const CardComponent = ({
       setEditable(true);
     }
   }, [updated]);
+
   return (
     <Box
       onMouseOver={() => setHoverBlock(true)}

@@ -35,11 +35,11 @@ const MyAccountScreen = () => {
   const [productsModal, setProductsModalOpen] = useState(false);
   const [storesModal, setStoresModalOpen] = useState(false);
   const account = useSelector(({ account: { user } }) => user);
-  
+
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
-    setCurIdentity({ ...identity, [name]: value });
+    setCurIdentity({ ...curIdentity, [name]: value });
   };
 
   const saveIdentity = () => {
@@ -52,10 +52,10 @@ const MyAccountScreen = () => {
   };
 
   const removeItem = (id, type) => {
-    if(type === 'products') {
-      setProducts((cur) => cur.filter(product => product.id !== id));
-    } else if(type === 'stores') {
-      setStores((cur) => cur.filter(store => store.id !== id));
+    if (type === 'products') {
+      setProducts((cur) => cur.filter((product) => product.id !== id));
+    } else if (type === 'stores') {
+      setStores((cur) => cur.filter((store) => store.id !== id));
     }
   };
 
@@ -82,7 +82,9 @@ const MyAccountScreen = () => {
         api
           .getProducts(0, `&customerId=${data.customerId}`)
           .then(({ data: { items: products } }) => {
-            const productsObj = products.map((product) => ({ id: product.id, name: product.genericName }));
+            const productsObj = products.map((product) => (
+              { id: product.id, name: product.genericName }
+            ));
             setProducts(productsObj);
           });
       });

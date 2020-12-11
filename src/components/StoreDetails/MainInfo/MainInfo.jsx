@@ -1,4 +1,8 @@
+// ToDo: move out and reuse common blocks for procuts/stores/orders details
+
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Box,
   Typography,
@@ -8,11 +12,13 @@ import {
   TextField,
   Chip,
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import localization from '../../../localization';
+
 import selectLanguages from '../../../services/selectOptions/selectLanguages';
 import { status } from '../../../services/selectOptions/selectOptions';
+
+import localization from '../../../localization';
+
 import './MainInfo.scss';
 
 const MainInfo = ({
@@ -58,6 +64,7 @@ const MainInfo = ({
 
     setCurrentStoreData(newData);
   };
+
   return (
     <Box
       pb={5}
@@ -154,6 +161,7 @@ const MainInfo = ({
                 fullWidth
                 InputProps={{
                   disableUnderline: true,
+                  form: { autocomplete: 'off' },
                 }}
                 onChange={(e) => {
                   const newArray = [...currentStoreData.routes];
@@ -165,7 +173,6 @@ const MainInfo = ({
                 }}
                 type="text"
                 value={currentStoreData.routes[0].hostname}
-                inputProps={{ form: { autocomplete: 'off' } }}
               />
             </Box>
           </Box>
@@ -348,7 +355,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
-            className="storeCheckoutTheme"
+              className="storeCheckoutTheme"
               value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
               disabled={!editable}
               disableUnderline

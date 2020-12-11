@@ -1,5 +1,4 @@
 import localization from '../../../localization';
-import labels from '../../../localizations/en-US/labels';
 
 const defaultShow = {
   name: true,
@@ -10,10 +9,18 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.name'), id: 'name' },
-    { value: localization.t('labels.status'), id: 'status' },
-    { value: localization.t('labels.email'), id: 'email' },
-    { value: localization.t('labels.accountCreated'), id: 'createDate' },
+    { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
+    {
+      value: localization.t('labels.status'),
+      id: 'status',
+      sortParam: 'status',
+    },
+    { value: localization.t('labels.email'), id: 'email', sortParam: 'email' },
+    {
+      value: localization.t('labels.accountCreated'),
+      id: 'createDate',
+      sortParam: 'createDate',
+    },
   ],
 };
 

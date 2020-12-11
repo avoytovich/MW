@@ -1,11 +1,12 @@
 import React from 'react';
-
 import PropTypes from 'prop-types';
+
 import {
   Box, Checkbox, FormControlLabel, Typography,
 } from '@material-ui/core';
-import localization from '../../../localization';
+
 import CustomCard from '../../../components/utils/CustomCard';
+import localization from '../../../localization';
 
 const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
   <Box display="flex" alignItems="baseline" mt={3}>

@@ -1,7 +1,10 @@
 @import '../../styles/variables.scss';
 
 .tableRowGrid {
+  display: flex;
   padding: 8px 15px;
+  min-height: 64px;
+
   &:nth-of-type(odd) {
     background-color: $tablesOddRow;
   }
@@ -50,7 +53,7 @@
   }
 }
 
-.table-items-actions{
+.table-items-actions {
   .CSVLinkBlock {
     text-decoration: none;
     .importExportFab {
@@ -73,4 +76,7 @@
       position: relative;
     }
   }
+}
+.sortableHeader {
+  cursor: pointer;
 }

@@ -23,6 +23,8 @@ const general = {
   order: 'Order',
   product: 'Product',
   store: 'Store',
+  recommendation: 'Recommendation',
+  discount: 'Discount',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
   selectImage: ' Select image',
@@ -30,7 +32,10 @@ const general = {
   live: 'Live',
   test: ' Test',
   payment: 'Payment',
-
+  translation: 'Translation',
+  theme: 'Theme',
+  font: 'Font',
+  layout: 'Layout',
 };
 
 export default general;

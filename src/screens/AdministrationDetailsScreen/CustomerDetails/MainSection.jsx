@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Box,
   Typography,
@@ -10,7 +12,6 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
 
 import localization from '../../../localization';
 

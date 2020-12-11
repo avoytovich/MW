@@ -1,9 +1,11 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
+
+import { Box } from '@material-ui/core';
 
 import RelatedProducts from './RelatedProducts';
 import MainInfo from './MainInfo';
+
 import './OrderDetails.scss';
 
 const OrderDetails = ({
@@ -34,6 +36,7 @@ const OrderDetails = ({
     </Box>
   </Box>
 );
+
 OrderDetails.propTypes = {
   currentOrderData: PropTypes.object,
   customer: PropTypes.string,
