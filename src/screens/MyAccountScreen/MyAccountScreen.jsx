@@ -39,7 +39,7 @@ const MyAccountScreen = () => {
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
-    setCurIdentity({ ...identity, [name]: value });
+    setCurIdentity({ ...curIdentity, [name]: value });
   };
 
   const saveIdentity = () => {
