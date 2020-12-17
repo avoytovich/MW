@@ -1,42 +1,44 @@
 import localization from '../../../localization';
 
 const defaultShow = {
+  id: false,
   name: true,
-  status: true,
-  email: true,
+  customer: true,
   createDate: true,
+  updateDate: true,
 };
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
+    { value: localization.t('labels.customer'), id: 'customer' },
     {
-      value: localization.t('labels.status'),
-      id: 'status',
-      sortParam: 'status',
+      value: localization.t('labels.lastUpdate'),
+      id: 'updateDate',
+      sortParam: 'updateDate',
     },
-    { value: localization.t('labels.email'), id: 'email', sortParam: 'email' },
     {
-      value: localization.t('labels.accountCreated'),
+      value: localization.t('labels.creationDate'),
       id: 'createDate',
       sortParam: 'createDate',
     },
   ],
 };
 
-const generateData = (data) => {
+const generateData = (data, customers) => {
+  let customer;
   const values = data.items.map((val) => {
-    let status = '';
-    if (val.status === 'RUNNING') {
-      status = localization.t('general.live');
-    } else if (val.status === 'TRIAL') {
-      status = localization.t('general.test');
-    }
+    customer =
+      val.customerId === 'Nexway'
+        ? val.customerId
+        : customers.find((item) => item.id === val.customerId)?.name;
+
     return {
       id: val.id,
       name: val.name,
-      status,
-      email: val.email,
+      customer: customer || '',
+      updateDate: val.updateDate,
       createDate: val.createDate,
     };
   });
