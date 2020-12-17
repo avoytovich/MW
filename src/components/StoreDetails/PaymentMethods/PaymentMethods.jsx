@@ -11,16 +11,15 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-
-import { getPaymentImages, paymentImages } from './images';
 import localization from '../../../localization';
-
+import { getPaymentImages } from './images';
 import './PaymentMethods.scss';
 
 const PaymentMethods = ({
   currentStoreData,
   setCurrentStoreData,
   storeData,
+  selectOptions,
 }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
@@ -83,13 +82,17 @@ const PaymentMethods = ({
             (item) => {
               const src = getPaymentImages(item);
               return (
-                <Box key={item} className="paymentImageWrapper">
-                  <img
-                    className="paymentImage"
-                    label="Clickable"
-                    src={src}
-                    alt={item}
-                  />
+                <Box key={item} className="paymentImageWrapper" p={1}>
+                  {src ? (
+                    <img
+                      className="paymentImage"
+                      label="Clickable"
+                      src={src}
+                      alt={item}
+                    />
+                  ) : (
+                    <span>{item}</span>
+                  )}
                 </Box>
               );
             },
@@ -124,7 +127,7 @@ const PaymentMethods = ({
               </Box>
             )}
           >
-            {paymentImages.map((item) => (
+            {selectOptions.paymentMethods.map((item) => (
               <MenuItem key={item.id} value={item.id}>
                 {item.id}
               </MenuItem>
@@ -160,6 +163,7 @@ PaymentMethods.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
   storeData: PropTypes.object,
+  selectOptions: PropTypes.object,
 };
 
 export default PaymentMethods;

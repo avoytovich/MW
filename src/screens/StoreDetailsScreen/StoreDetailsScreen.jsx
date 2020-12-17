@@ -101,6 +101,7 @@ const StoreDetailsScreen = () => {
         const store = await api.getStoreById(id);
         const customer = await api.getCustomerById(store?.data?.customerId);
         const themeOptions = await api.getThemeOptions();
+        const paymentMethodsOptions = await api.getPaymentMethodsOptions();
         if (!isCancelled) {
           const checkedStore = checkRequiredFields(store.data);
           setStoreData(checkedStore);
@@ -109,6 +110,7 @@ const StoreDetailsScreen = () => {
           setSelectOptions({
             ...selectOptions,
             theme: themeOptions.data.items,
+            paymentMethods: paymentMethodsOptions.data,
           });
           setLoading(false);
         }
