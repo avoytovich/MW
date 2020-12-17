@@ -6,7 +6,11 @@ import useTableData from '../../services/useData/useTableData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
-import { initialSortParams } from '../../services/constants';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 import {
   generateData,
   defaultShow,
@@ -17,7 +21,12 @@ const StoresScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(initialSortParams);
+  const [sortParams, setSortParams] = useState(getSortParams(sortKeys.stores));
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.stores, params);
+  };
 
   const requests = async (filtersUrl) => {
     const costumersIds = [];
@@ -56,7 +65,7 @@ const StoresScreen = () => {
   return (
     <TableComponent
       sortParams={sortParams}
-      setSortParams={setSortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteStore}
       showColumn={defaultShow}
       currentPage={currentPage}

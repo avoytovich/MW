@@ -9,14 +9,21 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import { initialSortParams } from '../../services/constants';
+import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
 
 const ThemesTab = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(initialSortParams);
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.themesTab),
+  );
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.themesTab, params);
+  };
 
   const requests = async () => {
     const costumersIds = [];
@@ -56,7 +63,7 @@ const ThemesTab = () => {
   return (
     <TableComponent
       sortParams={sortParams}
-      setSortParams={setSortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteTheme}
       showColumn={defaultShow}
       currentPage={currentPage}
