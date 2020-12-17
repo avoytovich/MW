@@ -1,6 +1,7 @@
 // ToDo: consider making a common layout for such type of settings screens
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -13,6 +14,10 @@ import {
   Dialog,
   InputAdornment,
   CircularProgress,
+  Typography,
+  FormControlLabel,
+  Checkbox,
+  Switch,
 } from '@material-ui/core';
 
 import EditIcon from '@material-ui/icons/Edit';
@@ -23,54 +28,60 @@ import CustomCard from '../../components/utils/CustomCard';
 import TableItems from '../../components/utils/Modals/TableItems';
 import localization from '../../localization';
 
-import './myAccountScreen.scss';
+import './discountDetailsScreen.scss';
 
-const MyAccountScreen = () => {
+const DiscountDetailsScreen = () => {
   const dispatch = useDispatch();
-  const [identity, setIdentity] = useState(null);
-  const [curIdentity, setCurIdentity] = useState(null);
+  const { id } = useParams();
+  const [discount, setDiscount] = useState(null);
+  const [curDiscount, setCurDiscount] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [curStores, setStores] = useState(null);
   const [curProducts, setProducts] = useState(null);
   const [productsModal, setProductsModalOpen] = useState(false);
   const [storesModal, setStoresModalOpen] = useState(false);
-  const account = useSelector(({ account: { user } }) => user);
 
   const handleChange = (e) => {
     e.persist();
-    const { name, value } = e.target;
-    setCurIdentity({ ...curIdentity, [name]: value });
+    const { name } = e.target;
+    let { value } = e.target;
+
+    if (name === 'discountRate') {
+      value /= 100;
+    }
+
+    setCurDiscount({ ...curDiscount, [name]: value });
   };
 
   const saveIdentity = () => {
-    api.updateIdentityById(account.sub, curIdentity).then(() => {
+    api.updateDiscountById(id, curDiscount).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setIdentity(curIdentity);
+      setDiscount(curDiscount);
     });
   };
 
   const removeItem = (id, type) => {
-    if (type === 'products') {
+    /* if (type === 'products') {
       setProducts((cur) => cur.filter((product) => product.id !== id));
     } else if (type === 'stores') {
       setStores((cur) => cur.filter((store) => store.id !== id));
-    }
+    } */
   };
 
   useEffect(() => {
-    setHasChanges(JSON.stringify(curIdentity) !== JSON.stringify(identity));
+    setHasChanges(JSON.stringify(curDiscount) !== JSON.stringify(discount));
 
     return () => setHasChanges(false);
-  }, [curIdentity, identity]);
+  }, [curDiscount, discount]);
 
   useEffect(() => {
     api
-      .getIdentityById(account.sub)
+      .getDiscountById(id)
       .then(({ data }) => {
-        setIdentity(data);
-        setCurIdentity(data);
+        setDiscount(data);
+        setCurDiscount(data);
 
         api
           .getStores(0, `&customerId=${data.customerId}`)
@@ -90,21 +101,21 @@ const MyAccountScreen = () => {
       });
   }, []);
 
-  if (curIdentity === null) return <LinearProgress />;
+  if (curDiscount === null) return <LinearProgress />;
 
   return (
-    <div className='my-account-screen'>
+    <div className='discount-details-screen'>
       <Tabs
         value={0}
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab label="My Account" />
+        <Tab label={discount.name} />
       </Tabs>
 
       <Zoom in={hasChanges}>
         <Button
-          id="save-account-button"
+          id="save-discount-button"
           color="primary"
           size="large"
           type="submit"
@@ -115,54 +126,97 @@ const MyAccountScreen = () => {
         </Button>
       </Zoom>
 
-      <CustomCard title='Basic Profile'>
+      <CustomCard title='Basic'>
         <Box display='flex' py={5} pb={2}>
           <TextField
             fullWidth
-            label='First Name'
-            name='firstName'
+            label='Customer'
+            name='customerId'
             type='text'
-            value={curIdentity.firstName}
-            onChange={handleChange}
+            disabled
+            value={curDiscount.customerId}
             variant='outlined'
           />
 
           <TextField
             fullWidth
-            label='Last Name'
-            name='lastName'
+            label='Amount'
+            name='discountRate'
             type='text'
-            value={curIdentity.lastName}
+            value={curDiscount.discountRate * 100}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: <span>%</span>,
+            }}
             variant='outlined'
           />
         </Box>
 
-        <Box display='flex' pb={2}>
+        <Box display='flex'>
           <TextField
             fullWidth
-            label='Email'
-            name='email'
+            label='Discount Name'
+            name='name'
             type='text'
-            value={curIdentity.email}
+            value={curDiscount.name}
             onChange={handleChange}
             variant='outlined'
           />
 
           <TextField
             fullWidth
-            label='User Name'
-            name='userName'
+            label='Label'
+            name='localizedLabels.neutral'
             type='text'
-            value={curIdentity.userName}
+            value={curDiscount.localizedLabels.neutral}
             onChange={handleChange}
             variant='outlined'
-            disabled
+            helperText={!curDiscount.localizedLabels.neutral && 'If left empty the label will not be displayed on the checkout'}
           />
+        </Box>
+
+        <Box display='flex' mx={2}>
+          <div>
+            <Typography gutterBottom variant='h5'>Model</Typography>
+
+            <Box display='flex' alignItems='center'>
+              <FormControlLabel
+                control={<Checkbox name='CAMPAIGN' color='primary' checked={curDiscount.model === 'CAMPAIGN'} />}
+                label='Campaign'
+              />
+
+              <FormControlLabel
+                control={<Checkbox name='COUPON' color='primary' checked={curDiscount.model === 'COUPON'} />}
+                label='Coupon'
+              />
+
+              <FormControlLabel
+                control={<Checkbox name='SINGLE_USE_CODE' color='primary' checked={curDiscount.model === 'SINGLE_USE_CODE'} />}
+                label='Single use code'
+              />
+            </Box>
+          </div>
+        </Box>
+
+        <Box py={3} mx={2}>
+          <Typography gutterBottom variant='h5'>Status</Typography>
+
+          <Box display='flex' alignItems='center' ml='-10px'>
+            <Switch
+              color='primary'
+              checked={curDiscount.status === 'ENABLED'}
+              onChange={() => setCurDiscount({ ...curDiscount, status: curDiscount.status === 'ENABLED' ? 'DISABLED' : 'ENABLED' })}
+              name='status'
+            />
+
+            <Typography>
+              {curDiscount.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
+            </Typography>
+          </Box>
         </Box>
       </CustomCard>
 
-      <CustomCard title='Configuration'>
+      <CustomCard title='Eligibility'>
         <Box display='flex' py={5} pb={2}>
           {curStores === null ? (
             <Box width={1} m='10px' pt='8px'><CircularProgress /></Box>
@@ -172,15 +226,14 @@ const MyAccountScreen = () => {
               label='Stores'
               name='stores'
               type='text'
-              placeholder='Stores list'
-              value={curStores.map((store) => store.name)}
+              placeholder='Select stores'
+              value={[]}
               contentEditable={false}
               onClick={() => setStoresModalOpen(true)}
               variant='outlined'
               disabled
               InputLabelProps={{ shrink: true }}
               InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
-              helperText='Please specify the stores you manage'
             />
           )}
 
@@ -189,20 +242,55 @@ const MyAccountScreen = () => {
           ) : (
             <TextField
               fullWidth
-              label='Catalogs & products'
+              label='Products'
               name='catalogs'
               type='text'
-              placeholder='Catalogs and/or products'
-              value={curProducts.map((product) => product.name)}
+              placeholder='Select products'
+              value={[]}
               contentEditable={false}
               onClick={() => setProductsModalOpen(true)}
               variant='outlined'
               disabled
               InputLabelProps={{ shrink: true }}
               InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
-              helperText='Please specify the catalogs you manage'
             />
           )}
+        </Box>
+
+        <Box display='flex' mx={2} pb={2}>
+          <div>
+            <Typography gutterBottom variant='h5'>Source(s)</Typography>
+
+            <Box display='flex' alignItems='center'>
+              <FormControlLabel
+                control={<Checkbox name='MANUAL_RENEWAL' color='primary' checked={curDiscount?.sources?.indexOf('MANUAL_RENEWAL') >= 0} />}
+                label='Manual Renewal'
+              />
+
+              <FormControlLabel
+                control={<Checkbox name='PURCHASE' color='primary' checked={curDiscount?.sources?.indexOf('PURCHASE') >= 0} />}
+                label='Purchase'
+              />
+            </Box>
+          </div>
+        </Box>
+
+        <Box display='flex' mx={2}>
+          <div>
+            <Typography gutterBottom variant='h5'>End-user types</Typography>
+
+            <Box display='flex' alignItems='center'>
+              <FormControlLabel
+                control={<Checkbox name='BUYER' color='primary' checked={curDiscount?.endUserTypes?.indexOf('BUYER') >= 0} />}
+                label='Buyer'
+              />
+
+              <FormControlLabel
+                control={<Checkbox name='RESELLER' color='primary' checked={curDiscount?.endUserTypes?.indexOf('RESELLER') >= 0} />}
+                label='Approved reseller'
+              />
+            </Box>
+          </div>
         </Box>
       </CustomCard>
 
@@ -229,4 +317,4 @@ const MyAccountScreen = () => {
   );
 };
 
-export default MyAccountScreen;
+export default DiscountDetailsScreen;
