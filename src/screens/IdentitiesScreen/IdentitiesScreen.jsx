@@ -9,14 +9,21 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import { initialIdentitiesSortParams } from '../../services/constants';
+import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
 
 const IdentitiesScreen = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(initialIdentitiesSortParams);
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.identities),
+  );
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.identities, params);
+  };
 
   const requests = async (filtersUrl) => {
     const res = await api.getIdentities(
@@ -52,7 +59,7 @@ const IdentitiesScreen = () => {
   return (
     <TableComponent
       sortParams={sortParams}
-      setSortParams={setSortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteIdentity}
       showColumn={defaultShow}
       currentPage={currentPage}

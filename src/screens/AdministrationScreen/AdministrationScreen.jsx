@@ -9,8 +9,11 @@ import {
 import { useTableData } from '../../services/useData';
 import api from '../../api';
 import localization from '../../localization';
-import { initialCustomerAdminSortParams } from '../../services/constants';
-
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const AdministrationScreen = () => {
@@ -18,7 +21,14 @@ const AdministrationScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(initialCustomerAdminSortParams);
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.customerAdmin),
+  );
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.customerAdmin, params);
+  };
 
   const requests = async () => {
     const res = await api.getCustomers(currentPage - 1, sortParams);
@@ -48,7 +58,7 @@ const AdministrationScreen = () => {
   return (
     <TableComponent
       sortParams={sortParams}
-      setSortParams={setSortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteIdentity}
       showColumn={defaultShow}
       currentPage={currentPage}

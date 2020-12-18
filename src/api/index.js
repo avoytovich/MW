@@ -39,38 +39,41 @@ const api = {
     });
   },
   getOrders(page, filters, sortParams) {
-    let url = `/orders?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
-
+    let url = `/orders?format=short&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
-
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
   // GET ALL
-  getStores(page, filters, sortParams = { value: 'name', type: 'asc' }) {
-    let url = `/stores?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
-
+  getStores(page, filters, sortParams) {
+    let url = `/stores?format=short&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
-
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
 
-  getProducts(page, filters, sortParams = { value: 'name', type: 'asc' }) {
-    let url = `/products?format=short&sort=${sortParams.value},${sortParams.type}&parentId=null&size=50&page=${page}`;
-
+  getProducts(page, filters, sortParams) {
+    let url = `/products?format=short&parentId=null&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
-
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
@@ -78,12 +81,13 @@ const api = {
   },
 
   getIdentities(page, filters, sortParams) {
-    let url = `/iam/identities?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
-
+    let url = `/iam/identities?format=short&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
-
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
@@ -114,7 +118,10 @@ const api = {
     });
   },
   getCustomers(page, sortParams) {
-    const url = `https://api.staging.nexway.build/customers?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
+    let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
@@ -201,28 +208,40 @@ const api = {
     });
   },
   getDesignsTranslations(page, sortParams) {
-    const url = `/designs/i18ns?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
+    let url = `/designs/i18ns?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
   getDesignsFonts(page, sortParams) {
-    const url = `/designs/fonts?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
+    let url = `/designs/fonts?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
   getDesignsThemes(page, sortParams) {
-    const url = `/designs/themes?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
+    let url = `/designs/themes?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
   getDesignsLayouts(page, sortParams) {
-    const url = `/designs/layouts?format=short&sort=${sortParams.value},${sortParams.type}&size=50&page=${page}`;
+    let url = `/designs/layouts?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,

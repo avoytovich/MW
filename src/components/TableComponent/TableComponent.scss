@@ -80,3 +80,9 @@
 .sortableHeader {
   cursor: pointer;
 }
+.sortActiveDesc {
+  border-bottom: 2px solid $navItemButtonActive;
+}
+.sortActiveAsc {
+  border-top: 2px solid $navItemButtonActive;
+}
