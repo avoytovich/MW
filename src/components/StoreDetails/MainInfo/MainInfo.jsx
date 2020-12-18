@@ -1,19 +1,16 @@
-// ToDo: move out and reuse common blocks for procuts/stores/orders details
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
   Box,
   Typography,
-  Zoom,
   Select,
   MenuItem,
   TextField,
   Chip,
 } from '@material-ui/core';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
+import EditZoomIcons from '../../EditZoomIcons';
 import selectLanguages from '../../../services/selectOptions/selectLanguages';
 import { status } from '../../../services/selectOptions/selectOptions';
 
@@ -391,24 +388,12 @@ const MainInfo = ({
           </Box>
         </Box>
       </Box>
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
-          <EditIcon
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock">
-          <DeleteIcon
-            color="primary"
-            onClick={handleDeleteBlock}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={handleDeleteBlock}
+      />
     </Box>
   );
 };

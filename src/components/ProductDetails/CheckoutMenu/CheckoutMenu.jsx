@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Button, Menu, MenuItem } from '@material-ui/core';
+import localization from '../../../localization';
 
 import './CheckoutMenu.scss';
 
@@ -44,8 +45,7 @@ const CheckoutMenu = ({ currentProductData, sellingStores }) => {
         aria-controls="checkoutMenu"
         onClick={handleClick}
       >
-        {/* toDo Add localization */}
-        CHECKOUT
+        {localization.t('general.checkout')}
       </Button>
       <Menu
         getContentAnchorEl={null}

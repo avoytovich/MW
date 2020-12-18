@@ -86,6 +86,14 @@ const labels = {
   model: 'Model',
   discountAmount: 'Discount Amount',
   maximumUses: 'Maximum Uses',
+  user: 'User',
+  application: 'Application',
+  firstName: 'First Name',
+  lastName: 'Last Name',
+  userName: 'User Name',
+  privileges: 'Privileges',
+  roles: 'Roles',
+  metaRoles: 'Meta-roles',
 };
 
 export default labels;

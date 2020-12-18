@@ -89,8 +89,7 @@ const OrderDetailsScreen = () => {
         </Box>
         <Box>
           <Typography component="div" color="primary">
-            {/* toDo Add localization */}
-            <Box fontWeight={500}> Order</Box>
+            <Box fontWeight={500}>{localization.t('general.order')}</Box>
           </Typography>
         </Box>
       </Box>
@@ -104,8 +103,7 @@ const OrderDetailsScreen = () => {
             variant="contained"
             onClick={saveDetails}
           >
-            {/* toDo Add localization */}
-            Save
+            {localization.t('general.save')}
           </Button>
         </Box>
       </Zoom>

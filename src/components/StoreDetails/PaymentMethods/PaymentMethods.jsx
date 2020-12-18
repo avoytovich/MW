@@ -5,13 +5,11 @@ import {
   Typography,
   Box,
   Divider,
-  Zoom,
   Chip,
   Select,
   MenuItem,
 } from '@material-ui/core';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-
+import EditZoomIcons from '../../EditZoomIcons';
 import { getPaymentImages, paymentImages } from './images';
 import localization from '../../../localization';
 
@@ -132,26 +130,12 @@ const PaymentMethods = ({
           </Select>
         )}
       </Box>
-
-      {/* ToDo: this is often copy-pasted in different components - should move it out */}
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
-          <EditIcon
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock">
-          <DeleteIcon
-            color="primary"
-            onClick={() => onChange([])}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={() => onChange([])}
+      />
     </Box>
   );
 };
