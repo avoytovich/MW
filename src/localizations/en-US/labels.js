@@ -15,7 +15,7 @@ const labels = {
   disabled: 'Disabled',
   paymentType: 'Payment Type',
   storeID: 'Store ID',
-  iD: 'ID',
+  id: 'ID',
   customer: 'Customer',
   amount: 'Amount',
   store: 'Store',
@@ -94,6 +94,12 @@ const labels = {
   privileges: 'Privileges',
   roles: 'Roles',
   metaRoles: 'Meta-roles',
+  fontFamily: 'Font Family',
+  importCssRule: '@import css rule',
+  themes: 'Themes',
+  layouts: 'Layouts',
+  translations: 'Translations',
+  fonts: 'Fonts',
 };
 
 export default labels;

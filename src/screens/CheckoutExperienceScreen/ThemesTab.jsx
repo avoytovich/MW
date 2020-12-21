@@ -9,7 +9,11 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 
 const ThemesTab = () => {
   const dispatch = useDispatch();
@@ -42,7 +46,7 @@ const ThemesTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'checkout-experience',
+    'themes',
     requests,
     sortParams,
   );

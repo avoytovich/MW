@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
 import TableComponent from '../../components/TableComponent';
 import {
   generateData,
@@ -8,17 +6,15 @@ import {
 } from '../../services/useData/tableMarkups/adminCustomers';
 import { useTableData } from '../../services/useData';
 import api from '../../api';
-import localization from '../../localization';
 import {
   getSortParams,
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 
 const AdministrationScreen = () => {
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -42,16 +38,7 @@ const AdministrationScreen = () => {
     requests,
     sortParams,
   );
-  const handleDeleteIdentity = (id) => api.deleteIdentityById(id).then(() => {
-    setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.identity')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
-    );
-  });
+  const handleDeleteCustomer = () => {};
 
   const updatePage = (page) => setCurrentPage(page);
 
@@ -59,7 +46,7 @@ const AdministrationScreen = () => {
     <TableComponent
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
-      handleDeleteItem={handleDeleteIdentity}
+      handleDeleteItem={handleDeleteCustomer}
       showColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}

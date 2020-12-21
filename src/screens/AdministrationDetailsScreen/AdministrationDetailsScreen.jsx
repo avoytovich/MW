@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 import {
   LinearProgress, Tabs, Tab, Zoom, Button,
 } from '@material-ui/core';
-
 import CustomerDetails from './CustomerDetails';
 import api from '../../api';
 import localization from '../../localization';
@@ -128,7 +127,7 @@ const AdministrationDetailsScreen = () => {
           variant="contained"
           onClick={saveCustomer}
         >
-          Save
+          {localization.t('forms.buttons.save')}
         </Button>
       </Zoom>
     </div>

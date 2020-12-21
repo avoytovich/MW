@@ -5,9 +5,7 @@ import { Tab } from '@material-ui/core';
 import CheckoutExperienceScreen from './CheckoutExperienceScreen';
 import ThemesTab from './ThemesTab';
 import FontsTab from './FontsTab';
-const mockSetState = jest.fn();
-const useStateSpy = jest.spyOn(React, 'useState');
-useStateSpy.mockImplementation((init) => [init, mockSetState]);
+import { BrowserRouter as Router } from 'react-router-dom';
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
@@ -16,15 +14,19 @@ jest.mock('react-redux', () => ({
 jest.mock('../../services/useData');
 describe('<CheckoutExperienceScreen/>', () => {
   let wrapper;
-  beforeEach(async () => {
-    wrapper = mount(<CheckoutExperienceScreen />);
-  });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it('should have 4 tabs with Themes, Layouts, Translations and Fonts', () => {
+    wrapper = mount(
+      <Router>
+        <CheckoutExperienceScreen
+          location={{ pathname: '/checkout-experience' }}
+        />
+      </Router>,
+    );
     expect(wrapper.find(Tab)).toHaveLength(4);
     expect(wrapper.find(Tab).at(0).text()).toEqual('Themes');
     expect(wrapper.find(Tab).at(1).text()).toEqual('Layouts');
@@ -32,7 +34,14 @@ describe('<CheckoutExperienceScreen/>', () => {
     expect(wrapper.find(Tab).at(3).text()).toEqual('Fonts');
   });
 
-  it('should show <ThemesTab /> if Themes tab is active', () => {
+  it('should show Themes tab be active if path is /checkout-experience/themes', () => {
+    wrapper = mount(
+      <Router>
+        <CheckoutExperienceScreen
+          location={{ pathname: '/checkout-experience/themes' }}
+        />
+      </Router>,
+    );
     expect(
       wrapper
         .find(Tab)
@@ -40,10 +49,15 @@ describe('<CheckoutExperienceScreen/>', () => {
         .getDOMNode()
         .attributes.getNamedItem('aria-selected').value,
     ).toEqual('true');
-    expect(wrapper.find(ThemesTab)).toHaveLength(1);
   });
-
-  it('should show <FontsTab /> if Fonts tab is active', () => {
+  it('should Fonts tab be active if path is /checkout-experience/fonts', () => {
+    wrapper = mount(
+      <Router>
+        <CheckoutExperienceScreen
+          location={{ pathname: '/checkout-experience/fonts' }}
+        />
+      </Router>,
+    );
     wrapper.find(Tab).last().simulate('click');
     expect(
       wrapper
@@ -59,7 +73,5 @@ describe('<CheckoutExperienceScreen/>', () => {
         .getDOMNode()
         .attributes.getNamedItem('aria-selected').value,
     ).toEqual('true');
-    expect(wrapper.find(ThemesTab)).toHaveLength(0);
-    expect(wrapper.find(FontsTab)).toHaveLength(1);
   });
 });

@@ -77,6 +77,23 @@ const SignedRoutes = () => {
         path="/marketing"
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />
+
+      <Route
+        path="/checkout-experience/themes/:id"
+        render={() => <div>theme</div>}
+      />
+      <Route
+        path="/checkout-experience/layouts/:id"
+        render={() => <div>layout</div>}
+      />
+      <Route
+        path="/checkout-experience/translations/:id"
+        render={() => <div>translation</div>}
+      />
+      <Route
+        path="/checkout-experience/fonts/:id"
+        component={lazy(() => import('../../screens/FontEditScreen'))}
+      />
       <Route
         path="/checkout-experience"
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}

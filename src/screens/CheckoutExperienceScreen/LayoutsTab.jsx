@@ -42,7 +42,7 @@ const LayoutsTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'checkout-experience',
+    'layouts',
     requests,
     sortParams,
   );

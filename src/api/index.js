@@ -319,6 +319,13 @@ const api = {
       url,
     });
   },
+  getFontById(id) {
+    const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // PUT BY ID
   updateCustomerById(id, data) {
@@ -371,6 +378,14 @@ const api = {
   },
   updateRecoById(id, data) {
     const url = `/product-recommendations/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateFontById(id, data) {
+    const url = `/designs/fonts/${id}`;
     return axiosInstance({
       method: 'put',
       url,
