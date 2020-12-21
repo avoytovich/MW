@@ -58,7 +58,6 @@ describe('<CheckoutExperienceScreen/>', () => {
         />
       </Router>,
     );
-    wrapper.find(Tab).last().simulate('click');
     expect(
       wrapper
         .find(Tab)
