@@ -42,7 +42,7 @@ const TranslationsTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'checkout-experience',
+    'translations',
     requests,
     sortParams,
   );
