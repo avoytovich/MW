@@ -26,6 +26,16 @@ const StoreDetailsScreen = () => {
   const [currentStoreData, setCurrentStoreData] = useState(null);
 
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
+  const getCustomersIdsArray = (...array) => {
+    const res = [];
+    array.forEach((item) => {
+      const customerId = `id=${item.customerId}`;
+      if (!res.includes(customerId)) {
+        res.push(customerId);
+      }
+    });
+    return res;
+  };
   const checkRequiredFields = (store) => {
     let resObj = { ...store };
 
@@ -75,16 +85,55 @@ const StoreDetailsScreen = () => {
         ...resObj,
         designs: {
           ...resObj.designs,
-          checkout: { themeRef: {} },
+          checkout: {},
         },
       };
     }
-    if (!Object.keys(resObj.designs.checkout.themeRef).length) {
+    if (!resObj.designs.checkout.themeRef) {
       resObj = {
         ...resObj,
         designs: {
           ...resObj.designs,
-          checkout: { themeRef: { customerId: '', name: '' } },
+          checkout: {
+            ...resObj.designs.checkout,
+            themeRef: { customerId: '', name: '' },
+          },
+        },
+      };
+    }
+    if (!resObj.designs.checkout.fontRef) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          checkout: {
+            ...resObj.designs.checkout,
+            fontRef: { customerId: '', name: '' },
+          },
+        },
+      };
+    }
+    if (!resObj.designs.checkout.i18nRef) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          checkout: {
+            ...resObj.designs.checkout,
+            i18nRef: { customerId: '' },
+          },
+        },
+      };
+    }
+    if (!resObj.designs.checkout.layoutRef) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          checkout: {
+            ...resObj.designs.checkout,
+            layoutRef: { customerId: '', name: '' },
+          },
         },
       };
     }
@@ -118,17 +167,34 @@ const StoreDetailsScreen = () => {
       try {
         const store = await api.getStoreById(id);
         const customer = await api.getCustomerById(store?.data?.customerId);
-        const themeOptions = await api.getThemeOptions();
+        const themeOptions = await api.getDesignsThemes();
+        const fontOptions = await api.getDesignsFonts();
+        const layoutOptions = await api.getDesignsLayouts();
+        const translationOptions = await api.getDesignsTranslations();
+
+        const customersIds = getCustomersIdsArray(
+          ...fontOptions.data.items,
+          ...themeOptions.data.items,
+          ...layoutOptions.data.items,
+          ...translationOptions.data.items,
+        );
+        const customers = await api.getCustomersByIds(customersIds.join('&'));
         const paymentMethodsOptions = await api.getPaymentMethodsOptions();
+
         if (!isCancelled) {
           const checkedStore = checkRequiredFields(store.data);
+
           setStoreData(checkedStore);
           setCurrentStoreData(checkedStore);
           setCurrentCustomerData(customer.data);
           setSelectOptions({
             ...selectOptions,
+            customers: customers.data.items,
+            font: fontOptions.data.items,
             theme: themeOptions.data.items,
             paymentMethods: paymentMethodsOptions.data,
+            layout: layoutOptions.data.items,
+            translation: translationOptions.data.items,
           });
           setLoading(false);
         }

@@ -179,13 +179,6 @@ const api = {
       url,
     });
   },
-  getThemeOptions() {
-    const url = '/designs/themes?format=short&size=30&page=0';
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
   getSellingStoreOptions(customerId) {
     const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
     return axiosInstance({
@@ -207,7 +200,7 @@ const api = {
       url,
     });
   },
-  getDesignsTranslations(page, sortParams) {
+  getDesignsTranslations(page = 0, sortParams) {
     let url = `/designs/i18ns?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -217,7 +210,7 @@ const api = {
       url,
     });
   },
-  getDesignsFonts(page, sortParams) {
+  getDesignsFonts(page = 0, sortParams) {
     let url = `/designs/fonts?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -227,7 +220,7 @@ const api = {
       url,
     });
   },
-  getDesignsThemes(page, sortParams) {
+  getDesignsThemes(page = 0, sortParams) {
     let url = `/designs/themes?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -237,7 +230,7 @@ const api = {
       url,
     });
   },
-  getDesignsLayouts(page, sortParams) {
+  getDesignsLayouts(page = 0, sortParams) {
     let url = `/designs/layouts?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
