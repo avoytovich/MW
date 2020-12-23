@@ -57,11 +57,29 @@ const StoreDetailsScreen = () => {
         ...resObj,
         designs: {
           ...resObj.designs,
+          endUserPortal: { themeRef: {} },
+        },
+      };
+    }
+    if (!Object.keys(resObj.designs.endUserPortal.themeRef).length) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
           endUserPortal: { themeRef: { customerId: '', name: '' } },
         },
       };
     }
     if (!resObj.designs.checkout) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          checkout: { themeRef: {} },
+        },
+      };
+    }
+    if (!Object.keys(resObj.designs.checkout.themeRef).length) {
       resObj = {
         ...resObj,
         designs: {
@@ -101,6 +119,7 @@ const StoreDetailsScreen = () => {
         const store = await api.getStoreById(id);
         const customer = await api.getCustomerById(store?.data?.customerId);
         const themeOptions = await api.getThemeOptions();
+        const paymentMethodsOptions = await api.getPaymentMethodsOptions();
         if (!isCancelled) {
           const checkedStore = checkRequiredFields(store.data);
           setStoreData(checkedStore);
@@ -109,6 +128,7 @@ const StoreDetailsScreen = () => {
           setSelectOptions({
             ...selectOptions,
             theme: themeOptions.data.items,
+            paymentMethods: paymentMethodsOptions.data,
           });
           setLoading(false);
         }
@@ -137,33 +157,33 @@ const StoreDetailsScreen = () => {
 
   return (
     <>
-      <Box display="flex" flexDirection="row">
-        <Box>
-          <FolderOpen color="secondary" />
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Box display="flex" flexDirection="row">
+          <Box>
+            <FolderOpen color="secondary" />
+          </Box>
+          <Box>
+            <Typography component="div" color="primary">
+              <Box fontWeight={500}>{localization.t('general.store')}</Box>
+            </Typography>
+          </Box>
         </Box>
-        <Box>
-          <Typography component="div" color="primary">
-            {/* toDo Add localization */}
-            <Box fontWeight={500}> Store</Box>
-          </Typography>
-        </Box>
+        <Zoom in={storeHasChanges}>
+          <Box mb={1}>
+            <Button
+              disabled={Object.keys(inputErrors).length !== 0}
+              id="save-detail-button"
+              color="primary"
+              size="large"
+              type="submit"
+              variant="contained"
+              onClick={saveDetails}
+            >
+              {localization.t('general.save')}
+            </Button>
+          </Box>
+        </Zoom>
       </Box>
-      <Zoom in={storeHasChanges}>
-        <Box mb={1}>
-          <Button
-            disabled={Object.keys(inputErrors).length !== 0}
-            id="save-detail-button"
-            color="primary"
-            size="large"
-            type="submit"
-            variant="contained"
-            onClick={saveDetails}
-          >
-            {/* toDo Add localization */}
-            Save
-          </Button>
-        </Box>
-      </Zoom>
       {currentStoreData && (
         <StoreDetails
           inputErrors={inputErrors}

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
 import TableComponent from '../../components/TableComponent';
 import {
   generateData,
@@ -8,17 +6,25 @@ import {
 } from '../../services/useData/tableMarkups/adminCustomers';
 import { useTableData } from '../../services/useData';
 import api from '../../api';
-import localization from '../../localization';
-import { initialCustomerAdminSortParams } from '../../services/constants';
-
-import { showNotification } from '../../redux/actions/HttpNotifications';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 
 const AdministrationScreen = () => {
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(initialCustomerAdminSortParams);
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.customerAdmin),
+  );
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.customerAdmin, params);
+  };
 
   const requests = async () => {
     const res = await api.getCustomers(currentPage - 1, sortParams);
@@ -32,24 +38,15 @@ const AdministrationScreen = () => {
     requests,
     sortParams,
   );
-  const handleDeleteIdentity = (id) => api.deleteIdentityById(id).then(() => {
-    setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.identity')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
-    );
-  });
+  const handleDeleteCustomer = () => {};
 
   const updatePage = (page) => setCurrentPage(page);
 
   return (
     <TableComponent
       sortParams={sortParams}
-      setSortParams={setSortParams}
-      handleDeleteItem={handleDeleteIdentity}
+      setSortParams={handleSetSortParams}
+      handleDeleteItem={handleDeleteCustomer}
       showColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}

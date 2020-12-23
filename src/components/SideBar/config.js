@@ -67,7 +67,7 @@ const navConfig = [
       {
         id: 'checkout-experience',
         title: localization.t('sideBar.titles.checkoutExperience'),
-        href: '/tobedefined/checkout-experience',
+        href: '/checkout-experience',
         icon: Toll,
       },
       {
