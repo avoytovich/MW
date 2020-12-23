@@ -122,28 +122,30 @@ const ProductDetailsScreen = () => {
             </Typography>
           </Box>
         </Box>
-        <Box>
-          <CheckoutMenu
-            currentProductData={currentProductData}
-            sellingStores={selectOptions.sellingStores}
-          />
+        <Box display="flex" flexDirection="row">
+          <Zoom in={productHasChanges}>
+            <Box mb={1} mr={1}>
+              <Button
+                disabled={Object.keys(inputErrors).length !== 0}
+                id="save-detail-button"
+                color="primary"
+                size="large"
+                type="submit"
+                variant="contained"
+                onClick={saveDetails}
+              >
+                {localization.t('general.save')}
+              </Button>
+            </Box>
+          </Zoom>
+          <Box>
+            <CheckoutMenu
+              currentProductData={currentProductData}
+              sellingStores={selectOptions.sellingStores}
+            />
+          </Box>
         </Box>
       </Box>
-      <Zoom in={productHasChanges}>
-        <Box mb={1}>
-          <Button
-            disabled={Object.keys(inputErrors).length !== 0}
-            id="save-detail-button"
-            color="primary"
-            size="large"
-            type="submit"
-            variant="contained"
-            onClick={saveDetails}
-          >
-            {localization.t('general.save')}
-          </Button>
-        </Box>
-      </Zoom>
       {currentProductData && (
         <ProductDetails
           inputErrors={inputErrors}

@@ -83,30 +83,32 @@ const OrderDetailsScreen = () => {
   if (isLoading) return <LinearProgress />;
   return (
     <>
-      <Box display="flex" flexDirection="row">
-        <Box>
-          <FolderOpen color="secondary" />
+      <Box display="flex" flexDirection="row" justifyContent="space-between">
+        <Box display="flex" flexDirection="row">
+          <Box>
+            <FolderOpen color="secondary" />
+          </Box>
+          <Box>
+            <Typography component="div" color="primary">
+              <Box fontWeight={500}>{localization.t('general.order')}</Box>
+            </Typography>
+          </Box>
         </Box>
-        <Box>
-          <Typography component="div" color="primary">
-            <Box fontWeight={500}>{localization.t('general.order')}</Box>
-          </Typography>
-        </Box>
+        <Zoom in={orderHasChanges}>
+          <Box mb={1}>
+            <Button
+              id="save-detail-button"
+              color="primary"
+              size="large"
+              type="submit"
+              variant="contained"
+              onClick={saveDetails}
+            >
+              {localization.t('general.save')}
+            </Button>
+          </Box>
+        </Zoom>
       </Box>
-      <Zoom in={orderHasChanges}>
-        <Box mb={1}>
-          <Button
-            id="save-detail-button"
-            color="primary"
-            size="large"
-            type="submit"
-            variant="contained"
-            onClick={saveDetails}
-          >
-            {localization.t('general.save')}
-          </Button>
-        </Box>
-      </Zoom>
       {currentOrderData && (
         <OrderDetails
           currentOrderData={currentOrderData}

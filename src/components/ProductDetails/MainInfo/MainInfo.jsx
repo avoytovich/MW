@@ -211,24 +211,26 @@ const MainInfo = ({
                           (item) => item.id === chip,
                         )[0];
                         return (
-                          <Chip
-                            variant="outlined"
-                            color="primary"
-                            onDelete={() => {
-                              const newValue = [
-                                ...currentProductData.sellingStores,
-                              ].filter((val) => val !== chip);
-                              setProductData({
-                                ...currentProductData,
-                                sellingStores: newValue,
-                              });
-                            }}
-                            onMouseDown={(event) => {
-                              event.stopPropagation();
-                            }}
-                            key={chip}
-                            label={storeName.displayName}
-                          />
+                          <Box mb="2px" mr="2px">
+                            <Chip
+                              variant="outlined"
+                              color="primary"
+                              onDelete={() => {
+                                const newValue = [
+                                  ...currentProductData.sellingStores,
+                                ].filter((val) => val !== chip);
+                                setProductData({
+                                  ...currentProductData,
+                                  sellingStores: newValue,
+                                });
+                              }}
+                              onMouseDown={(event) => {
+                                event.stopPropagation();
+                              }}
+                              key={chip}
+                              label={storeName.displayName}
+                            />
+                          </Box>
                         );
                       })}
                     </Box>
