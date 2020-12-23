@@ -38,6 +38,20 @@ const api = {
       data,
     });
   },
+  // POST
+  addNewFont(data) {
+    let url = 'designs/fonts';
+    const reason = 'Nexway-Center';
+    if (reason) {
+      url += `?reason=${reason}`;
+    }
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
     if (filters) {
@@ -51,7 +65,6 @@ const api = {
       url,
     });
   },
-  // GET ALL
   getStores(page, filters, sortParams) {
     let url = `/stores?format=short&size=50&page=${page}`;
     if (filters) {
