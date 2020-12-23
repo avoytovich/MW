@@ -1,14 +1,12 @@
-// ToDo: localize texts
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Box,
   FormControlLabel,
   Checkbox,
   CircularProgress,
 } from '@material-ui/core';
-
+import localization from '../../localization';
 import CustomCard from '../../components/utils/CustomCard';
 import { usePrivilegesData, useRolesData, useMetaRolesData } from '../../services/useData';
 
@@ -68,7 +66,7 @@ const RightsDetails = ({ initIdentity, identity, changeIdentity }) => {
 
   return (
     <Box display='flex' mx={-3}>
-      <CustomCard title='Privileges' width={1 / 3} mx={3}>
+      <CustomCard title={localization.t('labels.privileges')} width={1 / 3} mx={3}>
         <Box display='flex' flexDirection='column' py={1} className='rights-details-privileges'>
           {privileges && curPrivileges !== null ? privileges.items.map((privilage) => (
             <FormControlLabel
@@ -87,7 +85,7 @@ const RightsDetails = ({ initIdentity, identity, changeIdentity }) => {
         </Box>
       </CustomCard>
 
-      <CustomCard title='Roles' width={1 / 3} mx={3}>
+      <CustomCard title={localization.t('labels.roles')} width={1 / 3} mx={3}>
         <Box display='flex' flexDirection='column' py={1} className='rights-details-roles'>
           {roles ? roles.items.map((role) => (
             <FormControlLabel
@@ -106,7 +104,7 @@ const RightsDetails = ({ initIdentity, identity, changeIdentity }) => {
         </Box>
       </CustomCard>
 
-      <CustomCard title='Meta-roles' width={1 / 3} mx={3}>
+      <CustomCard title={localization.t('labels.metaRoles')} width={1 / 3} mx={3}>
         <Box display='flex' flexDirection='column' py={1} className='rights-details-meta-roles'>
           {metaRoles ? metaRoles.items.map((meta) => (
             <FormControlLabel

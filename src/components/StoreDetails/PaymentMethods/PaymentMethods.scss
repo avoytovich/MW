@@ -2,7 +2,7 @@
 
 .paymentImageWrapper {
   width: 60px;
-  background-color: $tablesEvenRow;
+  background-color: $tableHeader;;
 }
 
 .paymentImage {
@@ -17,9 +17,4 @@
   .actionBlockWrapper {
     position: relative;
   }
-}
-.actionBlock {
-  position: absolute;
-  right: 5px;
-  top: 5px;
 }

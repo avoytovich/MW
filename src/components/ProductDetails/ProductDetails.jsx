@@ -20,7 +20,7 @@ const ProductDetails = ({
   <Box className="detailContainer" display="flex" flexDirection="column">
     <Box>
       <Box display="flex" justify="space-between">
-        <Box width="60%" sm={9} className="actionBlockWrapper">
+        <Box width="80%" sm={9} className="actionBlockWrapper">
           <MainInfo
             inputErrors={inputErrors}
             setInputErrors={setInputErrors}
@@ -36,9 +36,8 @@ const ProductDetails = ({
           flexDirection="column"
           flexWrap="wrap"
           justifyContent="space-around"
-          alignSelf="flex-end"
-          pl="10%"
-          pb="10%"
+          alignSelf="flex-start"
+          pl="2%"
         >
           <Prices
             productData={productData}

@@ -53,7 +53,7 @@
   }
 }
 
-.table-items-actions{
+.table-items-actions {
   .CSVLinkBlock {
     text-decoration: none;
     .importExportFab {
@@ -76,4 +76,13 @@
       position: relative;
     }
   }
+}
+.sortableHeader {
+  cursor: pointer;
+}
+.sortActiveDesc {
+  border-bottom: 2px solid $navItemButtonActive;
+}
+.sortActiveAsc {
+  border-top: 2px solid $navItemButtonActive;
 }

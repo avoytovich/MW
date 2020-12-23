@@ -7,6 +7,11 @@ import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
+import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/stores';
@@ -16,10 +21,16 @@ const StoresScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [sortParams, setSortParams] = useState(getSortParams(sortKeys.stores));
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.stores, params);
+  };
 
   const requests = async (filtersUrl) => {
     const costumersIds = [];
-    const res = await api.getStores(currentPage - 1, filtersUrl);
+    const res = await api.getStores(currentPage - 1, filtersUrl, sortParams);
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -47,11 +58,14 @@ const StoresScreen = () => {
     makeUpdate,
     'stores',
     requests,
+    sortParams,
   );
   const updatePage = (page) => setCurrentPage(page);
 
   return (
     <TableComponent
+      sortParams={sortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteStore}
       showColumn={defaultShow}
       currentPage={currentPage}

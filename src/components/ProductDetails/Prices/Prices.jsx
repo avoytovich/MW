@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Box, Zoom, TextField, Typography,
-} from '@material-ui/core';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-
+import { Box, TextField, Typography } from '@material-ui/core';
+import EditZoomIcons from '../../EditZoomIcons';
 import localization from '../../../localization';
 
 import './Prices.scss';
@@ -46,25 +43,13 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
       className="paymentItem actionBlockWrapper"
       alignSelf="center"
     >
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
-          <EditIcon
-            data-test="editIcon"
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock">
-          <DeleteIcon
-            color="primary"
-            onClick={handleDeleteBlock}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={handleDeleteBlock}
+      />
+
       <Box my={2} display="flex" flexDirection="column" flexWrap="wrap">
         <Box p={3}>
           <Box

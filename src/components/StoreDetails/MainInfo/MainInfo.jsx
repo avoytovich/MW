@@ -1,19 +1,16 @@
-// ToDo: move out and reuse common blocks for procuts/stores/orders details
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
   Box,
   Typography,
-  Zoom,
   Select,
   MenuItem,
   TextField,
   Chip,
 } from '@material-ui/core';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
 
+import EditZoomIcons from '../../EditZoomIcons';
 import selectLanguages from '../../../services/selectOptions/selectLanguages';
 import { status } from '../../../services/selectOptions/selectOptions';
 
@@ -63,6 +60,17 @@ const MainInfo = ({
     };
     setInputErrors({ defaultLocale: true, status: true });
     setCurrentStoreData(newData);
+  };
+
+  const formStoreNames = () => {
+    const storesArray = [];
+    currentStoreData.saleLocales.forEach((item) => {
+      const storeName = selectOptions.sellingStores.filter(
+        (store) => store.id === item,
+      )[0]?.name;
+      storesArray.push(storeName);
+    });
+    return storesArray.join(', ');
   };
   return (
     <Box
@@ -246,7 +254,7 @@ const MainInfo = ({
           <Box>
             {!editable ? (
               <Typography data-test="saleLocales" color="secondary">
-                {currentStoreData?.saleLocales?.join(', ')}
+                {currentStoreData?.saleLocales?.join(', ') || '---'}
               </Typography>
             ) : (
               <Select
@@ -336,7 +344,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem
@@ -387,7 +395,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem
@@ -401,26 +409,12 @@ const MainInfo = ({
           </Box>
         </Box>
       </Box>
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
-          <EditIcon
-            data-test="editIcon"
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock">
-          <DeleteIcon
-            data-test="deleteIcon"
-            color="primary"
-            onClick={handleDeleteBlock}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={handleDeleteBlock}
+      />
     </Box>
   );
 };

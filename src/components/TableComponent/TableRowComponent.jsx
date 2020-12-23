@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import {
   Typography,
@@ -20,7 +21,6 @@ import {
 
 import FullNameAvatar from '../utils/FullNameAvatar';
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import formatDate from '../../services/dateFormatting';
 import localization from '../../localization';
 import './TableComponent.scss';
 
@@ -47,7 +47,7 @@ const TableRowComponent = ({
       let valueToShow;
 
       if (item.id === 'createDate' || item.id === 'updateDate') {
-        valueToShow = formatDate(rowItem[item.id]);
+        valueToShow = moment(rowItem[item.id]).format('D MMM YYYY');
       } else {
         valueToShow = rowItem[item.id];
       }

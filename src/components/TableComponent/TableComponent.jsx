@@ -25,6 +25,8 @@ const TableComponent = ({
   showColumn,
   handleDeleteItem,
   noActions,
+  setSortParams,
+  sortParams,
 }) => {
   const [checked, setChecked] = useState([]);
 
@@ -80,22 +82,52 @@ const TableComponent = ({
             />
           </Grid>
         )}
-
         {tableData.headers.map(
-          (header) => showColumn[header.id] && (
-            <Grid item xs zeroMinWidth key={header.value}>
-              <Box my={1}>
-                <Typography
-                  variant="h6"
-                  className="tableHeader"
-                  noWrap
-                  align="center"
+          (header) => showColumn[header.id]
+            && (header.sortParam ? (
+              <Grid item xs zeroMinWidth key={header.value}>
+                <Box
+                  className={`sortableHeader ${
+                    sortParams?.value === header.sortParam
+                    && (sortParams.type === 'desc'
+                      ? 'sortActiveDesc'
+                      : 'sortActiveAsc')
+                  }`}
+                  my={1}
+                  onClick={() => {
+                    let type;
+                    if (sortParams) {
+                      type = sortParams.type === 'desc' ? 'asc' : 'desc';
+                    } else {
+                      type = 'desc';
+                    }
+                    setSortParams({ value: header.sortParam, type });
+                  }}
                 >
-                  {header.value}
-                </Typography>
-              </Box>
-            </Grid>
-          ),
+                  <Typography
+                    variant="h6"
+                    className="tableHeader"
+                    noWrap
+                    align="center"
+                  >
+                    {header.value}
+                  </Typography>
+                </Box>
+              </Grid>
+            ) : (
+              <Grid item xs zeroMinWidth key={header.value}>
+                <Box my={1}>
+                  <Typography
+                    variant="h6"
+                    className="tableHeader"
+                    noWrap
+                    align="center"
+                  >
+                    {header.value}
+                  </Typography>
+                </Box>
+              </Grid>
+            )),
         )}
       </Grid>
 
@@ -134,6 +166,8 @@ TableComponent.propTypes = {
   isLoading: PropTypes.bool,
   showColumn: PropTypes.object,
   noActions: PropTypes.bool,
+  setSortParams: PropTypes.func,
+  sortParams: PropTypes.object,
 };
 
 export default TableComponent;
