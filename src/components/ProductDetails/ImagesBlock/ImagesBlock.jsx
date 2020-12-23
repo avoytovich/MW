@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import { Box } from '@material-ui/core';
+
 import CardComponent from './CardComponent';
 import PaginationComponent from '../../PaginationComponent';
+
 import './ImagesBlock.scss';
 
 const ImagesBlock = ({ currentProductData, setProductData, productData }) => {

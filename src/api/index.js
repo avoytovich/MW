@@ -38,51 +38,56 @@ const api = {
       data,
     });
   },
-  getOrders(page, filters) {
-    let url = `/orders?format=short&sort=updateDate,desc&size=50&page=${page}`;
-
+  getOrders(page, filters, sortParams) {
+    let url = `/orders?format=short&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
-
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
   // GET ALL
-  getStores(page, filters) {
-    let url = `/stores?format=short&sort=name,asc&size=50&page=${page}`;
-
+  getStores(page, filters, sortParams) {
+    let url = `/stores?format=short&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
-
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getProducts(page, filters) {
-    let url = `/products?format=short&sort=updateDate,desc&parentId=null&size=50&page=${page}`;
-
-    if (filters) {
-      url += filters;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
     }
-
     return axiosInstance({
       method: 'get',
       url,
     });
   },
 
-  getIdentities(page, filters) {
-    let url = `/iam/identities?format=short&sort=firstName,desc&size=50&page=${page}`;
-
+  getProducts(page, filters, sortParams) {
+    let url = `/products?format=short&parentId=null&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
+  getIdentities(page, filters, sortParams) {
+    let url = `/iam/identities?format=short&size=50&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     return axiosInstance({
       method: 'get',
       url,
@@ -112,7 +117,136 @@ const api = {
       url,
     });
   },
+  getCustomers(page, sortParams) {
+    let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
+  getCampaigns(page, filters) {
+    let url = `/marketing-campaign/campaigns?format=short&customerId=Nexway&sort=updateDate,desc&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getRecommendations(page, filters) {
+    let url = `/product-recommendations?format=short&customerId=Nexway&sort=name,asc&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDiscounts(page, filters) {
+    let url = `/discounts?format=short&customerId=Nexway&sort=name,asc&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getPaymentMethodsOptions() {
+    const url = '/payment-proxy/available-payment-types';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getPaymentConfigOptions() {
+    const url = '/payment-proxy/service/config';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getThemeOptions() {
+    const url = '/designs/themes?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSellingStoreOptions(customerId) {
+    const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getFulfillmentsOptions() {
+    const url = '/fulfillments/partners?size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubscriptionsOptions() {
+    const url = '/subscriptions/models?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsTranslations(page, sortParams) {
+    let url = `/designs/i18ns?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsFonts(page, sortParams) {
+    let url = `/designs/fonts?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsThemes(page, sortParams) {
+    let url = `/designs/themes?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getDesignsLayouts(page, sortParams) {
+    let url = `/designs/layouts?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET FEW BY IDs
   getCustomersByIds(ids) {
     const url = `/customers/public?format=short/${ids}`;
@@ -171,8 +305,37 @@ const api = {
       url,
     });
   },
+  getDiscountById(id) {
+    const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getRecoById(id) {
+    const url = `/product-recommendations/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getFontById(id) {
+    const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // PUT BY ID
+  updateCustomerById(id, data) {
+    const url = `/customers/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateIdentityById(id, data) {
     const url = `/iam/identities/${id}`;
     return axiosInstance({
@@ -205,6 +368,31 @@ const api = {
       data,
     });
   },
+  updateDiscountById(id, data) {
+    const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateRecoById(id, data) {
+    const url = `/product-recommendations/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateFontById(id, data) {
+    const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+
   // DELETE BY ID
   deleteProductById(id) {
     const url = `/products/${id}`;
@@ -234,17 +422,45 @@ const api = {
       url,
     });
   },
-  getThemeOptions() {
-    const url = '/designs/themes?format=short&size=30&page=0';
+  deleteRecommendationById(id) {
+    const url = `/product-recommendations/${id}`;
     return axiosInstance({
-      method: 'get',
+      method: 'delete',
       url,
     });
   },
-  getSellingStoreOptions(customerId) {
-    const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
+  deleteDiscountById(id) {
+    const url = `/discounts/${id}`;
     return axiosInstance({
-      method: 'get',
+      method: 'delete',
+      url,
+    });
+  },
+  deleteTranslationById(id) {
+    const url = `/designs/i18ns/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteThemeById(id) {
+    const url = `/designs/themes/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteFontById(id) {
+    const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteLayoutById(id) {
+    const url = `/designs/layouts/${id}`;
+    return axiosInstance({
+      method: 'delete',
       url,
     });
   },

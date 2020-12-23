@@ -1,6 +1,5 @@
 {
   "baseUrl": "https://mynexway.staging.nexway.build/",
-  "chromeWebSecurity": false,
   "env": {
     "apiUrl": "https://api.staging.nexway.build"
   }

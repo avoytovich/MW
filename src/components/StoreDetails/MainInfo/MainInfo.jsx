@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Box,
   Typography,
-  Zoom,
   Select,
   MenuItem,
   TextField,
   Chip,
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import localization from '../../../localization';
+
+import EditZoomIcons from '../../EditZoomIcons';
 import selectLanguages from '../../../services/selectOptions/selectLanguages';
 import { status } from '../../../services/selectOptions/selectOptions';
+
+import localization from '../../../localization';
+
 import './MainInfo.scss';
 
 const MainInfo = ({
@@ -165,6 +168,7 @@ const MainInfo = ({
                 fullWidth
                 InputProps={{
                   disableUnderline: true,
+                  form: { autocomplete: 'off' },
                 }}
                 onChange={(e) => {
                   const newArray = [...currentStoreData.routes];
@@ -176,7 +180,6 @@ const MainInfo = ({
                 }}
                 type="text"
                 value={currentStoreData.routes[0].hostname}
-                inputProps={{ form: { autocomplete: 'off' } }}
               />
             </Box>
           </Box>
@@ -395,24 +398,12 @@ const MainInfo = ({
           </Box>
         </Box>
       </Box>
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock" mt="15px" mr="15px">
-          <EditIcon
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock" mt="15px" mr="15px">
-          <DeleteIcon
-            color="primary"
-            onClick={handleDeleteBlock}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={handleDeleteBlock}
+      />
     </Box>
   );
 };

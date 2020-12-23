@@ -1,23 +1,22 @@
 import React, { useState } from 'react';
-
 import PropTypes from 'prop-types';
+
 import { Button, Menu, MenuItem } from '@material-ui/core';
+import localization from '../../../localization';
+
 import './CheckoutMenu.scss';
 
 const CheckoutMenu = ({ currentProductData, sellingStores }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+
   const formHostsMenu = () => {
     const res = [];
 
-    currentProductData.sellingStores.forEach((item) => {
+    currentProductData?.sellingStores.forEach((item) => {
       const selectedStore = sellingStores.filter((store) => store.id === item);
       const { name, hostnames } = selectedStore[0];
       hostnames.forEach((hostname) => res.push({ name, hostname }));
@@ -47,8 +46,7 @@ const CheckoutMenu = ({ currentProductData, sellingStores }) => {
         onClick={handleClick}
         size="large"
       >
-        {/* toDo Add localization */}
-        CHECKOUT
+        {localization.t('general.checkout')}
       </Button>
       <Menu
         getContentAnchorEl={null}

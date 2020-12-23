@@ -1,10 +1,12 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
+
+import { Box } from '@material-ui/core';
 
 import PaymentMethods from './PaymentMethods';
 import ImagesBlock from './ImagesBlock';
 import MainInfo from './MainInfo';
+
 import './StoreDetails.scss';
 
 const StoreDetails = ({
@@ -41,6 +43,7 @@ const StoreDetails = ({
           pb="10%"
         >
           <PaymentMethods
+            selectOptions={selectOptions}
             setCurrentStoreData={setCurrentStoreData}
             storeData={storeData}
             currentStoreData={currentStoreData}
@@ -57,6 +60,7 @@ const StoreDetails = ({
     </Box>
   </Box>
 );
+
 StoreDetails.propTypes = {
   selectOptions: PropTypes.object,
   storeData: PropTypes.object,

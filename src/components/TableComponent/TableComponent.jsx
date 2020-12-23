@@ -24,6 +24,9 @@ const TableComponent = ({
   isLoading,
   showColumn,
   handleDeleteItem,
+  noActions,
+  setSortParams,
+  sortParams,
 }) => {
   const [checked, setChecked] = useState([]);
 
@@ -55,7 +58,13 @@ const TableComponent = ({
 
   return tableData?.values?.length ? (
     <>
-      <TableItemsActions items={checked} headers={tableData.headers} onDelete={handleDeleteItem} />
+      {!noActions && (
+        <TableItemsActions
+          items={checked}
+          headers={tableData.headers}
+          onDelete={handleDeleteItem}
+        />
+      )}
 
       <Grid
         spacing={1}
@@ -64,30 +73,64 @@ const TableComponent = ({
         justify="center"
         className="tableHeaderGrid"
       >
-        <Grid>
-          <Checkbox
-            checked={tableData?.values.length === checked.length}
-            name="checkAll"
-            onChange={handleCheckAll}
-          />
-        </Grid>
+        {!noActions && (
+          <Grid>
+            <Checkbox
+              checked={tableData?.values.length === checked.length}
+              name="checkAll"
+              onChange={handleCheckAll}
+            />
+          </Grid>
+        )}
         {tableData.headers.map(
-          (header) => showColumn[header.id] && (
-            <Grid item xs zeroMinWidth key={header.value}>
-              <Box my={1}>
-                <Typography
-                  variant="h6"
-                  className="tableHeader"
-                  noWrap
-                  align="center"
+          (header) => showColumn[header.id]
+            && (header.sortParam ? (
+              <Grid item xs zeroMinWidth key={header.value}>
+                <Box
+                  className={`sortableHeader ${
+                    sortParams?.value === header.sortParam
+                    && (sortParams.type === 'desc'
+                      ? 'sortActiveDesc'
+                      : 'sortActiveAsc')
+                  }`}
+                  my={1}
+                  onClick={() => {
+                    let type;
+                    if (sortParams) {
+                      type = sortParams.type === 'desc' ? 'asc' : 'desc';
+                    } else {
+                      type = 'desc';
+                    }
+                    setSortParams({ value: header.sortParam, type });
+                  }}
                 >
-                  {header.value}
-                </Typography>
-              </Box>
-            </Grid>
-          ),
+                  <Typography
+                    variant="h6"
+                    className="tableHeader"
+                    noWrap
+                    align="center"
+                  >
+                    {header.value}
+                  </Typography>
+                </Box>
+              </Grid>
+            ) : (
+              <Grid item xs zeroMinWidth key={header.value}>
+                <Box my={1}>
+                  <Typography
+                    variant="h6"
+                    className="tableHeader"
+                    noWrap
+                    align="center"
+                  >
+                    {header.value}
+                  </Typography>
+                </Box>
+              </Grid>
+            )),
         )}
       </Grid>
+
       <Box className="tableBodyGrid">
         {tableData.values.map((rowItem) => (
           <TableRowComponent
@@ -98,9 +141,11 @@ const TableComponent = ({
             showColumn={showColumn}
             key={rowItem.id}
             rowItem={rowItem}
+            noActions={noActions}
           />
         ))}
       </Box>
+
       <PaginationComponent
         location="flex-end"
         currentPage={currentPage}
@@ -120,6 +165,9 @@ TableComponent.propTypes = {
   currentPage: PropTypes.number,
   isLoading: PropTypes.bool,
   showColumn: PropTypes.object,
+  noActions: PropTypes.bool,
+  setSortParams: PropTypes.func,
+  sortParams: PropTypes.object,
 };
 
 export default TableComponent;

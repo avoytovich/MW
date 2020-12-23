@@ -1,9 +1,12 @@
 import React from 'react';
-import { Box } from '@material-ui/core';
 import PropTypes from 'prop-types';
+
+import { Box } from '@material-ui/core';
+
 import Prices from './Prices';
 import ImagesBlock from './ImagesBlock';
 import MainInfo from './MainInfo';
+
 import './ProductDetails.scss';
 
 const ProductDetails = ({

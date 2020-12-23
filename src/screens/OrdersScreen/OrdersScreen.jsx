@@ -10,17 +10,28 @@ import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/orders';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 
 const OrdersScreen = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [sortParams, setSortParams] = useState(getSortParams(sortKeys.orders));
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.orders, params);
+  };
 
   const requests = async (filtersUrl) => {
     const costumersIds = [];
     const storeIds = [];
-    const res = await api.getOrders(currentPage - 1, filtersUrl);
+    const res = await api.getOrders(currentPage - 1, filtersUrl, sortParams);
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customer.id}`;
       const store = `id=${item.endUser?.storeId}`;
@@ -42,6 +53,7 @@ const OrdersScreen = () => {
     makeUpdate,
     'orders',
     requests,
+    sortParams,
   );
   const handleDeleteOrder = (id) => api.deleteOrderById(id).then(() => {
     setMakeUpdate((v) => v + 1);
@@ -58,6 +70,8 @@ const OrdersScreen = () => {
 
   return (
     <TableComponent
+      sortParams={sortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteOrder}
       showColumn={defaultShow}
       currentPage={currentPage}

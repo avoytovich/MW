@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 import {
   Box,
   Typography,
-  Zoom,
   Select,
   MenuItem,
   Chip,
   TextField,
 } from '@material-ui/core';
-import PropTypes from 'prop-types';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-import localization from '../../../localization';
-import formatDate from '../../../services/dateFormatting';
-
+import EditZoomIcons from '../../EditZoomIcons';
 import {
   lifeTime,
   trialAllowed,
   type,
 } from '../../../services/selectOptions/selectOptions';
+
+import localization from '../../../localization';
+
 import './MainInfo.scss';
 
 const MainInfo = ({
@@ -35,6 +35,7 @@ const MainInfo = ({
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
+
   const handleDeleteBlock = () => {
     const newProductData = {
       ...currentProductData,
@@ -46,6 +47,7 @@ const MainInfo = ({
     setInputErrors({ type: true, lifeTime: true });
     setProductData(newProductData);
   };
+
   useEffect(() => {
     let LifeTimeNumber = false;
     const res = currentProductData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
@@ -65,6 +67,7 @@ const MainInfo = ({
     setShowLifeTimeNumber(LifeTimeNumber);
     return () => {};
   }, [currentProductData.lifeTime]);
+
   useEffect(() => {
     if (editable) {
       const newLifeTime = showLifeTimeNumber
@@ -88,6 +91,7 @@ const MainInfo = ({
     });
     return storesArray.join(', ');
   };
+
   return (
     <Box
       pb={5}
@@ -283,7 +287,7 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%" pt="5px" pl="4px">
-            <Typography>{formatDate(currentProductData.updateDate)}</Typography>
+            <Typography>{moment(currentProductData.updateDate).format('D MMM YYYY')}</Typography>
           </Box>
         </Box>
         <Box
@@ -384,27 +388,16 @@ const MainInfo = ({
           </Box>
         </Box>
       </Box>
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock" mt="15px" mr="15px">
-          <EditIcon
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock" mt="15px" mr="15px">
-          <DeleteIcon
-            color="primary"
-            onClick={handleDeleteBlock}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={handleDeleteBlock}
+      />
     </Box>
   );
 };
+
 MainInfo.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,

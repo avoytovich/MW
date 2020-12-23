@@ -57,11 +57,29 @@ const StoreDetailsScreen = () => {
         ...resObj,
         designs: {
           ...resObj.designs,
+          endUserPortal: { themeRef: {} },
+        },
+      };
+    }
+    if (!Object.keys(resObj.designs.endUserPortal.themeRef).length) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
           endUserPortal: { themeRef: { customerId: '', name: '' } },
         },
       };
     }
     if (!resObj.designs.checkout) {
+      resObj = {
+        ...resObj,
+        designs: {
+          ...resObj.designs,
+          checkout: { themeRef: {} },
+        },
+      };
+    }
+    if (!Object.keys(resObj.designs.checkout.themeRef).length) {
       resObj = {
         ...resObj,
         designs: {
@@ -101,6 +119,7 @@ const StoreDetailsScreen = () => {
         const store = await api.getStoreById(id);
         const customer = await api.getCustomerById(store?.data?.customerId);
         const themeOptions = await api.getThemeOptions();
+        const paymentMethodsOptions = await api.getPaymentMethodsOptions();
         if (!isCancelled) {
           const checkedStore = checkRequiredFields(store.data);
           setStoreData(checkedStore);
@@ -109,6 +128,7 @@ const StoreDetailsScreen = () => {
           setSelectOptions({
             ...selectOptions,
             theme: themeOptions.data.items,
+            paymentMethods: paymentMethodsOptions.data,
           });
           setLoading(false);
         }
@@ -144,8 +164,7 @@ const StoreDetailsScreen = () => {
           </Box>
           <Box>
             <Typography component="div" color="primary">
-              {/* toDo Add localization */}
-              <Box fontWeight={500}> Store</Box>
+              <Box fontWeight={500}>{localization.t('general.store')}</Box>
             </Typography>
           </Box>
         </Box>
@@ -160,8 +179,7 @@ const StoreDetailsScreen = () => {
               variant="contained"
               onClick={saveDetails}
             >
-              {/* toDo Add localization */}
-              Save
+              {localization.t('general.save')}
             </Button>
           </Box>
         </Zoom>

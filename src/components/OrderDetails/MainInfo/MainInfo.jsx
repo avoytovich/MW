@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import moment from 'moment';
 import {
   Box, Typography, Select, MenuItem, Zoom,
 } from '@material-ui/core';
 import { Edit as EditIcon } from '@material-ui/icons';
-import PropTypes from 'prop-types';
+
 import { orderDetailStatus } from '../../../services/selectOptions/selectOptions';
+
 import localization from '../../../localization';
-import formatDate from '../../../services/dateFormatting';
+
 import './MainInfo.scss';
 
 const MainInfo = ({
@@ -217,7 +220,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Typography color="secondary" variant="body2">
-              {formatDate(currentOrderData.createDate)}
+              {moment(currentOrderData.createDate).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -235,7 +238,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Typography color="secondary" variant="body2">
-              {formatDate(currentOrderData.updateDate)}
+              {moment(currentOrderData.updateDate).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -270,10 +273,10 @@ const MainInfo = ({
           <Box width="60%">
             <Typography color="secondary" variant="body2">
               {currentOrderData.emails
-                && formatDate(
+                && moment(
                   currentOrderData.emails[currentOrderData?.emails?.length - 1]
                     .createDate,
-                )}
+                ).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -291,7 +294,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Typography color="secondary" variant="body2">
-              {formatDate(currentOrderData.invoice?.date)}
+              {moment(currentOrderData.invoice?.date).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>

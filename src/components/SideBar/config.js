@@ -61,13 +61,13 @@ const navConfig = [
       {
         id: 'marketing',
         title: localization.t('sideBar.titles.marketing'),
-        href: '/tobedefined/marketing',
+        href: '/marketing',
         icon: EmojiObjects,
       },
       {
         id: 'checkout-experience',
         title: localization.t('sideBar.titles.checkoutExperience'),
-        href: '/tobedefined/checkout-experience',
+        href: '/checkout-experience',
         icon: Toll,
       },
       {
