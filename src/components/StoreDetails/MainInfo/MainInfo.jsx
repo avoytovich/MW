@@ -62,16 +62,6 @@ const MainInfo = ({
     setCurrentStoreData(newData);
   };
 
-  const formStoreNames = () => {
-    const storesArray = [];
-    currentStoreData.saleLocales.forEach((item) => {
-      const storeName = selectOptions.sellingStores.filter(
-        (store) => store.id === item,
-      )[0]?.name;
-      storesArray.push(storeName);
-    });
-    return storesArray.join(', ');
-  };
   return (
     <Box
       pb={5}
