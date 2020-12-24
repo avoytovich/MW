@@ -8,7 +8,7 @@ import { storeDetailsCardText } from '../../../services/selectOptions/selectOpti
 
 import './ImagesBlock.scss';
 
-const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
+const ImagesBlock =   ({ currentStoreData, setCurrentStoreData, storeData }) => {
   const [updated, setUpdated] = useState(null);
 
   const handleDeleteCard = (key) => {
@@ -35,9 +35,7 @@ const ImagesBlock = ({ currentStoreData, setCurrentStoreData, storeData }) => {
     <Box
       width="100%"
       display="flex"
-      alignContent="center"
       flexDirection="row"
-      justifyContent="space-around"
       pt="1%"
     >
       {(currentStoreData.logoStore || currentStoreData.logoStore === '') && (

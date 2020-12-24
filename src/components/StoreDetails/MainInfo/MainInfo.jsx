@@ -62,6 +62,16 @@ const MainInfo = ({
     setCurrentStoreData(newData);
   };
 
+  const formStoreNames = () => {
+    const storesArray = [];
+    currentStoreData.saleLocales.forEach((item) => {
+      const storeName = selectOptions.sellingStores.filter(
+        (store) => store.id === item,
+      )[0]?.name;
+      storesArray.push(storeName);
+    });
+    return storesArray.join(', ');
+  };
   return (
     <Box
       pb={5}
@@ -236,7 +246,7 @@ const MainInfo = ({
           <Box>
             {!editable ? (
               <Typography color="secondary">
-                {currentStoreData?.saleLocales?.join(', ')}
+                {currentStoreData?.saleLocales?.join(', ') || '---'}
               </Typography>
             ) : (
               <Select
@@ -324,7 +334,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem
@@ -374,7 +384,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem

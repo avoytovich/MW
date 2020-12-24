@@ -45,44 +45,44 @@ const CardComponent = ({
       className="itemWrapper"
       width="23%"
     >
-      <EditZoomIcons
-        showCondition={hoverBlock && !editable}
-        editable={editable}
-        setEditable={setEditable}
-        handleDelete={() => {
-          handleDeleteCard(updateKey);
-        }}
-      />
-      <Box mt={8} mx={3}>
-        <Card className="cardItem">
-          <CardActionArea>
-            <CardMedia
-              className="cardImage"
-              image={imageSrc}
-              title="Contemplative Reptile"
-            />
-            <CardContent>
-              <Box pt={3} pb={7}>
-                <Select
-                  disabled={!editable}
-                  value={cardText}
-                  disableUnderline
-                  onChange={(e) => handleUpdateText(updateKey, e.target.value)}
-                >
-                  <MenuItem value=" ">
-                    <em />
-                  </MenuItem>
-                  {storeDetailsCardText.map((option) => (
-                    <MenuItem key={option.id} value={option.value}>
-                      {option.value}
+      <CardActionArea>
+        <EditZoomIcons
+          showCondition={hoverBlock && !editable}
+          editable={editable}
+          setEditable={setEditable}
+          handleDelete={() => {
+            handleDeleteCard(updateKey);
+          }}
+        />
+        <Box mt={8} mx={3}>
+          <Card className="cardItem">
+              <CardMedia
+                className="cardImage"
+                image={imageSrc}
+                title="Contemplative Reptile"
+              />
+              <CardContent>
+                <Box>
+                  <Select
+                    disabled={!editable}
+                    value={cardText}
+                    disableUnderline
+                    onChange={(e) => handleUpdateText(updateKey, e.target.value)}
+                  >
+                    <MenuItem value=" ">
+                      <em />
                     </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Box>
+                    {storeDetailsCardText.map((option) => (
+                      <MenuItem key={option.id} value={option.value}>
+                        {option.value}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Box>
+              </CardContent>
+          </Card>
+        </Box>
+      </CardActionArea>
     </Box>
   );
 };

@@ -52,13 +52,12 @@ const CardComponent = ({
               title="Contemplative Reptile"
             />
             <CardContent>
-              <Box pt={3} pb={7}>
+              <Box>
                 <TextField
                   onChange={(e) => handleChange(e.target.value, updateKey)}
                   disabled={!editable}
                   fullWidth
                   multiple
-                  margin="normal"
                   type="text"
                   value={cardText}
                   InputProps={{

@@ -44,6 +44,7 @@ const CheckoutMenu = ({ currentProductData, sellingStores }) => {
         color="primary"
         aria-controls="checkoutMenu"
         onClick={handleClick}
+        size="large"
       >
         {localization.t('general.checkout')}
       </Button>
