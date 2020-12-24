@@ -1,10 +1,10 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import MainInfo from './MainInfo';
-import formatDate from '../../../services/dateFormatting';
+import moment from 'moment';
 
 const date = 1606732200058;
-const formattedDate = formatDate(date);
+const formattedDate = moment(date).format('D MMM YYYY');
 let orderData = {
   customer: { id: 'test_id' },
   id: 'test_id',
