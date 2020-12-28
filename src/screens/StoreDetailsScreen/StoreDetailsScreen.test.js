@@ -28,6 +28,7 @@ jest.mock('../../api', () => ({
   getStoreById: jest.fn(),
   getCustomerById: jest.fn(),
   getThemeOptions: jest.fn(),
+  getPaymentMethodsOptions: jest.fn(),
 }));
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
@@ -75,6 +76,25 @@ describe('StoreDetailsScreen', () => {
 
       expect(api.getThemeOptions).toHaveBeenCalledTimes(1);
     });
+
+    it('should call api.getPaymentMethodsOptions', async () => {
+      api.getStoreById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getCustomerById.mockImplementation(() =>
+        Promise.resolve({ data: 'data' }),
+      );
+      api.getThemeOptions.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      mount(<StoreDetailsScreen />);
+      await api.getStoreById();
+      await api.getCustomerById();
+      await api.getThemeOptions();
+
+      expect(api.getPaymentMethodsOptions).toHaveBeenCalledTimes(1);
+    });
+
   });
 
   it('should update storeData prop', async () => {
@@ -86,11 +106,15 @@ describe('StoreDetailsScreen', () => {
     api.getThemeOptions.mockImplementation(() =>
       Promise.resolve({ data: { items: [] } }),
     );
+    api.getPaymentMethodsOptions.mockImplementation(() =>
+      Promise.resolve({ data: { items: [] } }),
+    );
     const wrapper = mount(<StoreDetailsScreen />);
     await act(async () => {
       await api.getStoreById();
       await api.getCustomerById();
       await api.getThemeOptions();
+      await api.getPaymentMethodsOptions();
       wrapper.update();
     });
     expect(wrapper.find(StoreDetails).props().currentStoreData).toEqual(

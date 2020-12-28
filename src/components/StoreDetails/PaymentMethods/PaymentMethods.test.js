@@ -28,6 +28,7 @@ describe('StoreDetails <PaymentMethods/>', () => {
           wrapper.setProps({ currentStoreData: storeData });
         }}
         storeData={storeData}
+        selectOptions={{paymentMethods:[]}}
       />,
     );
   });
