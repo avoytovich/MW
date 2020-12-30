@@ -34,6 +34,7 @@ const PaymentSection = ({
             {localization.t('labels.availablePayments')}
           </InputLabel>
           <Select
+            name='availableAdditionalPaymentTypes'
             inputProps={{
               name: 'availablePayments',
               id: 'outlined-availablePayments',
@@ -106,6 +107,7 @@ const PaymentSection = ({
             {localization.t('labels.blockedPayments')}
           </InputLabel>
           <Select
+            name='blackListedPaymentTypes'
             inputProps={{
               name: 'blockedPayments',
               id: 'outlined-blockedPayments',
@@ -172,6 +174,7 @@ const PaymentSection = ({
       </Box>
       <Box py={5} pb={2}>
         <TextField
+          name='maxPaymentsParts'
           value={currentCustomer.paymentServiceConfiguration.maxPaymentsParts}
           fullWidth
           label={localization.t('labels.maxPaymentsPart')}
@@ -195,6 +198,7 @@ const PaymentSection = ({
           label={localization.t('labels.oneClickPayment')}
           control={(
             <Checkbox
+              name='promoteOneClickPayment'
               color="primary"
               checked={
                 currentCustomer.paymentServiceConfiguration

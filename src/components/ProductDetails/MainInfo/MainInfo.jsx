@@ -99,6 +99,7 @@ const MainInfo = ({
       display="flex"
       flexDirection="column"
       className="mainContainer"
+      data-test="mainSection"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
     >
@@ -144,6 +145,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                name="type"
                 error={inputErrors?.type}
                 disabled={!editable}
                 value={currentProductData.type}
@@ -186,6 +188,7 @@ const MainInfo = ({
                 <Typography>{formStoreNames()}</Typography>
               ) : (
                 <Select
+                  name="sellingStores"
                   multiple
                   disableUnderline
                   value={
@@ -211,7 +214,7 @@ const MainInfo = ({
                           (item) => item.id === chip,
                         )[0];
                         return (
-                          <Box mb="2px" mr="2px">
+                          <Box mb="2px" mr="2px" key={chip}>
                             <Chip
                               variant="outlined"
                               color="primary"
@@ -227,7 +230,6 @@ const MainInfo = ({
                               onMouseDown={(event) => {
                                 event.stopPropagation();
                               }}
-                              key={chip}
                               label={storeName.displayName}
                             />
                           </Box>
@@ -287,7 +289,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%" pt="5px" pl="4px">
-            <Typography>{moment(currentProductData.updateDate).format('D MMM YYYY')}</Typography>
+            <Typography>
+              {moment(currentProductData.updateDate).format('D MMM YYYY')}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -304,7 +308,9 @@ const MainInfo = ({
           </Box>
           <Box width="60%" pt="5px" pl="4px">
             {!editable ? (
-              <Typography>{currentProductData.lifeTime}</Typography>
+              <Typography data-test="lifeTime">
+                {currentProductData.lifeTime}
+              </Typography>
             ) : (
               <>
                 {showLifeTimeNumber && (
@@ -325,6 +331,7 @@ const MainInfo = ({
                   />
                 )}
                 <Select
+                  name="lifeTime"
                   error={inputErrors?.lifeTime}
                   value={lifeTimeUpdateValue.value}
                   onChange={(e) => {
@@ -368,6 +375,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              name="trialAllowed"
               disabled={!editable}
               value={currentProductData.trialAllowed}
               onChange={(e) => setProductData({
