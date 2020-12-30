@@ -95,7 +95,7 @@ describe('<Sidebar />', () => {
         expect.objectContaining({icon: EmojiObjects}),
         expect.objectContaining({id: 'checkout-experience'}),
         expect.objectContaining({title: 'Checkout Experience'}),
-        expect.objectContaining({href: '/tobedefined/checkout-experience'}),
+        expect.objectContaining({href: '/checkout-experience'}),
         expect.objectContaining({icon: Toll}),
         expect.objectContaining({id: 'reports'}),
         expect.objectContaining({title: 'Reports'}),
