@@ -22,10 +22,15 @@ const MainSection = ({
 }) => (
   <Box display="flex" flexDirection="column">
     <Box mt={3} pb={7} bgcolor="#fff" className="test" boxShadow={2} p={3}>
-      <Typography gutterBottom variant="h4">
+      <Typography data-test="customerName" gutterBottom variant="h4">
         {currentCustomer.name}
       </Typography>
-      <Typography color="secondary" gutterBottom variant="body2">
+      <Typography
+        data-test="customerId"
+        color="secondary"
+        gutterBottom
+        variant="body2"
+      >
         {currentCustomer.id}
       </Typography>
       <Box
@@ -81,6 +86,7 @@ const MainSection = ({
             {localization.t('labels.fulfillmentTemplates')}
           </InputLabel>
           <Select
+            name="fulfillments"
             inputProps={{
               name: 'fulfillmentTemplates',
               id: 'outlined-fulfillmentTemplates',
@@ -150,6 +156,7 @@ const MainSection = ({
             {localization.t('labels.subscriptionsModels')}
           </InputLabel>
           <Select
+            name="subscriptions"
             inputProps={{
               name: 'subscriptionsModels',
               id: 'outlined-subscriptionsModels',

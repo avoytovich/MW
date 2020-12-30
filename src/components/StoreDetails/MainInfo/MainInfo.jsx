@@ -32,7 +32,6 @@ const MainInfo = ({
   useEffect(() => {
     setEditable(false);
   }, [storeData]);
-
   const handleDeleteBlock = () => {
     const newData = {
       ...currentStoreData,
@@ -46,6 +45,7 @@ const MainInfo = ({
           themeRef: {
             ...currentStoreData.designs.checkout.themeRef,
             name: '',
+            customerId: '',
           },
         },
         endUserPortal: {
@@ -53,12 +53,12 @@ const MainInfo = ({
           themeRef: {
             ...currentStoreData.designs.endUserPortal.themeRef,
             name: '',
+            customerId: '',
           },
         },
       },
     };
     setInputErrors({ defaultLocale: true, status: true });
-
     setCurrentStoreData(newData);
   };
 
@@ -71,6 +71,7 @@ const MainInfo = ({
       className="mainContainer"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
+      data-test="mainSection"
     >
       <Box
         pb={10}
@@ -87,10 +88,14 @@ const MainInfo = ({
           flexDirection="column"
         >
           <Box>
-            <Typography variant="h1">{currentStoreData.name}</Typography>
+            <Typography data-test="storeName" variant="h1">
+              {currentStoreData.name}
+            </Typography>
           </Box>
           <Box>
-            <Typography variant="h1">{customerData.name}</Typography>
+            <Typography data-test="customerName" variant="h1">
+              {customerData.name}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -154,6 +159,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <TextField
+                name="hostname"
                 required
                 disabled
                 fullWidth
@@ -237,8 +243,8 @@ const MainInfo = ({
           </Box>
           <Box>
             {!editable ? (
-              <Typography color="secondary">
-                {currentStoreData?.saleLocales?.join(', ')}
+              <Typography data-test="saleLocales" color="secondary">
+                {currentStoreData?.saleLocales?.join(', ') || '---'}
               </Typography>
             ) : (
               <Select
@@ -328,7 +334,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem

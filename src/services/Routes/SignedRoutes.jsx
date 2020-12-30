@@ -77,7 +77,22 @@ const SignedRoutes = () => {
         path="/marketing"
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />
-
+      <Route
+        path="/checkout-experience/fonts/add"
+        component={lazy(() => import('../../screens/FontScreen/FontAddScreen'))}
+      />
+      <Route
+        path="/checkout-experience/themes/add"
+        render={() => <div>add theme</div>}
+      />
+      <Route
+        path="/checkout-experience/layouts/add"
+        render={() => <div> add layout</div>}
+      />
+      <Route
+        path="/checkout-experience/translations/add"
+        render={() => <div> add translation</div>}
+      />
       <Route
         path="/checkout-experience/themes/:id"
         render={() => <div>theme</div>}
@@ -92,8 +107,9 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/fonts/:id"
-        component={lazy(() => import('../../screens/FontEditScreen'))}
+        component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
       />
+
       <Route
         path="/checkout-experience"
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}

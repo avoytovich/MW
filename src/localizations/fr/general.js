@@ -36,6 +36,7 @@ const general = {
   theme: 'Theme',
   font: 'Font',
   layout: 'Layout',
+  add: 'Add',
 };
 
 export default general;

@@ -40,30 +40,32 @@ const CardComponent = ({
 
   return (
     <Box
+      data-test="cardSection"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
       className="itemWrapper"
       width="23%"
     >
-      <EditZoomIcons
-        showCondition={hoverBlock && !editable}
-        editable={editable}
-        setEditable={setEditable}
-        handleDelete={() => {
-          handleDeleteCard(updateKey);
-        }}
-      />
-      <Box mt={8} mx={3}>
-        <Card className="cardItem">
-          <CardActionArea>
+      <CardActionArea>
+        <EditZoomIcons
+          showCondition={hoverBlock && !editable}
+          editable={editable}
+          setEditable={setEditable}
+          handleDelete={() => {
+            handleDeleteCard(updateKey);
+          }}
+        />
+        <Box mt={8} mx={3}>
+          <Card className="cardItem">
             <CardMedia
               className="cardImage"
               image={imageSrc}
               title="Contemplative Reptile"
             />
             <CardContent>
-              <Box pt={3} pb={7}>
+              <Box>
                 <Select
+                  name="cardText"
                   disabled={!editable}
                   value={cardText}
                   disableUnderline
@@ -80,9 +82,9 @@ const CardComponent = ({
                 </Select>
               </Box>
             </CardContent>
-          </CardActionArea>
-        </Card>
-      </Box>
+          </Card>
+        </Box>
+      </CardActionArea>
     </Box>
   );
 };

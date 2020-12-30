@@ -25,6 +25,7 @@ const CheckoutMenu = ({ currentProductData, sellingStores }) => {
     return res.map((obj) => (
       <MenuItem key={obj.hostname} onClick={handleClose}>
         <a
+          data-test="checkoutLink"
           className="storeHostLink"
           target="_blank"
           rel="noreferrer"
@@ -44,6 +45,7 @@ const CheckoutMenu = ({ currentProductData, sellingStores }) => {
         color="primary"
         aria-controls="checkoutMenu"
         onClick={handleClick}
+        size="large"
       >
         {localization.t('general.checkout')}
       </Button>

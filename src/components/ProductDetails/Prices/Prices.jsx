@@ -65,6 +65,7 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
             </Box>
             <Box width="60%">
               <TextField
+                name="totalPrice"
                 InputProps={{
                   inputProps: { min: 0 },
                   disableUnderline: true,
@@ -116,6 +117,7 @@ const Prices = ({ setProductData, currentProductData, productData }) => {
             </Box>
             <Box width="60%">
               <TextField
+                name="total"
                 InputProps={{
                   inputProps: { min: 0 },
                   disableUnderline: true,

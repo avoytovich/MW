@@ -15,12 +15,13 @@ const EditZoomIcons = ({
   <>
     <Zoom in={showCondition}>
       <Box className="actionBlock">
-        <EditIcon color="primary" onClick={() => setEditable(true)} />
+        <EditIcon data-test='editIcon' color="primary" onClick={() => setEditable(true)} />
       </Box>
     </Zoom>
     <Zoom in={editable}>
       <Box className="actionBlock">
         <DeleteIcon
+          data-test="deleteIcon"
           color="primary"
           onClick={handleDelete}
         />
