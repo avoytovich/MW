@@ -118,6 +118,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                name="status"
                 fullWidth
                 error={inputErrors?.status}
                 disabled={!editable}
@@ -204,6 +205,7 @@ const MainInfo = ({
           <Box width="60%">
             <Select
               fullWidth
+              name="defaultLocale"
               className="storeDefaultLanuage"
               error={inputErrors.defaultLocale}
               disabled={!editable}
@@ -248,6 +250,7 @@ const MainInfo = ({
               </Typography>
             ) : (
               <Select
+                name="saleLocales"
                 fullWidth
                 multiple
                 value={currentStoreData.saleLocales}
@@ -312,6 +315,7 @@ const MainInfo = ({
           <Box width="60%">
             <Select
               fullWidth
+              name="enduserPortalTheme"
               className="storeEnduserPortalTheme"
               disabled={!editable}
               disableUnderline
@@ -348,6 +352,7 @@ const MainInfo = ({
           </Box>
         </Box>
         <CheckOutSelect
+          data-test="checkoutTheme"
           boxClass="odd"
           label={localization.t('labels.checkoutTheme')}
           editable={editable}

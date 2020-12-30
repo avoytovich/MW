@@ -21,6 +21,9 @@ let storeData = {
     checkout: {
       themeRef: { customerId: 'test_customerId', name: 'test_name' },
       theme: 'test_theme',
+      fontRef: { customerId: 'test_customerId', name: 'test_name' },
+      layoutRef: { customerId: 'test_customerId', name: 'test_name' },
+      i18nRef: { customerId: 'test_customerId' },
     },
     endUserPortal: {
       themeRef: { customerId: 'test_customerId', name: 'test_name' },
@@ -35,6 +38,10 @@ let storeData = {
 const customerData = { name: 'test_CustomerName' };
 const selectOptions = {
   theme: [{ id: 1, customerId: 'test_customerId', name: 'test_name' }],
+  customers: [{ id: 2, customerId: 'test_customerId', name: 'test_name' }],
+  font: [{ id: 3, customerId: 'test_customerId', name: 'test_name' }],
+  layout: [{ id: 4, customerId: 'test_customerId', name: 'test_name' }],
+  translation: [{ id: 5, customerId: 'test_customerId' }],
 };
 describe('StoreDetails <MainInfo/>', () => {
   let wrapper;
@@ -92,7 +99,7 @@ describe('StoreDetails <MainInfo/>', () => {
     ).toEqual(enduserPortalTheme);
     const checkoutTheme = `${designs.checkout.themeRef.customerId}: ${designs.checkout.themeRef.name}`;
     expect(
-      wrapper.find('input[name="checkoutTheme"]').instance().value,
+      wrapper.find({ 'data-test': 'checkoutTheme' }).props().value,
     ).toEqual(checkoutTheme);
   });
 
@@ -118,10 +125,9 @@ describe('StoreDetails <MainInfo/>', () => {
       wrapper.find('input[name="enduserPortalTheme"]').instance().value,
     ).toEqual(': ');
     expect(
-      wrapper.find('input[name="checkoutTheme"]').instance().value,
+      wrapper.find({ 'data-test': 'checkoutTheme' }).props().value,
     ).toEqual(': ');
   });
-
   it('should change storeData when some update is made', async () => {
     wrapper.find({ 'data-test': 'editIcon' }).first().simulate('click');
     const newValue = 'ENABLED';
