@@ -98,6 +98,7 @@ const PaymentMethods = ({
           )
         ) : (
           <Select
+            name="paymentMethods"
             multiple
             value={
               currentStoreData.designs.paymentComponent

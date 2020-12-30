@@ -40,6 +40,7 @@ const CardComponent = ({
 
   return (
     <Box
+      data-test="cardSection"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
       className="itemWrapper"
@@ -56,30 +57,31 @@ const CardComponent = ({
         />
         <Box mt={8} mx={3}>
           <Card className="cardItem">
-              <CardMedia
-                className="cardImage"
-                image={imageSrc}
-                title="Contemplative Reptile"
-              />
-              <CardContent>
-                <Box>
-                  <Select
-                    disabled={!editable}
-                    value={cardText}
-                    disableUnderline
-                    onChange={(e) => handleUpdateText(updateKey, e.target.value)}
-                  >
-                    <MenuItem value=" ">
-                      <em />
+            <CardMedia
+              className="cardImage"
+              image={imageSrc}
+              title="Contemplative Reptile"
+            />
+            <CardContent>
+              <Box>
+                <Select
+                  name="cardText"
+                  disabled={!editable}
+                  value={cardText}
+                  disableUnderline
+                  onChange={(e) => handleUpdateText(updateKey, e.target.value)}
+                >
+                  <MenuItem value=" ">
+                    <em />
+                  </MenuItem>
+                  {storeDetailsCardText.map((option) => (
+                    <MenuItem key={option.id} value={option.value}>
+                      {option.value}
                     </MenuItem>
-                    {storeDetailsCardText.map((option) => (
-                      <MenuItem key={option.id} value={option.value}>
-                        {option.value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </Box>
-              </CardContent>
+                  ))}
+                </Select>
+              </Box>
+            </CardContent>
           </Card>
         </Box>
       </CardActionArea>
