@@ -29,6 +29,7 @@ const CardComponent = ({
 
   return (
     <Box
+      data-test="cardSection"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
       className="itemWrapper"
@@ -54,6 +55,7 @@ const CardComponent = ({
             <CardContent>
               <Box>
                 <TextField
+                  name="cardText"
                   onChange={(e) => handleChange(e.target.value, updateKey)}
                   disabled={!editable}
                   fullWidth
