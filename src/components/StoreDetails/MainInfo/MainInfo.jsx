@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Box,
   Typography,
@@ -9,6 +8,7 @@ import {
   TextField,
   Chip,
 } from '@material-ui/core';
+import CheckOutSelect from './CheckOutSelect';
 
 import EditZoomIcons from '../../EditZoomIcons';
 import selectLanguages from '../../../services/selectOptions/selectLanguages';
@@ -119,6 +119,7 @@ const MainInfo = ({
             <Box width="60%">
               <Select
                 name="status"
+                fullWidth
                 error={inputErrors?.status}
                 disabled={!editable}
                 value={currentStoreData.status}
@@ -203,6 +204,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              fullWidth
               name="defaultLocale"
               className="storeDefaultLanuage"
               error={inputErrors.defaultLocale}
@@ -249,6 +251,7 @@ const MainInfo = ({
             ) : (
               <Select
                 name="saleLocales"
+                fullWidth
                 multiple
                 value={currentStoreData.saleLocales}
                 disableUnderline
@@ -311,6 +314,7 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              fullWidth
               name="enduserPortalTheme"
               className="storeEnduserPortalTheme"
               disabled={!editable}
@@ -347,58 +351,106 @@ const MainInfo = ({
             </Select>
           </Box>
         </Box>
-
-        <Box
-          width="100%"
-          flexWrap="nowrap"
-          className="odd"
-          display="flex"
-          flexDirection="row"
-        >
-          <Box width="40%" pr={4} pt="7px" pl="4px">
-            <Typography color="secondary" variant="body2">
-              {localization.t('labels.checkoutTheme')}
-            </Typography>
-          </Box>
-          <Box width="60%">
-            <Select
-              name="checkoutTheme"
-              className="storeCheckoutTheme"
-              value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
-              disabled={!editable}
-              disableUnderline
-              onChange={(e) => {
-                const newValue = e.target.value.split(':');
-                setCurrentStoreData({
-                  ...currentStoreData,
-                  designs: {
-                    ...currentStoreData.designs,
-                    checkout: {
-                      ...currentStoreData.designs.checkout,
-                      themeRef: {
-                        customerId: newValue[0],
-                        name: newValue[1].trim(),
-                      },
-                    },
+        <CheckOutSelect
+          data-test="checkoutTheme"
+          boxClass="odd"
+          label={localization.t('labels.checkoutTheme')}
+          editable={editable}
+          customers={selectOptions.customers}
+          emValue=": "
+          handleChanges={(e) => {
+            const newValue = e.target.value.split(':');
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  themeRef: {
+                    customerId: newValue[0],
+                    name: newValue[1].trim(),
                   },
-                });
-              }}
-            >
-              <MenuItem value=": ">
-                <em>None</em>
-              </MenuItem>
-              {selectOptions.theme.map((option) => (
-                <MenuItem
-                  key={option.id}
-                  value={`${option.customerId}: ${option.name}`}
-                >
-                  {`${option.customerId}: ${option.name}`}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
-        </Box>
+                },
+              },
+            });
+          }}
+          selectOptions={selectOptions.theme}
+          value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
+        />
+        <CheckOutSelect
+          boxClass="even"
+          label={localization.t('labels.checkoutFont')}
+          editable={editable}
+          customers={selectOptions.customers}
+          emValue=": "
+          value={`${currentStoreData.designs.checkout.fontRef.customerId}: ${currentStoreData.designs.checkout.fontRef.name}`}
+          selectOptions={selectOptions.font}
+          handleChanges={(e) => {
+            const newValue = e.target.value.split(':');
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  fontRef: {
+                    customerId: newValue[0],
+                    name: newValue[1].trim(),
+                  },
+                },
+              },
+            });
+          }}
+        />
+        <CheckOutSelect
+          boxClass="even"
+          label={localization.t('labels.checkoutLayout')}
+          editable={editable}
+          customers={selectOptions.customers}
+          emValue=": "
+          value={`${currentStoreData.designs.checkout.layoutRef.customerId}: ${currentStoreData.designs.checkout.layoutRef.name}`}
+          selectOptions={selectOptions.layout}
+          handleChanges={(e) => {
+            const newValue = e.target.value.split(':');
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  layoutRef: {
+                    customerId: newValue[0],
+                    name: newValue[1].trim(),
+                  },
+                },
+              },
+            });
+          }}
+        />
+        <CheckOutSelect
+          boxClass="odd"
+          label={localization.t('labels.checkoutTranslation')}
+          editable={editable}
+          emValue=""
+          value={currentStoreData.designs.checkout.i18nRef.customerId}
+          selectOptions={selectOptions.translation}
+          handleChanges={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  i18nRef: {
+                    customerId: e.target.value,
+                  },
+                },
+              },
+            });
+          }}
+        />
       </Box>
+
       <EditZoomIcons
         showCondition={hoverBlock && !editable}
         editable={editable}

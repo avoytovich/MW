@@ -17,7 +17,20 @@ const expectedCurrentStoreData = {
     endUserPortal: {
       themeRef: { customerId: '', name: '' },
     },
-    checkout: { themeRef: { customerId: '', name: '' } },
+    checkout: {
+      themeRef: { customerId: '', name: '' },
+      fontRef: {
+        customerId: '',
+        name: '',
+      },
+      i18nRef: {
+        customerId: '',
+      },
+      layoutRef: {
+        customerId: '',
+        name: '',
+      },
+    },
     paymentComponent: {
       rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
     },
@@ -27,7 +40,11 @@ const expectedCurrentStoreData = {
 jest.mock('../../api', () => ({
   getStoreById: jest.fn(),
   getCustomerById: jest.fn(),
-  getThemeOptions: jest.fn(),
+  getDesignsThemes: jest.fn(),
+  getDesignsFonts: jest.fn(),
+  getDesignsLayouts: jest.fn(),
+  getDesignsTranslations: jest.fn(),
+  getCustomersByIds: jest.fn(),
   getPaymentMethodsOptions: jest.fn(),
 }));
 jest.mock('react-redux', () => ({
@@ -63,7 +80,7 @@ describe('StoreDetailsScreen', () => {
       expect(api.getCustomerById).toHaveBeenCalledWith(customerId);
     });
 
-    it('should call api.getThemeOptions', async () => {
+    it('should call api.getDesignsThemes', async () => {
       api.getStoreById.mockImplementation(() =>
         Promise.resolve({ data: { customerId: customerId } }),
       );
@@ -74,7 +91,7 @@ describe('StoreDetailsScreen', () => {
       await api.getStoreById();
       await api.getCustomerById();
 
-      expect(api.getThemeOptions).toHaveBeenCalledTimes(1);
+      expect(api.getDesignsThemes).toHaveBeenCalledTimes(1);
     });
 
     it('should call api.getPaymentMethodsOptions', async () => {
@@ -84,17 +101,32 @@ describe('StoreDetailsScreen', () => {
       api.getCustomerById.mockImplementation(() =>
         Promise.resolve({ data: 'data' }),
       );
-      api.getThemeOptions.mockImplementation(() =>
+      api.getDesignsThemes.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      api.getDesignsFonts.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      api.getDesignsLayouts.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      api.getDesignsTranslations.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      api.getCustomersByIds.mockImplementation(() =>
         Promise.resolve({ data: { items: [] } }),
       );
       mount(<StoreDetailsScreen />);
       await api.getStoreById();
       await api.getCustomerById();
-      await api.getThemeOptions();
+      await api.getDesignsThemes();
+      await api.getDesignsFonts();
+      await api.getDesignsLayouts();
+      await api.getDesignsTranslations();
+      await api.getCustomersByIds();
 
       expect(api.getPaymentMethodsOptions).toHaveBeenCalledTimes(1);
     });
-
   });
 
   it('should update storeData prop', async () => {
@@ -103,7 +135,19 @@ describe('StoreDetailsScreen', () => {
       Promise.resolve({ data: { customerId: customerId } }),
     );
     api.getCustomerById.mockImplementation(() => Promise.resolve({ data: {} }));
-    api.getThemeOptions.mockImplementation(() =>
+    api.getDesignsThemes.mockImplementation(() =>
+      Promise.resolve({ data: { items: [] } }),
+    );
+    api.getDesignsFonts.mockImplementation(() =>
+      Promise.resolve({ data: { items: [] } }),
+    );
+    api.getDesignsLayouts.mockImplementation(() =>
+      Promise.resolve({ data: { items: [] } }),
+    );
+    api.getDesignsTranslations.mockImplementation(() =>
+      Promise.resolve({ data: { items: [] } }),
+    );
+    api.getCustomersByIds.mockImplementation(() =>
       Promise.resolve({ data: { items: [] } }),
     );
     api.getPaymentMethodsOptions.mockImplementation(() =>
@@ -113,7 +157,12 @@ describe('StoreDetailsScreen', () => {
     await act(async () => {
       await api.getStoreById();
       await api.getCustomerById();
-      await api.getThemeOptions();
+      await api.getDesignsThemes();
+      await api.getDesignsFonts();
+      await api.getDesignsLayouts();
+      await api.getDesignsTranslations();
+      await api.getCustomersByIds();
+
       await api.getPaymentMethodsOptions();
       wrapper.update();
     });
