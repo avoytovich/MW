@@ -16,6 +16,9 @@
       &.deleteIcon {
         color: $deleteIcon;
       }
+      &.addIcon {
+        color: $navItemButtonActive;
+      }
       &.copyIcon {
         color: $copyIcon;
       }

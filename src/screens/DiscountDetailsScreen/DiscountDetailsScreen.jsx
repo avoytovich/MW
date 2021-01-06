@@ -38,6 +38,8 @@ const DiscountDetailsScreen = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [curStores, setStores] = useState(null);
   const [curProducts, setProducts] = useState(null);
+  const [availStores, setAvailStores] = useState(null);
+  const [availProducts, setAvailProducts] = useState(null);
   const [productsModal, setProductsModalOpen] = useState(false);
   const [storesModal, setStoresModalOpen] = useState(false);
 
@@ -62,12 +64,38 @@ const DiscountDetailsScreen = () => {
     });
   };
 
-  const removeItem = (id, type) => {
-    /* if (type === 'products') {
-      setProducts((cur) => cur.filter((product) => product.id !== id));
+  const removeItem = (item, type) => {
+    if (type === 'products') {
+      const newArr = [...curDiscount.productIds];
+
+      newArr.splice(newArr.indexOf(item.id), 1);
+      setProductsModalOpen(false);
+      setCurDiscount((c) => ({ ...c, productIds: newArr }));
+      setProducts((p) => p.filter((pr) => pr.id !== item.id));
+      setAvailProducts((pr) => [...pr, item]);
     } else if (type === 'stores') {
-      setStores((cur) => cur.filter((store) => store.id !== id));
-    } */
+      const newArr = [...curDiscount.storeIds];
+
+      newArr.splice(newArr.indexOf(item), 1);
+      setStoresModalOpen(false);
+      setCurDiscount((c) => ({ ...c, storeIds: newArr }));
+      setStores((p) => p.filter((pr) => pr.id !== item.id));
+      setAvailStores((pr) => [...pr, item]);
+    }
+  };
+
+  const addItem = (item, type) => {
+    if (type === 'products') {
+      setProductsModalOpen(false);
+      setCurDiscount((c) => ({ ...c, productIds: [...c.productIds, item.id] }));
+      setProducts((p) => [...p, item]);
+      setAvailProducts((pr) => [...pr.filter((p) => p.id !== item.id)]);
+    } else if (type === 'stores') {
+      setStoresModalOpen(false);
+      setCurDiscount((c) => ({ ...c, storeIds: [...c.storeIds, item.id] }));
+      setStores((p) => [...p, item]);
+      setAvailStores((pr) => [...pr.filter((p) => p.id !== item.id)]);
+    }
   };
 
   useEffect(() => {
@@ -86,20 +114,65 @@ const DiscountDetailsScreen = () => {
         api
           .getStores(0, `&customerId=${data.customerId}`)
           .then(({ data: { items: stores } }) => {
-            const storesObj = stores.map((store) => ({ id: store.id, name: store.name }));
+            const availStoresObj = [];
+            const storesObj = [];
+
+            stores.forEach((store) => {
+              if (data?.storeIds?.indexOf(store.id) >= 0) {
+                storesObj.push({ id: store.id, name: store.name });
+              } else {
+                availStoresObj.push({ id: store.id, name: store.name });
+              }
+            });
+
+            setAvailStores(availStoresObj);
             setStores(storesObj);
           });
 
         api
           .getProducts(0, `&customerId=${data.customerId}`)
           .then(({ data: { items: products } }) => {
-            const productsObj = products.map((product) => (
-              { id: product.id, name: product.genericName }
-            ));
+            const availProductsObj = [];
+            const productsObj = [];
+
+            products.forEach((product) => {
+              if (data?.productIds?.indexOf(product.id) >= 0) {
+                productsObj.push({ id: product.id, name: product.genericName });
+              } else {
+                availProductsObj.push({ id: product.id, name: product.genericName });
+              }
+            });
+
+            setAvailProducts(availProductsObj);
             setProducts(productsObj);
           });
       });
   }, []);
+
+  // ToDO refactor from here and recodetails
+  const updateDiscount = (type, value, selections) => {
+    let setValue = value;
+
+    if (!curDiscount[type]) {
+      setValue = [value];
+    } else if (selections === 'multiple' || selections === 'empty') {
+      const curValInd = curDiscount[type].indexOf(value);
+      if (curValInd >= 0) {
+        if (curDiscount[type].length === 1) {
+          if (selections === 'multiple') return;
+          setValue = [];
+        } else {
+          const newArr = [...curDiscount[type]];
+          newArr.splice(curValInd, 1);
+          setValue = newArr;
+        }
+      } else {
+        setValue = [...curDiscount[type], value];
+      }
+    }
+
+    setCurDiscount((c) => ({ ...c, [type]: setValue }));
+  };
 
   if (curDiscount === null) return <LinearProgress />;
 
@@ -169,7 +242,10 @@ const DiscountDetailsScreen = () => {
             name='localizedLabels.neutral'
             type='text'
             value={curDiscount.localizedLabels.neutral}
-            onChange={handleChange}
+            onChange={(e) => setCurDiscount((d) => ({
+              ...d,
+              localizedLabels: { ...d.localizedLabels, neutral: e.target.value },
+            }))}
             variant='outlined'
             helperText={!curDiscount.localizedLabels.neutral && 'If left empty the label will not be displayed on the checkout'}
           />
@@ -182,16 +258,19 @@ const DiscountDetailsScreen = () => {
             <Box display='flex' alignItems='center'>
               <FormControlLabel
                 control={<Checkbox name='CAMPAIGN' color='primary' checked={curDiscount.model === 'CAMPAIGN'} />}
+                onChange={() => updateDiscount('model', 'CAMPAIGN')}
                 label='Campaign'
               />
 
               <FormControlLabel
                 control={<Checkbox name='COUPON' color='primary' checked={curDiscount.model === 'COUPON'} />}
+                onChange={() => updateDiscount('model', 'COUPON')}
                 label='Coupon'
               />
 
               <FormControlLabel
                 control={<Checkbox name='SINGLE_USE_CODE' color='primary' checked={curDiscount.model === 'SINGLE_USE_CODE'} />}
+                onChange={() => updateDiscount('model', 'SINGLE_USE_CODE')}
                 label='Single use code'
               />
             </Box>
@@ -201,17 +280,18 @@ const DiscountDetailsScreen = () => {
         <Box py={3} mx={2}>
           <Typography gutterBottom variant='h5'>Status</Typography>
 
-          <Box display='flex' alignItems='center' ml='-10px'>
-            <Switch
-              color='primary'
-              checked={curDiscount.status === 'ENABLED'}
-              onChange={() => setCurDiscount({ ...curDiscount, status: curDiscount.status === 'ENABLED' ? 'DISABLED' : 'ENABLED' })}
-              name='status'
+          <Box display='flex' alignItems='center'>
+            <FormControlLabel
+              control={(
+                <Switch
+                  color='primary'
+                  checked={curDiscount.status === 'ENABLED'}
+                  onChange={() => updateDiscount('status', curDiscount.status === 'ENABLED' ? 'DISABLED' : 'ENABLED')}
+                  name='status'
+                />
+              )}
+              label={curDiscount.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
             />
-
-            <Typography>
-              {curDiscount.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
-            </Typography>
           </Box>
         </Box>
       </CustomCard>
@@ -227,7 +307,7 @@ const DiscountDetailsScreen = () => {
               name='stores'
               type='text'
               placeholder='Select stores'
-              value={[]}
+              value={curStores.map((st) => st.name)}
               contentEditable={false}
               onClick={() => setStoresModalOpen(true)}
               variant='outlined'
@@ -246,7 +326,7 @@ const DiscountDetailsScreen = () => {
               name='catalogs'
               type='text'
               placeholder='Select products'
-              value={[]}
+              value={curProducts.map((pr) => pr.name)}
               contentEditable={false}
               onClick={() => setProductsModalOpen(true)}
               variant='outlined'
@@ -264,11 +344,13 @@ const DiscountDetailsScreen = () => {
             <Box display='flex' alignItems='center'>
               <FormControlLabel
                 control={<Checkbox name='MANUAL_RENEWAL' color='primary' checked={curDiscount?.sources?.indexOf('MANUAL_RENEWAL') >= 0} />}
+                onChange={() => updateDiscount('sources', 'MANUAL_RENEWAL', 'empty')}
                 label='Manual Renewal'
               />
 
               <FormControlLabel
                 control={<Checkbox name='PURCHASE' color='primary' checked={curDiscount?.sources?.indexOf('PURCHASE') >= 0} />}
+                onChange={() => updateDiscount('sources', 'PURCHASE', 'empty')}
                 label='Purchase'
               />
             </Box>
@@ -282,11 +364,13 @@ const DiscountDetailsScreen = () => {
             <Box display='flex' alignItems='center'>
               <FormControlLabel
                 control={<Checkbox name='BUYER' color='primary' checked={curDiscount?.endUserTypes?.indexOf('BUYER') >= 0} />}
+                onChange={() => updateDiscount('endUserTypes', 'BUYER', 'empty')}
                 label='Buyer'
               />
 
               <FormControlLabel
                 control={<Checkbox name='RESELLER' color='primary' checked={curDiscount?.endUserTypes?.indexOf('RESELLER') >= 0} />}
+                onChange={() => updateDiscount('endUserTypes', 'RESELLER', 'empty')}
                 label='Approved reseller'
               />
             </Box>
@@ -301,7 +385,14 @@ const DiscountDetailsScreen = () => {
         fullWidth
         maxWidth='sm'
       >
-        <TableItems values={curProducts} type='products' removeItem={removeItem} />
+        <TableItems
+          values={curProducts}
+          avail={availProducts}
+          type='products'
+          noDelete
+          removeItem={(item) => removeItem(item, 'products')}
+          addItem={(item) => addItem(item, 'products')}
+        />
       </Dialog>
 
       <Dialog
@@ -311,7 +402,14 @@ const DiscountDetailsScreen = () => {
         fullWidth
         maxWidth='sm'
       >
-        <TableItems values={curStores} type='stores' removeItem={removeItem} />
+        <TableItems
+          values={curStores}
+          avail={availStores}
+          type='stores'
+          noDelete
+          removeItem={(item) => removeItem(item, 'stores')}
+          addItem={(item) => addItem(item, 'stores')}
+        />
       </Dialog>
     </div>
   );
