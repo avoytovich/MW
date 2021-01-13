@@ -53,7 +53,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "4.0.0-alpha.56",
     "@material-ui/pickers": "3.2.10",
-    "axios": "0.20.0",
+    "axios": ">=0.21.1",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "browser-locale": "1.0.3",
     "css-loader": "4.3.0",
