@@ -74,6 +74,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/RecoDetailsScreen'))}
       />
       <Route
+        path="/marketing/campaigns/:id"
+        component={lazy(() => import('../../screens/CampaignDetailsScreen'))}
+      />
+      <Route
         path="/marketing"
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />

@@ -120,6 +120,11 @@ const labels = {
   layouts: 'Layouts',
   translations: 'Translations',
   fonts: 'Fonts',
+  price: 'Price',
+  productName: 'Product Name',
+  value: 'Value',
+  msrp: 'MSRP',
+  vatIncluded: 'VAT included',
 };
 
 export default labels;
