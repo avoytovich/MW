@@ -331,11 +331,10 @@ const RecoDetailsScreen = () => {
                 <Switch
                   color='primary'
                   checked={curReco.status === 'ENABLED'}
-                  onChange={() => updateReco('status', curReco.status === 'ENABLED' ? 'DISABLED' : 'ENABLED')}
                   name='status'
                 />
               )}
-              onChange={() => updateReco('sources', 'MANUAL_RENEWAL', 'empty')}
+              onChange={() => updateReco('status', curReco.status === 'ENABLED' ? 'DISABLED' : 'ENABLED')}
               label={curReco.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
             />
           </Box>

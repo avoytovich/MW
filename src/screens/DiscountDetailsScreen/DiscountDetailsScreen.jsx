@@ -286,10 +286,10 @@ const DiscountDetailsScreen = () => {
                 <Switch
                   color='primary'
                   checked={curDiscount.status === 'ENABLED'}
-                  onChange={() => updateDiscount('status', curDiscount.status === 'ENABLED' ? 'DISABLED' : 'ENABLED')}
                   name='status'
                 />
               )}
+              onChange={() => updateDiscount('status', curDiscount.status === 'ENABLED' ? 'DISABLED' : 'ENABLED')}
               label={curDiscount.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
             />
           </Box>

@@ -27,6 +27,7 @@ const TableComponent = ({
   noActions,
   setSortParams,
   sortParams,
+  customPath,
 }) => {
   const [checked, setChecked] = useState([]);
 
@@ -142,6 +143,7 @@ const TableComponent = ({
             key={rowItem.id}
             rowItem={rowItem}
             noActions={noActions}
+            customPath={customPath}
           />
         ))}
       </Box>
@@ -168,6 +170,7 @@ TableComponent.propTypes = {
   noActions: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,
+  customPath: PropTypes.string,
 };
 
 export default TableComponent;

@@ -2,38 +2,39 @@ import moment from 'moment';
 import localization from '../../../localization';
 
 const defaultShow = {
-  id: false,
-  customer: true,
-  creationDate: true,
-  lastUpdate: true,
-  name: true,
+  id: true,
+  productId: true,
   startDate: true,
   endDate: true,
-  status: true,
+  currency: true,
+  value: true,
+  msrp: true,
+  vatIncluded: true,
 };
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.customer'), id: 'customer' },
-    { value: localization.t('labels.creationDate'), id: 'creationDate' },
-    { value: localization.t('labels.lastUpdate'), id: 'lastUpdate' },
-    { value: localization.t('labels.name'), id: 'name' },
+    { value: localization.t('labels.price'), id: 'id' },
+    { value: localization.t('labels.product'), id: 'productId' },
     { value: localization.t('labels.startDate'), id: 'startDate' },
     { value: localization.t('labels.endDate'), id: 'endDate' },
-    { value: localization.t('labels.status'), id: 'status' },
+    { value: localization.t('labels.currency'), id: 'currency' },
+    { value: localization.t('labels.value'), id: 'value' },
+    { value: localization.t('labels.msrp'), id: 'msrp' },
+    { value: localization.t('labels.vatIncluded'), id: 'vatIncluded' },
   ],
 };
 
 const generateData = (data) => {
   const values = data.items.map((val) => ({
     id: val.id,
-    customer: val.customerId,
-    creationDate: moment(val.createDate).format('D MMM YYYY'),
-    lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
-    name: val.name,
+    productId: val.productId,
     startDate: moment(val.startDate).format('D MMM YYYY'),
     endDate: moment(val.endDate).format('D MMM YYYY'),
-    status: val.status,
+    currency: val.currency,
+    value: val.value,
+    msrp: val.msrp,
+    vatIncluded: val.vatIncluded,
   }));
 
   const meta = {
