@@ -95,7 +95,7 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/translations/add"
-        render={() => <div> add translation</div>}
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
       />
       <Route
         path="/checkout-experience/themes/:id"
