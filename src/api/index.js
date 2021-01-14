@@ -51,6 +51,15 @@ const api = {
       data,
     });
   },
+  addNewTranslation(data) {
+    const url = '/designs/i18ns';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
@@ -339,6 +348,13 @@ const api = {
       url,
     });
   },
+  getTranslationById(id) {
+    const url = `/designs/i18ns/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getPricesByCampaignId(id) {
     const url = `/prices?format=short&marketingCampaignId=${id}`;
     return axiosInstance({
@@ -406,6 +422,14 @@ const api = {
   },
   updateFontById(id, data) {
     const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateTranslationById(id, data) {
+    const url = `/designs/i18ns/${id}`;
     return axiosInstance({
       method: 'put',
       url,
