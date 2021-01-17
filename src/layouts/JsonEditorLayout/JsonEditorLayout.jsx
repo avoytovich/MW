@@ -11,15 +11,16 @@ import CustomCard from '../../components/utils/CustomCard';
 
 import localization from '../../localization';
 
-import './translationLayout.scss';
+import './jsonEditorLayout.scss';
 
-const TranslationLayout = ({
+const JsonEditorLayout = ({
   hasChanges,
   doSave,
   currentData,
   staticData,
   setCurrentData,
   customer,
+  title,
   isNew,
 }) => {
   const editTranslations = (edit) => {
@@ -28,18 +29,18 @@ const TranslationLayout = ({
   };
 
   return (
-    <div className='translation-screen'>
+    <div className='json-editor-screen'>
       <Tabs
         value={0}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor='primary'
+        textColor='primary'
       >
         <Tab label={staticData.name || 'new'} />
       </Tabs>
 
       <Zoom in={hasChanges}>
         <Button
-          id="save-translation-button"
+          id="save-json-button"
           color="primary"
           size="large"
           type="submit"
@@ -100,7 +101,7 @@ const TranslationLayout = ({
         </Box>
       </CustomCard>
 
-      <CustomCard title='Translations JSON' className='translations-list'>
+      <CustomCard title={title || 'JSON'}>
         <ReactJson
           src={currentData.data}
           name={false}
@@ -119,7 +120,7 @@ const TranslationLayout = ({
   );
 };
 
-TranslationLayout.propTypes = {
+JsonEditorLayout.propTypes = {
   hasChanges: PropTypes.bool,
   doSave: PropTypes.func,
   currentData: PropTypes.object,
@@ -127,5 +128,7 @@ TranslationLayout.propTypes = {
   setCurrentData: PropTypes.func,
   isNew: PropTypes.bool,
   customer: PropTypes.string,
+  title: PropTypes.string,
 };
-export default TranslationLayout;
+
+export default JsonEditorLayout;

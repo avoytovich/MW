@@ -7,42 +7,50 @@ import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
-const TranslationAddScreen = () => {
+const LayoutAddScreen = () => {
   const dispatch = useDispatch();
 
   const { customerId } = useSelector(({ account: { user } }) => user);
-  const initData = { name: '', data: {}, customerId };
+  const initData = {
+    name: '',
+    data: {
+      layouts: {},
+      pages: [],
+      steps: [],
+    },
+    customerId,
+  };
 
   const [hasChanges, setChanges] = useState(false);
-  const [currentTranslation, setCurrentTranslation] = useState({ ...initData });
+  const [currentLayout, setCurrentLayout] = useState({ ...initData });
 
-  const saveTranslation = () => {
-    api.addNewTranslation(currentTranslation).then(() => {
+  const saveLayout = () => {
+    api.addNewLayout(currentLayout).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setCurrentTranslation({ ...initData });
+      setCurrentLayout({ ...initData });
     });
   };
 
   useEffect(() => {
-    setChanges(JSON.stringify(currentTranslation) !== JSON.stringify(initData));
+    setChanges(JSON.stringify(currentLayout) !== JSON.stringify(initData));
 
     return () => setChanges(false);
-  }, [currentTranslation]);
+  }, [currentLayout]);
 
   return (
     <JsonEditorLayout
       customer={customerId}
       hasChanges={hasChanges}
-      doSave={saveTranslation}
-      currentData={currentTranslation}
-      setCurrentData={setCurrentTranslation}
+      doSave={saveLayout}
+      currentData={currentLayout}
+      setCurrentData={setCurrentLayout}
       staticData={initData}
-      title='Translations JSON'
+      title='Layout Data'
       isNew
     />
   );
 };
 
-export default TranslationAddScreen;
+export default LayoutAddScreen;
