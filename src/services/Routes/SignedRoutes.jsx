@@ -91,7 +91,7 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/layouts/add"
-        render={() => <div> add layout</div>}
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
       />
       <Route
         path="/checkout-experience/translations/add"
@@ -103,7 +103,7 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/layouts/:id"
-        render={() => <div>layout</div>}
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
       />
       <Route
         path="/checkout-experience/translations/:id"

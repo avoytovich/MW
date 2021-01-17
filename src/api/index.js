@@ -60,6 +60,15 @@ const api = {
       data,
     });
   },
+  addNewLayout(data) {
+    const url = '/designs/layouts';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
@@ -355,6 +364,13 @@ const api = {
       url,
     });
   },
+  getLayoutById(id) {
+    const url = `/designs/layouts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getPricesByCampaignId(id) {
     const url = `/prices?format=short&marketingCampaignId=${id}`;
     return axiosInstance({
@@ -430,6 +446,14 @@ const api = {
   },
   updateTranslationById(id, data) {
     const url = `/designs/i18ns/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateLayoutById(id, data) {
+    const url = `/designs/layouts/${id}`;
     return axiosInstance({
       method: 'put',
       url,

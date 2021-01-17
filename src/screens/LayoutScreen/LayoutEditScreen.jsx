@@ -10,24 +10,24 @@ import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
-const TranslationEditScreen = () => {
+const LayoutEditScreen = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [hasChanges, setChanges] = useState(false);
 
-  const [translationData, setTranslationData] = useState(null);
+  const [layoutData, setLayoutData] = useState(null);
 
-  const [currentTranslation, setCurrentTranslation] = useState(null);
+  const [currentLayout, setCurrentLayout] = useState(null);
   const [currentCustomer, setCurrentCustomer] = useState(null);
 
-  const saveTranslation = () => {
-    api.updateTranslationById(id, currentTranslation).then(() => {
+  const saveLayout = () => {
+    api.updateLayoutById(id, currentLayout).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setTranslationData(currentTranslation);
+      setLayoutData(currentLayout);
       window.location.reload();
     });
   };
@@ -37,13 +37,13 @@ const TranslationEditScreen = () => {
 
     (async () => {
       try {
-        const translation = await api.getTranslationById(id);
-        const customer = await api.getCustomerById(translation.data.customerId);
+        const layout = await api.getLayoutById(id);
+        const customer = await api.getCustomerById(layout.data.customerId);
 
         if (!isCancelled) {
-          setTranslationData(translation.data);
+          setLayoutData(layout.data);
           setCurrentCustomer(customer.data.name);
-          setCurrentTranslation(translation.data);
+          setCurrentLayout(layout.data);
           setLoading(false);
         }
       } catch (error) {
@@ -59,10 +59,10 @@ const TranslationEditScreen = () => {
   }, []);
 
   useEffect(() => {
-    setChanges(JSON.stringify(currentTranslation) !== JSON.stringify(translationData));
+    setChanges(JSON.stringify(currentLayout) !== JSON.stringify(layoutData));
 
     return () => setChanges(false);
-  }, [currentTranslation, translationData]);
+  }, [currentLayout, layoutData]);
 
   if (isLoading) return <LinearProgress />;
 
@@ -70,13 +70,13 @@ const TranslationEditScreen = () => {
     <JsonEditorLayout
       customer={currentCustomer}
       hasChanges={hasChanges}
-      doSave={saveTranslation}
-      currentData={currentTranslation}
-      setCurrentData={setCurrentTranslation}
-      staticData={translationData}
-      title='Translations JSON'
+      doSave={saveLayout}
+      currentData={currentLayout}
+      setCurrentData={setCurrentLayout}
+      staticData={layoutData}
+      title='Layout Data'
     />
   );
 };
 
-export default TranslationEditScreen;
+export default LayoutEditScreen;
