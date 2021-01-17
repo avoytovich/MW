@@ -15,7 +15,7 @@ const CustomerDetails = ({
   <Box display="flex" flexDirection="column">
     <Box>
       <Box display="flex" flexDirection="row">
-        <Box width="30%">
+        <Box width="40%">
           <MainSection
             setCurrentCustomer={setCurrentCustomer}
             selectOptions={selectOptions}
