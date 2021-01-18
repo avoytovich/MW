@@ -378,6 +378,7 @@ const MainInfo = ({
           value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
         />
         <CheckOutSelect
+          data-test="checkoutFont"
           boxClass="even"
           label={localization.t('labels.checkoutFont')}
           editable={editable}
@@ -403,6 +404,7 @@ const MainInfo = ({
           }}
         />
         <CheckOutSelect
+          data-test="checkoutLayout"
           boxClass="even"
           label={localization.t('labels.checkoutLayout')}
           editable={editable}
@@ -428,6 +430,7 @@ const MainInfo = ({
           }}
         />
         <CheckOutSelect
+          data-test="checkoutTranslation"
           boxClass="odd"
           label={localization.t('labels.checkoutTranslation')}
           editable={editable}
