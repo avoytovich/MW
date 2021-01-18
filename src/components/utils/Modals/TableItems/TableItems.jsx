@@ -10,11 +10,13 @@ import {
   FormGroup,
   Typography,
   Grid,
+  Divider,
   Box,
 } from '@material-ui/core';
 
 import {
   Edit as EditIcon,
+  AddCircle as AddIcon,
   Delete as DeleteIcon,
   FileCopy as FileCopyIcon,
 } from '@material-ui/icons';
@@ -26,22 +28,26 @@ import { showNotification } from '../../../../redux/actions/HttpNotifications';
 
 import './tableItems.scss';
 
-const TableItems = ({ values = [], type, removeItem }) => {
+const TableItems = ({
+  values = [], avail = [], type, removeItem, addItem, noDelete,
+}) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const getItemUrl = (id) => `/overview/${type}/${id}`;
 
-  const deleteItem = (id) => {
+  const deleteItem = (item) => {
     const onSuccess = () => {
-      removeItem(id, type);
+      removeItem(item.id, type);
       dispatch(showNotification(localization.t('general.hasBeenSuccessfullyDeleted')));
     };
 
-    if(type === 'products') {
-      api.deleteProductById(id).then(onSuccess);
-    } else if(type === 'stores') {
-      api.deleteStoreById(id).then(onSuccess);
+    if (noDelete) {
+      removeItem(item);
+    } else if (type === 'products') {
+      api.deleteProductById(item.id).then(onSuccess);
+    } else if (type === 'stores') {
+      api.deleteStoreById(item.id).then(onSuccess);
     }
   };
 
@@ -77,7 +83,7 @@ const TableItems = ({ values = [], type, removeItem }) => {
 
                   <Grid container item xs={6} justify='flex-end' alignItems='center' className='action-items'>
                     <Box my={2}>
-                      <DeleteIcon className="deleteIcon icons" onClick={() => deleteItem(value.id)} />
+                      <DeleteIcon className="deleteIcon icons" onClick={() => deleteItem(value)} />
                       <EditIcon className="editIcon icons" onClick={() => goToDetails(value.id)} />
                       <FileCopyIcon className="copyIcon icons" onClick={() => copyUrl(value.id)} />
                     </Box>
@@ -88,6 +94,33 @@ const TableItems = ({ values = [], type, removeItem }) => {
               <Typography>{localization.t('general.noResults')}</Typography>
             )
           }
+
+          {
+            avail.length > 0 && (
+              <>
+                <Divider width="100%" />
+                {
+                  avail.map((value) => (
+                    <Box px={2} key={value.id} className='table-item-row'>
+                      <Grid container>
+                        <Grid container item xs={6} alignItems='center'>
+                          <Typography>{value.name}</Typography>
+                        </Grid>
+
+                        <Grid container item xs={6} justify='flex-end' alignItems='center' className='action-items'>
+                          <Box my={2}>
+                            <AddIcon className="addIcon icons" onClick={() => addItem(value)} />
+                            <EditIcon className="editIcon icons" onClick={() => goToDetails(value.id)} />
+                            <FileCopyIcon className="copyIcon icons" onClick={() => copyUrl(value.id)} />
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  ))
+                }
+              </>
+            )
+          }
         </FormGroup>
       </DialogContent>
     </div>
@@ -96,7 +129,11 @@ const TableItems = ({ values = [], type, removeItem }) => {
 
 TableItems.propTypes = {
   values: PropTypes.array,
+  avail: PropTypes.array,
   type: PropTypes.string,
+  removeItem: PropTypes.func,
+  addItem: PropTypes.func,
+  noDelete: PropTypes.bool,
 };
 
 export default TableItems;

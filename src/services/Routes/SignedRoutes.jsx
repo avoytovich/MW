@@ -74,6 +74,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/RecoDetailsScreen'))}
       />
       <Route
+        path="/marketing/campaigns/:id"
+        component={lazy(() => import('../../screens/CampaignDetailsScreen'))}
+      />
+      <Route
         path="/marketing"
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />
@@ -87,11 +91,11 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/layouts/add"
-        render={() => <div> add layout</div>}
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
       />
       <Route
         path="/checkout-experience/translations/add"
-        render={() => <div> add translation</div>}
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
       />
       <Route
         path="/checkout-experience/themes/:id"
@@ -99,11 +103,11 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/layouts/:id"
-        render={() => <div>layout</div>}
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
       />
       <Route
         path="/checkout-experience/translations/:id"
-        render={() => <div>translation</div>}
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
       />
       <Route
         path="/checkout-experience/fonts/:id"

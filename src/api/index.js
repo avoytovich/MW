@@ -51,6 +51,24 @@ const api = {
       data,
     });
   },
+  addNewTranslation(data) {
+    const url = '/designs/i18ns';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addNewLayout(data) {
+    const url = '/designs/layouts';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
@@ -142,7 +160,7 @@ const api = {
   },
 
   getCampaigns(page, filters) {
-    let url = `/marketing-campaign/campaigns?format=short&customerId=Nexway&sort=updateDate,desc&size=50&page=${page}`;
+    let url = `/marketing-campaign/campaigns?format=short&customerId=c84ab4ca-94b3-44c3-8313-8fa4da3e0940&sort=updateDate,desc&size=50&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -325,8 +343,36 @@ const api = {
       url,
     });
   },
+  getCampaignById(id) {
+    const url = `/marketing-campaign/campaigns/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getFontById(id) {
     const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getTranslationById(id) {
+    const url = `/designs/i18ns/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getLayoutById(id) {
+    const url = `/designs/layouts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getPricesByCampaignId(id) {
+    const url = `/prices?format=short&marketingCampaignId=${id}`;
     return axiosInstance({
       method: 'get',
       url,
@@ -392,6 +438,30 @@ const api = {
   },
   updateFontById(id, data) {
     const url = `/designs/fonts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateTranslationById(id, data) {
+    const url = `/designs/i18ns/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateLayoutById(id, data) {
+    const url = `/designs/layouts/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateCampaignById(id, data) {
+    const url = `/marketing-campaign/campaigns/${id}`;
     return axiosInstance({
       method: 'put',
       url,
