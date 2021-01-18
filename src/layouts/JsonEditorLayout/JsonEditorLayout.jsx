@@ -7,6 +7,8 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
+import PublishIcon from '@material-ui/icons/Publish';
+
 import CustomCard from '../../components/utils/CustomCard';
 
 import localization from '../../localization';
@@ -26,6 +28,20 @@ const JsonEditorLayout = ({
   const editTranslations = (edit) => {
     const { updated_src } = edit;
     setCurrentData({ ...currentData, data: { ...updated_src } });
+  };
+
+  const handleJsonUpload = (e) => {
+    e.persist();
+
+    const reader = new FileReader();
+    reader.readAsText(e.target.files[0]);
+
+    reader.onload = () => setCurrentData({
+      ...currentData,
+      data: { ...JSON.parse(reader.result) },
+    });
+
+    // reader.onerror = () => setCurrentData({ ...currentData, data: {} });
   };
 
   return (
@@ -101,7 +117,22 @@ const JsonEditorLayout = ({
         </Box>
       </CustomCard>
 
-      <CustomCard title={title || 'JSON'}>
+      <CustomCard title={title || 'JSON'} style={{ position: 'relative' }}>
+        <Button
+          variant='outlined'
+          className='json-file-upload'
+          component='label'
+        >
+          Upload
+          <PublishIcon style={{ marginLeft: 5, fontSize: 20 }} />
+          <input
+            type='file'
+            accept="application/JSON"
+            onChange={handleJsonUpload}
+            hidden
+          />
+        </Button>
+
         <ReactJson
           src={currentData.data}
           name={false}
