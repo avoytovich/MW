@@ -1,4 +1,3 @@
-// ToDo: localize texts
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -10,6 +9,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
+import localization from '../../localization';
 
 import CustomCard from '../../components/utils/CustomCard';
 
@@ -26,7 +26,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
         <Box display='flex' py={5} pb={2}>
           <TextField
             fullWidth
-            label='First Name'
+            label={localization.t('labels.firstName')}
             name='firstName'
             type='text'
             value={identity.firstName}
@@ -36,7 +36,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
 
           <TextField
             fullWidth
-            label='Last Name'
+            label={localization.t('labels.lastName')}
             name='lastName'
             type='text'
             value={identity.lastName}
@@ -48,7 +48,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
         <Box display='flex' pb={2}>
           <TextField
             fullWidth
-            label='Email'
+            label={localization.t('labels.email')}
             name='email'
             type='text'
             value={identity.email}
@@ -58,7 +58,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
 
           <TextField
             fullWidth
-            label='User Name'
+            label={localization.t('labels.userName')}
             name='userName'
             type='text'
             value={identity.userName}
@@ -71,7 +71,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
 
       <CustomCard title='Configuration'>
         <Box py={3}>
-          <Typography gutterBottom variant='h5'>Status</Typography>
+          <Typography gutterBottom variant='h5'>{localization.t('labels.status')}</Typography>
 
           <Box display='flex' alignItems='center' ml='-10px'>
             <Switch
@@ -82,23 +82,23 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
             />
 
             <Typography>
-              {identity.inactive ? 'Disabled' : 'Enabled'}
+              {identity.inactive ? localization.t('labels.disabled') : localization.t('labels.enabled')}
             </Typography>
           </Box>
         </Box>
 
         <Box pb={3}>
-          <Typography gutterBottom variant='h5'>Type</Typography>
+          <Typography gutterBottom variant='h5'>{localization.t('labels.type')}</Typography>
 
           <Box display='flex' alignItems='center'>
             <FormControlLabel
               control={<Checkbox name='user' color='primary' checked disabled />}
-              label='User'
+              label={localization.t('labels.user')}
             />
 
             <FormControlLabel
               control={<Checkbox name='application' color='primary' disabled />}
-              label='Application'
+              label={localization.t('labels.application')}
             />
           </Box>
         </Box>

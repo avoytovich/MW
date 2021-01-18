@@ -39,7 +39,7 @@ const MyAccountScreen = () => {
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
-    setCurIdentity({ ...identity, [name]: value });
+    setCurIdentity({ ...curIdentity, [name]: value });
   };
 
   const saveIdentity = () => {
@@ -67,27 +67,28 @@ const MyAccountScreen = () => {
 
   useEffect(() => {
     api
-      .getIdentityById(account.sub)
+      .getIdentityById(account?.sub)
       .then(({ data }) => {
         setIdentity(data);
         setCurIdentity(data);
 
         api
-          .getStores(0, `&customerId=${data.customerId}`)
+          .getStores(0, `&customerId=${data?.customerId}`)
           .then(({ data: { items: stores } }) => {
             const storesObj = stores.map((store) => ({ id: store.id, name: store.name }));
             setStores(storesObj);
-          });
+          }).catch(() => setStores(null));
 
         api
-          .getProducts(0, `&customerId=${data.customerId}`)
+          .getProducts(0, `&customerId=${data?.customerId}`)
           .then(({ data: { items: products } }) => {
             const productsObj = products.map((product) => (
               { id: product.id, name: product.genericName }
             ));
             setProducts(productsObj);
-          });
-      });
+          }).catch(() => setProducts(null));
+      })
+      .catch(() => { setIdentity(null); setCurIdentity(null); });
   }, []);
 
   if (curIdentity === null) return <LinearProgress />;

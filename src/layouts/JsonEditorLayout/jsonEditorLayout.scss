@@ -1,0 +1,21 @@
+@import '../../styles/variables.scss';
+
+.json-editor-screen {
+  position: relative;
+
+  #save-json-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  
+  .link-to-customer{
+    color: $currentPageText;
+  }
+
+  .json-file-upload{
+    position: absolute;
+    top: 6.5px;
+    right: 15px;
+  }
+}

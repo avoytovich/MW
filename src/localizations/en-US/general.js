@@ -36,6 +36,9 @@ const general = {
   theme: 'Theme',
   font: 'Font',
   layout: 'Layout',
+  checkout: 'Checkout',
+  save: 'Save',
+  add: 'Add',
 };
 
 export default general;

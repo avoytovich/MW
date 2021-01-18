@@ -5,22 +5,20 @@ import {
   Typography,
   Box,
   Divider,
-  Zoom,
   Chip,
   Select,
   MenuItem,
 } from '@material-ui/core';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
-
-import { getPaymentImages, paymentImages } from './images';
+import EditZoomIcons from '../../EditZoomIcons';
 import localization from '../../../localization';
-
+import { getPaymentImages } from './images';
 import './PaymentMethods.scss';
 
 const PaymentMethods = ({
   currentStoreData,
   setCurrentStoreData,
   storeData,
+  selectOptions,
 }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
@@ -83,19 +81,24 @@ const PaymentMethods = ({
             (item) => {
               const src = getPaymentImages(item);
               return (
-                <Box key={item} className="paymentImageWrapper">
-                  <img
-                    className="paymentImage"
-                    label="Clickable"
-                    src={src}
-                    alt={item}
-                  />
+                <Box key={item} className="paymentImageWrapper" p={1}>
+                  {src ? (
+                    <img
+                      className="paymentImage"
+                      label="Clickable"
+                      src={src}
+                      alt={item}
+                    />
+                  ) : (
+                    <span>{item}</span>
+                  )}
                 </Box>
               );
             },
           )
         ) : (
           <Select
+            name="paymentMethods"
             multiple
             value={
               currentStoreData.designs.paymentComponent
@@ -124,7 +127,7 @@ const PaymentMethods = ({
               </Box>
             )}
           >
-            {paymentImages.map((item) => (
+            {selectOptions.paymentMethods.map((item) => (
               <MenuItem key={item.id} value={item.id}>
                 {item.id}
               </MenuItem>
@@ -132,26 +135,12 @@ const PaymentMethods = ({
           </Select>
         )}
       </Box>
-
-      {/* ToDo: this is often copy-pasted in different components - should move it out */}
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
-          <EditIcon
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock">
-          <DeleteIcon
-            color="primary"
-            onClick={() => onChange([])}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={() => onChange([])}
+      />
     </Box>
   );
 };
@@ -160,6 +149,7 @@ PaymentMethods.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
   storeData: PropTypes.object,
+  selectOptions: PropTypes.object,
 };
 
 export default PaymentMethods;

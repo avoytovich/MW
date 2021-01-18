@@ -9,14 +9,21 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import { initialSortParams } from '../../services/constants';
+import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
 
 const LayoutsTab = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(initialSortParams);
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.layoutsTab),
+  );
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.layoutsTab, params);
+  };
 
   const requests = async () => {
     const costumersIds = [];
@@ -35,7 +42,7 @@ const LayoutsTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'checkout-experience',
+    'layouts',
     requests,
     sortParams,
   );
@@ -56,7 +63,7 @@ const LayoutsTab = () => {
   return (
     <TableComponent
       sortParams={sortParams}
-      setSortParams={setSortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteLayout}
       showColumn={defaultShow}
       currentPage={currentPage}

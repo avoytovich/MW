@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import {
   Typography,
@@ -20,7 +21,6 @@ import {
 
 import FullNameAvatar from '../utils/FullNameAvatar';
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import formatDate from '../../services/dateFormatting';
 import localization from '../../localization';
 import './TableComponent.scss';
 
@@ -32,6 +32,7 @@ const TableRowComponent = ({
   checked,
   handleDeleteItem,
   noActions,
+  customPath,
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
@@ -42,12 +43,27 @@ const TableRowComponent = ({
     });
   };
 
+  const parsePath = (path) => {
+    let newPath = path;
+
+    if (path.indexOf(':') >= 0) {
+      const replacingParts = path.match(/:[^/]*/gi);
+
+      replacingParts.forEach((part) => {
+        const rowItemValue = rowItem[part.replace(':', '')];
+        newPath = path.replace(part, rowItemValue);
+      });
+    }
+
+    return newPath;
+  };
+
   const drawTableCell = (item) => {
     if (showColumn[item.id]) {
       let valueToShow;
 
       if (item.id === 'createDate' || item.id === 'updateDate') {
-        valueToShow = formatDate(rowItem[item.id]);
+        valueToShow = moment(rowItem[item.id]).format('D MMM YYYY');
       } else {
         valueToShow = rowItem[item.id];
       }
@@ -79,8 +95,8 @@ const TableRowComponent = ({
               className="tableCellItem"
             >
               { // eslint-disable-next-line no-nested-ternary
-                valueToShow === 'ENABLED' ? <CheckIcon className="statusEnabled" />
-                  : valueToShow === 'DISABLED' ? <CloseIcon className="statusDisable" /> : valueToShow
+                valueToShow === 'ENABLED' || valueToShow === true ? <CheckIcon className="statusEnabled" />
+                  : valueToShow === 'DISABLED' || valueToShow === false ? <CloseIcon className="statusDisable" /> : valueToShow
               }
             </Typography>
           </Box>
@@ -94,7 +110,7 @@ const TableRowComponent = ({
     <Box className="tableRowGrid" data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
       <Grid
         spacing={1}
-        onClick={() => history.push(`${history.location.pathname}/${rowItem.id}`)}
+        onClick={() => history.push(customPath ? parsePath(customPath) : `${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}
         onMouseLeave={() => setRowHover(false)}
         container
@@ -116,7 +132,7 @@ const TableRowComponent = ({
 
         {markupSequence.map((item) => drawTableCell(item))}
 
-        {rowHover && (
+        {rowHover && !customPath && (
           <Grid>
             <Box my={2}>
               {!noActions && (
@@ -148,6 +164,7 @@ TableRowComponent.propTypes = {
     }),
   ),
   noActions: PropTypes.bool,
+  customPath: PropTypes.string,
 };
 
 export default TableRowComponent;

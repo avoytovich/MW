@@ -1,19 +1,16 @@
-// ToDo: move out and reuse common blocks for procuts/stores/orders details
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Box,
   Typography,
-  Zoom,
   Select,
   MenuItem,
   TextField,
   Chip,
 } from '@material-ui/core';
-import { Edit as EditIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import CheckOutSelect from './CheckOutSelect';
 
+import EditZoomIcons from '../../EditZoomIcons';
 import selectLanguages from '../../../services/selectOptions/selectLanguages';
 import { status } from '../../../services/selectOptions/selectOptions';
 
@@ -35,7 +32,6 @@ const MainInfo = ({
   useEffect(() => {
     setEditable(false);
   }, [storeData]);
-
   const handleDeleteBlock = () => {
     const newData = {
       ...currentStoreData,
@@ -49,6 +45,7 @@ const MainInfo = ({
           themeRef: {
             ...currentStoreData.designs.checkout.themeRef,
             name: '',
+            customerId: '',
           },
         },
         endUserPortal: {
@@ -56,12 +53,12 @@ const MainInfo = ({
           themeRef: {
             ...currentStoreData.designs.endUserPortal.themeRef,
             name: '',
+            customerId: '',
           },
         },
       },
     };
     setInputErrors({ defaultLocale: true, status: true });
-
     setCurrentStoreData(newData);
   };
 
@@ -74,6 +71,7 @@ const MainInfo = ({
       className="mainContainer"
       onMouseOver={() => setHoverBlock(true)}
       onMouseLeave={() => setHoverBlock(false)}
+      data-test="mainSection"
     >
       <Box
         pb={10}
@@ -90,10 +88,14 @@ const MainInfo = ({
           flexDirection="column"
         >
           <Box>
-            <Typography variant="h1">{currentStoreData.name}</Typography>
+            <Typography data-test="storeName" variant="h1">
+              {currentStoreData.name}
+            </Typography>
           </Box>
           <Box>
-            <Typography variant="h1">{customerData.name}</Typography>
+            <Typography data-test="customerName" variant="h1">
+              {customerData.name}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -116,6 +118,8 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                name="status"
+                fullWidth
                 error={inputErrors?.status}
                 disabled={!editable}
                 value={currentStoreData.status}
@@ -156,6 +160,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <TextField
+                name="hostname"
                 required
                 disabled
                 fullWidth
@@ -199,6 +204,8 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              fullWidth
+              name="defaultLocale"
               className="storeDefaultLanuage"
               error={inputErrors.defaultLocale}
               disabled={!editable}
@@ -238,11 +245,13 @@ const MainInfo = ({
           </Box>
           <Box>
             {!editable ? (
-              <Typography color="secondary">
-                {currentStoreData?.saleLocales?.join(', ')}
+              <Typography data-test="saleLocales" color="secondary">
+                {currentStoreData?.saleLocales?.join(', ') || '---'}
               </Typography>
             ) : (
               <Select
+                name="saleLocales"
+                fullWidth
                 multiple
                 value={currentStoreData.saleLocales}
                 disableUnderline
@@ -305,6 +314,8 @@ const MainInfo = ({
           </Box>
           <Box width="60%">
             <Select
+              fullWidth
+              name="enduserPortalTheme"
               className="storeEnduserPortalTheme"
               disabled={!editable}
               disableUnderline
@@ -327,7 +338,7 @@ const MainInfo = ({
               }}
             >
               <MenuItem value=": ">
-                <em />
+                <em>None</em>
               </MenuItem>
               {selectOptions.theme.map((option) => (
                 <MenuItem
@@ -340,75 +351,115 @@ const MainInfo = ({
             </Select>
           </Box>
         </Box>
-
-        <Box
-          width="100%"
-          flexWrap="nowrap"
-          className="odd"
-          display="flex"
-          flexDirection="row"
-        >
-          <Box width="40%" pr={4} pt="7px" pl="4px">
-            <Typography color="secondary" variant="body2">
-              {localization.t('labels.checkoutTheme')}
-            </Typography>
-          </Box>
-          <Box width="60%">
-            <Select
-              className="storeCheckoutTheme"
-              value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
-              disabled={!editable}
-              disableUnderline
-              onChange={(e) => {
-                const newValue = e.target.value.split(':');
-                setCurrentStoreData({
-                  ...currentStoreData,
-                  designs: {
-                    ...currentStoreData.designs,
-                    checkout: {
-                      ...currentStoreData.designs.checkout,
-                      themeRef: {
-                        customerId: newValue[0],
-                        name: newValue[1].trim(),
-                      },
-                    },
+        <CheckOutSelect
+          data-test="checkoutTheme"
+          boxClass="odd"
+          label={localization.t('labels.checkoutTheme')}
+          editable={editable}
+          customers={selectOptions.customers}
+          emValue=": "
+          handleChanges={(e) => {
+            const newValue = e.target.value.split(':');
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  themeRef: {
+                    customerId: newValue[0],
+                    name: newValue[1].trim(),
                   },
-                });
-              }}
-            >
-              <MenuItem value=": ">
-                <em />
-              </MenuItem>
-              {selectOptions.theme.map((option) => (
-                <MenuItem
-                  key={option.id}
-                  value={`${option.customerId}: ${option.name}`}
-                >
-                  {`${option.customerId}: ${option.name}`}
-                </MenuItem>
-              ))}
-            </Select>
-          </Box>
-        </Box>
+                },
+              },
+            });
+          }}
+          selectOptions={selectOptions.theme}
+          value={`${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`}
+        />
+        <CheckOutSelect
+          data-test="checkoutFont"
+          boxClass="even"
+          label={localization.t('labels.checkoutFont')}
+          editable={editable}
+          customers={selectOptions.customers}
+          emValue=": "
+          value={`${currentStoreData.designs.checkout.fontRef.customerId}: ${currentStoreData.designs.checkout.fontRef.name}`}
+          selectOptions={selectOptions.font}
+          handleChanges={(e) => {
+            const newValue = e.target.value.split(':');
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  fontRef: {
+                    customerId: newValue[0],
+                    name: newValue[1].trim(),
+                  },
+                },
+              },
+            });
+          }}
+        />
+        <CheckOutSelect
+          data-test="checkoutLayout"
+          boxClass="even"
+          label={localization.t('labels.checkoutLayout')}
+          editable={editable}
+          customers={selectOptions.customers}
+          emValue=": "
+          value={`${currentStoreData.designs.checkout.layoutRef.customerId}: ${currentStoreData.designs.checkout.layoutRef.name}`}
+          selectOptions={selectOptions.layout}
+          handleChanges={(e) => {
+            const newValue = e.target.value.split(':');
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  layoutRef: {
+                    customerId: newValue[0],
+                    name: newValue[1].trim(),
+                  },
+                },
+              },
+            });
+          }}
+        />
+        <CheckOutSelect
+          data-test="checkoutTranslation"
+          boxClass="odd"
+          label={localization.t('labels.checkoutTranslation')}
+          editable={editable}
+          emValue=""
+          value={currentStoreData.designs.checkout.i18nRef.customerId}
+          selectOptions={selectOptions.translation}
+          handleChanges={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              designs: {
+                ...currentStoreData.designs,
+                checkout: {
+                  ...currentStoreData.designs.checkout,
+                  i18nRef: {
+                    customerId: e.target.value,
+                  },
+                },
+              },
+            });
+          }}
+        />
       </Box>
-      <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
-          <EditIcon
-            color="primary"
-            className="editIcon icons"
-            onClick={() => setEditable(true)}
-          />
-        </Box>
-      </Zoom>
-      <Zoom in={editable}>
-        <Box className="actionBlock">
-          <DeleteIcon
-            color="primary"
-            onClick={handleDeleteBlock}
-            className="deleteIcon icons"
-          />
-        </Box>
-      </Zoom>
+
+      <EditZoomIcons
+        showCondition={hoverBlock && !editable}
+        editable={editable}
+        setEditable={setEditable}
+        handleDelete={handleDeleteBlock}
+      />
     </Box>
   );
 };

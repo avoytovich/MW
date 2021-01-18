@@ -9,6 +9,7 @@ const defaultShow = {
   name: true,
   startDate: true,
   endDate: true,
+  status: true,
 };
 
 const markUp = {
@@ -19,18 +20,20 @@ const markUp = {
     { value: localization.t('labels.name'), id: 'name' },
     { value: localization.t('labels.startDate'), id: 'startDate' },
     { value: localization.t('labels.endDate'), id: 'endDate' },
+    { value: localization.t('labels.status'), id: 'status' },
   ],
 };
 
 const generateData = (data) => {
   const values = data.items.map((val) => ({
-    id: val.name,
+    id: val.id,
     customer: val.customerId,
     creationDate: moment(val.createDate).format('D MMM YYYY'),
     lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
     name: val.name,
     startDate: moment(val.startDate).format('D MMM YYYY'),
     endDate: moment(val.endDate).format('D MMM YYYY'),
+    status: val.status,
   }));
 
   const meta = {

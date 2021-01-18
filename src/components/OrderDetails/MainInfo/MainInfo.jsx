@@ -1,15 +1,12 @@
-// ToDo: move out and reuse common blocks for procuts/stores/orders details
-
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
+import moment from 'moment';
 import {
   Box, Typography, Select, MenuItem, Zoom,
 } from '@material-ui/core';
 import { Edit as EditIcon } from '@material-ui/icons';
 
 import { orderDetailStatus } from '../../../services/selectOptions/selectOptions';
-import formatDate from '../../../services/dateFormatting';
 
 import localization from '../../../localization';
 
@@ -23,7 +20,6 @@ const MainInfo = ({
 }) => {
   const [editable, setEditable] = useState(false);
   const [hoverBlock, setHoverBlock] = useState(false);
-
   useEffect(() => {
     setEditable(false);
   }, [orderData]);
@@ -52,10 +48,14 @@ const MainInfo = ({
           flexDirection="column"
         >
           <Box>
-            <Typography variant="h1">{currentOrderData.id}</Typography>
+            <Typography data-test="orderId" variant="h1">
+              {currentOrderData.id}
+            </Typography>
           </Box>
           <Box>
-            <Typography variant="h1">{customer}</Typography>
+            <Typography data-test="customer" variant="h1">
+              {customer}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -78,6 +78,7 @@ const MainInfo = ({
             </Box>
             <Box width="60%">
               <Select
+                name="status"
                 disabled={!editable}
                 value={currentOrderData.status}
                 disableUnderline
@@ -110,7 +111,9 @@ const MainInfo = ({
               </Typography>
             </Box>
             <Box width="60%">
-              <Typography>{currentOrderData.lineItems[0]?.amount}</Typography>
+              <Typography data-test="amount">
+                {currentOrderData.lineItems[0]?.amount}
+              </Typography>
             </Box>
           </Box>
         </Box>
@@ -135,7 +138,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.store.name}</Typography>
+            <Typography data-test="storeName">
+              {currentOrderData.store.name}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -151,7 +156,7 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>
+            <Typography data-test="paymentId">
               {currentOrderData.processingEvent[0]?.metadata?.paymentId}
             </Typography>
           </Box>
@@ -170,7 +175,7 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>
+            <Typography data-test="fulfillment">
               {currentOrderData?.lineItems[0]?.fulfillmentProcessingStatus}
             </Typography>
           </Box>
@@ -188,7 +193,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.payment?.status}</Typography>
+            <Typography data-test="paymentStatus">
+              {currentOrderData.payment?.status}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -204,7 +211,7 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>
+            <Typography data-test="subscriptionProcessingStatus">
               {currentOrderData.lineItems[0]?.subscriptionProcessingStatus}
             </Typography>
           </Box>
@@ -222,8 +229,8 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography color="secondary" variant="body2">
-              {formatDate(currentOrderData.createDate)}
+            <Typography data-test="createDate" color="secondary" variant="body2">
+              {moment(currentOrderData.createDate).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -240,8 +247,8 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography color="secondary" variant="body2">
-              {formatDate(currentOrderData.updateDate)}
+            <Typography data-test="updateDate" color="secondary" variant="body2">
+              {moment(currentOrderData.updateDate).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -258,7 +265,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.lastUpdateReason}</Typography>
+            <Typography data-test="lastUpdateReason">
+              {currentOrderData.lastUpdateReason}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -274,12 +283,16 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography color="secondary" variant="body2">
+            <Typography
+              data-test="emailsCreateDate"
+              color="secondary"
+              variant="body2"
+            >
               {currentOrderData.emails
-                && formatDate(
+                && moment(
                   currentOrderData.emails[currentOrderData?.emails?.length - 1]
                     .createDate,
-                )}
+                ).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -296,8 +309,8 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography color="secondary" variant="body2">
-              {formatDate(currentOrderData.invoice?.date)}
+            <Typography data-test="invoiceCreateDate" color="secondary" variant="body2">
+              {moment(currentOrderData.invoice?.date).format('D MMM YYYY')}
             </Typography>
           </Box>
         </Box>
@@ -314,7 +327,7 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>
+            <Typography data-test="companyName">
               {currentOrderData.endUser?.company?.companyName}
             </Typography>
           </Box>
@@ -332,7 +345,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.endUser?.streetAddress}</Typography>
+            <Typography data-test="streetAddress">
+              {currentOrderData.endUser?.streetAddress}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -348,7 +363,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.endUser?.zipCode}</Typography>
+            <Typography data-test="zipCode">
+              {currentOrderData.endUser?.zipCode}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -364,7 +381,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.endUser?.country}</Typography>
+            <Typography data-test="country">
+              {currentOrderData.endUser?.country}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -380,7 +399,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.payment?.transactionId}</Typography>
+            <Typography data-test="transactionId">
+              {currentOrderData.payment?.transactionId}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -396,7 +417,9 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.maxPaymentsParts}</Typography>
+            <Typography data-test="maxPaymentsParts">
+              {currentOrderData.maxPaymentsParts}
+            </Typography>
           </Box>
         </Box>
         <Box
@@ -412,13 +435,16 @@ const MainInfo = ({
             </Typography>
           </Box>
           <Box width="60%">
-            <Typography>{currentOrderData.paymentDeadline}</Typography>
+            <Typography data-test="paymentDeadline">
+              {currentOrderData.paymentDeadline}
+            </Typography>
           </Box>
         </Box>
       </Box>
       <Zoom in={hoverBlock && !editable}>
-        <Box className="actionBlock">
+        <Box className="actionBlock" mt="15px" mr="15px">
           <EditIcon
+            data-test="editIcon"
             color="primary"
             className="editIcon icons"
             onClick={() => setEditable(true)}

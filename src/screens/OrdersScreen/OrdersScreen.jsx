@@ -10,14 +10,23 @@ import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/orders';
-import { initialSortParams } from '../../services/constants';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 
 const OrdersScreen = () => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(initialSortParams);
+  const [sortParams, setSortParams] = useState(getSortParams(sortKeys.orders));
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.orders, params);
+  };
 
   const requests = async (filtersUrl) => {
     const costumersIds = [];
@@ -62,7 +71,7 @@ const OrdersScreen = () => {
   return (
     <TableComponent
       sortParams={sortParams}
-      setSortParams={setSortParams}
+      setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteOrder}
       showColumn={defaultShow}
       currentPage={currentPage}

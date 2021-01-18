@@ -66,9 +66,54 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/AdministrationScreen'))}
       />
       <Route
+        path="/marketing/discounts/:id"
+        component={lazy(() => import('../../screens/DiscountDetailsScreen'))}
+      />
+      <Route
+        path="/marketing/recommendations/:id"
+        component={lazy(() => import('../../screens/RecoDetailsScreen'))}
+      />
+      <Route
+        path="/marketing/campaigns/:id"
+        component={lazy(() => import('../../screens/CampaignDetailsScreen'))}
+      />
+      <Route
         path="/marketing"
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />
+      <Route
+        path="/checkout-experience/fonts/add"
+        component={lazy(() => import('../../screens/FontScreen/FontAddScreen'))}
+      />
+      <Route
+        path="/checkout-experience/themes/add"
+        render={() => <div>add theme</div>}
+      />
+      <Route
+        path="/checkout-experience/layouts/add"
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
+      />
+      <Route
+        path="/checkout-experience/translations/add"
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
+      />
+      <Route
+        path="/checkout-experience/themes/:id"
+        render={() => <div>theme</div>}
+      />
+      <Route
+        path="/checkout-experience/layouts/:id"
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
+      />
+      <Route
+        path="/checkout-experience/translations/:id"
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
+      />
+      <Route
+        path="/checkout-experience/fonts/:id"
+        component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
+      />
+
       <Route
         path="/checkout-experience"
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}

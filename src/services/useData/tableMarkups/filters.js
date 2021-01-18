@@ -43,9 +43,50 @@ const filters = {
   ],
   orders: [
     {
+      id: 'email',
+      label: localization.t('labels.email'),
+      type: 'text',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.orderStatusCompleted'), value: 'COMPLETED' },
+        { label: localization.t('labels.orderStatusPaymentPending'), value: 'PAYMENT_PENDING' },
+        { label: localization.t('labels.orderStatusPaymentRefused'), value: 'PAYMENT_REFUSED' },
+        { label: localization.t('labels.orderStatusFraudPending'), value: 'FRAUD_PENDING' },
+        { label: localization.t('labels.orderStatusPending'), value: 'PENDING' },
+        { label: localization.t('labels.orderStatusPendingError'), value: 'PENDING_ERROR' },
+        { label: localization.t('labels.orderStatusCreated'), value: 'CREATED' },
+        { label: localization.t('labels.orderStatusCancelPending'), value: 'CANCEL_PENDING' },
+        { label: localization.t('labels.orderStatusPartialCompleted'), value: 'PARTIAL_COMPLETED' },
+        { label: localization.t('labels.orderStatusCanceled'), value: 'CANCELED' },
+        { label: localization.t('labels.orderStatusCanceledError'), value: 'CANCELED_ERROR' },
+        { label: localization.t('labels.orderStatusPartialCanceled'), value: 'PARTIAL_CANCELED' },
+        { label: localization.t('labels.orderStatusForceCompleted'), value: 'FORCE_COMPLETED' },
+        { label: localization.t('labels.orderStatusForceCancelled'), value: 'FORCE_CANCELLED' },
+        { label: localization.t('labels.orderStatusAborted'), value: 'ABORTED' },
+      ],
+    },
+    {
+      id: 'invoiceId',
+      label: localization.t('labels.invoiceID'),
+      type: 'text',
+    },
+    {
       id: 'payment.paymentTypeId',
       label: localization.t('labels.paymentType'),
       type: 'text',
+    },
+    {
+      id: 'paymentStatus',
+      label: localization.t('labels.paymentStatus'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.orderPaymentStatusCompleted'), value: 'COMPLETED' },
+        { label: localization.t('labels.orderPaymentStatusPending'), value: 'PENDING' },
+      ],
     },
   ],
   stores: [
