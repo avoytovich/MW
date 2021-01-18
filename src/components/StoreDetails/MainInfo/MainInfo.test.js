@@ -101,6 +101,18 @@ describe('StoreDetails <MainInfo/>', () => {
     expect(
       wrapper.find({ 'data-test': 'checkoutTheme' }).props().value,
     ).toEqual(checkoutTheme);
+    const checkoutFont = `${designs.checkout.fontRef.customerId}: ${designs.checkout.fontRef.name}`;
+    expect(wrapper.find({ 'data-test': 'checkoutFont' }).props().value).toEqual(
+      checkoutFont,
+    );
+    const checkoutLayout = `${designs.checkout.layoutRef.customerId}: ${designs.checkout.layoutRef.name}`;
+    expect(
+      wrapper.find({ 'data-test': 'checkoutLayout' }).props().value,
+    ).toEqual(checkoutLayout);
+
+    expect(
+      wrapper.find({ 'data-test': 'checkoutTranslation' }).props().value,
+    ).toEqual(designs.checkout.i18nRef.customerId);
   });
 
   it('on hover edit icon should appear', () => {
