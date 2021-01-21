@@ -21,7 +21,7 @@ const MainSection = ({
   selectOptions,
 }) => (
   <Box display="flex" flexDirection="column">
-    <Box mt={3} pb={7} bgcolor="#fff" className="test" boxShadow={2} p={3}>
+    <Box mt={3} pb={7} bgcolor="#fff" boxShadow={2} p={3}>
       <Typography data-test="customerName" gutterBottom variant="h4">
         {currentCustomer.name}
       </Typography>
