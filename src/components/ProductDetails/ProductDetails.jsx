@@ -52,15 +52,13 @@ const ProductDetails = ({
       </Box>
     </Box>
 
-    <Box>
-      {currentProductData?.resources && (
-        <ImagesBlock
-          productData={productData}
-          currentProductData={currentProductData}
-          setProductData={setProductData}
-        />
-      )}
-    </Box>
+    {currentProductData?.resources && (
+      <ImagesBlock
+        productData={productData}
+        currentProductData={currentProductData}
+        setProductData={setProductData}
+      />
+    )}
   </Box>
 );
 
