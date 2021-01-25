@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import Prices from './Prices';
+import PricesSection from './PricesSection';
 
 let productData = {
   prices: {
@@ -11,12 +11,12 @@ let productData = {
   },
 };
 
-describe('ProductDetails <Prices/>', () => {
+describe('ProductDetails <PricesSection/>', () => {
   let wrapper;
 
   beforeEach(() => {
     wrapper = mount(
-      <Prices
+      <PricesSection
         setProductData={(newProductData) => {
           productData = newProductData;
         }}
@@ -43,7 +43,6 @@ describe('ProductDetails <Prices/>', () => {
   });
 
   it('should change productData when some update is made', async () => {
-    wrapper.find({ 'data-test': 'editIcon' }).first().simulate('click');
     const newValue = 2;
     wrapper.find('input[name="totalPrice"]').simulate('change', {
       target: {

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Box, Typography } from '@material-ui/core';
 import { NumberInput } from '../Inputs';
+import localization from '../../../localization';
 
 const PricesSection = ({ setProductData, currentProductData }) => (
   <>
@@ -62,6 +64,20 @@ const PricesSection = ({ setProductData, currentProductData }) => (
       }}
       minMAx={{ min: 0 }}
     />
+    <Box display="flex" flexDirection="row" my={3} alignItems="baseline">
+      <Box width="30%">
+        <Typography color="secondary" gutterBottom variant="body2">
+          {localization.t('labels.currency')}
+        </Typography>
+      </Box>
+      <Box>
+        <Typography color="secondary" gutterBottom variant="body2">
+          {Object.keys(
+            currentProductData?.prices?.priceByCountryByCurrency,
+          ).join(', ')}
+        </Typography>
+      </Box>
+    </Box>
   </>
 );
 

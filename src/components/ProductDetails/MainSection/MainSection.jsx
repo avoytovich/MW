@@ -11,7 +11,7 @@ const MainSection = ({ currentProductData, setProductData }) => (
   <Box display="flex" flexDirection="column">
     <Box mt={3} bgcolor="#fff" boxShadow={2} p={3} mx={2}>
       <Box pb={10}>
-        <Typography data-test="customerName" gutterBottom variant="h3">
+        <Typography data-test="productName" gutterBottom variant="h3">
           {currentProductData.genericName}
         </Typography>
         <Divider light />
@@ -24,6 +24,7 @@ const MainSection = ({ currentProductData, setProductData }) => (
         </Box>
         <Box>
           <Button
+            data-test="statusEnabledBtn"
             disabled={currentProductData.status === 'ENABLED'}
             color="primary"
             variant="contained"
@@ -38,6 +39,7 @@ const MainSection = ({ currentProductData, setProductData }) => (
             {localization.t('labels.enabled')}
           </Button>
           <Button
+            data-test="statusDisabledBtn"
             disabled={currentProductData.status === 'DISABLED'}
             color="primary"
             variant="contained"
@@ -53,12 +55,7 @@ const MainSection = ({ currentProductData, setProductData }) => (
           </Button>
         </Box>
       </Box>
-      <Box
-        display="flex"
-        flexDirection="row"
-        mt={7}
-        alignItems="baseline"
-      >
+      <Box display="flex" flexDirection="row" mt={7} alignItems="baseline">
         <Box width="30%">
           <Typography color="secondary" gutterBottom variant="body2">
             {localization.t('labels.lastUpdate')}

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import {
   Box,
@@ -11,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { SelectWithChip, SelectWithDeleteIcon, NumberInput } from '../Inputs';
 import localization from '../../../localization';
+import './FulfillmentSubscriptionSection.scss';
 
 const FulfillmentSubscriptionSection = ({
   setProductData,
@@ -44,6 +46,7 @@ const FulfillmentSubscriptionSection = ({
         <FormControlLabel
           control={(
             <Switch
+              name="allowTrial"
               onChange={(e) => {
                 setProductData({
                   ...currentProductData,
@@ -88,12 +91,17 @@ const FulfillmentSubscriptionSection = ({
     />
     {currentProductData.fulfillmentTemplate && (
       <Box my={3}>
-        <form noValidate>
+        <form noValidate className="cancelDateIconParent">
           <TextField
+            fullWidth
             name="datetime"
-            value={moment(currentProductData.releaseDate).format(
-              'YYYY-MM-DDTkk:mm',
-            )}
+            value={
+              currentProductData.releaseDate
+                ? moment(currentProductData.releaseDate).format(
+                  'YYYY-MM-DDTkk:mm',
+                )
+                : ''
+            }
             label={localization.t('labels.PreorderReleaseDate')}
             type="datetime-local"
             variant="outlined"
@@ -107,6 +115,22 @@ const FulfillmentSubscriptionSection = ({
               });
             }}
           />
+          {currentProductData.releaseDate && (
+            <CancelIcon
+              className="cancelDateIcon"
+              fontSize="small"
+              color="primary"
+              onClick={() => {
+                setProductData({
+                  ...currentProductData,
+                  releaseDate: '',
+                });
+              }}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          )}
         </form>
       </Box>
     )}

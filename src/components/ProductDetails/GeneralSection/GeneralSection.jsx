@@ -43,21 +43,6 @@ const GeneralSection = ({
     setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
 
-  // useEffect(() => {
-  //   setEditable(false);
-  // }, [productData]);
-
-  // const formStoreNames = () => {
-  //   const storesArray = [];
-  //   currentProductData.sellingStores.forEach((item) => {
-  //     const storeName = selectOptions.sellingStores.filter(
-  //       (store) => store.id === item,
-  //     )[0]?.name;
-  //     storesArray.push(storeName);
-  //   });
-  //   return storesArray.join(', ');
-  // };
-
   return (
     <>
       <SelectCustom
