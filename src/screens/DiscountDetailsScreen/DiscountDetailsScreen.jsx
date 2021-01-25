@@ -87,12 +87,22 @@ const DiscountDetailsScreen = () => {
   const addItem = (item, type) => {
     if (type === 'products') {
       setProductsModalOpen(false);
-      setCurDiscount((c) => ({ ...c, productIds: [...c.productIds, item.id] }));
+      setCurDiscount((c) => {
+        const newProductIds = c.productIds
+          ? [...c.productIds, item.id]
+          : [...item.id];
+        return { ...c, productIds: newProductIds };
+      });
       setProducts((p) => [...p, item]);
       setAvailProducts((pr) => [...pr.filter((p) => p.id !== item.id)]);
     } else if (type === 'stores') {
       setStoresModalOpen(false);
-      setCurDiscount((c) => ({ ...c, storeIds: [...c.storeIds, item.id] }));
+      setCurDiscount((c) => {
+        const newStoreIds = c.storeIds
+          ? [...c.storeIds, item.id]
+          : [...item.id];
+        return { ...c, storeIds: newStoreIds };
+      });
       setStores((p) => [...p, item]);
       setAvailStores((pr) => [...pr.filter((p) => p.id !== item.id)]);
     }
@@ -105,48 +115,49 @@ const DiscountDetailsScreen = () => {
   }, [curDiscount, discount]);
 
   useEffect(() => {
-    api
-      .getDiscountById(id)
-      .then(({ data }) => {
-        setDiscount(data);
-        setCurDiscount(data);
+    api.getDiscountById(id).then(({ data }) => {
+      setDiscount(data);
+      setCurDiscount(data);
 
-        api
-          .getStores(0, `&customerId=${data.customerId}`)
-          .then(({ data: { items: stores } }) => {
-            const availStoresObj = [];
-            const storesObj = [];
+      api
+        .getStores(0, `&customerId=${data.customerId}`)
+        .then(({ data: { items: stores } }) => {
+          const availStoresObj = [];
+          const storesObj = [];
 
-            stores.forEach((store) => {
-              if (data?.storeIds?.indexOf(store.id) >= 0) {
-                storesObj.push({ id: store.id, name: store.name });
-              } else {
-                availStoresObj.push({ id: store.id, name: store.name });
-              }
-            });
-
-            setAvailStores(availStoresObj);
-            setStores(storesObj);
+          stores.forEach((store) => {
+            if (data?.storeIds?.indexOf(store.id) >= 0) {
+              storesObj.push({ id: store.id, name: store.name });
+            } else {
+              availStoresObj.push({ id: store.id, name: store.name });
+            }
           });
 
-        api
-          .getProducts(0, `&customerId=${data.customerId}`)
-          .then(({ data: { items: products } }) => {
-            const availProductsObj = [];
-            const productsObj = [];
+          setAvailStores(availStoresObj);
+          setStores(storesObj);
+        });
 
-            products.forEach((product) => {
-              if (data?.productIds?.indexOf(product.id) >= 0) {
-                productsObj.push({ id: product.id, name: product.genericName });
-              } else {
-                availProductsObj.push({ id: product.id, name: product.genericName });
-              }
-            });
+      api
+        .getProducts(0, `&customerId=${data.customerId}`)
+        .then(({ data: { items: products } }) => {
+          const availProductsObj = [];
+          const productsObj = [];
 
-            setAvailProducts(availProductsObj);
-            setProducts(productsObj);
+          products.forEach((product) => {
+            if (data?.productIds?.indexOf(product.id) >= 0) {
+              productsObj.push({ id: product.id, name: product.genericName });
+            } else {
+              availProductsObj.push({
+                id: product.id,
+                name: product.genericName,
+              });
+            }
           });
-      });
+
+          setAvailProducts(availProductsObj);
+          setProducts(productsObj);
+        });
+    });
   }, []);
 
   // ToDO refactor from here and recodetails
@@ -177,12 +188,8 @@ const DiscountDetailsScreen = () => {
   if (curDiscount === null) return <LinearProgress />;
 
   return (
-    <div className='discount-details-screen'>
-      <Tabs
-        value={0}
-        indicatorColor="primary"
-        textColor="primary"
-      >
+    <div className="discount-details-screen">
+      <Tabs value={0} indicatorColor="primary" textColor="primary">
         <Tab label={discount.name} />
       </Tabs>
 
@@ -199,179 +206,258 @@ const DiscountDetailsScreen = () => {
         </Button>
       </Zoom>
 
-      <CustomCard title='Basic'>
-        <Box display='flex' py={5} pb={2}>
+      <CustomCard title="Basic">
+        <Box display="flex" py={5} pb={2}>
           <TextField
             fullWidth
-            label='Customer'
-            name='customerId'
-            type='text'
+            label="Customer"
+            name="customerId"
+            type="text"
             disabled
             value={curDiscount.customerId}
-            variant='outlined'
+            variant="outlined"
           />
 
           <TextField
             fullWidth
-            label='Amount'
-            name='discountRate'
-            type='text'
+            label="Amount"
+            name="discountRate"
+            type="text"
             value={curDiscount.discountRate * 100}
             onChange={handleChange}
             InputProps={{
               endAdornment: <span>%</span>,
             }}
-            variant='outlined'
+            variant="outlined"
           />
         </Box>
 
-        <Box display='flex'>
+        <Box display="flex">
           <TextField
             fullWidth
-            label='Discount Name'
-            name='name'
-            type='text'
+            label="Discount Name"
+            name="name"
+            type="text"
             value={curDiscount.name}
             onChange={handleChange}
-            variant='outlined'
+            variant="outlined"
           />
 
           <TextField
             fullWidth
-            label='Label'
-            name='localizedLabels.neutral'
-            type='text'
+            label="Label"
+            name="localizedLabels.neutral"
+            type="text"
             value={curDiscount.localizedLabels.neutral}
             onChange={(e) => setCurDiscount((d) => ({
               ...d,
-              localizedLabels: { ...d.localizedLabels, neutral: e.target.value },
+              localizedLabels: {
+                ...d.localizedLabels,
+                neutral: e.target.value,
+              },
             }))}
-            variant='outlined'
-            helperText={!curDiscount.localizedLabels.neutral && 'If left empty the label will not be displayed on the checkout'}
+            variant="outlined"
+            helperText={
+              !curDiscount.localizedLabels.neutral
+              && 'If left empty the label will not be displayed on the checkout'
+            }
           />
         </Box>
 
-        <Box display='flex' mx={2}>
+        <Box display="flex" mx={2}>
           <div>
-            <Typography gutterBottom variant='h5'>Model</Typography>
+            <Typography gutterBottom variant="h5">
+              Model
+            </Typography>
 
-            <Box display='flex' alignItems='center'>
+            <Box display="flex" alignItems="center">
               <FormControlLabel
-                control={<Checkbox name='CAMPAIGN' color='primary' checked={curDiscount.model === 'CAMPAIGN'} />}
+                control={(
+                  <Checkbox
+                    name="CAMPAIGN"
+                    color="primary"
+                    checked={curDiscount.model === 'CAMPAIGN'}
+                  />
+                )}
                 onChange={() => updateDiscount('model', 'CAMPAIGN')}
-                label='Campaign'
+                label="Campaign"
               />
 
               <FormControlLabel
-                control={<Checkbox name='COUPON' color='primary' checked={curDiscount.model === 'COUPON'} />}
+                control={(
+                  <Checkbox
+                    name="COUPON"
+                    color="primary"
+                    checked={curDiscount.model === 'COUPON'}
+                  />
+                )}
                 onChange={() => updateDiscount('model', 'COUPON')}
-                label='Coupon'
+                label="Coupon"
               />
 
               <FormControlLabel
-                control={<Checkbox name='SINGLE_USE_CODE' color='primary' checked={curDiscount.model === 'SINGLE_USE_CODE'} />}
+                control={(
+                  <Checkbox
+                    name="SINGLE_USE_CODE"
+                    color="primary"
+                    checked={curDiscount.model === 'SINGLE_USE_CODE'}
+                  />
+                )}
                 onChange={() => updateDiscount('model', 'SINGLE_USE_CODE')}
-                label='Single use code'
+                label="Single use code"
               />
             </Box>
           </div>
         </Box>
 
         <Box py={3} mx={2}>
-          <Typography gutterBottom variant='h5'>Status</Typography>
+          <Typography gutterBottom variant="h5">
+            Status
+          </Typography>
 
-          <Box display='flex' alignItems='center'>
+          <Box display="flex" alignItems="center">
             <FormControlLabel
               control={(
                 <Switch
-                  color='primary'
+                  color="primary"
                   checked={curDiscount.status === 'ENABLED'}
-                  name='status'
+                  name="status"
                 />
               )}
-              onChange={() => updateDiscount('status', curDiscount.status === 'ENABLED' ? 'DISABLED' : 'ENABLED')}
+              onChange={() => updateDiscount(
+                'status',
+                curDiscount.status === 'ENABLED' ? 'DISABLED' : 'ENABLED',
+              )}
               label={curDiscount.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
             />
           </Box>
         </Box>
       </CustomCard>
 
-      <CustomCard title='Eligibility'>
-        <Box display='flex' py={5} pb={2}>
+      <CustomCard title="Eligibility">
+        <Box display="flex" py={5} pb={2}>
           {curStores === null ? (
-            <Box width={1} m='10px' pt='8px'><CircularProgress /></Box>
+            <Box width={1} m="10px" pt="8px">
+              <CircularProgress />
+            </Box>
           ) : (
             <TextField
               fullWidth
-              label='Stores'
-              name='stores'
-              type='text'
-              placeholder='Select stores'
+              label="Stores"
+              name="stores"
+              type="text"
+              placeholder="Select stores"
               value={curStores.map((st) => st.name)}
               contentEditable={false}
               onClick={() => setStoresModalOpen(true)}
-              variant='outlined'
+              variant="outlined"
               disabled
               InputLabelProps={{ shrink: true }}
-              InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <EditIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
           )}
 
           {curProducts === null ? (
-            <Box width={1} m='10px' pt='8px'><CircularProgress /></Box>
+            <Box width={1} m="10px" pt="8px">
+              <CircularProgress />
+            </Box>
           ) : (
             <TextField
               fullWidth
-              label='Products'
-              name='catalogs'
-              type='text'
-              placeholder='Select products'
+              label="Products"
+              name="catalogs"
+              type="text"
+              placeholder="Select products"
               value={curProducts.map((pr) => pr.name)}
               contentEditable={false}
               onClick={() => setProductsModalOpen(true)}
-              variant='outlined'
+              variant="outlined"
               disabled
               InputLabelProps={{ shrink: true }}
-              InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <EditIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
           )}
         </Box>
 
-        <Box display='flex' mx={2} pb={2}>
+        <Box display="flex" mx={2} pb={2}>
           <div>
-            <Typography gutterBottom variant='h5'>Source(s)</Typography>
+            <Typography gutterBottom variant="h5">
+              Source(s)
+            </Typography>
 
-            <Box display='flex' alignItems='center'>
+            <Box display="flex" alignItems="center">
               <FormControlLabel
-                control={<Checkbox name='MANUAL_RENEWAL' color='primary' checked={curDiscount?.sources?.indexOf('MANUAL_RENEWAL') >= 0} />}
+                control={(
+                  <Checkbox
+                    name="MANUAL_RENEWAL"
+                    color="primary"
+                    checked={
+                      curDiscount?.sources?.indexOf('MANUAL_RENEWAL') >= 0
+                    }
+                  />
+                )}
                 onChange={() => updateDiscount('sources', 'MANUAL_RENEWAL', 'empty')}
-                label='Manual Renewal'
+                label="Manual Renewal"
               />
 
               <FormControlLabel
-                control={<Checkbox name='PURCHASE' color='primary' checked={curDiscount?.sources?.indexOf('PURCHASE') >= 0} />}
+                control={(
+                  <Checkbox
+                    name="PURCHASE"
+                    color="primary"
+                    checked={curDiscount?.sources?.indexOf('PURCHASE') >= 0}
+                  />
+                )}
                 onChange={() => updateDiscount('sources', 'PURCHASE', 'empty')}
-                label='Purchase'
+                label="Purchase"
               />
             </Box>
           </div>
         </Box>
 
-        <Box display='flex' mx={2}>
+        <Box display="flex" mx={2}>
           <div>
-            <Typography gutterBottom variant='h5'>End-user types</Typography>
+            <Typography gutterBottom variant="h5">
+              End-user types
+            </Typography>
 
-            <Box display='flex' alignItems='center'>
+            <Box display="flex" alignItems="center">
               <FormControlLabel
-                control={<Checkbox name='BUYER' color='primary' checked={curDiscount?.endUserTypes?.indexOf('BUYER') >= 0} />}
+                control={(
+                  <Checkbox
+                    name="BUYER"
+                    color="primary"
+                    checked={curDiscount?.endUserTypes?.indexOf('BUYER') >= 0}
+                  />
+                )}
                 onChange={() => updateDiscount('endUserTypes', 'BUYER', 'empty')}
-                label='Buyer'
+                label="Buyer"
               />
 
               <FormControlLabel
-                control={<Checkbox name='RESELLER' color='primary' checked={curDiscount?.endUserTypes?.indexOf('RESELLER') >= 0} />}
+                control={(
+                  <Checkbox
+                    name="RESELLER"
+                    color="primary"
+                    checked={
+                      curDiscount?.endUserTypes?.indexOf('RESELLER') >= 0
+                    }
+                  />
+                )}
                 onChange={() => updateDiscount('endUserTypes', 'RESELLER', 'empty')}
-                label='Approved reseller'
+                label="Approved reseller"
               />
             </Box>
           </div>
@@ -381,14 +467,14 @@ const DiscountDetailsScreen = () => {
       <Dialog
         open={productsModal}
         onClose={() => setProductsModalOpen(false)}
-        aria-labelledby='table-items-dialog-title'
+        aria-labelledby="table-items-dialog-title"
         fullWidth
-        maxWidth='sm'
+        maxWidth="sm"
       >
         <TableItems
           values={curProducts}
           avail={availProducts}
-          type='products'
+          type="products"
           noDelete
           removeItem={(item) => removeItem(item, 'products')}
           addItem={(item) => addItem(item, 'products')}
@@ -398,14 +484,14 @@ const DiscountDetailsScreen = () => {
       <Dialog
         open={storesModal}
         onClose={() => setStoresModalOpen(false)}
-        aria-labelledby='table-items-dialog-title'
+        aria-labelledby="table-items-dialog-title"
         fullWidth
-        maxWidth='sm'
+        maxWidth="sm"
       >
         <TableItems
           values={curStores}
           avail={availStores}
-          type='stores'
+          type="stores"
           noDelete
           removeItem={(item) => removeItem(item, 'stores')}
           addItem={(item) => addItem(item, 'stores')}
