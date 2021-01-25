@@ -24,8 +24,9 @@ const ProductDetailsScreen = () => {
   const [productHasChanges, setProductChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
     sellingStores: null,
+    renewingProducts: null,
+    subscriptionModels: null,
   });
-
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
 
@@ -52,8 +53,18 @@ const ProductDetailsScreen = () => {
       resObj = { ...resObj, lifeTime: '' };
     }
     if (!resObj.trialAllowed) {
-      resObj = { ...resObj, trialAllowed: '' };
+      resObj = { ...resObj, trialAllowed: false };
     }
+    if (!resObj.subscriptionTemplate) {
+      resObj = { ...resObj, subscriptionTemplate: '' };
+    }
+    if (!resObj.trialDuration) {
+      resObj = { ...resObj, trialDuration: '' };
+    }
+    if (!resObj.fulfillmentTemplate) {
+      resObj = { ...resObj, fulfillmentTemplate: '' };
+    }
+
     return resObj;
   };
 
@@ -77,6 +88,15 @@ const ProductDetailsScreen = () => {
           product.data?.customerId,
         );
 
+        const renewingProd = await api.getRenewingProductsByCustomerId(
+          product.data?.customerId,
+        );
+        const subscriptionModels = await api.getSubscriptionModelsByCustomerId(
+          product.data?.customerId,
+        );
+        const fulfillmentTemplates = await api.getFulfillmentTemplateByCustomerId(
+          product.data?.customerId,
+        );
         if (!isCancelled) {
           const checkedProduct = checkRequiredFields(product.data);
           setProductData(checkedProduct);
@@ -84,6 +104,9 @@ const ProductDetailsScreen = () => {
           setSelectOptions({
             ...selectOptions,
             sellingStores: sellingStoreOptions.data.items,
+            renewingProducts: renewingProd.data?.items,
+            subscriptionModels: subscriptionModels.data?.items,
+            fulfillmentTemplates: fulfillmentTemplates.data?.items,
           });
           setLoading(false);
         }

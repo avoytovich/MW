@@ -125,6 +125,16 @@ const labels = {
   value: 'Value',
   msrp: 'MSRP',
   vatIncluded: 'VAT included',
+  subscriptionModel: 'Subscription Model',
+  trialDuration: 'Trial Duration',
+  fulfillmentTemplate: 'Fulfillment Template',
+  licenseKeyPackages: 'License Key Packages',
+  renewingProducts: 'Renewing Products',
+  allowTrial: 'Allow trial',
+  PreorderReleaseDate: 'Preorder Release Date',
+  fulfillmentAndSubscription: 'Fulfillment and Subscription',
+  general: 'General',
+  prices: 'Prices',
 };
 
 export default labels;

@@ -1,15 +1,11 @@
 @import '../../../styles/variables.scss';
 
 .itemWrapper {
-  background-color: $tablesEvenRow;
-  border-radius: 10px;
-  margin-right: 10px;
   position: relative;
 }
 .cardImage {
-  height: 140px;
+  height: 230px;
   border-radius: 10px;
-  position: relative;
 }
 .cardItem {
   box-shadow: none;
@@ -20,4 +16,9 @@
     font-size: larger;
     color: $darkGray;
   }
+}
+.actionBlock {
+  position: absolute;
+  right: 5px;
+  top: 5px;
 }

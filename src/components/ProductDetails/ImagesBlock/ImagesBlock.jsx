@@ -11,7 +11,8 @@ import './ImagesBlock.scss';
 const ImagesBlock = ({ currentProductData, setProductData, productData }) => {
   const handleDeleteCard = (key) => {
     const newResources = [...currentProductData.resources];
-    newResources.splice(key, 1);
+    const position = newResources.map((e) => e.index).indexOf(key);
+    newResources.splice(position, 1);
     setProductData({ ...currentProductData, resources: newResources });
   };
   const totalPages = Math.ceil(currentProductData.resources?.length / 4);
@@ -43,6 +44,7 @@ const ImagesBlock = ({ currentProductData, setProductData, productData }) => {
       <Box
         width="100%"
         display="flex"
+        justifyContent="space-evenly"
         flexDirection="row"
         pt="1%"
       >

@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Box } from '@material-ui/core';
-
-import Prices from './Prices';
+import MainSection from './MainSection';
+import SectionLayout from './SectionLayout';
 import ImagesBlock from './ImagesBlock';
-import MainInfo from './MainInfo';
-
-import './ProductDetails.scss';
+import FulfillmentSubscriptionSection from './FulfillmentSubscriptionSection';
+import GeneralSection from './GeneralSection';
+import PricesSection from './PricesSection';
 
 const ProductDetails = ({
   setProductData,
@@ -17,11 +17,23 @@ const ProductDetails = ({
   setInputErrors,
   inputErrors,
 }) => (
-  <Box className="detailContainer" display="flex" flexDirection="column">
-    <Box>
-      <Box display="flex" justify="space-between">
-        <Box width="80%" sm={9} className="actionBlockWrapper">
-          <MainInfo
+  <Box display="flex" flexDirection="column">
+    <Box display="flex" flexDirection="row">
+      <Box width="30%">
+        <MainSection
+          setProductData={setProductData}
+          currentProductData={currentProductData}
+        />
+        <SectionLayout label="prices">
+          <PricesSection
+            setProductData={setProductData}
+            currentProductData={currentProductData}
+          />
+        </SectionLayout>
+      </Box>
+      <Box className="payment" width="60%">
+        <SectionLayout label="general">
+          <GeneralSection
             inputErrors={inputErrors}
             setInputErrors={setInputErrors}
             productData={productData}
@@ -29,33 +41,24 @@ const ProductDetails = ({
             setProductData={setProductData}
             currentProductData={currentProductData}
           />
-        </Box>
-        <Box
-          className="paymentBlock"
-          display="flex"
-          flexDirection="column"
-          flexWrap="wrap"
-          justifyContent="space-around"
-          alignSelf="flex-start"
-          pl="2%"
-        >
-          <Prices
-            productData={productData}
+        </SectionLayout>
+        <SectionLayout label="fulfillmentAndSubscription">
+          <FulfillmentSubscriptionSection
+            selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={currentProductData}
           />
-        </Box>
+        </SectionLayout>
       </Box>
     </Box>
-    <Box>
-      {currentProductData?.resources && (
-        <ImagesBlock
-          productData={productData}
-          currentProductData={currentProductData}
-          setProductData={setProductData}
-        />
-      )}
-    </Box>
+
+    {currentProductData?.resources && (
+      <ImagesBlock
+        productData={productData}
+        currentProductData={currentProductData}
+        setProductData={setProductData}
+      />
+    )}
   </Box>
 );
 
