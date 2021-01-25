@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
-  Divider,
   Chip,
   Button,
   Select,
@@ -21,7 +20,7 @@ const MainSection = ({
   selectOptions,
 }) => (
   <Box display="flex" flexDirection="column">
-    <Box mt={3} pb={7} bgcolor="#fff" boxShadow={2} p={3}>
+    <Box mt={3} bgcolor="#fff" boxShadow={2} p={3}>
       <Typography data-test="customerName" gutterBottom variant="h4">
         {currentCustomer.name}
       </Typography>
@@ -34,11 +33,10 @@ const MainSection = ({
         {currentCustomer.id}
       </Typography>
       <Box
-        // mt={4}
         display="flex"
         flexDirection="row"
         justifyContent="space-around"
-        my={7}
+        my={6}
         alignItems="baseline"
       >
         <Typography color="secondary" gutterBottom variant="body2">
@@ -77,7 +75,6 @@ const MainSection = ({
           </Button>
         </Box>
       </Box>
-      <Divider light />
     </Box>
     <Box my={3} bgcolor="#fff" boxShadow={2} p={3}>
       <Box py={5} pb={2}>
@@ -116,28 +113,30 @@ const MainSection = ({
                 flexWrap="wrap"
               >
                 {selected.map((chip) => (
-                  <Chip
-                    variant="outlined"
-                    color="primary"
-                    onDelete={() => {
-                      const newValue = [
-                        ...Object.keys(currentCustomer.fulfillments),
-                      ].filter((val) => val !== chip);
-                      let newObj = {};
-                      newValue.forEach((item) => {
-                        newObj = { ...newObj, [item]: item };
-                      });
-                      setCurrentCustomer({
-                        ...currentCustomer,
-                        fulfillments: newObj,
-                      });
-                    }}
-                    onMouseDown={(event) => {
-                      event.stopPropagation();
-                    }}
-                    key={chip}
-                    label={chip}
-                  />
+                  <Box mb="3px" mr="3px">
+                    <Chip
+                      variant="outlined"
+                      color="primary"
+                      onDelete={() => {
+                        const newValue = [
+                          ...Object.keys(currentCustomer.fulfillments),
+                        ].filter((val) => val !== chip);
+                        let newObj = {};
+                        newValue.forEach((item) => {
+                          newObj = { ...newObj, [item]: item };
+                        });
+                        setCurrentCustomer({
+                          ...currentCustomer,
+                          fulfillments: newObj,
+                        });
+                      }}
+                      onMouseDown={(event) => {
+                        event.stopPropagation();
+                      }}
+                      key={chip}
+                      label={chip}
+                    />
+                  </Box>
                 ))}
               </Box>
             )}
@@ -183,28 +182,30 @@ const MainSection = ({
                 flexWrap="wrap"
               >
                 {selected.map((chip) => (
-                  <Chip
-                    variant="outlined"
-                    color="primary"
-                    onDelete={() => {
-                      const newValue = [
-                        ...Object.keys(currentCustomer.subscriptions),
-                      ].filter((val) => val !== chip);
-                      let newObj = {};
-                      newValue.forEach((item) => {
-                        newObj = { ...newObj, [item]: item };
-                      });
-                      setCurrentCustomer({
-                        ...currentCustomer,
-                        subscriptions: newObj,
-                      });
-                    }}
-                    onMouseDown={(event) => {
-                      event.stopPropagation();
-                    }}
-                    key={chip}
-                    label={chip}
-                  />
+                  <Box mb="3px" mr="3px">
+                    <Chip
+                      variant="outlined"
+                      color="primary"
+                      onDelete={() => {
+                        const newValue = [
+                          ...Object.keys(currentCustomer.subscriptions),
+                        ].filter((val) => val !== chip);
+                        let newObj = {};
+                        newValue.forEach((item) => {
+                          newObj = { ...newObj, [item]: item };
+                        });
+                        setCurrentCustomer({
+                          ...currentCustomer,
+                          subscriptions: newObj,
+                        });
+                      }}
+                      onMouseDown={(event) => {
+                        event.stopPropagation();
+                      }}
+                      key={chip}
+                      label={chip}
+                    />
+                  </Box>
                 ))}
               </Box>
             )}

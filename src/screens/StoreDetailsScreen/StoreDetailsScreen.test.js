@@ -94,6 +94,102 @@ describe('StoreDetailsScreen', () => {
       expect(api.getDesignsThemes).toHaveBeenCalledTimes(1);
     });
 
+    it('should call api.getDesignsFonts', async () => {
+      api.getStoreById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getCustomerById.mockImplementation(() =>
+        Promise.resolve({ data: 'data' }),
+      );
+      api.getDesignsThemes.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      mount(<StoreDetailsScreen />);
+      await api.getStoreById();
+      await api.getCustomerById();
+      await api.getDesignsThemes();
+
+      expect(api.getDesignsFonts).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call api.getDesignsLayouts', async () => {
+      api.getStoreById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getCustomerById.mockImplementation(() =>
+        Promise.resolve({ data: 'data' }),
+      );
+      api.getDesignsThemes.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      api.getDesignsFonts.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      mount(<StoreDetailsScreen />);
+      await api.getStoreById();
+      await api.getCustomerById();
+      await api.getDesignsThemes();
+      await api.getDesignsFonts();
+
+      expect(api.getDesignsLayouts).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call api.getDesignsTranslations', async () => {
+      api.getStoreById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getCustomerById.mockImplementation(() =>
+        Promise.resolve({ data: 'data' }),
+      );
+      api.getDesignsThemes.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      api.getDesignsFonts.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      api.getDesignsLayouts.mockImplementation(() =>
+        Promise.resolve({ data: { items: [] } }),
+      );
+      mount(<StoreDetailsScreen />);
+      await api.getStoreById();
+      await api.getCustomerById();
+      await api.getDesignsThemes();
+      await api.getDesignsFonts();
+      await api.getDesignsLayouts();
+
+      expect(api.getDesignsTranslations).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call api.getCustomersByIds', async () => {
+      api.getStoreById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getCustomerById.mockImplementation(() =>
+        Promise.resolve({ data: 'data' }),
+      );
+      api.getDesignsThemes.mockImplementation(() =>
+        Promise.resolve({ data: { items: [{ customerId: 1 }] } }),
+      );
+      api.getDesignsFonts.mockImplementation(() =>
+        Promise.resolve({ data: { items: [{ customerId: 2 }] } }),
+      );
+      api.getDesignsLayouts.mockImplementation(() =>
+        Promise.resolve({ data: { items: [{ customerId: 3 }] } }),
+      );
+      api.getDesignsTranslations.mockImplementation(() =>
+        Promise.resolve({ data: { items: [{ customerId: 4 }] } }),
+      );
+      mount(<StoreDetailsScreen />);
+      await api.getStoreById();
+      await api.getCustomerById();
+      await api.getDesignsThemes();
+      await api.getDesignsFonts();
+      await api.getDesignsLayouts();
+      await api.getDesignsTranslations();
+      expect(api.getCustomersByIds).toHaveBeenCalledTimes(1);
+      expect(api.getCustomersByIds).toHaveBeenCalledWith('id=2&id=1&id=3&id=4');
+    });
+
     it('should call api.getPaymentMethodsOptions', async () => {
       api.getStoreById.mockImplementation(() =>
         Promise.resolve({ data: { customerId: customerId } }),
@@ -124,7 +220,7 @@ describe('StoreDetailsScreen', () => {
       await api.getDesignsLayouts();
       await api.getDesignsTranslations();
       await api.getCustomersByIds();
-
+      
       expect(api.getPaymentMethodsOptions).toHaveBeenCalledTimes(1);
     });
   });
@@ -162,7 +258,6 @@ describe('StoreDetailsScreen', () => {
       await api.getDesignsLayouts();
       await api.getDesignsTranslations();
       await api.getCustomersByIds();
-
       await api.getPaymentMethodsOptions();
       wrapper.update();
     });
