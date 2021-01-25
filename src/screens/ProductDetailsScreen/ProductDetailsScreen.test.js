@@ -13,6 +13,10 @@ const expectedCurrentProductData = {
   sellingStores: [],
   lifeTime: '',
   trialAllowed: '',
+  fulfillmentTemplate: '',
+  subscriptionTemplate: '',
+  trialAllowed: false,
+  trialDuration: '',
   prices: {
     priceByCountryByCurrency: {
       EUR: { default: { value: '' } },
@@ -23,6 +27,9 @@ const expectedCurrentProductData = {
 jest.mock('../../api', () => ({
   getProductById: jest.fn(),
   getSellingStoreOptions: jest.fn(),
+  getRenewingProductsByCustomerId: jest.fn(),
+  getSubscriptionModelsByCustomerId: jest.fn(),
+  getFulfillmentTemplateByCustomerId: jest.fn(),
 }));
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
@@ -54,6 +61,67 @@ describe('ProductDetailsScreen', () => {
       mount(<ProductDetailsScreen />);
       await api.getProductById();
       expect(api.getSellingStoreOptions).toHaveBeenCalledTimes(1);
+      expect(api.getSellingStoreOptions).toHaveBeenCalledWith(customerId);
+    });
+
+    it('should call api.getRenewingProductsByCustomerId', async () => {
+      api.getProductById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getSellingStoreOptions.mockImplementation(() =>
+        Promise.resolve({ data: {} }),
+      );
+      mount(<ProductDetailsScreen />);
+      await api.getProductById();
+      await api.getSellingStoreOptions();
+      expect(api.getRenewingProductsByCustomerId).toHaveBeenCalledTimes(1);
+      expect(api.getRenewingProductsByCustomerId).toHaveBeenCalledWith(
+        customerId,
+      );
+    });
+
+    it('should call api.getSubscriptionModelsByCustomerId', async () => {
+      api.getProductById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getSellingStoreOptions.mockImplementation(() =>
+        Promise.resolve({ data: {} }),
+      );
+      api.getRenewingProductsByCustomerId.mockImplementation(() =>
+        Promise.resolve({ data: {} }),
+      );
+      mount(<ProductDetailsScreen />);
+      await api.getProductById();
+      await api.getSellingStoreOptions();
+      await api.getRenewingProductsByCustomerId();
+      expect(api.getSubscriptionModelsByCustomerId).toHaveBeenCalledTimes(1);
+      expect(api.getSubscriptionModelsByCustomerId).toHaveBeenCalledWith(
+        customerId,
+      );
+    });
+
+    it('should call api.getFulfillmentTemplateByCustomerId', async () => {
+      api.getProductById.mockImplementation(() =>
+        Promise.resolve({ data: { customerId: customerId } }),
+      );
+      api.getSellingStoreOptions.mockImplementation(() =>
+        Promise.resolve({ data: {} }),
+      );
+      api.getRenewingProductsByCustomerId.mockImplementation(() =>
+        Promise.resolve({ data: {} }),
+      );
+      api.getSubscriptionModelsByCustomerId.mockImplementation(() =>
+        Promise.resolve({ data: {} }),
+      );
+      mount(<ProductDetailsScreen />);
+      await api.getProductById();
+      await api.getSellingStoreOptions();
+      await api.getRenewingProductsByCustomerId();
+      await api.getSubscriptionModelsByCustomerId();
+      expect(api.getFulfillmentTemplateByCustomerId).toHaveBeenCalledTimes(1);
+      expect(api.getFulfillmentTemplateByCustomerId).toHaveBeenCalledWith(
+        customerId,
+      );
     });
   });
 
@@ -73,12 +141,24 @@ describe('ProductDetailsScreen', () => {
       }),
     );
     api.getSellingStoreOptions.mockImplementation(() =>
-      Promise.resolve({ data: { items: [1, 2, 3] } }),
+      Promise.resolve({ data: { items: [{ id: 1 }, { id: 2 }] } }),
+    );
+    api.getRenewingProductsByCustomerId.mockImplementation(() =>
+      Promise.resolve({ data: { items: [{ id: 1 }, { id: 2 }] } }),
+    );
+    api.getSubscriptionModelsByCustomerId.mockImplementation(() =>
+      Promise.resolve({ data: { items: [{ id: 1 }, { id: 2 }] } }),
+    );
+    api.getFulfillmentTemplateByCustomerId.mockImplementation(() =>
+      Promise.resolve({ data: { items: [{ id: 1 }, { id: 2 }] } }),
     );
     const wrapper = mount(<ProductDetailsScreen />);
     await act(async () => {
       await api.getProductById();
       await api.getSellingStoreOptions();
+      await api.getRenewingProductsByCustomerId();
+      await api.getSubscriptionModelsByCustomerId();
+      await api.getFulfillmentTemplateByCustomerId();
       wrapper.update();
     });
     expect(wrapper.find(ProductDetails).props().currentProductData).toEqual(

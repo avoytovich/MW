@@ -37,10 +37,7 @@ const lifeTime = [
   { id: 'MONTH', value: 'Month(s)' },
   { id: 'YEAR', value: 'Year(s)' },
 ];
-const trialAllowed = [
-  { id: 'true', value: 'true' },
-  { id: 'false', value: 'false' },
-];
+
 const storeDetailsCardText = [
   { id: 'logoStore', value: 'Logo' },
   { id: 'bannerInvoice', value: 'Invoice banner' },
@@ -50,7 +47,6 @@ const storeDetailsCardText = [
 export {
   status,
   lifeTime,
-  trialAllowed,
   type,
   storeDetailsCardText,
   orderDetailStatus,

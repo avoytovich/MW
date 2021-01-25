@@ -43,7 +43,6 @@ describe('ProductDetails <CardComponent/>', () => {
   });
 
   it('should change cardData when some update is made', async () => {
-    wrapper.find({ 'data-test': 'editIcon' }).first().simulate('click');
     const newValue = 'new-text';
     wrapper.find('input[name="cardText"]').simulate('change', {
       target: { name: 'cardText', value: newValue },

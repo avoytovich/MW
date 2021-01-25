@@ -293,6 +293,20 @@ const api = {
       url,
     });
   },
+  getRenewingProductsByCustomerId(id) {
+    const url = `/products?format=full&customerId=${id}&hasSubscription=true&status=ENABLED&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubscriptionModelsByCustomerId(id) {
+    const url = `/subscription-manager/models?format=short&customerId=${id}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET ONE BY ID
   getProductById(id) {
     const url = `/products/${id}`;
@@ -378,7 +392,20 @@ const api = {
       url,
     });
   },
-
+  getSubscriptionModelById(id) {
+    const url = `/subscription-manager/models?format=short&id=${id}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getFulfillmentTemplateByCustomerId(id) {
+    const url = `/license-manager/license-provider-definitions?format=short&customerId=${id}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // PUT BY ID
   updateCustomerById(id, data) {
     const url = `/customers/${id}`;
