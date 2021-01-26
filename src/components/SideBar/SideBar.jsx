@@ -13,6 +13,8 @@ import {
 import NavItem from './NavItem';
 import navConfig from './config';
 
+import CustomerHandling from '../CustomerHandling';
+
 const SideBar = ({ open }) => (
   <Drawer
     anchor="left"
@@ -60,6 +62,8 @@ const SideBar = ({ open }) => (
         ))}
       </Box>
     </Box>
+
+    <CustomerHandling />
   </Drawer>
 );
 
