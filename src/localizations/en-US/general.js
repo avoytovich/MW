@@ -39,6 +39,7 @@ const general = {
   checkout: 'Checkout',
   save: 'Save',
   add: 'Add',
+  noPackagesFound: 'No packages found',
 };
 
 export default general;
