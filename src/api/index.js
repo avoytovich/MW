@@ -148,7 +148,7 @@ const api = {
       url,
     });
   },
-  getCustomers(page, sortParams) {
+  getCustomers(page = 0, sortParams) {
     let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -160,7 +160,7 @@ const api = {
   },
 
   getCampaigns(page, filters) {
-    let url = `/marketing-campaign/campaigns?format=short&customerId=c84ab4ca-94b3-44c3-8313-8fa4da3e0940&sort=updateDate,desc&size=50&page=${page}`;
+    let url = `/marketing-campaign/campaigns?format=short&sort=updateDate,desc&size=50&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -172,7 +172,7 @@ const api = {
     });
   },
   getRecommendations(page, filters) {
-    let url = `/product-recommendations?format=short&customerId=Nexway&sort=name,asc&size=50&page=${page}`;
+    let url = `/product-recommendations?format=short&sort=name,asc&size=50&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -184,7 +184,7 @@ const api = {
     });
   },
   getDiscounts(page, filters) {
-    let url = `/discounts?format=short&customerId=Nexway&sort=name,asc&size=50&page=${page}`;
+    let url = `/discounts?format=short&sort=name,asc&size=50&page=${page}`;
 
     if (filters) {
       url += filters;

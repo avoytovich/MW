@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import LoadingScreen from '../../../screens/LoadingScreen';
 import auth from '../../../services/auth';
-import { setUserData } from '../../../redux/actions/Account';
+import { setUserData, setNexwayState } from '../../../redux/actions/Account';
 
 function Auth({ children }) {
   const dispatch = useDispatch();
@@ -18,6 +18,10 @@ function Auth({ children }) {
         // eslint-disable-next-line camelcase
         const access_token = auth.getAccessToken();
         dispatch(setUserData(access_token));
+
+        const localNxState = JSON.parse(localStorage.getItem('nexwayState'));
+        dispatch(setNexwayState(localNxState));
+
         auth.setAxiosInterceptors();
       }
 
