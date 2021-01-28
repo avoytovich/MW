@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { lifeTime, type } from '../../../services/selectOptions/selectOptions';
-import { SelectWithChip, SelectCustom, NumberInput } from '../Inputs';
+import { SelectWithChip, SelectCustom, NumberInput } from '../../Inputs';
 
 const GeneralSection = ({
   setProductData,
@@ -65,7 +65,7 @@ const GeneralSection = ({
         label="sellingStores"
         value={currentProductData.sellingStores}
         selectOptions={selectOptions.sellingStores}
-        optionName={(item) => item.displayName}
+        optionName={(item) => item?.displayName}
         onChangeSelect={(e) => setProductData({
           ...currentProductData,
           sellingStores: e.target.value,

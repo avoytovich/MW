@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography } from '@material-ui/core';
-import { NumberInput } from '../Inputs';
+import { NumberInput } from '../../Inputs';
 import localization from '../../../localization';
 
 const PricesSection = ({ setProductData, currentProductData }) => (

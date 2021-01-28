@@ -7,8 +7,7 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
-
-import localization from '../../../localization';
+import localization from '../../localization';
 
 const SelectCustom = ({
   label, value, selectOptions, onChangeSelect,

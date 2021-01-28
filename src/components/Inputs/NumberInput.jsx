@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, TextField } from '@material-ui/core';
-
-import localization from '../../../localization';
+import localization from '../../localization';
 
 const NumberInput = ({
   label, value, onChangeInput, minMAx,

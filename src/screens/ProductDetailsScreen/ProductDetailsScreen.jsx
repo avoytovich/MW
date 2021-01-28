@@ -30,6 +30,7 @@ const ProductDetailsScreen = () => {
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
 
+  const [checkOutStores, setCheckOutStores] = useState([]);
   const checkRequiredFields = (product) => {
     let resourcesKeys = null;
     let resObj = { ...product };
@@ -78,6 +79,21 @@ const ProductDetailsScreen = () => {
       window.location.reload();
     });
   };
+  const filterCheckoutStores = () => {
+    const res = [];
+    currentProductData?.sellingStores.forEach((item) => {
+      const selectedStore = selectOptions.sellingStores.filter(
+        (store) => store.id === item,
+      );
+
+      if (selectedStore[0]) {
+        const { name, hostnames } = selectedStore[0];
+        hostnames.forEach((hostname) => res.push({ name, hostname }));
+      }
+    });
+    setCheckOutStores(res);
+  };
+
   useEffect(() => {
     let isCancelled = false;
 
@@ -94,7 +110,7 @@ const ProductDetailsScreen = () => {
         const subscriptionModels = await api.getSubscriptionModelsByCustomerId(
           product.data?.customerId,
         );
-        const fulfillmentTemplates = await api.getFulfillmentTemplateByCustomerId(
+        const fulfillmentTemplate = await api.getFulfillmentTemplateByCustomerId(
           product.data?.customerId,
         );
         if (!isCancelled) {
@@ -106,8 +122,9 @@ const ProductDetailsScreen = () => {
             sellingStores: sellingStoreOptions.data.items,
             renewingProducts: renewingProd.data?.items,
             subscriptionModels: subscriptionModels.data?.items,
-            fulfillmentTemplates: fulfillmentTemplates.data?.items,
+            fulfillmentTemplates: fulfillmentTemplate.data?.items,
           });
+          filterCheckoutStores();
           setLoading(false);
         }
       } catch (error) {
@@ -122,6 +139,10 @@ const ProductDetailsScreen = () => {
     };
   }, []);
   useEffect(() => {
+    if (currentProductData && selectOptions.sellingStores) {
+      filterCheckoutStores();
+    }
+
     setProductChanges(
       JSON.stringify(currentProductData) !== JSON.stringify(productData),
     );
@@ -162,10 +183,13 @@ const ProductDetailsScreen = () => {
             </Box>
           </Zoom>
           <Box>
-            <CheckoutMenu
-              currentProductData={currentProductData}
-              sellingStores={selectOptions.sellingStores}
-            />
+            {selectOptions.sellingStores && (
+              <CheckoutMenu
+                checkOutStores={checkOutStores}
+                currentProductData={currentProductData}
+                sellingStores={selectOptions.sellingStores}
+              />
+            )}
           </Box>
         </Box>
       </Box>
