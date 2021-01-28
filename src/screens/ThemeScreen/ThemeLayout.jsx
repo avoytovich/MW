@@ -8,7 +8,7 @@ import localization from '../../localization';
 
 import './ThemeLayout.scss';
 
-const FontLayout = ({
+const ThemeLayout = ({
   hasChanges,
   saveTheme,
   currentTheme,
@@ -16,11 +16,11 @@ const FontLayout = ({
   disabled,
   customer,
 }) => (
-  <Box className="font-screen">
+  <Box className="theme-screen">
     <Zoom in={hasChanges}>
       <Button
         disabled={disabled}
-        id="save-font-button"
+        id="save-theme-button"
         color="primary"
         size="large"
         type="submit"
@@ -78,7 +78,7 @@ const FontLayout = ({
   </Box>
 );
 
-FontLayout.propTypes = {
+ThemeLayout.propTypes = {
   hasChanges: PropTypes.bool,
   saveTheme: PropTypes.func,
   currentTheme: PropTypes.object,
@@ -86,4 +86,4 @@ FontLayout.propTypes = {
   disabled: PropTypes.bool,
   customer: PropTypes.string,
 };
-export default FontLayout;
+export default ThemeLayout;

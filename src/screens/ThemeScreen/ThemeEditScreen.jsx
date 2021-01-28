@@ -9,7 +9,7 @@ import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
-const TranslationEditScreen = () => {
+const ThemeEditScreen = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setLoading] = useState(true);
@@ -75,4 +75,4 @@ const TranslationEditScreen = () => {
   );
 };
 
-export default TranslationEditScreen;
+export default ThemeEditScreen;
