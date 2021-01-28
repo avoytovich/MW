@@ -9,7 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import './TableComponent.scss';
 
-const TableItemsActions = ({ items, headers, onDelete }) => {
+const TableItemsActions = ({ items, headers, onDelete, setItems }) => {
   const csvHeaders = [...headers].map((header) => ({
     label: header.value,
     key: header.id,
@@ -18,6 +18,7 @@ const TableItemsActions = ({ items, headers, onDelete }) => {
   const deleteItems = () => {
     const itemsIds = [...items].map((i) => i.id);
     onDelete(itemsIds.join(','));
+    setItems([]);
   };
 
   return (
