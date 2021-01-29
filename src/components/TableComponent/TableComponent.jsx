@@ -56,12 +56,12 @@ const TableComponent = ({
   };
 
   if (isLoading) return <LinearProgress />;
-
   return tableData?.values?.length ? (
     <>
       {!noActions && (
         <TableItemsActions
           items={checked}
+          setItems={setChecked}
           headers={tableData.headers}
           onDelete={handleDeleteItem}
         />
