@@ -39,6 +39,18 @@ const api = {
     });
   },
   // POST
+  addNewTheme(data) {
+    let url = 'designs/themes';
+    const reason = 'Nexway-Center';
+    if (reason) {
+      url += `?reason=${reason}`;
+    }
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addNewFont(data) {
     let url = 'designs/fonts';
     const reason = 'Nexway-Center';
