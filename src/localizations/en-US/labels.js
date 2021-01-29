@@ -135,6 +135,7 @@ const labels = {
   fulfillmentAndSubscription: 'Fulfillment and Subscription',
   general: 'General',
   prices: 'Prices',
+  css: 'CSS',
 };
 
 export default labels;

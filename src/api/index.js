@@ -39,6 +39,18 @@ const api = {
     });
   },
   // POST
+  addNewTheme(data) {
+    let url = 'designs/themes';
+    const reason = 'Nexway-Center';
+    if (reason) {
+      url += `?reason=${reason}`;
+    }
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addNewFont(data) {
     let url = 'designs/fonts';
     const reason = 'Nexway-Center';
@@ -378,6 +390,13 @@ const api = {
       url,
     });
   },
+  getThemeById(id) {
+    const url = `/designs/themes/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getLayoutById(id) {
     const url = `/designs/layouts/${id}`;
     return axiosInstance({
@@ -457,6 +476,14 @@ const api = {
   },
   updateRecoById(id, data) {
     const url = `/product-recommendations/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateThemeById(id, data) {
+    const url = `/designs/themes/${id}`;
     return axiosInstance({
       method: 'put',
       url,
