@@ -16,6 +16,8 @@ import {
   Switch,
 } from '@material-ui/core';
 
+import moment from 'moment';
+
 import {
   generateData,
   defaultShow,
@@ -25,6 +27,7 @@ import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import CustomCard from '../../components/utils/CustomCard';
 import TableComponent from '../../components/TableComponent';
+import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
 import localization from '../../localization';
 
 import './campaignDetailsScreen.scss';
@@ -76,6 +79,21 @@ const CampaignDetailsScreen = () => {
 
   const updateReco = (type, value) => setCurCampaign((c) => ({ ...c, [type]: value }));
 
+  const handleSelectDate = (ranges) => {
+    const { startDate, endDate } = ranges;
+    setCurCampaign((c) => ({
+      ...c,
+      startDate: moment(startDate).valueOf(),
+      endDate: moment(endDate).valueOf(),
+    }));
+  };
+
+  const selectionRange = {
+    startDate: new Date(curCampaign?.startDate),
+    endDate: new Date(curCampaign?.endDate),
+    key: 'selection',
+  };
+
   if (curCampaign === null) return <LinearProgress />;
 
   return (
@@ -121,6 +139,13 @@ const CampaignDetailsScreen = () => {
             value={curCampaign.name}
             onChange={handleChange}
             variant='outlined'
+          />
+        </Box>
+
+        <Box display='flex' pb={2}>
+          <DateRangePicker
+            values={selectionRange}
+            handleChange={handleSelectDate}
           />
         </Box>
 

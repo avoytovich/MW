@@ -1,0 +1,9 @@
+@import '../../../../styles/variables.scss';
+
+.date-range-selected{
+  .date-value{
+    display: inline-block;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
