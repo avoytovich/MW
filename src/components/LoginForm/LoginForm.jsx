@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { Formik } from 'formik';
 
-import { login } from '../../redux/actions/Account';
+import { login, setNexwayState } from '../../redux/actions/Account';
 import localization from '../../localization';
 
 const initialValues = { username: '', password: '' };
@@ -21,7 +21,10 @@ const LoginForm = () => {
     setSubmitting(true);
 
     try {
-      await dispatch(login(username, password));
+      dispatch(login(username, password));
+
+      const localNxState = JSON.parse(localStorage.getItem('nexwayState'));
+      dispatch(setNexwayState(localNxState));
     } catch (e) {
       setSubmitting(false);
     }

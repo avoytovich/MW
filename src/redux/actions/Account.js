@@ -1,5 +1,7 @@
 import auth from '../../services/auth';
-import { LOGIN_SUCCESS, SILENT_LOGIN, LOGOUT } from '../constants/actionTypes';
+import {
+  LOGIN_SUCCESS, SILENT_LOGIN, UPDATE_NEXWAY_STATE, LOGOUT,
+} from '../constants/actionTypes';
 import { showNotification } from './HttpNotifications';
 import localization from '../../localization';
 
@@ -36,6 +38,17 @@ const setUserData = (token) => (dispatch) => {
   });
 };
 
+const setNexwayState = (newState) => (dispatch) => {
+  localStorage.setItem('nexwayState', JSON.stringify(newState));
+
+  dispatch({
+    type: UPDATE_NEXWAY_STATE,
+    payload: {
+      nexwayState: { ...newState },
+    },
+  });
+};
+
 const logout = () => async (dispatch) => {
   auth.logout();
 
@@ -46,4 +59,9 @@ const logout = () => async (dispatch) => {
   dispatch(showNotification(localization.t('general.sessionEnded')));
 };
 
-export { login, logout, setUserData };
+export {
+  login,
+  logout,
+  setUserData,
+  setNexwayState,
+};

@@ -3,10 +3,12 @@ import {
   LOGIN_SUCCESS,
   SILENT_LOGIN,
   LOGOUT,
+  UPDATE_NEXWAY_STATE,
 } from '../constants/actionTypes';
 
 const initialState = {
   user: null,
+  nexwayState: null,
 };
 
 const Account = (state = initialState, {
@@ -14,11 +16,12 @@ const Account = (state = initialState, {
 }) => {
   switch (type) {
     case LOGOUT:
-      return { user: null };
+      return { user: null, nexwayState: null };
 
     case SILENT_LOGIN:
     case LOGIN_SUCCESS:
-      return { ...payload };
+    case UPDATE_NEXWAY_STATE:
+      return { ...state, ...payload };
 
     default:
       return state;

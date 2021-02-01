@@ -4,6 +4,7 @@
 export const LOGIN_SUCCESS = 'account/loginSuccess';
 export const SILENT_LOGIN = 'account/silentLogin';
 export const LOGOUT = 'account/logout';
+export const UPDATE_NEXWAY_STATE = 'account/updateNexwayState';
 
 // Http Notifications
 export const HTTP_SHOW_NOTIFICATION = 'http/showNotification';

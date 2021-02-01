@@ -143,6 +143,7 @@ const labels = {
   maximumUsesPerStore: 'Maximum Uses Per Store',
   maximumUsesPerEndUser: 'Maximum Uses Per End-User',
   periodOfValidity: 'Period of Validity',
+  css: 'CSS',
 };
 
 export default labels;

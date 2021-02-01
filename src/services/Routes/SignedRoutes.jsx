@@ -87,7 +87,7 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/themes/add"
-        render={() => <div>add theme</div>}
+        component={lazy(() => import('../../screens/ThemeScreen/ThemeAddScreen'))}
       />
       <Route
         path="/checkout-experience/layouts/add"
@@ -99,7 +99,7 @@ const SignedRoutes = () => {
       />
       <Route
         path="/checkout-experience/themes/:id"
-        render={() => <div>theme</div>}
+        component={lazy(() => import('../../screens/ThemeScreen/ThemeEditScreen'))}
       />
       <Route
         path="/checkout-experience/layouts/:id"
