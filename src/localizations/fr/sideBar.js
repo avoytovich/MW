@@ -19,6 +19,7 @@ const sideBar = {
     servicesConfiguration: 'Configuration des services',
     administration: 'Administration',
     identities: 'Identités',
+    css: 'CSS',
   },
 };
 
