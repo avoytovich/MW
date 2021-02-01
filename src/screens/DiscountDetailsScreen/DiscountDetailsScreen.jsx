@@ -13,6 +13,7 @@ import EligibilitySection from './EligibilitySection';
 import localization from '../../localization';
 import BasicSection from './BasicSection';
 import DialogWindows from './DialogWindows';
+import CappingAndLimitsSection from './CappingAndLimitsSection';
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsScreen = () => {
@@ -128,12 +129,8 @@ const DiscountDetailsScreen = () => {
 
   useEffect(() => {
     api.getDiscountById(id).then(({ data }) => {
-      const discountData = { ...data };
-      if (!discountData.publisherRefIds) {
-        discountData.publisherRefIds = [];
-      }
-      setDiscount(discountData);
-      setCurDiscount(discountData);
+      setDiscount(data);
+      setCurDiscount(data);
 
       api
         .getStores(0, `&customerId=${data.customerId}`)
@@ -278,6 +275,10 @@ const DiscountDetailsScreen = () => {
         updateDiscount={updateDiscount}
         setCurDiscount={setCurDiscount}
         setParentProductsModalOpen={setParentProductsModalOpen}
+      />
+      <CappingAndLimitsSection
+        curDiscount={curDiscount}
+        setCurDiscount={setCurDiscount}
       />
       <DialogWindows
         productsModal={productsModal}

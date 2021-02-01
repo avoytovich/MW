@@ -10,10 +10,6 @@
     right: 0;
   }
 
-  .MuiTextField-root {
-    margin: 10px;
-  }
-
   .MuiTab-root {
     text-transform: none;
   }
@@ -23,8 +19,4 @@
 }
 .discountInput {
   color: $discountInputText;
-}
-.discountSelectWithChip {
-  width: 100%;
-  margin: 10px;
 }

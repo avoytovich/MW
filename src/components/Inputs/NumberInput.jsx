@@ -6,7 +6,7 @@ import localization from '../../localization';
 const NumberInput = ({
   label, value, onChangeInput, minMAx,
 }) => (
-  <Box my={3}>
+  <Box py={3}>
     <TextField
       name={label}
       value={value}

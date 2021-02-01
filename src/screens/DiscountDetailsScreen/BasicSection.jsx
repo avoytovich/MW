@@ -21,64 +21,70 @@ const BasicSection = ({
   setCurDiscount,
 }) => (
   <CustomCard title="Basic">
-    <Box display="flex" py={5} pb={2}>
-      <TextField
-        fullWidth
-        label="Customer"
-        name="customerId"
-        type="text"
-        disabled
-        value={curDiscount.customerId}
-        variant="outlined"
-      />
-
-      <TextField
-        fullWidth
-        label="Amount"
-        name="discountRate"
-        type="text"
-        value={curDiscount.discountRate * 100}
-        onChange={(e) => handleChange(e)}
-        InputProps={{
-          endAdornment: <span>%</span>,
-        }}
-        variant="outlined"
-      />
+    <Box display="flex" pb={3} pt={6}>
+      <Box px={1} width=" 100%">
+        <TextField
+          fullWidth
+          label="Customer"
+          name="customerId"
+          type="text"
+          disabled
+          value={curDiscount.customerId}
+          variant="outlined"
+        />
+      </Box>
+      <Box px={1} width=" 100%">
+        <TextField
+          fullWidth
+          label="Amount"
+          name="discountRate"
+          type="text"
+          value={curDiscount.discountRate * 100}
+          onChange={(e) => handleChange(e)}
+          InputProps={{
+            endAdornment: <span>%</span>,
+          }}
+          variant="outlined"
+        />
+      </Box>
     </Box>
 
-    <Box display="flex">
-      <TextField
-        fullWidth
-        label="Discount Name"
-        name="name"
-        type="text"
-        value={curDiscount.name}
-        onChange={(e) => handleChange(e)}
-        variant="outlined"
-      />
-
-      <TextField
-        fullWidth
-        label="Label"
-        name="localizedLabels.neutral"
-        type="text"
-        value={curDiscount.localizedLabels.neutral}
-        onChange={(e) => setCurDiscount((d) => ({
-          ...d,
-          localizedLabels: {
-            ...d.localizedLabels,
-            neutral: e.target.value,
-          },
-        }))}
-        variant="outlined"
-        helperText={
-          !curDiscount.localizedLabels.neutral
-          && 'If left empty the label will not be displayed on the checkout'
-        }
-      />
+    <Box display="flex" py={3}>
+      <Box px={1} width=" 100%">
+        <TextField
+          fullWidth
+          label="Discount Name"
+          name="name"
+          type="text"
+          value={curDiscount.name}
+          onChange={(e) => handleChange(e)}
+          variant="outlined"
+        />
+      </Box>
+      <Box px={1} width=" 100%">
+        <TextField
+          fullWidth
+          label="Label"
+          name="localizedLabels.neutral"
+          type="text"
+          value={curDiscount.localizedLabels.neutral}
+          onChange={(e) => setCurDiscount((d) => ({
+            ...d,
+            localizedLabels: {
+              ...d.localizedLabels,
+              neutral: e.target.value,
+            },
+          }))}
+          variant="outlined"
+          helperText={
+            !curDiscount.localizedLabels.neutral
+            && 'If left empty the label will not be displayed on the checkout'
+          }
+        />
+      </Box>
     </Box>
 
-    <Box display="flex" mx={2}>
+    <Box display="flex" py={3} px={2}>
       <div>
         <Typography gutterBottom variant="h5">
           Model
@@ -124,7 +130,7 @@ const BasicSection = ({
       </div>
     </Box>
 
-    <Box py={3} mx={2}>
+    <Box py={3} px={2}>
       <Typography gutterBottom variant="h5">
         Status
       </Typography>

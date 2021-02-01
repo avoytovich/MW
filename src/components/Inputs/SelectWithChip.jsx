@@ -17,9 +17,8 @@ const SelectWithChip = ({
   optionName,
   onChangeSelect,
   onClickDelIcon,
-  customStylesClass,
 }) => (
-  <Box my={3} className={customStylesClass}>
+  <Box py={3}>
     <FormControl fullWidth variant="outlined">
       <InputLabel htmlFor={label}>
         {localization.t(`labels.${label}`)}
@@ -83,7 +82,6 @@ SelectWithChip.propTypes = {
   optionName: PropTypes.func,
   onChangeSelect: PropTypes.func,
   onClickDelIcon: PropTypes.func,
-  customStylesClass: PropTypes.string,
 };
 
 export default SelectWithChip;

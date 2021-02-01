@@ -140,6 +140,9 @@ const labels = {
   endUserGroups: 'End-User Groups',
   countries: 'Countries',
   endUserMails: 'End-User Mails',
+  maximumUsesPerStore: 'Maximum Uses Per Store',
+  maximumUsesPerEndUser: 'Maximum Uses Per End-User',
+  periodOfValidity: 'Period of Validity',
 };
 
 export default labels;
