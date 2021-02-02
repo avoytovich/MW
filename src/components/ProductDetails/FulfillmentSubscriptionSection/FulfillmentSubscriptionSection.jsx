@@ -10,7 +10,7 @@ import {
   Typography,
   TextField,
 } from '@material-ui/core';
-import { SelectWithChip, SelectWithDeleteIcon, NumberInput } from '../Inputs';
+import { SelectWithChip, SelectWithDeleteIcon, NumberInput } from '../../Inputs';
 import localization from '../../../localization';
 import './FulfillmentSubscriptionSection.scss';
 

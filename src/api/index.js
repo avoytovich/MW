@@ -319,6 +319,20 @@ const api = {
       url,
     });
   },
+  getDiscountProductsByIds(customerId) {
+    const url = `/products?format=full&customerId=${customerId}&status=ENABLED&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getParentProductsByIds(customerId, parentIds) {
+    const url = `/products?format=full&customerId=${customerId}&parentId=${parentIds}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET ONE BY ID
   getProductById(id) {
     const url = `/products/${id}`;
@@ -420,6 +434,13 @@ const api = {
   },
   getFulfillmentTemplateByCustomerId(id) {
     const url = `/license-manager/license-provider-definitions?format=short&customerId=${id}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getEndUsersGroupsByCustomerId(id) {
+    const url = `/endusers/groups?customerId=${id}&size=30&page=0`;
     return axiosInstance({
       method: 'get',
       url,

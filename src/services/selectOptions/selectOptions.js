@@ -44,7 +44,13 @@ const storeDetailsCardText = [
   { id: 'bannerOrderConfEmail', value: 'Confirmation email banner' },
   { id: 'logoFavicon', value: 'Favicon' },
 ];
+const validityPeriod = [
+  { id: 'between', value: 'between' },
+  { id: 'before', value: 'before' },
+];
+
 export {
+  validityPeriod,
   status,
   lifeTime,
   type,

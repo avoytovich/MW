@@ -29,17 +29,27 @@ import { showNotification } from '../../../../redux/actions/HttpNotifications';
 import './tableItems.scss';
 
 const TableItems = ({
-  values = [], avail = [], type, removeItem, addItem, noDelete,
+  values = [],
+  avail = [],
+  type,
+  removeItem,
+  addItem,
+  noDelete,
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const getItemUrl = (id) => `/overview/${type}/${id}`;
+  const getItemUrl = (id) => {
+    const itemType = type === 'parentProducts' ? 'products' : type;
+    return `/overview/${itemType}/${id}`;
+  };
 
   const deleteItem = (item) => {
     const onSuccess = () => {
       removeItem(item.id, type);
-      dispatch(showNotification(localization.t('general.hasBeenSuccessfullyDeleted')));
+      dispatch(
+        showNotification(localization.t('general.hasBeenSuccessfullyDeleted')),
+      );
     };
 
     if (noDelete) {
@@ -53,7 +63,6 @@ const TableItems = ({
 
   const goToDetails = (id) => {
     const url = getItemUrl(id);
-
     history.push(url);
   };
 
@@ -61,66 +70,96 @@ const TableItems = ({
     const url = window.location.origin + getItemUrl(id);
 
     navigator.clipboard.writeText(url).then(() => {
-      dispatch(showNotification(localization.t('general.itemURLHasBeenCopied')));
+      dispatch(
+        showNotification(localization.t('general.itemURLHasBeenCopied')),
+      );
     });
   };
 
   return (
-    <div className='table-items-modal'>
-      <DialogTitle id='table-items-dialog-title' disableTypography>
-        <Typography variant='h4'>{type}</Typography>
+    <div className="table-items-modal">
+      <DialogTitle id="table-items-dialog-title" disableTypography>
+        <Typography variant="h4">{type}</Typography>
       </DialogTitle>
 
       <DialogContent dividers>
         <FormGroup style={{ flexWrap: 'nowrap' }}>
-          {
-            values.length > 0 ? values.map((value) => (
-              <Box px={2} key={value.id} className='table-item-row'>
+          {values.length > 0 ? (
+            values.map((value) => (
+              <Box px={2} key={value.id} className="table-item-row">
                 <Grid container>
-                  <Grid container item xs={6} alignItems='center'>
+                  <Grid container item xs={6} alignItems="center">
                     <Typography>{value.name}</Typography>
                   </Grid>
 
-                  <Grid container item xs={6} justify='flex-end' alignItems='center' className='action-items'>
+                  <Grid
+                    container
+                    item
+                    xs={6}
+                    justify="flex-end"
+                    alignItems="center"
+                    className="action-items"
+                  >
                     <Box my={2}>
-                      <DeleteIcon className="deleteIcon icons" onClick={() => deleteItem(value)} />
-                      <EditIcon className="editIcon icons" onClick={() => goToDetails(value.id)} />
-                      <FileCopyIcon className="copyIcon icons" onClick={() => copyUrl(value.id)} />
+                      <DeleteIcon
+                        className="deleteIcon icons"
+                        onClick={() => deleteItem(value)}
+                      />
+                      <EditIcon
+                        className="editIcon icons"
+                        onClick={() => goToDetails(value.id)}
+                      />
+                      <FileCopyIcon
+                        className="copyIcon icons"
+                        onClick={() => copyUrl(value.id)}
+                      />
                     </Box>
                   </Grid>
                 </Grid>
               </Box>
-            )) : (
-              <Typography>{localization.t('general.noResults')}</Typography>
-            )
-          }
+            ))
+          ) : (
+            <Typography>{localization.t('general.noResults')}</Typography>
+          )}
 
-          {
-            avail.length > 0 && (
-              <>
-                <Divider width="100%" />
-                {
-                  avail.map((value) => (
-                    <Box px={2} key={value.id} className='table-item-row'>
-                      <Grid container>
-                        <Grid container item xs={6} alignItems='center'>
-                          <Typography>{value.name}</Typography>
-                        </Grid>
+          {avail.length > 0 && (
+            <>
+              <Divider width="100%" />
+              {avail.map((value) => (
+                <Box px={2} key={value.id} className="table-item-row">
+                  <Grid container>
+                    <Grid container item xs={6} alignItems="center">
+                      <Typography>{value.name}</Typography>
+                    </Grid>
 
-                        <Grid container item xs={6} justify='flex-end' alignItems='center' className='action-items'>
-                          <Box my={2}>
-                            <AddIcon className="addIcon icons" onClick={() => addItem(value)} />
-                            <EditIcon className="editIcon icons" onClick={() => goToDetails(value.id)} />
-                            <FileCopyIcon className="copyIcon icons" onClick={() => copyUrl(value.id)} />
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  ))
-                }
-              </>
-            )
-          }
+                    <Grid
+                      container
+                      item
+                      xs={6}
+                      justify="flex-end"
+                      alignItems="center"
+                      className="action-items"
+                    >
+                      <Box my={2}>
+                        <AddIcon
+                          className="addIcon icons"
+                          onClick={() => addItem(value)}
+                        />
+                        <EditIcon
+                          className="editIcon icons"
+                          onClick={() => goToDetails(value.id)}
+                        />
+                        <FileCopyIcon
+                          className="copyIcon icons"
+                          onClick={() => copyUrl(value.id)}
+                        />
+                      </Box>
+                    </Grid>
+                  </Grid>
+                </Box>
+              ))}
+            </>
+          )}
         </FormGroup>
       </DialogContent>
     </div>
