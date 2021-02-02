@@ -88,7 +88,7 @@ const CustomerHandling = () => {
   return (
     customers?.length > 0 && (
       <Box
-        width='80%'
+        width='100%'
         m='auto'
         mb='20px'
         display='flex'
@@ -96,7 +96,7 @@ const CustomerHandling = () => {
         justifyContent='space-between'
         className='customers-handling'
       >
-        <ContactsIcon color='primary' width='10%' style={{ marginRight: '5%' }} />
+        <ContactsIcon color='primary' width='10%' />
 
         <Autocomplete
           id="customers-select"
