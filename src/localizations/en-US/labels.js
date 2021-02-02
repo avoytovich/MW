@@ -144,6 +144,7 @@ const labels = {
   maximumUsesPerEndUser: 'Maximum Uses Per End-User',
   periodOfValidity: 'Period of Validity',
   css: 'CSS',
+  fallbackLocale: 'Fallback locale',
 };
 
 export default labels;
