@@ -39,7 +39,7 @@ const BasicSection = ({
           label="Amount"
           name="discountRate"
           type="text"
-          value={curDiscount.discountRate * 100}
+          value={curDiscount.discountRate ? curDiscount.discountRate * 100 : 0}
           onChange={(e) => handleChange(e)}
           InputProps={{
             endAdornment: <span>%</span>,

@@ -181,7 +181,7 @@ const DiscountDetailsScreen = () => {
           setAvailProducts(availProductsObj);
           setProducts(productsObj);
         });
-      const parentIds = data.parentProductIds.length
+      const parentIds = data.parentProductIds?.length
         ? data.parentProductIds.join('&')
         : null;
       api

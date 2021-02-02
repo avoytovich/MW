@@ -41,7 +41,7 @@ const SelectWithChip = ({
             flexWrap="wrap"
           >
             {selected?.map((chip) => {
-              const selectedItem = selectOptions.filter(
+              const selectedItem = selectOptions?.filter(
                 (item) => item.id === chip,
               )[0];
               const itemName = optionName(selectedItem);

@@ -69,7 +69,7 @@ const CappingAndLimitsSection = ({ curDiscount, setCurDiscount }) => {
               name="endDate"
               value={
                 curDiscount.endDate
-                  ? moment(curDiscount.endDate).format('YYYY-MM-DDTkk:mm')
+                  ? moment(curDiscount.endDate).format('YYYY-MM-DDTHH:mm')
                   : ''
               }
               label={localization.t('labels.endDate')}

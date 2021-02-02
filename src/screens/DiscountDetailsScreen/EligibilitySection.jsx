@@ -47,7 +47,7 @@ const EligibilitySection = ({
               label="Stores"
               name="stores"
               type="text"
-              value={curStores.map((st) => st.name)}
+              value={curStores?.map((st) => st.name)}
               contentEditable={false}
               onClick={() => setStoresModalOpen(true)}
               variant="outlined"
@@ -74,7 +74,7 @@ const EligibilitySection = ({
               label="Products"
               name="catalogs"
               type="text"
-              value={curProducts.map((pr) => pr.name)}
+              value={curProducts?.map((pr) => pr.name)}
               contentEditable={false}
               onClick={() => setProductsModalOpen(true)}
               variant="outlined"
@@ -91,32 +91,26 @@ const EligibilitySection = ({
         )}
       </Box>
       <Box display="flex" py={3}>
-        {curProductsByParent === null ? (
-          <Box width={1} m="10px" pt="8px">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <Box px={1} width=" 100%">
-            <TextField
-              fullWidth
-              label={localization.t('labels.productsByParent')}
-              name="productsByParent"
-              type="text"
-              value={curProductsByParent.map((pr) => pr.name)}
-              contentEditable={false}
-              onClick={() => setParentProductsModalOpen(true)}
-              variant="outlined"
-              disabled
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <EditIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-        )}
+        <Box px={1} width=" 100%">
+          <TextField
+            fullWidth
+            label={localization.t('labels.productsByParent')}
+            name="productsByParent"
+            type="text"
+            value={curProductsByParent?.map((pr) => pr.name) || []}
+            contentEditable={false}
+            onClick={() => setParentProductsModalOpen(true)}
+            variant="outlined"
+            disabled
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <EditIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
       </Box>
       <Box display="flex">
         <Box px={1} width=" 100%">
@@ -124,7 +118,7 @@ const EligibilitySection = ({
             label="countries"
             value={curDiscount.countries}
             selectOptions={selectOptions.countries}
-            optionName={(item) => item.id}
+            optionName={(item) => item?.id}
             onChangeSelect={(e) => setCurDiscount({
               ...curDiscount,
               countries: e.target.value,
@@ -147,7 +141,7 @@ const EligibilitySection = ({
             label="productsByReference"
             value={curDiscount.publisherRefIds}
             selectOptions={selectOptions.refProducts}
-            optionName={(item) => item.id}
+            optionName={(item) => item?.id}
             onChangeSelect={(e) => setCurDiscount({
               ...curDiscount,
               publisherRefIds: e.target.value,
@@ -166,7 +160,7 @@ const EligibilitySection = ({
       </Box>
       <Box display="flex" pt={3}>
         <Box px={1} width=" 100%">
-          {curDiscount.endUserEmails.map((chip) => (
+          {curDiscount.endUserEmails?.map((chip) => (
             <Chip
               key={chip}
               variant="outlined"
