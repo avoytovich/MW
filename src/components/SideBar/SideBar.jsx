@@ -22,7 +22,7 @@ const SideBar = ({ open }) => (
     variant="persistent"
     className='side-bar'
   >
-    <Box display="flex" flexDirection="column">
+    <Box height="100%" display="flex" flexDirection="column">
       {process?.env?.BUILT_AT && (
         <Box
           display='flex'
@@ -63,7 +63,7 @@ const SideBar = ({ open }) => (
           ))}
         </Box>
       </Box>
-      <Box height="100%" m="0 2px">
+      <Box m="0 2px">
         <CustomerHandling />
       </Box>
     </Box>
