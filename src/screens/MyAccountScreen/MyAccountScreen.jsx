@@ -75,31 +75,36 @@ const MyAccountScreen = () => {
         api
           .getStores(0, `&customerId=${data?.customerId}`)
           .then(({ data: { items: stores } }) => {
-            const storesObj = stores.map((store) => ({ id: store.id, name: store.name }));
+            const storesObj = stores.map((store) => ({
+              id: store.id,
+              name: store.name,
+            }));
             setStores(storesObj);
-          }).catch(() => setStores(null));
+          })
+          .catch(() => setStores(null));
 
         api
           .getProducts(0, `&customerId=${data?.customerId}`)
           .then(({ data: { items: products } }) => {
-            const productsObj = products.map((product) => (
-              { id: product.id, name: product.genericName }
-            ));
+            const productsObj = products.map((product) => ({
+              id: product.id,
+              name: product.genericName,
+            }));
             setProducts(productsObj);
-          }).catch(() => setProducts(null));
+          })
+          .catch(() => setProducts(null));
       })
-      .catch(() => { setIdentity(null); setCurIdentity(null); });
+      .catch(() => {
+        setIdentity(null);
+        setCurIdentity(null);
+      });
   }, []);
 
   if (curIdentity === null) return <LinearProgress />;
 
   return (
-    <div className='my-account-screen'>
-      <Tabs
-        value={0}
-        indicatorColor="primary"
-        textColor="primary"
-      >
+    <div className="my-account-screen">
+      <Tabs value={0} indicatorColor="primary" textColor="primary">
         <Tab label="My Account" />
       </Tabs>
 
@@ -116,93 +121,119 @@ const MyAccountScreen = () => {
         </Button>
       </Zoom>
 
-      <CustomCard title='Basic Profile'>
-        <Box display='flex' py={5} pb={2}>
-          <TextField
-            fullWidth
-            label='First Name'
-            name='firstName'
-            type='text'
-            value={curIdentity.firstName}
-            onChange={handleChange}
-            variant='outlined'
-          />
-
-          <TextField
-            fullWidth
-            label='Last Name'
-            name='lastName'
-            type='text'
-            value={curIdentity.lastName}
-            onChange={handleChange}
-            variant='outlined'
-          />
+      <CustomCard title="Basic Profile">
+        <Box display="flex" py={5} pb={2}>
+          <Box px={1} width=" 100%">
+            <TextField
+              fullWidth
+              label="First Name"
+              name="firstName"
+              type="text"
+              value={curIdentity.firstName}
+              onChange={handleChange}
+              variant="outlined"
+            />
+          </Box>
+          <Box px={1} width=" 100%">
+            <TextField
+              fullWidth
+              label="Last Name"
+              name="lastName"
+              type="text"
+              value={curIdentity.lastName}
+              onChange={handleChange}
+              variant="outlined"
+            />
+          </Box>
         </Box>
 
-        <Box display='flex' pb={2}>
-          <TextField
-            fullWidth
-            label='Email'
-            name='email'
-            type='text'
-            value={curIdentity.email}
-            onChange={handleChange}
-            variant='outlined'
-          />
-
-          <TextField
-            fullWidth
-            label='User Name'
-            name='userName'
-            type='text'
-            value={curIdentity.userName}
-            onChange={handleChange}
-            variant='outlined'
-            disabled
-          />
+        <Box display="flex" pb={2}>
+          <Box px={1} width=" 100%">
+            <TextField
+              fullWidth
+              label="Email"
+              name="email"
+              type="text"
+              value={curIdentity.email}
+              onChange={handleChange}
+              variant="outlined"
+            />
+          </Box>
+          <Box px={1} width=" 100%">
+            <TextField
+              fullWidth
+              label="User Name"
+              name="userName"
+              type="text"
+              value={curIdentity.userName}
+              onChange={handleChange}
+              variant="outlined"
+              disabled
+            />
+          </Box>
         </Box>
       </CustomCard>
 
-      <CustomCard title='Configuration'>
-        <Box display='flex' py={5} pb={2}>
+      <CustomCard title="Configuration">
+        <Box display="flex" py={5} pb={2}>
           {curStores === null ? (
-            <Box width={1} m='10px' pt='8px'><CircularProgress /></Box>
+            <Box width={1} m="10px" pt="8px">
+              <CircularProgress />
+            </Box>
           ) : (
-            <TextField
-              fullWidth
-              label='Stores'
-              name='stores'
-              type='text'
-              placeholder='Stores list'
-              value={curStores.map((store) => store.name)}
-              contentEditable={false}
-              onClick={() => setStoresModalOpen(true)}
-              variant='outlined'
-              disabled
-              InputLabelProps={{ shrink: true }}
-              InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
-              helperText='Please specify the stores you manage'
-            />
+            <Box px={1} width=" 100%">
+              <TextField
+                fullWidth
+                label="Stores"
+                name="stores"
+                type="text"
+                placeholder="Stores list"
+                value={curStores.map((store) => store.name)}
+                contentEditable={false}
+                onClick={() => setStoresModalOpen(true)}
+                variant="outlined"
+                disabled
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <EditIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                helperText="Please specify the stores you manage"
+              />
+            </Box>
           )}
 
           {curProducts === null ? (
-            <Box width={1} m='10px' pt='8px'><CircularProgress /></Box>
+            <Box width={1} m="10px" pt="8px">
+              <CircularProgress />
+            </Box>
           ) : (
-            <TextField
-              fullWidth
-              label='Catalogs & products'
-              name='catalogs'
-              type='text'
-              placeholder='Catalogs and/or products'
-              value={curProducts.map((product) => product.name)}
-              contentEditable={false}
-              onClick={() => setProductsModalOpen(true)}
-              variant='outlined'
-              disabled
-              InputLabelProps={{ shrink: true }}
-              InputProps={{ endAdornment: <InputAdornment position='end'><EditIcon /></InputAdornment> }}
-              helperText='Please specify the catalogs you manage'
-            />
+            <Box px={1} width=" 100%">
+              <TextField
+                fullWidth
+                label="Catalogs & products"
+                name="catalogs"
+                type="text"
+                placeholder="Catalogs and/or products"
+                value={curProducts.map((product) => product.name)}
+                contentEditable={false}
+                onClick={() => setProductsModalOpen(true)}
+                variant="outlined"
+                disabled
+                InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <EditIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                helperText="Please specify the catalogs you manage"
+              />
+            </Box>
           )}
         </Box>
       </CustomCard>
@@ -210,21 +241,25 @@ const MyAccountScreen = () => {
       <Dialog
         open={productsModal}
         onClose={() => setProductsModalOpen(false)}
-        aria-labelledby='table-items-dialog-title'
+        aria-labelledby="table-items-dialog-title"
         fullWidth
-        maxWidth='sm'
+        maxWidth="sm"
       >
-        <TableItems values={curProducts} type='products' removeItem={removeItem} />
+        <TableItems
+          values={curProducts}
+          type="products"
+          removeItem={removeItem}
+        />
       </Dialog>
 
       <Dialog
         open={storesModal}
         onClose={() => setStoresModalOpen(false)}
-        aria-labelledby='table-items-dialog-title'
+        aria-labelledby="table-items-dialog-title"
         fullWidth
-        maxWidth='sm'
+        maxWidth="sm"
       >
-        <TableItems values={curStores} type='stores' removeItem={removeItem} />
+        <TableItems values={curStores} type="stores" removeItem={removeItem} />
       </Dialog>
     </div>
   );

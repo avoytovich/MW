@@ -7,13 +7,12 @@ import CheckoutMenu from './CheckoutMenu';
 const productData = {
   sellingStores: [1, 2],
 };
-const sellingStores = [
+const checkOutStores = [
+  { name: 'test_name_1', hostname: 'test_hostnames_1.1' },
   {
-    id: 1,
-    name: 'test_name_1',
-    hostnames: ['test_hostnames_1.1', 'test_hostnames_1.2'],
+    name: 'test_name_2',
+    hostname: 'test_hostnames_2',
   },
-  { id: 2, name: 'test_name_2', hostnames: ['test_hostnames_2'] },
 ];
 
 describe('ProductDetails <CheckoutMenu/>', () => {
@@ -23,7 +22,7 @@ describe('ProductDetails <CheckoutMenu/>', () => {
     wrapper = mount(
       <CheckoutMenu
         currentProductData={productData}
-        sellingStores={sellingStores}
+        checkOutStores={checkOutStores}
       />,
     );
   });
@@ -32,10 +31,10 @@ describe('ProductDetails <CheckoutMenu/>', () => {
   });
 
   it('should render two menuItems for CheckoutMenu', () => {
-    const result = `Store '${sellingStores[0].name}' (${sellingStores[0].hostnames[0]})`;
+    const result = `Store '${checkOutStores[0].name}' (${checkOutStores[0].hostname})`;
     const checkoutButton = wrapper.find(Button);
     checkoutButton.simulate('click');
-    expect(wrapper.find(MenuItem)).toHaveLength(3);
+    expect(wrapper.find(MenuItem)).toHaveLength(2);
     expect(
       wrapper.find({ 'data-test': 'checkoutLink' }).first().text(),
     ).toEqual(result);

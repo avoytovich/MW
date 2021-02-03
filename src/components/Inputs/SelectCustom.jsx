@@ -7,13 +7,12 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
-
-import localization from '../../../localization';
+import localization from '../../localization';
 
 const SelectCustom = ({
   label, value, selectOptions, onChangeSelect,
 }) => (
-  <Box my={3}>
+  <Box py={3}>
     <FormControl fullWidth variant="outlined">
       <InputLabel htmlFor={label}>
         {localization.t(`labels.${label}`)}
