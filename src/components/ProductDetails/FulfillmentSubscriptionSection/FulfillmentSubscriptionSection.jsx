@@ -135,12 +135,12 @@ const FulfillmentSubscriptionSection = ({
       </Box>
     )}
     <SelectWithChip
-      optionName={(item) => (item.genericName
+      optionName={(item) => (item?.genericName
         ? `${item.genericName} (${item.publisherRefId}${
           item.subscriptionTemplate ? ', ' : ''
         }
                 ${item.subscriptionTemplate || ''})`
-        : item.id)}
+        : item?.id)}
       label="renewingProducts"
       value={currentProductData.nextGenerationOf}
       selectOptions={selectOptions.renewingProducts}
