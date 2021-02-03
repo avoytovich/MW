@@ -355,6 +355,13 @@ const api = {
       url,
     });
   },
+  getPaymentById(id) {
+    const url = `/payment-proxy/payments/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getCustomerById(id) {
     const url = `/customers/${id}`;
     return axiosInstance({

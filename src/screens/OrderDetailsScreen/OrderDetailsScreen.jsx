@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+
 import {
   LinearProgress,
   Box,
@@ -7,12 +9,20 @@ import {
   Zoom,
   Button,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+
 import { FolderOpen } from '@material-ui/icons';
-import localization from '../../localization';
+
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import OrderDetails from '../../components/OrderDetails';
+
+import localization from '../../localization';
 import api from '../../api';
+
+import General from './SubSections/General';
+import EndUser from './SubSections/EndUser';
+import Payments from './SubSections/Payments';
+import Products from './SubSections/Products';
+// import Subscriptions from './SubSections/Subscriptions';
+import Events from './SubSections/Events';
 
 const OrderDetailsScreen = () => {
   const dispatch = useDispatch();
@@ -23,9 +33,6 @@ const OrderDetailsScreen = () => {
 
   const [currentOrderData, setCurrentOrderData] = useState(null);
   const [orderData, setOrderData] = useState(null);
-
-  const [currentCustomer, setCurrentCustomer] = useState(null);
-  const [currentProductsData, setCurrentProductsData] = useState(null);
 
   const saveDetails = () => {
     api.updateOrderById(currentOrderData.id, currentOrderData).then(() => {
@@ -38,25 +45,14 @@ const OrderDetailsScreen = () => {
 
   useEffect(() => {
     let isCancelled = false;
-    const productsIds = [];
 
-    const requests = async () => {
+    (async () => {
       try {
         const order = await api.getOrderById(id);
-        order.data.lineItems.forEach((item) => {
-          const product = `id=${item.productId}`;
-          if (!productsIds.includes(product)) {
-            productsIds.push(product);
-          }
-        });
-        const products = await api.getProductsByIds(productsIds.join('&'));
-        const customer = await api.getCustomerById(order?.data?.customer?.id);
 
         if (!isCancelled) {
           setOrderData(order.data);
           setCurrentOrderData(order.data);
-          setCurrentCustomer(customer.data.name);
-          setCurrentProductsData(products.data);
           setLoading(false);
         }
       } catch (error) {
@@ -64,8 +60,8 @@ const OrderDetailsScreen = () => {
           setLoading(false);
         }
       }
-    };
-    requests();
+    })();
+
     return () => {
       isCancelled = true;
     };
@@ -88,12 +84,17 @@ const OrderDetailsScreen = () => {
           <Box>
             <FolderOpen color="secondary" />
           </Box>
-          <Box>
+          <Box ml={2}>
             <Typography component="div" color="primary">
-              <Box fontWeight={500}>{localization.t('general.order')}</Box>
+              <Box fontWeight={500}>
+                {localization.t('general.order')}
+                {' / '}
+                {id}
+              </Box>
             </Typography>
           </Box>
         </Box>
+
         <Zoom in={orderHasChanges}>
           <Box mb={1}>
             <Button
@@ -109,15 +110,24 @@ const OrderDetailsScreen = () => {
           </Box>
         </Zoom>
       </Box>
-      {currentOrderData && (
-        <OrderDetails
-          currentOrderData={currentOrderData}
-          orderData={orderData}
-          setCurrentOrderData={setCurrentOrderData}
-          customer={currentCustomer}
-          productsData={currentProductsData}
-        />
-      )}
+
+      <Box display="flex">
+        <Box pr={1} width="100%">
+          <General orderData={orderData} />
+        </Box>
+
+        <Box pl={1} width="100%">
+          <EndUser orderData={orderData} />
+        </Box>
+      </Box>
+
+      <Payments orderData={orderData} />
+
+      <Products orderData={orderData} />
+
+      {/* <Subscriptions orderData={orderData} /> */}
+
+      <Events orderData={orderData} />
     </>
   );
 };
