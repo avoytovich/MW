@@ -11,4 +11,10 @@
   .MuiTab-root {
     text-transform: none;
   }
+  
+  .MuiChip-root{
+    &:not(:nth-child(1)){
+      margin-left: 5px;
+    }
+  }
 }
