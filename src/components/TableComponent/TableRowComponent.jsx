@@ -33,6 +33,7 @@ const TableRowComponent = ({
   handleDeleteItem,
   noActions,
   customPath,
+  errorHighlight,
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
@@ -107,10 +108,10 @@ const TableRowComponent = ({
   };
 
   return (
-    <Box className="tableRowGrid" data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
+    <Box className={`tableRowGrid ${rowItem[errorHighlight] ? 'error-row' : ''}`} data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
       <Grid
         spacing={1}
-        onClick={() => history.push(customPath ? parsePath(customPath) : `${history.location.pathname}/${rowItem.id}`)}
+        onClick={() => customPath !== 'disabled' && history.push(customPath ? parsePath(customPath) : `${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}
         onMouseLeave={() => setRowHover(false)}
         container
@@ -165,6 +166,7 @@ TableRowComponent.propTypes = {
   ),
   noActions: PropTypes.bool,
   customPath: PropTypes.string,
+  errorHighlight: PropTypes.string,
 };
 
 export default TableRowComponent;

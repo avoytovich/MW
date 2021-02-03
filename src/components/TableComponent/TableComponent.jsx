@@ -28,6 +28,7 @@ const TableComponent = ({
   setSortParams,
   sortParams,
   customPath,
+  errorHighlight,
 }) => {
   const [checked, setChecked] = useState([]);
 
@@ -144,6 +145,7 @@ const TableComponent = ({
             rowItem={rowItem}
             noActions={noActions}
             customPath={customPath}
+            errorHighlight={errorHighlight}
           />
         ))}
       </Box>
@@ -171,6 +173,7 @@ TableComponent.propTypes = {
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,
   customPath: PropTypes.string,
+  errorHighlight: PropTypes.string,
 };
 
 export default TableComponent;
