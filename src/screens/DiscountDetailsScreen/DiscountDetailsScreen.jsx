@@ -68,7 +68,9 @@ const DiscountDetailsScreen = () => {
       setProductsModalOpen(false);
       setCurDiscount((c) => ({ ...c, productIds: newArr }));
       setProducts((p) => p.filter((pr) => pr.id !== item.id));
-      setAvailProducts((pr) => [...pr, item]);
+      if (item.name !== 'Was removed') {
+        setAvailProducts((pr) => [...pr, item]);
+      }
     } else if (type === 'stores') {
       const newArr = [...curDiscount.storeIds];
 
@@ -168,9 +170,9 @@ const DiscountDetailsScreen = () => {
             if (data?.productIds?.indexOf(product.id) >= 0) {
               productsObj.push({
                 id: product.id,
-                name: product.genericName ? product.genericName : product.id,
+                name: product.genericName || 'Was removed',
               });
-            } else {
+            } else if (product.genericName) {
               availProductsObj.push({
                 id: product.id,
                 name: product.genericName,

@@ -105,14 +105,18 @@ const TableItems = ({
                         className="deleteIcon icons"
                         onClick={() => deleteItem(value)}
                       />
-                      <EditIcon
-                        className="editIcon icons"
-                        onClick={() => goToDetails(value.id)}
-                      />
-                      <FileCopyIcon
-                        className="copyIcon icons"
-                        onClick={() => copyUrl(value.id)}
-                      />
+                      {value.name !== 'Was removed' && (
+                        <>
+                          <EditIcon
+                            className="editIcon icons"
+                            onClick={() => goToDetails(value.id)}
+                          />
+                          <FileCopyIcon
+                            className="copyIcon icons"
+                            onClick={() => copyUrl(value.id)}
+                          />
+                        </>
+                      )}
                     </Box>
                   </Grid>
                 </Grid>

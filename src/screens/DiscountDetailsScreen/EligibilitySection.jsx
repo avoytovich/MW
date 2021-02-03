@@ -11,8 +11,8 @@ import {
   Checkbox,
   Chip,
 } from '@material-ui/core';
-
 import EditIcon from '@material-ui/icons/Edit';
+import countriesOptions from '../../services/selectOptions/countries';
 import { email } from '../../services/helpers/inputValidators';
 import CustomCard from '../../components/utils/CustomCard';
 import localization from '../../localization';
@@ -117,14 +117,14 @@ const EligibilitySection = ({
           <SelectWithChip
             label="countries"
             value={curDiscount.countries}
-            selectOptions={selectOptions.countries}
-            optionName={(item) => item?.id}
+            selectOptions={countriesOptions}
+            optionName={(item) => item?.value}
             onChangeSelect={(e) => setCurDiscount({
               ...curDiscount,
               countries: e.target.value,
             })}
             onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.endUserGroupIds].filter(
+              const newValue = [...curDiscount.countries].filter(
                 (val) => val !== chip,
               );
               setCurDiscount({

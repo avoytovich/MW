@@ -137,14 +137,20 @@ const CampaignDetailsScreen = () => {
           </Box>
         </Box>
 
-        <Box display='flex' pb={2}>
-          <DateRangePicker
-            values={selectionRange}
-            handleChange={handleSelectDate}
-          />
+        <Box display="flex" pb={2} flexDirection="column">
+          <Typography gutterBottom variant="h5">
+            Date range:
+          </Typography>
+          <Box display="flex" alignItems="baseline">
+            {'Between '}
+            <DateRangePicker
+              values={selectionRange}
+              handleChange={handleSelectDate}
+            />
+          </Box>
         </Box>
 
-        <Box mx={2} pb={2}>
+        <Box pb={2}>
           <Typography gutterBottom variant="h5">
             Status
           </Typography>

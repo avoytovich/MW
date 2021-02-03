@@ -33,49 +33,58 @@ const DateRangePicker = ({ values, handleChange }) => {
     setModalOpened(false);
 
     if (initiator === 'start') {
-      const endDate = moment(startDate).isAfter(values.endDate) ? startDate : values.endDate;
+      const endDate = moment(startDate).isAfter(values.endDate)
+        ? startDate
+        : values.endDate;
       handleChange({ startDate, endDate });
     } else {
       handleChange(selection);
     }
   };
-
   return (
     <>
-      {
-        values.startDate && (
-          <Box mx={2} pb={2} className='date-range-selected'>
-            <Typography gutterBottom variant='h5'>Date range:</Typography>
-            {'Between '}
-            <Typography className='date-value' color='primary' variant='h6' onClick={() => showDatePicker('start')}>
-              {moment(values.startDate).format('ll')}
-            </Typography>
-            {' and '}
-            <Typography className='date-value' color='primary' variant='h6' onClick={() => showDatePicker('end')}>
-              {moment(values.endDate).format('ll')}
-            </Typography>
-          </Box>
-        )
-      }
+      {values.startDate && (
+        <Box ml={2} className="date-range-selected">
+          <Typography
+            className="date-value"
+            color="primary"
+            variant="h6"
+            onClick={() => showDatePicker('start')}
+          >
+            {moment(values.startDate).format('ll')}
+          </Typography>
+          {' and '}
+          <Typography
+            className="date-value"
+            color="primary"
+            variant="h6"
+            onClick={() => showDatePicker('end')}
+          >
+            {moment(values.endDate).format('ll')}
+          </Typography>
+        </Box>
+      )}
 
-      {
-        modalOpened && initiator && (
-          <Dialog onClose={() => setModalOpened(false)} aria-labelledby='date-range-dialog-title' open={modalOpened}>
-            <DialogTitle id='date-range-dialog-title' disableTypography>
-              <Typography variant='h4'>Select range</Typography>
-            </DialogTitle>
+      {modalOpened && initiator && (
+        <Dialog
+          onClose={() => setModalOpened(false)}
+          aria-labelledby="date-range-dialog-title"
+          open={modalOpened}
+        >
+          <DialogTitle id="date-range-dialog-title" disableTypography>
+            <Typography variant="h4">Select range</Typography>
+          </DialogTitle>
 
-            <DialogContent dividers>
-              <DateRange
-                ranges={[values]}
-                focusedRange={initiator === 'start' ? [0, 0] : [0, 1]}
-                onRangeFocusChange={changeRangeFocus}
-                onChange={changeRange}
-              />
-            </DialogContent>
-          </Dialog>
-        )
-      }
+          <DialogContent dividers>
+            <DateRange
+              ranges={[values]}
+              focusedRange={initiator === 'start' ? [0, 0] : [0, 1]}
+              onRangeFocusChange={changeRangeFocus}
+              onChange={changeRange}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 };
