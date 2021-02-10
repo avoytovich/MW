@@ -45,7 +45,7 @@ const CappingAndLimitsSection = ({ curDiscount, setCurDiscount }) => {
   return (
     <CustomCard title="Capping And Limits">
       <Box display="flex" alignItems="center" pt={3}>
-        <Box px={1} width=" 100%">
+        <Box px={1} width=" 100%" py={3}>
           <SelectCustom
             label="periodOfValidity"
             onChangeSelect={(e) => setValidPeriod(e.target.value)}
@@ -89,7 +89,7 @@ const CappingAndLimitsSection = ({ curDiscount, setCurDiscount }) => {
           </Box>
         )}
       </Box>
-      <Box px={1} width=" 100%">
+      <Box px={1} width=" 100%" p={2}>
         <NumberInput
           label="maximumUses"
           value={curDiscount.maxUsages}
@@ -97,7 +97,7 @@ const CappingAndLimitsSection = ({ curDiscount, setCurDiscount }) => {
           minMAx={{ min: 1, max: 9999 }}
         />
       </Box>
-      <Box px={1} width=" 100%">
+      <Box px={1} width=" 100%" p={2}>
         <NumberInput
           label="maximumUsesPerStore"
           value={curDiscount.maxUsePerStore}
@@ -105,7 +105,7 @@ const CappingAndLimitsSection = ({ curDiscount, setCurDiscount }) => {
           minMAx={{ min: 1, max: 9999 }}
         />
       </Box>
-      <Box px={1} width=" 100%">
+      <Box px={1} width=" 100%" p={2}>
         <NumberInput
           label="maximumUsesPerEndUser"
           value={curDiscount.maxUsePerEndUser}

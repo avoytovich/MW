@@ -453,6 +453,14 @@ const api = {
       url,
     });
   },
+  getCatalogsByCustomerId(id) {
+    const url = `/catalogs?format=short&customerId=${id}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   // PUT BY ID
   updateCustomerById(id, data) {
     const url = `/customers/${id}`;

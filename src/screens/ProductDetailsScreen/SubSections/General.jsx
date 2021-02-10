@@ -1,0 +1,267 @@
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import {
+  Box, Switch, FormControlLabel, Typography,
+} from '@material-ui/core';
+import {
+  lifeTime,
+  type,
+  businessSegment,
+} from '../../../services/selectOptions/selectOptions';
+import {
+  SelectWithChip,
+  SelectCustom,
+  NumberInput,
+  InputCustom,
+} from '../../../components/Inputs';
+import localization from '../../../localization';
+
+const General = ({
+  setProductData,
+  currentProductData,
+  selectOptions,
+  inputErrors,
+  setInputErrors,
+}) => {
+  const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
+    number: 1,
+    value: '',
+  });
+  const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
+
+  useEffect(() => {
+    let LifeTimeNumber = false;
+    const res = currentProductData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
+
+    if (res && res.length > 1 && res[1] !== 'DAY') {
+      setLifeTimeUpdateValue({ number: res[0], value: res[1] });
+      LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR';
+    } else if (res) {
+      setLifeTimeUpdateValue({
+        ...lifeTimeUpdateValue,
+        value: currentProductData.lifeTime,
+      });
+      LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR';
+    } else {
+      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: '' });
+    }
+    setShowLifeTimeNumber(LifeTimeNumber);
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    const newLifeTime = showLifeTimeNumber
+      ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
+      : lifeTimeUpdateValue.value;
+    setProductData({ ...currentProductData, lifeTime: newLifeTime });
+  }, [lifeTimeUpdateValue]);
+
+  return (
+    <>
+      <Box display="flex" flexDirection="row" alignItems="baseline">
+        <Box p={2}>
+          <Typography color="secondary">
+            {localization.t('labels.status')}
+          </Typography>
+        </Box>
+        <Box p={2}>
+          <FormControlLabel
+            control={(
+              <Switch
+                name="status"
+                onChange={(e) => {
+                  setProductData({
+                    ...currentProductData,
+                    status: e.target.checked ? 'ENABLED' : 'DISABLED',
+                  });
+                }}
+                color="primary"
+                checked={currentProductData.status === 'ENABLED'}
+              />
+            )}
+            label={localization.t(
+              `labels.${
+                currentProductData.status === 'ENABLED' ? 'enabled' : 'disabled'
+              }`,
+            )}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" width="100%">
+        <Box width="100%">
+          <Box p={2}>
+            <SelectCustom
+              label="catalog"
+              value={currentProductData.catalogId}
+              selectOptions={selectOptions.catalogs}
+              onChangeSelect={(e) => {
+                setProductData({
+                  ...currentProductData,
+                  catalogId: e.target.value,
+                });
+              }}
+            />
+          </Box>
+          <Box p={2}>
+            <SelectCustom
+              label="type"
+              isRequired
+              value={currentProductData.type}
+              selectOptions={type}
+              onChangeSelect={(e) => {
+                setProductData({
+                  ...currentProductData,
+                  type: e.target.value,
+                });
+                if (inputErrors?.type) {
+                  const newObj = { ...inputErrors };
+                  delete newObj.type;
+                  setInputErrors(newObj);
+                }
+              }}
+            />
+          </Box>
+          <Box p={2}>
+            <SelectCustom
+              label="businessSegment"
+              value={currentProductData.businessSegment}
+              selectOptions={businessSegment}
+              onChangeSelect={(e) => {
+                setProductData({
+                  ...currentProductData,
+                  businessSegment: e.target.value,
+                });
+              }}
+            />
+          </Box>
+          <Box display="flex" flexDirection="row" alignItems="baseline">
+            <Box p={2}>
+              <Typography color="secondary">
+                {localization.t('labels.physicalProduct')}
+              </Typography>
+            </Box>
+            <Box p={2}>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    name="physicalProduct"
+                    onChange={(e) => {
+                      setProductData({
+                        ...currentProductData,
+                        physical: e.target.checked,
+                      });
+                    }}
+                    color="primary"
+                    checked={currentProductData.physical}
+                  />
+                )}
+              />
+            </Box>
+          </Box>
+          <Box p={2}>
+            <SelectWithChip
+              label="sellingStores"
+              value={currentProductData.sellingStores}
+              selectOptions={selectOptions.sellingStores}
+              onChangeSelect={(e) => setProductData({
+                ...currentProductData,
+                sellingStores: e.target.value,
+              })}
+              onClickDelIcon={(chip) => {
+                const newValue = [...currentProductData.sellingStores].filter(
+                  (val) => val !== chip,
+                );
+                setProductData({
+                  ...currentProductData,
+                  sellingStores: newValue,
+                });
+              }}
+            />
+          </Box>
+          <Box p={2}>
+            <SelectWithChip
+              label="blockedCountries"
+              value={[]}
+              selectOptions={[]}
+              onChangeSelect={() => console.log('blockedCountries')}
+              onClickDelIcon={(chip) => () => console.log('blockedCountries')}
+            />
+          </Box>
+        </Box>
+
+        <Box width="100%">
+          <Box p={2}>
+            <InputCustom
+              label="name"
+              isRequired
+              value={currentProductData.genericName}
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                genericName: e.target.value,
+              })}
+            />
+          </Box>
+          <Box p={2}>
+            <InputCustom
+              isRequired
+              label="publisherRefID"
+              value={currentProductData.publisherRefId}
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                publisherRefId: e.target.value,
+              })}
+            />
+          </Box>
+          <Box display="flex" width="100%">
+            <Box width="30%" p={2}>
+              <SelectCustom
+                label="lifeTime"
+                value={lifeTimeUpdateValue.value}
+                selectOptions={lifeTime}
+                onChangeSelect={(e) => {
+                  setShowLifeTimeNumber(
+                    e.target.value === 'MONTH' || e.target.value === 'YEAR',
+                  );
+                  setLifeTimeUpdateValue({
+                    ...lifeTimeUpdateValue,
+                    value: e.target.value,
+                  });
+                  if (inputErrors?.lifeTime) {
+                    const newObj = { ...inputErrors };
+                    delete newObj.lifeTime;
+                    setInputErrors(newObj);
+                  }
+                }}
+              />
+            </Box>
+            {showLifeTimeNumber && (
+              <Box width="30%" p={2}>
+                <NumberInput
+                  label="maxPaymentsPart"
+                  value={lifeTimeUpdateValue.number}
+                  onChangeInput={(e) => {
+                    setLifeTimeUpdateValue({
+                      ...lifeTimeUpdateValue,
+                      number: e.target.value,
+                    });
+                  }}
+                  minMAx={{ min: 1, max: 11 }}
+                />
+              </Box>
+            )}
+          </Box>
+        </Box>
+      </Box>
+    </>
+  );
+};
+
+General.propTypes = {
+  setProductData: PropTypes.func,
+  currentProductData: PropTypes.object,
+  selectOptions: PropTypes.object,
+  inputErrors: PropTypes.object,
+  setInputErrors: PropTypes.func,
+};
+
+export default General;

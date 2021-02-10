@@ -19,55 +19,51 @@ const SelectWithDeleteIcon = ({
   onChangeSelect,
   onClickDelIcon,
 }) => (
-  <Box my={3}>
-    <FormControl fullWidth variant="outlined">
-      <InputLabel htmlFor={label}>
-        {localization.t(`labels.${label}`)}
-      </InputLabel>
-      <Select
-        value={value}
-        inputProps={{
-          name: label,
-          id: label,
-        }}
-        label={localization.t(`labels.${label}`)}
-        onChange={onChangeSelect}
-        variant="outlined"
-        renderValue={(selected) => {
-          const optionName = selectOptions.find(
-            (option) => option.id === selected,
-          );
-          return (
-            <Box
-              display="flex"
-              alignItems="center"
-              flexDirection="row"
-              flexWrap="wrap"
-            >
-              <Box mb="2px" mr="2px">
-                <Typography>{optionName?.name}</Typography>
-              </Box>
-              <CancelIcon
-                className="cancelIcon"
-                fontSize="small"
-                color="primary"
-                onClick={onClickDelIcon}
-                onMouseDown={(e) => {
-                  e.stopPropagation();
-                }}
-              />
+  <FormControl fullWidth variant="outlined">
+    <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
+    <Select
+      value={value}
+      inputProps={{
+        name: label,
+        id: label,
+      }}
+      label={localization.t(`labels.${label}`)}
+      onChange={onChangeSelect}
+      variant="outlined"
+      renderValue={(selected) => {
+        const optionName = selectOptions.find(
+          (option) => option.id === selected,
+        );
+        return (
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="row"
+            flexWrap="wrap"
+          >
+            <Box mb="2px" mr="2px">
+              <Typography>{optionName?.name}</Typography>
             </Box>
-          );
-        }}
-      >
-        {selectOptions.map((option) => (
-          <MenuItem key={option.id} value={option.id}>
-            {option.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
-  </Box>
+            <CancelIcon
+              className="cancelIcon"
+              fontSize="small"
+              color="primary"
+              onClick={onClickDelIcon}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </Box>
+        );
+      }}
+    >
+      {selectOptions.map((option) => (
+        <MenuItem key={option.id} value={option.id}>
+          {option.name}
+        </MenuItem>
+      ))}
+    </Select>
+  </FormControl>
 );
 
 SelectWithDeleteIcon.propTypes = {

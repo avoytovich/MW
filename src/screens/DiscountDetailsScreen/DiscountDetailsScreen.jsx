@@ -14,6 +14,7 @@ import localization from '../../localization';
 import BasicSection from './BasicSection';
 import DialogWindows from './DialogWindows';
 import CappingAndLimitsSection from './CappingAndLimitsSection';
+import { discountRequiredFields } from '../../services/helpers/dataStructuring';
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsScreen = () => {
@@ -131,8 +132,9 @@ const DiscountDetailsScreen = () => {
 
   useEffect(() => {
     api.getDiscountById(id).then(({ data }) => {
-      setDiscount(data);
-      setCurDiscount(data);
+      const checkedData = discountRequiredFields(data);
+      setDiscount(checkedData);
+      setCurDiscount(checkedData);
 
       api
         .getStores(0, `&customerId=${data.customerId}`)
@@ -165,7 +167,10 @@ const DiscountDetailsScreen = () => {
               && !refProductsObjs.filter((e) => e.id === product.publisherRefId)
                 .length > 0
             ) {
-              refProductsObjs.push({ id: product.publisherRefId });
+              refProductsObjs.push({
+                id: product.publisherRefId,
+                value: product.publisherRefId,
+              });
             }
             if (data?.productIds?.indexOf(product.id) >= 0) {
               productsObj.push({
@@ -179,7 +184,10 @@ const DiscountDetailsScreen = () => {
               });
             }
           });
-          setSelectOptions({ ...selectOptions, refProducts: refProductsObjs });
+          setSelectOptions({
+            ...selectOptions,
+            refProducts: refProductsObjs || [],
+          });
           setAvailProducts(availProductsObj);
           setProducts(productsObj);
         });

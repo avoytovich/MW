@@ -37,7 +37,7 @@ const EligibilitySection = ({
     <CustomCard title="Eligibility">
       <Box display="flex" pb={3} pt={6}>
         {curStores === null ? (
-          <Box width={1} m="10px" pt="8px">
+          <Box width={1} px={1}>
             <CircularProgress />
           </Box>
         ) : (
@@ -64,7 +64,7 @@ const EligibilitySection = ({
         )}
 
         {curProducts === null ? (
-          <Box width={1} m="10px" pt="8px">
+          <Box width={1} px={1}>
             <CircularProgress />
           </Box>
         ) : (
@@ -113,12 +113,11 @@ const EligibilitySection = ({
         </Box>
       </Box>
       <Box display="flex">
-        <Box px={1} width=" 100%">
+        <Box px={1} width=" 100%" p={3}>
           <SelectWithChip
             label="countries"
             value={curDiscount.countries}
             selectOptions={countriesOptions}
-            optionName={(item) => item?.value}
             onChangeSelect={(e) => setCurDiscount({
               ...curDiscount,
               countries: e.target.value,
@@ -136,12 +135,11 @@ const EligibilitySection = ({
         </Box>
       </Box>
       <Box display="flex">
-        <Box px={1} width=" 100%">
+        <Box px={1} width=" 100%" p={3}>
           <SelectWithChip
             label="productsByReference"
             value={curDiscount.publisherRefIds}
             selectOptions={selectOptions.refProducts}
-            optionName={(item) => item?.id}
             onChangeSelect={(e) => setCurDiscount({
               ...curDiscount,
               publisherRefIds: e.target.value,
