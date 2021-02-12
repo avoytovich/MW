@@ -16,6 +16,8 @@ import {
   Switch,
 } from '@material-ui/core';
 
+import moment from 'moment';
+
 import {
   generateData,
   defaultShow,
@@ -25,6 +27,7 @@ import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import CustomCard from '../../components/utils/CustomCard';
 import TableComponent from '../../components/TableComponent';
+import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
 import localization from '../../localization';
 
 import './campaignDetailsScreen.scss';
@@ -59,32 +62,39 @@ const CampaignDetailsScreen = () => {
   }, [curCampaign, campaign]);
 
   useEffect(() => {
-    api
-      .getCampaignById(id)
-      .then(({ data }) => {
-        setCampaign(data);
-        setCurCampaign(data);
-      });
+    api.getCampaignById(id).then(({ data }) => {
+      setCampaign(data);
+      setCurCampaign(data);
+    });
 
-    api
-      .getPricesByCampaignId(id)
-      .then(({ data }) => {
-        const pricesTableData = generateData(data);
-        setPricesData(pricesTableData || []);
-      });
+    api.getPricesByCampaignId(id).then(({ data }) => {
+      const pricesTableData = generateData(data);
+      setPricesData(pricesTableData || []);
+    });
   }, []);
 
   const updateReco = (type, value) => setCurCampaign((c) => ({ ...c, [type]: value }));
 
+  const handleSelectDate = (ranges) => {
+    const { startDate, endDate } = ranges;
+    setCurCampaign((c) => ({
+      ...c,
+      startDate: moment(startDate).valueOf(),
+      endDate: moment(endDate).valueOf(),
+    }));
+  };
+
+  const selectionRange = {
+    startDate: new Date(curCampaign?.startDate),
+    endDate: new Date(curCampaign?.endDate),
+    key: 'selection',
+  };
+
   if (curCampaign === null) return <LinearProgress />;
 
   return (
-    <div className='campaign-details-screen'>
-      <Tabs
-        value={0}
-        indicatorColor="primary"
-        textColor="primary"
-      >
+    <div className="campaign-details-screen">
+      <Tabs value={0} indicatorColor="primary" textColor="primary">
         <Tab label={campaign.name} />
       </Tabs>
 
@@ -101,55 +111,76 @@ const CampaignDetailsScreen = () => {
         </Button>
       </Zoom>
 
-      <CustomCard title='General'>
-        <Box display='flex' py={5} pb={2}>
-          <TextField
-            fullWidth
-            label='Customer'
-            name='customerId'
-            type='text'
-            disabled
-            value={curCampaign.customerId}
-            variant='outlined'
-          />
-
-          <TextField
-            fullWidth
-            label='Name'
-            name='name'
-            type='text'
-            value={curCampaign.name}
-            onChange={handleChange}
-            variant='outlined'
-          />
+      <CustomCard title="General">
+        <Box display="flex" py={5} pb={2}>
+          <Box px={1} width=" 100%">
+            <TextField
+              fullWidth
+              label="Customer"
+              name="customerId"
+              type="text"
+              disabled
+              value={curCampaign.customerId}
+              variant="outlined"
+            />
+          </Box>
+          <Box px={1} width=" 100%">
+            <TextField
+              fullWidth
+              label="Name"
+              name="name"
+              type="text"
+              value={curCampaign.name}
+              onChange={handleChange}
+              variant="outlined"
+            />
+          </Box>
         </Box>
 
-        <Box mx={2} pb={2}>
-          <Typography gutterBottom variant='h5'>Status</Typography>
+        <Box display="flex" pb={2} flexDirection="column">
+          <Typography gutterBottom variant="h5">
+            Date range:
+          </Typography>
+          <Box display="flex" alignItems="baseline">
+            {'Between '}
+            <DateRangePicker
+              values={selectionRange}
+              handleChange={handleSelectDate}
+            />
+          </Box>
+        </Box>
 
-          <Box display='flex' alignItems='center'>
+        <Box pb={2}>
+          <Typography gutterBottom variant="h5">
+            Status
+          </Typography>
+
+          <Box display="flex" alignItems="center">
             <FormControlLabel
               control={(
                 <Switch
-                  color='primary'
+                  color="primary"
                   checked={curCampaign.status === 'ENABLED'}
-                  name='status'
+                  name="status"
                 />
               )}
-              onChange={() => updateReco('status', curCampaign.status === 'ENABLED' ? 'DISABLED' : 'ENABLED')}
+              onChange={() => updateReco(
+                'status',
+                curCampaign.status === 'ENABLED' ? 'DISABLED' : 'ENABLED',
+              )}
               label={curCampaign.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
             />
           </Box>
         </Box>
       </CustomCard>
 
-      <CustomCard title='Products Price Table'>
+      <CustomCard title="Products Price Table">
         <Box pt={4}>
           <TableComponent
             showColumn={defaultShow}
             tableData={pricesData}
             isLoading={pricesData === null}
-            customPath='/overview/products/:productId'
+            customPath="/overview/products/:productId"
             noActions
           />
         </Box>

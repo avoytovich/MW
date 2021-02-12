@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Box,
   MenuItem,
@@ -9,7 +8,7 @@ import {
   InputLabel,
   Select,
 } from '@material-ui/core';
-import localization from '../../../localization';
+import localization from '../../localization';
 
 const SelectWithChip = ({
   label,
@@ -19,7 +18,7 @@ const SelectWithChip = ({
   onChangeSelect,
   onClickDelIcon,
 }) => (
-  <Box my={3}>
+  <Box py={3}>
     <FormControl fullWidth variant="outlined">
       <InputLabel htmlFor={label}>
         {localization.t(`labels.${label}`)}
@@ -41,8 +40,8 @@ const SelectWithChip = ({
             flexDirection="row"
             flexWrap="wrap"
           >
-            {selected.map((chip) => {
-              const selectedItem = selectOptions.filter(
+            {selected?.map((chip) => {
+              const selectedItem = selectOptions?.filter(
                 (item) => item.id === chip,
               )[0];
               const itemName = optionName(selectedItem);
@@ -63,7 +62,7 @@ const SelectWithChip = ({
           </Box>
         )}
       >
-        {selectOptions.map((item) => {
+        {selectOptions?.map((item) => {
           const itemName = optionName(item);
           return (
             <MenuItem key={item.id} value={item.id}>

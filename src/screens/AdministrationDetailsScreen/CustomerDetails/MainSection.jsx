@@ -113,7 +113,7 @@ const MainSection = ({
                 flexWrap="wrap"
               >
                 {selected.map((chip) => (
-                  <Box mb="3px" mr="3px">
+                  <Box mb="3px" mr="3px" key={chip}>
                     <Chip
                       variant="outlined"
                       color="primary"
@@ -133,7 +133,6 @@ const MainSection = ({
                       onMouseDown={(event) => {
                         event.stopPropagation();
                       }}
-                      key={chip}
                       label={chip}
                     />
                   </Box>
@@ -182,7 +181,7 @@ const MainSection = ({
                 flexWrap="wrap"
               >
                 {selected.map((chip) => (
-                  <Box mb="3px" mr="3px">
+                  <Box mb="3px" mr="3px" key={chip}>
                     <Chip
                       variant="outlined"
                       color="primary"
@@ -202,7 +201,6 @@ const MainSection = ({
                       onMouseDown={(event) => {
                         event.stopPropagation();
                       }}
-                      key={chip}
                       label={chip}
                     />
                   </Box>

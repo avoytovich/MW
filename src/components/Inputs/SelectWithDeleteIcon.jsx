@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import CancelIcon from '@material-ui/icons/Cancel';
-
 import {
   Box,
   Typography,
@@ -11,8 +9,7 @@ import {
   FormControl,
   InputLabel,
 } from '@material-ui/core';
-
-import localization from '../../../localization';
+import localization from '../../localization';
 import './Inputs.scss';
 
 const SelectWithDeleteIcon = ({
@@ -48,7 +45,7 @@ const SelectWithDeleteIcon = ({
               flexWrap="wrap"
             >
               <Box mb="2px" mr="2px">
-                <Typography>{optionName.name}</Typography>
+                <Typography>{optionName?.name}</Typography>
               </Box>
               <CancelIcon
                 className="cancelIcon"

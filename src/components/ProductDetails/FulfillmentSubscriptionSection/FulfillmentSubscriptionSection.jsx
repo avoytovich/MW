@@ -10,7 +10,7 @@ import {
   Typography,
   TextField,
 } from '@material-ui/core';
-import { SelectWithChip, SelectWithDeleteIcon, NumberInput } from '../Inputs';
+import { SelectWithChip, SelectWithDeleteIcon, NumberInput } from '../../Inputs';
 import localization from '../../../localization';
 import './FulfillmentSubscriptionSection.scss';
 
@@ -135,12 +135,12 @@ const FulfillmentSubscriptionSection = ({
       </Box>
     )}
     <SelectWithChip
-      optionName={(item) => (item.genericName
+      optionName={(item) => (item?.genericName
         ? `${item.genericName} (${item.publisherRefId}${
           item.subscriptionTemplate ? ', ' : ''
         }
                 ${item.subscriptionTemplate || ''})`
-        : item.id)}
+        : item?.id)}
       label="renewingProducts"
       value={currentProductData.nextGenerationOf}
       selectOptions={selectOptions.renewingProducts}

@@ -6,40 +6,16 @@ import localization from '../../../localization';
 
 import './CheckoutMenu.scss';
 
-const CheckoutMenu = ({ currentProductData, sellingStores }) => {
+const CheckoutMenu = ({ checkOutStores, currentProductData }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-
   const handleClose = () => setAnchorEl(null);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
-  const formHostsMenu = () => {
-    const res = [];
-
-    currentProductData?.sellingStores.forEach((item) => {
-      const selectedStore = sellingStores.filter((store) => store.id === item);
-      const { name, hostnames } = selectedStore[0];
-      hostnames.forEach((hostname) => res.push({ name, hostname }));
-    });
-
-    return res.map((obj) => (
-      <MenuItem key={obj.hostname} onClick={handleClose}>
-        <a
-          data-test="checkoutLink"
-          className="storeHostLink"
-          target="_blank"
-          rel="noreferrer"
-          href={` http://${obj.hostname}/checkout/add?products=${currentProductData.id}`}
-        >
-          {`Store '${obj.name}' (${obj.hostname})`}
-        </a>
-      </MenuItem>
-    ));
-  };
-
   return (
     <>
       <Button
+        disabled={checkOutStores.length <= 0}
         aria-haspopup="true"
         variant="contained"
         color="primary"
@@ -64,15 +40,28 @@ const CheckoutMenu = ({ currentProductData, sellingStores }) => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {formHostsMenu()}
+        {checkOutStores.length
+          && checkOutStores.map((obj) => (
+            <MenuItem key={obj.hostname} onClick={handleClose}>
+              <a
+                data-test="checkoutLink"
+                className="storeHostLink"
+                target="_blank"
+                rel="noreferrer"
+                href={` http://${obj.hostname}/checkout/add?products=${currentProductData.id}`}
+              >
+                {`Store '${obj.name}' (${obj.hostname})`}
+              </a>
+            </MenuItem>
+          ))}
       </Menu>
     </>
   );
 };
 
 CheckoutMenu.propTypes = {
+  checkOutStores: PropTypes.array,
   currentProductData: PropTypes.object,
-  sellingStores: PropTypes.array,
 };
 
 export default CheckoutMenu;

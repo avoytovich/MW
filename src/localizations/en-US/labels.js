@@ -135,7 +135,16 @@ const labels = {
   fulfillmentAndSubscription: 'Fulfillment and Subscription',
   general: 'General',
   prices: 'Prices',
+  productsByParent: 'Products By Parent',
+  productsByReference: 'Products By Reference',
+  endUserGroups: 'End-User Groups',
+  countries: 'Countries',
+  endUserMails: 'End-User Mails',
+  maximumUsesPerStore: 'Maximum Uses Per Store',
+  maximumUsesPerEndUser: 'Maximum Uses Per End-User',
+  periodOfValidity: 'Period of Validity',
   css: 'CSS',
+  fallbackLocale: 'Fallback locale',
 };
 
 export default labels;
