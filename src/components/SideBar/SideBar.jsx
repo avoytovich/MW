@@ -37,34 +37,39 @@ const SideBar = ({ open }) => (
           <Typography variant='h5'>{moment(process.env.BUILT_AT).format('lll')}</Typography>
         </Box>
       )}
-
       <Box
-        height="100%"
+        height="inherit"
         display="flex"
         flexDirection="column"
-        p={3}
-        width={260}
+        justifyContent="space-between"
       >
-        <Box p={2}>
-          {navConfig.map((config) => (
-            <List
-              key={config.subheader}
-              subheader={(
-                <ListSubheader
-                  disableGutters
-                  disableSticky
-                >
-                  {config.subheader}
-                </ListSubheader>
-              )}
-            >
-              {config.items.map((item) => <NavItem key={item.id} {...item} />)}
-            </List>
-          ))}
+        <Box
+          display="flex"
+          flexDirection="column"
+          p={3}
+          width={260}
+        >
+          <Box p={2}>
+            {navConfig.map((config) => (
+              <List
+                key={config.subheader}
+                subheader={(
+                  <ListSubheader
+                    disableGutters
+                    disableSticky
+                  >
+                    {config.subheader}
+                  </ListSubheader>
+                )}
+              >
+                {config.items.map((item) => <NavItem key={item.id} {...item} />)}
+              </List>
+            ))}
+          </Box>
         </Box>
-      </Box>
-      <Box m="0 2px">
-        <CustomerHandling />
+        <Box m="0 2px">
+          <CustomerHandling />
+        </Box>
       </Box>
     </Box>
   </Drawer>
