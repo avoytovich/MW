@@ -1,26 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import localization from '../../localization';
 
 const NumberInput = ({
   label, value, onChangeInput, minMAx,
 }) => (
-  <Box py={3}>
-    <TextField
-      name={label}
-      value={value}
-      fullWidth
-      label={localization.t(`labels.${label}`)}
-      type="number"
-      InputProps={{
-        inputProps: minMAx,
-        form: { autocomplete: 'off' },
-      }}
-      onChange={onChangeInput}
-      variant="outlined"
-    />
-  </Box>
+  <TextField
+    name={label}
+    value={value}
+    fullWidth
+    label={localization.t(`labels.${label}`)}
+    type="number"
+    InputProps={{
+      inputProps: minMAx,
+      form: { autocomplete: 'off' },
+    }}
+    onChange={onChangeInput}
+    variant="outlined"
+  />
 );
 
 NumberInput.propTypes = {

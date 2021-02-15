@@ -72,6 +72,11 @@ const availableLocales = [
   { value: 'zh-CN: Chinese (China)', id: 'zh-CN' },
 ];
 
+const businessSegment = [
+  { value: 'B2B', id: 'B2B' },
+  { value: 'B2C', id: 'B2C' },
+];
+
 export {
   validityPeriod,
   status,
@@ -80,4 +85,5 @@ export {
   storeDetailsCardText,
   orderDetailStatus,
   availableLocales,
+  businessSegment,
 };
