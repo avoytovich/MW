@@ -8,11 +8,13 @@ import {
   type,
   businessSegment,
 } from '../../../services/selectOptions/selectOptions';
+import countriesOptions from '../../../services/selectOptions/countries';
 import {
   SelectWithChip,
   SelectCustom,
   NumberInput,
   InputCustom,
+  SelectWithDeleteIcon,
 } from '../../../components/Inputs';
 import localization from '../../../localization';
 
@@ -181,10 +183,21 @@ const General = ({
           <Box p={2}>
             <SelectWithChip
               label="blockedCountries"
-              value={[]}
-              selectOptions={[]}
-              onChangeSelect={() => console.log('blockedCountries')}
-              onClickDelIcon={(chip) => () => console.log('blockedCountries')}
+              value={currentProductData.blackListedCountries}
+              selectOptions={countriesOptions}
+              onChangeSelect={(e) => setProductData({
+                ...currentProductData,
+                blackListedCountries: e.target.value,
+              })}
+              onClickDelIcon={(chip) => {
+                const newValue = [
+                  ...currentProductData.blackListedCountries,
+                ].filter((val) => val !== chip);
+                setProductData({
+                  ...currentProductData,
+                  blackListedCountries: newValue,
+                });
+              }}
             />
           </Box>
         </Box>
@@ -249,6 +262,45 @@ const General = ({
                 />
               </Box>
             )}
+          </Box>
+          <Box p={2}>
+            <InputCustom
+              label="externalContext"
+              value={currentProductData.externalContext}
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                externalContext: e.target.value,
+              })}
+            />
+          </Box>
+          <Box p={2}>
+            <InputCustom
+              label="family"
+              value={currentProductData.productFamily}
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                productFamily: e.target.value,
+              })}
+            />
+          </Box>
+          <Box p={2}>
+            <SelectWithDeleteIcon
+              label="priceFunction"
+              value={currentProductData.priceFunction}
+              selectOptions={selectOptions.priceFunctions}
+              onChangeSelect={(e) => {
+                setProductData({
+                  ...currentProductData,
+                  priceFunction: e.target.value,
+                });
+              }}
+              onClickDelIcon={() => {
+                setProductData({
+                  ...currentProductData,
+                  priceFunction: '',
+                });
+              }}
+            />
           </Box>
         </Box>
       </Box>

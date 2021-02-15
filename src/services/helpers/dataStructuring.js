@@ -4,12 +4,16 @@ const productRequiredFields = (product) => {
   const defProduct = {
     type: '',
     sellingStores: [],
+    blackListedCountries: [],
     lifeTime: '',
     trialAllowed: false,
     subscriptionTemplate: '',
     trialDuration: '',
     fulfillmentTemplate: '',
     businessSegment: '',
+    externalContext: '',
+    productFamily: '',
+    priceFunction: '',
   };
   if (product.resources) {
     resourcesKeys = [...product.resources].map((resource, index) => ({
@@ -17,9 +21,7 @@ const productRequiredFields = (product) => {
       index,
     }));
   }
-  defProduct.resources = resourcesKeys;
-
-  return { ...defProduct, ...product };
+  return { ...defProduct, ...product, resources: resourcesKeys };
 };
 
 const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {

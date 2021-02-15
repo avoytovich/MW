@@ -44,6 +44,7 @@ const ProductDetailsScreen = () => {
     renewingProducts: null,
     subscriptionModels: null,
     catalogs: null,
+    priceFunctions: null,
   });
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
@@ -92,6 +93,7 @@ const ProductDetailsScreen = () => {
         api.getSubscriptionModelsByCustomerId(customerId),
         api.getFulfillmentTemplateByCustomerId(customerId),
         api.getCatalogsByCustomerId(customerId),
+        api.getPriceFunctionsCustomerByIds(customerId),
       ]).then(
         ([
           sellingStores,
@@ -99,6 +101,7 @@ const ProductDetailsScreen = () => {
           subscriptionModels,
           fulfillmentTemplates,
           catalogs,
+          priceFunctionsOptions,
         ]) => {
           setSelectOptions({
             ...selectOptions,
@@ -121,6 +124,11 @@ const ProductDetailsScreen = () => {
               ) || [],
             catalogs:
               structureSelectOptions(catalogs.data?.items, 'name') || [],
+            priceFunctions:
+              structureSelectOptions(
+                priceFunctionsOptions.data?.items,
+                'name',
+              ) || [],
           });
         },
       );
