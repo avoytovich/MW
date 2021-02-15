@@ -54,6 +54,9 @@ const ProductDetailsScreen = () => {
   const saveDetails = () => {
     const updateDate = Date.now();
     const sendObj = { ...currentProductData, updateDate };
+    if (!sendObj.businessSegment) {
+      delete sendObj.businessSegment;
+    }
     api.updateProductById(currentProductData.id, sendObj).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),

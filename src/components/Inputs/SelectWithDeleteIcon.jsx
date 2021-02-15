@@ -43,6 +43,7 @@ const SelectWithDeleteIcon = ({
           <CancelIcon
             className="cancelIcon"
             fontSize="small"
+            color="secondary"
             onClick={onClickDelIcon}
             onMouseDown={(e) => {
               e.stopPropagation();

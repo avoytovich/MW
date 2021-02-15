@@ -89,219 +89,237 @@ const General = ({
           />
         </Box>
       </Box>
-      <Box display="flex" width="100%">
-        <Box width="100%">
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box p={2} width="50%">
+          <SelectCustom
+            label="catalog"
+            value={currentProductData.catalogId}
+            selectOptions={selectOptions.catalogs}
+            onChangeSelect={(e) => {
+              setProductData({
+                ...currentProductData,
+                catalogId: e.target.value,
+              });
+            }}
+          />
+        </Box>
+        <Box p={2} width="50%">
+          <InputCustom
+            label="name"
+            isRequired
+            value={currentProductData.genericName}
+            onChangeInput={(e) => setProductData({
+              ...currentProductData,
+              genericName: e.target.value,
+            })}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box p={2} width="50%">
+          <SelectCustom
+            label="type"
+            isRequired
+            value={currentProductData.type}
+            selectOptions={type}
+            onChangeSelect={(e) => {
+              setProductData({
+                ...currentProductData,
+                type: e.target.value,
+              });
+              if (inputErrors?.type) {
+                const newObj = { ...inputErrors };
+                delete newObj.type;
+                setInputErrors(newObj);
+              }
+            }}
+          />
+        </Box>
+        <Box p={2} width="50%">
+          <InputCustom
+            isRequired
+            label="publisherRefID"
+            value={currentProductData.publisherRefId}
+            onChangeInput={(e) => setProductData({
+              ...currentProductData,
+              publisherRefId: e.target.value,
+            })}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box p={2} width="50%">
+          <SelectWithDeleteIcon
+            label="businessSegment"
+            value={currentProductData.businessSegment}
+            selectOptions={businessSegment}
+            onChangeSelect={(e) => {
+              setProductData({
+                ...currentProductData,
+                businessSegment: e.target.value,
+              });
+            }}
+            onClickDelIcon={() => {
+              setProductData({
+                ...currentProductData,
+                businessSegment: '',
+              });
+            }}
+          />
+        </Box>
+        <Box display="flex">
           <Box p={2}>
             <SelectCustom
-              label="catalog"
-              value={currentProductData.catalogId}
-              selectOptions={selectOptions.catalogs}
+              label="lifeTime"
+              value={lifeTimeUpdateValue.value}
+              selectOptions={lifeTime}
               onChangeSelect={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  catalogId: e.target.value,
+                setShowLifeTimeNumber(
+                  e.target.value === 'MONTH' || e.target.value === 'YEAR',
+                );
+                setLifeTimeUpdateValue({
+                  ...lifeTimeUpdateValue,
+                  value: e.target.value,
                 });
-              }}
-            />
-          </Box>
-          <Box p={2}>
-            <SelectCustom
-              label="type"
-              isRequired
-              value={currentProductData.type}
-              selectOptions={type}
-              onChangeSelect={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  type: e.target.value,
-                });
-                if (inputErrors?.type) {
+                if (inputErrors?.lifeTime) {
                   const newObj = { ...inputErrors };
-                  delete newObj.type;
+                  delete newObj.lifeTime;
                   setInputErrors(newObj);
                 }
               }}
             />
           </Box>
-          <Box p={2}>
-            <SelectCustom
-              label="businessSegment"
-              value={currentProductData.businessSegment}
-              selectOptions={businessSegment}
-              onChangeSelect={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  businessSegment: e.target.value,
-                });
-              }}
-            />
-          </Box>
-          <Box display="flex" flexDirection="row" alignItems="baseline">
-            <Box p={2}>
-              <Typography color="secondary">
-                {localization.t('labels.physicalProduct')}
-              </Typography>
-            </Box>
-            <Box p={2}>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    name="physicalProduct"
-                    onChange={(e) => {
-                      setProductData({
-                        ...currentProductData,
-                        physical: e.target.checked,
-                      });
-                    }}
-                    color="primary"
-                    checked={currentProductData.physical}
-                  />
-                )}
+          {showLifeTimeNumber && (
+            <Box minWidth="135px" p={2}>
+              <NumberInput
+                label="maxPaymentsPart"
+                value={lifeTimeUpdateValue.number}
+                onChangeInput={(e) => {
+                  setLifeTimeUpdateValue({
+                    ...lifeTimeUpdateValue,
+                    number: e.target.value,
+                  });
+                }}
+                minMAx={{ min: 1, max: 11 }}
               />
             </Box>
+          )}
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="baseline"
+          width="50%"
+          pr={2}
+        >
+          <Box p={2}>
+            <Typography color="secondary">
+              {localization.t('labels.physicalProduct')}
+            </Typography>
           </Box>
           <Box p={2}>
-            <SelectWithChip
-              label="sellingStores"
-              value={currentProductData.sellingStores}
-              selectOptions={selectOptions.sellingStores}
-              onChangeSelect={(e) => setProductData({
-                ...currentProductData,
-                sellingStores: e.target.value,
-              })}
-              onClickDelIcon={(chip) => {
-                const newValue = [...currentProductData.sellingStores].filter(
-                  (val) => val !== chip,
-                );
-                setProductData({
-                  ...currentProductData,
-                  sellingStores: newValue,
-                });
-              }}
-            />
-          </Box>
-          <Box p={2}>
-            <SelectWithChip
-              label="blockedCountries"
-              value={currentProductData.blackListedCountries}
-              selectOptions={countriesOptions}
-              onChangeSelect={(e) => setProductData({
-                ...currentProductData,
-                blackListedCountries: e.target.value,
-              })}
-              onClickDelIcon={(chip) => {
-                const newValue = [
-                  ...currentProductData.blackListedCountries,
-                ].filter((val) => val !== chip);
-                setProductData({
-                  ...currentProductData,
-                  blackListedCountries: newValue,
-                });
-              }}
+            <FormControlLabel
+              control={(
+                <Switch
+                  name="physicalProduct"
+                  onChange={(e) => {
+                    setProductData({
+                      ...currentProductData,
+                      physical: e.target.checked,
+                    });
+                  }}
+                  color="primary"
+                  checked={currentProductData.physical}
+                />
+              )}
             />
           </Box>
         </Box>
-
-        <Box width="100%">
-          <Box p={2}>
-            <InputCustom
-              label="name"
-              isRequired
-              value={currentProductData.genericName}
-              onChangeInput={(e) => setProductData({
+        <Box p={2} width="50%">
+          <InputCustom
+            isMultiline
+            label="externalContext"
+            value={currentProductData.externalContext}
+            onChangeInput={(e) => setProductData({
+              ...currentProductData,
+              externalContext: e.target.value,
+            })}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box p={2} width="50%">
+          <SelectWithChip
+            label="sellingStores"
+            value={currentProductData.sellingStores}
+            selectOptions={selectOptions.sellingStores}
+            onChangeSelect={(e) => setProductData({
+              ...currentProductData,
+              sellingStores: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [...currentProductData.sellingStores].filter(
+                (val) => val !== chip,
+              );
+              setProductData({
                 ...currentProductData,
-                genericName: e.target.value,
-              })}
-            />
-          </Box>
-          <Box p={2}>
-            <InputCustom
-              isRequired
-              label="publisherRefID"
-              value={currentProductData.publisherRefId}
-              onChangeInput={(e) => setProductData({
+                sellingStores: newValue,
+              });
+            }}
+          />
+        </Box>
+        <Box p={2} width="50%">
+          <InputCustom
+            label="family"
+            value={currentProductData.productFamily}
+            onChangeInput={(e) => setProductData({
+              ...currentProductData,
+              productFamily: e.target.value,
+            })}
+          />
+        </Box>
+      </Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box p={2} width="50%">
+          <SelectWithChip
+            label="blockedCountries"
+            value={currentProductData.blackListedCountries}
+            selectOptions={countriesOptions}
+            onChangeSelect={(e) => setProductData({
+              ...currentProductData,
+              blackListedCountries: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [
+                ...currentProductData.blackListedCountries,
+              ].filter((val) => val !== chip);
+              setProductData({
                 ...currentProductData,
-                publisherRefId: e.target.value,
-              })}
-            />
-          </Box>
-          <Box display="flex" width="100%">
-            <Box width="30%" p={2}>
-              <SelectCustom
-                label="lifeTime"
-                value={lifeTimeUpdateValue.value}
-                selectOptions={lifeTime}
-                onChangeSelect={(e) => {
-                  setShowLifeTimeNumber(
-                    e.target.value === 'MONTH' || e.target.value === 'YEAR',
-                  );
-                  setLifeTimeUpdateValue({
-                    ...lifeTimeUpdateValue,
-                    value: e.target.value,
-                  });
-                  if (inputErrors?.lifeTime) {
-                    const newObj = { ...inputErrors };
-                    delete newObj.lifeTime;
-                    setInputErrors(newObj);
-                  }
-                }}
-              />
-            </Box>
-            {showLifeTimeNumber && (
-              <Box width="30%" p={2}>
-                <NumberInput
-                  label="maxPaymentsPart"
-                  value={lifeTimeUpdateValue.number}
-                  onChangeInput={(e) => {
-                    setLifeTimeUpdateValue({
-                      ...lifeTimeUpdateValue,
-                      number: e.target.value,
-                    });
-                  }}
-                  minMAx={{ min: 1, max: 11 }}
-                />
-              </Box>
-            )}
-          </Box>
-          <Box p={2}>
-            <InputCustom
-              label="externalContext"
-              value={currentProductData.externalContext}
-              onChangeInput={(e) => setProductData({
+                blackListedCountries: newValue,
+              });
+            }}
+          />
+        </Box>
+        <Box p={2} width="50%">
+          <SelectWithDeleteIcon
+            label="priceFunction"
+            value={currentProductData.priceFunction}
+            selectOptions={selectOptions.priceFunctions}
+            onChangeSelect={(e) => {
+              setProductData({
                 ...currentProductData,
-                externalContext: e.target.value,
-              })}
-            />
-          </Box>
-          <Box p={2}>
-            <InputCustom
-              label="family"
-              value={currentProductData.productFamily}
-              onChangeInput={(e) => setProductData({
+                priceFunction: e.target.value,
+              });
+            }}
+            onClickDelIcon={() => {
+              setProductData({
                 ...currentProductData,
-                productFamily: e.target.value,
-              })}
-            />
-          </Box>
-          <Box p={2}>
-            <SelectWithDeleteIcon
-              label="priceFunction"
-              value={currentProductData.priceFunction}
-              selectOptions={selectOptions.priceFunctions}
-              onChangeSelect={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  priceFunction: e.target.value,
-                });
-              }}
-              onClickDelIcon={() => {
-                setProductData({
-                  ...currentProductData,
-                  priceFunction: '',
-                });
-              }}
-            />
-          </Box>
+                priceFunction: '',
+              });
+            }}
+          />
         </Box>
       </Box>
     </>
