@@ -27,6 +27,11 @@ const SelectWithChip = ({
         name: label,
         id: label,
       }}
+      MenuProps={{
+        getContentAnchorEl: null,
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        transformOrigin: { vertical: 'top', horizontal: 'center' },
+      }}
       startAdornment={
         !selectOptions && (
           <InputAdornment>
@@ -58,7 +63,7 @@ const SelectWithChip = ({
                   onMouseDown={(e) => {
                     e.stopPropagation();
                   }}
-                  label={selectedItem.value}
+                  label={selectedItem?.value || chip}
                 />
               </Box>
             );
