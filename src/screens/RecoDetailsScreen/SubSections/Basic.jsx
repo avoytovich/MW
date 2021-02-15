@@ -201,7 +201,7 @@ const Basic = ({
           />
         </Box>
 
-        <Box px={1} width="100%">
+        <Box px={1} width="100%" py={3}>
           <SelectCustom
             label="fallbackLocale"
             onChangeSelect={(e) => setCurReco({ ...curReco, fallbackLocale: e.target.value })}

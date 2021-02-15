@@ -20,17 +20,16 @@ const themeConfig = {
         },
       },
     },
-    MuiCardActionArea:
-      { root:
-        {
-          boxSizing: 'border-box',
-          border: "3px solid transparent",
-          "&:hover": {
-            borderRadius: '10px',
-            border: "3px solid white",
-          },
-        }
+    MuiCardActionArea: {
+      root: {
+        boxSizing: 'border-box',
+        border: '3px solid transparent',
+        '&:hover': {
+          borderRadius: '10px',
+          border: '3px solid white',
+        },
       },
+    },
     MuiFormLabel: { root: { color: colors.textPrimaryGray } },
     MuiCheckbox: { root: { color: colors.textPrimaryGray } },
     MuiFormHelperText: {
@@ -39,6 +38,12 @@ const themeConfig = {
     },
     MuiTab: {
       root: {
+        '&.MuiTab-root': {
+          textTransform: 'none',
+          minWidth: 'auto',
+          padding: 18,
+          letterSpacing: 'unset',
+        },
         '&.MuiTab-textColorPrimary': {
           color: colors.textPrimaryGray,
         },

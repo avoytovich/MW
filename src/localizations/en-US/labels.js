@@ -132,7 +132,7 @@ const labels = {
   renewingProducts: 'Renewing Products',
   allowTrial: 'Allow trial',
   PreorderReleaseDate: 'Preorder Release Date',
-  fulfillmentAndSubscription: 'Fulfillment and Subscription',
+  fulfillmentAndSubscription: 'Fulfillment & Subscription',
   general: 'General',
   prices: 'Prices',
   productsByParent: 'Products By Parent',
@@ -145,6 +145,13 @@ const labels = {
   periodOfValidity: 'Period of Validity',
   css: 'CSS',
   fallbackLocale: 'Fallback locale',
+  catalog: 'Catalog',
+  businessSegment: 'Business Segment',
+  physicalProduct: 'Physical Product',
+  blockedCountries: 'Blocked Countries',
+  localizedContent: 'Localized Content',
+  productVariations: 'Product Variations',
+  productFiles: 'Product Files',
 };
 
 export default labels;

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FolderOpen } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import {
   LinearProgress,
@@ -8,66 +7,48 @@ import {
   Button,
   Box,
   Typography,
+  Tabs,
+  Tab,
 } from '@material-ui/core';
+
 import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
-import ProductDetails from '../../components/ProductDetails';
-import CheckoutMenu from '../../components/ProductDetails/CheckoutMenu';
+import General from './SubSections/General';
+import CheckoutMenu from './CheckoutMenu';
+import SectionLayout from './SectionLayout';
+import {
+  productRequiredFields,
+  structureSelectOptions,
+} from '../../services/helpers/dataStructuring';
+
+const allTabs = [
+  'general',
+  'fulfillmentAndSubscription',
+  'localizedContent',
+  'prices',
+  'productVariations',
+  'productFiles',
+];
 
 const ProductDetailsScreen = () => {
   const dispatch = useDispatch();
   const [inputErrors, setInputErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
 
   const [productHasChanges, setProductChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
     sellingStores: null,
     renewingProducts: null,
     subscriptionModels: null,
+    catalogs: null,
   });
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
 
   const [checkOutStores, setCheckOutStores] = useState([]);
-  const checkRequiredFields = (product) => {
-    let resourcesKeys = null;
-    let resObj = { ...product };
-
-    if (resObj.resources) {
-      resourcesKeys = [...resObj.resources].map((resource, index) => ({
-        ...resource,
-        index,
-      }));
-    }
-    if (resourcesKeys) {
-      resObj = { ...resObj, resources: resourcesKeys };
-    }
-    if (!resObj.type) {
-      resObj = { ...resObj, type: '' };
-    }
-    if (!resObj.sellingStores) {
-      resObj = { ...resObj, sellingStores: [] };
-    }
-    if (!resObj.lifeTime) {
-      resObj = { ...resObj, lifeTime: '' };
-    }
-    if (!resObj.trialAllowed) {
-      resObj = { ...resObj, trialAllowed: false };
-    }
-    if (!resObj.subscriptionTemplate) {
-      resObj = { ...resObj, subscriptionTemplate: '' };
-    }
-    if (!resObj.trialDuration) {
-      resObj = { ...resObj, trialDuration: '' };
-    }
-    if (!resObj.fulfillmentTemplate) {
-      resObj = { ...resObj, fulfillmentTemplate: '' };
-    }
-
-    return resObj;
-  };
 
   const saveDetails = () => {
     const updateDate = Date.now();
@@ -87,8 +68,8 @@ const ProductDetailsScreen = () => {
       );
 
       if (selectedStore[0]) {
-        const { name, hostnames } = selectedStore[0];
-        hostnames.forEach((hostname) => res.push({ name, hostname }));
+        const { value, hostnames } = selectedStore[0];
+        hostnames.forEach((hostname) => res.push({ value, hostname }));
       }
     });
     setCheckOutStores(res);
@@ -97,49 +78,62 @@ const ProductDetailsScreen = () => {
   useEffect(() => {
     let isCancelled = false;
 
-    const requests = async () => {
-      try {
-        const product = await api.getProductById(id);
-        const sellingStoreOptions = await api.getSellingStoreOptions(
-          product.data?.customerId,
-        );
-
-        const renewingProd = await api.getRenewingProductsByCustomerId(
-          product.data?.customerId,
-        );
-        const subscriptionModels = await api.getSubscriptionModelsByCustomerId(
-          product.data?.customerId,
-        );
-        const fulfillmentTemplate = await api.getFulfillmentTemplateByCustomerId(
-          product.data?.customerId,
-        );
-        if (!isCancelled) {
-          const checkedProduct = checkRequiredFields(product.data);
-          setProductData(checkedProduct);
-          setCurrentProductData(checkedProduct);
+    api.getProductById(id).then(({ data: product }) => {
+      const { customerId } = product;
+      if (!isCancelled) {
+        const checkedProduct = productRequiredFields(product);
+        setProductData(checkedProduct);
+        setCurrentProductData(checkedProduct);
+        setLoading(false);
+      }
+      Promise.all([
+        api.getSellingStoreOptions(customerId),
+        api.getRenewingProductsByCustomerId(customerId),
+        api.getSubscriptionModelsByCustomerId(customerId),
+        api.getFulfillmentTemplateByCustomerId(customerId),
+        api.getCatalogsByCustomerId(customerId),
+      ]).then(
+        ([
+          sellingStores,
+          renewingProducts,
+          subscriptionModels,
+          fulfillmentTemplates,
+          catalogs,
+        ]) => {
           setSelectOptions({
             ...selectOptions,
-            sellingStores: sellingStoreOptions.data.items,
-            renewingProducts: renewingProd.data?.items,
-            subscriptionModels: subscriptionModels.data?.items,
-            fulfillmentTemplates: fulfillmentTemplate.data?.items,
+            sellingStores:
+              structureSelectOptions(
+                sellingStores.data?.items,
+                'name',
+                'hostnames',
+              ) || [],
+            renewingProducts:
+              structureSelectOptions(renewingProducts.data?.items, 'value')
+              || [],
+            subscriptionModels:
+              structureSelectOptions(subscriptionModels.data?.items, 'value')
+              || [],
+            fulfillmentTemplates:
+              structureSelectOptions(
+                fulfillmentTemplates.data?.items,
+                'value',
+              ) || [],
+            catalogs:
+              structureSelectOptions(catalogs.data?.items, 'name') || [],
           });
-          filterCheckoutStores();
-          setLoading(false);
-        }
-      } catch (error) {
-        if (!isCancelled) {
-          setLoading(false);
-        }
-      }
-    };
-    requests();
+        },
+      );
+    });
     return () => {
       isCancelled = true;
     };
   }, []);
   useEffect(() => {
-    if (currentProductData && selectOptions.sellingStores) {
+    if (
+      JSON.stringify(currentProductData?.sellingStores)
+      !== JSON.stringify(productData?.sellingStores)
+    ) {
       filterCheckoutStores();
     }
 
@@ -151,21 +145,38 @@ const ProductDetailsScreen = () => {
     };
   }, [currentProductData]);
 
+  useEffect(() => {
+    if (selectOptions.sellingStores) {
+      filterCheckoutStores();
+    }
+  }, [selectOptions.sellingStores]);
   if (isLoading) return <LinearProgress />;
 
   return (
     <>
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Box display="flex" flexDirection="row">
-          <Box>
-            <FolderOpen color="secondary" />
+      <Box display="flex" flexDirection="row" mx={2} pb={2}>
+        <Typography component="div" color="primary">
+          <Box fontWeight={500}>
+            {localization.t('general.product')}
+            {'/'}
           </Box>
-          <Box>
-            <Typography component="div" color="primary">
-              <Box fontWeight={500}>{localization.t('general.product')}</Box>
-            </Typography>
-          </Box>
+        </Typography>
+        <Typography component="div" color="secondary">
+          <Box fontWeight={500}>{id}</Box>
+        </Typography>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="row"
+        m={2}
+        justifyContent="space-between"
+      >
+        <Box alignSelf="center">
+          <Typography data-test="productName" gutterBottom variant="h3">
+            {currentProductData.genericName}
+          </Typography>
         </Box>
+
         <Box display="flex" flexDirection="row">
           <Zoom in={productHasChanges}>
             <Box mb={1} mr={1}>
@@ -182,6 +193,7 @@ const ProductDetailsScreen = () => {
               </Button>
             </Box>
           </Zoom>
+
           <Box>
             {selectOptions.sellingStores && (
               <CheckoutMenu
@@ -193,16 +205,43 @@ const ProductDetailsScreen = () => {
           </Box>
         </Box>
       </Box>
-      {currentProductData && (
-        <ProductDetails
-          inputErrors={inputErrors}
-          setInputErrors={setInputErrors}
-          selectOptions={selectOptions}
-          setProductData={setCurrentProductData}
-          currentProductData={currentProductData}
-          productData={productData}
-        />
-      )}
+      <Box m={2} bgcolor="#fff">
+        <Tabs
+          value={curTab}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={(event, newValue) => {
+            setCurTab(newValue);
+          }}
+          aria-label="disabled tabs example"
+        >
+          <Tab label={localization.t(`labels.${allTabs[0]}`)} />
+          <Tab label={localization.t(`labels.${allTabs[1]}`)} />
+          <Tab label={localization.t(`labels.${allTabs[2]}`)} />
+          <Tab label={localization.t(`labels.${allTabs[3]}`)} />
+          <Tab label={localization.t(`labels.${allTabs[4]}`)} />
+          <Tab label={localization.t(`labels.${allTabs[5]}`)} />
+        </Tabs>
+      </Box>
+      <Box display="flex">
+        {curTab === 0 && (
+          <SectionLayout label={allTabs[0]}>
+            <General
+              inputErrors={inputErrors}
+              setInputErrors={setInputErrors}
+              selectOptions={selectOptions}
+              setProductData={setCurrentProductData}
+              currentProductData={currentProductData}
+              productData={productData}
+            />
+          </SectionLayout>
+        )}
+        {curTab === 1 && <SectionLayout label={allTabs[1]} />}
+        {curTab === 2 && <SectionLayout label={allTabs[2]} />}
+        {curTab === 3 && <SectionLayout label={allTabs[3]} />}
+        {curTab === 4 && <SectionLayout label={allTabs[4]} />}
+        {curTab === 5 && <SectionLayout label={allTabs[5]} />}
+      </Box>
     </>
   );
 };
