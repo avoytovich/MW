@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import CancelIcon from '@material-ui/icons/Cancel';
 import {
-  Box,
-  Typography,
   MenuItem,
   Select,
   FormControl,
   InputLabel,
+  CircularProgress,
+  InputAdornment,
 } from '@material-ui/core';
 import localization from '../../localization';
 import './Inputs.scss';
@@ -22,44 +22,39 @@ const SelectWithDeleteIcon = ({
   <FormControl fullWidth variant="outlined">
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
-      value={value}
+      value={selectOptions ? value : ''}
       inputProps={{
         name: label,
         id: label,
       }}
+      disabled={!selectOptions}
       label={localization.t(`labels.${label}`)}
       onChange={onChangeSelect}
       variant="outlined"
-      renderValue={(selected) => {
-        const optionName = selectOptions.find(
-          (option) => option.id === selected,
-        );
-        return (
-          <Box
-            display="flex"
-            alignItems="center"
-            flexDirection="row"
-            flexWrap="wrap"
-          >
-            <Box mb="2px" mr="2px">
-              <Typography>{optionName?.name}</Typography>
-            </Box>
-            <CancelIcon
-              className="cancelIcon"
-              fontSize="small"
-              color="primary"
-              onClick={onClickDelIcon}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-              }}
-            />
-          </Box>
-        );
-      }}
+      startAdornment={
+        !selectOptions && (
+          <InputAdornment>
+            <CircularProgress />
+          </InputAdornment>
+        )
+      }
+      endAdornment={
+        value && (
+          <CancelIcon
+            className="cancelIcon"
+            fontSize="small"
+            color="secondary"
+            onClick={onClickDelIcon}
+            onMouseDown={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        )
+      }
     >
-      {selectOptions.map((option) => (
+      {selectOptions?.map((option) => (
         <MenuItem key={option.id} value={option.id}>
-          {option.name}
+          {option.value}
         </MenuItem>
       ))}
     </Select>

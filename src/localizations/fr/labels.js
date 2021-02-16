@@ -59,6 +59,7 @@ const labels = {
   accountCreated: 'Account Created',
   productID: 'Product ID',
   family: 'Family',
+  externalContext: 'External Context',
   priceFunction: 'Price function',
   hostnames: 'Hostnames',
   defaultLanguage: 'Default Language',

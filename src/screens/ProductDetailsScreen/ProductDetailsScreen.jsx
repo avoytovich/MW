@@ -44,6 +44,7 @@ const ProductDetailsScreen = () => {
     renewingProducts: null,
     subscriptionModels: null,
     catalogs: null,
+    priceFunctions: null,
   });
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
@@ -53,6 +54,9 @@ const ProductDetailsScreen = () => {
   const saveDetails = () => {
     const updateDate = Date.now();
     const sendObj = { ...currentProductData, updateDate };
+    if (!sendObj.businessSegment) {
+      delete sendObj.businessSegment;
+    }
     api.updateProductById(currentProductData.id, sendObj).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
@@ -92,6 +96,7 @@ const ProductDetailsScreen = () => {
         api.getSubscriptionModelsByCustomerId(customerId),
         api.getFulfillmentTemplateByCustomerId(customerId),
         api.getCatalogsByCustomerId(customerId),
+        api.getPriceFunctionsCustomerByIds(customerId),
       ]).then(
         ([
           sellingStores,
@@ -99,6 +104,7 @@ const ProductDetailsScreen = () => {
           subscriptionModels,
           fulfillmentTemplates,
           catalogs,
+          priceFunctionsOptions,
         ]) => {
           setSelectOptions({
             ...selectOptions,
@@ -121,6 +127,11 @@ const ProductDetailsScreen = () => {
               ) || [],
             catalogs:
               structureSelectOptions(catalogs.data?.items, 'name') || [],
+            priceFunctions:
+              structureSelectOptions(
+                priceFunctionsOptions.data?.items,
+                'name',
+              ) || [],
           });
         },
       );

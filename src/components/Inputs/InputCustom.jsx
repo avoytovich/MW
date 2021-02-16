@@ -4,10 +4,15 @@ import { TextField } from '@material-ui/core';
 import localization from '../../localization';
 
 const InputCustom = ({
-  label, value, onChangeInput, isRequired,
+  label,
+  value,
+  onChangeInput,
+  isRequired,
+  isMultiline,
 }) => (
   <form autoComplete="off">
     <TextField
+      multiline={isMultiline}
       required={isRequired}
       name={label}
       value={value}
@@ -27,6 +32,7 @@ InputCustom.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   isRequired: PropTypes.bool,
+  isMultiline: PropTypes.bool,
   onChangeInput: PropTypes.func,
 };
 

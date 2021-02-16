@@ -333,6 +333,13 @@ const api = {
       url,
     });
   },
+  getPriceFunctionsCustomerByIds(customerId) {
+    const url = `/products/price-functions?format=short&customerId=${customerId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET ONE BY ID
   getProductById(id) {
     const url = `/products/${id}`;
