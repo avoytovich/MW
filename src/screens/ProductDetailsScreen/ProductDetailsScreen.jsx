@@ -15,6 +15,7 @@ import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import General from './SubSections/General';
+import Prices from './SubSections/Prices';
 import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
 import CheckoutMenu from './CheckoutMenu';
 import SectionLayout from './SectionLayout';
@@ -274,7 +275,12 @@ const ProductDetailsScreen = () => {
           </SectionLayout>
         )}
         {curTab === 2 && <SectionLayout label={allTabs[2]} />}
-        {curTab === 3 && <SectionLayout label={allTabs[3]} />}
+        {/* {curTab === 3 && <SectionLayout label={allTabs[3]} />} */}
+        {curTab === 3 && (
+          <SectionLayout label={allTabs[3]} >
+            <Prices/>
+          </SectionLayout>
+        )}
         {curTab === 4 && <SectionLayout label={allTabs[4]} />}
         {curTab === 5 && <SectionLayout label={allTabs[5]} />}
       </Box>
