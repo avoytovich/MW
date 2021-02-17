@@ -82,6 +82,7 @@ const LocalizedContent = ({
           indicatorColor='primary'
           variant='scrollable'
           value={value}
+          style={{ borderRight: '1px solid #e2e2e2', height: '100%' }}
           onChange={(e, newTab) => setValue(newTab)}
           aria-label='Localizations'
         >
@@ -93,7 +94,7 @@ const LocalizedContent = ({
               component={({ children, ...props }) => (
                 <div {...props}>
                   {children}
-                  {locale !== curData?.fallbackLocale && <ClearIcon onClick={(e) => { e.stopPropagation(); console.log('do close'); }} />}
+                  {locale !== curData?.fallbackLocale && <ClearIcon onClick={(e) => { e.stopPropagation(); setAvailLocales((c) => c.filter(l => l!== locale)); }} />}
                 </div>
               )}
             />
@@ -109,7 +110,7 @@ const LocalizedContent = ({
                   selectOptions={availableLocales}
                 />
 
-                <AddCircleIcon color='primary' style={{ marginLeft: 15 }} />
+                <AddCircleIcon color='primary' style={{ marginLeft: 15 }} onClick={() => console.log('add new')} />
               </div>
             )}
           />
