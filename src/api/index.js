@@ -467,6 +467,14 @@ const api = {
       url,
     });
   },
+  getProductDescriptionById(id) {
+    const url = `/products/descriptions/${id}`;
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // PUT BY ID
   updateCustomerById(id, data) {
