@@ -4,9 +4,10 @@ import { TextField } from '@material-ui/core';
 import localization from '../../localization';
 
 const NumberInput = ({
-  label, value, onChangeInput, minMAx,
+  label, value, onChangeInput, minMAx, isDisabled,
 }) => (
   <TextField
+    disabled={isDisabled}
     name={label}
     value={value}
     fullWidth
@@ -26,6 +27,7 @@ NumberInput.propTypes = {
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   minMAx: PropTypes.object,
   onChangeInput: PropTypes.func,
+  isDisabled: PropTypes.bool,
 };
 
 export default NumberInput;

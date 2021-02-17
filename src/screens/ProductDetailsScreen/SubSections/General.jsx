@@ -9,6 +9,7 @@ import {
   businessSegment,
 } from '../../../services/selectOptions/selectOptions';
 import countriesOptions from '../../../services/selectOptions/countries';
+import localization from '../../../localization';
 import {
   SelectWithChip,
   SelectCustom,
@@ -16,7 +17,6 @@ import {
   InputCustom,
   SelectWithDeleteIcon,
 } from '../../../components/Inputs';
-import localization from '../../../localization';
 
 const General = ({
   setProductData,

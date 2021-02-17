@@ -15,11 +15,13 @@ import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import General from './SubSections/General';
+import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
 import CheckoutMenu from './CheckoutMenu';
 import SectionLayout from './SectionLayout';
 import {
   productRequiredFields,
   structureSelectOptions,
+  renewingProductsOptions,
 } from '../../services/helpers/dataStructuring';
 
 const allTabs = [
@@ -81,6 +83,7 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => {
     let isCancelled = false;
+    let subscriptionOptions = null;
 
     api.getProductById(id).then(({ data: product }) => {
       const { customerId } = product;
@@ -90,51 +93,64 @@ const ProductDetailsScreen = () => {
         setCurrentProductData(checkedProduct);
         setLoading(false);
       }
-      Promise.all([
+      const promiseArray = [
         api.getSellingStoreOptions(customerId),
         api.getRenewingProductsByCustomerId(customerId),
-        api.getSubscriptionModelsByCustomerId(customerId),
         api.getFulfillmentTemplateByCustomerId(customerId),
         api.getCatalogsByCustomerId(customerId),
         api.getPriceFunctionsCustomerByIds(customerId),
-      ]).then(
-        ([
-          sellingStores,
-          renewingProducts,
-          subscriptionModels,
-          fulfillmentTemplates,
-          catalogs,
-          priceFunctionsOptions,
-        ]) => {
-          setSelectOptions({
-            ...selectOptions,
-            sellingStores:
-              structureSelectOptions(
-                sellingStores.data?.items,
+      ];
+      api.getCustomerById(customerId).then(({ data: curCustomer }) => {
+        if (curCustomer?.usingSubscriptionV1) {
+          promiseArray.push(api.getSubscriptionModelsByCustomerId(customerId));
+        } else {
+          subscriptionOptions = Object.keys(
+            curCustomer?.subscriptions,
+          ).map((item) => ({ id: item, value: item }));
+        }
+        Promise.all(promiseArray).then(
+          ([
+            sellingStores,
+            renewingProducts,
+            fulfillmentTemplates,
+            catalogs,
+            priceFunctionsOptions,
+            subscriptions,
+          ]) => {
+            if (!subscriptionOptions) {
+              subscriptionOptions = structureSelectOptions(
+                subscriptions.data?.items,
                 'name',
-                'hostnames',
-              ) || [],
-            renewingProducts:
-              structureSelectOptions(renewingProducts.data?.items, 'value')
-              || [],
-            subscriptionModels:
-              structureSelectOptions(subscriptionModels.data?.items, 'value')
-              || [],
-            fulfillmentTemplates:
-              structureSelectOptions(
-                fulfillmentTemplates.data?.items,
-                'value',
-              ) || [],
-            catalogs:
-              structureSelectOptions(catalogs.data?.items, 'name') || [],
-            priceFunctions:
-              structureSelectOptions(
-                priceFunctionsOptions.data?.items,
-                'name',
-              ) || [],
-          });
-        },
-      );
+              );
+            }
+            setSelectOptions({
+              ...selectOptions,
+              sellingStores:
+                structureSelectOptions(
+                  sellingStores.data?.items,
+                  'name',
+                  'hostnames',
+                ) || [],
+              renewingProducts:
+                renewingProductsOptions(renewingProducts.data?.items) || [],
+
+              fulfillmentTemplates:
+                structureSelectOptions(
+                  fulfillmentTemplates.data?.items,
+                  'name',
+                ) || [],
+              catalogs:
+                structureSelectOptions(catalogs.data?.items, 'name') || [],
+              priceFunctions:
+                structureSelectOptions(
+                  priceFunctionsOptions.data?.items,
+                  'name',
+                ) || [],
+              subscriptionModels: subscriptionOptions || [],
+            });
+          },
+        );
+      });
     });
     return () => {
       isCancelled = true;
@@ -247,7 +263,16 @@ const ProductDetailsScreen = () => {
             />
           </SectionLayout>
         )}
-        {curTab === 1 && <SectionLayout label={allTabs[1]} />}
+        {curTab === 1 && (
+          <SectionLayout label={allTabs[1]}>
+            <FulfillmentAndSubscription
+              selectOptions={selectOptions}
+              setProductData={setCurrentProductData}
+              currentProductData={currentProductData}
+              productData={productData}
+            />
+          </SectionLayout>
+        )}
         {curTab === 2 && <SectionLayout label={allTabs[2]} />}
         {curTab === 3 && <SectionLayout label={allTabs[3]} />}
         {curTab === 4 && <SectionLayout label={allTabs[4]} />}
