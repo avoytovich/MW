@@ -1,5 +1,10 @@
-.cancelIcon {
-  border-radius: 0px;
+.cancelSelectIcon {
   position: absolute;
   right: 30px;
+  cursor: pointer;
+}
+.cancelDateIcon{
+  position: absolute;
+  right: 42px;
+  cursor: pointer;
 }

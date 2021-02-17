@@ -120,6 +120,7 @@ const FulfillmentAndSubscription = ({
               endAdornment: currentProductData.releaseDate && (
                 <InputAdornment>
                   <CancelIcon
+                    className='cancelDateIcon'
                     fontSize="small"
                     color="secondary"
                     onClick={() => {
