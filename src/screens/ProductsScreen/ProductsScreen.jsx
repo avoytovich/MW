@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Button, Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+
 import api from '../../api';
 import {
   generateData,
@@ -55,9 +58,20 @@ const ProductsScreen = () => {
   });
 
   const updatePage = (page) => setCurrentPage(page);
-
   return (
     <>
+      <Box display="flex" justifyContent="flex-end" p="15px">
+        <Button
+          id="add-product"
+          color="primary"
+          size="large"
+          variant="contained"
+          component={Link}
+          to="/products/add"
+        >
+          Add product
+        </Button>
+      </Box>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

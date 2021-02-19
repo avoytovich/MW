@@ -113,10 +113,13 @@ const SignedRoutes = () => {
         path="/checkout-experience/fonts/:id"
         component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
       />
-
       <Route
         path="/checkout-experience"
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}
+      />
+      <Route
+        path="/products/add"
+        component={lazy(() => import('../../screens/CreateProductScreen'))}
       />
       <Redirect to="/overview/products" />
     </Switch>

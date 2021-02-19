@@ -47,6 +47,9 @@ const themeConfig = {
         '&.MuiTab-textColorPrimary': {
           color: colors.textPrimaryGray,
         },
+        '&.Mui-disabled': {
+          opacity: 0.5,
+        },
       },
     },
     MuiAppBar: {

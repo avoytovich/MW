@@ -17,10 +17,9 @@ const SelectCustom = ({
   onChangeSelect,
   isRequired,
 }) => (
-  <FormControl fullWidth variant="outlined">
+  <FormControl fullWidth required={isRequired} variant="outlined">
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
-      required={isRequired}
       disabled={!selectOptions}
       value={selectOptions ? value : ''}
       inputProps={{

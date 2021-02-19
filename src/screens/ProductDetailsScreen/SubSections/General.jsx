@@ -92,6 +92,7 @@ const General = ({
       <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2} width="50%">
           <SelectCustom
+            isRequired
             label="catalog"
             value={currentProductData.catalogId}
             selectOptions={selectOptions.catalogs}
