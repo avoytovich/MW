@@ -69,7 +69,7 @@ const ProductsScreen = () => {
           component={Link}
           to="/products/add"
         >
-          Add product
+          {localization.t('general.addProduct')}
         </Button>
       </Box>
       <TableComponent

@@ -6,20 +6,16 @@ import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
+import handleGetOptions from './utils';
+import { productRequiredFields } from '../../services/helpers/dataStructuring';
 
-import {
-  productRequiredFields,
-  structureSelectOptions,
-  renewingProductsOptions,
-} from '../../services/helpers/dataStructuring';
+const EditProduct = () => {
+  const { id } = useParams();
 
-const ProductDetailsScreen = () => {
   const dispatch = useDispatch();
 
   const [inputErrors, setInputErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
-  const { id } = useParams();
-
   const [productHasChanges, setProductChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
     sellingStores: null,
@@ -30,16 +26,14 @@ const ProductDetailsScreen = () => {
   });
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
-
   const [checkOutStores, setCheckOutStores] = useState([]);
 
   const saveDetails = () => {
-    const updateDate = Date.now();
-    const sendObj = { ...currentProductData, updateDate };
-    if (!sendObj.businessSegment) {
-      delete sendObj.businessSegment;
+    const res = { ...currentProductData };
+    if (!res.businessSegment) {
+      delete res.businessSegment;
     }
-    api.updateProductById(currentProductData.id, sendObj).then(() => {
+    api.updateProductById(currentProductData.id, res).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
@@ -60,70 +54,7 @@ const ProductDetailsScreen = () => {
     });
     setCheckOutStores(res);
   };
-  const handleGetOptions = (customerId, isCancelled) => {
-    let subscriptionOptions = null;
 
-    const promiseArray = [
-      api.getSellingStoreOptions(customerId),
-      api.getRenewingProductsByCustomerId(customerId),
-      api.getFulfillmentTemplateByCustomerId(customerId),
-      api.getCatalogsByCustomerId(customerId),
-      api.getPriceFunctionsCustomerByIds(customerId),
-    ];
-    api.getCustomerById(customerId).then(({ data: curCustomer }) => {
-      if (curCustomer?.usingSubscriptionV1) {
-        promiseArray.push(api.getSubscriptionModelsByCustomerId(customerId));
-      } else {
-        subscriptionOptions = Object.keys(
-          curCustomer?.subscriptions,
-        ).map((item) => ({ id: item, value: item }));
-      }
-      Promise.all(promiseArray).then(
-        ([
-          sellingStores,
-          renewingProducts,
-          fulfillmentTemplates,
-          catalogs,
-          priceFunctionsOptions,
-          subscriptions,
-        ]) => {
-          if (!subscriptionOptions) {
-            subscriptionOptions = structureSelectOptions(
-              subscriptions.data?.items,
-              'name',
-            );
-          }
-          if (!isCancelled) {
-            setSelectOptions({
-              ...selectOptions,
-              sellingStores:
-                structureSelectOptions(
-                  sellingStores.data?.items,
-                  'name',
-                  'hostnames',
-                ) || [],
-              renewingProducts:
-                renewingProductsOptions(renewingProducts.data?.items) || [],
-
-              fulfillmentTemplates:
-                structureSelectOptions(
-                  fulfillmentTemplates.data?.items,
-                  'name',
-                ) || [],
-              catalogs:
-                structureSelectOptions(catalogs.data?.items, 'name') || [],
-              priceFunctions:
-                structureSelectOptions(
-                  priceFunctionsOptions.data?.items,
-                  'name',
-                ) || [],
-              subscriptionModels: subscriptionOptions || [],
-            });
-          }
-        },
-      );
-    });
-  };
   useEffect(() => {
     let isCancelled = false;
     api.getProductById(id).then(({ data: product }) => {
@@ -133,12 +64,18 @@ const ProductDetailsScreen = () => {
         setCurrentProductData(checkedProduct);
         setLoading(false);
       }
-      handleGetOptions(product.customerId, isCancelled);
+      handleGetOptions(
+        product.customerId,
+        isCancelled,
+        setSelectOptions,
+        selectOptions,
+      );
     });
     return () => {
       isCancelled = true;
     };
   }, []);
+
   useEffect(() => {
     if (
       JSON.stringify(currentProductData?.sellingStores)
@@ -146,7 +83,6 @@ const ProductDetailsScreen = () => {
     ) {
       filterCheckoutStores();
     }
-
     setProductChanges(
       JSON.stringify(currentProductData) !== JSON.stringify(productData),
     );
@@ -160,10 +96,12 @@ const ProductDetailsScreen = () => {
       filterCheckoutStores();
     }
   }, [selectOptions.sellingStores]);
+
   if (isLoading) return <LinearProgress />;
 
   return (
     <ProductDetailsView
+      productId={id}
       saveData={saveDetails}
       inputErrors={inputErrors}
       setInputErrors={setInputErrors}
@@ -177,4 +115,4 @@ const ProductDetailsScreen = () => {
   );
 };
 
-export default ProductDetailsScreen;
+export default EditProduct;

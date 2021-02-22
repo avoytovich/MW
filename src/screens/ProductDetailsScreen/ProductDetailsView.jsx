@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 
 import {
   Zoom,
@@ -29,29 +28,56 @@ const allTabs = [
 ];
 
 const ProductDetailsView = ({
-  inputErrors,
-  setInputErrors,
   selectOptions,
   setProductData,
   currentProductData,
   productHasChanges,
   saveData,
   checkOutStores,
+  productData,
+  productId,
 }) => {
   const [curTab, setCurTab] = useState(0);
-  const params = useParams();
+  const [tabsDisabled, setTabsDisabled] = useState(true);
+
+  useEffect(() => {
+    const {
+      catalogId,
+      publisherRefId,
+      genericName,
+      type,
+      prices,
+    } = currentProductData;
+
+    if (
+      catalogId
+      && publisherRefId
+      && genericName
+      && type
+      && prices.defaultCurrency
+      && prices.priceByCountryByCurrency[prices.defaultCurrency].default.value
+    ) {
+      setTabsDisabled(false);
+    } else {
+      setTabsDisabled(true);
+    }
+  }, [currentProductData]);
   return (
     <>
       <Box display="flex" flexDirection="row" mx={2} pb={2}>
-        <Typography component="div" color="primary">
-          <Box fontWeight={500}>
-            {localization.t('general.product')}
-            {'/'}
-          </Box>
-        </Typography>
-        <Typography component="div" color="secondary">
-          <Box fontWeight={500}>{params.id}</Box>
-        </Typography>
+        {productId && (
+          <>
+            <Typography component="div" color="primary">
+              <Box fontWeight={500}>
+                {localization.t('general.product')}
+                {'/'}
+              </Box>
+            </Typography>
+            <Typography component="div" color="secondary">
+              <Box fontWeight={500}>{productId}</Box>
+            </Typography>
+          </>
+        )}
       </Box>
       <Box
         display="flex"
@@ -60,16 +86,22 @@ const ProductDetailsView = ({
         justifyContent="space-between"
       >
         <Box alignSelf="center">
-          <Typography data-test="productName" gutterBottom variant="h3">
-            {currentProductData.genericName}
-          </Typography>
+          {productId ? (
+            <Typography data-test="productName" gutterBottom variant="h3">
+              {productData.genericName}
+            </Typography>
+          ) : (
+            <Typography data-test="productName" gutterBottom variant="h3">
+              {localization.t('general.addProduct')}
+            </Typography>
+          )}
         </Box>
 
         <Box display="flex" flexDirection="row">
-          <Zoom in={productHasChanges}>
+          <Zoom in={productHasChanges || !productId}>
             <Box mb={1} mr={1}>
               <Button
-                disabled={Object.keys(inputErrors).length !== 0}
+                disabled={tabsDisabled}
                 id="save-detail-button"
                 color="primary"
                 size="large"
@@ -82,15 +114,17 @@ const ProductDetailsView = ({
             </Box>
           </Zoom>
 
-          <Box>
-            {selectOptions.sellingStores && (
-              <CheckoutMenu
-                checkOutStores={checkOutStores}
-                currentProductData={currentProductData}
-                sellingStores={selectOptions.sellingStores}
-              />
-            )}
-          </Box>
+          {productId && (
+            <Box>
+              {selectOptions.sellingStores && (
+                <CheckoutMenu
+                  checkOutStores={checkOutStores}
+                  currentProductData={currentProductData}
+                  sellingStores={selectOptions.sellingStores}
+                />
+              )}
+            </Box>
+          )}
         </Box>
       </Box>
       <Box m={2} bgcolor="#fff">
@@ -104,19 +138,29 @@ const ProductDetailsView = ({
           aria-label="disabled tabs example"
         >
           <Tab label={localization.t(`labels.${allTabs[0]}`)} />
-          <Tab label={localization.t(`labels.${allTabs[1]}`)} />
-          <Tab label={localization.t(`labels.${allTabs[2]}`)} />
+          <Tab
+            disabled={tabsDisabled}
+            label={localization.t(`labels.${allTabs[1]}`)}
+          />
+          <Tab
+            disabled={tabsDisabled}
+            label={localization.t(`labels.${allTabs[2]}`)}
+          />
           <Tab label={localization.t(`labels.${allTabs[3]}`)} />
-          <Tab label={localization.t(`labels.${allTabs[4]}`)} />
-          <Tab label={localization.t(`labels.${allTabs[5]}`)} />
+          <Tab
+            disabled={tabsDisabled}
+            label={localization.t(`labels.${allTabs[4]}`)}
+          />
+          <Tab
+            disabled={tabsDisabled}
+            label={localization.t(`labels.${allTabs[5]}`)}
+          />
         </Tabs>
       </Box>
       <Box display="flex">
         {curTab === 0 && (
           <SectionLayout label={allTabs[0]}>
             <General
-              inputErrors={inputErrors}
-              setInputErrors={setInputErrors}
               selectOptions={selectOptions}
               setProductData={setProductData}
               currentProductData={currentProductData}
@@ -149,11 +193,11 @@ ProductDetailsView.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
-  inputErrors: PropTypes.object,
-  setInputErrors: PropTypes.func,
   productHasChanges: PropTypes.bool,
   saveData: PropTypes.func,
   checkOutStores: PropTypes.array,
+  productData: PropTypes.object,
+  productId: PropTypes.string,
 };
 
 export default ProductDetailsView;

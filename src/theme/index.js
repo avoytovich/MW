@@ -30,7 +30,29 @@ const themeConfig = {
         },
       },
     },
-    MuiFormLabel: { root: { color: colors.textPrimaryGray } },
+    MuiFormLabel: {
+      root: {
+        color: colors.textPrimaryGray,
+        '&.Mui-disabled': {
+          opacity: 0.6,
+        },
+      },
+    },
+    MuiFormControlLabel: {
+      root: {
+        color: colors.textPrimaryGray,
+        '&.Mui-disabled': {
+          opacity: 0.6,
+        },
+      },
+    },
+    MuiInputBase: {
+      root: {
+        '&.Mui-disabled': {
+          opacity: 0.6,
+        },
+      },
+    },
     MuiCheckbox: { root: { color: colors.textPrimaryGray } },
     MuiFormHelperText: {
       root: { color: colors.textPrimaryGray },

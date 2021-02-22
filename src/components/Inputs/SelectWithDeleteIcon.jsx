@@ -52,11 +52,17 @@ const SelectWithDeleteIcon = ({
         )
       }
     >
-      {selectOptions?.map((option) => (
-        <MenuItem key={option.id} value={option.id}>
-          {option.value}
+      {selectOptions?.length ? (
+        selectOptions.map((option) => (
+          <MenuItem key={option.id} value={option.id}>
+            {option.value}
+          </MenuItem>
+        ))
+      ) : (
+        <MenuItem disabled>
+          {localization.t('general.noAvailableOptions')}
         </MenuItem>
-      ))}
+      )}
     </Select>
   </FormControl>
 );

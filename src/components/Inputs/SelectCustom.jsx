@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
+  TextField,
   CircularProgress,
   InputAdornment,
 } from '@material-ui/core';
@@ -17,33 +15,35 @@ const SelectCustom = ({
   onChangeSelect,
   isRequired,
 }) => (
-  <FormControl fullWidth required={isRequired} variant="outlined">
-    <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
-    <Select
-      disabled={!selectOptions}
-      value={selectOptions ? value : ''}
-      inputProps={{
-        name: label,
-        id: label,
-      }}
-      startAdornment={
-        !selectOptions && (
-          <InputAdornment>
-            <CircularProgress />
-          </InputAdornment>
-        )
-      }
-      label={localization.t(`labels.${label}`)}
-      onChange={onChangeSelect}
-      variant="outlined"
-    >
-      {selectOptions?.map((option) => (
+  <TextField
+    fullWidth
+    select
+    required={isRequired}
+    variant="outlined"
+    disabled={!selectOptions}
+    value={selectOptions ? value : ''}
+    InputProps={{
+      startAdornment: !selectOptions && (
+        <InputAdornment>
+          <CircularProgress />
+        </InputAdornment>
+      ),
+    }}
+    label={localization.t(`labels.${label}`)}
+    onChange={onChangeSelect}
+  >
+    {selectOptions?.length ? (
+      selectOptions.map((option) => (
         <MenuItem key={option.id} value={option.id}>
           {option.value}
         </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
+      ))
+    ) : (
+      <MenuItem disabled>
+        {localization.t('general.noAvailableOptions')}
+      </MenuItem>
+    )}
+  </TextField>
 );
 
 SelectCustom.propTypes = {
