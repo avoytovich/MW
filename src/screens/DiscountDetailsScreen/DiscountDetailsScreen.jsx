@@ -6,15 +6,19 @@ import { useParams } from 'react-router-dom';
 import {
   LinearProgress, Zoom, Button, Tabs, Tab,
 } from '@material-ui/core';
-
+import {
+  structureSelectOptions,
+  discountRequiredFields,
+} from '../../services/helpers/dataStructuring';
+import SectionLayout from '../../components/SectionLayout';
+import General from './SubSections/General';
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import EligibilitySection from './EligibilitySection';
 import localization from '../../localization';
-import BasicSection from './BasicSection';
 import DialogWindows from './DialogWindows';
 import CappingAndLimitsSection from './CappingAndLimitsSection';
-import { discountRequiredFields } from '../../services/helpers/dataStructuring';
+
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsScreen = () => {
@@ -32,25 +36,20 @@ const DiscountDetailsScreen = () => {
     refProducts: null,
     endUserGroups: null,
     countries: null,
+    endUsers: null,
   });
+
+  const [amountCurrency, setAmountCurrency] = useState(null);
+  const [curAmountCurrency, setCurAmountCurrency] = useState(null);
+
+  const [discountLabels, setDiscountLabels] = useState(null);
+  const [curDiscountLabels, setCurDiscountLabels] = useState(null);
 
   const [productsModal, setProductsModalOpen] = useState(false);
   const [parentProductsModal, setParentProductsModalOpen] = useState(false);
 
   const [storesModal, setStoresModalOpen] = useState(false);
   const [curProductsByParent, setCurProductsByParent] = useState(null);
-
-  const handleChange = (e) => {
-    e.persist();
-    const { name } = e.target;
-    let { value } = e.target;
-
-    if (name === 'discountRate') {
-      value /= 100;
-    }
-
-    setCurDiscount({ ...curDiscount, [name]: value });
-  };
 
   const saveIdentity = () => {
     api.updateDiscountById(id, curDiscount).then(() => {
@@ -125,24 +124,63 @@ const DiscountDetailsScreen = () => {
   };
 
   useEffect(() => {
-    setHasChanges(JSON.stringify(curDiscount) !== JSON.stringify(discount));
+    setHasChanges(
+      JSON.stringify(curDiscount) !== JSON.stringify(discount)
+        || JSON.stringify(amountCurrency) !== JSON.stringify(curAmountCurrency)
+        || JSON.stringify(discountLabels) !== JSON.stringify(curDiscountLabels),
+    );
 
     return () => setHasChanges(false);
-  }, [curDiscount, discount]);
+  }, [curDiscount, discount, curAmountCurrency, curDiscountLabels]);
 
   useEffect(() => {
     api.getDiscountById(id).then(({ data }) => {
       const checkedData = discountRequiredFields(data);
+      const currencyArray = Object.keys({
+        ...checkedData.amountByCurrency,
+      }).map((item) => ({
+        key: item,
+        value: checkedData.amountByCurrency[item],
+      }));
+      const localizedLabelsArray = Object.keys({
+        ...checkedData.localizedLabels,
+      }).map((item) => ({
+        key: item,
+        value: checkedData.localizedLabels[item],
+      }));
+      setDiscountLabels(JSON.parse(JSON.stringify(localizedLabelsArray)));
+      setCurDiscountLabels(JSON.parse(JSON.stringify(localizedLabelsArray)));
+      setAmountCurrency(JSON.parse(JSON.stringify(currencyArray)));
+      setCurAmountCurrency(JSON.parse(JSON.stringify(currencyArray)));
       setDiscount(checkedData);
       setCurDiscount(checkedData);
-
-      api
-        .getStores(0, `&customerId=${data.customerId}`)
-        .then(({ data: { items: stores } }) => {
+      const parentIds = data.parentProductIds?.length
+        ? data.parentProductIds.join('&')
+        : null;
+      const { customerId } = data;
+      Promise.all([
+        api.getEndUsersByCustomerId(customerId),
+        api.getStores(0, `&customerId=${customerId}`),
+        api.getDiscountProductsByIds(customerId),
+        api.getParentProductsByIds(customerId, parentIds),
+        api.getEndUsersGroupsByCustomerId(customerId),
+      ]).then(
+        ([
+          endUsers,
+          stores,
+          discountProducts,
+          parentProducts,
+          endUsersGroups,
+        ]) => {
           const availStoresObj = [];
           const storesObj = [];
+          const availParProductsObj = [];
+          const parProductsObj = [];
+          const availDiscountProductsObj = [];
+          const productsDiscountObj = [];
+          const refDiscountProductsObjs = [];
 
-          stores.forEach((store) => {
+          stores.data?.items.forEach((store) => {
             if (data?.storeIds?.indexOf(store.id) >= 0) {
               storesObj.push({ id: store.id, name: store.name });
             } else {
@@ -150,56 +188,32 @@ const DiscountDetailsScreen = () => {
             }
           });
 
-          setAvailStores(availStoresObj);
-          setStores(storesObj);
-        });
-
-      api
-        .getDiscountProductsByIds(data.customerId)
-        .then(({ data: { items: products } }) => {
-          const availProductsObj = [];
-          const productsObj = [];
-          const refProductsObjs = [];
-
-          products.forEach((product) => {
+          discountProducts.data?.items.forEach((product) => {
             if (
               product.publisherRefId
-              && !refProductsObjs.filter((e) => e.id === product.publisherRefId)
-                .length > 0
+              && !refDiscountProductsObjs.filter(
+                (e) => e.id === product.publisherRefId,
+              ).length > 0
             ) {
-              refProductsObjs.push({
+              refDiscountProductsObjs.push({
                 id: product.publisherRefId,
                 value: product.publisherRefId,
               });
             }
             if (data?.productIds?.indexOf(product.id) >= 0) {
-              productsObj.push({
+              productsDiscountObj.push({
                 id: product.id,
                 name: product.genericName || 'Was removed',
               });
             } else if (product.genericName) {
-              availProductsObj.push({
+              availDiscountProductsObj.push({
                 id: product.id,
                 name: product.genericName,
               });
             }
           });
-          setSelectOptions({
-            ...selectOptions,
-            refProducts: refProductsObjs || [],
-          });
-          setAvailProducts(availProductsObj);
-          setProducts(productsObj);
-        });
-      const parentIds = data.parentProductIds?.length
-        ? data.parentProductIds.join('&')
-        : null;
-      api
-        .getParentProductsByIds(data.customerId, parentIds)
-        .then(({ data: { items: parentProducts } }) => {
-          const availParProductsObj = [];
-          const parProductsObj = [];
-          parentProducts.forEach((product) => {
+
+          parentProducts.data?.items.forEach((product) => {
             if (data?.parentProductIds?.indexOf(product.id) >= 0) {
               parProductsObj.push({
                 id: product.id,
@@ -212,21 +226,29 @@ const DiscountDetailsScreen = () => {
               });
             }
           });
+          setAvailStores(availStoresObj);
+          setStores(storesObj);
+
+          setAvailProducts(availDiscountProductsObj);
+          setProducts(productsDiscountObj);
+
           setAvailParentProducts(availParProductsObj);
           setCurProductsByParent(parProductsObj);
-        });
-      api
-        .getEndUsersGroupsByCustomerId(data.customerId)
-        .then(({ data: { items: groups } }) => {
-          setSelectOptions({ ...selectOptions, endUserGroups: groups });
-        });
+
+          setSelectOptions({
+            ...selectOptions,
+            endUsers:
+              structureSelectOptions(endUsers.data?.items, 'fullName') || [],
+            refProducts: refDiscountProductsObjs || [],
+            endUserGroups: endUsersGroups.data?.items || [],
+          });
+        },
+      );
     });
   }, []);
-
   // ToDO refactor from here and recodetails
   const updateDiscount = (type, value, selections) => {
     let setValue = value;
-
     if (!curDiscount[type]) {
       setValue = [value];
     } else if (selections === 'multiple' || selections === 'empty') {
@@ -268,12 +290,18 @@ const DiscountDetailsScreen = () => {
           Save
         </Button>
       </Zoom>
-      <BasicSection
-        curDiscount={curDiscount}
-        handleChange={handleChange}
-        updateDiscount={updateDiscount}
-        setCurDiscount={setCurDiscount}
-      />
+
+      <SectionLayout label="general">
+        <General
+          curDiscountLabels={curDiscountLabels}
+          setCurDiscountLabels={setCurDiscountLabels}
+          curAmountCurrency={curAmountCurrency}
+          setCurAmountCurrency={setCurAmountCurrency}
+          curDiscount={curDiscount}
+          setCurDiscount={setCurDiscount}
+          selectOptions={selectOptions}
+        />
+      </SectionLayout>
       <EligibilitySection
         selectOptions={selectOptions}
         curProductsByParent={curProductsByParent}

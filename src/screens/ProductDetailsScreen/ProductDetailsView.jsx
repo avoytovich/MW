@@ -16,7 +16,7 @@ import General from './SubSections/General';
 import Prices from './SubSections/Prices';
 import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
 import CheckoutMenu from './CheckoutMenu';
-import SectionLayout from './SectionLayout';
+import SectionLayout from '../../components/SectionLayout';
 
 const allTabs = [
   'general',

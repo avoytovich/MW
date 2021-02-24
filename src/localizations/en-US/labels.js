@@ -153,6 +153,12 @@ const labels = {
   localizedContent: 'Localized Content',
   productVariations: 'Product Variations',
   productFiles: 'Product Files',
+  discountLabels: 'Discount Labels',
+  language: 'Language',
+  discountLabel: 'Discount Label',
+  byPercentage: 'By Percentage',
+  byCurrency: 'By Currency',
+  percents: 'Percents',
 };
 
 export default labels;

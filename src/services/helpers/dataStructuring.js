@@ -45,6 +45,12 @@ const productRequiredFields = (product) => {
   return { ...defaultProduct, ...product, resources: resourcesKeys };
 };
 
+const discountRequiredFields = (discount) => {
+  const defDiscount = { publisherRefIds: [], countries: [] };
+
+  return { ...defDiscount, ...discount };
+};
+
 const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
   const resObj = { id: option.id, value: option[optionValue] };
   if (otherOptions) {
@@ -54,17 +60,6 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => option
   }
   return resObj;
 });
-
-const discountRequiredFields = (discount) => {
-  let resObj = { ...discount };
-  if (!resObj.publisherRefIds) {
-    resObj = { ...resObj, publisherRefIds: [] };
-  }
-  if (!resObj.countries) {
-    resObj = { ...resObj, countries: [] };
-  }
-  return resObj;
-};
 
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName

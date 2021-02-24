@@ -459,6 +459,13 @@ const api = {
       url,
     });
   },
+  getEndUsersByCustomerId(id) {
+    const url = `/endusers?customerId=${id}&size=200`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getEndUsersGroupsByCustomerId(id) {
     const url = `/endusers/groups?customerId=${id}&size=30&page=0`;
     return axiosInstance({

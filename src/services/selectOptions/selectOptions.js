@@ -51,7 +51,6 @@ const validityPeriod = [
 ];
 
 const availableLocales = [
-  { value: 'None', id: '' },
   { value: 'ar-AE: Arabic (United Arab Emirates)', id: 'ar-AE' },
   { value: 'ar-DZ: Arabic (Algeria)', id: 'ar-DZ' },
   { value: 'ar-MA: Arabic (Morocco)', id: 'ar-MA' },
@@ -72,6 +71,18 @@ const availableLocales = [
   { value: 'zh-CN: Chinese (China)', id: 'zh-CN' },
 ];
 
+const priceCurrency = [
+  { value: 'AED (UAE Dirham)', id: 'AED' },
+  { value: 'ARS (Argentine Peso)', id: 'ARS' },
+  { value: 'AUD (Australian Dollar)', id: 'AUD' },
+  { value: 'BRL (Brazilian Real)', id: 'BRL' },
+  { value: 'CAD (Canadian Dollar)', id: 'CAD' },
+  { value: 'CHF (Swiss Frank)', id: 'CHF' },
+  { value: 'CLP (Chilean Peso)', id: 'CLP' },
+  { value: 'CNY (Yuan Renminbi)', id: 'CNY' },
+  { value: 'COP (Colombian Peso)', id: 'COP' },
+  { value: 'DKK (Danish Krone)', id: 'DKK' },
+];
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
   { value: 'B2C', id: 'B2C' },
@@ -86,4 +97,5 @@ export {
   orderDetailStatus,
   availableLocales,
   businessSegment,
+  priceCurrency,
 };
