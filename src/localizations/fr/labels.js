@@ -153,6 +153,8 @@ const labels = {
   localizedContent: 'Localized Content',
   productVariations: 'Product Variations',
   productFiles: 'Product Files',
+  bundledProducts: 'Bundled products',
+  variationParameters: 'Variation parameters',
 };
 
 export default labels;

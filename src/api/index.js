@@ -346,6 +346,13 @@ const api = {
       url,
     });
   },
+  getSubProductsById(parentId) {
+    const url = `/products?format=full&parentId=${parentId}&size=500`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET ONE BY ID
   getProductById(id) {
     const url = `/products/${id}`;

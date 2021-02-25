@@ -163,13 +163,16 @@ const labels = {
   selectFile: 'Select File',
   freeLabel: 'Free label',
   url: 'URL',
-  dropFileOrSelect: 'Select files from your computer or click add icon to enter custom URL',
+  dropFileOrSelect:
+    'Select files from your computer or click add icon to enter custom URL',
   relatedContents: 'Related Contents',
   resources: 'Resources',
   label: 'Label',
   headerLogo: 'Header Logo',
   boxshot: 'Boxshot',
   icon: 'Icon',
+  bundledProducts: 'Bundled products',
+  variationParameters: 'Variation parameters',
 };
 
 export default labels;
