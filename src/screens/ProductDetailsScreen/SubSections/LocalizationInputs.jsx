@@ -20,7 +20,7 @@ const initValues = {
   thankYouDesc: '',
 };
 
-const LocalizationInputs = ({ data = {}, handleChange }) => {
+const LocalizationInputs = ({ data = {}, handleChange, isDefault }) => {
   const [newData, setNewData] = useState({ ...data });
   const [isEditing, setEditing] = useState(false);
   const editor = useRef();
@@ -66,8 +66,10 @@ const LocalizationInputs = ({ data = {}, handleChange }) => {
 
   return (
     <Box display='flex' width='100%' flexDirection='column'>
-      <Box width='50%' px={4} mb={4}>
+      <Box width='50%' px={4} mb={4} position='relative'>
         <LocalizationInput val='marketingName' />
+
+        {isDefault && !data?.marketingName && <div className='error-message'>{localization.t('general.marketingNameMandatory')}</div>}
       </Box>
 
       <Box width='100%' px={4} mb={4}>
