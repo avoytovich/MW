@@ -196,7 +196,11 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
       </Box>
 
       <Box display="flex" flexDirection="row" alignItems="baseline" width='80%'>
-        <LocalizationInputs handleChange={handleChange} data={newTabValues} />
+        <LocalizationInputs
+          handleChange={handleChange}
+          data={newTabValues}
+          isDefault={value === curData?.fallbackLocale}
+        />
       </Box>
     </Box>
   );
