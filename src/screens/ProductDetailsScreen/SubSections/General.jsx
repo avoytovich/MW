@@ -9,6 +9,7 @@ import {
   businessSegment,
 } from '../../../services/selectOptions/selectOptions';
 import countriesOptions from '../../../services/selectOptions/countries';
+import localization from '../../../localization';
 import {
   SelectWithChip,
   SelectCustom,
@@ -16,7 +17,6 @@ import {
   InputCustom,
   SelectWithDeleteIcon,
 } from '../../../components/Inputs';
-import localization from '../../../localization';
 
 const General = ({
   setProductData,
@@ -168,7 +168,7 @@ const General = ({
           />
         </Box>
         <Box display="flex">
-          <Box p={2}>
+          <Box p={2} minWidth="170px">
             <SelectCustom
               label="lifeTime"
               value={lifeTimeUpdateValue.value}
@@ -190,7 +190,7 @@ const General = ({
             />
           </Box>
           {showLifeTimeNumber && (
-            <Box minWidth="135px" p={2}>
+            <Box minWidth="170px" p={2}>
               <NumberInput
                 label="maxPaymentsPart"
                 value={lifeTimeUpdateValue.number}

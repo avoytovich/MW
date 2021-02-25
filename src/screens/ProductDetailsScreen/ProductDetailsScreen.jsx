@@ -16,13 +16,18 @@ import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 
 import General from './SubSections/General';
+
 import LocalizedContent from './SubSections/LocalizedContent';
+import Prices from './SubSections/Prices';
+import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
 
 import CheckoutMenu from './CheckoutMenu';
 import SectionLayout from './SectionLayout';
+
 import {
   productRequiredFields,
   structureSelectOptions,
+  renewingProductsOptions,
 } from '../../services/helpers/dataStructuring';
 
 const allTabs = [
@@ -42,6 +47,7 @@ const ProductDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
 
   const [productHasChanges, setProductChanges] = useState(false);
+  const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
     sellingStores: null,
     renewingProducts: null,
@@ -55,18 +61,34 @@ const ProductDetailsScreen = () => {
   const [checkOutStores, setCheckOutStores] = useState([]);
 
   const saveDetails = () => {
-    const updateDate = Date.now();
-    const sendObj = { ...currentProductData, updateDate };
-    if (!sendObj.businessSegment) {
-      delete sendObj.businessSegment;
+    if (productHasChanges) {
+      const updateDate = Date.now();
+      const sendObj = { ...currentProductData, updateDate };
+
+      if (!sendObj.businessSegment) {
+        delete sendObj.businessSegment;
+      }
+
+      api.updateProductById(currentProductData.id, sendObj).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        window.location.reload();
+      });
     }
-    api.updateProductById(currentProductData.id, sendObj).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      window.location.reload();
-    });
+
+    if (productHasLocalizationChanges) {
+      api
+        .updateProductLocalsById(currentProductData.descriptionId, productHasLocalizationChanges)
+        .then(() => {
+          dispatch(
+            showNotification(localization.t('general.updatesHaveBeenSaved')),
+          );
+          window.location.reload();
+        });
+    }
   };
+
   const filterCheckoutStores = () => {
     const res = [];
     currentProductData?.sellingStores.forEach((item) => {
@@ -84,6 +106,7 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => {
     let isCancelled = false;
+    let subscriptionOptions = null;
 
     api.getProductById(id).then(({ data: product }) => {
       const { customerId } = product;
@@ -93,51 +116,64 @@ const ProductDetailsScreen = () => {
         setCurrentProductData(checkedProduct);
         setLoading(false);
       }
-      Promise.all([
+      const promiseArray = [
         api.getSellingStoreOptions(customerId),
         api.getRenewingProductsByCustomerId(customerId),
-        api.getSubscriptionModelsByCustomerId(customerId),
         api.getFulfillmentTemplateByCustomerId(customerId),
         api.getCatalogsByCustomerId(customerId),
         api.getPriceFunctionsCustomerByIds(customerId),
-      ]).then(
-        ([
-          sellingStores,
-          renewingProducts,
-          subscriptionModels,
-          fulfillmentTemplates,
-          catalogs,
-          priceFunctionsOptions,
-        ]) => {
-          setSelectOptions({
-            ...selectOptions,
-            sellingStores:
-              structureSelectOptions(
-                sellingStores.data?.items,
+      ];
+      api.getCustomerById(customerId).then(({ data: curCustomer }) => {
+        if (curCustomer?.usingSubscriptionV1) {
+          promiseArray.push(api.getSubscriptionModelsByCustomerId(customerId));
+        } else {
+          subscriptionOptions = Object.keys(
+            curCustomer?.subscriptions,
+          ).map((item) => ({ id: item, value: item }));
+        }
+        Promise.all(promiseArray).then(
+          ([
+            sellingStores,
+            renewingProducts,
+            fulfillmentTemplates,
+            catalogs,
+            priceFunctionsOptions,
+            subscriptions,
+          ]) => {
+            if (!subscriptionOptions) {
+              subscriptionOptions = structureSelectOptions(
+                subscriptions.data?.items,
                 'name',
-                'hostnames',
-              ) || [],
-            renewingProducts:
-              structureSelectOptions(renewingProducts.data?.items, 'value')
-              || [],
-            subscriptionModels:
-              structureSelectOptions(subscriptionModels.data?.items, 'value')
-              || [],
-            fulfillmentTemplates:
-              structureSelectOptions(
-                fulfillmentTemplates.data?.items,
-                'value',
-              ) || [],
-            catalogs:
-              structureSelectOptions(catalogs.data?.items, 'name') || [],
-            priceFunctions:
-              structureSelectOptions(
-                priceFunctionsOptions.data?.items,
-                'name',
-              ) || [],
-          });
-        },
-      );
+              );
+            }
+            setSelectOptions({
+              ...selectOptions,
+              sellingStores:
+                structureSelectOptions(
+                  sellingStores.data?.items,
+                  'name',
+                  'hostnames',
+                ) || [],
+              renewingProducts:
+                renewingProductsOptions(renewingProducts.data?.items) || [],
+
+              fulfillmentTemplates:
+                structureSelectOptions(
+                  fulfillmentTemplates.data?.items,
+                  'name',
+                ) || [],
+              catalogs:
+                structureSelectOptions(catalogs.data?.items, 'name') || [],
+              priceFunctions:
+                structureSelectOptions(
+                  priceFunctionsOptions.data?.items,
+                  'name',
+                ) || [],
+              subscriptionModels: subscriptionOptions || [],
+            });
+          },
+        );
+      });
     });
     return () => {
       isCancelled = true;
@@ -192,7 +228,7 @@ const ProductDetailsScreen = () => {
         </Box>
 
         <Box display="flex" flexDirection="row">
-          <Zoom in={productHasChanges}>
+          <Zoom in={productHasChanges || !!productHasLocalizationChanges}>
             <Box mb={1} mr={1}>
               <Button
                 disabled={Object.keys(inputErrors).length !== 0}
@@ -250,17 +286,32 @@ const ProductDetailsScreen = () => {
             />
           </SectionLayout>
         )}
-        {curTab === 1 && <SectionLayout label={allTabs[1]} />}
-        {curTab === 2 && (
-          <SectionLayout label={allTabs[2]}>
-            <LocalizedContent
+
+        {curTab === 1 && (
+          <SectionLayout label={allTabs[1]}>
+            <FulfillmentAndSubscription
+              selectOptions={selectOptions}
               setProductData={setCurrentProductData}
               currentProductData={currentProductData}
               productData={productData}
             />
           </SectionLayout>
         )}
-        {curTab === 3 && <SectionLayout label={allTabs[3]} />}
+
+        {curTab === 2 && (
+          <SectionLayout label={allTabs[2]}>
+            <LocalizedContent
+              setProductData={setCurrentProductData}
+              currentProductData={currentProductData}
+              productData={productData}
+              setNewData={setProductLocalizationChanges}
+            />
+          </SectionLayout>
+        )}
+
+        {curTab === 3 && (
+          <SectionLayout label={allTabs[3]}><Prices /></SectionLayout>
+        )}
         {curTab === 4 && <SectionLayout label={allTabs[4]} />}
         {curTab === 5 && <SectionLayout label={allTabs[5]} />}
       </Box>

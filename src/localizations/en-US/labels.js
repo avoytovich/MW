@@ -132,7 +132,7 @@ const labels = {
   licenseKeyPackages: 'License Key Packages',
   renewingProducts: 'Renewing Products',
   allowTrial: 'Allow trial',
-  PreorderReleaseDate: 'Preorder Release Date',
+  preorderReleaseDate: 'Preorder Release Date',
   fulfillmentAndSubscription: 'Fulfillment & Subscription',
   general: 'General',
   prices: 'Prices',
@@ -156,9 +156,9 @@ const labels = {
   marketingName: 'Marketing name',
   shortDesc: 'Short description',
   longDesc: 'Long description',
-  thanksDesc: 'Thank you description',
-  purchaseDesc: 'Purchase description',
-  manualRenDesc: 'Manual renewal description',
+  thankYouDesc: 'Thank you description',
+  purchaseEmailDesc: 'Purchase description',
+  manualRenewalEmailDesc: 'Manual renewal description',
   addLanguage: 'Add Language',
 };
 

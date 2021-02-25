@@ -1,62 +1,68 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect, forwardRef } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
   Box,
   Tabs,
   Tab,
+  LinearProgress,
 } from '@material-ui/core';
-
-import { SelectCustom } from '../../../components/Inputs';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
+import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
 
 import LocalizationInputs from './LocalizationInputs';
+import { SelectCustom } from '../../../components/Inputs';
 
 import { availableLocales } from '../../../services/selectOptions/selectOptions';
 
-import localization from '../../../localization';
+const localizedValues = [
+  'localizedLongDesc',
+  'localizedManualRenewalEmailDesc',
+  'localizedMarketingName',
+  'localizedPurchaseEmailDesc',
+  'localizedShortDesc',
+  'localizedThankYouDesc',
+];
 
-const LocalizedContent = ({
-  setProductData,
-  currentProductData,
-  selectOptions,
-  inputErrors,
-  setInputErrors,
-}) => {
+const LocalizedContent = ({ setNewData, currentProductData }) => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [availLocales, setAvailLocales] = useState([]);
   const [curData, setCurData] = useState(null);
+  const [initData, setInitData] = useState({});
   const [curTabValues, setCurTabValues] = useState({});
+  const [newTabValues, setNewTabValues] = useState({});
+  const [newLangValue, setNewLangValue] = useState('');
 
-  useEffect(() => {
-    api
-      .getProductDescriptionById(currentProductData.descriptionId)
-      .then(({ data }) => {
-        const { localizedMarketingName } = data;
+  const makeNewData = (locale) => {
+    const dataToSave = { ...curData };
 
-        if (localizedMarketingName) {
-          setAvailLocales(Object.keys(localizedMarketingName));
+    Object.entries(newTabValues).forEach(([v, k]) => {
+      if (newTabValues[v] !== curTabValues[v]) {
+        const dataKey = `localized${v.charAt(0).toUpperCase() + v.slice(1)}`;
+
+        if (!k) {
+          delete dataToSave[dataKey][locale || value];
+        } else {
+          dataToSave[dataKey][locale || value] = k;
         }
+      }
+    });
 
-        setCurData(data);
-      });
-  }, []);
+    setCurData({ ...dataToSave });
+    setNewData({ ...dataToSave });
+  };
 
   const getValues = () => {
     const inputValues = {};
 
-    [
-      'localizedLongDesc',
-      'localizedManualRenewalEmailDesc',
-      'localizedMarketingName',
-      'localizedPurchaseEmailDesc',
-      'localizedShortDesc',
-      'localizedThankYouDesc',
-    ].forEach((v) => {
+    localizedValues.forEach((v) => {
       if (curData && curData[v] && curData[v][value]) {
         let newKey = v.replace('localized', '');
         newKey = (newKey.charAt(0).toLowerCase() + newKey.slice(1));
@@ -65,14 +71,77 @@ const LocalizedContent = ({
       }
     });
 
-    setCurTabValues(inputValues);
+    setCurTabValues({ ...inputValues });
+    setNewTabValues({ ...inputValues });
   };
+
+  const handleChange = (name, val) => setNewTabValues((c) => ({ ...c, [name]: val }));
+
+  const removeLocale = (e, locale) => {
+    e.stopPropagation();
+
+    const dataToSave = { ...curData };
+
+    localizedValues.forEach((it) => delete dataToSave[it][locale]);
+
+    setAvailLocales((c) => c.filter((l) => l !== locale));
+    setCurData({ ...dataToSave });
+    setNewData({ ...dataToSave });
+
+    if (value === locale) {
+      setValue(0);
+    }
+  };
+
+  const addLocale = () => {
+    if (newLangValue) {
+      if (availLocales.indexOf(newLangValue) < 0) {
+        makeNewData(newLangValue);
+        setNewLangValue('');
+        setAvailLocales((c) => [...c, newLangValue]);
+      } else {
+        dispatch(
+          showNotification('Locale already exists!', true),
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    api
+      .getProductDescriptionById(currentProductData.descriptionId)
+      .then(({ data }) => {
+        const avail = [];
+
+        localizedValues.forEach((it) => {
+          if (data[it]) {
+            Object.keys(data[it]).forEach((loc) => {
+              if (avail.indexOf(loc) < 0) {
+                avail.push(loc);
+              }
+            });
+          }
+        });
+
+        setCurData({ ...data });
+        setInitData(JSON.stringify({ ...data }));
+        setAvailLocales(avail);
+      });
+  }, []);
 
   useEffect(() => getValues(), [value]);
 
-  const handleChange = () => {
+  useEffect(() => {
+    const hasChanges = JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
 
-  };
+    if (hasChanges) {
+      makeNewData();
+    } else if (JSON.stringify(curData) === initData) {
+      setNewData(false);
+    }
+  }, [newTabValues]);
+
+  if (!curData) return <LinearProgress />;
 
   return (
     <Box display='flex' width='100%'>
@@ -91,45 +160,51 @@ const LocalizedContent = ({
               label={`${locale}${locale === curData?.fallbackLocale ? ' (default)' : ''}`}
               key={locale}
               value={locale}
-              component={({ children, ...props }) => (
-                <div {...props}>
-                  {children}
-                  {locale !== curData?.fallbackLocale && <ClearIcon onClick={(e) => { e.stopPropagation(); setAvailLocales((c) => c.filter(l => l!== locale)); }} />}
-                </div>
-              )}
+              component={
+                forwardRef(({ children, ...props }, ref) => (
+                  <div role="button" {...props} ref={ref}>
+                    {children}
+                    {locale !== curData?.fallbackLocale && (
+                      <ClearIcon onClick={(e) => removeLocale(e, locale)} />
+                    )}
+                  </div>
+                ))
+              }
             />
           ))}
 
           <Tab
             label='Add Language'
             value={0}
-            component={({ ...props }) => (
-              <div {...props} style={{ minWidth: '100%' }}>
-                <SelectCustom
-                  label='addLanguage'
-                  selectOptions={availableLocales}
-                />
+            component={
+              forwardRef(({ children, ...props }, ref) => (
+                <div role="button" {...props} style={{ minWidth: '100%' }} ref={ref}>
+                  <SelectCustom
+                    label='addLanguage'
+                    value={newLangValue}
+                    selectOptions={availableLocales}
+                    onChangeSelect={(e) => setNewLangValue(e.target.value)}
+                  />
 
-                <AddCircleIcon color='primary' style={{ marginLeft: 15 }} onClick={() => console.log('add new')} />
-              </div>
-            )}
+                  <div hidden>{children}</div>
+                  <AddCircleIcon color='primary' style={{ marginLeft: 15 }} onClick={addLocale} />
+                </div>
+              ))
+            }
           />
         </Tabs>
       </Box>
 
       <Box display="flex" flexDirection="row" alignItems="baseline" width='80%'>
-        <LocalizationInputs handleChange={handleChange} data={curTabValues} />
+        <LocalizationInputs handleChange={handleChange} data={newTabValues} />
       </Box>
     </Box>
   );
 };
 
 LocalizedContent.propTypes = {
-  setProductData: PropTypes.func,
+  setNewData: PropTypes.func,
   currentProductData: PropTypes.object,
-  selectOptions: PropTypes.object,
-  inputErrors: PropTypes.object,
-  setInputErrors: PropTypes.func,
 };
 
 export default LocalizedContent;

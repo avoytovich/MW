@@ -41,7 +41,7 @@ const SelectWithDeleteIcon = ({
       endAdornment={
         value && (
           <CancelIcon
-            className="cancelIcon"
+            className="cancelSelectIcon"
             fontSize="small"
             color="secondary"
             onClick={onClickDelIcon}

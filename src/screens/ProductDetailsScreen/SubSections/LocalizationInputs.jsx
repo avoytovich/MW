@@ -1,165 +1,93 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect, useRef } from 'react';
+
+import ReactQuill from 'react-quill';
 import PropTypes from 'prop-types';
 
 import { Box } from '@material-ui/core';
-
-import { InputCustom } from '../../../components/Inputs';
+import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
 
 import localization from '../../../localization';
 
-const LocalizationInputs = ({ data, handleChange }) => {
-  const [value, setValue] = useState(0);
+import 'react-quill/dist/quill.bubble.css';
+import './localizations.scss';
+
+const initValues = {
+  marketingName: '',
+  shortDesc: '',
+  longDesc: '',
+  thankYouDesc: '',
+};
+
+const LocalizationInputs = ({ data = {}, handleChange }) => {
+  const [newData, setNewData] = useState({ ...data });
+  const [isEditing, setEditing] = useState(false);
+  const editor = useRef();
+
+  useEffect(() => setNewData(() => ({ ...initValues, ...data })), [data]);
+
+  const updateNewData = (name) => {
+    const curContent = editor.current.getEditorContents();
+
+    handleChange(name, curContent === '<p><br></p>' ? '' : curContent);
+    setEditing(false);
+  };
+
+  const LocalizationInput = ({ val }) => (
+    <>
+      {isEditing === val ? (
+        <Box position='relative'>
+          <ReactQuill
+            theme='bubble'
+            value={newData[val]}
+            placeholder={localization.t(`labels.${val}`)}
+            ref={editor}
+          />
+
+          <SaveIcon className='edit-loc-field' color='secondary' onClick={() => updateNewData(val)} />
+        </Box>
+      ) : (
+        <Box position='relative' className='localization-input-holder'>
+          <div className={`localization-text-legend ${newData[val] ? '' : 'empty'}`}>
+            <span className='MuiFormLabel-root'>{localization.t(`labels.${val}`)}</span>
+          </div>
+
+          <div
+            className='localization-text-block'
+            dangerouslySetInnerHTML={{ __html: newData[val] }}
+          />
+
+          <EditIcon className='edit-loc-field' color='secondary' onClick={() => setEditing(val)} />
+        </Box>
+      )}
+    </>
+  );
 
   return (
     <Box display='flex' width='100%' flexDirection='column'>
       <Box width='50%' px={4} mb={4}>
-        {
-          data?.marketingName ? (
-            <div
-              style={{
-                width: '100%',
-                height: '56px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 15px',
-              }}
-              dangerouslySetInnerHTML={{ __html: data.marketingName }}
-            />
-          ) : (
-            <InputCustom
-              label='marketingName'
-              value={data?.marketingName}
-              onChangeInput={handleChange}
-            />
-          )
-        }
+        <LocalizationInput val='marketingName' />
       </Box>
 
       <Box width='100%' px={4} mb={4}>
-        {
-          data?.shortDesc ? (
-            <div
-              style={{
-                width: '100%',
-                height: '56px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 15px',
-              }}
-              dangerouslySetInnerHTML={{ __html: data.shortDesc }}
-            />
-          ) : (
-            <InputCustom
-              label='shortDesc'
-              value={data?.shortDesc}
-              onChangeInput={handleChange}
-            />
-          )
-        }
+        <LocalizationInput val='shortDesc' />
       </Box>
 
       <Box width='100%' px={4} mb={4}>
-        {
-          data?.longDesc ? (
-            <div
-              style={{
-                width: '100%',
-                height: '56px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 15px',
-              }}
-              dangerouslySetInnerHTML={{ __html: data.longDesc }}
-            />
-          ) : (
-            <InputCustom
-              label='longDesc'
-              value={data?.longDesc}
-              onChangeInput={handleChange}
-            />
-          )
-        }
+        <LocalizationInput val='longDesc' />
       </Box>
 
       <Box width='100%' px={4} mb={4}>
-        {
-          data?.thankYouDesc ? (
-            <div
-              style={{
-                width: '100%',
-                height: '56px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 15px',
-              }}
-              dangerouslySetInnerHTML={{ __html: data.thankYouDesc }}
-            />
-          ) : (
-            <InputCustom
-              label='thanksDesc'
-              value={data?.thankYouDesc}
-              onChangeInput={handleChange}
-            />
-          )
-        }
+        <LocalizationInput val='thankYouDesc' />
       </Box>
 
       <Box width='100%' px={4} mb={4}>
-        {
-          data?.purchaseEmailDesc ? (
-            <div
-              style={{
-                width: '100%',
-                height: '56px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 15px',
-              }}
-              dangerouslySetInnerHTML={{ __html: data.purchaseEmailDesc }}
-            />
-          ) : (
-            <InputCustom
-              label='purchaseDesc'
-              value={data?.purchaseEmailDesc}
-              onChangeInput={handleChange}
-            />
-          )
-        }
+        <LocalizationInput val='purchaseEmailDesc' />
       </Box>
 
       <Box width='100%' px={4} mb={4}>
-        {
-          data?.manualRenewalEmailDesc ? (
-            <div
-              style={{
-                width: '100%',
-                height: '56px',
-                border: '1px solid rgba(0, 0, 0, 0.23)',
-                borderRadius: '4px',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 15px',
-              }}
-              dangerouslySetInnerHTML={{ __html: data.manualRenewalEmailDesc }}
-            />
-          ) : (
-            <InputCustom
-              label='manualRenDesc'
-              value={data?.manualRenewalEmailDesc}
-              onChangeInput={handleChange}
-            />
-          )
-        }
+        <LocalizationInput val='manualRenewalEmailDesc' />
       </Box>
     </Box>
   );

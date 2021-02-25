@@ -132,7 +132,7 @@ const labels = {
   licenseKeyPackages: 'License Key Packages',
   renewingProducts: 'Renewing Products',
   allowTrial: 'Allow trial',
-  PreorderReleaseDate: 'Preorder Release Date',
+  preorderReleaseDate: 'Preorder Release Date',
   fulfillmentAndSubscription: 'Fulfillment & Subscription',
   general: 'General',
   prices: 'Prices',

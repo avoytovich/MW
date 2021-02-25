@@ -14,6 +14,7 @@ const productRequiredFields = (product) => {
     externalContext: '',
     productFamily: '',
     priceFunction: '',
+    nextGenerationOf: [],
   };
   if (product.resources) {
     resourcesKeys = [...product.resources].map((resource, index) => ({
@@ -44,8 +45,20 @@ const discountRequiredFields = (discount) => {
   }
   return resObj;
 };
+
+const renewingProductsOptions = (options) => options.map((item) => {
+  const value = item?.genericName
+    ? `${item.genericName} (${item.publisherRefId}${
+      item.subscriptionTemplate ? ', ' : ''
+    }
+          ${item.subscriptionTemplate || ''})`
+    : item?.id;
+  return { id: item.id, value };
+});
+
 export {
   productRequiredFields,
   structureSelectOptions,
   discountRequiredFields,
+  renewingProductsOptions,
 };

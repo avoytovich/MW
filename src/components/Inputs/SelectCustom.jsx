@@ -39,7 +39,7 @@ const SelectCustom = ({
       variant="outlined"
     >
       {selectOptions?.map((option) => (
-        <MenuItem key={option.id} value={option.id}>
+        <MenuItem key={option.id || option.value} value={option.id}>
           {option.value}
         </MenuItem>
       ))}

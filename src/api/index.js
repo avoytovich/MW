@@ -517,6 +517,14 @@ const api = {
       data,
     });
   },
+  updateProductLocalsById(id, data) {
+    const url = `/products/descriptions/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateDiscountById(id, data) {
     const url = `/discounts/${id}`;
     return axiosInstance({
