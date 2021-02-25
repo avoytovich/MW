@@ -14,11 +14,16 @@ import {
 import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
+
 import General from './SubSections/General';
+
+import LocalizedContent from './SubSections/LocalizedContent';
 import Prices from './SubSections/Prices';
 import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
+
 import CheckoutMenu from './CheckoutMenu';
 import SectionLayout from './SectionLayout';
+
 import {
   productRequiredFields,
   structureSelectOptions,
@@ -42,6 +47,7 @@ const ProductDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
 
   const [productHasChanges, setProductChanges] = useState(false);
+  const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
     sellingStores: null,
     renewingProducts: null,
@@ -55,18 +61,34 @@ const ProductDetailsScreen = () => {
   const [checkOutStores, setCheckOutStores] = useState([]);
 
   const saveDetails = () => {
-    const updateDate = Date.now();
-    const sendObj = { ...currentProductData, updateDate };
-    if (!sendObj.businessSegment) {
-      delete sendObj.businessSegment;
+    if (productHasChanges) {
+      const updateDate = Date.now();
+      const sendObj = { ...currentProductData, updateDate };
+
+      if (!sendObj.businessSegment) {
+        delete sendObj.businessSegment;
+      }
+
+      api.updateProductById(currentProductData.id, sendObj).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        window.location.reload();
+      });
     }
-    api.updateProductById(currentProductData.id, sendObj).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      window.location.reload();
-    });
+
+    if (productHasLocalizationChanges) {
+      api
+        .updateProductLocalsById(currentProductData.descriptionId, productHasLocalizationChanges)
+        .then(() => {
+          dispatch(
+            showNotification(localization.t('general.updatesHaveBeenSaved')),
+          );
+          window.location.reload();
+        });
+    }
   };
+
   const filterCheckoutStores = () => {
     const res = [];
     currentProductData?.sellingStores.forEach((item) => {
@@ -206,7 +228,7 @@ const ProductDetailsScreen = () => {
         </Box>
 
         <Box display="flex" flexDirection="row">
-          <Zoom in={productHasChanges}>
+          <Zoom in={productHasChanges || !!productHasLocalizationChanges}>
             <Box mb={1} mr={1}>
               <Button
                 disabled={Object.keys(inputErrors).length !== 0}
@@ -264,6 +286,7 @@ const ProductDetailsScreen = () => {
             />
           </SectionLayout>
         )}
+
         {curTab === 1 && (
           <SectionLayout label={allTabs[1]}>
             <FulfillmentAndSubscription
@@ -274,12 +297,20 @@ const ProductDetailsScreen = () => {
             />
           </SectionLayout>
         )}
-        {curTab === 2 && <SectionLayout label={allTabs[2]} />}
-        {/* {curTab === 3 && <SectionLayout label={allTabs[3]} />} */}
-        {curTab === 3 && (
-          <SectionLayout label={allTabs[3]} >
-            <Prices/>
+
+        {curTab === 2 && (
+          <SectionLayout label={allTabs[2]}>
+            <LocalizedContent
+              setProductData={setCurrentProductData}
+              currentProductData={currentProductData}
+              productData={productData}
+              setNewData={setProductLocalizationChanges}
+            />
           </SectionLayout>
+        )}
+
+        {curTab === 3 && (
+          <SectionLayout label={allTabs[3]}><Prices /></SectionLayout>
         )}
         {curTab === 4 && <SectionLayout label={allTabs[4]} />}
         {curTab === 5 && <SectionLayout label={allTabs[5]} />}

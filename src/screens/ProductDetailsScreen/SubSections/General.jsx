@@ -168,7 +168,7 @@ const General = ({
           />
         </Box>
         <Box display="flex">
-          <Box p={2}>
+          <Box p={2} minWidth="170px">
             <SelectCustom
               label="lifeTime"
               value={lifeTimeUpdateValue.value}
@@ -190,7 +190,7 @@ const General = ({
             />
           </Box>
           {showLifeTimeNumber && (
-            <Box minWidth="135px" p={2}>
+            <Box minWidth="170px" p={2}>
               <NumberInput
                 label="maxPaymentsPart"
                 value={lifeTimeUpdateValue.number}
