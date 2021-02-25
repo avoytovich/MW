@@ -127,7 +127,7 @@ const ProductDetailsView = ({
           )}
         </Box>
       </Box>
-      <Box m={2} bgcolor="#fff">
+      <Box my={2} bgcolor="#fff">
         <Tabs
           value={curTab}
           indicatorColor="primary"

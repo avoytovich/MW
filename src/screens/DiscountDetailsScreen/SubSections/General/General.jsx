@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import AmountByCurrency from './AmountByCurrency';
 import DiscountLabels from './DiscountLabels';
+import DiscountCodes from './DiscountCodes';
 import localization from '../../../../localization';
 import {
   NumberInput,
@@ -25,6 +26,8 @@ const General = ({
   curDiscountLabels,
   setCurDiscountLabels,
   selectOptions,
+  setCurDiscountCodes,
+  curDiscountCodes,
 }) => {
   const [amountType, setAmountType] = useState(
     curDiscount.discountRate ? 'byPercentage' : 'byCurrency',
@@ -33,8 +36,8 @@ const General = ({
   const handleUpdateAmount = (value) => {
     if (value === 'byPercentage' && !curDiscount.discountRate) {
       setCurDiscount({ ...curDiscount, discountRate: 0.1 });
-    } else if (value === 'byCurrency' && !curDiscount.amountByCurrency) {
-      setCurDiscount({ ...curDiscount, amountByCurrency: { AED: 1 } });
+    } else if (value === 'byCurrency' && curAmountCurrency.length === 0) {
+      setCurAmountCurrency([{ key: '', value: '' }]);
     }
     setAmountType(value);
   };
@@ -43,10 +46,10 @@ const General = ({
     <Box display="flex" flexDirection="row" alignItems="baseline">
       <Box display="flex" flexDirection="column" width="50%">
         <Box display="flex" py={2} flexDirection="row" alignItems="baseline">
-          <Box px={2}>
+          <Box px={2} width="90%">
             <Typography>{localization.t('labels.status')}</Typography>
           </Box>
-          <Box px={2}>
+          <Box px={2} width="90%">
             <FormControlLabel
               control={(
                 <Switch
@@ -69,7 +72,7 @@ const General = ({
             />
           </Box>
         </Box>
-        <Box p={2}>
+        <Box p={2} width="90%">
           <SelectWithDeleteIcon
             label="endUser"
             value={curDiscount.enduserId}
@@ -88,7 +91,7 @@ const General = ({
             }}
           />
         </Box>
-        <Box p={2}>
+        <Box p={2} width="90%">
           <InputCustom
             label="discountRuleName"
             isRequired
@@ -100,10 +103,10 @@ const General = ({
           />
         </Box>
         <Box>
-          <Box pt={2} pl={2}>
+          <Box pt={4} pl={2} width="90%">
             <Typography>{localization.t('labels.amount')}</Typography>
           </Box>
-          <Box p={2}>
+          <Box p={2} width="90%">
             <RadioGroup
               row
               aria-label="Amount"
@@ -125,17 +128,19 @@ const General = ({
           </Box>
           <Box>
             {amountType === 'byPercentage' ? (
-              <NumberInput
-                label="percents"
-                value={curDiscount.discountRate * 100}
-                onChangeInput={(e) => {
-                  setCurDiscount({
-                    ...curDiscount,
-                    discountRate: e.target.value / 100,
-                  });
-                }}
-                minMAx={{ min: 1, max: 100 }}
-              />
+              <Box p={2} width="90%">
+                <NumberInput
+                  label="percents"
+                  value={curDiscount.discountRate * 100}
+                  onChangeInput={(e) => {
+                    setCurDiscount({
+                      ...curDiscount,
+                      discountRate: e.target.value / 100,
+                    });
+                  }}
+                  minMAx={{ min: 1, max: 100 }}
+                />
+              </Box>
             ) : (
               curAmountCurrency && (
                 <AmountByCurrency
@@ -160,7 +165,7 @@ const General = ({
             setCurDiscountLabels={setCurDiscountLabels}
           />
         )}
-        <Box p={2}>
+        <Box p={2} width="90%">
           <InputCustom
             isMultiline
             label="externalContext"
@@ -172,10 +177,10 @@ const General = ({
           />
         </Box>
         <Box>
-          <Box p={2}>
+          <Box pt={4} pl={2}>
             <Typography>{localization.t('labels.model')}</Typography>
           </Box>
-          <Box px={2}>
+          <Box p={2}>
             <RadioGroup
               row
               aria-label="Model"
@@ -201,6 +206,12 @@ const General = ({
             </RadioGroup>
           </Box>
         </Box>
+        {curDiscount.model === 'COUPON' && (
+          <DiscountCodes
+            curDiscountCodes={curDiscountCodes}
+            setCurDiscountCodes={setCurDiscountCodes}
+          />
+        )}
       </Box>
     </Box>
   );
@@ -214,6 +225,8 @@ General.propTypes = {
   curDiscountLabels: PropTypes.array,
   setCurDiscountLabels: PropTypes.func,
   selectOptions: PropTypes.object,
+  setCurDiscountCodes: PropTypes.func,
+  curDiscountCodes: PropTypes.array,
 };
 
 export default General;

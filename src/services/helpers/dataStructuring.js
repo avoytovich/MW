@@ -46,7 +46,7 @@ const productRequiredFields = (product) => {
 };
 
 const discountRequiredFields = (discount) => {
-  const defDiscount = { publisherRefIds: [], countries: [] };
+  const defDiscount = { publisherRefIds: [], countries: [], enduserId: '' };
 
   return { ...defDiscount, ...discount };
 };

@@ -5,13 +5,13 @@ import { Box, Typography } from '@material-ui/core';
 import localization from '../../localization';
 
 const SectionLayout = ({ label, children }) => (
-  <Box my={3} bgcolor="#fff" boxShadow={2} mx={2} width="100%" pb={4}>
+  <Box my={3} bgcolor="#fff" boxShadow={2} width="100%" pb={4}>
     <Box p={4}>
       <Typography gutterBottom variant="h4">
         {localization.t(`labels.${label}`)}
       </Typography>
     </Box>
-    <Box display="flex" flexDirection="column" width="90%" pl={2}>
+    <Box display="flex" flexDirection="column" width="95%" pl={2}>
       {children}
     </Box>
   </Box>

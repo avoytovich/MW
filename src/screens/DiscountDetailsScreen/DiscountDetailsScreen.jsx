@@ -4,7 +4,11 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import {
-  LinearProgress, Zoom, Button, Tabs, Tab,
+  LinearProgress,
+  Zoom,
+  Button,
+  Box,
+  Typography,
 } from '@material-ui/core';
 import {
   structureSelectOptions,
@@ -38,6 +42,9 @@ const DiscountDetailsScreen = () => {
     countries: null,
     endUsers: null,
   });
+
+  const [discountCodes, setDiscountCodes] = useState(null);
+  const [curDiscountCodes, setCurDiscountCodes] = useState(null);
 
   const [amountCurrency, setAmountCurrency] = useState(null);
   const [curAmountCurrency, setCurAmountCurrency] = useState(null);
@@ -127,7 +134,8 @@ const DiscountDetailsScreen = () => {
     setHasChanges(
       JSON.stringify(curDiscount) !== JSON.stringify(discount)
         || JSON.stringify(amountCurrency) !== JSON.stringify(curAmountCurrency)
-        || JSON.stringify(discountLabels) !== JSON.stringify(curDiscountLabels),
+        || JSON.stringify(discountLabels) !== JSON.stringify(curDiscountLabels)
+        || JSON.stringify(discountCodes) !== JSON.stringify(curDiscountCodes),
     );
 
     return () => setHasChanges(false);
@@ -148,6 +156,19 @@ const DiscountDetailsScreen = () => {
         key: item,
         value: checkedData.localizedLabels[item],
       }));
+
+      let discountCodesArray = [{ key: 'default', value: '' }];
+      if (checkedData.codes) {
+        discountCodesArray = Object.keys({
+          ...checkedData.codes,
+        }).map((item) => ({
+          key: checkedData.codes[item],
+          value: item,
+        }));
+      }
+      setDiscountCodes(JSON.parse(JSON.stringify(discountCodesArray)));
+      setCurDiscountCodes(JSON.parse(JSON.stringify(discountCodesArray)));
+
       setDiscountLabels(JSON.parse(JSON.stringify(localizedLabelsArray)));
       setCurDiscountLabels(JSON.parse(JSON.stringify(localizedLabelsArray)));
       setAmountCurrency(JSON.parse(JSON.stringify(currencyArray)));
@@ -273,26 +294,49 @@ const DiscountDetailsScreen = () => {
   if (curDiscount === null) return <LinearProgress />;
 
   return (
-    <div className="discount-details-screen">
-      <Tabs value={0} indicatorColor="primary" textColor="primary">
-        <Tab label={discount.name} />
-      </Tabs>
-
-      <Zoom in={hasChanges}>
-        <Button
-          id="save-discount-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={saveIdentity}
-        >
-          Save
-        </Button>
-      </Zoom>
+    <>
+      <Box display="flex" flexDirection="row" mx={2} pb={2}>
+        <Typography component="div" color="primary">
+          <Box fontWeight={500}>
+            {localization.t('general.discount')}
+            {'/'}
+          </Box>
+        </Typography>
+        <Typography component="div" color="secondary">
+          <Box fontWeight={500}>{discount.id}</Box>
+        </Typography>
+      </Box>
+      <Box
+        display="flex"
+        flexDirection="row"
+        m={2}
+        justifyContent="space-between"
+      >
+        <Box alignSelf="center">
+          <Typography data-test="discountName" gutterBottom variant="h3">
+            {discount.name}
+          </Typography>
+        </Box>
+        <Zoom in={hasChanges}>
+          <Box mb={1} mr={1}>
+            <Button
+              id="save-discount-button"
+              color="primary"
+              size="large"
+              type="submit"
+              variant="contained"
+              onClick={saveIdentity}
+            >
+              {localization.t('general.save')}
+            </Button>
+          </Box>
+        </Zoom>
+      </Box>
 
       <SectionLayout label="general">
         <General
+          curDiscountCodes={curDiscountCodes}
+          setCurDiscountCodes={setCurDiscountCodes}
           curDiscountLabels={curDiscountLabels}
           setCurDiscountLabels={setCurDiscountLabels}
           curAmountCurrency={curAmountCurrency}
@@ -334,7 +378,7 @@ const DiscountDetailsScreen = () => {
         curProductsByParent={curProductsByParent}
         availParentProducts={availParentProducts}
       />
-    </div>
+    </>
   );
 };
 

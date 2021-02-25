@@ -159,6 +159,7 @@ const labels = {
   byPercentage: 'By Percentage',
   byCurrency: 'By Currency',
   percents: 'Percents',
+  code: 'Code',
 };
 
 export default labels;

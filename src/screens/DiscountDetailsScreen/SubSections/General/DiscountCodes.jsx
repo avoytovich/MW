@@ -9,40 +9,40 @@ import { filterOptions } from '../../utils';
 import { availableLocales } from '../../../../services/selectOptions/selectOptions';
 import { SelectCustom, InputCustom } from '../../../../components/Inputs';
 
-const DiscountLabels = ({ curDiscountLabels, setCurDiscountLabels }) => {
+const DiscountCodes = ({ curDiscountCodes, setCurDiscountCodes }) => {
   const handleRemove = (removeKey) => {
-    const index = curDiscountLabels.findIndex((item) => item.key === removeKey);
-    const newValue = [...curDiscountLabels];
+    const index = curDiscountCodes.findIndex((item) => item.key === removeKey);
+    const newValue = [...curDiscountCodes];
     newValue.splice(index, 1);
-    setCurDiscountLabels(newValue);
+    setCurDiscountCodes(newValue);
   };
   const handleAdd = () => {
-    const lastValue = curDiscountLabels[curDiscountLabels.length - 1];
+    const lastValue = curDiscountCodes[curDiscountCodes.length - 1];
     if (lastValue.key !== '' && lastValue.value !== '') {
-      setCurDiscountLabels([...curDiscountLabels, { key: '', value: '' }]);
+      setCurDiscountCodes([...curDiscountCodes, { key: '', value: '' }]);
     }
   };
 
-  return curDiscountLabels.map((item) => (
+  return curDiscountCodes.map((item) => (
     <Box display="flex" key={item.key}>
       <Box p={2} width="30%">
         <SelectCustom
           label="language"
           value={item.key}
           selectOptions={filterOptions(
-            [...availableLocales, { value: 'neutral', id: 'neutral' }],
-            curDiscountLabels,
+            [...availableLocales, { value: 'default', id: 'default' }],
+            curDiscountCodes,
             item.key,
           )}
           onChangeSelect={(e) => {
-            const newValue = [...curDiscountLabels];
+            const newValue = [...curDiscountCodes];
             newValue.map((el) => {
               if (el.key === item.key) {
                 el.key = e.target.value;
               }
               return el;
             });
-            setCurDiscountLabels(newValue);
+            setCurDiscountCodes(newValue);
           }}
         />
       </Box>
@@ -52,19 +52,19 @@ const DiscountLabels = ({ curDiscountLabels, setCurDiscountLabels }) => {
           label="discountLabel"
           value={item.value}
           onChangeInput={(e) => {
-            const newValue = [...curDiscountLabels];
+            const newValue = [...curDiscountCodes];
             newValue.map((el) => {
               if (el.key === item.key) {
                 el.value = e.target.value;
               }
               return el;
             });
-            setCurDiscountLabels(newValue);
+            setCurDiscountCodes(newValue);
           }}
         />
       </Box>
-      <Box alignSelf="center" width="10%">
-        {item.key === 'neutral' ? (
+      <Box p={2} alignSelf="center" width="10%">
+        {item.key === 'default' ? (
           <AddCircleIcon color="secondary" onClick={handleAdd} />
         ) : (
           <CancelIcon
@@ -77,9 +77,9 @@ const DiscountLabels = ({ curDiscountLabels, setCurDiscountLabels }) => {
   ));
 };
 
-export default DiscountLabels;
+export default DiscountCodes;
 
-DiscountLabels.propTypes = {
-  curDiscountLabels: PropTypes.array,
-  setCurDiscountLabels: PropTypes.func,
+DiscountCodes.propTypes = {
+  curDiscountCodes: PropTypes.array,
+  setCurDiscountCodes: PropTypes.func,
 };
