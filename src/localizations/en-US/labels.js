@@ -160,6 +160,7 @@ const labels = {
   byCurrency: 'By Currency',
   percents: 'Percents',
   code: 'Code',
+  cappingAndLimits: 'Capping And Limits',
 };
 
 export default labels;

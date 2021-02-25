@@ -16,12 +16,12 @@ import {
 } from '../../services/helpers/dataStructuring';
 import SectionLayout from '../../components/SectionLayout';
 import General from './SubSections/General';
+import CappingAndLimits from './SubSections/CappingAndLimits';
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import EligibilitySection from './EligibilitySection';
 import localization from '../../localization';
 import DialogWindows from './DialogWindows';
-import CappingAndLimitsSection from './CappingAndLimitsSection';
 
 import './discountDetailsScreen.scss';
 
@@ -346,6 +346,12 @@ const DiscountDetailsScreen = () => {
           selectOptions={selectOptions}
         />
       </SectionLayout>
+      <SectionLayout label="cappingAndLimits">
+        <CappingAndLimits
+          curDiscount={curDiscount}
+          setCurDiscount={setCurDiscount}
+        />
+      </SectionLayout>
       <EligibilitySection
         selectOptions={selectOptions}
         curProductsByParent={curProductsByParent}
@@ -357,10 +363,6 @@ const DiscountDetailsScreen = () => {
         updateDiscount={updateDiscount}
         setCurDiscount={setCurDiscount}
         setParentProductsModalOpen={setParentProductsModalOpen}
-      />
-      <CappingAndLimitsSection
-        curDiscount={curDiscount}
-        setCurDiscount={setCurDiscount}
       />
       <DialogWindows
         productsModal={productsModal}
