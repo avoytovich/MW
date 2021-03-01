@@ -6,4 +6,35 @@ const filterOptions = (all, selected, currentValue) => {
   return res;
 };
 
-export { filterOptions };
+const fromObjectToArray = (object, keyValue, defParam) => {
+  const res = Object.keys({
+    ...object,
+  }).map((item) => (keyValue === 'key'
+    ? {
+      key: item,
+      value: object[item],
+    }
+    : {
+      key: object[item],
+      value: item,
+    }));
+  if (res.length === 0 && defParam) {
+    res.push(defParam);
+  }
+  return res;
+};
+
+const fromArrayToObject = (array, keyValue) => {
+  const res = {};
+  array.forEach((item) => {
+    if (keyValue === 'key') {
+      res[item.key] = item.value;
+    } else {
+      res[item.value] = item.key;
+    }
+  });
+
+  return res;
+};
+
+export { filterOptions, fromObjectToArray, fromArrayToObject };

@@ -161,6 +161,11 @@ const labels = {
   percents: 'Percents',
   code: 'Code',
   cappingAndLimits: 'Capping And Limits',
+  sourceS: 'Source(s)',
+  endUserTypes: 'End User Types',
+  stores: 'Stores',
+  minimumCartAmount: 'Minimum Cart Amount',
+  eligibility: 'Eligibility',
 };
 
 export default labels;

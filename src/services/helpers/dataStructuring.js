@@ -46,30 +46,41 @@ const productRequiredFields = (product) => {
 };
 
 const discountRequiredFields = (discount) => {
-  const defDiscount = { publisherRefIds: [], countries: [], enduserId: '' };
+  const defDiscount = {
+    publisherRefIds: [],
+    maxUsages: '',
+    maxUsePerStore: '',
+    maxUsePerEndUser: '',
+    countries: [],
+    enduserId: '',
+    codes: {},
+    endUserGroupIds: [],
+  };
 
   return { ...defDiscount, ...discount };
 };
 
-const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
-  const resObj = { id: option.id, value: option[optionValue] };
-  if (otherOptions) {
-    otherOptions.forEach((element) => {
-      resObj[element] = option[element];
-    });
-  }
-  return resObj;
-});
-
-const renewingProductsOptions = (options) => options.map((item) => {
-  const value = item?.genericName
-    ? `${item.genericName} (${item.publisherRefId}${
-      item.subscriptionTemplate ? ', ' : ''
+const structureSelectOptions = (options, optionValue, ...otherOptions) =>
+  options.map((option) => {
+    const resObj = { id: option.id, value: option[optionValue] };
+    if (otherOptions) {
+      otherOptions.forEach((element) => {
+        resObj[element] = option[element];
+      });
     }
+    return resObj;
+  });
+
+const renewingProductsOptions = (options) =>
+  options.map((item) => {
+    const value = item?.genericName
+      ? `${item.genericName} (${item.publisherRefId}${
+          item.subscriptionTemplate ? ', ' : ''
+        }
           ${item.subscriptionTemplate || ''})`
-    : item?.id;
-  return { id: item.id, value };
-});
+      : item?.id;
+    return { id: item.id, value };
+  });
 
 export {
   productRequiredFields,
