@@ -1,0 +1,25 @@
+@import '../../../styles/variables.scss';
+
+.product-files{
+  form{
+    width: 100%;
+  }
+
+  .block-actions{
+    right: -75px;
+
+    .MuiSvgIcon-root {
+      margin: 0 5px;
+      color: $navItemButton;
+      transition: .3s ease-in-out;
+
+      &:hover{
+        color: $navItemButtonActive;
+
+        &:nth-child(2){
+          color: $deleteIcon;
+        }
+      }
+    }
+  }
+}

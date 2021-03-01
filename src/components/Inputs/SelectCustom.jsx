@@ -16,6 +16,7 @@ const SelectCustom = ({
   selectOptions,
   onChangeSelect,
   isRequired,
+  selectId,
 }) => (
   <FormControl fullWidth variant="outlined">
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
@@ -25,7 +26,7 @@ const SelectCustom = ({
       value={selectOptions ? value : ''}
       inputProps={{
         name: label,
-        id: label,
+        id: selectId || label,
       }}
       startAdornment={
         !selectOptions && (
@@ -53,6 +54,7 @@ SelectCustom.propTypes = {
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   isRequired: PropTypes.bool,
+  selectId: PropTypes.string,
 };
 
 export default SelectCustom;
