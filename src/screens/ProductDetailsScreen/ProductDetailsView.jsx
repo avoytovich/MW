@@ -2,21 +2,18 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Zoom,
-  Button,
-  Box,
-  Typography,
-  Tabs,
-  Tab,
+  Zoom, Button, Box, Typography, Tabs, Tab,
 } from '@material-ui/core';
 
 import localization from '../../localization';
+import ProductFiles from './SubSections/ProductFiles';
 
 import General from './SubSections/General';
 import Prices from './SubSections/Prices';
 import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
 import CheckoutMenu from './CheckoutMenu';
 import SectionLayout from '../../components/SectionLayout';
+import LocalizedContent from './SubSections/LocalizedContent';
 
 const allTabs = [
   'general',
@@ -36,6 +33,8 @@ const ProductDetailsView = ({
   checkOutStores,
   productData,
   productId,
+  productHasLocalizationChanges,
+  setProductLocalizationChanges,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
@@ -98,7 +97,11 @@ const ProductDetailsView = ({
         </Box>
 
         <Box display="flex" flexDirection="row">
-          <Zoom in={productHasChanges || !productId}>
+          <Zoom
+            in={
+              productHasChanges || !productId || !!productHasLocalizationChanges
+            }
+          >
             <Box mb={1} mr={1}>
               <Button
                 disabled={tabsDisabled}
@@ -139,20 +142,20 @@ const ProductDetailsView = ({
         >
           <Tab label={localization.t(`labels.${allTabs[0]}`)} />
           <Tab
-            disabled={tabsDisabled}
+            disabled={!productId}
             label={localization.t(`labels.${allTabs[1]}`)}
           />
           <Tab
-            disabled={tabsDisabled}
+            disabled={!productId}
             label={localization.t(`labels.${allTabs[2]}`)}
           />
           <Tab label={localization.t(`labels.${allTabs[3]}`)} />
           <Tab
-            disabled={tabsDisabled}
+            disabled={!productId}
             label={localization.t(`labels.${allTabs[4]}`)}
           />
           <Tab
-            disabled={tabsDisabled}
+            disabled={!productId}
             label={localization.t(`labels.${allTabs[5]}`)}
           />
         </Tabs>
@@ -176,14 +179,31 @@ const ProductDetailsView = ({
             />
           </SectionLayout>
         )}
-        {curTab === 2 && <SectionLayout label={allTabs[2]} />}
+        {curTab === 2 && (
+          <SectionLayout label={allTabs[2]}>
+            <LocalizedContent
+              setProductData={setProductData}
+              currentProductData={currentProductData}
+              productData={productData}
+              setNewData={setProductLocalizationChanges}
+            />
+          </SectionLayout>
+        )}
         {curTab === 3 && (
           <SectionLayout label={allTabs[3]}>
             <Prices />
           </SectionLayout>
         )}
         {curTab === 4 && <SectionLayout label={allTabs[4]} />}
-        {curTab === 5 && <SectionLayout label={allTabs[5]} />}
+        {curTab === 5 && (
+          <SectionLayout label={allTabs[5]}>
+            <ProductFiles
+              productData={productData}
+              currentProductData={currentProductData}
+              setProductData={setProductData}
+            />
+          </SectionLayout>
+        )}
       </Box>
     </>
   );
@@ -198,6 +218,8 @@ ProductDetailsView.propTypes = {
   checkOutStores: PropTypes.array,
   productData: PropTypes.object,
   productId: PropTypes.string,
+  productHasLocalizationChanges: PropTypes.bool,
+  setProductLocalizationChanges: PropTypes.func,
 };
 
 export default ProductDetailsView;

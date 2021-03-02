@@ -166,6 +166,24 @@ const labels = {
   stores: 'Stores',
   minimumCartAmount: 'Minimum Cart Amount',
   eligibility: 'Eligibility',
+  marketingName: 'Marketing name',
+  shortDesc: 'Short description',
+  longDesc: 'Long description',
+  thankYouDesc: 'Thank you description',
+  purchaseEmailDesc: 'Purchase description',
+  manualRenewalEmailDesc: 'Manual renewal description',
+  addLanguage: 'Add Language',
+  selectFile: 'Select File',
+  freeLabel: 'Free label',
+  url: 'URL',
+  dropFileOrSelect:
+    'Select files from your computer or click add icon to enter custom URL',
+  relatedContents: 'Related Contents',
+  resources: 'Resources',
+  label: 'Label',
+  headerLogo: 'Header Logo',
+  boxshot: 'Boxshot',
+  icon: 'Icon',
 };
 
 export default labels;

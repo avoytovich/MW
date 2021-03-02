@@ -35,7 +35,7 @@ const SelectCustom = ({
   >
     {selectOptions?.length ? (
       selectOptions.map((option) => (
-        <MenuItem key={option.id} value={option.id}>
+        <MenuItem key={option.id || option.value} value={option.id}>
           {option.value}
         </MenuItem>
       ))
