@@ -65,7 +65,6 @@ const api = {
   },
   addNewTranslation(data) {
     const url = '/designs/i18ns';
-
     return axiosInstance({
       method: 'post',
       url,
@@ -74,7 +73,14 @@ const api = {
   },
   addNewLayout(data) {
     const url = '/designs/layouts';
-
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addNewProduct(data) {
+    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,

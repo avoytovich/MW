@@ -71,11 +71,17 @@ const SelectWithChip = ({
         </Box>
       )}
     >
-      {selectOptions?.map((item) => (
-        <MenuItem key={item.id} value={item.id}>
-          {item.value}
+      {selectOptions?.length ? (
+        selectOptions.map((item) => (
+          <MenuItem key={item.id} value={item.id}>
+            {item.value}
+          </MenuItem>
+        ))
+      ) : (
+        <MenuItem disabled>
+          {localization.t('general.noAvailableOptions')}
         </MenuItem>
-      ))}
+      )}
     </Select>
   </FormControl>
 );

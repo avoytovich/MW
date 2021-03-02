@@ -40,7 +40,10 @@ const general = {
   save: 'Save',
   add: 'Add',
   noPackagesFound: 'No packages found',
-  marketingNameMandatory: 'Marketing name is mandatory for the default language.',
+  addProduct: 'Add Product',
+  noAvailableOptions: 'No available options',
+  marketingNameMandatory:
+    'Marketing name is mandatory for the default language.',
 };
 
 export default general;

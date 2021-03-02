@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
+  TextField,
   CircularProgress,
   InputAdornment,
 } from '@material-ui/core';
@@ -16,36 +14,36 @@ const SelectCustom = ({
   selectOptions,
   onChangeSelect,
   isRequired,
-  selectId,
 }) => (
-  <FormControl fullWidth variant="outlined">
-    <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
-    <Select
-      required={isRequired}
-      disabled={!selectOptions}
-      value={selectOptions ? value : ''}
-      inputProps={{
-        name: label,
-        id: selectId || label,
-      }}
-      startAdornment={
-        !selectOptions && (
-          <InputAdornment>
-            <CircularProgress />
-          </InputAdornment>
-        )
-      }
-      label={localization.t(`labels.${label}`)}
-      onChange={onChangeSelect}
-      variant="outlined"
-    >
-      {selectOptions?.map((option) => (
+  <TextField
+    fullWidth
+    select
+    required={isRequired}
+    variant="outlined"
+    disabled={!selectOptions}
+    value={selectOptions ? value : ''}
+    InputProps={{
+      startAdornment: !selectOptions && (
+        <InputAdornment>
+          <CircularProgress />
+        </InputAdornment>
+      ),
+    }}
+    label={localization.t(`labels.${label}`)}
+    onChange={onChangeSelect}
+  >
+    {selectOptions?.length ? (
+      selectOptions.map((option) => (
         <MenuItem key={option.id || option.value} value={option.id}>
           {option.value}
         </MenuItem>
-      ))}
-    </Select>
-  </FormControl>
+      ))
+    ) : (
+      <MenuItem disabled>
+        {localization.t('general.noAvailableOptions')}
+      </MenuItem>
+    )}
+  </TextField>
 );
 
 SelectCustom.propTypes = {
@@ -54,7 +52,6 @@ SelectCustom.propTypes = {
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   isRequired: PropTypes.bool,
-  selectId: PropTypes.string,
 };
 
 export default SelectCustom;

@@ -22,8 +22,6 @@ const General = ({
   setProductData,
   currentProductData,
   selectOptions,
-  inputErrors,
-  setInputErrors,
 }) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
     number: 1,
@@ -92,6 +90,7 @@ const General = ({
       <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2} width="50%">
           <SelectCustom
+            isRequired
             label="catalog"
             value={currentProductData.catalogId}
             selectOptions={selectOptions.catalogs}
@@ -127,11 +126,6 @@ const General = ({
                 ...currentProductData,
                 type: e.target.value,
               });
-              if (inputErrors?.type) {
-                const newObj = { ...inputErrors };
-                delete newObj.type;
-                setInputErrors(newObj);
-              }
             }}
           />
         </Box>
@@ -181,16 +175,11 @@ const General = ({
                   ...lifeTimeUpdateValue,
                   value: e.target.value,
                 });
-                if (inputErrors?.lifeTime) {
-                  const newObj = { ...inputErrors };
-                  delete newObj.lifeTime;
-                  setInputErrors(newObj);
-                }
               }}
             />
           </Box>
           {showLifeTimeNumber && (
-            <Box minWidth="170px" p={2}>
+            <Box minWidth="165px" p={2}>
               <NumberInput
                 label="maxPaymentsPart"
                 value={lifeTimeUpdateValue.number}
@@ -330,8 +319,6 @@ General.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
-  inputErrors: PropTypes.object,
-  setInputErrors: PropTypes.func,
 };
 
 export default General;

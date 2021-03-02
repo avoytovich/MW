@@ -1,28 +1,48 @@
+const defaultProduct = {
+  status: 'DISABLED',
+  type: '',
+  genericName: '',
+  catalogId: '',
+  publisherRefId: '',
+  lifeTime: 'PERMANENT',
+  physical: false,
+  sellingStores: [],
+  blackListedCountries: [],
+  trialAllowed: false,
+  subscriptionTemplate: '',
+  trialDuration: '',
+  fulfillmentTemplate: '',
+  businessSegment: '',
+  externalContext: '',
+  productFamily: '',
+  priceFunction: '',
+  nextGenerationOf: [],
+  prices: {
+    defaultCurrency: 'AED',
+    priceByCountryByCurrency: {
+      AED: {
+        default: {
+          value: 1,
+          msrp: null,
+          upSell: null,
+          crossSell: null,
+          vatIncluded: false,
+        },
+      },
+    },
+  },
+};
+
 const productRequiredFields = (product) => {
   let resourcesKeys = null;
 
-  const defProduct = {
-    type: '',
-    sellingStores: [],
-    blackListedCountries: [],
-    lifeTime: '',
-    trialAllowed: false,
-    subscriptionTemplate: '',
-    trialDuration: '',
-    fulfillmentTemplate: '',
-    businessSegment: '',
-    externalContext: '',
-    productFamily: '',
-    priceFunction: '',
-    nextGenerationOf: [],
-  };
   if (product.resources) {
     resourcesKeys = [...product.resources].map((resource, index) => ({
       ...resource,
       index,
     }));
   }
-  return { ...defProduct, ...product, resources: resourcesKeys };
+  return { ...defaultProduct, ...product, resources: resourcesKeys };
 };
 
 const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
@@ -61,4 +81,5 @@ export {
   structureSelectOptions,
   discountRequiredFields,
   renewingProductsOptions,
+  defaultProduct,
 };

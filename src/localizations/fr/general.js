@@ -40,6 +40,8 @@ const general = {
   save: 'Save',
   add: 'Add',
   noPackagesFound: 'No packages found',
+  addProduct: 'Add Product',
+  noAvailableOptions: 'No available options',
 };
 
 export default general;
