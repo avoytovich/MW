@@ -3,12 +3,7 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {
-  Box,
-  Tabs,
-  Tab,
-  LinearProgress,
-} from '@material-ui/core';
+import { Box, Tabs, Tab, LinearProgress } from '@material-ui/core';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -65,7 +60,7 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
     localizedValues.forEach((v) => {
       if (curData && curData[v] && curData[v][value]) {
         let newKey = v.replace('localized', '');
-        newKey = (newKey.charAt(0).toLowerCase() + newKey.slice(1));
+        newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1);
 
         inputValues[newKey] = curData[v][value];
       }
@@ -75,7 +70,8 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
     setNewTabValues({ ...inputValues });
   };
 
-  const handleChange = (name, val) => setNewTabValues((c) => ({ ...c, [name]: val }));
+  const handleChange = (name, val) =>
+    setNewTabValues((c) => ({ ...c, [name]: val }));
 
   const removeLocale = (e, locale) => {
     e.stopPropagation();
@@ -100,9 +96,7 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
         setNewLangValue('');
         setAvailLocales((c) => [...c, newLangValue]);
       } else {
-        dispatch(
-          showNotification('Locale already exists!', true),
-        );
+        dispatch(showNotification('Locale already exists!', true));
       }
     }
   };
@@ -112,7 +106,6 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
       .getProductDescriptionById(currentProductData.descriptionId)
       .then(({ data }) => {
         const avail = [];
-
         localizedValues.forEach((it) => {
           if (data[it]) {
             Object.keys(data[it]).forEach((loc) => {
@@ -132,7 +125,8 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
   useEffect(() => getValues(), [value]);
 
   useEffect(() => {
-    const hasChanges = JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
+    const hasChanges =
+      JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
 
     if (hasChanges) {
       makeNewData();
@@ -144,58 +138,65 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
   if (!curData) return <LinearProgress />;
 
   return (
-    <Box display='flex' width='100%'>
-      <Box width='20%'>
+    <Box display="flex" width="100%">
+      <Box width="20%">
         <Tabs
-          orientation='vertical'
-          indicatorColor='primary'
-          variant='scrollable'
+          orientation="vertical"
+          indicatorColor="primary"
+          variant="scrollable"
           value={value}
           style={{ borderRight: '1px solid #e2e2e2', height: '100%' }}
           onChange={(e, newTab) => setValue(newTab)}
-          aria-label='Localizations'
+          aria-label="Localizations"
         >
           {availLocales.map((locale) => (
             <Tab
-              label={`${locale}${locale === curData?.fallbackLocale ? ' (default)' : ''}`}
+              label={`${locale}${
+                locale === curData?.fallbackLocale ? ' (default)' : ''
+              }`}
               key={locale}
               value={locale}
-              component={
-                forwardRef(({ children, ...props }, ref) => (
-                  <div role="button" {...props} ref={ref}>
-                    {children}
-                    {locale !== curData?.fallbackLocale && (
-                      <ClearIcon onClick={(e) => removeLocale(e, locale)} />
-                    )}
-                  </div>
-                ))
-              }
+              component={forwardRef(({ children, ...props }, ref) => (
+                <div role="button" {...props} ref={ref}>
+                  {children}
+                  {locale !== curData?.fallbackLocale && (
+                    <ClearIcon onClick={(e) => removeLocale(e, locale)} />
+                  )}
+                </div>
+              ))}
             />
           ))}
 
           <Tab
-            label='Add Language'
+            label="Add Language"
             value={0}
-            component={
-              forwardRef(({ children, ...props }, ref) => (
-                <div role="button" {...props} style={{ minWidth: '100%' }} ref={ref}>
-                  <SelectCustom
-                    label='addLanguage'
-                    value={newLangValue}
-                    selectOptions={availableLocales}
-                    onChangeSelect={(e) => setNewLangValue(e.target.value)}
-                  />
+            component={forwardRef(({ children, ...props }, ref) => (
+              <div
+                role="button"
+                {...props}
+                style={{ minWidth: '100%' }}
+                ref={ref}
+              >
+                <SelectCustom
+                  label="addLanguage"
+                  value={newLangValue}
+                  selectOptions={availableLocales}
+                  onChangeSelect={(e) => setNewLangValue(e.target.value)}
+                />
 
-                  <div hidden>{children}</div>
-                  <AddCircleIcon color='primary' style={{ marginLeft: 15 }} onClick={addLocale} />
-                </div>
-              ))
-            }
+                <div hidden>{children}</div>
+                <AddCircleIcon
+                  color="primary"
+                  style={{ marginLeft: 15 }}
+                  onClick={addLocale}
+                />
+              </div>
+            ))}
           />
         </Tabs>
       </Box>
 
-      <Box display="flex" flexDirection="row" alignItems="baseline" width='80%'>
+      <Box display="flex" flexDirection="row" alignItems="baseline" width="80%">
         <LocalizationInputs
           handleChange={handleChange}
           data={newTabValues}

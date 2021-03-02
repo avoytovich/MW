@@ -15,6 +15,8 @@ const AddVariationModal = ({
   onClose,
   setProductData,
   currentProductData,
+  setProductDetails,
+  productHasLocalizationChanges,
 }) => {
   const [step, setStep] = useState('firstStep');
   const [modalState, setModalState] = useState({});
@@ -56,12 +58,13 @@ const AddVariationModal = ({
 
       dataForProductDescriptionRequest = {
         description: frontToBack.field,
-        variableValueDescription: variableValueDescription.valueForDetails,
+        variableValueDescriptions: variableValueDescription.valueForDetails,
       };
 
       if (frontToBack.label) {
         dataForProductDescriptionRequest = {
           ...dataForProductDescriptionRequest,
+          label: frontToBack.label,
           labels: { 'en-US': frontToBack.label },
         };
       }
@@ -80,13 +83,19 @@ const AddVariationModal = ({
       ...currentProductData,
       availableVariables: newAvailableVariables,
     });
+    setProductDetails({
+      ...productHasLocalizationChanges,
+      variableDescriptions: [
+        ...productHasLocalizationChanges.variableDescriptions,
+        dataForProductDescriptionRequest,
+      ],
+    });
     onClose();
   };
 
   const modalBody = {
     firstStep: (
       <AddParameterFirstStep
-        setProductData={setProductData}
         setStep={setStep}
         setModalState={setModalState}
         onClose={handleClose}
@@ -130,6 +139,8 @@ AddVariationModal.propTypes = {
   onClose: PropTypes.func,
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
+  setProductDetails: PropTypes.func,
+  productHasLocalizationChanges: PropTypes.object,
 };
 
 export default AddVariationModal;

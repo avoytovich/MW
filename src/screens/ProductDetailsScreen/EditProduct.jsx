@@ -14,7 +14,6 @@ const EditProduct = () => {
 
   const dispatch = useDispatch();
 
-  const [inputErrors, setInputErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [productHasChanges, setProductChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
@@ -30,7 +29,8 @@ const EditProduct = () => {
   const [
     productHasLocalizationChanges,
     setProductLocalizationChanges,
-  ] = useState(false);
+  ] = useState({});
+  const [productVariations, setSubProductVariations] = useState({});
 
   const saveDetails = () => {
     if (productHasChanges) {
@@ -47,7 +47,6 @@ const EditProduct = () => {
         window.location.reload();
       });
     }
-
     if (productHasLocalizationChanges) {
       api
         .updateProductLocalsById(
@@ -86,11 +85,16 @@ const EditProduct = () => {
         setCurrentProductData(checkedProduct);
         setLoading(false);
       }
+      const { customerId, id, descriptionId } = product;
       handleGetOptions(
-        product.customerId,
+        customerId,
+        id,
+        descriptionId,
         isCancelled,
         setSelectOptions,
         selectOptions,
+        setSubProductVariations,
+        setProductLocalizationChanges,
       );
     });
     return () => {
@@ -100,8 +104,8 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (
-      JSON.stringify(currentProductData?.sellingStores)
-      !== JSON.stringify(productData?.sellingStores)
+      JSON.stringify(currentProductData?.sellingStores) !==
+      JSON.stringify(productData?.sellingStores)
     ) {
       filterCheckoutStores();
     }
@@ -126,8 +130,6 @@ const EditProduct = () => {
       productHasLocalizationChanges={productHasLocalizationChanges}
       productId={id}
       saveData={saveDetails}
-      inputErrors={inputErrors}
-      setInputErrors={setInputErrors}
       selectOptions={selectOptions}
       setProductData={setCurrentProductData}
       currentProductData={currentProductData}
@@ -135,6 +137,7 @@ const EditProduct = () => {
       productHasChanges={productHasChanges}
       checkOutStores={checkOutStores}
       setProductLocalizationChanges={setProductLocalizationChanges}
+      productVariations={productVariations}
     />
   );
 };

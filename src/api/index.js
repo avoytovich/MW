@@ -80,7 +80,8 @@ const api = {
     });
   },
   addNewProduct(data) {
-    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url =
+      '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,

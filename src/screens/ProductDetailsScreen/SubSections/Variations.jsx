@@ -27,13 +27,12 @@ import Popup from '../../../components/Popup';
 import AddVariationModal from '../../../components/utils/Modals/AddVariationModal';
 
 const Variations = ({
-  inputErrors,
-  setInputErrors,
   selectOptions,
   setProductData,
   currentProductData,
-  productData,
-  subProducts: { subProducts, variations },
+  productVariations: { bundledProducts = [], variations },
+  setProductDetails,
+  productHasLocalizationChanges,
 }) => {
   // MOCK !!!
   const defaultLocale = 'en-US';
@@ -42,7 +41,9 @@ const Variations = ({
   const [open, setOpen] = useState(false);
 
   const counts = {};
-  currentProductData.subProducts.forEach((x) => {
+  const subProductsList = currentProductData?.subProducts || [];
+
+  subProductsList.forEach((x) => {
     counts[x] = (counts[x] || 0) + 1;
   });
 
@@ -55,8 +56,8 @@ const Variations = ({
   };
 
   return (
-    <Box display="flex" flexDirection="column" width="auto">
-      <SectionLayout label="productVariations" wrapperWidth="inherit">
+    <Box display="flex" flexDirection="column" width="100%">
+      <SectionLayout label="productVariations" wrapperWidth="initial">
         <Box mt={3}>
           <Typography>
             Emphasized values override parent product's values.
@@ -81,7 +82,7 @@ const Variations = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {subProducts.map((item) => {
+                {bundledProducts.map((item) => {
                   const {
                     id,
                     status,
@@ -107,9 +108,9 @@ const Variations = ({
                         {subscriptionTemplate || ''}
                       </TableCell>
                       {variations?.availableVariables.map(
-                        ({ field, localizedValue }) => (
+                        ({ fieldValue, field, localizedValue }) => (
                           <TableCell key={field} align="center">
-                            {localizedValue[item[field]][defaultLocale]}
+                            {localizedValue[fieldValue][defaultLocale]}
                           </TableCell>
                         ),
                       )}
@@ -176,7 +177,6 @@ const Variations = ({
                         const index = currentProductData?.subProducts.findIndex(
                           (item) => item === selectValue.id,
                         );
-                        console.log('INDEX', index);
                         const newSubProducts = [
                           ...currentProductData.subProducts,
                         ];
@@ -247,10 +247,12 @@ const Variations = ({
                 onClick={() => {
                   setProductData({
                     ...currentProductData,
-                    subProducts: [
-                      ...currentProductData.subProducts,
-                      selectedBundledProduct,
-                    ],
+                    subProducts: currentProductData?.subProducts
+                      ? [
+                          ...currentProductData.subProducts,
+                          selectedBundledProduct,
+                        ]
+                      : [selectedBundledProduct],
                   });
                   setSelectedBundledProduct(null);
                 }}
@@ -260,7 +262,7 @@ const Variations = ({
             </Box>
           </Box>
         </SectionLayout>
-        <SectionLayout label="variationParameters">
+        <SectionLayout label="variationParameters" width="100%">
           <TableContainer component={Paper}>
             <Table className="table" aria-label="simple table">
               <TableHead>
@@ -270,12 +272,35 @@ const Variations = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {variations?.availableVariables.map(({ field, type }) => (
-                  <TableRow key={field}>
-                    <TableCell>{field}</TableCell>
-                    <TableCell>{type}</TableCell>
-                  </TableRow>
-                ))}
+                {currentProductData?.availableVariables.map(
+                  ({ field, type }) => (
+                    <TableRow key={field}>
+                      <TableCell>{field}</TableCell>
+                      <TableCell>{type}</TableCell>
+                      <TableCell>
+                        <IconButton
+                          color="secondary"
+                          aria-label="clear"
+                          onClick={() => {
+                            const newAvailableVariables = currentProductData.availableVariables.filter(
+                              (item) => item.field !== field,
+                            );
+                            setProductData({
+                              ...currentProductData,
+                              availableVariables: newAvailableVariables,
+                            });
+                            setProductDetails({
+                              ...productHasLocalizationChanges,
+                              variableDescriptions: newAvailableVariables,
+                            });
+                          }}
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ),
+                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -289,6 +314,8 @@ const Variations = ({
             onClose={handleClose}
             setProductData={setProductData}
             currentProductData={currentProductData}
+            setProductDetails={setProductDetails}
+            productHasLocalizationChanges={productHasLocalizationChanges}
           />
         </SectionLayout>
       </Box>
@@ -301,10 +328,12 @@ Variations.propTypes = {
   selectOptions: PropTypes.object,
   inputErrors: PropTypes.object,
   setInputErrors: PropTypes.func,
-  subProducts: PropTypes.shape({
-    subProducts: PropTypes.array,
+  productVariations: PropTypes.shape({
+    bundledProducts: PropTypes.array,
     variations: PropTypes.object,
   }),
+  setProductDetails: PropTypes.func,
+  productHasLocalizationChanges: PropTypes.object,
 };
 
 export default Variations;

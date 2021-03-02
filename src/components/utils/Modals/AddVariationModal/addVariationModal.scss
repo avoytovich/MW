@@ -12,5 +12,6 @@
   max-width: 860px;
   padding: 60px 40px;
   overflow-y: auto;
-  height: 98vh;
+  max-height: 98vh;
+  height: auto;
 }

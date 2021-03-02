@@ -12,10 +12,9 @@ import {
 
 import { InputCustom } from '../../../Inputs';
 
-import './addParameterFirstStep.scss';
+import '../variations.scss';
 
 const AddParameterFirstStep = ({
-  setProductData,
   setStep,
   setModalState,
   onClose,
@@ -38,7 +37,7 @@ const AddParameterFirstStep = ({
         Allowed: alphanumeric characters and underscore
       </Typography>
       <InputCustom
-        label="some"
+        // label="some"
         onChangeInput={(e) =>
           setModalState({
             ...modalState,
@@ -54,7 +53,7 @@ const AddParameterFirstStep = ({
         The label dasplayed to the buyer when ferering to this parameter
       </Typography>
       <InputCustom
-        label="some"
+        // label="some"
         onChangeInput={(e) =>
           setModalState({ ...modalState, label: e.target.value })
         }
@@ -72,7 +71,9 @@ const AddParameterFirstStep = ({
           <FormControlLabel
             className="radio"
             value="LIST"
-            control={<Radio color="primary" />}
+            control={
+              <Radio color={value === 'LIST' ? 'primary' : 'secondary'} />
+            }
             label="LIST"
           />
           <Typography variant="h6" className="radioLabel">
@@ -85,7 +86,9 @@ const AddParameterFirstStep = ({
           <FormControlLabel
             className="radio"
             value="RANGE"
-            control={<Radio color="primary" />}
+            control={
+              <Radio color={value === 'RANGE' ? 'primary' : 'secondary'} />
+            }
             label="RANGE"
           />
           <Typography variant="h6" className="radioLabel">
@@ -118,7 +121,6 @@ const AddParameterFirstStep = ({
 };
 
 AddParameterFirstStep.propTypes = {
-  setProductData: PropTypes.func,
   setStep: PropTypes.func,
   setModalState: PropTypes.func,
   onClose: PropTypes.func,

@@ -24,6 +24,7 @@ const CreateProduct = () => {
     catalogs: null,
     priceFunctions: null,
   });
+  const [productVariations, setSubProductVariations] = useState({});
 
   useEffect(() => {
     setCurrentProductData({ ...currentProductData, customerId });
@@ -31,7 +32,14 @@ const CreateProduct = () => {
 
   useEffect(() => {
     let isCancelled = false;
-    handleGetOptions(customerId, isCancelled, setSelectOptions, selectOptions);
+    handleGetOptions(
+      customerId,
+      null,
+      isCancelled,
+      setSelectOptions,
+      selectOptions,
+      setSubProductVariations,
+    );
     return () => {
       isCancelled = true;
     };
@@ -59,6 +67,7 @@ const CreateProduct = () => {
       setProductData={setCurrentProductData}
       currentProductData={currentProductData}
       saveData={saveProduct}
+      productVariations={productVariations}
     />
   );
 };

@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, Button, TextareaAutosize } from '@material-ui/core';
 
-import { InputCustom } from '../../../Inputs';
-
-import './addParameterSecondStepList.scss';
+import '../variations.scss';
 
 const AddParameterSecondStepList = ({
   setModalState,
@@ -13,11 +11,31 @@ const AddParameterSecondStepList = ({
   modalState,
 }) => {
   return (
-    <Box>
+    <>
+      <Typography variant="h2" className="header">
+        New Parameter
+      </Typography>
+      <Typography variant="h4" className="title">
+        Please enter in this text zone all values the paramater can take :
+      </Typography>
+      <Typography ariant="h6">
+        Please enter in this text zone all values the paramater can take : One
+        value per line. Written as it would appear for buyers speaking language
+        'en-US'.
+      </Typography>
       <TextareaAutosize
         aria-label="minimum height"
         rowsMin={3}
-        placeholder="Minimum 3 rows"
+        placeholder="
+        Tee-shirt size S
+        Tee-shirt size M
+        Tee-shirt size L"
+        style={{
+          width: '100%',
+          height: '345px',
+          border: '1px solid gray',
+          marginTop: '48px',
+        }}
         onChange={(e) =>
           setModalState({
             ...modalState,
@@ -35,7 +53,7 @@ const AddParameterSecondStepList = ({
           </Button>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
@@ -47,4 +65,3 @@ AddParameterSecondStepList.propTypes = {
 };
 
 export default AddParameterSecondStepList;
-('');

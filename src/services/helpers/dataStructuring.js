@@ -79,21 +79,23 @@ const renewingProductsOptions = (options) =>
   });
 
 const productsVariations = (renewingProducts, productId) =>
-  renewingProducts
-    .filter((item) => item.id === productId)
-    .reduce((accumulator, current) => {
-      current.availableVariables = current.availableVariables.reduce(
-        (acc, curr) => [
-          ...acc,
-          {
-            ...curr,
-            fieldValue: current[curr.field],
-          },
-        ],
-        [],
-      );
-      return [...accumulator, current];
-    }, [])[0];
+  productId
+    ? renewingProducts
+        .filter((item) => item.id === productId)
+        .reduce((accumulator, current) => {
+          current.availableVariables = current.availableVariables.reduce(
+            (acc, curr) => [
+              ...acc,
+              {
+                ...curr,
+                fieldValue: current[curr.field],
+              },
+            ],
+            [],
+          );
+          return [...accumulator, current];
+        }, [])[0]
+    : {};
 
 export {
   productRequiredFields,
