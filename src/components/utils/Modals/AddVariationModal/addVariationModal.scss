@@ -1,0 +1,16 @@
+@import '../../../../styles/variables.scss';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $tablesEvenRow;
+  width: 80vw;
+  max-width: 860px;
+  padding: 60px 40px;
+  overflow-y: auto;
+  height: 98vh;
+}

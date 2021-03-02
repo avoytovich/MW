@@ -16,12 +16,15 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
+
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import SectionLayout from '../SectionLayout';
 import { SelectCustom } from '../../../components/Inputs';
+
 import Popup from '../../../components/Popup';
+import AddVariationModal from '../../../components/utils/Modals/AddVariationModal';
 
 const Variations = ({
   inputErrors,
@@ -36,11 +39,20 @@ const Variations = ({
   const defaultLocale = 'en-US';
   //
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
+  const [open, setOpen] = useState(false);
 
   const counts = {};
   currentProductData.subProducts.forEach((x) => {
     counts[x] = (counts[x] || 0) + 1;
   });
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Box display="flex" flexDirection="column" width="auto">
@@ -108,7 +120,12 @@ const Variations = ({
             </Table>
           </TableContainer>
           <Box mt={3}>
-            <Button variant="outlined" color="primary" onClick={() => null}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => null}
+              disabled={!variations || !variations?.availableVariables.length}
+            >
               Add variant
             </Button>
           </Box>
@@ -262,6 +279,17 @@ const Variations = ({
               </TableBody>
             </Table>
           </TableContainer>
+          <Box marginTop="30px">
+            <Button variant="outlined" color="primary" onClick={handleOpen}>
+              Add Variation
+            </Button>
+          </Box>
+          <AddVariationModal
+            open={open}
+            onClose={handleClose}
+            setProductData={setProductData}
+            currentProductData={currentProductData}
+          />
         </SectionLayout>
       </Box>
     </Box>
