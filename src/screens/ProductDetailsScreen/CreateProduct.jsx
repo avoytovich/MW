@@ -29,16 +29,18 @@ const CreateProduct = () => {
   useEffect(() => {
     setCurrentProductData({ ...currentProductData, customerId });
   }, [customerId]);
-
+  //ToDo: refactor handleGetOptions props !!!
   useEffect(() => {
     let isCancelled = false;
     handleGetOptions(
       customerId,
       null,
+      null,
       isCancelled,
       setSelectOptions,
       selectOptions,
       setSubProductVariations,
+      () => {},
     );
     return () => {
       isCancelled = true;
