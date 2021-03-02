@@ -11,7 +11,7 @@ const SectionLayout = ({ label, children }) => (
         {localization.t(`labels.${label}`)}
       </Typography>
     </Box>
-    <Box display="flex" flexDirection="column" width="90%" pl={2}>
+    <Box display="flex" flexDirection="column" width="100%" px={2}>
       {children}
     </Box>
   </Box>

@@ -42,6 +42,8 @@ const general = {
   noPackagesFound: 'No packages found',
   addProduct: 'Add Product',
   noAvailableOptions: 'No available options',
+  marketingNameMandatory:
+    'Marketing name is mandatory for the default language.',
 };
 
 export default general;

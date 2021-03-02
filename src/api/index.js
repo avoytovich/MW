@@ -473,6 +473,14 @@ const api = {
       url,
     });
   },
+  getProductDescriptionById(id) {
+    const url = `/products/descriptions/${id}`;
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   // PUT BY ID
   updateCustomerById(id, data) {
@@ -509,6 +517,14 @@ const api = {
   },
   updateProductById(id, data) {
     const url = `/products/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateProductLocalsById(id, data) {
+    const url = `/products/descriptions/${id}`;
     return axiosInstance({
       method: 'put',
       url,

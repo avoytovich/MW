@@ -27,18 +27,40 @@ const EditProduct = () => {
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
   const [checkOutStores, setCheckOutStores] = useState([]);
+  const [
+    productHasLocalizationChanges,
+    setProductLocalizationChanges,
+  ] = useState(false);
 
   const saveDetails = () => {
-    const res = { ...currentProductData };
-    if (!res.businessSegment) {
-      delete res.businessSegment;
+    if (productHasChanges) {
+      const sendObj = { ...currentProductData };
+
+      if (!sendObj.businessSegment) {
+        delete sendObj.businessSegment;
+      }
+
+      api.updateProductById(currentProductData.id, sendObj).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        window.location.reload();
+      });
     }
-    api.updateProductById(currentProductData.id, res).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      window.location.reload();
-    });
+
+    if (productHasLocalizationChanges) {
+      api
+        .updateProductLocalsById(
+          currentProductData.descriptionId,
+          productHasLocalizationChanges,
+        )
+        .then(() => {
+          dispatch(
+            showNotification(localization.t('general.updatesHaveBeenSaved')),
+          );
+          window.location.reload();
+        });
+    }
   };
   const filterCheckoutStores = () => {
     const res = [];
@@ -101,6 +123,7 @@ const EditProduct = () => {
 
   return (
     <ProductDetailsView
+      productHasLocalizationChanges={productHasLocalizationChanges}
       productId={id}
       saveData={saveDetails}
       inputErrors={inputErrors}
@@ -111,6 +134,7 @@ const EditProduct = () => {
       productData={productData}
       productHasChanges={productHasChanges}
       checkOutStores={checkOutStores}
+      setProductLocalizationChanges={setProductLocalizationChanges}
     />
   );
 };

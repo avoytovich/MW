@@ -153,6 +153,13 @@ const labels = {
   localizedContent: 'Localized Content',
   productVariations: 'Product Variations',
   productFiles: 'Product Files',
+  marketingName: 'Marketing name',
+  shortDesc: 'Short description',
+  longDesc: 'Long description',
+  thankYouDesc: 'Thank you description',
+  purchaseEmailDesc: 'Purchase description',
+  manualRenewalEmailDesc: 'Manual renewal description',
+  addLanguage: 'Add Language',
 };
 
 export default labels;
