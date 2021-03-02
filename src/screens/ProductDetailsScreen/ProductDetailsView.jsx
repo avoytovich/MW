@@ -6,6 +6,7 @@ import {
 } from '@material-ui/core';
 
 import localization from '../../localization';
+import ProductFiles from './SubSections/ProductFiles';
 
 import General from './SubSections/General';
 import Prices from './SubSections/Prices';
@@ -194,7 +195,15 @@ const ProductDetailsView = ({
           </SectionLayout>
         )}
         {curTab === 4 && <SectionLayout label={allTabs[4]} />}
-        {curTab === 5 && <SectionLayout label={allTabs[5]} />}
+        {curTab === 5 && (
+          <SectionLayout label={allTabs[5]}>
+            <ProductFiles
+              productData={productData}
+              currentProductData={currentProductData}
+              setProductData={setProductData}
+            />
+          </SectionLayout>
+        )}
       </Box>
     </>
   );
