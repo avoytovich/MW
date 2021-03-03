@@ -53,6 +53,11 @@ const themeConfig = {
         },
       },
     },
+    MuiRadio: {
+      root: {
+        color: colors.radioButton,
+      },
+    },
     MuiCheckbox: { root: { color: colors.textPrimaryGray } },
     MuiFormHelperText: {
       root: { color: colors.textPrimaryGray },

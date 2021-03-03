@@ -10,7 +10,7 @@ import General from './SubSections/General';
 import Prices from './SubSections/Prices';
 import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
 import CheckoutMenu from './CheckoutMenu';
-import SectionLayout from './SectionLayout';
+import SectionLayout from '../../components/SectionLayout';
 import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
 
@@ -130,7 +130,7 @@ const ProductDetailsView = ({
           )}
         </Box>
       </Box>
-      <Box m={2} bgcolor="#fff">
+      <Box my={2} bgcolor="#fff">
         <Tabs
           value={curTab}
           indicatorColor="primary"
@@ -191,7 +191,12 @@ const ProductDetailsView = ({
         )}
         {curTab === 3 && (
           <SectionLayout label={allTabs[3]}>
-            <Prices />
+            <Prices
+              setProductData={setProductData}
+              currentProductData={currentProductData}
+              productData={productData}
+              setNewData={setProductLocalizationChanges}
+            />
           </SectionLayout>
         )}
         {curTab === 4 && (

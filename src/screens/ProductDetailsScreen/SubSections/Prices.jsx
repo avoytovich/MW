@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Box,
   Button,
-  TextField,
   Table,
   TableBody,
   TableCell,
@@ -11,98 +10,98 @@ import {
   TableHead,
   TableRow,
   Paper,
-  FormControl,
-  Select,
-  InputLabel,
-  MenuItem,
   Typography,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 
-const Prices = ({
-  props,
-}) => {
-  const [rows, setRows] = useState([
-    {
-      currency: 'AED (UAE Dirham)',
-      country: 'default',
-      price: 'AED 200',
-      msrp: '-',
-      upsellPrice: '-',
-      crossSellPrice: '-',
-      vatIncluded: 'vat',
-    },
-  ]);
-  const [input, setInput] = useState('');
+import ProductPriceRow from '../../../components/ProductDetails/ProductPriceRow';
 
-  const [state, setState] = useState({
-    currency: '',
-    country: '',
-    price: '',
-    msrp: '',
-    upsellPrice: '',
-    crossSellPrice: '',
-    vatIncluded: '',
+import {
+  SelectCustom,
+} from '../../../components/Inputs';
+
+import {
+  defaultCurrency,
+} from '../../../services/selectOptions/selectOptions';
+
+const Prices = ({
+  currentProductData,
+  selectOptions,
+  setProductData,
+  productData,
+}) => {
+  const test = currentProductData.prices.priceByCountryByCurrency;
+
+  const arr = [];
+
+  // const deleteRow = (e) => {
+
+  //   const raw = currentProductData.prices.priceByCountryByCurrency;
+
+  //   const allowed = [Object.keys(e)];
+  //   const all = [Object.keys(currentProductData.prices.priceByCountryByCurrency)];
+
+  //   const filtered = allowed.reduce((obj, key) => ({ ...obj, [key]: raw[key] }), {});
+
+    // const arrayCopy = rows.filter((row) => row !== e);
+    // setRows(arrayCopy);
+  // };
+
+  Object.keys(test).map((key) => {
+    const value = test[key];
+    const checkFiledsCount = Object.keys(value).length > 1;
+
+    if (checkFiledsCount === false) {
+      const obj = {};
+      obj[key] = value;
+      arr.push(obj);
+    } else {
+      const usd = key;
+      Object.keys(value).map((key) => {
+        const key1 = {};
+        const key2 = {};
+
+        key2[key] = value[key];
+        key1[usd] = key2;
+        arr.push(key1);
+      });
+    }
+
+    return key;
   });
 
-  const handleChange = (evt) => {
-    const { value } = evt.target;
-    setState({
-      ...state,
-      [evt.target.name]: value,
-    });
-  };
-
-  const addRow = (e) => {
-    const newState = {
-      currency: '',
-      country: '',
-      price: '',
-      msrp: '',
-      upsellPrice: '',
-      crossSellPrice: '',
-      vatIncluded: '',
-    };
-    setRows((rows) => [...rows, state]);
-    return setState(newState);
-  };
-
-  const deleteRow = (e) => {
-    const arrayCopy = rows.filter((row) => row !== e);
-    setRows(arrayCopy);
-  };
-
-  const handleChangeInput = (event) => {
-    const { name } = event.target;
-    setInput({
-      ...input,
-      [name]: event.target.value,
-    });
-  };
-
+  // console.log('test', currentProductData);
   return (
     <>
       <Box>
         <Box width={200} pb={3}>
-          <FormControl variant="outlined" fullWidth>
-            <InputLabel htmlFor="outlined-age-native-simple">Default currency</InputLabel>
-            <Select
-              native
-              value={input.age}
-              onChange={handleChangeInput}
-              displayEmpty
-              label="Default currency"
-            >
-              <option aria-label="None" value="" />
-              <option value="AED">AED</option>
-              <option value="-">-</option>
-            </Select>
-          </FormControl>
+          <Box>
+
+            <SelectCustom
+              label='defaultCurrency'
+              value={currentProductData.prices.defaultCurrency}
+              selectOptions={defaultCurrency}
+              onChangeSelect={(e) => {
+                console.log('e.target.value', e.target.value);
+                setProductData({
+                  ...currentProductData,
+                  prices: {
+                    ...currentProductData.prices,
+                    defaultCurrency: e.target.value,
+                  },
+                });
+              }}
+            />
+
+          </Box>
         </Box>
+
         <TableContainer component={Paper}>
           <Table className='table' aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Currency</TableCell>
+                <TableCell align="center">Currency</TableCell>
                 <TableCell align="center">Country</TableCell>
                 <TableCell align="center">Price</TableCell>
                 <TableCell align="center">MSRP</TableCell>
@@ -112,128 +111,59 @@ const Prices = ({
                 <TableCell align="center">Action</TableCell>
               </TableRow>
             </TableHead>
+
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.currency}>
-                  <TableCell component="th" scope="row">
-                    {row.currency}
-                  </TableCell>
-                  <TableCell align="center">{row.country}</TableCell>
-                  <TableCell align="center">{row.price || '-'}</TableCell>
-                  <TableCell align="center">{row.msrp || '-'}</TableCell>
-                  <TableCell align="center">{row.upsellPrice || '-'}</TableCell>
-                  <TableCell align="center">{row.crossSellPrice || '-'}</TableCell>
-                  <TableCell align="center">{row.vatIncluded || '-'}</TableCell>
+
+              {arr.map((key, index) => (
+                <TableRow key={index}>
                   <TableCell align="center">
-                    <Button variant="contained" color='primary' onClick={() => deleteRow(row)}>
+                    {Object.keys(key)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {Object.keys(Object.values(key)[0]).[0] || '-'}
+                  </TableCell>
+                  <TableCell align="center">
+                    {Object.values(Object.values(key)[0]).[0].value || '-'}
+                  </TableCell>
+                  <TableCell align="center">
+                    {Object.values(Object.values(key)[0]).[0].msrp || '-'}
+                  </TableCell>
+                  <TableCell align="center">
+                    {Object.values(Object.values(key)[0]).[0].upSell || '-'}
+                  </TableCell>
+                  <TableCell align="center">
+                    {Object.values(Object.values(key)[0]).[0].crossSell || '-'}
+                  </TableCell>
+                  <TableCell align="center">
+                    <FormControlLabel
+                      control={(
+                        <Checkbox
+                          disabled
+                          checked={Object.values(Object.values(key)[0]).[0].vatIncluded}
+                          name="checkedB"
+                          color="primary"
+                        />
+                      )}
+                    />
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button variant="contained" color='primary' onClick={() => deleteRow(key)}>
                       -
                     </Button>
                   </TableCell>
+
                 </TableRow>
               ))}
-              <TableRow>
-                <TableCell component="th" scope="row" width="210px">
-                  <FormControl fullWidth>
-                    <Select
-                      name="currency"
-                      value={state.currency}
-                      onChange={handleChange}
-                    >
-                      <MenuItem value='AED (UAE Dirham)'>AED (UAE Dirham)</MenuItem>
-                      <MenuItem value="ARS (Argentine Peso)">ARS (Argentine Peso)</MenuItem>
-                      <MenuItem value="CAD (Canadian Dollar)">CAD (Canadian Dollar)</MenuItem>
-                      <MenuItem value="COP (Colombian Peso )">COP (Colombian Peso)</MenuItem>
-                      <MenuItem value="EUR">EUR (Euro)</MenuItem>
-                    </Select>
-                  </FormControl>
-                </TableCell>
-
-                <TableCell align="right" width="210px">
-                  <FormControl fullWidth>
-                    <Select
-                      name="country"
-                      value={state.country}
-                      onChange={handleChange}
-                    >
-                      <MenuItem value="AD (Andora)">AD (Andora)</MenuItem>
-                      <MenuItem value="AF (Afghanistan)">AF (Afghanistan)</MenuItem>
-                      <MenuItem value="AM (Armenia)">AF (Afghanistan)</MenuItem>
-                      <MenuItem value="BR (Brazil)">AF (Afghanistan)</MenuItem>
-                      <MenuItem value="ES (Spain)">AF (Afghanistan)</MenuItem>
-                    </Select>
-                  </FormControl>
-                </TableCell>
-
-                <TableCell align="right">
-                  <Box px={1} width=" 100%">
-                    <TextField
-                      fullWidth
-                      name="price"
-                      type="text"
-                      value={state.price}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell align="right">
-                  <Box px={1} width=" 100%">
-                    <TextField
-                      fullWidth
-                      name="msrp"
-                      type="text"
-                      value={state.msrp}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell align="right">
-                  <Box px={1} width=" 100%">
-                    <TextField
-                      fullWidth
-                      name="upsellPrice"
-                      type="text"
-                      value={state.upsellPrice}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell align="right">
-                  <Box px={1} width=" 100%">
-                    <TextField
-                      fullWidth
-                      name="crossSellPrice"
-                      type="text"
-                      value={state.crossSellPrice}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell align="right">
-                  <Box px={1} width=" 100%">
-                    <TextField
-                      fullWidth
-                      name="vatIncluded"
-                      type="text"
-                      value={state.vatIncluded}
-                      onChange={handleChange}
-                      variant="outlined"
-                    />
-                  </Box>
-                </TableCell>
-                <TableCell align="right">
-                  <Button variant="contained" color="primary" onClick={(i) => addRow(i)}>
-                    +
-                  </Button>
-                </TableCell>
-              </TableRow>
+                <ProductPriceRow
+                  setProductData={setProductData}
+                  currentProductData={currentProductData}
+                />
             </TableBody>
+
           </Table>
         </TableContainer>
       </Box>
+
       <Box mt={3}>
         <Typography variant="h6">
           Date range

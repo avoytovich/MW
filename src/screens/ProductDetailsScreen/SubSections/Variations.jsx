@@ -20,7 +20,7 @@ import {
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 
-import SectionLayout from '../SectionLayout';
+import SectionLayout from '../../../components/SectionLayout';
 import { SelectCustom } from '../../../components/Inputs';
 
 import Popup from '../../../components/Popup';

@@ -51,7 +51,6 @@ const validityPeriod = [
 ];
 
 const availableLocales = [
-  { value: 'None', id: '' },
   { value: 'ar-AE: Arabic (United Arab Emirates)', id: 'ar-AE' },
   { value: 'ar-DZ: Arabic (Algeria)', id: 'ar-DZ' },
   { value: 'ar-MA: Arabic (Morocco)', id: 'ar-MA' },
@@ -72,10 +71,41 @@ const availableLocales = [
   { value: 'zh-CN: Chinese (China)', id: 'zh-CN' },
 ];
 
+const priceCurrency = [
+  { value: 'AED (UAE Dirham)', id: 'AED' },
+  { value: 'ARS (Argentine Peso)', id: 'ARS' },
+  { value: 'AUD (Australian Dollar)', id: 'AUD' },
+  { value: 'BRL (Brazilian Real)', id: 'BRL' },
+  { value: 'CAD (Canadian Dollar)', id: 'CAD' },
+  { value: 'CHF (Swiss Frank)', id: 'CHF' },
+  { value: 'CLP (Chilean Peso)', id: 'CLP' },
+  { value: 'CNY (Yuan Renminbi)', id: 'CNY' },
+  { value: 'COP (Colombian Peso)', id: 'COP' },
+  { value: 'DKK (Danish Krone)', id: 'DKK' },
+];
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
   { value: 'B2C', id: 'B2C' },
 ];
+
+const priceCountry = [
+  { value: 'AD (Andora)', id: 'AD (Andora)' },
+  { value: 'AE (United Arab Emirates)', id: 'AE (United Arab Emirates)' },
+  { value: 'AF (Afganistan)', id: 'AF (Afganistan)' },
+  { value: 'AG (Antigua and Barbuda)', id: 'AG (Antigua and Barbuda)' },
+  { value: 'AI (Anguilla)', id: 'AI (Anguilla)' },
+  { value: 'AL (Albania)', id: 'AL (Albania)' },
+  { value: 'AM (Armenia)', id: 'AM (Armenia)' },
+  { value: 'AO (Angola)', id: 'AO (Angola)' },
+  { value: 'AQ (Antarctica)', id: 'AQ (Antarctica)' },
+  { value: 'AR (Argentina)', id: 'AR (Argentina)' },
+];
+
+const defaultCurrency = [
+  { id: '-', value: '-' },
+  { id: 'AED', value: 'AED' },
+  { id: 'AUD', value: 'AUD' },
+]
 
 export {
   validityPeriod,
@@ -86,4 +116,7 @@ export {
   orderDetailStatus,
   availableLocales,
   businessSegment,
+  priceCurrency,
+  priceCountry,
+  defaultCurrency,
 };
