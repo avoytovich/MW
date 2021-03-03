@@ -143,7 +143,9 @@ const ProductFileBlock = ({
     newData.push(newItemData);
 
     updateData(newData);
-    setInit();
+
+    setInitImage(' ');
+    setTimeout(setInit, 0);
   };
 
   return (

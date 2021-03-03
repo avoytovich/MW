@@ -74,9 +74,9 @@ const Prices = ({
   // console.log('test', currentProductData);
   return (
     <>
-      <Box>
+      <Box px={2}>
         <Box width={200} pb={3}>
-          <Box>
+          {/* <Box>
 
             <SelectCustom
               label='defaultCurrency'
@@ -94,7 +94,7 @@ const Prices = ({
               }}
             />
 
-          </Box>
+          </Box> */}
         </Box>
 
         <TableContainer component={Paper}>
@@ -164,7 +164,7 @@ const Prices = ({
         </TableContainer>
       </Box>
 
-      <Box mt={3}>
+      <Box mt={3} px={2}>
         <Typography variant="h6">
           Date range
         </Typography>
@@ -173,7 +173,7 @@ const Prices = ({
         </Typography>
       </Box>
 
-      <Box mt={3}>
+      <Box mt={3} px={2}>
         <TableContainer component={Paper}>
           <Table className='table' aria-label="simple table">
             <TableHead>
