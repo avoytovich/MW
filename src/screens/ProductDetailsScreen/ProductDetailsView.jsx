@@ -99,7 +99,7 @@ const ProductDetailsView = ({
         <Box display="flex" flexDirection="row">
           <Zoom
             in={
-              productHasChanges || !productId || !!productHasLocalizationChanges
+              productHasChanges || !productId || productHasLocalizationChanges
             }
           >
             <Box mb={1} mr={1}>
@@ -232,9 +232,9 @@ ProductDetailsView.propTypes = {
   checkOutStores: PropTypes.array,
   productData: PropTypes.object,
   productId: PropTypes.string,
-  productHasLocalizationChanges: PropTypes.object,
+  productHasLocalizationChanges: PropTypes.bool,
   setProductLocalizationChanges: PropTypes.func,
-  subProducts: PropTypes.object,
+  productVariations: PropTypes.object,
 };
 
 export default ProductDetailsView;

@@ -74,7 +74,7 @@ const Variations = ({
                   <TableCell align="center">Lifetime</TableCell>
                   <TableCell align="center">Fulfillment Model</TableCell>
                   <TableCell align="center">Subscription Model</TableCell>
-                  {variations?.availableVariables.map(({ field }) => (
+                  {variations?.availableVariables?.map(({ field }) => (
                     <TableCell key={field} align="center">
                       {field}
                     </TableCell>
@@ -82,7 +82,7 @@ const Variations = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {bundledProducts.map((item) => {
+                {bundledProducts?.map((item) => {
                   const {
                     id,
                     status,
@@ -107,7 +107,7 @@ const Variations = ({
                       <TableCell align="center">
                         {subscriptionTemplate || ''}
                       </TableCell>
-                      {variations?.availableVariables.map(
+                      {variations?.availableVariables?.map(
                         ({ fieldValue, field, localizedValue }) => (
                           <TableCell key={field} align="center">
                             {localizedValue[fieldValue][defaultLocale]}
@@ -125,7 +125,7 @@ const Variations = ({
               variant="outlined"
               color="primary"
               onClick={() => null}
-              disabled={!variations || !variations?.availableVariables.length}
+              disabled={!variations || !variations?.availableVariables?.length}
             >
               Add variant
             </Button>
@@ -135,9 +135,8 @@ const Variations = ({
       <Box display="flex">
         <SectionLayout label="bundledProducts" contentWidth="100%">
           {Object.entries(counts).map(([key, value]) => {
-            const selectValue =
-              selectOptions?.renewingProducts.find(({ id }) => id === key) ||
-              '';
+            const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+
             return (
               <Box
                 key={key}
@@ -174,7 +173,7 @@ const Variations = ({
                   >
                     <Button
                       onClick={() => {
-                        const index = currentProductData?.subProducts.findIndex(
+                        const index = currentProductData?.subProducts?.findIndex(
                           (item) => item === selectValue.id,
                         );
                         const newSubProducts = [
@@ -272,7 +271,7 @@ const Variations = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentProductData?.availableVariables.map(
+                {currentProductData?.availableVariables?.map(
                   ({ field, type }) => (
                     <TableRow key={field}>
                       <TableCell>{field}</TableCell>
@@ -333,7 +332,7 @@ Variations.propTypes = {
     variations: PropTypes.object,
   }),
   setProductDetails: PropTypes.func,
-  productHasLocalizationChanges: PropTypes.object,
+  productHasLocalizationChanges: PropTypes.bool,
 };
 
 export default Variations;

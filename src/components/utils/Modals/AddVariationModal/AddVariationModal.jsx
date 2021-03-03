@@ -140,7 +140,7 @@ AddVariationModal.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   setProductDetails: PropTypes.func,
-  productHasLocalizationChanges: PropTypes.object,
+  productHasLocalizationChanges: PropTypes.bool,
 };
 
 export default AddVariationModal;

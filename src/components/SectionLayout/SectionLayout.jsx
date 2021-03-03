@@ -8,9 +8,9 @@ const SectionLayout = ({
   label,
   children,
   wrapperWidth = '100%',
-  contentWidth = '90%',
+  contentWidth = '100%',
 }) => (
-  <Box my={3} bgcolor="#fff" boxShadow={2} mx={2} width={wrapperWidth} pb={4}>
+  <Box my={3} bgcolor="#fff" boxShadow={2} width={wrapperWidth} pb={4}>
     <Box p={4}>
       <Typography gutterBottom variant="h4">
         {localization.t(`labels.${label}`)}

@@ -57,7 +57,8 @@ const handleGetOptions = (
           variations: productsVariations(renewingProducts?.data?.items, id),
         });
 
-        setProductLocalizationChanges(productDetails?.data);
+        // setProductLocalizationChanges(productDetails?.data);
+
         if (!isCancelled) {
           setSelectOptions({
             ...selectOptions,

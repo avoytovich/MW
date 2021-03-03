@@ -26,10 +26,7 @@ const EditProduct = () => {
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
   const [checkOutStores, setCheckOutStores] = useState([]);
-  const [
-    productHasLocalizationChanges,
-    setProductLocalizationChanges,
-  ] = useState({});
+  const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
   const [productVariations, setSubProductVariations] = useState({});
 
   const saveDetails = () => {
@@ -112,6 +109,7 @@ const EditProduct = () => {
     setProductChanges(
       JSON.stringify(currentProductData) !== JSON.stringify(productData),
     );
+
     return () => {
       setProductChanges(false);
     };
