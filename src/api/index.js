@@ -38,6 +38,7 @@ const api = {
       data,
     });
   },
+
   // POST
   addNewTheme(data) {
     let url = 'designs/themes';
@@ -88,6 +89,18 @@ const api = {
       data,
     });
   },
+  addNewAsset(file) {
+    const url = '/assets';
+    const data = new FormData();
+    data.append('file', file);
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;

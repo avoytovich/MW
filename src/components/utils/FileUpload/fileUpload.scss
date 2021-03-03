@@ -3,6 +3,7 @@
 .MuiDropzoneArea-root{
   width: 198px;
   height: 139px;
+  min-width: 198px;
   min-height: 139px;
   border-radius: 2px;
   border: solid 1px #c7c7c7;
@@ -43,6 +44,14 @@
       max-width: 100%;
       flex-basis: 100%;
       background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 5px;
+
+      .MuiDropzonePreviewList-image{
+        box-shadow: none;
+      }
 
       img{
         width: 100%;
@@ -54,6 +63,7 @@
         top: 3px;
         right: 3px;
         background: #fff;
+        z-index: 9;
 
         svg{
           fill: $navItemButton;
