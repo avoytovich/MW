@@ -3,7 +3,8 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography, Grid } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import CancelIcon from '@material-ui/icons/Cancel';
+import ClearIcon from '@material-ui/icons/Clear';
+
 import { filterOptions } from './utils';
 
 import {
@@ -102,14 +103,13 @@ const EditKeyValueInputs = ({
               </Box>
             </Grid>
             <Grid item xs={1} className="iconsWrapper">
-              {((!additionalOption && index === 0) || index !== 0) && (
-                <CancelIcon
+              {index === 0 ? (
+                <AddCircleIcon color="primary" onClick={handleAdd} />
+              ) : (
+                <ClearIcon
                   color="secondary"
                   onClick={() => handleRemove(item.key)}
                 />
-              )}
-              {index === 0 && (
-                <AddCircleIcon color="secondary" onClick={handleAdd} />
               )}
             </Grid>
           </Fragment>
@@ -117,7 +117,7 @@ const EditKeyValueInputs = ({
       ) : (
         <Box display="flex">
           <Box p={2}>
-            <AddCircleIcon color="secondary" onClick={handleAdd} />
+            <AddCircleIcon color="primary" onClick={handleAdd} />
           </Box>
           <Box p={2}>
             <Typography>Add new value</Typography>

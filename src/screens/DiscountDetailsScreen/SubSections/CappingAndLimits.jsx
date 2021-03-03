@@ -51,7 +51,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
       </Grid>
       <Grid container alignItems="center">
         <Grid item md={3} sm={6}>
-          <Box py={2} p={2}>
+          <Box py={2} pl={2}>
             <SelectCustom
               label="periodOfValidity"
               onChangeSelect={(e) => setValidPeriod(e.target.value)}
@@ -62,7 +62,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
         </Grid>
         <Grid item md={4} sm={6}>
           {validPeriod === 'between' ? (
-            <Box py={2}>
+            <Box p={2}>
               <DateRangePicker
                 values={selectionRange}
                 handleChange={handleSelect}
@@ -97,41 +97,46 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
           )}
         </Grid>
       </Grid>
-      <Grid item md={4} sm={12}>
-        <Box p={2} width={1}>
-          <NumberInput
-            label="maximumUses"
-            value={curDiscount.maxUsages}
-            onChangeInput={(e) => setCurDiscount({ ...curDiscount, maxUsages: e.target.value })}
-            minMAx={{ min: 1, max: 9999, step: 1 }}
-          />
-        </Box>
-      </Grid>
-      <Grid item md={4} sm={12}>
-        <Box p={2} width={1}>
-          <NumberInput
-            label="maximumUsesPerStore"
-            value={curDiscount.maxUsePerStore}
-            onChangeInput={(e) => setCurDiscount(
-              { ...curDiscount, maxUsePerStore: e.target.value },
-            )}
-            minMAx={{ min: 1, max: 9999, step: 1 }}
-          />
-        </Box>
-      </Grid>
-      <Grid item md={4} sm={12}>
-        <Box p={2} width={1}>
-          <NumberInput
-            label="maximumUsesPerEndUser"
-            value={curDiscount.maxUsePerEndUser}
-            onChangeInput={(e) => setCurDiscount({
-              ...curDiscount,
-              maxUsePerEndUser: e.target.value,
-            })}
-            minMAx={{ min: 1, max: 9999, step: 1 }}
-          />
-        </Box>
-      </Grid>
+      <Box width={1} p={2}>
+        <Grid container spacing={2}>
+          <Grid item md={4} sm={12}>
+            <Box>
+              <NumberInput
+                label="maximumUses"
+                value={curDiscount.maxUsages}
+                onChangeInput={(e) => setCurDiscount({ ...curDiscount, maxUsages: e.target.value })}
+                minMAx={{ min: 1, max: 9999, step: 1 }}
+              />
+            </Box>
+          </Grid>
+          <Grid item md={4} sm={12}>
+            <Box>
+              <NumberInput
+                label="maximumUsesPerStore"
+                value={curDiscount.maxUsePerStore}
+                onChangeInput={(e) => setCurDiscount({
+                  ...curDiscount,
+                  maxUsePerStore: e.target.value,
+                })}
+                minMAx={{ min: 1, max: 9999, step: 1 }}
+              />
+            </Box>
+          </Grid>
+          <Grid item md={4} sm={12}>
+            <Box>
+              <NumberInput
+                label="maximumUsesPerEndUser"
+                value={curDiscount.maxUsePerEndUser}
+                onChangeInput={(e) => setCurDiscount({
+                  ...curDiscount,
+                  maxUsePerEndUser: e.target.value,
+                })}
+                minMAx={{ min: 1, max: 9999, step: 1 }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
     </>
   );
 };

@@ -27,13 +27,14 @@ const fromObjectToArray = (object, keyValue, defParam) => {
 const fromArrayToObject = (array, keyValue) => {
   const res = {};
   array.forEach((item) => {
-    if (keyValue === 'key') {
-      res[item.key] = item.value;
-    } else {
-      res[item.value] = item.key;
+    if (item.value && item.key) {
+      if (keyValue === 'key') {
+        res[item.key] = item.value;
+      } else {
+        res[item.value] = item.key;
+      }
     }
   });
-
   return res;
 };
 

@@ -63,7 +63,6 @@ const DiscountDetailsScreen = () => {
   const [curProductsByParent, setCurProductsByParent] = useState(null);
 
   const [amountType, setAmountType] = useState(null);
-
   const saveDiscount = () => {
     const res = { ...curDiscount };
 
@@ -73,6 +72,7 @@ const DiscountDetailsScreen = () => {
       res.amountByCurrency = fromArrayToObject(curAmountCurrency, 'key');
       delete res.discountRate;
     } else {
+      res.discountRate = curDiscount.discountRate / 100;
       delete res.amountByCurrency;
     }
     if (curDiscount.model === 'COUPON') {
@@ -100,13 +100,13 @@ const DiscountDetailsScreen = () => {
       }
     } else if (type === 'stores') {
       const newArr = [...curDiscount.storeIds];
-      newArr.splice(newArr.indexOf(item), 1);
+      newArr.splice(newArr.indexOf(item.id), 1);
       setCurDiscount((c) => ({ ...c, storeIds: newArr }));
       setStores((p) => p.filter((pr) => pr.id !== item.id));
       setAvailStores((pr) => [...pr, item]);
     } else if (type === 'parentProducts') {
       const newArr = [...curDiscount.parentProductIds];
-      newArr.splice(newArr.indexOf(item), 1);
+      newArr.splice(newArr.indexOf(item.id), 1);
       setCurDiscount((c) => ({ ...c, parentProductIds: newArr }));
       setCurProductsByParent((p) => p.filter((pr) => pr.id !== item.id));
       setAvailParentProducts((pr) => [...pr, item]);
@@ -200,9 +200,9 @@ const DiscountDetailsScreen = () => {
 
       setDiscount(checkedData);
       setCurDiscount(checkedData);
-      const parentIds = data.parentProductIds?.length
-        ? data.parentProductIds.join('&')
-        : null;
+      // const parentIds = data.parentProductIds?.length
+      //   ? data.parentProductIds.join('&')
+      //   : null;
       const { customerId } = data;
       Promise.all([
         api.getEndUsersByCustomerId(customerId),

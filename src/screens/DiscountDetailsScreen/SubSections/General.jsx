@@ -37,7 +37,7 @@ const General = ({
 }) => {
   const handleUpdateAmount = (value) => {
     if (value === 'byPercentage' && !curDiscount.discountRate) {
-      setCurDiscount({ ...curDiscount, discountRate: 0.1 });
+      setCurDiscount({ ...curDiscount, discountRate: 1 });
     }
     setAmountType(value);
   };
@@ -157,14 +157,14 @@ const General = ({
             <Box p={2}>
               <NumberInput
                 label="percents"
-                value={curDiscount.discountRate * 100}
+                value={curDiscount.discountRate}
                 onChangeInput={(e) => {
                   setCurDiscount({
                     ...curDiscount,
-                    discountRate: e.target.value / 100,
+                    discountRate: e.target.value,
                   });
                 }}
-                minMAx={{ min: 1, max: 100 }}
+                minMAx={{ min: 1, max: 100, step: 1 }}
               />
             </Box>
           ) : (
@@ -174,7 +174,6 @@ const General = ({
                 setCurValue={setCurAmountCurrency}
                 selectOptions={priceCurrency}
                 labels={['currency', 'amount']}
-                canNotBeEmpty
               />
             )
           )}
