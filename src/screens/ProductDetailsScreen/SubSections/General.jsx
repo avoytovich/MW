@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box, Switch, FormControlLabel, Typography,
-} from '@material-ui/core';
+import { Box, Switch, FormControlLabel, Typography } from '@material-ui/core';
 import {
   lifeTime,
   type,
@@ -66,7 +64,7 @@ const General = ({
         </Box>
         <Box p={2}>
           <FormControlLabel
-            control={(
+            control={
               <Switch
                 name="status"
                 onChange={(e) => {
@@ -78,7 +76,7 @@ const General = ({
                 color="primary"
                 checked={currentProductData.status === 'ENABLED'}
               />
-            )}
+            }
             label={localization.t(
               `labels.${
                 currentProductData.status === 'ENABLED' ? 'enabled' : 'disabled'
@@ -107,10 +105,12 @@ const General = ({
             label="name"
             isRequired
             value={currentProductData.genericName}
-            onChangeInput={(e) => setProductData({
-              ...currentProductData,
-              genericName: e.target.value,
-            })}
+            onChangeInput={(e) =>
+              setProductData({
+                ...currentProductData,
+                genericName: e.target.value,
+              })
+            }
           />
         </Box>
       </Box>
@@ -134,10 +134,12 @@ const General = ({
             isRequired
             label="publisherRefID"
             value={currentProductData.publisherRefId}
-            onChangeInput={(e) => setProductData({
-              ...currentProductData,
-              publisherRefId: e.target.value,
-            })}
+            onChangeInput={(e) =>
+              setProductData({
+                ...currentProductData,
+                publisherRefId: e.target.value,
+              })
+            }
           />
         </Box>
       </Box>
@@ -210,7 +212,7 @@ const General = ({
           </Box>
           <Box p={2}>
             <FormControlLabel
-              control={(
+              control={
                 <Switch
                   name="physicalProduct"
                   onChange={(e) => {
@@ -222,7 +224,7 @@ const General = ({
                   color="primary"
                   checked={currentProductData.physical}
                 />
-              )}
+              }
             />
           </Box>
         </Box>
@@ -231,10 +233,12 @@ const General = ({
             isMultiline
             label="externalContext"
             value={currentProductData.externalContext}
-            onChangeInput={(e) => setProductData({
-              ...currentProductData,
-              externalContext: e.target.value,
-            })}
+            onChangeInput={(e) =>
+              setProductData({
+                ...currentProductData,
+                externalContext: e.target.value,
+              })
+            }
           />
         </Box>
       </Box>
@@ -244,10 +248,12 @@ const General = ({
             label="sellingStores"
             value={currentProductData.sellingStores}
             selectOptions={selectOptions.sellingStores}
-            onChangeSelect={(e) => setProductData({
-              ...currentProductData,
-              sellingStores: e.target.value,
-            })}
+            onChangeSelect={(e) =>
+              setProductData({
+                ...currentProductData,
+                sellingStores: e.target.value,
+              })
+            }
             onClickDelIcon={(chip) => {
               const newValue = [...currentProductData.sellingStores].filter(
                 (val) => val !== chip,
@@ -263,10 +269,12 @@ const General = ({
           <InputCustom
             label="family"
             value={currentProductData.productFamily}
-            onChangeInput={(e) => setProductData({
-              ...currentProductData,
-              productFamily: e.target.value,
-            })}
+            onChangeInput={(e) =>
+              setProductData({
+                ...currentProductData,
+                productFamily: e.target.value,
+              })
+            }
           />
         </Box>
       </Box>
@@ -276,10 +284,12 @@ const General = ({
             label="blockedCountries"
             value={currentProductData.blackListedCountries}
             selectOptions={countriesOptions}
-            onChangeSelect={(e) => setProductData({
-              ...currentProductData,
-              blackListedCountries: e.target.value,
-            })}
+            onChangeSelect={(e) =>
+              setProductData({
+                ...currentProductData,
+                blackListedCountries: e.target.value,
+              })
+            }
             onClickDelIcon={(chip) => {
               const newValue = [
                 ...currentProductData.blackListedCountries,

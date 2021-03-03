@@ -45,15 +45,16 @@ const productRequiredFields = (product) => {
   return { ...defaultProduct, ...product, resources: resourcesKeys };
 };
 
-const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
-  const resObj = { id: option.id, value: option[optionValue] };
-  if (otherOptions) {
-    otherOptions.forEach((element) => {
-      resObj[element] = option[element];
-    });
-  }
-  return resObj;
-});
+const structureSelectOptions = (options, optionValue, ...otherOptions) =>
+  options.map((option) => {
+    const resObj = { id: option.id, value: option[optionValue] };
+    if (otherOptions) {
+      otherOptions.forEach((element) => {
+        resObj[element] = option[element];
+      });
+    }
+    return resObj;
+  });
 
 const discountRequiredFields = (discount) => {
   let resObj = { ...discount };
@@ -66,15 +67,35 @@ const discountRequiredFields = (discount) => {
   return resObj;
 };
 
-const renewingProductsOptions = (options) => options.map((item) => {
-  const value = item?.genericName
-    ? `${item.genericName} (${item.publisherRefId}${
-      item.subscriptionTemplate ? ', ' : ''
-    }
+const renewingProductsOptions = (options) =>
+  options.map((item) => {
+    const value = item?.genericName
+      ? `${item.genericName} (${item.publisherRefId}${
+          item.subscriptionTemplate ? ', ' : ''
+        }
           ${item.subscriptionTemplate || ''})`
-    : item?.id;
-  return { id: item.id, value };
-});
+      : item?.id;
+    return { id: item.id, value };
+  });
+
+const productsVariations = (renewingProducts, productId) =>
+  productId
+    ? renewingProducts
+        .filter((item) => item.id === productId)
+        .reduce((accumulator, current) => {
+          current.availableVariables = current.availableVariables.reduce(
+            (acc, curr) => [
+              ...acc,
+              {
+                ...curr,
+                fieldValue: current[curr.field],
+              },
+            ],
+            [],
+          );
+          return [...accumulator, current];
+        }, [])[0]
+    : {};
 
 export {
   productRequiredFields,
@@ -82,4 +103,5 @@ export {
   discountRequiredFields,
   renewingProductsOptions,
   defaultProduct,
+  productsVariations,
 };
