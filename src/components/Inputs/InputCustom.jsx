@@ -19,7 +19,7 @@ const InputCustom = ({
       name={label}
       value={value}
       fullWidth
-      label={localization.t(`labels.${label}`)}
+      label={label ? localization.t(`labels.${label}`) : ''}
       type="text"
       InputProps={{
         form: { autocomplete: 'off' },

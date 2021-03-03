@@ -184,6 +184,8 @@ const labels = {
   headerLogo: 'Header Logo',
   boxshot: 'Boxshot',
   icon: 'Icon',
+  bundledProducts: 'Bundled products',
+  variationParameters: 'Variation parameters',
 };
 
 export default labels;

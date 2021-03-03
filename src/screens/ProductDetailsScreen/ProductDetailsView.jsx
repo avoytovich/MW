@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Zoom, Button, Box, Typography, Tabs, Tab,
-} from '@material-ui/core';
+import { Zoom, Button, Box, Typography, Tabs, Tab } from '@material-ui/core';
 
 import localization from '../../localization';
 import ProductFiles from './SubSections/ProductFiles';
@@ -14,6 +12,7 @@ import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription
 import CheckoutMenu from './CheckoutMenu';
 import SectionLayout from '../../components/SectionLayout';
 import LocalizedContent from './SubSections/LocalizedContent';
+import Variations from './SubSections/Variations';
 
 const allTabs = [
   'general',
@@ -35,6 +34,7 @@ const ProductDetailsView = ({
   productId,
   productHasLocalizationChanges,
   setProductLocalizationChanges,
+  productVariations,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
@@ -49,12 +49,12 @@ const ProductDetailsView = ({
     } = currentProductData;
 
     if (
-      catalogId
-      && publisherRefId
-      && genericName
-      && type
-      && prices.defaultCurrency
-      && prices.priceByCountryByCurrency[prices.defaultCurrency].default.value
+      catalogId &&
+      publisherRefId &&
+      genericName &&
+      type &&
+      prices.defaultCurrency &&
+      prices.priceByCountryByCurrency[prices.defaultCurrency].default.value
     ) {
       setTabsDisabled(false);
     } else {
@@ -194,7 +194,16 @@ const ProductDetailsView = ({
             <Prices />
           </SectionLayout>
         )}
-        {curTab === 4 && <SectionLayout label={allTabs[4]} />}
+        {curTab === 4 && (
+          <Variations
+            selectOptions={selectOptions}
+            setProductData={setProductData}
+            currentProductData={currentProductData}
+            productVariations={productVariations}
+            setProductDetails={setProductLocalizationChanges}
+            productHasLocalizationChanges={productHasLocalizationChanges}
+          />
+        )}
         {curTab === 5 && (
           <SectionLayout label={allTabs[5]}>
             <ProductFiles
@@ -218,8 +227,9 @@ ProductDetailsView.propTypes = {
   checkOutStores: PropTypes.array,
   productData: PropTypes.object,
   productId: PropTypes.string,
-  productHasLocalizationChanges: PropTypes.bool,
+  productHasLocalizationChanges: PropTypes.object,
   setProductLocalizationChanges: PropTypes.func,
+  subProducts: PropTypes.object,
 };
 
 export default ProductDetailsView;

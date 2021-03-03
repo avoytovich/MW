@@ -63,7 +63,6 @@ const discountRequiredFields = (discount) => {
   }
   return resObj;
 };
-
 const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
   const resObj = { id: option.id, value: option[optionValue] };
   if (otherOptions) {
@@ -84,10 +83,29 @@ const renewingProductsOptions = (options) => options.map((item) => {
   return { id: item.id, value };
 });
 
+const productsVariations = (renewingProducts, productId) => (productId
+  ? renewingProducts
+    .filter((item) => item.id === productId)
+    .reduce((accumulator, current) => {
+      current.availableVariables = current.availableVariables.reduce(
+        (acc, curr) => [
+          ...acc,
+          {
+            ...curr,
+            fieldValue: current[curr.field],
+          },
+        ],
+        [],
+      );
+      return [...accumulator, current];
+    }, [])[0]
+  : {});
+
 export {
   productRequiredFields,
   structureSelectOptions,
   discountRequiredFields,
   renewingProductsOptions,
   defaultProduct,
+  productsVariations,
 };

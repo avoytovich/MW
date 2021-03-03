@@ -38,6 +38,7 @@ const api = {
       data,
     });
   },
+
   // POST
   addNewTheme(data) {
     let url = 'designs/themes';
@@ -80,13 +81,26 @@ const api = {
     });
   },
   addNewProduct(data) {
-    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url =
+      '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
       data,
     });
   },
+  addNewAsset(file) {
+    const url = '/assets';
+    const data = new FormData();
+    data.append('file', file);
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
@@ -341,6 +355,13 @@ const api = {
   },
   getPriceFunctionsCustomerByIds(customerId) {
     const url = `/products/price-functions?format=short&customerId=${customerId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubProductsById(parentId) {
+    const url = `/products?format=full&parentId=${parentId}&size=500`;
     return axiosInstance({
       method: 'get',
       url,

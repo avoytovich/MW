@@ -1,14 +1,19 @@
 import {
   structureSelectOptions,
   renewingProductsOptions,
+  productsVariations,
 } from '../../services/helpers/dataStructuring';
 import api from '../../api';
 
 const handleGetOptions = (
   customerId,
+  id,
+  descriptionId,
   isCancelled,
   setSelectOptions,
   selectOptions,
+  setSubProductVariations,
+  setProductLocalizationChanges,
 ) => {
   let subscriptionOptions = null;
 
@@ -18,7 +23,10 @@ const handleGetOptions = (
     api.getFulfillmentTemplateByCustomerId(customerId),
     api.getCatalogsByCustomerId(customerId),
     api.getPriceFunctionsCustomerByIds(customerId),
+    id ? api.getSubProductsById(id) : null,
+    descriptionId ? api.getProductDescriptionById(descriptionId) : null,
   ];
+
   api.getCustomerById(customerId).then(({ data: curCustomer }) => {
     if (curCustomer?.usingSubscriptionV1) {
       promiseArray.push(api.getSubscriptionModelsByCustomerId(customerId));
@@ -34,6 +42,8 @@ const handleGetOptions = (
         fulfillmentTemplates,
         catalogs,
         priceFunctionsOptions,
+        subProducts,
+        productDetails,
         subscriptions,
       ]) => {
         if (!subscriptionOptions) {
@@ -42,6 +52,12 @@ const handleGetOptions = (
             'name',
           );
         }
+        setSubProductVariations({
+          bundledProducts: subProducts?.data?.items,
+          variations: productsVariations(renewingProducts?.data?.items, id),
+        });
+
+        setProductLocalizationChanges(productDetails?.data);
         if (!isCancelled) {
           setSelectOptions({
             ...selectOptions,
