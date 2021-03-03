@@ -45,57 +45,61 @@ const productRequiredFields = (product) => {
   return { ...defaultProduct, ...product, resources: resourcesKeys };
 };
 
-const structureSelectOptions = (options, optionValue, ...otherOptions) =>
-  options.map((option) => {
-    const resObj = { id: option.id, value: option[optionValue] };
-    if (otherOptions) {
-      otherOptions.forEach((element) => {
-        resObj[element] = option[element];
-      });
-    }
-    return resObj;
-  });
-
 const discountRequiredFields = (discount) => {
-  let resObj = { ...discount };
-  if (!resObj.publisherRefIds) {
-    resObj = { ...resObj, publisherRefIds: [] };
-  }
-  if (!resObj.countries) {
-    resObj = { ...resObj, countries: [] };
+  const defDiscount = {
+    publisherRefIds: [],
+    maxUsages: '',
+    maxUsePerStore: '',
+    maxUsePerEndUser: '',
+    countries: [],
+    enduserId: '',
+    codes: {},
+    endUserGroupIds: [],
+    endUserEmails: [],
+  };
+  const resObj = { ...defDiscount, ...discount };
+  if (resObj.discountRate) {
+    resObj.discountRate = discount.discountRate * 100;
   }
   return resObj;
 };
+const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
+  const resObj = { id: option.id, value: option[optionValue] };
+  if (otherOptions) {
+    otherOptions.forEach((element) => {
+      resObj[element] = option[element];
+    });
+  }
+  return resObj;
+});
 
-const renewingProductsOptions = (options) =>
-  options.map((item) => {
-    const value = item?.genericName
-      ? `${item.genericName} (${item.publisherRefId}${
-          item.subscriptionTemplate ? ', ' : ''
-        }
+const renewingProductsOptions = (options) => options.map((item) => {
+  const value = item?.genericName
+    ? `${item.genericName} (${item.publisherRefId}${
+      item.subscriptionTemplate ? ', ' : ''
+    }
           ${item.subscriptionTemplate || ''})`
-      : item?.id;
-    return { id: item.id, value };
-  });
+    : item?.id;
+  return { id: item.id, value };
+});
 
-const productsVariations = (renewingProducts, productId) =>
-  productId
-    ? renewingProducts
-        .filter((item) => item.id === productId)
-        .reduce((accumulator, current) => {
-          current.availableVariables = current.availableVariables.reduce(
-            (acc, curr) => [
-              ...acc,
-              {
-                ...curr,
-                fieldValue: current[curr.field],
-              },
-            ],
-            [],
-          );
-          return [...accumulator, current];
-        }, [])[0]
-    : {};
+const productsVariations = (renewingProducts, productId) => (productId
+  ? renewingProducts
+    .filter((item) => item.id === productId)
+    .reduce((accumulator, current) => {
+      current.availableVariables = current.availableVariables.reduce(
+        (acc, curr) => [
+          ...acc,
+          {
+            ...curr,
+            fieldValue: current[curr.field],
+          },
+        ],
+        [],
+      );
+      return [...accumulator, current];
+    }, [])[0]
+  : {});
 
 export {
   productRequiredFields,

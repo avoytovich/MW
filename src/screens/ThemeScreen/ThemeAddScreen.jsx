@@ -28,7 +28,6 @@ const ThemeAddScreen = () => {
       history.push(`/checkout-experience/themes/${id}`);
     });
   };
-  console.log(currentTheme.data)
   return (
     <ThemeLayout
       customer="Nexway"

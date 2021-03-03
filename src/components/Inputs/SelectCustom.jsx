@@ -14,13 +14,14 @@ const SelectCustom = ({
   selectOptions,
   onChangeSelect,
   isRequired,
+  isDisabled,
 }) => (
   <TextField
     fullWidth
     select
     required={isRequired}
     variant="outlined"
-    disabled={!selectOptions}
+    disabled={!selectOptions || isDisabled}
     value={selectOptions ? value : ''}
     InputProps={{
       startAdornment: !selectOptions && (
@@ -52,6 +53,7 @@ SelectCustom.propTypes = {
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   isRequired: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };
 
 export default SelectCustom;
