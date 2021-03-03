@@ -81,7 +81,8 @@ const api = {
     });
   },
   addNewProduct(data) {
-    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url =
+      '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
@@ -354,6 +355,13 @@ const api = {
   },
   getPriceFunctionsCustomerByIds(customerId) {
     const url = `/products/price-functions?format=short&customerId=${customerId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubProductsById(parentId) {
+    const url = `/products?format=full&parentId=${parentId}&size=500`;
     return axiosInstance({
       method: 'get',
       url,
