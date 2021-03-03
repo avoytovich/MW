@@ -80,10 +80,9 @@ const renewingProductsOptions = (options) =>
 
 const productsVariations = (renewingProducts, productId) =>
   productId
-    ? renewingProducts
-        .filter((item) => item.id === productId)
+    ? renewingProducts?.filter((item) => item.id === productId)
         .reduce((accumulator, current) => {
-          current.availableVariables = current.availableVariables.reduce(
+          current.availableVariables = current?.availableVariables?.reduce(
             (acc, curr) => [
               ...acc,
               {

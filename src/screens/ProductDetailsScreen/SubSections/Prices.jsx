@@ -45,7 +45,6 @@ const Prices = ({
   });
 
   const handleChange = (evt) => {
-    console.log('evt.target', evt.target);
     const { value } = evt.target;
     setState({
       ...state,
