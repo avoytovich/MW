@@ -186,6 +186,9 @@ const labels = {
   icon: 'Icon',
   bundledProducts: 'Bundled products',
   variationParameters: 'Variation parameters',
+  defaultCurrency: 'Default Currency',
+  priceCurrency: 'Price',
+  priceCountry: 'Country',
 };
 
 export default labels;

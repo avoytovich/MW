@@ -191,7 +191,12 @@ const ProductDetailsView = ({
         )}
         {curTab === 3 && (
           <SectionLayout label={allTabs[3]}>
-            <Prices />
+            <Prices
+              setProductData={setProductData}
+              currentProductData={currentProductData}
+              productData={productData}
+              setNewData={setProductLocalizationChanges}
+            />
           </SectionLayout>
         )}
         {curTab === 4 && (
