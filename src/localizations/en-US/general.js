@@ -44,6 +44,7 @@ const general = {
   noAvailableOptions: 'No available options',
   marketingNameMandatory:
     'Marketing name is mandatory for the default language.',
+  itemHasBeenCopied: 'Item Has BeenCopied',
 };
 
 export default general;

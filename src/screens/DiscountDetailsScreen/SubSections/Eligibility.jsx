@@ -38,7 +38,7 @@ const Eligibility = ({
     <>
       <Grid item md={6} xs={12}>
         <Box pt={2} pl={2}>
-          <Typography>{localization.t('labels.sourceS')}</Typography>
+          <Typography>{localization.t('labels.sources')}</Typography>
         </Box>
         <Box p={2}>
           <FormControlLabel

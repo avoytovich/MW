@@ -1,0 +1,15 @@
+@import '../../styles/variables.scss';
+
+.rowValue {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.rowValue:hover {
+  overflow: visible;
+  white-space: normal;
+}
+.orderDetailsRow:nth-child(even) {
+  background-color: $tablesOddRow;
+}
