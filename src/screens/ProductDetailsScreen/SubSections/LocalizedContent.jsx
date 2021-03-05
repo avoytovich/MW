@@ -70,8 +70,7 @@ const LocalizedContent = ({ setNewData, currentProductData }) => {
     setNewTabValues({ ...inputValues });
   };
 
-  const handleChange = (name, val) =>
-    setNewTabValues((c) => ({ ...c, [name]: val }));
+  const handleChange = (name, val) => setNewTabValues((c) => ({ ...c, [name]: val }));
 
   const removeLocale = (e, locale) => {
     e.stopPropagation();

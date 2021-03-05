@@ -204,6 +204,9 @@ const labels = {
   paymentProvider: 'Payment Provider',
   cardBin: 'Card Bin',
   paymentAttempt1_1: 'Payment Attempt 1/1',
+  defaultCurrency: 'Default Currency',
+  priceCurrency: 'Price',
+  priceCountry: 'Country',
 };
 
 export default labels;
