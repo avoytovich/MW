@@ -81,8 +81,7 @@ const api = {
     });
   },
   addNewProduct(data) {
-    const url =
-      '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
@@ -505,6 +504,18 @@ const api = {
     const url = `/products/descriptions/${id}`;
 
     return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getTermsAndConditions(id, date) {
+    const url = `/tandcs/public/tandcs/IAP/${id}/en-US/pdf?date=${date}`;
+    return axiosInstance({
+      headers: {
+        'Content-Type': 'application/pdf',
+        accept: 'application/pdf',
+      },
+      responseType: 'blob',
       method: 'get',
       url,
     });
