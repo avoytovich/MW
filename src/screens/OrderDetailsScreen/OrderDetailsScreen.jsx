@@ -126,7 +126,11 @@ const OrderDetailsScreen = () => {
                   {localization.t('labels.general')}
                 </Typography>
               </Box>
-              <OrderRow rowData={orderRows.general} />
+              <OrderRow
+                customerId={currentOrderData.customer?.id}
+                creationDate={currentOrderData.createDate}
+                rowData={orderRows.general}
+              />
             </Box>
           </Grid>
           <Grid item md={4} xs={12}>
