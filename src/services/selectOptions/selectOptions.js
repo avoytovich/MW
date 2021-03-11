@@ -88,7 +88,7 @@ const businessSegment = [
   { value: 'B2C', id: 'B2C' },
 ];
 
-const priceCountry = [
+const countryOptions = [
   { value: 'AD (Andora)', id: 'AD (Andora)' },
   { value: 'AE (United Arab Emirates)', id: 'AE (United Arab Emirates)' },
   { value: 'AF (Afganistan)', id: 'AF (Afganistan)' },
@@ -105,8 +105,13 @@ const defaultCurrency = [
   { id: '-', value: '-' },
   { id: 'AED', value: 'AED' },
   { id: 'AUD', value: 'AUD' },
-]
+];
 
+const installmentOptions = [
+  { id: 1, value: 1 },
+  { id: 2, value: 2 },
+  { id: 3, value: 3 },
+];
 export {
   validityPeriod,
   status,
@@ -117,6 +122,7 @@ export {
   availableLocales,
   businessSegment,
   priceCurrency,
-  priceCountry,
+  countryOptions,
   defaultCurrency,
+  installmentOptions,
 };

@@ -9,9 +9,11 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import General from './SubSections/General';
+import StoreSection from './StoreSection';
+import { storeRequiredFields } from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import StoreDetails from '../../components/StoreDetails';
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
@@ -35,121 +37,6 @@ const StoreDetailsScreen = () => {
       }
     });
     return res;
-  };
-  const checkRequiredFields = (store) => {
-    let resObj = { ...store };
-
-    if (!resObj.status) {
-      resObj = { ...resObj, status: '' };
-    }
-    if (!resObj.routes) {
-      resObj = { ...resObj, routes: [] };
-    }
-    if (!resObj.routes[0]) {
-      resObj = { ...resObj, routes: [{ hostname: '' }] };
-    }
-    if (!resObj.routes[0].hostname) {
-      const newArr = [!resObj.routes];
-      newArr[0] = { ...newArr[0], hostname: '' };
-      resObj = { ...resObj, routes: newArr };
-    }
-    if (!resObj.defaultLocale) {
-      resObj = { ...resObj, defaultLocale: '' };
-    }
-    if (!resObj.saleLocales) {
-      resObj = { ...resObj, saleLocales: [] };
-    }
-    if (!resObj.designs) {
-      resObj = { ...resObj, designs: {} };
-    }
-    if (!resObj.designs.endUserPortal) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          endUserPortal: { themeRef: {} },
-        },
-      };
-    }
-    if (!Object.keys(resObj.designs.endUserPortal.themeRef).length) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          endUserPortal: { themeRef: { customerId: '', name: '' } },
-        },
-      };
-    }
-    if (!resObj.designs.checkout) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {},
-        },
-      };
-    }
-    if (!resObj.designs.checkout.themeRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            themeRef: { customerId: '', name: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.checkout.fontRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            fontRef: { customerId: '', name: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.checkout.i18nRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            i18nRef: { customerId: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.checkout.layoutRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            layoutRef: { customerId: '', name: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.paymentComponent) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          paymentComponent: {
-            rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
-          },
-        },
-      };
-    }
-
-    return resObj;
   };
 
   const saveDetails = () => {
@@ -182,7 +69,7 @@ const StoreDetailsScreen = () => {
         const paymentMethodsOptions = await api.getPaymentMethodsOptions();
 
         if (!isCancelled) {
-          const checkedStore = checkRequiredFields(store.data);
+          const checkedStore = storeRequiredFields(store.data);
 
           setStoreData(checkedStore);
           setCurrentStoreData(checkedStore);
@@ -222,46 +109,96 @@ const StoreDetailsScreen = () => {
   if (isLoading) return <LinearProgress />;
 
   return (
-    <>
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Box display="flex" flexDirection="row">
-          <Box>
-            <FolderOpen color="secondary" />
-          </Box>
-          <Box>
-            <Typography component="div" color="primary">
-              <Box fontWeight={500}>{localization.t('general.store')}</Box>
+    storeData && (
+      <>
+        <Box display="flex" flexDirection="row" mx={2} pb={2}>
+          <Typography component="div" color="primary">
+            <Box fontWeight={500}>
+              {localization.t('general.discount')}
+              {'/'}
+            </Box>
+          </Typography>
+          <Typography component="div" color="secondary">
+            <Box fontWeight={500}>{storeData.id}</Box>
+          </Typography>
+        </Box>
+        <Box
+          display="flex"
+          flexDirection="row"
+          m={2}
+          justifyContent="space-between"
+        >
+          <Box alignSelf="center">
+            <Typography data-test="discountName" gutterBottom variant="h3">
+              {storeData.name}
             </Typography>
           </Box>
+          <Zoom in={storeHasChanges}>
+            <Box mb={1} mr={1}>
+              <Button
+                id="save-discount-button"
+                color="primary"
+                size="large"
+                type="submit"
+                variant="contained"
+                onClick={saveDetails}
+              >
+                {localization.t('general.save')}
+              </Button>
+            </Box>
+          </Zoom>
         </Box>
-        <Zoom in={storeHasChanges}>
-          <Box mb={1}>
-            <Button
-              disabled={Object.keys(inputErrors).length !== 0}
-              id="save-detail-button"
-              color="primary"
-              size="large"
-              type="submit"
-              variant="contained"
-              onClick={saveDetails}
-            >
-              {localization.t('general.save')}
-            </Button>
-          </Box>
-        </Zoom>
-      </Box>
-      {currentStoreData && (
-        <StoreDetails
-          inputErrors={inputErrors}
-          setInputErrors={setInputErrors}
-          storeData={storeData}
-          selectOptions={selectOptions}
-          setCurrentStoreData={setCurrentStoreData}
-          customerData={currentCustomerData}
-          currentStoreData={currentStoreData}
-        />
-      )}
-    </>
+        <StoreSection label="general">
+          <General
+            currentStoreData={currentStoreData}
+            setCurrentStoreData={setCurrentStoreData}
+            selectOptions={selectOptions}
+          />
+        </StoreSection>
+        <StoreSection label="cappingAndLimits"></StoreSection>
+        <StoreSection label="eligibility"></StoreSection>
+      </>
+      // <>
+      //   <Box display="flex" flexDirection="row" justifyContent="space-between">
+      //     <Box display="flex" flexDirection="row">
+      //       <Box>
+      //         <FolderOpen color="secondary" />
+      //       </Box>
+      //       <Box>
+      //         <Typography component="div" color="primary">
+      //           <Box fontWeight={500}>{localization.t('general.store')}</Box>
+      //         </Typography>
+      //       </Box>
+      //     </Box>
+      //     <Zoom in={storeHasChanges}>
+      //       <Box mb={1}>
+      //         <Button
+      //           disabled={Object.keys(inputErrors).length !== 0}
+      //           id="save-detail-button"
+      //           color="primary"
+      //           size="large"
+      //           type="submit"
+      //           variant="contained"
+      //           onClick={saveDetails}
+      //         >
+      //           {localization.t('general.save')}
+      //         </Button>
+      //       </Box>
+      //     </Zoom>
+      //   </Box>
+      //   {currentStoreData && (
+      //     <StoreDetails
+      //       inputErrors={inputErrors}
+      //       setInputErrors={setInputErrors}
+      //       storeData={storeData}
+      //       selectOptions={selectOptions}
+      //       setCurrentStoreData={setCurrentStoreData}
+      //       customerData={currentCustomerData}
+      //       currentStoreData={currentStoreData}
+      //     />
+      //   )}
+      // </>
+    )
   );
 };
 

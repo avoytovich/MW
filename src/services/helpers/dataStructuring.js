@@ -33,6 +33,38 @@ const defaultProduct = {
   },
 };
 
+const defaultStore = {
+  status: '',
+  emailSenderOverride: '',
+  routes: [{ hostname: '' }],
+  defaultLocale: [],
+  saleLocales: [],
+  storeWebsite: '',
+  displayName: '',
+  forceGeoipLocalization: false,
+  promoteOneClickPayment: false,
+  allowOrderDetailsOnCheckoutConfirmation: false,
+  recipientCodeMandatory: false,
+  allowInstallments: false,
+  blackListedCountries: [],
+  restrictedCountries: [],
+  installmentOptions: [],
+  fallbackCartCountry: '',
+  externalContextGenerationParams: [],
+  designs: {
+    endUserPortal: { themeRef: { customerId: '', name: '' } },
+    checkout: {
+      themeRef: { customerId: '', name: '' },
+      fontRef: { customerId: '', name: '' },
+      i18nRef: { customerId: '' },
+      layoutRef: { customerId: '', name: '' },
+    },
+    paymentComponent: {
+      rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
+    },
+  },
+};
+
 const productRequiredFields = (product) => {
   let resourcesKeys = null;
 
@@ -83,25 +115,28 @@ const renewingProductsOptions = (options) => options.map((item) => {
   return { id: item.id, value };
 });
 
-const productsVariations = (renewingProducts, productId) =>
-  productId
-    ? renewingProducts?.filter((item) => item.id === productId)
-        .reduce((accumulator, current) => {
-          current.availableVariables = current?.availableVariables?.reduce(
-            (acc, curr) => [
-              ...acc,
-              {
-                ...curr,
-                fieldValue: current[curr.field],
-              },
-            ],
-            [],
-          );
-          return [...accumulator, current];
-        }, [])[0]
-    : {};
+const productsVariations = (renewingProducts, productId) => (productId
+  ? renewingProducts
+    ?.filter((item) => item.id === productId)
+    .reduce((accumulator, current) => {
+      current.availableVariables = current?.availableVariables?.reduce(
+        (acc, curr) => [
+          ...acc,
+          {
+            ...curr,
+            fieldValue: current[curr.field],
+          },
+        ],
+        [],
+      );
+      return [...accumulator, current];
+    }, [])[0]
+  : {});
+
+const storeRequiredFields = (store) => ({ ...defaultStore, ...store });
 
 export {
+  storeRequiredFields,
   productRequiredFields,
   structureSelectOptions,
   discountRequiredFields,

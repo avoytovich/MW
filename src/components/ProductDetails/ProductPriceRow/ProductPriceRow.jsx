@@ -17,7 +17,7 @@ import {
 
 import {
   priceCurrency,
-  priceCountry,
+  countryOptions,
 } from '../../../services/selectOptions/selectOptions';
 
 const ProductPriceRow = ({
@@ -61,7 +61,6 @@ const ProductPriceRow = ({
       },
     });
 
-    console.log('currentProductData.prices', currentProductData.prices.priceByCountryByCurrency)
     setCurrency('');
     setCountry('');
 
@@ -106,7 +105,7 @@ const ProductPriceRow = ({
           <Box>
             <SelectCustom
               label="priceCountry"
-              selectOptions={priceCountry}
+              selectOptions={countryOptions}
               onChangeSelect={handleCountry}
             />
           </Box>
