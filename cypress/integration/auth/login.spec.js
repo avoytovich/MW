@@ -1,98 +1,49 @@
-import localization from '../../../src/localization';
-
 /// <reference types="cypress" />
 
-describe('Login Screen', () => {  
-  before(() => cy.visit('/login'));
+describe("Login", () => {
+  beforeEach(() => {
+    cy.visit("/");
+    cy.fixture("creds.json").as("creds");
+  });
+  it("contains /login", () => {
+    cy.url().should("contain", "/login");
+  });
 
-  context('Login Form', () => {
-    beforeEach(() => {
-      cy.get('input[name=username]').clear();
-      cy.get('input[name=password]').clear();
-    });
-
-    it('has a form with inputs for credentials', () => {
-      cy.get('form').as('loginForm').should('exist');
-      cy.get('@loginForm').find('input[name=username]').should('exist');
-      cy.get('@loginForm').find('input[name=password]').should('exist');
-    });
-
-    it('has submit button disabled without filled inputs', () => {
-      cy.get('form')
-        .find('button[type=submit]').as('submitButton')
-        .should('exist').and('be.disabled');
-
-      cy.get('input[name=password]').type('something');
-      cy.get('@submitButton').should('exist').and('be.disabled');
-
-      cy.get('input[name=password]').clear();
-      cy.get('input[name=username]').type('something');
-      cy.get('@submitButton').should('exist').and('be.disabled');
-    });
-
-    it('has submit button enabled with filled inputs', () => {
-      cy.get('input[name=username]').type('something');
-      cy.get('input[name=password]').type('something');
-      
-      cy.get('form').find('button[type=submit]')
-        .should('exist').and('not.be.disabled');
-    });
-
-    it('has recovery password navigation', () => {
-      cy.contains(localization.t('forms.text.forgotPassword')).as('recoveryButton')
-        .should('be.visible').and('not.be.disabled');
-      
-      cy.get('@recoveryButton').click();
-
-      cy.url().should('contain', '/recover-password');
+  ["username", "password"].forEach((field) => {
+    it(`contains ${field} field`, () => {
+      cy.get(`input[name=${field}]`);
     });
   });
 
-  context('Auth Actions', () => {
-    beforeEach(() => cy.visit('/login'));
+  it(`contains Sign In button`, () => {
+    cy.get("button[type=submit]").should("be.disabled");
+  });
 
-    it('reject wrong credentials with error notification', () => {
-      cy.login().then((xhr) => {
-        cy.wrap(xhr).then((data) => {
-          const { message } = data.response.body;
-          
-          expect(data.status).to.equal(401);
-          cy.get('#error-notification').should('exist');
-        })
-      });
-    });
-  
-    it('sign in a user with proper credentials', () => {
-      cy.login(true).then((xhr) => {
-        cy.wrap(xhr).then((data) => {
-          const { access_token } = data.response.body;
+  it(`contains Forgot password link`, function () {
+    cy.get("a.forgotPasswordLink");
+  });
 
-          expect(data.status).to.equal(200);
-          expect(localStorage.getItem('accessToken')).to.equal(access_token);
-          cy.get('#success-notification').should('exist');
-          cy.url().should('include', '/overview/products');
-        })
-      });
-    });
-
-    it('redirects a user to desired section after signin', () => {
-      const desiredPath = '/overview/stores';
-      cy.visit(desiredPath);
-
-      cy.wait(300).then(() => {
-        expect(sessionStorage.getItem('redirect')).to.be.equal(desiredPath);
-
-        cy.login(true).then((xhr) => {
-          cy.wrap(xhr).then((data) => {
-            expect(data.status).to.equal(200);
-          });
-        });
-
-        cy.wait(300).then(() => {
-          cy.url().should('contain', desiredPath);
-          expect(sessionStorage.getItem('redirect')).to.be.null;
-        });
-      });
-    });
+  it("can log in with correct credentials", function () {
+    cy.get("input[name=username]").type(this.creds.username);
+    cy.get("input[name=password]").type(this.creds.password);
+    cy.get("button[type=submit]").click();
+    cy.url().should("not.contain", "/login");
+  });
+  it("cannot login without credentials", function () {
+    cy.get("button[type=submit]").should("be.disabled");
+  });
+  it("cannot login with wrong password", function () {
+    cy.get("input[name=username]").type(this.creds.username);
+    cy.get("input[name=password]").type("WRONG");
+    cy.get("button[type=submit]").click();
+    cy.get("#error-notification");
+    cy.url().should("contain", "/login");
+  });
+  it("cannot login with wrong username", function () {
+    cy.get("input[name=username]").type("WRONG");
+    cy.get("input[name=password]").type(this.creds.password);
+    cy.get("button[type=submit]").click();
+    cy.get("#error-notification");
+    cy.url().should("contain", "/login");
   });
 });
