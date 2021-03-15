@@ -26,8 +26,12 @@ const EditProduct = () => {
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
   const [checkOutStores, setCheckOutStores] = useState([]);
-  const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
+  const [
+    productHasLocalizationChanges,
+    setProductLocalizationChanges,
+  ] = useState(false);
   const [productVariations, setSubProductVariations] = useState({});
+  const [productDetails, setProductDetails] = useState(null);
 
   const saveDetails = () => {
     if (productHasChanges) {
@@ -44,11 +48,12 @@ const EditProduct = () => {
         window.location.reload();
       });
     }
-    if (productHasLocalizationChanges) {
+    if (productHasLocalizationChanges || productDetails) {
+      console.log('TUPA_WIWTSIA', productHasLocalizationChanges);
       api
         .updateProductLocalsById(
           currentProductData.descriptionId,
-          productHasLocalizationChanges,
+          productHasLocalizationChanges || productDetails,
         )
         .then(() => {
           dispatch(
@@ -92,7 +97,7 @@ const EditProduct = () => {
         setSelectOptions,
         selectOptions,
         setSubProductVariations,
-        setProductLocalizationChanges,
+        setProductDetails,
       );
     });
     return () => {
@@ -137,6 +142,8 @@ const EditProduct = () => {
       checkOutStores={checkOutStores}
       setProductLocalizationChanges={setProductLocalizationChanges}
       productVariations={productVariations}
+      setProductDetails={setProductDetails}
+      productDetails={productDetails}
     />
   );
 };

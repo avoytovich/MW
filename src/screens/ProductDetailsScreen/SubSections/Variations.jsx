@@ -32,7 +32,7 @@ const Variations = ({
   currentProductData,
   productVariations: { bundledProducts = [], variations },
   setProductDetails,
-  productHasLocalizationChanges,
+  productDetails,
 }) => {
   // MOCK !!!
   const defaultLocale = 'en-US';
@@ -135,7 +135,9 @@ const Variations = ({
       <Box display="flex">
         <SectionLayout label="bundledProducts" contentWidth="100%">
           {Object.entries(counts).map(([key, value]) => {
-            const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+            const selectValue =
+              selectOptions?.renewingProducts?.find(({ id }) => id === key) ||
+              '';
 
             return (
               <Box
@@ -268,6 +270,7 @@ const Variations = ({
                 <TableRow>
                   <TableCell>Parameter Name</TableCell>
                   <TableCell>Name</TableCell>
+                  <TableCell></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -284,13 +287,16 @@ const Variations = ({
                             const newAvailableVariables = currentProductData.availableVariables.filter(
                               (item) => item.field !== field,
                             );
+                            const newVariableDescriptions = productDetails.variableDescriptions.filter(
+                              ({ description }) => description !== field,
+                            );
                             setProductData({
                               ...currentProductData,
                               availableVariables: newAvailableVariables,
                             });
                             setProductDetails({
-                              ...productHasLocalizationChanges,
-                              variableDescriptions: newAvailableVariables,
+                              ...productDetails,
+                              variableDescriptions: newVariableDescriptions,
                             });
                           }}
                         >
@@ -314,7 +320,7 @@ const Variations = ({
             setProductData={setProductData}
             currentProductData={currentProductData}
             setProductDetails={setProductDetails}
-            productHasLocalizationChanges={productHasLocalizationChanges}
+            productDetails={productDetails}
           />
         </SectionLayout>
       </Box>
@@ -332,7 +338,7 @@ Variations.propTypes = {
     variations: PropTypes.object,
   }),
   setProductDetails: PropTypes.func,
-  productHasLocalizationChanges: PropTypes.bool,
+  productDetails: PropTypes.object,
 };
 
 export default Variations;

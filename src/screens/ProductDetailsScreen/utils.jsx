@@ -13,7 +13,7 @@ const handleGetOptions = (
   setSelectOptions,
   selectOptions,
   setSubProductVariations,
-  setProductLocalizationChanges,
+  setProductDetails,
 ) => {
   let subscriptionOptions = null;
 
@@ -57,7 +57,7 @@ const handleGetOptions = (
           variations: productsVariations(renewingProducts?.data?.items, id),
         });
 
-        // setProductLocalizationChanges(productDetails?.data);
+        setProductDetails(productDetails?.data);
 
         if (!isCancelled) {
           setSelectOptions({

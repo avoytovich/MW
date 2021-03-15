@@ -16,10 +16,11 @@ const AddVariationModal = ({
   setProductData,
   currentProductData,
   setProductDetails,
-  productHasLocalizationChanges,
+  productDetails,
 }) => {
   const [step, setStep] = useState('firstStep');
   const [modalState, setModalState] = useState({});
+  console.log('MODAL_STATE', modalState);
 
   const handleClose = () => {
     setStep('firstStep');
@@ -32,9 +33,10 @@ const AddVariationModal = ({
     let frontToBack = JSON.parse(JSON.stringify(modalState));
     let dataForProductDescriptionRequest = {};
     let dataForProductRquest = {};
+    let variableValueDescription = {};
 
     if (modalState.type === 'LIST') {
-      const variableValueDescription = frontToBack?.listValue
+      variableValueDescription = frontToBack?.listValue
         .split('\n')
         .filter((item) => item)
         .reduce(
@@ -55,28 +57,49 @@ const AddVariationModal = ({
           },
           { valueForDetails: [], valueForProduct: [] },
         );
+    } else {
+      variableValueDescription = frontToBack?.rangesList.reduce(
+        (acc, { from, to, label }, i) => {
+          const value1 = {
+            description: `${from}-${to}`,
+            localizedValue: {
+              'en-US': label,
+            },
+          };
+          const value2 = `${from}-${to}`;
+          return {
+            ...acc,
+            valueForDetails: [...acc.valueForDetails, value1],
+            valueForProduct: [...acc.valueForProduct, value2],
+          };
+        },
+        { valueForDetails: [], valueForProduct: [] },
+      );
+    }
 
+    dataForProductDescriptionRequest = {
+      description: frontToBack.field,
+      variableValueDescriptions: variableValueDescription.valueForDetails,
+    };
+
+    if (frontToBack.label) {
       dataForProductDescriptionRequest = {
-        description: frontToBack.field,
-        variableValueDescriptions: variableValueDescription.valueForDetails,
-      };
-
-      if (frontToBack.label) {
-        dataForProductDescriptionRequest = {
-          ...dataForProductDescriptionRequest,
-          label: frontToBack.label,
-          labels: { 'en-US': frontToBack.label },
-        };
-      }
-      dataForProductRquest = {
-        defaultValue: 'val1',
-        field: frontToBack.field,
-        labels: null,
-        localizedValue: null,
-        type: frontToBack.type,
-        value: variableValueDescription.valueForProduct,
+        ...dataForProductDescriptionRequest,
+        label: frontToBack.label,
+        labels: { 'en-US': frontToBack.label },
       };
     }
+    dataForProductRquest = {
+      defaultValue:
+        modalState.type === 'LIST'
+          ? 'val1'
+          : variableValueDescription?.valueForProduct[0],
+      field: frontToBack.field,
+      labels: null,
+      localizedValue: null,
+      type: frontToBack.type,
+      value: variableValueDescription.valueForProduct,
+    };
 
     newAvailableVariables.push(dataForProductRquest);
     setProductData({
@@ -84,13 +107,13 @@ const AddVariationModal = ({
       availableVariables: newAvailableVariables,
     });
     setProductDetails({
-      ...productHasLocalizationChanges,
+      ...productDetails,
       variableDescriptions: [
-        ...productHasLocalizationChanges.variableDescriptions,
+        ...productDetails.variableDescriptions,
         dataForProductDescriptionRequest,
       ],
     });
-    onClose();
+    handleClose();
   };
 
   const modalBody = {
@@ -140,7 +163,7 @@ AddVariationModal.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   setProductDetails: PropTypes.func,
-  productHasLocalizationChanges: PropTypes.bool,
+  productDetails: PropTypes.object,
 };
 
 export default AddVariationModal;

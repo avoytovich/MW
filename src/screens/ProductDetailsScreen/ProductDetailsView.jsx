@@ -36,6 +36,8 @@ const ProductDetailsView = ({
   productHasLocalizationChanges,
   setProductLocalizationChanges,
   productVariations,
+  setProductDetails,
+  productDetails,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
@@ -204,8 +206,8 @@ const ProductDetailsView = ({
             setProductData={setProductData}
             currentProductData={currentProductData}
             productVariations={productVariations}
-            setProductDetails={setProductLocalizationChanges}
-            productHasLocalizationChanges={productHasLocalizationChanges}
+            setProductDetails={setProductDetails}
+            productDetails={productDetails}
           />
         )}
         {curTab === 5 && (
@@ -234,6 +236,8 @@ ProductDetailsView.propTypes = {
   productHasLocalizationChanges: PropTypes.bool,
   setProductLocalizationChanges: PropTypes.func,
   productVariations: PropTypes.object,
+  setProductDetails: PropTypes.func,
+  productDetails: PropTypes.object,
 };
 
 export default ProductDetailsView;
