@@ -232,6 +232,21 @@ const labels = {
   buyerAuthentication: 'Buyer authentication',
   noAuthentication: 'No authentication',
   routes: 'Routes',
+  design: 'Design',
+  payment: 'Payment',
+  enduserPortal: 'Enduser Portal',
+  checkout: 'Checkout',
+  resellerPortalEmbeddedCheckout: 'Reseller Portal embedded checkout',
+  theme: 'Theme',
+  layout: 'Layout',
+  font: 'Font',
+  i18n: 'I18n',
+  paymentMethodsByDefault: 'Payment Methods by Default',
+  blacklistedPaymentTypes: 'Blacklisted Payment Types',
+  additionalPaymentTypes: 'Additional Payment Types',
+  paymentTabsRanking: 'Payment tabs ranking',
+  group: 'Group',
+  paymentTypes: 'Payment Types',
 };
 
 export default labels;

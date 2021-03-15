@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Box,
-  Typography,
-  TextField,
-  Grid,
+  Box, Typography, Grid, Button,
 } from '@material-ui/core';
 import {
   availableLocales,
   installmentOptions,
-  countryOptions,
 } from '../../../services/selectOptions/selectOptions';
+import countriesOptions from '../../../services/selectOptions/countries';
 
 import localization from '../../../localization';
 import {
@@ -57,47 +54,34 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
           })}
         />
       </Box>
-      <Box display="flex" p={2} flexDirection="row" alignItems="baseline">
-        <Box>
-          <Typography>
-            {localization.t('labels.overrideEmailSender')}
-          </Typography>
-        </Box>
-        <Box minWidth="92px" maxWidth="92px">
-          <TextField
-            fullWidth
-            variant="outlined"
-            disabled
-            value="noreply."
-            type="text"
-            InputProps={{
-              form: { autocomplete: 'off' },
-            }}
-          />
-        </Box>
-
-        <Box>
-          <InputCustom
-            label="senderName"
-            value={currentStoreData.emailSenderOverride}
-            onChangeInput={(e) => setCurrentStoreData({
-              ...currentStoreData,
-              emailSenderOverride: e.target.value,
-            })}
-          />
-        </Box>
-        <Box>
-          <TextField
-            fullWidth
-            variant="outlined"
-            disabled
-            value="@nexway.com."
-            type="text"
-            InputProps={{
-              form: { autocomplete: 'off' },
-            }}
-          />
-        </Box>
+      <Box p={2}>
+        <Grid container alignItems="center">
+          <Grid item lg={3} md={12} sm={12}>
+            <Typography>
+              {localization.t('labels.overrideEmailSender')}
+            </Typography>
+          </Grid>
+          <Grid item lg={9} md={12} sm={12}>
+            <Box display="flex" flexDirection="row" justifyContent="flex-end">
+              <Button variant="contained" disabled>
+                noreply.
+              </Button>
+              <Box px={1} width="70%">
+                <InputCustom
+                  label="senderName"
+                  value={currentStoreData.emailSenderOverride}
+                  onChangeInput={(e) => setCurrentStoreData({
+                    ...currentStoreData,
+                    emailSenderOverride: e.target.value,
+                  })}
+                />
+              </Box>
+              <Button variant="contained" disabled>
+                @nexway.com.
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
       <Box p={2}>
         <SelectCustom
@@ -258,7 +242,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         <SelectWithChip
           label="blockedCountries"
           value={currentStoreData.blackListedCountries}
-          selectOptions={countryOptions}
+          selectOptions={countriesOptions}
           onChangeSelect={(e) => setCurrentStoreData({
             ...currentStoreData,
             blackListedCountries: e.target.value,
@@ -278,7 +262,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         <SelectWithChip
           label="restrictedCountries"
           value={currentStoreData.restrictedCountries}
-          selectOptions={countryOptions}
+          selectOptions={countriesOptions}
           onChangeSelect={(e) => setCurrentStoreData({
             ...currentStoreData,
             restrictedCountries: e.target.value,
@@ -313,7 +297,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         <SelectCustom
           label="fallbackCartCountry"
           value={currentStoreData.fallbackCartCountry}
-          selectOptions={countryOptions}
+          selectOptions={countriesOptions}
           onChangeSelect={(e) => setCurrentStoreData({
             ...currentStoreData,
             fallbackCartCountry: e.target.value,
@@ -322,17 +306,35 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       </Box>
       <Box p={2}>
         <InputCustom
+          helperText={
+            currentStoreData.externalContextAlias
+            && !!currentStoreData.externalContextGenerationParams.length
+              ? 'Context should be only one '
+              : null
+          }
           isMultiline
           label="externalContextGenerationParamsOnePerLine"
-          // value={currentStoreData.externalContextGenerationParams}
-          onChangeInput={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            externalContextGenerationParams: e.target.value,
-          })}
+          value={currentStoreData.externalContextGenerationParams.join('\r\n')}
+          onChangeInput={(e) => {
+            let res = [];
+            if (e.target.value) {
+              res = e.target.value.split(/\r?\n/);
+            }
+            setCurrentStoreData({
+              ...currentStoreData,
+              externalContextGenerationParams: res,
+            });
+          }}
         />
       </Box>
       <Box p={2}>
         <InputCustom
+          helperText={
+            currentStoreData.externalContextAlias
+            && !!currentStoreData.externalContextGenerationParams.length
+              ? 'Context should be only one '
+              : null
+          }
           onChangeInput={(e) => setCurrentStoreData({
             ...currentStoreData,
             externalContextAlias: e.target.value,

@@ -26,7 +26,6 @@ const SelectWithChip = ({
       disabled={!selectOptions || isDisabled}
       inputProps={{
         name: label,
-        id: label,
       }}
       MenuProps={{
         getContentAnchorEl: null,

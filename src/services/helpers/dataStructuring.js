@@ -41,6 +41,7 @@ const defaultStore = {
   saleLocales: [],
   storeWebsite: '',
   displayName: '',
+  blackListedPaymentTypes: [],
   forceGeoipLocalization: false,
   promoteOneClickPayment: false,
   allowOrderDetailsOnCheckoutConfirmation: false,
@@ -52,12 +53,23 @@ const defaultStore = {
   fallbackCartCountry: '',
   externalContextGenerationParams: [],
   designs: {
-    endUserPortal: { themeRef: { customerId: '', name: '' } },
+    endUserPortal: {
+      fontRef: {},
+      layoutRef: {},
+      themeRef: {},
+      i18nRef: {},
+    },
     checkout: {
-      themeRef: { customerId: '', name: '' },
-      fontRef: { customerId: '', name: '' },
-      i18nRef: { customerId: '' },
-      layoutRef: { customerId: '', name: '' },
+      fontRef: {},
+      layoutRef: {},
+      themeRef: {},
+      i18nRef: {},
+    },
+    resellerCheckout: {
+      fontRef: {},
+      layoutRef: {},
+      themeRef: {},
+      i18nRef: {},
     },
     paymentComponent: {
       rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
@@ -95,15 +107,21 @@ const discountRequiredFields = (discount) => {
   }
   return resObj;
 };
-const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
-  const resObj = { id: option.id, value: option[optionValue] };
-  if (otherOptions) {
-    otherOptions.forEach((element) => {
-      resObj[element] = option[element];
+const structureSelectOptions = (options, optionValue, ...otherOptions) => {
+  let res = [];
+  if (options) {
+    res = options.map((option) => {
+      const resObj = { id: option.id, value: option[optionValue] };
+      if (otherOptions) {
+        otherOptions.forEach((element) => {
+          resObj[element] = option[element];
+        });
+      }
+      return resObj;
     });
   }
-  return resObj;
-});
+  return res;
+};
 
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName
@@ -133,7 +151,31 @@ const productsVariations = (renewingProducts, productId) => (productId
     }, [])[0]
   : {});
 
-const storeRequiredFields = (store) => ({ ...defaultStore, ...store });
+const storeRequiredFields = (store) => {
+  const res = { ...defaultStore, ...store };
+  if (store.designs) {
+    const checkoutObj = {
+      ...defaultStore.designs.checkout,
+      ...store.designs.checkout,
+    };
+    const endUserPortalObj = {
+      ...defaultStore.designs.endUserPortal,
+      ...store.designs.endUserPortal,
+    };
+    const resellerCheckoutObj = {
+      ...defaultStore.designs.resellerCheckout,
+      ...store.designs.resellerCheckout,
+    };
+    const newDesigns = {
+      ...store.designs,
+      checkout: checkoutObj,
+      endUserPortal: endUserPortalObj,
+      resellerCheckout: resellerCheckoutObj,
+    };
+    res.designs = newDesigns;
+  }
+  return res;
+};
 
 export {
   storeRequiredFields,

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FolderOpen } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import {
   LinearProgress,
@@ -8,22 +7,37 @@ import {
   Button,
   Box,
   Typography,
+  Grid,
 } from '@material-ui/core';
+import Payment from './SubSections/Payment';
+
 import General from './SubSections/General';
+import Design from './SubSections/Design';
 import StoreSection from './StoreSection';
-import { storeRequiredFields } from '../../services/helpers/dataStructuring';
+import {
+  storeRequiredFields,
+  structureSelectOptions,
+} from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
+import { formDesignOptions } from './utils';
+
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
-  const [inputErrors, setInputErrors] = useState({});
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [storeHasChanges, setStoreChanges] = useState(false);
-  const [selectOptions, setSelectOptions] = useState({ theme: null });
+  const [selectOptions, setSelectOptions] = useState({
+    customers: null,
+    font: null,
+    theme: null,
+    paymentMethods: null,
+    layout: null,
+    translation: null,
+  });
   const [storeData, setStoreData] = useState(null);
   const [currentStoreData, setCurrentStoreData] = useState(null);
 
@@ -52,39 +66,72 @@ const StoreDetailsScreen = () => {
     let isCancelled = false;
     const requests = async () => {
       try {
-        const store = await api.getStoreById(id);
-        const customer = await api.getCustomerById(store?.data?.customerId);
-        const themeOptions = await api.getDesignsThemes();
-        const fontOptions = await api.getDesignsFonts();
-        const layoutOptions = await api.getDesignsLayouts();
-        const translationOptions = await api.getDesignsTranslations();
+        api.getStoreById(id).then(({ data: store }) => {
+          if (!isCancelled) {
+            const checkedStore = storeRequiredFields(store);
 
-        const customersIds = getCustomersIdsArray(
-          ...fontOptions.data.items,
-          ...themeOptions.data.items,
-          ...layoutOptions.data.items,
-          ...translationOptions.data.items,
-        );
-        const customers = await api.getCustomersByIds(customersIds.join('&'));
-        const paymentMethodsOptions = await api.getPaymentMethodsOptions();
+            setStoreData(checkedStore);
+            setCurrentStoreData(checkedStore);
+            api
+              .getCustomerById(store?.customerId)
+              .then(({ data: customer }) => {
+                setCurrentCustomerData(customer);
+              });
+            setLoading(false);
 
-        if (!isCancelled) {
-          const checkedStore = storeRequiredFields(store.data);
+            Promise.allSettled([
+              api.getDesignsThemes(),
+              api.getDesignsFonts(),
+              api.getDesignsLayouts(),
+              api.getDesignsTranslations(),
+              api.getPaymentMethodsOptions(),
+            ]).then(
+              ([
+                themeOptions,
+                fontOptions,
+                layoutOptions,
+                translationOptions,
+                paymentMethodsOptions,
+              ]) => {
+                const customersIds = getCustomersIdsArray(
+                  ...fontOptions.value.data.items,
+                  ...themeOptions.value.data.items,
+                  ...layoutOptions.value.data.items,
+                  ...translationOptions.value.data.items,
+                );
 
-          setStoreData(checkedStore);
-          setCurrentStoreData(checkedStore);
-          setCurrentCustomerData(customer.data);
-          setSelectOptions({
-            ...selectOptions,
-            customers: customers.data.items,
-            font: fontOptions.data.items,
-            theme: themeOptions.data.items,
-            paymentMethods: paymentMethodsOptions.data,
-            layout: layoutOptions.data.items,
-            translation: translationOptions.data.items,
-          });
-          setLoading(false);
-        }
+                api
+                  .getCustomersByIds(customersIds.join('&'))
+                  .then(({ data: customers }) => {
+                    setSelectOptions({
+                      ...selectOptions,
+                      customers: customers.items,
+                      font: formDesignOptions(
+                        fontOptions.value?.data.items,
+                        customers.items,
+                      ),
+                      theme: formDesignOptions(
+                        themeOptions.value?.data.items,
+                        customers.items,
+                      ),
+                      paymentMethods: structureSelectOptions(
+                        paymentMethodsOptions.value?.data,
+                        'id',
+                      ),
+                      layout: formDesignOptions(
+                        layoutOptions.value?.data.items,
+                        customers.items,
+                      ),
+                      translation: formDesignOptions(
+                        translationOptions.value?.data.items,
+                        customers.items,
+                      ),
+                    });
+                  });
+              },
+            );
+          }
+        });
       } catch (error) {
         if (!isCancelled) {
           setLoading(false);
@@ -148,56 +195,34 @@ const StoreDetailsScreen = () => {
             </Box>
           </Zoom>
         </Box>
-        <StoreSection label="general">
-          <General
-            currentStoreData={currentStoreData}
-            setCurrentStoreData={setCurrentStoreData}
-            selectOptions={selectOptions}
-          />
-        </StoreSection>
-        <StoreSection label="cappingAndLimits"></StoreSection>
-        <StoreSection label="eligibility"></StoreSection>
+        <Grid container spacing={2}>
+          <Grid item md={12}>
+            <StoreSection label="general">
+              <General
+                currentStoreData={currentStoreData}
+                setCurrentStoreData={setCurrentStoreData}
+                selectOptions={selectOptions}
+              />
+            </StoreSection>
+          </Grid>
+          <Grid item md={5}>
+            <Design
+              selectOptions={selectOptions}
+              currentStoreData={currentStoreData}
+              setCurrentStoreData={setCurrentStoreData}
+            />
+          </Grid>
+          <Grid item md={7}>
+            <StoreSection label="payment">
+              <Payment
+                selectOptions={selectOptions}
+                currentStoreData={currentStoreData}
+                setCurrentStoreData={setCurrentStoreData}
+              />
+            </StoreSection>
+          </Grid>
+        </Grid>
       </>
-      // <>
-      //   <Box display="flex" flexDirection="row" justifyContent="space-between">
-      //     <Box display="flex" flexDirection="row">
-      //       <Box>
-      //         <FolderOpen color="secondary" />
-      //       </Box>
-      //       <Box>
-      //         <Typography component="div" color="primary">
-      //           <Box fontWeight={500}>{localization.t('general.store')}</Box>
-      //         </Typography>
-      //       </Box>
-      //     </Box>
-      //     <Zoom in={storeHasChanges}>
-      //       <Box mb={1}>
-      //         <Button
-      //           disabled={Object.keys(inputErrors).length !== 0}
-      //           id="save-detail-button"
-      //           color="primary"
-      //           size="large"
-      //           type="submit"
-      //           variant="contained"
-      //           onClick={saveDetails}
-      //         >
-      //           {localization.t('general.save')}
-      //         </Button>
-      //       </Box>
-      //     </Zoom>
-      //   </Box>
-      //   {currentStoreData && (
-      //     <StoreDetails
-      //       inputErrors={inputErrors}
-      //       setInputErrors={setInputErrors}
-      //       storeData={storeData}
-      //       selectOptions={selectOptions}
-      //       setCurrentStoreData={setCurrentStoreData}
-      //       customerData={currentCustomerData}
-      //       currentStoreData={currentStoreData}
-      //     />
-      //   )}
-      // </>
     )
   );
 };

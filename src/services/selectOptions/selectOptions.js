@@ -111,6 +111,28 @@ const installmentOptions = [
   { id: 1, value: 1 },
   { id: 2, value: 2 },
   { id: 3, value: 3 },
+  { id: 4, value: 4 },
+  { id: 5, value: 5 },
+  { id: 6, value: 6 },
+  { id: 7, value: 7 },
+  { id: 8, value: 8 },
+  { id: 9, value: 9 },
+
+];
+
+const paymentDefaults = [
+  { id: 'bank_transfer', value: 'Bank Transfer' },
+  { id: 'cheque', value: 'Cheque' },
+  { id: 'credit_card', value: 'Credit Card' },
+  { id: 'directebanking', value: 'Directebanking' },
+  { id: 'mistercash', value: 'Mistercash' },
+  { id: 'bacs', value: 'Bacs' },
+  { id: 'boleto', value: 'Boleto' },
+  { id: 'giropay', value: 'Giropay' },
+  { id: 'payPal', value: 'Pay Pal' },
+  { id: 'sepa', value: 'Sepa' },
+  { id: 'sofort', value: 'Sofort' },
+  { id: 'trustly', value: 'Trustly' },
 ];
 export {
   validityPeriod,
@@ -125,4 +147,5 @@ export {
   countryOptions,
   defaultCurrency,
   installmentOptions,
+  paymentDefaults,
 };
