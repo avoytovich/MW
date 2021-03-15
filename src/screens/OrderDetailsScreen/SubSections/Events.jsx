@@ -8,7 +8,8 @@ import {
   defaultShow,
 } from '../../../services/useData/tableMarkups/orderDetailsEvents';
 
-import TableComponent from '../../../components/TableComponent';
+import OrderDetailsTableComponent from '../../../components/TableComponent/OrderDetailsTableComponent';
+
 import CustomCard from '../../../components/utils/CustomCard';
 
 const Events = ({ orderData }) => {
@@ -23,8 +24,8 @@ const Events = ({ orderData }) => {
 
   return (
     <CustomCard title="Events">
-      <Box pt={4}>
-        <TableComponent
+      <Box border={1} borderColor="secondary.main">
+        <OrderDetailsTableComponent
           showColumn={defaultShow}
           tableData={events}
           isLoading={events === null}

@@ -1,0 +1,92 @@
+@import '../../../styles/variables.scss';
+
+.orderDetailsTableRowGrid {
+  display: flex;
+  min-height: 64px;
+
+  &:nth-of-type(odd) {
+    background-color: $tablesOddRow;
+  }
+  &:nth-of-type(even) {
+    background-color: $tablesEvenRow;
+  }
+
+  &.error-row{
+    background-color: $deleteIcon;
+
+    .MuiTypography-colorSecondary{
+      color: #fff;
+    }
+  }
+
+  .tableCellItemGrid {
+    overflow-x: hidden;
+    .tableCellItem {
+      display: inherit;
+      white-space: nowrap;
+      text-align: center;
+    }
+  }
+  .icons {
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .deleteIcon {
+    color: $deleteIcon;
+  }
+  .copyIcon {
+    color: $copyIcon;
+  }
+  .editIcon {
+    color: $editIcon;
+  }
+  .statusEnabled {
+    color: $copyIcon;
+  }
+  .statusDisable {
+    color: $deleteIcon;
+  }
+}
+.OrderDetailsTableHeaderGrid {
+  overflow-x: hidden;
+  background-color: #eee;
+  .tableHeader {
+    display: inherit;
+    white-space: nowrap;
+    background-color: #eee;
+  }
+}
+
+.table-items-actions {
+  .CSVLinkBlock {
+    text-decoration: none;
+    .importExportFab {
+      margin: 20px;
+      padding: 15px;
+      color: #fff;
+      .importExportIcon {
+        left: -4px;
+        position: relative;
+      }
+    }
+  }
+  .deleteFab {
+    margin: 20px;
+    padding: 15px;
+    margin-left: -10px;
+    background-color: $deleteIcon;
+    .deleteIcon {
+      left: -4px;
+      position: relative;
+    }
+  }
+}
+.sortableHeader {
+  cursor: pointer;
+}
+.sortActiveDesc {
+  border-bottom: 2px solid $navItemButtonActive;
+}
+.sortActiveAsc {
+  border-top: 2px solid $navItemButtonActive;
+}
