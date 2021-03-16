@@ -13,6 +13,7 @@ import Payment from './SubSections/Payment';
 
 import General from './SubSections/General';
 import Design from './SubSections/Design';
+import AssetsResource from './SubSections/AssetsResource';
 import StoreSection from './StoreSection';
 import {
   storeRequiredFields,
@@ -20,12 +21,21 @@ import {
 } from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import { formDesignOptions } from './utils';
+import {
+  formDesignOptions,
+  structureResources,
+  checkLabelDuplicate,
+  resourcesKeys,
+} from './utils';
 
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
+
+  const [currentStoreResources, setCurrentStoreResources] = useState([]);
+  const [storeResources, setStoreResources] = useState([]);
+  const [resourcesHasChanges, setResourcesHasChanges] = useState(false);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -54,7 +64,18 @@ const StoreDetailsScreen = () => {
   };
 
   const saveDetails = () => {
-    api.updateStoreById(currentStoreData.id, currentStoreData).then(() => {
+    const updatedData = { ...currentStoreData };
+    if (resourcesHasChanges) {
+      let notUsedKeys = [...resourcesKeys];
+      currentStoreResources.forEach((item) => {
+        notUsedKeys = notUsedKeys.filter((key) => key !== item.label);
+        updatedData[item.label] = item.url;
+      });
+      notUsedKeys.forEach((key) => {
+        delete updatedData[key];
+      });
+    }
+    api.updateStoreById(currentStoreData.id, updatedData).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
@@ -69,7 +90,11 @@ const StoreDetailsScreen = () => {
         api.getStoreById(id).then(({ data: store }) => {
           if (!isCancelled) {
             const checkedStore = storeRequiredFields(store);
-
+            const resourcesArray = structureResources(store);
+            setStoreResources(JSON.parse(JSON.stringify(resourcesArray)));
+            setCurrentStoreResources(
+              JSON.parse(JSON.stringify(resourcesArray)),
+            );
             setStoreData(checkedStore);
             setCurrentStoreData(checkedStore);
             api
@@ -143,6 +168,14 @@ const StoreDetailsScreen = () => {
       isCancelled = true;
     };
   }, []);
+  useEffect(() => {
+    setResourcesHasChanges(
+      JSON.stringify(currentStoreResources) !== JSON.stringify(storeResources),
+    );
+    return () => {
+      setResourcesHasChanges(false);
+    };
+  }, [currentStoreResources]);
 
   useEffect(() => {
     setStoreChanges(
@@ -161,7 +194,7 @@ const StoreDetailsScreen = () => {
         <Box display="flex" flexDirection="row" mx={2} pb={2}>
           <Typography component="div" color="primary">
             <Box fontWeight={500}>
-              {localization.t('general.discount')}
+              {localization.t('general.store')}
               {'/'}
             </Box>
           </Typography>
@@ -179,10 +212,23 @@ const StoreDetailsScreen = () => {
             <Typography data-test="discountName" gutterBottom variant="h3">
               {storeData.name}
             </Typography>
+            <Box display="flex" flexDirection="row">
+              <Typography component="div" color="primary">
+                <Box fontWeight={500}>
+                  {localization.t('labels.customerId')}
+                  {'/'}
+                </Box>
+              </Typography>
+              <Typography component="div" color="secondary">
+                <Box fontWeight={500}>{currentCustomerData?.id}</Box>
+              </Typography>
+            </Box>
           </Box>
-          <Zoom in={storeHasChanges}>
+
+          <Zoom in={storeHasChanges || resourcesHasChanges}>
             <Box mb={1} mr={1}>
               <Button
+                disabled={checkLabelDuplicate(currentStoreResources)}
                 id="save-discount-button"
                 color="primary"
                 size="large"
@@ -216,6 +262,16 @@ const StoreDetailsScreen = () => {
             <StoreSection label="payment">
               <Payment
                 selectOptions={selectOptions}
+                currentStoreData={currentStoreData}
+                setCurrentStoreData={setCurrentStoreData}
+              />
+            </StoreSection>
+          </Grid>
+          <Grid item md={12}>
+            <StoreSection label="assetsResource">
+              <AssetsResource
+                resources={currentStoreResources}
+                setResources={setCurrentStoreResources}
                 currentStoreData={currentStoreData}
                 setCurrentStoreData={setCurrentStoreData}
               />

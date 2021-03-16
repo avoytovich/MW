@@ -247,6 +247,12 @@ const labels = {
   paymentTabsRanking: 'Payment tabs ranking',
   group: 'Group',
   paymentTypes: 'Payment Types',
+  assetsResource: 'Assets Resource',
+  logoFavicon: 'Favicon',
+  bannerInvoice: 'Invoice banner ',
+  bannerOrderConfEmail: 'Confirmation email banner',
+  logoStore: 'Logo',
+  customerId: 'Customer ID',
 };
 
 export default labels;

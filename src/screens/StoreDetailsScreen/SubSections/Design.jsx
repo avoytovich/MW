@@ -28,8 +28,8 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
   };
   return (
     <>
-      <Box bgcolor="#fff" boxShadow={2}>
-        <Box pt={6} px={6} my={3}>
+      <Box bgcolor="#fff" boxShadow={2} pb={4}>
+        <Box pt={6} px={6} mt={3}>
           <Typography gutterBottom variant="h4">
             {localization.t('labels.design')}
           </Typography>
