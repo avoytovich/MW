@@ -416,6 +416,13 @@ const api = {
       url,
     });
   },
+  getPriceById(id) {
+    const url = `/prices/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getRecoById(id) {
     const url = `/product-recommendations/${id}`;
     return axiosInstance({
@@ -467,6 +474,13 @@ const api = {
   },
   getPricesByProductId(id) {
     const url = `/prices?format=short&productId=${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getMarketingPrices(page = 0, customerId) {
+    const url = `/prices?format=short&size=50&customerId=${customerId}&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,
@@ -593,6 +607,14 @@ const api = {
       data,
     });
   },
+  updatePriceById(id, data) {
+    const url = `/prices/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateThemeById(id, data) {
     const url = `/designs/themes/${id}`;
     return axiosInstance({
@@ -672,6 +694,13 @@ const api = {
   },
   deleteDiscountById(id) {
     const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deletePriceById(id) {
+    const url = `/prices/${id}`;
     return axiosInstance({
       method: 'delete',
       url,

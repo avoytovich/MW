@@ -166,6 +166,7 @@ const labels = {
   minimumCartAmount: 'Minimum Cart Amount',
   eligibility: 'Eligibility',
   marketingName: 'Marketing name',
+  marketingId: 'Marketing Campaign ID',
   shortDesc: 'Short description',
   longDesc: 'Long description',
   thankYouDesc: 'Thank you description',
@@ -207,6 +208,8 @@ const labels = {
   defaultCurrency: 'Default Currency',
   priceCurrency: 'Price',
   priceCountry: 'Country',
+  upsellPrice: 'Upsell price',
+  crossSellPrice: 'Cross-sell price',
 };
 
 export default labels;
