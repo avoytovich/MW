@@ -82,7 +82,30 @@ const priceCurrency = [
   { value: 'CNY (Yuan Renminbi)', id: 'CNY' },
   { value: 'COP (Colombian Peso)', id: 'COP' },
   { value: 'DKK (Danish Krone)', id: 'DKK' },
+  { value: 'DZD (Algerian Dinar)', id: 'DZD' },
+  { value: 'EGP (Egyptian Pound)', id: 'EGP' },
+  { value: 'EUR (Euro)', id: 'EUR' },
+  { value: 'GBP (Pound Sterling)', id: 'GBP' },
+  { value: 'HKD (Hong Kong Dollar)', id: 'HKD' },
+  { value: 'IDR (Rupiah)', id: 'IDR' },
+  { value: 'ILS (New Israeli Sheqel)', id: 'ILS' },
+  { value: 'INR (Indian Rupee)', id: 'INR' },
+  { value: 'JPY (Yen)', id: 'JPY' },
+  { value: 'KES (Kenyan Shilling)', id: 'KES' },
+  { value: 'KRW (Won)', id: 'KRW' },
+  { value: 'MXN (Mexican Peso)', id: 'MXN' },
+  { value: 'MYR(Malaysian Ringgit)', id: 'MYR' },
+  { value: 'NAD (Namibia Dollar)', id: 'NAD' },
+  { value: 'NGN (Naira)', id: 'NGN' },
+  { value: 'NOK (Norwegian Krone)', id: 'NOK' },
+  { value: 'NZD (New Zealand Dollar)', id: 'NZD' },
+  { value: 'PEN (Sol)', id: 'PEN' },
+  { value: 'PHP (Philippine Peso)', id: 'PHP' },
+  { value: 'PLN (Zloty)', id: 'PLN' },
+  { value: 'QAR (Qatari Rial)', id: 'QAR' },
+  { value: 'USD (US Dollar)', id: 'USD' },
 ];
+
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
   { value: 'B2C', id: 'B2C' },
@@ -101,12 +124,6 @@ const priceCountry = [
   { value: 'AR (Argentina)', id: 'AR (Argentina)' },
 ];
 
-const defaultCurrency = [
-  { id: '-', value: '-' },
-  { id: 'AED', value: 'AED' },
-  { id: 'AUD', value: 'AUD' },
-]
-
 export {
   validityPeriod,
   status,
@@ -118,5 +135,4 @@ export {
   businessSegment,
   priceCurrency,
   priceCountry,
-  defaultCurrency,
 };
