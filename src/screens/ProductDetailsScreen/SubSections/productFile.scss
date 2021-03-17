@@ -55,3 +55,52 @@
     margin-bottom: 25px;
   }
 }
+
+.product-prices{
+  .transparent-cell{
+    min-width: 75px;
+    background: #fff;
+    border: 0;
+    border-left: 1px solid #e0e0e0;
+    padding: 0;
+
+    button{
+      color: #b9b1b1;
+
+      &:hover{
+        color: $deleteIcon;
+      }
+    }
+  }
+
+  tr:nth-child(2n - 1):not(.new-price-row){
+    background-color: #fff;
+  }
+
+  th, td{
+    max-width: 200px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .outdated{
+    opacity: .2;
+    text-decoration: line-through;
+  }
+
+  .new-price-row{
+    td{
+      min-width: 150px;
+      max-width: 150px;
+
+      &.transparent-cell{
+        button{    
+          &:hover{
+            color: $navItemButtonActive;
+          }
+        }
+      }
+    }
+  }
+}

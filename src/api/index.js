@@ -465,6 +465,13 @@ const api = {
       url,
     });
   },
+  getPricesByProductId(id) {
+    const url = `/prices?format=short&productId=${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getSubscriptionModelById(id) {
     const url = `/subscription-manager/models?format=short&id=${id}&size=30&page=0`;
     return axiosInstance({
