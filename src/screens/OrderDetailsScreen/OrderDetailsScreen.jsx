@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import {
-  Chip, LinearProgress, Box, Typography, Grid,
+  Chip, LinearProgress, Box, Typography, Grid, Button, Menu, MenuItem,
 } from '@material-ui/core';
 
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -15,6 +15,8 @@ import generateData from '../../services/useData/tableMarkups/orderDetails';
 import Products from './SubSections/Products';
 import OrderRow from './OrderRow';
 import Events from './SubSections/Events';
+import ConfirmationPopup from '../../components/Popup/ConfirmationPopup/index';
+import CancelOrderPopup from '../../components/Popup/CancelOrderPopup/index';
 import './orderDetailsScreen.scss';
 
 const OrderDetailsScreen = () => {
@@ -28,6 +30,12 @@ const OrderDetailsScreen = () => {
 
   const [currentOrderData, setCurrentOrderData] = useState(null);
   const [orderData, setOrderData] = useState(null);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClose = () => setAnchorEl(null);
+
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+
 
   const saveDetails = () => {
     api.updateOrderById(currentOrderData.id, currentOrderData).then(() => {
@@ -81,42 +89,82 @@ const OrderDetailsScreen = () => {
   }, [currentOrderData, orderData]);
 
   if (isLoading) return <LinearProgress />;
+  console.log('currentOrderData', currentOrderData);
+  console.log('orderData', orderData);
   return (
     <>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Box display="flex" flexDirection="row">
-          <Typography variant="body2" color="primary">
-            {localization.t('general.order')}
-            {' / '}
-          </Typography>
-          <Typography variant="body2" color="secondary">
-            {id}
-          </Typography>
-        </Box>
-      </Box>
-      <Box py={2} mt={3}>
-        <Typography gutterBottom variant="h3">
-          {id}
-        </Typography>
-      </Box>
-      <Box display="flex" alignItems="center">
-        {customer && (
-          <>
-            <Box pr={2}>
-              <Typography variant="body2" gutterBottom>
-                {localization.t('labels.customer')}
+        <Box display="flex" flexDirection="column">
+          <Box display="flex" flexDirection="row" justifyContent="space-between">
+            <Box display="flex" flexDirection="row">
+              <Typography variant="body2" color="primary">
+                {localization.t('general.order')}
+                {' / '}
+              </Typography>
+              <Typography variant="body2" color="secondary">
+                {id}
               </Typography>
             </Box>
-            <Chip
-              label={customer.status === 'RUNNING' ? 'LIVE' : 'TEST'}
-              style={{
-                backgroundColor: customer.status === 'RUNNING' ? '#99de90' : '',
-                color: '#fff',
-              }}
-            />
-          </>
-        )}
+          </Box>
+          <Box py={2} mt={3}>
+            <Typography gutterBottom variant="h3">
+              {id}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            {customer && (
+              <>
+                <Box pr={2}>
+                  <Typography variant="body2" gutterBottom>
+                    {localization.t('labels.customer')}
+                  </Typography>
+                </Box>
+                <Chip
+                  label={customer.status === 'RUNNING' ? 'LIVE' : 'TEST'}
+                  style={{
+                    backgroundColor: customer.status === 'RUNNING' ? '#99de90' : '',
+                    color: '#fff',
+                  }}
+                />
+              </>
+            )}
+          </Box>
+        </Box>
+
+        <Box display="flex" alignItems="flex-end">
+
+          <Button
+            aria-haspopup="true"
+            variant="contained"
+            color="primary"
+            aria-controls="checkoutMenu"
+            onClick={handleClick}
+            size="large"
+          >
+            Actions
+          </Button>
+          <Menu
+            getContentAnchorEl={null}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem><ConfirmationPopup/></MenuItem>
+            <MenuItem><CancelOrderPopup/></MenuItem>
+          </Menu>
+        </Box>
       </Box>
+
+
+
       {orderRows && (
         <Grid container spacing={2}>
           <Grid item md={4} xs={12}>

@@ -208,6 +208,7 @@ const labels = {
   defaultCurrency: 'Default Currency',
   priceCurrency: 'Price',
   priceCountry: 'Country',
+  cancelOrder: 'Cancel Order',
   upsellPrice: 'Upsell price',
   crossSellPrice: 'Cross-sell price',
   overrideEmailSender: 'Override Email Sender',
