@@ -20,6 +20,8 @@ import {
   countryOptions,
 } from '../../../services/selectOptions/selectOptions';
 
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+
 const ProductPriceRow = ({
   setProductData,
   currentProductData,
@@ -38,7 +40,7 @@ const ProductPriceRow = ({
     },
   );
 
-  const addRow = (e) => {
+  const addRow = () => {
     const newState = {
       value: '',
       msrp: '',
@@ -46,6 +48,7 @@ const ProductPriceRow = ({
       crossSell: '',
       vatIncluded: false,
     };
+
     const countryObj = {};
 
     countryObj[country] = newRow;
@@ -56,7 +59,7 @@ const ProductPriceRow = ({
         ...currentProductData.prices,
         priceByCountryByCurrency: {
           ...currentProductData.prices.priceByCountryByCurrency,
-          [currency]: { ...countryObj},
+          [currency]: { ...currentProductData?.prices?.priceByCountryByCurrency[currency], ...countryObj},
         }
       },
     });
@@ -90,28 +93,30 @@ const ProductPriceRow = ({
 
   return (
     <>
-      <TableRow>
-        <TableCell component="th" scope="row" style={{minWidth: 180, maxWidth: 180}}>
+      <TableRow className='new-price-row'>
+        <TableCell align="center">
           <Box>
             <SelectCustom
               label="priceCurrency"
+              value={currency}
               selectOptions={priceCurrency}
               onChangeSelect={handleCurrency}
             />
           </Box>
         </TableCell>
 
-        <TableCell align="right" width="210px" style={{minWidth: 180, maxWidth: 180}}>
+        <TableCell align="center">
           <Box>
             <SelectCustom
               label="priceCountry"
-              selectOptions={countryOptions}
+              value={country}
+              selectOptions={[{ id: 'default', value: 'default' }, ...priceCountry]}
               onChangeSelect={handleCountry}
             />
           </Box>
         </TableCell>
 
-        <TableCell align="right" style={{ minWidth: 100 }}>
+        <TableCell align="center">
           <Box px={1} width=" 100%">
             <TextField
               fullWidth
@@ -123,7 +128,8 @@ const ProductPriceRow = ({
             />
           </Box>
         </TableCell>
-        <TableCell align="right" style={{ minWidth: 100 }}>
+
+        <TableCell align="center">
           <Box px={1} width=" 100%">
             <TextField
               fullWidth
@@ -135,7 +141,8 @@ const ProductPriceRow = ({
             />
           </Box>
         </TableCell>
-        <TableCell align="right" style={{ minWidth: 100 }}>
+
+        <TableCell align="center">
           <Box px={1} width=" 100%">
             <TextField
               fullWidth
@@ -147,7 +154,8 @@ const ProductPriceRow = ({
             />
           </Box>
         </TableCell>
-        <TableCell align="right" style={{ minWidth: 100 }}>
+
+        <TableCell align="center">
           <Box px={1} width=" 100%">
             <TextField
               fullWidth
@@ -159,8 +167,8 @@ const ProductPriceRow = ({
             />
           </Box>
         </TableCell>
-        <TableCell align="right">
 
+        <TableCell align="center" style={{ minWidth: '50px' }}>
           <FormControlLabel
             control={(
               <Checkbox
@@ -170,12 +178,13 @@ const ProductPriceRow = ({
                 color="primary"
               />
             )}
+            style={{ margin: 0 }}
           />
-
         </TableCell>
-        <TableCell align="right">
-          <Button variant="contained" color="primary" onClick={(i) => addRow(i)}>
-            +
+
+        <TableCell align="center" className='transparent-cell' style={{ minWidth: '50px' }}>
+          <Button onClick={addRow} disabled={!country || !currency}>
+            <AddCircleIcon color="primary" style={{ opacity: !country || !currency ? 0.5 : 1 }} />
           </Button>
         </TableCell>
       </TableRow>

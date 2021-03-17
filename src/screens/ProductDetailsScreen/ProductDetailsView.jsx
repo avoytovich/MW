@@ -38,6 +38,7 @@ const ProductDetailsView = ({
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
+  const [saveDisabled, setSaveDisabled] = useState(false);
 
   useEffect(() => {
     const {
@@ -54,7 +55,7 @@ const ProductDetailsView = ({
       genericName &&
       type &&
       prices.defaultCurrency &&
-      prices.priceByCountryByCurrency[prices.defaultCurrency].default.value
+      prices.priceByCountryByCurrency[prices.defaultCurrency]?.default?.value
     ) {
       setTabsDisabled(false);
     } else {
@@ -104,7 +105,7 @@ const ProductDetailsView = ({
           >
             <Box mb={1} mr={1}>
               <Button
-                disabled={tabsDisabled}
+                disabled={tabsDisabled || saveDisabled}
                 id="save-detail-button"
                 color="primary"
                 size="large"
@@ -196,6 +197,7 @@ const ProductDetailsView = ({
               currentProductData={currentProductData}
               productData={productData}
               setNewData={setProductLocalizationChanges}
+              setSaveDisabled={setSaveDisabled}
             />
           </SectionLayout>
         )}
