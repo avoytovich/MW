@@ -228,7 +228,11 @@ const StoreDetailsScreen = () => {
           <Zoom in={storeHasChanges || resourcesHasChanges}>
             <Box mb={1} mr={1}>
               <Button
-                disabled={checkLabelDuplicate(currentStoreResources)}
+                disabled={
+                  checkLabelDuplicate(currentStoreResources) ||
+                  (currentStoreData.externalContextAlias &&
+                    !!currentStoreData.externalContextGenerationParams.length)
+                }
                 id="save-discount-button"
                 color="primary"
                 size="large"
@@ -251,14 +255,14 @@ const StoreDetailsScreen = () => {
               />
             </StoreSection>
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={5} sm={12}>
             <Design
               selectOptions={selectOptions}
               currentStoreData={currentStoreData}
               setCurrentStoreData={setCurrentStoreData}
             />
           </Grid>
-          <Grid item md={7}>
+          <Grid item md={7} sm={12}>
             <StoreSection label="payment">
               <Payment
                 selectOptions={selectOptions}

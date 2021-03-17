@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box, Typography, Tabs, Tab,
-} from '@material-ui/core';
+import { Box, Typography, Tabs, Tab } from '@material-ui/core';
 
 import localization from '../../../localization';
 import { SelectWithDeleteIcon } from '../../../components/Inputs';
@@ -64,12 +62,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.theme}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'endUserPortal',
-                    'themeRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'themeRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'endUserPortal',
+                      'themeRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('endUserPortal', 'themeRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -83,12 +85,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.layout}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'endUserPortal',
-                    'layoutRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'layoutRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'endUserPortal',
+                      'layoutRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('endUserPortal', 'layoutRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -101,12 +107,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.font}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'endUserPortal',
-                    'fontRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'fontRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'endUserPortal',
+                      'fontRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('endUserPortal', 'fontRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -119,12 +129,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.translation}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'endUserPortal',
-                    'i18nRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'i18nRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'endUserPortal',
+                      'i18nRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('endUserPortal', 'i18nRef')
+                  }
                 />
               </Box>
             </>
@@ -141,8 +155,12 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.theme}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'themeRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'themeRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign('checkout', 'themeRef', e.target.value)
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('checkout', 'themeRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -155,8 +173,12 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.layout}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'layoutRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'layoutRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign('checkout', 'layoutRef', e.target.value)
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('checkout', 'layoutRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -169,8 +191,12 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.font}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'fontRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'fontRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign('checkout', 'fontRef', e.target.value)
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('checkout', 'fontRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -183,8 +209,12 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.translation}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'i18nRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'i18nRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign('checkout', 'i18nRef', e.target.value)
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('checkout', 'i18nRef')
+                  }
                 />
               </Box>
             </>
@@ -202,12 +232,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.theme}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'resellerCheckout',
-                    'themeRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'themeRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'resellerCheckout',
+                      'themeRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('resellerCheckout', 'themeRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -221,12 +255,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.layout}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'resellerCheckout',
-                    'layoutRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'layoutRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'resellerCheckout',
+                      'layoutRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('resellerCheckout', 'layoutRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -240,12 +278,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.font}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'resellerCheckout',
-                    'fontRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'fontRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'resellerCheckout',
+                      'fontRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('resellerCheckout', 'fontRef')
+                  }
                 />
               </Box>
               <Box p={2}>
@@ -259,12 +301,16 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                       : ''
                   }
                   selectOptions={selectOptions.translation}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'resellerCheckout',
-                    'i18nRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'i18nRef')}
+                  onChangeSelect={(e) =>
+                    handleUpdateDesign(
+                      'resellerCheckout',
+                      'i18nRef',
+                      e.target.value,
+                    )
+                  }
+                  onClickDelIcon={() =>
+                    handleUpdateDesign('resellerCheckout', 'i18nRef')
+                  }
                 />
               </Box>
             </>

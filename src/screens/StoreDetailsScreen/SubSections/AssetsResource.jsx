@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PublishIcon from '@material-ui/icons/Publish';
-import {
-  Box, Divider, Button, Typography,
-} from '@material-ui/core';
+import { Box, Divider, Button, Typography } from '@material-ui/core';
 
 import StoreFileBlock from './StoreFileBlock';
 
@@ -32,17 +30,19 @@ const AssetsResource = ({ resources, setResources }) => {
         </Typography>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" width={1}>
-        {!!resources.length
-          && resources.map((content, index) => (
+        {!!resources.length &&
+          resources.map((content, index) => (
             <Box key={content.key} width={1} p={2}>
-              <StoreFileBlock
-                deleteItem={deleteItem}
-                data={resources}
-                item={content}
-                updateResources={updateResources}
-                index={index}
-                type="file"
-              />
+              <Box width={1} pb={4}>
+                <StoreFileBlock
+                  deleteItem={deleteItem}
+                  data={resources}
+                  item={content}
+                  updateResources={updateResources}
+                  index={index}
+                  type="file"
+                />
+              </Box>
               <Divider light />
             </Box>
           ))}

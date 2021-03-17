@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 
 import ClearIcon from '@material-ui/icons/Clear';
 
-import { CircularProgress, Grid } from '@material-ui/core';
+import { CircularProgress, Grid, Box } from '@material-ui/core';
 import { resourceLabel } from '../utils';
 import { InputCustom, SelectCustom } from '../../../components/Inputs';
 import FileUpload from '../../../components/utils/FileUpload';
+import '../storeDetailsScreen.scss';
 
-const StoreFileBlock = ({
-  item, updateResources, deleteItem, index,
-}) => {
+const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
   const [urlLoading, setUrlLoading] = useState(true);
 
   const [initImage, setInitImage] = useState('');
@@ -31,15 +30,14 @@ const StoreFileBlock = ({
   };
 
   return (
-    <Grid
-      justify="space-between"
-      spacing={1}
-      container
+    <Box
+      display="flex"
+      flexWrap="wrap"
       className={`product-files ${
         urlFetching ? 'disable-block' : ''
       } existing-item`}
     >
-      <Grid item md={3}>
+      <Box minWidth="220px" width={1 / 4}>
         {urlLoading || initImage === ' ' ? (
           <CircularProgress />
         ) : (
@@ -52,26 +50,35 @@ const StoreFileBlock = ({
             setHasSave={() => {}}
           />
         )}
-      </Grid>
-
-      <Grid item md={7}>
-        <SelectCustom
-          label="label"
-          value={item.label}
-          selectOptions={resourceLabel}
-          onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
-        />
-
-        <InputCustom
-          label="url"
-          value={item.url}
-          onChangeInput={(e) => updateResources(index, 'url', e.target.value)}
-        />
-      </Grid>
-      <Grid item md={1} className="block-actions single">
-        <ClearIcon onClick={() => deleteItem(item.key)} />
-      </Grid>
-    </Grid>
+      </Box>
+      <Box width={3 / 4}>
+        <Box maxWidth="250px" my={2}>
+          <SelectCustom
+            label="label"
+            value={item.label}
+            selectOptions={resourceLabel}
+            onChangeSelect={(e) =>
+              updateResources(index, 'label', e.target.value)
+            }
+          />
+        </Box>
+        <Grid container spacing={1} alignItems="center">
+          <Grid item md={11} sm={11}>
+            <InputCustom
+              label="url"
+              value={item.url}
+              onChangeInput={(e) =>
+                updateResources(index, 'url', e.target.value)
+              }
+            />
+          </Grid>
+          <Grid item md={1} sm={1} className="iconWrapper">
+            <ClearIcon
+             color="secondary" onClick={() => deleteItem(item.key)} />
+          </Grid>
+        </Grid>
+      </Box>
+    </Box>
   );
 };
 
