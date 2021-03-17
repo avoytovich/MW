@@ -17,7 +17,7 @@ import {
 
 import {
   priceCurrency,
-  priceCountry,
+  countryOptions,
 } from '../../../services/selectOptions/selectOptions';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
