@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { FolderOpen } from '@material-ui/icons';
 import { useDispatch } from 'react-redux';
 import {
   LinearProgress,
@@ -8,20 +7,47 @@ import {
   Button,
   Box,
   Typography,
+  Grid,
 } from '@material-ui/core';
+import Payment from './SubSections/Payment';
+
+import General from './SubSections/General';
+import Design from './SubSections/Design';
+import AssetsResource from './SubSections/AssetsResource';
+import StoreSection from './StoreSection';
+import {
+  storeRequiredFields,
+  structureSelectOptions,
+} from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import StoreDetails from '../../components/StoreDetails';
+import {
+  formDesignOptions,
+  structureResources,
+  checkLabelDuplicate,
+  resourcesKeys,
+} from './utils';
+
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
-  const [inputErrors, setInputErrors] = useState({});
+
+  const [currentStoreResources, setCurrentStoreResources] = useState([]);
+  const [storeResources, setStoreResources] = useState([]);
+  const [resourcesHasChanges, setResourcesHasChanges] = useState(false);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [storeHasChanges, setStoreChanges] = useState(false);
-  const [selectOptions, setSelectOptions] = useState({ theme: null });
+  const [selectOptions, setSelectOptions] = useState({
+    customers: null,
+    font: null,
+    theme: null,
+    paymentMethods: null,
+    layout: null,
+    translation: null,
+  });
   const [storeData, setStoreData] = useState(null);
   const [currentStoreData, setCurrentStoreData] = useState(null);
 
@@ -36,124 +62,20 @@ const StoreDetailsScreen = () => {
     });
     return res;
   };
-  const checkRequiredFields = (store) => {
-    let resObj = { ...store };
-
-    if (!resObj.status) {
-      resObj = { ...resObj, status: '' };
-    }
-    if (!resObj.routes) {
-      resObj = { ...resObj, routes: [] };
-    }
-    if (!resObj.routes[0]) {
-      resObj = { ...resObj, routes: [{ hostname: '' }] };
-    }
-    if (!resObj.routes[0].hostname) {
-      const newArr = [!resObj.routes];
-      newArr[0] = { ...newArr[0], hostname: '' };
-      resObj = { ...resObj, routes: newArr };
-    }
-    if (!resObj.defaultLocale) {
-      resObj = { ...resObj, defaultLocale: '' };
-    }
-    if (!resObj.saleLocales) {
-      resObj = { ...resObj, saleLocales: [] };
-    }
-    if (!resObj.designs) {
-      resObj = { ...resObj, designs: {} };
-    }
-    if (!resObj.designs.endUserPortal) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          endUserPortal: { themeRef: {} },
-        },
-      };
-    }
-    if (!Object.keys(resObj.designs.endUserPortal.themeRef).length) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          endUserPortal: { themeRef: { customerId: '', name: '' } },
-        },
-      };
-    }
-    if (!resObj.designs.checkout) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {},
-        },
-      };
-    }
-    if (!resObj.designs.checkout.themeRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            themeRef: { customerId: '', name: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.checkout.fontRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            fontRef: { customerId: '', name: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.checkout.i18nRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            i18nRef: { customerId: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.checkout.layoutRef) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          checkout: {
-            ...resObj.designs.checkout,
-            layoutRef: { customerId: '', name: '' },
-          },
-        },
-      };
-    }
-    if (!resObj.designs.paymentComponent) {
-      resObj = {
-        ...resObj,
-        designs: {
-          ...resObj.designs,
-          paymentComponent: {
-            rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
-          },
-        },
-      };
-    }
-
-    return resObj;
-  };
 
   const saveDetails = () => {
-    api.updateStoreById(currentStoreData.id, currentStoreData).then(() => {
+    const updatedData = { ...currentStoreData };
+    if (resourcesHasChanges) {
+      let notUsedKeys = [...resourcesKeys];
+      currentStoreResources.forEach((item) => {
+        notUsedKeys = notUsedKeys.filter((key) => key !== item.label);
+        updatedData[item.label] = item.url;
+      });
+      notUsedKeys.forEach((key) => {
+        delete updatedData[key];
+      });
+    }
+    api.updateStoreById(currentStoreData.id, updatedData).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
@@ -165,39 +87,76 @@ const StoreDetailsScreen = () => {
     let isCancelled = false;
     const requests = async () => {
       try {
-        const store = await api.getStoreById(id);
-        const customer = await api.getCustomerById(store?.data?.customerId);
-        const themeOptions = await api.getDesignsThemes();
-        const fontOptions = await api.getDesignsFonts();
-        const layoutOptions = await api.getDesignsLayouts();
-        const translationOptions = await api.getDesignsTranslations();
+        api.getStoreById(id).then(({ data: store }) => {
+          if (!isCancelled) {
+            const checkedStore = storeRequiredFields(store);
+            const resourcesArray = structureResources(store);
+            setStoreResources(JSON.parse(JSON.stringify(resourcesArray)));
+            setCurrentStoreResources(
+              JSON.parse(JSON.stringify(resourcesArray)),
+            );
+            setStoreData(checkedStore);
+            setCurrentStoreData(checkedStore);
+            api
+              .getCustomerById(store?.customerId)
+              .then(({ data: customer }) => {
+                setCurrentCustomerData(customer);
+              });
+            setLoading(false);
 
-        const customersIds = getCustomersIdsArray(
-          ...fontOptions.data.items,
-          ...themeOptions.data.items,
-          ...layoutOptions.data.items,
-          ...translationOptions.data.items,
-        );
-        const customers = await api.getCustomersByIds(customersIds.join('&'));
-        const paymentMethodsOptions = await api.getPaymentMethodsOptions();
+            Promise.allSettled([
+              api.getDesignsThemes(),
+              api.getDesignsFonts(),
+              api.getDesignsLayouts(),
+              api.getDesignsTranslations(),
+              api.getPaymentMethodsOptions(),
+            ]).then(
+              ([
+                themeOptions,
+                fontOptions,
+                layoutOptions,
+                translationOptions,
+                paymentMethodsOptions,
+              ]) => {
+                const customersIds = getCustomersIdsArray(
+                  ...fontOptions.value.data.items,
+                  ...themeOptions.value.data.items,
+                  ...layoutOptions.value.data.items,
+                  ...translationOptions.value.data.items,
+                );
 
-        if (!isCancelled) {
-          const checkedStore = checkRequiredFields(store.data);
-
-          setStoreData(checkedStore);
-          setCurrentStoreData(checkedStore);
-          setCurrentCustomerData(customer.data);
-          setSelectOptions({
-            ...selectOptions,
-            customers: customers.data.items,
-            font: fontOptions.data.items,
-            theme: themeOptions.data.items,
-            paymentMethods: paymentMethodsOptions.data,
-            layout: layoutOptions.data.items,
-            translation: translationOptions.data.items,
-          });
-          setLoading(false);
-        }
+                api
+                  .getCustomersByIds(customersIds.join('&'))
+                  .then(({ data: customers }) => {
+                    setSelectOptions({
+                      ...selectOptions,
+                      customers: customers.items,
+                      font: formDesignOptions(
+                        fontOptions.value?.data.items,
+                        customers.items,
+                      ),
+                      theme: formDesignOptions(
+                        themeOptions.value?.data.items,
+                        customers.items,
+                      ),
+                      paymentMethods: structureSelectOptions(
+                        paymentMethodsOptions.value?.data,
+                        'id',
+                      ),
+                      layout: formDesignOptions(
+                        layoutOptions.value?.data.items,
+                        customers.items,
+                      ),
+                      translation: formDesignOptions(
+                        translationOptions.value?.data.items,
+                        customers.items,
+                      ),
+                    });
+                  });
+              },
+            );
+          }
+        });
       } catch (error) {
         if (!isCancelled) {
           setLoading(false);
@@ -209,6 +168,14 @@ const StoreDetailsScreen = () => {
       isCancelled = true;
     };
   }, []);
+  useEffect(() => {
+    setResourcesHasChanges(
+      JSON.stringify(currentStoreResources) !== JSON.stringify(storeResources),
+    );
+    return () => {
+      setResourcesHasChanges(false);
+    };
+  }, [currentStoreResources]);
 
   useEffect(() => {
     setStoreChanges(
@@ -222,46 +189,101 @@ const StoreDetailsScreen = () => {
   if (isLoading) return <LinearProgress />;
 
   return (
-    <>
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Box display="flex" flexDirection="row">
-          <Box>
-            <FolderOpen color="secondary" />
-          </Box>
-          <Box>
-            <Typography component="div" color="primary">
-              <Box fontWeight={500}>{localization.t('general.store')}</Box>
-            </Typography>
-          </Box>
+    storeData && (
+      <>
+        <Box display="flex" flexDirection="row" mx={2} pb={2}>
+          <Typography component="div" color="primary">
+            <Box fontWeight={500}>
+              {localization.t('general.store')}
+              {'/'}
+            </Box>
+          </Typography>
+          <Typography component="div" color="secondary">
+            <Box fontWeight={500}>{storeData.id}</Box>
+          </Typography>
         </Box>
-        <Zoom in={storeHasChanges}>
-          <Box mb={1}>
-            <Button
-              disabled={Object.keys(inputErrors).length !== 0}
-              id="save-detail-button"
-              color="primary"
-              size="large"
-              type="submit"
-              variant="contained"
-              onClick={saveDetails}
-            >
-              {localization.t('general.save')}
-            </Button>
+        <Box
+          display="flex"
+          flexDirection="row"
+          m={2}
+          justifyContent="space-between"
+        >
+          <Box alignSelf="center">
+            <Typography data-test="discountName" gutterBottom variant="h3">
+              {storeData.name}
+            </Typography>
+            <Box display="flex" flexDirection="row">
+              <Typography component="div" color="primary">
+                <Box fontWeight={500}>
+                  {localization.t('labels.customerId')}
+                  {'/'}
+                </Box>
+              </Typography>
+              <Typography component="div" color="secondary">
+                <Box fontWeight={500}>{currentCustomerData?.id}</Box>
+              </Typography>
+            </Box>
           </Box>
-        </Zoom>
-      </Box>
-      {currentStoreData && (
-        <StoreDetails
-          inputErrors={inputErrors}
-          setInputErrors={setInputErrors}
-          storeData={storeData}
-          selectOptions={selectOptions}
-          setCurrentStoreData={setCurrentStoreData}
-          customerData={currentCustomerData}
-          currentStoreData={currentStoreData}
-        />
-      )}
-    </>
+
+          <Zoom in={storeHasChanges || resourcesHasChanges}>
+            <Box mb={1} mr={1}>
+              <Button
+                disabled={
+                  checkLabelDuplicate(currentStoreResources) ||
+                  (currentStoreData.externalContextAlias &&
+                    !!currentStoreData.externalContextGenerationParams.length)
+                }
+                id="save-discount-button"
+                color="primary"
+                size="large"
+                type="submit"
+                variant="contained"
+                onClick={saveDetails}
+              >
+                {localization.t('general.save')}
+              </Button>
+            </Box>
+          </Zoom>
+        </Box>
+        <Grid container spacing={2}>
+          <Grid item md={12}>
+            <StoreSection label="general">
+              <General
+                currentStoreData={currentStoreData}
+                setCurrentStoreData={setCurrentStoreData}
+                selectOptions={selectOptions}
+              />
+            </StoreSection>
+          </Grid>
+          <Grid item md={5} sm={12}>
+            <Design
+              selectOptions={selectOptions}
+              currentStoreData={currentStoreData}
+              setCurrentStoreData={setCurrentStoreData}
+            />
+          </Grid>
+          <Grid item md={7} sm={12}>
+            <StoreSection label="payment">
+              <Payment
+                selectOptions={selectOptions}
+                currentStoreData={currentStoreData}
+                setCurrentStoreData={setCurrentStoreData}
+              />
+            </StoreSection>
+          </Grid>
+          <Grid item md={12}>
+            <StoreSection label="assetsResource">
+              <AssetsResource
+                resources={currentStoreResources}
+                setResources={setCurrentStoreResources}
+                currentStoreData={currentStoreData}
+                setCurrentStoreData={setCurrentStoreData}
+              />
+            </StoreSection>
+          </Grid>
+        </Grid>
+      </>
+    )
   );
 };
 

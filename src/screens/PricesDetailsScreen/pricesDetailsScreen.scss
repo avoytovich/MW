@@ -1,0 +1,18 @@
+// ToDo: same as myaccount, make common solution
+.price-details-screen{
+  position: relative;
+
+  #save-price-button{
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .MuiTextField-root{
+    margin-top: 20px;
+  }
+
+  .MuiTab-root{
+    text-transform: none;
+  }
+}

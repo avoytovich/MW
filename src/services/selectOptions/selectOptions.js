@@ -82,13 +82,36 @@ const priceCurrency = [
   { value: 'CNY (Yuan Renminbi)', id: 'CNY' },
   { value: 'COP (Colombian Peso)', id: 'COP' },
   { value: 'DKK (Danish Krone)', id: 'DKK' },
+  { value: 'DZD (Algerian Dinar)', id: 'DZD' },
+  { value: 'EGP (Egyptian Pound)', id: 'EGP' },
+  { value: 'EUR (Euro)', id: 'EUR' },
+  { value: 'GBP (Pound Sterling)', id: 'GBP' },
+  { value: 'HKD (Hong Kong Dollar)', id: 'HKD' },
+  { value: 'IDR (Rupiah)', id: 'IDR' },
+  { value: 'ILS (New Israeli Sheqel)', id: 'ILS' },
+  { value: 'INR (Indian Rupee)', id: 'INR' },
+  { value: 'JPY (Yen)', id: 'JPY' },
+  { value: 'KES (Kenyan Shilling)', id: 'KES' },
+  { value: 'KRW (Won)', id: 'KRW' },
+  { value: 'MXN (Mexican Peso)', id: 'MXN' },
+  { value: 'MYR(Malaysian Ringgit)', id: 'MYR' },
+  { value: 'NAD (Namibia Dollar)', id: 'NAD' },
+  { value: 'NGN (Naira)', id: 'NGN' },
+  { value: 'NOK (Norwegian Krone)', id: 'NOK' },
+  { value: 'NZD (New Zealand Dollar)', id: 'NZD' },
+  { value: 'PEN (Sol)', id: 'PEN' },
+  { value: 'PHP (Philippine Peso)', id: 'PHP' },
+  { value: 'PLN (Zloty)', id: 'PLN' },
+  { value: 'QAR (Qatari Rial)', id: 'QAR' },
+  { value: 'USD (US Dollar)', id: 'USD' },
 ];
+
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
   { value: 'B2C', id: 'B2C' },
 ];
 
-const priceCountry = [
+const countryOptions = [
   { value: 'AD (Andora)', id: 'AD (Andora)' },
   { value: 'AE (United Arab Emirates)', id: 'AE (United Arab Emirates)' },
   { value: 'AF (Afganistan)', id: 'AF (Afganistan)' },
@@ -128,7 +151,33 @@ const orderCancelAction = [
   { id: 'VAT', value: 'VAT (VAT issue)' },
   { id: 'MRG', value: 'MRG (Wrong product choice)' },
 ]
+const installmentOptions = [
+  { id: 1, value: 1 },
+  { id: 2, value: 2 },
+  { id: 3, value: 3 },
+  { id: 4, value: 4 },
+  { id: 5, value: 5 },
+  { id: 6, value: 6 },
+  { id: 7, value: 7 },
+  { id: 8, value: 8 },
+  { id: 9, value: 9 },
 
+];
+
+const paymentDefaults = [
+  { id: 'bank_transfer', value: 'Bank Transfer' },
+  { id: 'cheque', value: 'Cheque' },
+  { id: 'credit_card', value: 'Credit Card' },
+  { id: 'directebanking', value: 'Directebanking' },
+  { id: 'mistercash', value: 'Mistercash' },
+  { id: 'bacs', value: 'Bacs' },
+  { id: 'boleto', value: 'Boleto' },
+  { id: 'giropay', value: 'Giropay' },
+  { id: 'payPal', value: 'Pay Pal' },
+  { id: 'sepa', value: 'Sepa' },
+  { id: 'sofort', value: 'Sofort' },
+  { id: 'trustly', value: 'Trustly' },
+];
 export {
   validityPeriod,
   status,
@@ -139,7 +188,12 @@ export {
   availableLocales,
   businessSegment,
   priceCurrency,
-  priceCountry,
+  countryOptions,
   defaultCurrency,
+<<<<<<< HEAD
   orderCancelAction,
+=======
+  installmentOptions,
+  paymentDefaults,
+>>>>>>> master
 };
