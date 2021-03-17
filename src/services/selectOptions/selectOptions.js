@@ -178,6 +178,7 @@ const paymentDefaults = [
   { id: 'sofort', value: 'Sofort' },
   { id: 'trustly', value: 'Trustly' },
 ];
+
 export {
   validityPeriod,
   status,
@@ -190,10 +191,7 @@ export {
   priceCurrency,
   countryOptions,
   defaultCurrency,
-<<<<<<< HEAD
   orderCancelAction,
-=======
   installmentOptions,
   paymentDefaults,
->>>>>>> master
 };
