@@ -31,7 +31,7 @@ import {
 
 import {
   priceCurrency,
-  priceCountry,
+  countryOptions,
 } from '../../services/selectOptions/selectOptions';
 
 import api from '../../api';
@@ -187,7 +187,7 @@ const PricesDetailsScreen = () => {
             <SelectCustom
               label="priceCountry"
               value={curPrice?.country || ''}
-              selectOptions={[{ id: 'default', value: 'default' }, ...priceCountry]}
+              selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
               onChangeSelect={handleCountry}
             />
 
