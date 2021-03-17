@@ -105,6 +105,28 @@ const defaultCurrency = [
   { id: '-', value: '-' },
   { id: 'AED', value: 'AED' },
   { id: 'AUD', value: 'AUD' },
+];
+
+const orderCancelAction = [
+  { id: 'CBA', value: 'CBA (Chargeback alert)' },
+  { id: 'CHB', value: 'CHB (Chargeback)' },
+
+  { id: 'DBL', value: 'DBL (Double order)' },
+  { id: 'DIP', value: 'DIP (Disappointing product)' },
+  { id: 'DIS', value: 'DIS (Disappointing service)' },
+  { id: 'FRD', value: 'FRD (Fraud suspicion)' },
+  { id: 'OCL', value: 'OCL (Order cancellation)' },
+  { id: 'OOS', value: 'OOS (Out of stock)' },
+  { id: 'PCR', value: "PCR (Partner's cancellation request)" },
+  { id: 'PSE', value: 'PSE (Price subscription evolution)' },
+  { id: 'PTI', value: 'PTI (Product technical issue)' },
+  { id: 'SUB', value: 'SUB (Subscription Flexibility)' },
+  { id: 'TCH', value: 'TCH (Technical issue)' },
+  { id: 'TST', value: 'TST (Test)' },
+  { id: 'UNT', value: 'UNT (Unsettled transactions)' },
+  { id: 'UNW', value: 'UNT (Unwilling subscription)' },
+  { id: 'VAT', value: 'VAT (VAT issue)' },
+  { id: 'MRG', value: 'MRG (Wrong product choice)' },
 ]
 
 export {
@@ -119,4 +141,5 @@ export {
   priceCurrency,
   priceCountry,
   defaultCurrency,
+  orderCancelAction,
 };

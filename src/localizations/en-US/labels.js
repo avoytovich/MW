@@ -207,6 +207,7 @@ const labels = {
   defaultCurrency: 'Default Currency',
   priceCurrency: 'Price',
   priceCountry: 'Country',
+  cancelOrder: 'Cancel Order',
 };
 
 export default labels;
