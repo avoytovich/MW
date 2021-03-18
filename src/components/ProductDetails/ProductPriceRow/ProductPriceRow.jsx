@@ -110,7 +110,7 @@ const ProductPriceRow = ({
             <SelectCustom
               label="priceCountry"
               value={country}
-              selectOptions={[{ id: 'default', value: 'default' }, ...priceCountry]}
+              selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
               onChangeSelect={handleCountry}
             />
           </Box>

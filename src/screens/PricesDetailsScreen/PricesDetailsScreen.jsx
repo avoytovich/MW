@@ -194,10 +194,7 @@ const PricesDetailsScreen = () => {
             <SelectCustom
               label="priceCountry"
               value={curPrice?.country || ''}
-              selectOptions={[
-                { id: 'default', value: 'default' },
-                ...countryOptions,
-              ]}
+              selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
               onChangeSelect={handleCountry}
             />
 
