@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import {
-  Box,
-  TextField,
-} from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import ContactsIcon from '@material-ui/icons/Contacts';
@@ -21,12 +18,20 @@ const CustomerHandling = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   useEffect(() => {
-    api
-      .getCustomers()
-      .then(({ data: { items } }) => {
-        setCustomers([...items]);
-      });
+    api.getCustomers().then(({ data: { items } }) => {
+      setCustomers([...items]);
+    });
   }, []);
+
+  useEffect(() => {
+    if (search) {
+      api
+        .getCustomers(0, 'name', `&name=${search}*`)
+        .then(({ data: { items } }) => {
+          setCustomers([...items]);
+        });
+    }
+  }, [search]);
 
   useEffect(() => setSearch(nxState?.selectedCustomer?.name || ''), [nxState]);
 
@@ -34,7 +39,10 @@ const CustomerHandling = () => {
     e.persist();
 
     const setNewState = async (newItem) => {
-      const newState = { ...nxState, selectedCustomer: { ...newItem, group_type: 'Current' } };
+      const newState = {
+        ...nxState,
+        selectedCustomer: { ...newItem, group_type: 'Current' },
+      };
 
       if (nxState?.selectedCustomer?.id !== newItem?.id) {
         if (nxState?.recentCustomers) {
@@ -45,14 +53,19 @@ const CustomerHandling = () => {
           }
 
           if (nxState?.selectedCustomer?.id) {
-            newState.recentCustomers.unshift({ ...nxState.selectedCustomer, group_type: 'Recent' });
+            newState.recentCustomers.unshift({
+              ...nxState.selectedCustomer,
+              group_type: 'Recent',
+            });
           }
 
           if (nxState.recentCustomers.length === 4) {
             newState.recentCustomers.pop();
           }
         } else if (nxState?.selectedCustomer?.id) {
-          newState.recentCustomers = [{ ...nxState.selectedCustomer, group_type: 'Recent' }];
+          newState.recentCustomers = [
+            { ...nxState.selectedCustomer, group_type: 'Recent' },
+          ];
         }
       }
 
@@ -75,11 +88,15 @@ const CustomerHandling = () => {
       return [{ id: accountId, name: accountId, group_type: 'Account' }];
     }
 
-    return newArr.filter((cust) => cust?.name?.toLowerCase().indexOf(search?.toLowerCase()) >= 0);
+    return newArr.filter(
+      (cust) => cust?.name?.toLowerCase().indexOf(search?.toLowerCase()) >= 0,
+    );
   };
 
   const filteredArr = toFilter(customers);
-  const autoOptions = filteredArr.length ? [...filteredArr] : [{ id: 'none', name: 'No Results' }];
+  const autoOptions = filteredArr.length
+    ? [...filteredArr]
+    : [{ id: 'none', name: 'No Results' }];
 
   if (nxState?.recentCustomers) {
     autoOptions.unshift(...nxState.recentCustomers);
@@ -88,23 +105,25 @@ const CustomerHandling = () => {
   return (
     customers?.length > 0 && (
       <Box
-        width='100%'
-        m='auto'
-        mb='20px'
-        p='0 3px'
-        display='flex'
-        alignItems='center'
-        justifyContent='space-between'
-        className='customers-handling'
+        width="100%"
+        m="auto"
+        mb="20px"
+        p="0 3px"
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        className="customers-handling"
       >
-        <ContactsIcon color='primary' width='10%' />
+        <ContactsIcon color="primary" width="10%" />
 
         <Autocomplete
           id="customers-select"
           options={autoOptions}
           inputValue={search}
           value={nxState?.selectedCustomer?.id || null}
-          getOptionSelected={(option) => option.id === nxState?.selectedCustomer?.id}
+          getOptionSelected={(option) =>
+            option.id === nxState?.selectedCustomer?.id
+          }
           getOptionDisabled={(option) => option.id === 'none'}
           onChange={changeCustomer}
           disableClearable={!search}
@@ -116,8 +135,11 @@ const CustomerHandling = () => {
             <TextField
               {...params}
               label={search?.length ? 'Customer' : 'All Customers'}
-              onChange={(e) => { e.persist(); setSearch(e.target.value); }}
-              placeholder='Search...'
+              onChange={(e) => {
+                e.persist();
+                setSearch(e.target.value);
+              }}
+              placeholder="Search..."
               variant="filled"
             />
           )}
