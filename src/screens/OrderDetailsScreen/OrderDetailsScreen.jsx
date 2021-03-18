@@ -3,7 +3,16 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import {
-  Chip, LinearProgress, Box, Typography, Grid, Button, Menu, MenuItem,
+  Chip,
+  LinearProgress,
+  Box,
+  Typography,
+  Grid,
+  Button,
+  Menu,
+  MenuItem,
+  Tabs,
+  Tab,
 } from '@material-ui/core';
 
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -11,7 +20,7 @@ import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 import generateData from '../../services/useData/tableMarkups/orderDetails';
-
+import { tabLabels } from './utils';
 import Products from './SubSections/Products';
 import OrderRow from './OrderRow';
 import Events from './SubSections/Events';
@@ -21,6 +30,7 @@ import './orderDetailsScreen.scss';
 
 const OrderDetailsScreen = () => {
   const dispatch = useDispatch();
+  const [curTab, setCurTab] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -35,7 +45,6 @@ const OrderDetailsScreen = () => {
   const handleClose = () => setAnchorEl(null);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
-
 
   const saveDetails = () => {
     api.updateOrderById(currentOrderData.id, currentOrderData).then(() => {
@@ -95,7 +104,11 @@ const OrderDetailsScreen = () => {
     <>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
         <Box display="flex" flexDirection="column">
-          <Box display="flex" flexDirection="row" justifyContent="space-between">
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+          >
             <Box display="flex" flexDirection="row">
               <Typography variant="body2" color="primary">
                 {localization.t('general.order')}
@@ -122,7 +135,8 @@ const OrderDetailsScreen = () => {
                 <Chip
                   label={customer.status === 'RUNNING' ? 'LIVE' : 'TEST'}
                   style={{
-                    backgroundColor: customer.status === 'RUNNING' ? '#99de90' : '',
+                    backgroundColor:
+                      customer.status === 'RUNNING' ? '#99de90' : '',
                     color: '#fff',
                   }}
                 />
@@ -132,7 +146,6 @@ const OrderDetailsScreen = () => {
         </Box>
 
         <Box display="flex" alignItems="flex-end">
-
           <Button
             aria-haspopup="true"
             variant="contained"
@@ -157,15 +170,31 @@ const OrderDetailsScreen = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem><ConfirmationPopup/></MenuItem>
-            <MenuItem><CancelOrderPopup/></MenuItem>
+            <MenuItem>
+              <ConfirmationPopup />
+            </MenuItem>
+            <MenuItem>
+              <CancelOrderPopup />
+            </MenuItem>
           </Menu>
         </Box>
       </Box>
-
-
-
-      {orderRows && (
+      <Box my={2} bgcolor="#fff">
+        <Tabs
+          value={curTab}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={(event, newValue) => {
+            setCurTab(newValue);
+          }}
+          aria-label="disabled tabs example"
+        >
+          {tabLabels.map((tab) => (
+            <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+          ))}
+        </Tabs>
+      </Box>
+      {curTab === 0 && orderRows && (
         <Grid container spacing={2}>
           <Grid item md={4} xs={12}>
             <Box my={3} bgcolor="#fff" boxShadow={2} height="100%">
@@ -204,9 +233,8 @@ const OrderDetailsScreen = () => {
           </Grid>
         </Grid>
       )}
-
-      <Products orderData={orderData} />
-      <Events orderData={orderData} />
+      {curTab === 1 && <Products orderData={orderData} />}
+      {curTab === 2 && <Events orderData={orderData} />}
     </>
   );
 };
