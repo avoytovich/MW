@@ -7,6 +7,12 @@ const resourcesKeys = [
   'logoStore',
 ];
 
+const tabLabels = [
+  'general',
+  'design',
+  'payment',
+  'assetsResource',
+];
 const formDesignOptions = (options, customers) => (options
   ? options.map((option) => {
     const curCustomer = customers.find(
@@ -66,4 +72,5 @@ export {
   structureResources,
   checkLabelDuplicate,
   resourcesKeys,
+  tabLabels,
 };

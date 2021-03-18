@@ -25,13 +25,11 @@ import {
   defaultShow,
 } from '../../services/useData/tableMarkups/campaignPrices';
 
-import {
-  SelectCustom,
-} from '../../components/Inputs';
+import { SelectCustom } from '../../components/Inputs';
 
 import {
   priceCurrency,
-  priceCountry,
+  countryOptions,
 } from '../../services/selectOptions/selectOptions';
 
 import api from '../../api';
@@ -78,7 +76,8 @@ const PricesDetailsScreen = () => {
     });
   }, []);
 
-  const updatePrice = (type, value) => setCurPrice((c) => ({ ...c, [type]: value }));
+  const updatePrice = (type, value) =>
+    setCurPrice((c) => ({ ...c, [type]: value }));
 
   const handleSelectDate = (ranges) => {
     const { startDate, endDate } = ranges;
@@ -91,7 +90,7 @@ const PricesDetailsScreen = () => {
 
   const handleCountry = (e) => {
     setCurPrice((c) => ({ ...c, country: e.target.value }));
-  }
+  };
 
   const selectionRange = {
     startDate: new Date(curPrice?.startDate),
@@ -121,44 +120,48 @@ const PricesDetailsScreen = () => {
       </Zoom>
 
       <CustomCard title="General" style={{ marginTop: '20px' }}>
-        <Box mt={4} display='flex'>
+        <Box mt={4} display="flex">
           <Typography gutterBottom variant="h5" style={{ marginRight: '10px' }}>
             Product ID
           </Typography>
 
-          <Typography variant="h6">
-            {price.productId}
-          </Typography>
+          <Typography variant="h6">{price.productId}</Typography>
         </Box>
 
-        <Box display='flex' mb={4}>
-          <Box width='50%' mr={4}>
-            <Box width='250px'>
+        <Box display="flex" mb={4}>
+          <Box width="50%" mr={4}>
+            <Box width="250px">
               <SelectCustom
                 label="priceCurrency"
                 value={curPrice?.currency}
                 selectOptions={priceCurrency}
-                onChangeSelect={(e) => setCurPrice((c) => ({ ...c, currency: e.target.value }))}
+                onChangeSelect={(e) =>
+                  setCurPrice((c) => ({ ...c, currency: e.target.value }))
+                }
               />
             </Box>
 
             <TextField
               fullWidth
               name="value"
-              label='Value'
+              label="Value"
               type="text"
               value={curPrice.value}
-              onChange={(e) => setCurPrice((c) => ({ ...c, value: e.target.value }))}
+              onChange={(e) =>
+                setCurPrice((c) => ({ ...c, value: e.target.value }))
+              }
               variant="outlined"
             />
 
             <TextField
               fullWidth
               name="msrp"
-              label='MSRP'
+              label="MSRP"
               type="text"
               value={curPrice.msrp}
-              onChange={(e) => setCurPrice((c) => ({ ...c, msrp: e.target.value }))}
+              onChange={(e) =>
+                setCurPrice((c) => ({ ...c, msrp: e.target.value }))
+              }
               variant="outlined"
             />
 
@@ -166,9 +169,11 @@ const PricesDetailsScreen = () => {
               fullWidth
               name="upsellPrice"
               type="text"
-              label='Upsell price'
+              label="Upsell price"
               value={curPrice.upsellPrice}
-              onChange={(e) => setCurPrice((c) => ({ ...c, upsellPrice: e.target.value }))}
+              onChange={(e) =>
+                setCurPrice((c) => ({ ...c, upsellPrice: e.target.value }))
+              }
               variant="outlined"
             />
 
@@ -176,42 +181,52 @@ const PricesDetailsScreen = () => {
               fullWidth
               name="crossSellPrice"
               type="text"
-              label='Cross-sell price'
+              label="Cross-sell price"
               value={curPrice.crossSellPrice}
-              onChange={(e) => setCurPrice((c) => ({ ...c, crossSellPrice: e.target.value }))}
+              onChange={(e) =>
+                setCurPrice((c) => ({ ...c, crossSellPrice: e.target.value }))
+              }
               variant="outlined"
             />
           </Box>
 
-          <Box width='50%' ml={4}>
+          <Box width="50%" ml={4}>
             <SelectCustom
               label="priceCountry"
               value={curPrice?.country || ''}
-              selectOptions={[{ id: 'default', value: 'default' }, ...priceCountry]}
+              selectOptions={[
+                { id: 'default', value: 'default' },
+                ...countryOptions,
+              ]}
               onChangeSelect={handleCountry}
             />
 
             <Box pt={4}>
-              <Typography variant='h5'>VAT Included *</Typography>
+              <Typography variant="h5">VAT Included *</Typography>
             </Box>
-            
+
             <Box py={2}>
               <RadioGroup
                 row
                 aria-label="vat"
                 name="VAT"
-                value={curPrice.vatIncluded ? "YES" : "NO"}
-                onChange={(e) => setCurPrice((c) => ({ ...c, vatIncluded: e.target.value === 'YES' }))}
+                value={curPrice.vatIncluded ? 'YES' : 'NO'}
+                onChange={(e) =>
+                  setCurPrice((c) => ({
+                    ...c,
+                    vatIncluded: e.target.value === 'YES',
+                  }))
+                }
               >
                 <FormControlLabel
-                  value='YES'
+                  value="YES"
                   control={<Radio color="primary" />}
-                  label='YES'
+                  label="YES"
                 />
                 <FormControlLabel
-                  value='NO'
+                  value="NO"
                   control={<Radio color="primary" />}
-                  label='NO'
+                  label="NO"
                 />
               </RadioGroup>
             </Box>
