@@ -103,7 +103,7 @@ const CustomerHandling = () => {
   }
 
   return (
-    customers?.length > 0 && (
+    customers && (
       <Box
         width="100%"
         m="auto"
