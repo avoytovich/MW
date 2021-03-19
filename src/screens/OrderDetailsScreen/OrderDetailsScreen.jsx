@@ -89,8 +89,6 @@ const OrderDetailsScreen = () => {
   }, [currentOrderData, orderData]);
 
   if (isLoading) return <LinearProgress />;
-  console.log('currentOrderData', currentOrderData);
-  console.log('orderData', orderData);
   return (
     <>
       <Box display="flex" flexDirection="row" justifyContent="space-between">
