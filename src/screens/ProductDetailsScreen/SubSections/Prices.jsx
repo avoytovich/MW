@@ -53,7 +53,7 @@ const Prices = ({
           pricesArr.push({
             currency: key,
             country: k,
-            price: `${getSymbolFromCurrency(key)}${v.value}`,
+            price: `${v.value}`,
             vatIncluded: v.vatIncluded,
           });
         });
@@ -79,10 +79,10 @@ const Prices = ({
 
     return () => setScheduledPrices([]);
   }, []);
-  
+
   const deleteRow = (item) => {
     const pricesData = { ...currentProductData?.prices?.priceByCountryByCurrency };
-    
+
     if (Object.keys(pricesData[item.currency]).length > 1) {
       delete pricesData[item.currency][item.country];
     } else {
@@ -116,8 +116,8 @@ const Prices = ({
           <Table className='table' aria-label="simple table">
             <TableHead>
               <TableRow style={{ background: '#eee' }}>
-                <TableCell align="center">Currency</TableCell>
                 <TableCell align="center">Country</TableCell>
+                <TableCell align="center">Currency</TableCell>
                 <TableCell align="center">Price</TableCell>
                 <TableCell align="center">MSRP</TableCell>
                 <TableCell align="center">Upsell price</TableCell>
@@ -130,8 +130,8 @@ const Prices = ({
             <TableBody>
               {prices.map((pr) => (
                 <TableRow key={pr.currency + pr.country}>
-                  <TableCell align="center">{pr.currency || '-'}</TableCell>
                   <TableCell align="center">{pr.country || '-'}</TableCell>
+                  <TableCell align="center">{pr.currency || '-'}</TableCell>
                   <TableCell align="center">{pr.price || '-'}</TableCell>
                   <TableCell align="center">{pr.msrp || '-'}</TableCell>
                   <TableCell align="center">{pr.upSell || '-'}</TableCell>
@@ -216,12 +216,12 @@ const Prices = ({
                           <TableCell align="center">{price.endDate ? moment(price.endDate).format('ll') : '-'}</TableCell>
                           <TableCell align="center">{price.country || 'default'}</TableCell>
                           <TableCell align="center">{price.currency}</TableCell>
-                          <TableCell align="center">{getSymbolFromCurrency(price.currency)}{price.value}</TableCell>
+                          <TableCell align="center">{price.value}</TableCell>
                           <TableCell align="center">-</TableCell>
                           <TableCell align="center">-</TableCell>
                           <TableCell align="center">-</TableCell>
                           <TableCell align="center">{price.vatIncluded ? 'YES' : 'NO'}</TableCell>
-                        </TableRow>   
+                        </TableRow>
                       ))
                     }
                   </TableBody>
