@@ -81,7 +81,8 @@ const api = {
     });
   },
   addNewProduct(data) {
-    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url =
+      '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
@@ -179,10 +180,13 @@ const api = {
       url,
     });
   },
-  getCustomers(page = 0, sortParams) {
+  getCustomers(page = 0, sortParams, filters) {
     let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
     }
     return axiosInstance({
       method: 'get',
