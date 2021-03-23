@@ -253,6 +253,7 @@ const labels = {
   bannerOrderConfEmail: 'Confirmation email banner',
   logoStore: 'Logo',
   customerId: 'Customer ID',
+  events: 'Events',
 };
 
 export default labels;
