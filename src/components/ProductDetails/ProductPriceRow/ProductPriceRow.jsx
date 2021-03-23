@@ -97,10 +97,10 @@ const ProductPriceRow = ({
         <TableCell align="center">
           <Box>
             <SelectCustom
-              label="priceCurrency"
-              value={currency}
-              selectOptions={priceCurrency}
-              onChangeSelect={handleCurrency}
+              label="priceCountry"
+              value={country}
+              selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
+              onChangeSelect={handleCountry}
             />
           </Box>
         </TableCell>
@@ -108,10 +108,10 @@ const ProductPriceRow = ({
         <TableCell align="center">
           <Box>
             <SelectCustom
-              label="priceCountry"
-              value={country}
-              selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
-              onChangeSelect={handleCountry}
+              label="priceCurrency"
+              value={currency}
+              selectOptions={priceCurrency}
+              onChangeSelect={handleCurrency}
             />
           </Box>
         </TableCell>
