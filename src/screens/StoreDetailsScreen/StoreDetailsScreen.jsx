@@ -7,7 +7,8 @@ import {
   Button,
   Box,
   Typography,
-  Grid,
+  Tabs,
+  Tab,
 } from '@material-ui/core';
 import Payment from './SubSections/Payment';
 
@@ -26,12 +27,14 @@ import {
   structureResources,
   checkLabelDuplicate,
   resourcesKeys,
+  tabLabels,
 } from './utils';
 
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
+  const [curTab, setCurTab] = useState(0);
 
   const [currentStoreResources, setCurrentStoreResources] = useState([]);
   const [storeResources, setStoreResources] = useState([]);
@@ -212,7 +215,7 @@ const StoreDetailsScreen = () => {
             <Typography data-test="discountName" gutterBottom variant="h3">
               {storeData.name}
             </Typography>
-            <Box display="flex" flexDirection="row">
+            <Box display="flex" flexDirection="row" py={2}>
               <Typography component="div" color="primary">
                 <Box fontWeight={500}>
                   {localization.t('labels.customerId')}
@@ -245,43 +248,56 @@ const StoreDetailsScreen = () => {
             </Box>
           </Zoom>
         </Box>
-        <Grid container spacing={2}>
-          <Grid item md={12}>
-            <StoreSection label="general">
-              <General
-                currentStoreData={currentStoreData}
-                setCurrentStoreData={setCurrentStoreData}
-                selectOptions={selectOptions}
-              />
-            </StoreSection>
-          </Grid>
-          <Grid item md={5} sm={12}>
-            <Design
+        <Box my={2} bgcolor="#fff">
+          <Tabs
+            value={curTab}
+            indicatorColor="primary"
+            textColor="primary"
+            onChange={(event, newValue) => {
+              setCurTab(newValue);
+            }}
+            aria-label="disabled tabs example"
+          >
+            {tabLabels.map((tab) => (
+              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+            ))}
+          </Tabs>
+        </Box>
+        {curTab === 0 && (
+          <StoreSection label={tabLabels[0]}>
+            <General
+              currentStoreData={currentStoreData}
+              setCurrentStoreData={setCurrentStoreData}
+              selectOptions={selectOptions}
+            />
+          </StoreSection>
+        )}
+        {curTab === 1 && (
+          <Design
+            selectOptions={selectOptions}
+            currentStoreData={currentStoreData}
+            setCurrentStoreData={setCurrentStoreData}
+          />
+        )}
+        {curTab === 2 && (
+          <StoreSection label={tabLabels[2]}>
+            <Payment
               selectOptions={selectOptions}
               currentStoreData={currentStoreData}
               setCurrentStoreData={setCurrentStoreData}
             />
-          </Grid>
-          <Grid item md={7} sm={12}>
-            <StoreSection label="payment">
-              <Payment
-                selectOptions={selectOptions}
-                currentStoreData={currentStoreData}
-                setCurrentStoreData={setCurrentStoreData}
-              />
-            </StoreSection>
-          </Grid>
-          <Grid item md={12}>
-            <StoreSection label="assetsResource">
-              <AssetsResource
-                resources={currentStoreResources}
-                setResources={setCurrentStoreResources}
-                currentStoreData={currentStoreData}
-                setCurrentStoreData={setCurrentStoreData}
-              />
-            </StoreSection>
-          </Grid>
-        </Grid>
+          </StoreSection>
+        )}
+        {curTab === 3 && (
+          <StoreSection label={tabLabels[3]}>
+            <AssetsResource
+              resources={currentStoreResources}
+              setResources={setCurrentStoreResources}
+              currentStoreData={currentStoreData}
+              setCurrentStoreData={setCurrentStoreData}
+            />
+          </StoreSection>
+        )}
       </>
     )
   );
