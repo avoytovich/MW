@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
-import { Tabs, Tab, Box } from '@material-ui/core';
+import { Tabs, Tab, Box, Button } from '@material-ui/core';
 
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
@@ -34,6 +34,21 @@ const MarketingScreen = () => {
 
   return (
     <div className='marketing-screen'>
+      {
+        curTab === 3 && (
+          <Button
+            id='add-marketing-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to={`/marketing/prices/add`}
+          >
+            Add Price
+          </Button>
+        )
+      }
+
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}

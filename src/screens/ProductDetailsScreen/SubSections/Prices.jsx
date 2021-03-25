@@ -14,7 +14,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
-import getSymbolFromCurrency from 'currency-symbol-map';
+
 import moment from 'moment';
 
 import ClearIcon from '@material-ui/icons/Clear';
