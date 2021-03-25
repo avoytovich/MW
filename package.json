@@ -58,7 +58,6 @@
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
     "browser-locale": "1.0.3",
     "css-loader": "4.3.0",
-    "currency-symbol-map": "5.0.1",
     "date-fns": "2.16.1",
     "file-loader": "6.1.0",
     "formik": "2.1.5",
