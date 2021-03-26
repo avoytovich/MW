@@ -22,7 +22,7 @@ const SelectCustom = ({
     required={isRequired}
     variant="outlined"
     disabled={!selectOptions || isDisabled}
-    value={selectOptions ? value : ''}
+    value={value || ''}
     InputProps={{
       startAdornment: !selectOptions && (
         <InputAdornment>

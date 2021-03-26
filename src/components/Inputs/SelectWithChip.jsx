@@ -18,14 +18,14 @@ const SelectWithChip = ({
   selectOptions,
   onChangeSelect,
   onClickDelIcon,
+  isDisabled,
 }) => (
   <FormControl fullWidth variant="outlined">
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
-      disabled={!selectOptions}
+      disabled={!selectOptions || isDisabled}
       inputProps={{
         name: label,
-        id: label,
       }}
       MenuProps={{
         getContentAnchorEl: null,
@@ -92,6 +92,7 @@ SelectWithChip.propTypes = {
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   onClickDelIcon: PropTypes.func,
+  isDisabled: PropTypes.bool,
 };
 
 export default SelectWithChip;

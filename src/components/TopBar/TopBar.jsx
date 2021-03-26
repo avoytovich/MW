@@ -67,6 +67,7 @@ const TopBar = ({ toggleDrawer }) => {
                     value={searchVal}
                     onChange={(e) => setSearchVal(e.target.value)}
                     placeholder='Search...'
+                    onKeyDown={(e) => { if (e.key === 'Enter') doSearch(); }}
                     startAdornment={(
                       <IconButton edge='start' aria-label='search' color='secondary' onClick={doSearch}>
                         <SearchIcon />

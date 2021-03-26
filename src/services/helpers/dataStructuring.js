@@ -33,6 +33,50 @@ const defaultProduct = {
   },
 };
 
+const defaultStore = {
+  status: '',
+  emailSenderOverride: '',
+  routes: [{ hostname: '' }],
+  defaultLocale: [],
+  saleLocales: [],
+  storeWebsite: '',
+  displayName: '',
+  blackListedPaymentTypes: [],
+  forceGeoipLocalization: false,
+  promoteOneClickPayment: false,
+  allowOrderDetailsOnCheckoutConfirmation: false,
+  recipientCodeMandatory: false,
+  allowInstallments: false,
+  blackListedCountries: [],
+  restrictedCountries: [],
+  installmentOptions: [],
+  fallbackCartCountry: '',
+  externalContextGenerationParams: [],
+  designs: {
+    endUserPortal: {
+      fontRef: {},
+      layoutRef: {},
+      themeRef: {},
+      i18nRef: {},
+    },
+    checkout: {
+      fontRef: {},
+      layoutRef: {},
+      themeRef: {},
+      i18nRef: {},
+    },
+    resellerCheckout: {
+      fontRef: {},
+      layoutRef: {},
+      themeRef: {},
+      i18nRef: {},
+    },
+    paymentComponent: {
+      rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
+    },
+  },
+};
+
 const productRequiredFields = (product) => {
   let resourcesKeys = null;
 
@@ -63,15 +107,21 @@ const discountRequiredFields = (discount) => {
   }
   return resObj;
 };
-const structureSelectOptions = (options, optionValue, ...otherOptions) => options.map((option) => {
-  const resObj = { id: option.id, value: option[optionValue] };
-  if (otherOptions) {
-    otherOptions.forEach((element) => {
-      resObj[element] = option[element];
+const structureSelectOptions = (options, optionValue, ...otherOptions) => {
+  let res = [];
+  if (options) {
+    res = options.map((option) => {
+      const resObj = { id: option.id, value: option[optionValue] };
+      if (otherOptions) {
+        otherOptions.forEach((element) => {
+          resObj[element] = option[element];
+        });
+      }
+      return resObj;
     });
   }
-  return resObj;
-});
+  return res;
+};
 
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName
@@ -83,25 +133,52 @@ const renewingProductsOptions = (options) => options.map((item) => {
   return { id: item.id, value };
 });
 
-const productsVariations = (renewingProducts, productId) =>
-  productId
-    ? renewingProducts?.filter((item) => item.id === productId)
-        .reduce((accumulator, current) => {
-          current.availableVariables = current?.availableVariables?.reduce(
-            (acc, curr) => [
-              ...acc,
-              {
-                ...curr,
-                fieldValue: current[curr.field],
-              },
-            ],
-            [],
-          );
-          return [...accumulator, current];
-        }, [])[0]
-    : {};
+const productsVariations = (renewingProducts, productId) => (productId
+  ? renewingProducts
+    ?.filter((item) => item.id === productId)
+    .reduce((accumulator, current) => {
+      current.availableVariables = current?.availableVariables?.reduce(
+        (acc, curr) => [
+          ...acc,
+          {
+            ...curr,
+            fieldValue: current[curr.field],
+          },
+        ],
+        [],
+      );
+      return [...accumulator, current];
+    }, [])[0]
+  : {});
+
+const storeRequiredFields = (store) => {
+  const res = { ...defaultStore, ...store };
+  if (store.designs) {
+    const checkoutObj = {
+      ...defaultStore.designs.checkout,
+      ...store.designs.checkout,
+    };
+    const endUserPortalObj = {
+      ...defaultStore.designs.endUserPortal,
+      ...store.designs.endUserPortal,
+    };
+    const resellerCheckoutObj = {
+      ...defaultStore.designs.resellerCheckout,
+      ...store.designs.resellerCheckout,
+    };
+    const newDesigns = {
+      ...store.designs,
+      checkout: checkoutObj,
+      endUserPortal: endUserPortalObj,
+      resellerCheckout: resellerCheckoutObj,
+    };
+    res.designs = newDesigns;
+  }
+  return res;
+};
 
 export {
+  storeRequiredFields,
   productRequiredFields,
   structureSelectOptions,
   discountRequiredFields,

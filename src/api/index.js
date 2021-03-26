@@ -81,7 +81,17 @@ const api = {
     });
   },
   addNewProduct(data) {
-    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url =
+      '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addNewPrice(data) {
+    const url = '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    
     return axiosInstance({
       method: 'post',
       url,
@@ -128,7 +138,7 @@ const api = {
     });
   },
 
-  getProducts(page, filters, sortParams) {
+  getProducts(page = 0, filters, sortParams) {
     let url = `/products?format=short&parentId=null&size=50&page=${page}`;
     if (filters) {
       url += filters;
@@ -179,10 +189,13 @@ const api = {
       url,
     });
   },
-  getCustomers(page = 0, sortParams) {
+  getCustomers(page = 0, sortParams, filters) {
     let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
     }
     return axiosInstance({
       method: 'get',
@@ -416,6 +429,13 @@ const api = {
       url,
     });
   },
+  getPriceById(id) {
+    const url = `/prices/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getRecoById(id) {
     const url = `/product-recommendations/${id}`;
     return axiosInstance({
@@ -460,6 +480,20 @@ const api = {
   },
   getPricesByCampaignId(id) {
     const url = `/prices?format=short&marketingCampaignId=${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getPricesByProductId(id) {
+    const url = `/prices?format=short&productId=${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getMarketingPrices(page = 0, customerId) {
+    const url = `/prices?format=short&size=50&customerId=${customerId}&page=${page}`;
     return axiosInstance({
       method: 'get',
       url,
@@ -586,6 +620,14 @@ const api = {
       data,
     });
   },
+  updatePriceById(id, data) {
+    const url = `/prices/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateThemeById(id, data) {
     const url = `/designs/themes/${id}`;
     return axiosInstance({
@@ -665,6 +707,13 @@ const api = {
   },
   deleteDiscountById(id) {
     const url = `/discounts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deletePriceById(id) {
+    const url = `/prices/${id}`;
     return axiosInstance({
       method: 'delete',
       url,

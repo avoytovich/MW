@@ -204,7 +204,7 @@ const DiscountDetailsScreen = () => {
       //   ? data.parentProductIds.join('&')
       //   : null;
       const { customerId } = data;
-      Promise.all([
+      Promise.allSettled([
         api.getEndUsersByCustomerId(customerId),
         api.getStores(0, `&customerId=${customerId}`),
         api.getDiscountProductsByIds(customerId),
