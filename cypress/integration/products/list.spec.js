@@ -8,7 +8,7 @@ describe("Product list", () => {
     cy.login();
     cy.intercept(
       "GET",
-      "https://api.staging.nexway.build/products?format=short&parentId=null&size=50&page=0"
+      "**/products?format=short&parentId=null&size=50&page=0"
     ).as("REQ");
     cy.visit("/overview/products", { failOnStatusCode: false });
     cy.get(".tableRowGrid", { timeout: 100000 });
