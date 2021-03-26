@@ -3,7 +3,7 @@ import {
   defaultShow,
 } from "../../../src/services/useData/tableMarkups/products";
 describe("Product list", () => {
-  beforeEach(() => {
+  before(() => {
     cy.visit("/login", { failOnStatusCode: false });
     cy.login();
     cy.intercept(
@@ -17,7 +17,7 @@ describe("Product list", () => {
   it("navbar button is selected", () => {
     cy.contains(".listItemButton.active", "products", { matchCase: false });
   });
-  it("contains /overview/produtcs", () => {
+  it("contains /overview/products", () => {
     cy.url().should("contain", "/overview/products");
   });
   it("contains add product button", () => {
