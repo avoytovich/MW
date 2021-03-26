@@ -25,6 +25,7 @@ const general = {
   store: 'Store',
   recommendation: 'Recommendation',
   discount: 'Discount',
+  price: 'Price',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
   selectImage: ' Select image',
@@ -41,9 +42,12 @@ const general = {
   add: 'Add',
   noPackagesFound: 'No packages found',
   addProduct: 'Add Product',
+  addPrice: 'Add Price',
   noAvailableOptions: 'No available options',
   marketingNameMandatory:
     'Marketing name is mandatory for the default language.',
+  noCustomer: 'No customer selected',
+  selectCustomer: 'Please select a customer which will own the created resource.',
   itemHasBeenCopied: 'Item Has BeenCopied',
 };
 

@@ -11,14 +11,10 @@
   &:nth-of-type(even) {
     background-color: $tablesEvenRow;
   }
-  &:hover {
-    transform: scale(1.03);
-    transition: all 0.3s ease-in-out 0s;
-  }
 
   &.error-row{
     background-color: $deleteIcon;
-    
+
     .MuiTypography-colorSecondary{
       color: #fff;
     }

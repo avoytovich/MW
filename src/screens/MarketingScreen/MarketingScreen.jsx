@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
-import { Tabs, Tab, Box } from '@material-ui/core';
+import { Tabs, Tab, Box, Button } from '@material-ui/core';
 
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
+import PricesScreen from './SubSections/PricesScreen';
 
 import './marketingScreen.scss';
 
-const availTabs = ['campaigns', 'recommendations', 'discounts'];
+const availTabs = ['campaigns', 'recommendations', 'discounts', 'prices'];
 
 const MarketingScreen = () => {
   const history = useHistory();
@@ -33,6 +34,21 @@ const MarketingScreen = () => {
 
   return (
     <div className='marketing-screen'>
+      {
+        curTab === 3 && (
+          <Button
+            id='add-marketing-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to={`/marketing/prices/add`}
+          >
+            Add Price
+          </Button>
+        )
+      }
+
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}
@@ -42,6 +58,7 @@ const MarketingScreen = () => {
         <Tab label='Campaigns' />
         <Tab label='Recommendations' />
         <Tab label='Discounts' />
+        <Tab label='Prices' />
       </Tabs>
 
       <Box mt={4} mb={2}>
@@ -50,6 +67,8 @@ const MarketingScreen = () => {
         {curTab === 1 && <RecommendationsScreen />}
 
         {curTab === 2 && <DiscountsScreen />}
+
+        {curTab === 3 && <PricesScreen />}
       </Box>
     </div>
   );

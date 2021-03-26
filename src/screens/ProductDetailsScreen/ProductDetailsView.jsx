@@ -11,6 +11,7 @@ import Prices from './SubSections/Prices';
 import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
 import CheckoutMenu from './CheckoutMenu';
 import SectionLayout from '../../components/SectionLayout';
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
 
@@ -38,6 +39,7 @@ const ProductDetailsView = ({
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
+  const [saveDisabled, setSaveDisabled] = useState(false);
 
   useEffect(() => {
     const {
@@ -54,30 +56,26 @@ const ProductDetailsView = ({
       genericName &&
       type &&
       prices.defaultCurrency &&
-      prices.priceByCountryByCurrency[prices.defaultCurrency].default.value
+      prices.priceByCountryByCurrency[prices.defaultCurrency]?.default?.value
     ) {
       setTabsDisabled(false);
     } else {
       setTabsDisabled(true);
     }
   }, [currentProductData]);
+
   return (
     <>
-      <Box display="flex" flexDirection="row" mx={2} pb={2}>
-        {productId && (
-          <>
-            <Typography component="div" color="primary">
-              <Box fontWeight={500}>
-                {localization.t('general.product')}
-                {'/'}
-              </Box>
-            </Typography>
-            <Typography component="div" color="secondary">
-              <Box fontWeight={500}>{productId}</Box>
-            </Typography>
-          </>
-        )}
-      </Box>
+      {productId && (
+        <Box mx={2}>
+          <CustomBreadcrumbs
+            url='/overview/products'
+            section={localization.t('general.product')}
+            id={productId}
+          />
+        </Box>
+      )}
+
       <Box
         display="flex"
         flexDirection="row"
@@ -104,7 +102,7 @@ const ProductDetailsView = ({
           >
             <Box mb={1} mr={1}>
               <Button
-                disabled={tabsDisabled}
+                disabled={tabsDisabled || saveDisabled}
                 id="save-detail-button"
                 color="primary"
                 size="large"
@@ -196,6 +194,7 @@ const ProductDetailsView = ({
               currentProductData={currentProductData}
               productData={productData}
               setNewData={setProductLocalizationChanges}
+              setSaveDisabled={setSaveDisabled}
             />
           </SectionLayout>
         )}
