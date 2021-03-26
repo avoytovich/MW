@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -15,6 +15,10 @@ import {
   Checkbox,
 } from '@material-ui/core';
 
+import moment from 'moment';
+
+import ClearIcon from '@material-ui/icons/Clear';
+
 import ProductPriceRow from '../../../components/ProductDetails/ProductPriceRow';
 
 import {
@@ -22,196 +26,211 @@ import {
 } from '../../../components/Inputs';
 
 import {
-  defaultCurrency,
+  priceCurrency,
 } from '../../../services/selectOptions/selectOptions';
+import api from '../../../api';
 
 const Prices = ({
   currentProductData,
-  selectOptions,
   setProductData,
   productData,
+  setSaveDisabled,
 }) => {
-  const test = currentProductData.prices.priceByCountryByCurrency;
+  const [prices, setPrices] = useState([]);
+  const [scheduledPrices, setScheduledPrices] = useState([]);
+  const [needDefault, setNeedDefault] = useState(null);
 
-  const arr = [];
+  const pricesList = Object.keys(currentProductData?.prices?.priceByCountryByCurrency);
 
-  // const deleteRow = (e) => {
+  useEffect(() => {
+    const pricesData = currentProductData?.prices?.priceByCountryByCurrency;
 
-  //   const raw = currentProductData.prices.priceByCountryByCurrency;
+    if (pricesData) {
+      const pricesArr = [];
 
-  //   const allowed = [Object.keys(e)];
-  //   const all = [Object.keys(currentProductData.prices.priceByCountryByCurrency)];
-
-  //   const filtered = allowed.reduce((obj, key) => ({ ...obj, [key]: raw[key] }), {});
-
-    // const arrayCopy = rows.filter((row) => row !== e);
-    // setRows(arrayCopy);
-  // };
-
-  Object.keys(test).map((key) => {
-    const value = test[key];
-    const checkFiledsCount = Object.keys(value).length > 1;
-
-    if (checkFiledsCount === false) {
-      const obj = {};
-      obj[key] = value;
-      arr.push(obj);
-    } else {
-      const usd = key;
-      Object.keys(value).map((key) => {
-        const key1 = {};
-        const key2 = {};
-
-        key2[key] = value[key];
-        key1[usd] = key2;
-        arr.push(key1);
+      Object.entries(pricesData).forEach(([key, val]) => {
+        Object.entries(val).map(([k, v]) => {
+          pricesArr.push({
+            currency: key,
+            country: k,
+            price: `${v.value}`,
+            vatIncluded: v.vatIncluded,
+          });
+        });
       });
+
+      const needDefault = pricesList.filter((it) => !currentProductData?.prices?.priceByCountryByCurrency[it]['default']);
+
+      if (needDefault.length) {
+        setSaveDisabled(true);
+      } else {
+        setSaveDisabled(false);
+      }
+
+      setNeedDefault(needDefault.length ? needDefault : false);
+      setPrices([...pricesArr]);
+    }
+  }, [currentProductData.prices]);
+
+  useEffect(() => {
+    api
+      .getPricesByProductId(currentProductData.id)
+      .then(({ data }) => setScheduledPrices(data?.items || []));
+
+    return () => setScheduledPrices([]);
+  }, []);
+
+  const deleteRow = (item) => {
+    const pricesData = { ...currentProductData?.prices?.priceByCountryByCurrency };
+
+    if (Object.keys(pricesData[item.currency]).length > 1) {
+      delete pricesData[item.currency][item.country];
+    } else {
+      delete pricesData[item.currency];
     }
 
-    return key;
-  });
+    setProductData((c) => ({...c, prices: { ...c.prices, priceByCountryByCurrency: pricesData }}));
+  };
 
-  // console.log('test', currentProductData);
   return (
     <>
-      <Box px={2}>
-        <Box width={200} pb={3}>
-          {/* <Box>
-
-            <SelectCustom
-              label='defaultCurrency'
-              value={currentProductData.prices.defaultCurrency}
-              selectOptions={defaultCurrency}
-              onChangeSelect={(e) => {
-                console.log('e.target.value', e.target.value);
-                setProductData({
-                  ...currentProductData,
-                  prices: {
-                    ...currentProductData.prices,
-                    defaultCurrency: e.target.value,
-                  },
-                });
-              }}
-            />
-
-          </Box> */}
+      <Box px={2} className='product-prices'>
+        <Box width={245} mb={4}>
+          <SelectCustom
+            label='defaultCurrency'
+            value={currentProductData?.prices?.defaultCurrency}
+            selectOptions={[...priceCurrency.filter(pr => pricesList.includes(pr.id))]}
+            onChangeSelect={(e) => {
+              setProductData({
+                ...currentProductData,
+                prices: {
+                  ...currentProductData.prices,
+                  defaultCurrency: e.target.value,
+                },
+              });
+            }}
+          />
         </Box>
 
         <TableContainer component={Paper}>
           <Table className='table' aria-label="simple table">
             <TableHead>
-              <TableRow>
-                <TableCell align="center">Currency</TableCell>
+              <TableRow style={{ background: '#eee' }}>
                 <TableCell align="center">Country</TableCell>
+                <TableCell align="center">Currency</TableCell>
                 <TableCell align="center">Price</TableCell>
                 <TableCell align="center">MSRP</TableCell>
                 <TableCell align="center">Upsell price</TableCell>
                 <TableCell align="center">Cross-sell price</TableCell>
                 <TableCell align="center">VAT included</TableCell>
-                <TableCell align="center">Action</TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
-
-              {arr.map((key, index) => (
-                <TableRow key={index}>
-                  <TableCell align="center">
-                    {Object.keys(key)}
-                  </TableCell>
-                  <TableCell align="center">
-                    {Object.keys(Object.values(key)[0]).[0] || '-'}
-                  </TableCell>
-                  <TableCell align="center">
-                    {Object.values(Object.values(key)[0]).[0].value || '-'}
-                  </TableCell>
-                  <TableCell align="center">
-                    {Object.values(Object.values(key)[0]).[0].msrp || '-'}
-                  </TableCell>
-                  <TableCell align="center">
-                    {Object.values(Object.values(key)[0]).[0].upSell || '-'}
-                  </TableCell>
-                  <TableCell align="center">
-                    {Object.values(Object.values(key)[0]).[0].crossSell || '-'}
-                  </TableCell>
-                  <TableCell align="center">
+              {prices.map((pr) => (
+                <TableRow key={pr.currency + pr.country}>
+                  <TableCell align="center">{pr.country || '-'}</TableCell>
+                  <TableCell align="center">{pr.currency || '-'}</TableCell>
+                  <TableCell align="center">{pr.price || '-'}</TableCell>
+                  <TableCell align="center">{pr.msrp || '-'}</TableCell>
+                  <TableCell align="center">{pr.upSell || '-'}</TableCell>
+                  <TableCell align="center">{pr.crossSell || '-'}</TableCell>
+                  <TableCell align="center" style={{ minWidth: '120px', padding: 0 }}>
                     <FormControlLabel
                       control={(
                         <Checkbox
                           disabled
-                          checked={Object.values(Object.values(key)[0]).[0].vatIncluded}
+                          checked={pr.vatIncluded}
                           name="checkedB"
                           color="primary"
                         />
                       )}
+                      style={{ margin: 0 }}
                     />
                   </TableCell>
-                  <TableCell align="center">
-                    <Button variant="contained" color='primary' onClick={() => deleteRow(key)}>
-                      -
-                    </Button>
+                  <TableCell align="center" className='transparent-cell'>
+                    <Button onClick={() => deleteRow(pr)}><ClearIcon /></Button>
                   </TableCell>
-
                 </TableRow>
               ))}
-                <ProductPriceRow
-                  setProductData={setProductData}
-                  currentProductData={currentProductData}
-                />
+
+              <ProductPriceRow
+                setProductData={setProductData}
+                currentProductData={currentProductData}
+              />
             </TableBody>
 
           </Table>
         </TableContainer>
       </Box>
 
-      <Box mt={3} px={2}>
-        <Typography variant="h6">
-          Date range
-        </Typography>
-        <Typography>
-          The following table represents values set with the new price service, you can click on each ID to navigate and mange them.
-        </Typography>
-      </Box>
+      {needDefault && needDefault.length > 0 && (
+        <Box p={2}>
+          <Typography variant='h5' style={{ color: '#fd8e8d', fontStyle: 'italic' }}>
+            {`You have to provide a default value for ${needDefault.join(', ')}`}
+          </Typography>
+        </Box>
+      )}
 
-      <Box mt={3} px={2}>
-        <TableContainer component={Paper}>
-          <Table className='table' aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Price</TableCell>
-                <TableCell align="center">Marketing Campaign</TableCell>
-                <TableCell align="center">Starts at</TableCell>
-                <TableCell align="center">Ends at</TableCell>
-                <TableCell align="center">Counrty</TableCell>
-                <TableCell align="center">Currency</TableCell>
-                <TableCell align="center">Value</TableCell>
-                <TableCell align="center">MSRP</TableCell>
-                <TableCell align="center">Upsell price</TableCell>
-                <TableCell align="center">Cross-sell price</TableCell>
-                <TableCell align="center">VAT included</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell component="th" scope="row">
-                  c3569f1e-4caa...
-                </TableCell>
-                <TableCell align="center">-</TableCell>
-                <TableCell align="center">	2021/02/02 10:57 +02:00 (EET)</TableCell>
-                <TableCell align="center">-</TableCell>
-                <TableCell align="center">default</TableCell>
-                <TableCell align="center">AED</TableCell>
-                <TableCell align="center">AED 200.00</TableCell>
-                <TableCell align="center">-</TableCell>
-                <TableCell align="center">-</TableCell>
-                <TableCell align="center">-</TableCell>
-                <TableCell align="center">NO</TableCell>
-              </TableRow>
-              <TableRow />
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Box>
+      {
+        scheduledPrices.length > 0 && (
+          <>
+            <Box mt={3} px={2}>
+              <Typography variant="h6">
+                Date range
+              </Typography>
+              <Typography>
+                The following table represents values set with the new price service, you can click on each ID to navigate and mange them.
+              </Typography>
+            </Box>
+
+            <Box mt={3} px={2} className='product-prices'>
+              <TableContainer component={Paper}>
+                <Table className='table' aria-label="simple table">
+                  <TableHead>
+                    <TableRow style={{ background: '#eee' }}>
+                      <TableCell>Price</TableCell>
+                      <TableCell align="center">Marketing Campaign</TableCell>
+                      <TableCell align="center">Starts at</TableCell>
+                      <TableCell align="center">Ends at</TableCell>
+                      <TableCell align="center">Counrty</TableCell>
+                      <TableCell align="center">Currency</TableCell>
+                      <TableCell align="center">Value</TableCell>
+                      <TableCell align="center">MSRP</TableCell>
+                      <TableCell align="center">Upsell price</TableCell>
+                      <TableCell align="center">Cross-sell price</TableCell>
+                      <TableCell align="center">VAT included</TableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  <TableBody>
+                    {
+                      scheduledPrices.map((price) => (
+                        <TableRow key={price.id} className={!price.endDate || moment().isBefore(price.endDate) ? '' : 'outdated'}>
+                          <TableCell component="th" scope="row">
+                            {price.id}
+                          </TableCell>
+                          <TableCell align="center">-</TableCell>
+                          <TableCell align="center">{price.startDate ? moment(price.startDate).format('ll') : '-'}</TableCell>
+                          <TableCell align="center">{price.endDate ? moment(price.endDate).format('ll') : '-'}</TableCell>
+                          <TableCell align="center">{price.country || 'default'}</TableCell>
+                          <TableCell align="center">{price.currency}</TableCell>
+                          <TableCell align="center">{price.value}</TableCell>
+                          <TableCell align="center">-</TableCell>
+                          <TableCell align="center">-</TableCell>
+                          <TableCell align="center">-</TableCell>
+                          <TableCell align="center">{price.vatIncluded ? 'YES' : 'NO'}</TableCell>
+                        </TableRow>
+                      ))
+                    }
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </>
+        )
+      }
     </>
   );
 };

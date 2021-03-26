@@ -79,7 +79,8 @@ const EditProduct = () => {
       if (!isCancelled) {
         const checkedProduct = productRequiredFields(product);
         setProductData(checkedProduct);
-        setCurrentProductData(checkedProduct);
+        const newHashes = JSON.stringify(checkedProduct);
+        setCurrentProductData(JSON.parse(newHashes));
         setLoading(false);
       }
       const { customerId, id, descriptionId } = product;
