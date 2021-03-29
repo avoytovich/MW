@@ -1,7 +1,7 @@
 // ToDo: consider making a common layout for such type of settings screens
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 
 import {
   LinearProgress,
@@ -27,6 +27,9 @@ import DialogWindows from './DialogWindows';
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsScreen = () => {
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const { id } = useParams();
   const [discount, setDiscount] = useState(null);
@@ -63,6 +66,7 @@ const DiscountDetailsScreen = () => {
   const [curProductsByParent, setCurProductsByParent] = useState(null);
 
   const [amountType, setAmountType] = useState(null);
+
   const saveDiscount = () => {
     const res = { ...curDiscount };
 
@@ -80,12 +84,23 @@ const DiscountDetailsScreen = () => {
     } else {
       delete res.codes;
     }
-    api.updateDiscountById(id, res).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      window.location.reload();
-    });
+    if (id === 'add') {
+      api.addNewDiscount(res).then((res) => {
+        const location = res.headers.location.split('/');
+        const id = location[location.length - 1];
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        history.push('/marketing/discounts');
+      });
+    } else {
+      api.updateDiscountById(id, res).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        window.location.reload();
+      });
+    }
   };
 
   const removeItem = (item, type) => {
@@ -146,11 +161,11 @@ const DiscountDetailsScreen = () => {
 
   useEffect(() => {
     setHasChanges(
-      JSON.stringify(curDiscount) !== JSON.stringify(discount)
-        || JSON.stringify(amountCurrency) !== JSON.stringify(curAmountCurrency)
-        || JSON.stringify(discountLabels) !== JSON.stringify(curDiscountLabels)
-        || JSON.stringify(discountCodes) !== JSON.stringify(curDiscountCodes)
-        || JSON.stringify(minCartAmount) !== JSON.stringify(curMinCartAmount),
+      JSON.stringify(curDiscount) !== JSON.stringify(discount) ||
+        JSON.stringify(amountCurrency) !== JSON.stringify(curAmountCurrency) ||
+        JSON.stringify(discountLabels) !== JSON.stringify(curDiscountLabels) ||
+        JSON.stringify(discountCodes) !== JSON.stringify(curDiscountCodes) ||
+        JSON.stringify(minCartAmount) !== JSON.stringify(curMinCartAmount),
     );
 
     return () => setHasChanges(false);
@@ -163,7 +178,15 @@ const DiscountDetailsScreen = () => {
   ]);
 
   useEffect(() => {
-    api.getDiscountById(id).then(({ data }) => {
+    let discountRequest;
+    if (id === 'add') {
+      discountRequest = Promise.resolve({
+        data: { customerId: nxState.selectedCustomer.id },
+      });
+    } else {
+      discountRequest = api.getDiscountById(id);
+    }
+    discountRequest.then(({ data }) => {
       const checkedData = discountRequiredFields(data);
       const currencyArray = fromObjectToArray(
         checkedData.amountByCurrency,
@@ -236,8 +259,8 @@ const DiscountDetailsScreen = () => {
 
           discountProducts.data?.items.forEach((product) => {
             if (
-              product.publisherRefId
-              && !refDiscountProductsObjs.filter(
+              product.publisherRefId &&
+              !refDiscountProductsObjs.filter(
                 (e) => e.id === product.publisherRefId,
               ).length > 0
             ) {
@@ -313,6 +336,18 @@ const DiscountDetailsScreen = () => {
 
     setCurDiscount((c) => ({ ...c, [type]: setValue }));
   };
+  if (id === 'add' && !nxState.selectedCustomer.id)
+    return (
+      <Box textAlign="center">
+        <Typography gutterBottom variant="h4">
+          {localization.t('general.noCustomer')}
+        </Typography>
+
+        <Typography gutterBottom variant="h5">
+          {localization.t('general.selectCustomer')}
+        </Typography>
+      </Box>
+    );
 
   if (curDiscount === null) return <LinearProgress />;
 
@@ -322,7 +357,7 @@ const DiscountDetailsScreen = () => {
         <Typography component="div" color="primary">
           <Box fontWeight={500}>
             {localization.t('general.discount')}
-            {'/'}
+            {id !== 'add' ? '/' : ''}
           </Box>
         </Typography>
         <Typography component="div" color="secondary">
@@ -337,12 +372,18 @@ const DiscountDetailsScreen = () => {
       >
         <Box alignSelf="center">
           <Typography data-test="discountName" gutterBottom variant="h3">
-            {discount.name}
+            {id !== 'add'
+              ? discount.name
+              : `${localization.t('general.new')} ${localization.t(
+                  'general.discount',
+                )}`}
           </Typography>
         </Box>
+
         <Zoom in={hasChanges}>
           <Box mb={1} mr={1}>
             <Button
+              disabled={!curDiscount.name}
               id="save-discount-button"
               color="primary"
               size="large"

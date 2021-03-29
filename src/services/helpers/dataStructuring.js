@@ -92,6 +92,7 @@ const productRequiredFields = (product) => {
 const discountRequiredFields = (discount) => {
   const defDiscount = {
     publisherRefIds: [],
+    name: '',
     maxUsages: '',
     maxUsePerStore: '',
     maxUsePerEndUser: '',
@@ -100,9 +101,15 @@ const discountRequiredFields = (discount) => {
     codes: {},
     endUserGroupIds: [],
     endUserEmails: [],
+    level: 'PRODUCT',
+    model: 'CAMPAIGN',
+    status: 'ENABLED',
+    discountRate: 1,
+    endDate: Date.now() + 6.048e8,
+    endUserTypes: ['BUYER', 'RESELLER'],
   };
   const resObj = { ...defDiscount, ...discount };
-  if (resObj.discountRate) {
+  if (resObj.discountRate && resObj.discountRate < 1) {
     resObj.discountRate = discount.discountRate * 100;
   }
   return resObj;
@@ -123,33 +130,35 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
   return res;
 };
 
-const renewingProductsOptions = (options) => options.map((item) => {
-  const value = item?.genericName
-    ? `${item.genericName} (${item.publisherRefId}${
-      item.subscriptionTemplate ? ', ' : ''
-    }
+const renewingProductsOptions = (options) =>
+  options.map((item) => {
+    const value = item?.genericName
+      ? `${item.genericName} (${item.publisherRefId}${
+          item.subscriptionTemplate ? ', ' : ''
+        }
           ${item.subscriptionTemplate || ''})`
-    : item?.id;
-  return { id: item.id, value };
-});
+      : item?.id;
+    return { id: item.id, value };
+  });
 
-const productsVariations = (renewingProducts, productId) => (productId
-  ? renewingProducts
-    ?.filter((item) => item.id === productId)
-    .reduce((accumulator, current) => {
-      current.availableVariables = current?.availableVariables?.reduce(
-        (acc, curr) => [
-          ...acc,
-          {
-            ...curr,
-            fieldValue: current[curr.field],
-          },
-        ],
-        [],
-      );
-      return [...accumulator, current];
-    }, [])[0]
-  : {});
+const productsVariations = (renewingProducts, productId) =>
+  productId
+    ? renewingProducts
+        ?.filter((item) => item.id === productId)
+        .reduce((accumulator, current) => {
+          current.availableVariables = current?.availableVariables?.reduce(
+            (acc, curr) => [
+              ...acc,
+              {
+                ...curr,
+                fieldValue: current[curr.field],
+              },
+            ],
+            [],
+          );
+          return [...accumulator, current];
+        }, [])[0]
+    : {};
 
 const storeRequiredFields = (store) => {
   const res = { ...defaultStore, ...store };
