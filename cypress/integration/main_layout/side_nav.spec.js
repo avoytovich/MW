@@ -34,18 +34,37 @@ describe('Side Navigation', () => {
         });
       });
     });
+  });si
+
+  context('Nav items actions', () => {
+    it('should have the active navigation changed and highlighted on click', () => {
+      for (let i = 0; i < navigationItems.length; i++) {
+        for (let z = 0; z < navigationItems[i].items.length; z++) {
+          cy.get(`.listItem a[href="${navigationItems[i].items[z].href}"]`).click().should('have.class', 'active');
+          cy.url().should('contain', navigationItems[i].items[z].href);
+        };
+      };
+    });
   });
 
   context('Nav items actions', () => {
     it('should have the active navigation changed and highlighted on click', () => {
-      cy.get(`.listItem a[href="${navigationItems[0].items[1].href}"]`).click().should('have.class', 'active');
-      cy.url().should('contain', navigationItems[0].items[1].href);
+      for (let i = 0; i < navigationItems.length; i++) {
+        for (let z = 0; i < navigationItems[i].length; z++) {
+          cy.get(`.listItem a[href="${navigationItems[i].items[z].href}"]`).click().should('have.class', 'active');
+          cy.url().should('contain', navigationItems[i].items[z].href);
+        };
+      };
     });
   });
 
   context('Customer selection', () => {
     it('should display customer select dropbox', () => {
-      cy.get(`.customers-select`).should('be.visible');
+      cy.get('#customers-select').scrollIntoView().should('be.visible');
+    })
+    it('should display customers list after click on dropdown', () => {
+      cy.get('#customers-select').click();
+      cy.get('[aria-controls=customers-select-popup]').should('be.visible')
     })
   })
 });
