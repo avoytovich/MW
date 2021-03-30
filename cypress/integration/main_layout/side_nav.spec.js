@@ -42,4 +42,10 @@ describe('Side Navigation', () => {
       cy.url().should('contain', navigationItems[0].items[1].href);
     });
   });
+
+  context('Customer selection', () => {
+    it('should display customer select dropbox', () => {
+      cy.get(`.customers-select`).should('be.visible');
+    })
+  })
 });
