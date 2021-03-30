@@ -32,26 +32,36 @@ const IdentityDetailsScreen = () => {
   const [curIdentity, setCurIdentity] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+
   const requests = async () => {
-    const defaultIdentityObject = {
-      data: {
-        email: '',
-        firstName: '',
-        lastName: '',
-        userName: '',
-        customerId: nxState.selectedCustomer.id,
-      },
-    };
     const res =
-      id !== 'add' ? await api.getIdentityById(id) : defaultIdentityObject;
+      id !== 'add'
+        ? await api.getIdentityById(id)
+        : {
+            data: {
+              email: '',
+              firstName: '',
+              lastName: '',
+              userName: '',
+              clientId: '',
+              customerId: nxState.selectedCustomer.id,
+            },
+          };
 
     return res.data;
   };
 
   const identity = useDetailsData(setLoading, requests, update);
+
   const saveIdentity = () => {
+    const filterBlankKeys = { ...curIdentity };
+    Object.keys(filterBlankKeys).forEach((key) => {
+      if (!filterBlankKeys[key]) {
+        delete filterBlankKeys[key];
+      }
+    });
     if (id === 'add') {
-      api.addNewIdentity(curIdentity).then((res) => {
+      api.addNewIdentity(filterBlankKeys).then((res) => {
         const location = res.headers.location.split('/');
         const id = location[location.length - 1];
         dispatch(
@@ -61,7 +71,7 @@ const IdentityDetailsScreen = () => {
         setUpdate((u) => u + 1);
       });
     } else {
-      api.updateIdentityById(id, curIdentity).then(() => {
+      api.updateIdentityById(id, filterBlankKeys).then(() => {
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
@@ -124,7 +134,10 @@ const IdentityDetailsScreen = () => {
       )}
       <Zoom in={hasChanges}>
         <Button
-          disabled={!curIdentity.userName || !curIdentity.email}
+          disabled={
+            !curIdentity.email ||
+            (!curIdentity.userName && !curIdentity.clientId)
+          }
           id="save-identity-button"
           color="primary"
           size="large"

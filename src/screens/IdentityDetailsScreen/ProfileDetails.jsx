@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -7,45 +7,62 @@ import {
   TextField,
   Switch,
   FormControlLabel,
-  Checkbox,
+  RadioGroup,
+  Radio,
 } from '@material-ui/core';
 import localization from '../../localization';
 
 import CustomCard from '../../components/utils/CustomCard';
-
 const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
+  const [identityType, setIdentityType] = useState(
+    identity.clientId ? 'application' : 'user',
+  );
+
+  const handleUpdateType = (value) => {
+    if (value === 'application') {
+      changeIdentity({ ...identity, userName: '' });
+    } else if (value === 'user') {
+      changeIdentity({ ...identity, clientId: '' });
+    }
+    setIdentityType(value);
+  };
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
+
     changeIdentity({ ...identity, [name]: value });
   };
 
   return (
     <>
       <CustomCard title="Basic Profile">
-        <Box display="flex" py={5} pb={2}>
-          <Box px={1} width=" 100%">
-            <TextField
-              fullWidth
-              label={localization.t('labels.firstName')}
-              name="firstName"
-              type="text"
-              value={identity.firstName}
-              onChange={handleChange}
-              variant="outlined"
-            />
-          </Box>
-          <Box px={1} width=" 100%">
-            <TextField
-              fullWidth
-              label={localization.t('labels.lastName')}
-              name="lastName"
-              type="text"
-              value={identity.lastName}
-              onChange={handleChange}
-              variant="outlined"
-            />
-          </Box>
+        <Box py={5} pb={2}>
+          {identityType === 'user' && (
+            <Box display="flex">
+              <Box px={1} width=" 100%">
+                <TextField
+                  fullWidth
+                  label={localization.t('labels.firstName')}
+                  name="firstName"
+                  type="text"
+                  value={identity.firstName}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+              </Box>
+              <Box px={1} width=" 100%">
+                <TextField
+                  fullWidth
+                  label={localization.t('labels.lastName')}
+                  name="lastName"
+                  type="text"
+                  value={identity.lastName}
+                  onChange={handleChange}
+                  variant="outlined"
+                />
+              </Box>
+            </Box>
+          )}
         </Box>
 
         <Box display="flex" pb={2}>
@@ -62,21 +79,34 @@ const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
             />
           </Box>
           <Box px={1} width=" 100%">
-            <TextField
-              required
-              fullWidth
-              label={localization.t('labels.userName')}
-              name="userName"
-              type="text"
-              value={identity.userName}
-              onChange={handleChange}
-              variant="outlined"
-              disabled={!newIdentity}
-            />
+            {identityType === 'user' ? (
+              <TextField
+                required
+                fullWidth
+                label={localization.t('labels.userName')}
+                name="userName"
+                type="text"
+                value={identity.userName}
+                onChange={handleChange}
+                variant="outlined"
+                disabled={!newIdentity}
+              />
+            ) : (
+              <TextField
+                required
+                fullWidth
+                label={localization.t('labels.clientId')}
+                name="clientId"
+                type="text"
+                value={identity.clientId}
+                onChange={handleChange}
+                variant="outlined"
+                disabled={!newIdentity}
+              />
+            )}
           </Box>
         </Box>
       </CustomCard>
-
       <CustomCard title="Configuration">
         <Box py={3}>
           {!newIdentity && (
@@ -92,7 +122,7 @@ const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
                   onChange={() =>
                     changeIdentity({
                       ...identity,
-                      inactive: !identity.inactive,
+                      inactive: !identity.clientId,
                     })
                   }
                   name="status"
@@ -108,24 +138,28 @@ const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
           )}
         </Box>
 
-        <Box pb={3}>
+        <Box>
           <Typography gutterBottom variant="h5">
             {localization.t('labels.type')}
           </Typography>
-
-          <Box display="flex" alignItems="center">
+          <RadioGroup
+            row
+            aria-label="Amount"
+            name="Amount"
+            value={identityType}
+            onChange={(e) => handleUpdateType(e.target.value)}
+          >
             <FormControlLabel
-              control={
-                <Checkbox name="user" color="primary" checked disabled />
-              }
+              value="user"
+              control={<Radio color="primary" disabled={!newIdentity} />}
               label={localization.t('labels.user')}
             />
-
             <FormControlLabel
-              control={<Checkbox name="application" color="primary" disabled />}
+              value="application"
+              control={<Radio color="primary" disabled={!newIdentity} />}
               label={localization.t('labels.application')}
             />
-          </Box>
+          </RadioGroup>
         </Box>
       </CustomCard>
     </>
