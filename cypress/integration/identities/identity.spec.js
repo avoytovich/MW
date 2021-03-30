@@ -5,11 +5,7 @@ describe("Identity", () => {
     cy.visit("/login", { failOnStatusCode: false });
     cy.login();
 
-    cy.intercept("GET", "**/identities/**", (req) => {
-      req.reply((res) => {
-        res.send();
-      });
-    }).as("identityReq");
+    cy.intercept("GET", "**/identities/**").as("identityReq");
 
     cy.visit("/settings/identities", { failOnStatusCode: false });
     cy.get(".tableRowGrid", { timeout: 100000 }).first().click();

@@ -1,61 +1,48 @@
 /// <reference types="cypress" />
 
-describe('Rights tab', () => {
-  let identityData = {};
+describe("Rights tab", () => {
+  beforeEach(() => {
+    cy.visit("/login", { failOnStatusCode: false });
+    cy.login();
 
-  before(() => {
-    cy.visit('/login');
-    cy.login(true);
-    cy.visit('/settings/identities');
+    cy.intercept("GET", "**/identities/**").as("identityReq");
+    cy.intercept("GET", "**privileges**").as("priviledgeReq");
+    cy.intercept("GET", "**/roles**").as("rolesReq");
+    cy.intercept("GET", "**/meta-roles**").as("metaReq");
 
-    cy.server();
-    cy.route(/\/identities[^\/].+/).as('getIdentities');
-    cy.route(/\/privileges.+/).as('privilegesData');
-    cy.route(/\/roles.+/).as('rolesData');
-    cy.route(/\/meta-roles.+/).as('metaRolesData');
-    cy.route(/\/identities\/.+/).as('getIdentity');
-    
-    cy.wait('@getIdentities').then(() => {
-      cy.get('.tableBodyGrid').find('.tableRowGrid').first().click();
+    cy.visit("/settings/identities", { failOnStatusCode: false });
+    cy.get(".tableRowGrid", { timeout: 100000 }).first().click();
 
-      cy.wait('@getIdentity').then((resp) => {
-        expect(resp.status).to.be.equal(200);
-        identityData = resp.response.body;
+    cy.wait("@identityReq")
+      .then(({ response: { body } }) => {
+        return body;
+      })
+      .as("identity");
+    cy.contains("button", "Rights").click();
+  });
 
-        cy.get('.identity-details-screen .MuiTab-wrapper').contains('Rights').click();
+  it("profile tab should be enabled", () => {
+    cy.contains(".Mui-selected", "Rights");
+  });
+  it("should have priviledges displayed", () => {
+    cy.wait("@priviledgeReq").then(({ response: { body } }) => {
+      body.items.forEach(({ serviceName }) => {
+        cy.get(".rights-details-privileges").should("contain", serviceName);
       });
     });
   });
-  
-  it('should have all items listed due to api responses', () => {
-    cy.wait('@privilegesData').then((resp) => {
-      expect(resp.status).to.be.equal(200);
-      
-      resp.response.body.items.forEach((item) => {
-        cy.get('.rights-details-privileges').should('contain', item.serviceName);
-      });
-    });
-
-    cy.wait('@rolesData').then((resp) => {
-      expect(resp.status).to.be.equal(200);
-      
-      resp.response.body.items.forEach((item) => {
-        cy.get('.rights-details-roles').should('contain', item.name);
-      });
-    });
-
-    cy.wait('@metaRolesData').then((resp) => {
-      expect(resp.status).to.be.equal(200);
-      
-      resp.response.body.items.forEach((item) => {
-        cy.get('.rights-details-meta-roles').should('contain', item.name);
+  it("should have roles displayed", () => {
+    cy.wait("@rolesReq").then(({ response: { body } }) => {
+      body.items.forEach(({ name }) => {
+        cy.get(".rights-details-roles").should("contain", name);
       });
     });
   });
-
-  it('should be active tab', () => {
-    cy
-      .get('.identity-details-screen .MuiTab-wrapper').contains('Rights').parent()
-      .should('have.class', 'Mui-selected');
+  it.only("should have meta-roles displayed", () => {
+    cy.wait("@metaReq").then(({ response: { body } }) => {
+      body.items.forEach(({ name }) => {
+        cy.get(".rights-details-meta-roles").should("contain", name);
+      });
+    });
   });
 });
