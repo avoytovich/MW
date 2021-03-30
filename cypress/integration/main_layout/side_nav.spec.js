@@ -34,7 +34,7 @@ describe('Side Navigation', () => {
         });
       });
     });
-  });si
+  });
 
   context('Nav items actions', () => {
     it('should have the active navigation changed and highlighted on click', () => {
