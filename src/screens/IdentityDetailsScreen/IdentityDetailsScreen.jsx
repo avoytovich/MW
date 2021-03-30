@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   LinearProgress,
@@ -8,6 +8,8 @@ import {
   Tab,
   Button,
   Zoom,
+  Box,
+  Typography,
 } from '@material-ui/core';
 
 import localization from '../../localization';
@@ -25,24 +27,48 @@ const IdentityDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
   const [update, setUpdate] = useState(0);
   const { id } = useParams();
+  const history = useHistory();
+
   const [curIdentity, setCurIdentity] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
-
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const requests = async () => {
-    const res = await api.getIdentityById(id);
+    const defaultIdentityObject = {
+      data: {
+        email: '',
+        firstName: '',
+        lastName: '',
+        userName: '',
+        customerId: nxState.selectedCustomer.id,
+      },
+    };
+    const res =
+      id !== 'add' ? await api.getIdentityById(id) : defaultIdentityObject;
+
     return res.data;
   };
+
   const identity = useDetailsData(setLoading, requests, update);
-
   const saveIdentity = () => {
-    api.updateIdentityById(id, curIdentity).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      setUpdate((u) => u + 1);
-    });
+    if (id === 'add') {
+      api.addNewIdentity(curIdentity).then((res) => {
+        const location = res.headers.location.split('/');
+        const id = location[location.length - 1];
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        history.push(`/settings/identities/${id}`);
+        setUpdate((u) => u + 1);
+      });
+    } else {
+      api.updateIdentityById(id, curIdentity).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        setUpdate((u) => u + 1);
+      });
+    }
   };
-
   useEffect(() => {
     setHasChanges(JSON.stringify(curIdentity) !== JSON.stringify(identity));
 
@@ -57,6 +83,19 @@ const IdentityDetailsScreen = () => {
 
   if (isLoading) return <LinearProgress />;
 
+  if (id === 'add' && !nxState.selectedCustomer.id)
+    return (
+      <Box textAlign="center">
+        <Typography gutterBottom variant="h4">
+          {localization.t('general.noCustomer')}
+        </Typography>
+
+        <Typography gutterBottom variant="h5">
+          {localization.t('general.selectCustomer')}
+        </Typography>
+      </Box>
+    );
+
   return (
     <div className="identity-details-screen">
       <Tabs
@@ -66,16 +105,16 @@ const IdentityDetailsScreen = () => {
         textColor="primary"
       >
         <Tab label="Profile" />
-        <Tab label="Rights" />
+        <Tab label="Rights" disabled={id === 'add'} />
       </Tabs>
 
       {curTab === 0 && curIdentity && (
         <ProfileDetails
+          newIdentity={id === 'add'}
           identity={curIdentity}
           changeIdentity={setCurIdentity}
         />
       )}
-
       {curTab === 1 && curIdentity && (
         <RightsDetails
           identity={curIdentity}
@@ -83,9 +122,9 @@ const IdentityDetailsScreen = () => {
           changeIdentity={setCurIdentity}
         />
       )}
-
       <Zoom in={hasChanges}>
         <Button
+          disabled={!curIdentity.userName || !curIdentity.email}
           id="save-identity-button"
           color="primary"
           size="large"

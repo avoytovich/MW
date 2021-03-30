@@ -13,7 +13,7 @@ import localization from '../../localization';
 
 import CustomCard from '../../components/utils/CustomCard';
 
-const ProfileDetails = ({ identity, changeIdentity }) => {
+const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
@@ -52,6 +52,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
           <Box px={1} width=" 100%">
             <TextField
               fullWidth
+              required
               label={localization.t('labels.email')}
               name="email"
               type="text"
@@ -62,6 +63,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
           </Box>
           <Box px={1} width=" 100%">
             <TextField
+              required
               fullWidth
               label={localization.t('labels.userName')}
               name="userName"
@@ -69,7 +71,7 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
               value={identity.userName}
               onChange={handleChange}
               variant="outlined"
-              disabled
+              disabled={!newIdentity}
             />
           </Box>
         </Box>
@@ -77,24 +79,33 @@ const ProfileDetails = ({ identity, changeIdentity }) => {
 
       <CustomCard title="Configuration">
         <Box py={3}>
-          <Typography gutterBottom variant="h5">
-            {localization.t('labels.status')}
-          </Typography>
+          {!newIdentity && (
+            <>
+              <Typography gutterBottom variant="h5">
+                {localization.t('labels.status')}
+              </Typography>
 
-          <Box display="flex" alignItems="center" ml="-10px">
-            <Switch
-              color="primary"
-              checked={!identity.inactive}
-              onChange={() => changeIdentity({ ...identity, inactive: !identity.inactive })}
-              name="status"
-            />
+              <Box display="flex" alignItems="center" ml="-10px">
+                <Switch
+                  color="primary"
+                  checked={!identity.inactive}
+                  onChange={() =>
+                    changeIdentity({
+                      ...identity,
+                      inactive: !identity.inactive,
+                    })
+                  }
+                  name="status"
+                />
 
-            <Typography>
-              {identity.inactive
-                ? localization.t('labels.disabled')
-                : localization.t('labels.enabled')}
-            </Typography>
-          </Box>
+                <Typography>
+                  {identity.inactive
+                    ? localization.t('labels.disabled')
+                    : localization.t('labels.enabled')}
+                </Typography>
+              </Box>
+            </>
+          )}
         </Box>
 
         <Box pb={3}>
