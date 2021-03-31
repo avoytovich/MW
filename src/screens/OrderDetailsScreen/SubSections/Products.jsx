@@ -23,7 +23,7 @@ const Products = ({ orderData }) => {
   }, []);
 
   return (
-    <CustomCard title="Products" divider={false}>
+    <CustomCard title="Products" noDivider>
       <Box
         border={1}
         borderRadius="borderRadius"
