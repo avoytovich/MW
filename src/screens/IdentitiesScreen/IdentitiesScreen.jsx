@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import api from '../../api';
+import { Link } from 'react-router-dom';
+import { Box, Button } from '@material-ui/core';
 import {
   generateData,
   defaultShow,
@@ -9,7 +11,11 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 
 const IdentitiesScreen = () => {
   const dispatch = useDispatch();
@@ -43,30 +49,47 @@ const IdentitiesScreen = () => {
     sortParams,
   );
 
-  const handleDeleteIdentity = (id) => api.deleteIdentityById(id).then(() => {
-    setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.identity')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
-    );
-  });
+  const handleDeleteIdentity = (id) =>
+    api.deleteIdentityById(id).then(() => {
+      setMakeUpdate((v) => v + 1);
+      dispatch(
+        showNotification(
+          `${localization.t('general.identity')} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
+        ),
+      );
+    });
 
   const updatePage = (page) => setCurrentPage(page);
 
   return (
-    <TableComponent
-      sortParams={sortParams}
-      setSortParams={handleSetSortParams}
-      handleDeleteItem={handleDeleteIdentity}
-      showColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
-      tableData={identities}
-      isLoading={isLoading}
-    />
+    <Box display='flex' flexDirection='column'>
+      <Box alignSelf='flex-end' py={2}>
+        <Button
+          id='add-identity-button'
+          color='primary'
+          size='large'
+          variant='contained'
+          component={Link}
+          to='/settings/identities/add'
+        >
+          {`${localization.t('general.add')} ${localization.t(
+            'general.identity',
+          )}`}
+        </Button>
+      </Box>
+      <TableComponent
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
+        handleDeleteItem={handleDeleteIdentity}
+        showColumn={defaultShow}
+        currentPage={currentPage}
+        updatePage={updatePage}
+        tableData={identities}
+        isLoading={isLoading}
+      />
+    </Box>
   );
 };
 

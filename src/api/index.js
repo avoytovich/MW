@@ -118,6 +118,15 @@ const api = {
       data,
     });
   },
+  addNewIdentity(data) {
+    const url =
+      '/iam/identities?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
