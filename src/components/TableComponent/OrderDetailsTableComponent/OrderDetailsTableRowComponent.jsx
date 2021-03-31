@@ -79,13 +79,12 @@ const TableRowComponent = ({
           style={{ overflow: 'hidden' }}
         >
           <Box
-            border={1}
-            borderColor="secondary.main"
             display='flex'
             height={1}
             alignItems='center'
             justifyContent={item.id === 'fullName' ? 'flex-start' : 'center'}
             flexDirection='row'
+            borderColor="secondary.main"
           >
             {item.id === 'fullName' && <FullNameAvatar name={valueToShow} />}
             <Typography

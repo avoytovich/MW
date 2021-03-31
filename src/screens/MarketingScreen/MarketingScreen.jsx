@@ -7,10 +7,40 @@ import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
 import PricesScreen from './SubSections/PricesScreen';
+import localization from '../../localization';
 
 import './marketingScreen.scss';
 
-const availTabs = ['campaigns', 'recommendations', 'discounts', 'prices'];
+const availTabs = [
+  {
+    label: 'campaigns',
+    path: `/marketing/campaigns`,
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.campaign',
+    )}`,
+  },
+  {
+    label: 'recommendations',
+    path: `/marketing/recommendations`,
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.recommendation',
+    )}`,
+  },
+  {
+    label: 'discounts',
+    path: `/marketing/discounts`,
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.discount',
+    )}`,
+  },
+  {
+    label: 'prices',
+    path: `/marketing/prices`,
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.price',
+    )}`,
+  },
+];
 
 const MarketingScreen = () => {
   const history = useHistory();
@@ -20,34 +50,36 @@ const MarketingScreen = () => {
 
   useEffect(() => {
     const section = pathname.split('/').pop();
-
-    if (availTabs.indexOf(section) < 0) {
+    const index = availTabs.findIndex((i) => i.label === section);
+    if (index < 0) {
       return history.push('/marketing/campaigns');
     }
 
-    setCurTab(availTabs.indexOf(section));
+    setCurTab(index);
 
     return () => setCurTab(0);
   }, [pathname]);
 
-  const changeTab = (tab) => history.push(`/marketing/${availTabs[tab]}`);
-
+  const drawAddButton = () => {
+    const currentTad =
+      availTabs.find((item) => item.path === pathname) || availTabs[0];
+    return (
+      <Button
+        id='add-marketing-button'
+        color='primary'
+        size='large'
+        variant='contained'
+        component={Link}
+        to={`${currentTad.path}/add`}
+      >
+        {currentTad.button}
+      </Button>
+    );
+  };
+  const changeTab = (tab) => history.push(`/marketing/${availTabs[tab].label}`);
   return (
-    <div className='marketing-screen'>
-      {
-        curTab === 3 && (
-          <Button
-            id='add-marketing-button'
-            color='primary'
-            size='large'
-            variant='contained'
-            component={Link}
-            to={`/marketing/prices/add`}
-          >
-            Add Price
-          </Button>
-        )
-      }
+    <Box display='flex' flexDirection='column'>
+      {drawAddButton()}
 
       <Tabs
         value={curTab}
@@ -70,7 +102,7 @@ const MarketingScreen = () => {
 
         {curTab === 3 && <PricesScreen />}
       </Box>
-    </div>
+    </Box>
   );
 };
 
