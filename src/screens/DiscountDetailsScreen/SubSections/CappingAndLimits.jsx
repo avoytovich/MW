@@ -95,6 +95,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
           )}
         </Grid>
       </Grid>
+      
       <Box width={1} p={2}>
         <Grid container spacing={2}>
           <Grid item md={4} sm={12}>

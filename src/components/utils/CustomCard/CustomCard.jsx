@@ -17,7 +17,7 @@ const CustomCard = ({ title, children, ...other }) => (
   >
     <Typography gutterBottom variant='h4'>{title}</Typography>
 
-    <Divider light />
+    {title && <Divider light />}
 
     {children}
   </Box>
