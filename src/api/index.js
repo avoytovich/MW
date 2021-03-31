@@ -108,14 +108,18 @@ const api = {
       data,
     });
   },
-
-  sendConfirmationMail(customerId, data) {
-    const url = `/orders/${customerId}/email/send?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
-
   addNewDiscount(data) {
     const url =
       '/discounts?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
 
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  sendConfirmationMail(customerId, data) {
+    const url = `/orders/${customerId}/email/send?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
     return axiosInstance({
       method: 'post',
       url,
