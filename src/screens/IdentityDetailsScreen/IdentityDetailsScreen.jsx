@@ -95,27 +95,27 @@ const IdentityDetailsScreen = () => {
 
   if (id === 'add' && !nxState.selectedCustomer.id)
     return (
-      <Box textAlign="center">
-        <Typography gutterBottom variant="h4">
+      <Box textAlign='center'>
+        <Typography gutterBottom variant='h4'>
           {localization.t('general.noCustomer')}
         </Typography>
 
-        <Typography gutterBottom variant="h5">
+        <Typography gutterBottom variant='h5'>
           {localization.t('general.selectCustomer')}
         </Typography>
       </Box>
     );
 
   return (
-    <div className="identity-details-screen">
+    <div className='identity-details-screen'>
       <Tabs
         value={curTab}
         onChange={(e, newTab) => setCurTab(newTab)}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor='primary'
+        textColor='primary'
       >
-        <Tab label="Profile" />
-        <Tab label="Rights" disabled={id === 'add'} />
+        <Tab label='Profile' />
+        <Tab label='Rights' disabled={id === 'add'} />
       </Tabs>
 
       {curTab === 0 && curIdentity && (
@@ -138,11 +138,11 @@ const IdentityDetailsScreen = () => {
             !curIdentity.email ||
             (!curIdentity.userName && !curIdentity.clientId)
           }
-          id="save-identity-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
+          id='save-identity-button'
+          color='primary'
+          size='large'
+          type='submit'
+          variant='contained'
           onClick={saveIdentity}
         >
           Save

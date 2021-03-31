@@ -64,15 +64,15 @@ const IdentitiesScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
 
   return (
-    <Box display="flex" flexDirection="column">
-      <Box alignSelf="flex-end" py={2}>
+    <Box display='flex' flexDirection='column'>
+      <Box alignSelf='flex-end' py={2}>
         <Button
-          id="add-identity-button"
-          color="primary"
-          size="large"
-          variant="contained"
+          id='add-identity-button'
+          color='primary'
+          size='large'
+          variant='contained'
           component={Link}
-          to="/settings/identities/add"
+          to='/settings/identities/add'
         >
           {`${localization.t('general.add')} ${localization.t(
             'general.identity',
