@@ -254,6 +254,7 @@ const labels = {
   logoStore: 'Logo',
   customerId: 'Customer ID',
   events: 'Events',
+  clientId: 'Client ID',
 };
 
 export default labels;
