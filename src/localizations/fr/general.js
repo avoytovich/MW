@@ -45,6 +45,13 @@ const general = {
   marketingNameMandatory:
     'Marketing name is mandatory for the default language.',
   itemHasBeenCopied: 'Item Has BeenCopied',
+  selectCustomer:
+    'Please select a customer which will own the created resource.',
+  campaign: 'Campaign',
+  recommendation: 'Recommendation',
+  discount: 'Discount',
+  price: 'Price',
+  new: 'New',
 };
 
 export default general;

@@ -1,0 +1,2 @@
+- Caping and limits section is repeatedly used among different places
+- Items details often share same layout: CustomBreadcrumbs + sections split to tabs
