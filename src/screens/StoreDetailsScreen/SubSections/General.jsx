@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box, Typography, Grid, Button,
-} from '@material-ui/core';
+import { Box, Typography, Grid, Button } from '@material-ui/core';
 import {
   availableLocales,
   installmentOptions,
@@ -27,7 +25,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
   <>
     <Grid item md={12}>
       <SwitchInput
-        label="status"
+        label='status'
         handleChange={(e) => {
           setCurrentStoreData({
             ...currentStoreData,
@@ -46,37 +44,41 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       <Box p={2}>
         <InputCustom
           isRequired
-          label="name"
+          label='name'
           value={currentStoreData.name}
-          onChangeInput={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            name: e.target.value,
-          })}
+          onChangeInput={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              name: e.target.value,
+            })
+          }
         />
       </Box>
       <Box p={2}>
-        <Grid container alignItems="center">
+        <Grid container alignItems='center'>
           <Grid item lg={3} md={12} sm={12}>
             <Typography>
               {localization.t('labels.overrideEmailSender')}
             </Typography>
           </Grid>
           <Grid item lg={9} md={12} sm={12}>
-            <Box display="flex" flexDirection="row" justifyContent="flex-end">
-              <Button variant="contained" disabled>
+            <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+              <Button variant='contained' disabled>
                 noreply.
               </Button>
-              <Box px={1} width="70%">
+              <Box px={1} width='70%'>
                 <InputCustom
-                  label="senderName"
+                  label='senderName'
                   value={currentStoreData.emailSenderOverride}
-                  onChangeInput={(e) => setCurrentStoreData({
-                    ...currentStoreData,
-                    emailSenderOverride: e.target.value,
-                  })}
+                  onChangeInput={(e) =>
+                    setCurrentStoreData({
+                      ...currentStoreData,
+                      emailSenderOverride: e.target.value,
+                    })
+                  }
                 />
               </Box>
-              <Button variant="contained" disabled>
+              <Button variant='contained' disabled>
                 @nexway.com.
               </Button>
             </Box>
@@ -85,25 +87,29 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       </Box>
       <Box p={2}>
         <SelectCustom
-          label="defaultLanguage"
+          label='defaultLanguage'
           isRequired
           value={currentStoreData.defaultLocale}
           selectOptions={availableLocales}
-          onChangeSelect={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            defaultLocale: e.target.value,
-          })}
+          onChangeSelect={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              defaultLocale: e.target.value,
+            })
+          }
         />
       </Box>
       <Box p={2}>
         <SelectWithChip
-          label="saleLanguages"
+          label='saleLanguages'
           value={currentStoreData.saleLocales}
           selectOptions={availableLocales}
-          onChangeSelect={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            saleLocales: e.target.value,
-          })}
+          onChangeSelect={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              saleLocales: e.target.value,
+            })
+          }
           onClickDelIcon={(chip) => {
             const newValue = [...currentStoreData.saleLocales].filter(
               (val) => val !== chip,
@@ -116,7 +122,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         />
       </Box>
       <SwitchInput
-        label="allowInstallments"
+        label='allowInstallments'
         handleChange={(e) => {
           setCurrentStoreData({
             ...currentStoreData,
@@ -128,13 +134,15 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       <Box p={2}>
         <SelectWithChip
           isDisabled={!currentStoreData.allowInstallments}
-          label="installmentOptions"
+          label='installmentOptions'
           value={currentStoreData.installmentOptions}
           selectOptions={installmentOptions}
-          onChangeSelect={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            installmentOptions: e.target.value,
-          })}
+          onChangeSelect={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              installmentOptions: e.target.value,
+            })
+          }
           onClickDelIcon={(chip) => {
             const newValue = [...currentStoreData.installmentOptions].filter(
               (val) => val !== chip,
@@ -147,18 +155,18 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         />
       </Box>
       <Box p={2}>
-        <InputCustom label="gtmId" onChangeInput={() => {}} />
+        <InputCustom label='gtmId' onChangeInput={() => {}} />
       </Box>
       <Box p={2}>
-        <InputCustom label="gtmIdOwnedByNexway" onChangeInput={() => {}} />
+        <InputCustom label='gtmIdOwnedByNexway' onChangeInput={() => {}} />
       </Box>
       <SwitchInput
-        label="forceEndUserCreation"
+        label='forceEndUserCreation'
         handleChange={() => {}}
         isChecked={currentStoreData.forceEndUserCreation}
       />
       <SwitchInput
-        label="promoteOneClickPayment"
+        label='promoteOneClickPayment'
         handleChange={(e) => {
           setCurrentStoreData({
             ...currentStoreData,
@@ -168,7 +176,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         isChecked={currentStoreData.promoteOneClickPayment}
       />
       <SwitchInput
-        label="displayProductDeliveryOnCheckoutConfirmation"
+        label='displayProductDeliveryOnCheckoutConfirmation'
         handleChange={(e) => {
           setCurrentStoreData({
             ...currentStoreData,
@@ -178,7 +186,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         isChecked={currentStoreData.allowOrderDetailsOnCheckoutConfirmation}
       />
       <SwitchInput
-        label="enableRecipientCode"
+        label='enableRecipientCode'
         handleChange={(e) => {
           setCurrentStoreData({
             ...currentStoreData,
@@ -188,7 +196,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         isChecked={currentStoreData.recipientCodeMandatory}
       />
       <SwitchInput
-        label="allowQuotes"
+        label='allowQuotes'
         handleChange={(e) => {
           setCurrentStoreData({
             ...currentStoreData,
@@ -200,7 +208,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       <CheckboxInput
         currentStoreData={currentStoreData}
         checkBoxData={checkBoxObj}
-        label="eligibleEndUserTypes"
+        label='eligibleEndUserTypes'
         setCurrentStoreData={setCurrentStoreData}
       />
     </Grid>
@@ -208,45 +216,61 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       <Box p={2}>
         <InputCustom
           isRequired
-          label="displayName"
+          label='displayName'
           value={currentStoreData.displayName}
-          onChangeInput={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            displayName: e.target.value,
-          })}
+          onChangeInput={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              displayName: e.target.value,
+            })
+          }
         />
       </Box>
       <Box p={2}>
         <InputCustom
-          label="storeWebsite"
+          label='storeWebsite'
           value={currentStoreData.storeWebsite}
-          onChangeInput={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            storeWebsite: e.target.value,
-          })}
+          onChangeInput={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              storeWebsite: e.target.value,
+            })
+          }
         />
       </Box>
       <Box p={2}>
         <InputCustom
           isRequired
           isMultiline
-          label="routes"
-          // value={currentStoreData.routes}
-          onChangeInput={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            routes: e.target.value,
-          })}
+          label='routes'
+          value={currentStoreData.routes
+            .map((item) => item.hostname)
+            .join('\r\n')}
+          onChangeInput={(e) => {
+            let res = [];
+            if (e.target.value) {
+              res = e.target.value.split(/\r?\n/);
+            }
+            setCurrentStoreData({
+              ...currentStoreData,
+              routes: res.map((item) => ({
+                hostname: item,
+              })),
+            });
+          }}
         />
       </Box>
       <Box p={2}>
         <SelectWithChip
-          label="blockedCountries"
+          label='blockedCountries'
           value={currentStoreData.blackListedCountries}
           selectOptions={countriesOptions}
-          onChangeSelect={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            blackListedCountries: e.target.value,
-          })}
+          onChangeSelect={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              blackListedCountries: e.target.value,
+            })
+          }
           onClickDelIcon={(chip) => {
             const newValue = [...currentStoreData.blackListedCountries].filter(
               (val) => val !== chip,
@@ -260,13 +284,15 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       </Box>
       <Box p={2}>
         <SelectWithChip
-          label="restrictedCountries"
+          label='restrictedCountries'
           value={currentStoreData.restrictedCountries}
           selectOptions={countriesOptions}
-          onChangeSelect={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            restrictedCountries: e.target.value,
-          })}
+          onChangeSelect={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              restrictedCountries: e.target.value,
+            })
+          }
           onClickDelIcon={(chip) => {
             const newValue = [...currentStoreData.restrictedCountries].filter(
               (val) => val !== chip,
@@ -279,7 +305,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         />
       </Box>
       <SwitchInput
-        label="useGeoIpToForceEnduserCountry"
+        label='useGeoIpToForceEnduserCountry'
         handleChange={(e) => {
           setCurrentStoreData({
             ...currentStoreData,
@@ -295,25 +321,27 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       />
       <Box p={2}>
         <SelectCustom
-          label="fallbackCartCountry"
+          label='fallbackCartCountry'
           value={currentStoreData.fallbackCartCountry}
           selectOptions={countriesOptions}
-          onChangeSelect={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            fallbackCartCountry: e.target.value,
-          })}
+          onChangeSelect={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              fallbackCartCountry: e.target.value,
+            })
+          }
         />
       </Box>
       <Box p={2}>
         <InputCustom
           helperText={
-            currentStoreData.externalContextAlias
-            && !!currentStoreData.externalContextGenerationParams.length
+            currentStoreData.externalContextAlias &&
+            !!currentStoreData.externalContextGenerationParams.length
               ? 'Context should be only one '
               : null
           }
           isMultiline
-          label="externalContextGenerationParamsOnePerLine"
+          label='externalContextGenerationParamsOnePerLine'
           value={currentStoreData.externalContextGenerationParams.join('\r\n')}
           onChangeInput={(e) => {
             let res = [];
@@ -330,16 +358,18 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
       <Box p={2}>
         <InputCustom
           helperText={
-            currentStoreData.externalContextAlias
-            && !!currentStoreData.externalContextGenerationParams.length
+            currentStoreData.externalContextAlias &&
+            !!currentStoreData.externalContextGenerationParams.length
               ? 'Context should be only one '
               : null
           }
-          onChangeInput={(e) => setCurrentStoreData({
-            ...currentStoreData,
-            externalContextAlias: e.target.value,
-          })}
-          label="externalContextAlias"
+          onChangeInput={(e) =>
+            setCurrentStoreData({
+              ...currentStoreData,
+              externalContextAlias: e.target.value,
+            })
+          }
+          label='externalContextAlias'
           value={currentStoreData.externalContextAlias}
         />
       </Box>

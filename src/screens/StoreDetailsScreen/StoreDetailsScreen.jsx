@@ -9,9 +9,10 @@ import {
   Typography,
   Tabs,
   Tab,
+  Breadcrumbs,
 } from '@material-ui/core';
 import Payment from './SubSections/Payment';
-
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import General from './SubSections/General';
 import Design from './SubSections/Design';
 import AssetsResource from './SubSections/AssetsResource';
@@ -194,37 +195,36 @@ const StoreDetailsScreen = () => {
   return (
     storeData && (
       <>
-        <Box display="flex" flexDirection="row" mx={2} pb={2}>
-          <Typography component="div" color="primary">
-            <Box fontWeight={500}>
-              {localization.t('general.store')}
-              {'/'}
-            </Box>
-          </Typography>
-          <Typography component="div" color="secondary">
-            <Box fontWeight={500}>{storeData.id}</Box>
-          </Typography>
-        </Box>
+        {id !== 'add' && (
+          <Box mx={2}>
+            <CustomBreadcrumbs
+              url='/overview/stores'
+              section={localization.t('general.store')}
+              id={storeData.id}
+            />
+          </Box>
+        )}
         <Box
-          display="flex"
-          flexDirection="row"
+          display='flex'
+          flexDirection='row'
           m={2}
-          justifyContent="space-between"
+          justifyContent='space-between'
         >
-          <Box alignSelf="center">
-            <Typography data-test="discountName" gutterBottom variant="h3">
+          <Box alignSelf='center'>
+            <Typography data-test='discountName' gutterBottom variant='h3'>
               {storeData.name}
             </Typography>
-            <Box display="flex" flexDirection="row" py={2}>
-              <Typography component="div" color="primary">
-                <Box fontWeight={500}>
+            <Box py={2}>
+              <Breadcrumbs color='secondary' aria-label='breadcrumb'>
+                <Typography color='primary'>
                   {localization.t('labels.customerId')}
-                  {'/'}
-                </Box>
-              </Typography>
-              <Typography component="div" color="secondary">
-                <Box fontWeight={500}>{currentCustomerData?.id}</Box>
-              </Typography>
+                </Typography>
+                {currentCustomerData && (
+                  <Typography color='secondary'>
+                    {currentCustomerData.id}
+                  </Typography>
+                )}
+              </Breadcrumbs>
             </Box>
           </Box>
 
@@ -236,11 +236,11 @@ const StoreDetailsScreen = () => {
                   (currentStoreData.externalContextAlias &&
                     !!currentStoreData.externalContextGenerationParams.length)
                 }
-                id="save-discount-button"
-                color="primary"
-                size="large"
-                type="submit"
-                variant="contained"
+                id='save-discount-button'
+                color='primary'
+                size='large'
+                type='submit'
+                variant='contained'
                 onClick={saveDetails}
               >
                 {localization.t('general.save')}
@@ -248,15 +248,15 @@ const StoreDetailsScreen = () => {
             </Box>
           </Zoom>
         </Box>
-        <Box my={2} bgcolor="#fff">
+        <Box my={2} bgcolor='#fff'>
           <Tabs
             value={curTab}
-            indicatorColor="primary"
-            textColor="primary"
+            indicatorColor='primary'
+            textColor='primary'
             onChange={(event, newValue) => {
               setCurTab(newValue);
             }}
-            aria-label="disabled tabs example"
+            aria-label='disabled tabs example'
           >
             {tabLabels.map((tab) => (
               <Tab key={tab} label={localization.t(`labels.${tab}`)} />
