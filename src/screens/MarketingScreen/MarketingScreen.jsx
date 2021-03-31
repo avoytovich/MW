@@ -65,10 +65,10 @@ const MarketingScreen = () => {
       availTabs.find((item) => item.path === pathname) || availTabs[0];
     return (
       <Button
-        id="add-marketing-button"
-        color="primary"
-        size="large"
-        variant="contained"
+        id='add-marketing-button'
+        color='primary'
+        size='large'
+        variant='contained'
         component={Link}
         to={`${currentTad.path}/add`}
       >
@@ -78,19 +78,19 @@ const MarketingScreen = () => {
   };
   const changeTab = (tab) => history.push(`/marketing/${availTabs[tab].label}`);
   return (
-    <Box display="flex" flexDirection="column">
+    <Box display='flex' flexDirection='column'>
       {drawAddButton()}
 
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor='primary'
+        textColor='primary'
       >
-        <Tab label="Campaigns" />
-        <Tab label="Recommendations" />
-        <Tab label="Discounts" />
-        <Tab label="Prices" />
+        <Tab label='Campaigns' />
+        <Tab label='Recommendations' />
+        <Tab label='Discounts' />
+        <Tab label='Prices' />
       </Tabs>
 
       <Box mt={4} mb={2}>

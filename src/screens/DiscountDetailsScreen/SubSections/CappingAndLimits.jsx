@@ -47,11 +47,11 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
           <Typography>{localization.t('labels.periodOfValidity')}</Typography>
         </Box>
       </Grid>
-      <Grid container alignItems="center">
+      <Grid container alignItems='center'>
         <Grid item md={3} sm={6}>
           <Box py={2} pl={2}>
             <SelectCustom
-              label="periodOfValidity"
+              label='periodOfValidity'
               onChangeSelect={(e) => setValidPeriod(e.target.value)}
               selectOptions={validityPeriod}
               value={validPeriod}
@@ -71,15 +71,15 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
               <form noValidate>
                 <TextField
                   fullWidth
-                  name="endDate"
+                  name='endDate'
                   value={
                     curDiscount.endDate
                       ? moment(curDiscount.endDate).format('YYYY-MM-DDTHH:mm')
                       : ''
                   }
                   label={localization.t('labels.endDate')}
-                  type="datetime-local"
-                  variant="outlined"
+                  type='datetime-local'
+                  variant='outlined'
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -100,7 +100,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
           <Grid item md={4} sm={12}>
             <Box>
               <NumberInput
-                label="maximumUses"
+                label='maximumUses'
                 value={curDiscount.maxUsages}
                 onChangeInput={(e) =>
                   setCurDiscount({ ...curDiscount, maxUsages: e.target.value })
@@ -112,7 +112,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
           <Grid item md={4} sm={12}>
             <Box>
               <NumberInput
-                label="maximumUsesPerStore"
+                label='maximumUsesPerStore'
                 value={curDiscount.maxUsePerStore}
                 onChangeInput={(e) =>
                   setCurDiscount({
@@ -127,7 +127,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
           <Grid item md={4} sm={12}>
             <Box>
               <NumberInput
-                label="maximumUsesPerEndUser"
+                label='maximumUsesPerEndUser'
                 value={curDiscount.maxUsePerEndUser}
                 onChangeInput={(e) =>
                   setCurDiscount({

@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-
 import {
   LinearProgress,
   Zoom,
@@ -15,6 +14,7 @@ import {
   structureSelectOptions,
   discountRequiredFields,
 } from '../../services/helpers/dataStructuring';
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import General from './SubSections/General';
 import Eligibility from './SubSections/Eligibility';
 import CappingAndLimits from './SubSections/CappingAndLimits';
@@ -338,12 +338,12 @@ const DiscountDetailsScreen = () => {
   };
   if (id === 'add' && !nxState.selectedCustomer.id)
     return (
-      <Box textAlign="center">
-        <Typography gutterBottom variant="h4">
+      <Box textAlign='center'>
+        <Typography gutterBottom variant='h4'>
           {localization.t('general.noCustomer')}
         </Typography>
 
-        <Typography gutterBottom variant="h5">
+        <Typography gutterBottom variant='h5'>
           {localization.t('general.selectCustomer')}
         </Typography>
       </Box>
@@ -353,25 +353,24 @@ const DiscountDetailsScreen = () => {
 
   return (
     <>
-      <Box display="flex" flexDirection="row" mx={2} pb={2}>
-        <Typography component="div" color="primary">
-          <Box fontWeight={500}>
-            {localization.t('general.discount')}
-            {id !== 'add' ? '/' : ''}
-          </Box>
-        </Typography>
-        <Typography component="div" color="secondary">
-          <Box fontWeight={500}>{discount.id}</Box>
-        </Typography>
-      </Box>
+      {id !== 'add' && (
+        <Box mx={2}>
+          <CustomBreadcrumbs
+            url='/marketing/discounts'
+            section={localization.t('general.discount')}
+            id={discount.id}
+          />
+        </Box>
+      )}
+
       <Box
-        display="flex"
-        flexDirection="row"
+        display='flex'
+        flexDirection='row'
         m={2}
-        justifyContent="space-between"
+        justifyContent='space-between'
       >
-        <Box alignSelf="center">
-          <Typography data-test="discountName" gutterBottom variant="h3">
+        <Box alignSelf='center'>
+          <Typography data-test='discountName' gutterBottom variant='h3'>
             {id !== 'add'
               ? discount.name
               : `${localization.t('general.new')} ${localization.t(
@@ -384,11 +383,11 @@ const DiscountDetailsScreen = () => {
           <Box mb={1} mr={1}>
             <Button
               disabled={!curDiscount.name}
-              id="save-discount-button"
-              color="primary"
-              size="large"
-              type="submit"
-              variant="contained"
+              id='save-discount-button'
+              color='primary'
+              size='large'
+              type='submit'
+              variant='contained'
               onClick={saveDiscount}
             >
               {localization.t('general.save')}
@@ -396,7 +395,7 @@ const DiscountDetailsScreen = () => {
           </Box>
         </Zoom>
       </Box>
-      <DiscountSection label="general">
+      <DiscountSection label='general'>
         <General
           amountType={amountType}
           setAmountType={setAmountType}
@@ -411,13 +410,13 @@ const DiscountDetailsScreen = () => {
           selectOptions={selectOptions}
         />
       </DiscountSection>
-      <DiscountSection label="cappingAndLimits">
+      <DiscountSection label='cappingAndLimits'>
         <CappingAndLimits
           curDiscount={curDiscount}
           setCurDiscount={setCurDiscount}
         />
       </DiscountSection>
-      <DiscountSection label="eligibility">
+      <DiscountSection label='eligibility'>
         <Eligibility
           curMinCartAmount={curMinCartAmount}
           setCurMinCartAmount={setCurMinCartAmount}
