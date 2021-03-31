@@ -8,8 +8,10 @@ import {
   Button,
   Box,
   Typography,
+  Tabs,
+  Tab,
 } from '@material-ui/core';
-import { fromObjectToArray, fromArrayToObject } from './utils';
+import { fromObjectToArray, fromArrayToObject, tabsLabels } from './utils';
 import {
   structureSelectOptions,
   discountRequiredFields,
@@ -29,6 +31,7 @@ import './discountDetailsScreen.scss';
 const DiscountDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const history = useHistory();
+  const [curTab, setCurTab] = useState(0);
 
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -395,44 +398,64 @@ const DiscountDetailsScreen = () => {
           </Box>
         </Zoom>
       </Box>
-      <DiscountSection label='general'>
-        <General
-          amountType={amountType}
-          setAmountType={setAmountType}
-          curDiscountCodes={curDiscountCodes}
-          setCurDiscountCodes={setCurDiscountCodes}
-          curDiscountLabels={curDiscountLabels}
-          setCurDiscountLabels={setCurDiscountLabels}
-          curAmountCurrency={curAmountCurrency}
-          setCurAmountCurrency={setCurAmountCurrency}
-          curDiscount={curDiscount}
-          setCurDiscount={setCurDiscount}
-          selectOptions={selectOptions}
-        />
-      </DiscountSection>
-      <DiscountSection label='cappingAndLimits'>
-        <CappingAndLimits
-          curDiscount={curDiscount}
-          setCurDiscount={setCurDiscount}
-        />
-      </DiscountSection>
-      <DiscountSection label='eligibility'>
-        <Eligibility
-          curMinCartAmount={curMinCartAmount}
-          setCurMinCartAmount={setCurMinCartAmount}
-          selectOptions={selectOptions}
-          curProductsByParent={curProductsByParent}
-          curDiscount={curDiscount}
-          curStores={curStores}
-          curProducts={curProducts}
-          setStoresModalOpen={setStoresModalOpen}
-          setProductsModalOpen={setProductsModalOpen}
-          updateDiscount={updateDiscount}
-          setCurDiscount={setCurDiscount}
-          setParentProductsModalOpen={setParentProductsModalOpen}
-        />
-      </DiscountSection>
 
+      <Box my={2} bgcolor='#fff'>
+        <Tabs
+          value={curTab}
+          indicatorColor='primary'
+          textColor='primary'
+          onChange={(event, newValue) => {
+            setCurTab(newValue);
+          }}
+        >
+          <Tab label={localization.t(`labels.${tabsLabels[0]}`)} />
+          <Tab label={localization.t(`labels.${tabsLabels[1]}`)} />
+          <Tab label={localization.t(`labels.${tabsLabels[2]}`)} />
+        </Tabs>
+      </Box>
+      {curTab === 0 && (
+        <DiscountSection label='general'>
+          <General
+            amountType={amountType}
+            setAmountType={setAmountType}
+            curDiscountCodes={curDiscountCodes}
+            setCurDiscountCodes={setCurDiscountCodes}
+            curDiscountLabels={curDiscountLabels}
+            setCurDiscountLabels={setCurDiscountLabels}
+            curAmountCurrency={curAmountCurrency}
+            setCurAmountCurrency={setCurAmountCurrency}
+            curDiscount={curDiscount}
+            setCurDiscount={setCurDiscount}
+            selectOptions={selectOptions}
+          />
+        </DiscountSection>
+      )}
+      {curTab === 1 && (
+        <DiscountSection label='cappingAndLimits'>
+          <CappingAndLimits
+            curDiscount={curDiscount}
+            setCurDiscount={setCurDiscount}
+          />
+        </DiscountSection>
+      )}
+      {curTab === 2 && (
+        <DiscountSection label='eligibility'>
+          <Eligibility
+            curMinCartAmount={curMinCartAmount}
+            setCurMinCartAmount={setCurMinCartAmount}
+            selectOptions={selectOptions}
+            curProductsByParent={curProductsByParent}
+            curDiscount={curDiscount}
+            curStores={curStores}
+            curProducts={curProducts}
+            setStoresModalOpen={setStoresModalOpen}
+            setProductsModalOpen={setProductsModalOpen}
+            updateDiscount={updateDiscount}
+            setCurDiscount={setCurDiscount}
+            setParentProductsModalOpen={setParentProductsModalOpen}
+          />
+        </DiscountSection>
+      )}
       <DialogWindows
         productsModal={productsModal}
         setProductsModalOpen={setProductsModalOpen}
