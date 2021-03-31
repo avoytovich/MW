@@ -8,6 +8,8 @@ import {
   FormControlLabel,
   Checkbox,
   Switch,
+  RadioGroup,
+  Radio,
 } from '@material-ui/core';
 
 import { SelectCustom } from '../../../components/Inputs';
@@ -21,20 +23,31 @@ const Basic = ({
   setCurReco,
 }) => (
   curReco && (
-    <CustomCard title="Basic">
-      <Box display="flex" py={5} pb={2}>
-        <Box px={1} width=" 100%">
-          <TextField
-            fullWidth
-            label="Customer"
-            name="customerId"
-            type="text"
-            disabled
-            value={curReco.customerId}
-            variant="outlined"
+    <CustomCard>
+      <Box mx={2} py={1} display='flex' alignItems='center'>
+        <Typography variant="h5">
+          Status *
+        </Typography>
+
+        <Box display="flex" alignItems="center" ml={4}>
+          <FormControlLabel
+            control={(
+              <Switch
+                color="primary"
+                checked={curReco.status === 'ENABLED'}
+                name="status"
+              />
+            )}
+            onChange={() => updateReco(
+              'status',
+              curReco.status === 'ENABLED' ? 'DISABLED' : 'ENABLED',
+            )}
+            label={curReco.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
           />
         </Box>
+      </Box>
 
+      <Box display="flex" py={5} pb={2}>
         <Box px={1} width=" 100%">
           <TextField
             fullWidth
@@ -48,53 +61,65 @@ const Basic = ({
         </Box>
       </Box>
 
-      <Box display="flex" mx={2} pb={2}>
+      <Box display="flex">
+        <Box px={1} py={3} width="100%" maxWidth='200px'>
+          <TextField
+            fullWidth
+            label="Weight"
+            name="weight"
+            type="number"
+            value={curReco.weight}
+            onChange={handleChange}
+            InputProps={{ inputProps: { min: 0 } }}
+            variant="outlined"
+          />
+        </Box>
+
+        <Box px={1} width="100%" py={3}>
+          <SelectCustom
+            label="fallbackLocale"
+            onChangeSelect={(e) => setCurReco({ ...curReco, fallbackLocale: e.target.value })}
+            selectOptions={availableLocales}
+            value={curReco.fallbackLocale || ''}
+          />
+        </Box>
+      </Box>
+
+      <Box display="flex" m={2} pb={2}>
         <div>
           <Typography gutterBottom variant="h5">
             Type
           </Typography>
 
-          <Box display="flex" alignItems="center">
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  name="CROSS_SELL"
-                  color="primary"
-                  checked={curReco.type === 'CROSS_SELL'}
-                />
-              )}
-              onChange={() => updateReco('type', 'CROSS_SELL')}
-              label="Cross Sell"
-            />
-
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  name="UP_SELL"
-                  color="primary"
-                  checked={curReco.type === 'UP_SELL'}
-                />
-              )}
-              onChange={() => updateReco('type', 'UP_SELL')}
-              label="Up Sell"
-            />
-
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  name="UPGRADE"
-                  color="primary"
-                  checked={curReco.type === 'UPGRADE'}
-                />
-              )}
-              onChange={() => updateReco('type', 'UPGRADE')}
-              label="Upgrade"
-            />
+          <Box>
+            <RadioGroup
+              row
+              aria-label="Type"
+              name="Type"
+              value={curReco.type}
+              onChange={(e) => updateReco('type', e.target.value)}
+            >
+              <FormControlLabel
+                value="CROSS_SELL"
+                control={<Radio color="primary" />}
+                label='Cross Sell'
+              />
+              <FormControlLabel
+                value='UP_SELL'
+                control={<Radio color="primary" />}
+                label='Up Sell'
+              />
+              <FormControlLabel
+                value='UPGRADE'
+                control={<Radio color="primary" />}
+                label='Upgrade'
+              />
+            </RadioGroup>
           </Box>
         </div>
       </Box>
 
-      <Box display="flex" mx={2} pb={2}>
+      <Box display="flex" m={2} pb={2}>
         <div>
           <Typography gutterBottom variant="h5">
             Level(s)
@@ -153,7 +178,7 @@ const Basic = ({
         </div>
       </Box>
 
-      <Box display="flex" mx={2}>
+      <Box display="flex" m={2}>
         <div>
           <Typography gutterBottom variant="h5">
             Source(s)
@@ -184,54 +209,11 @@ const Basic = ({
               label="Purchase"
             />
           </Box>
+
+          <Typography style={{ fontStyle: 'italic' }}>
+            Select no source means the same as "all sources are selected"
+          </Typography>
         </div>
-      </Box>
-
-      <Box display="flex">
-        <Box px={1} py={3} width="100%">
-          <TextField
-            fullWidth
-            label="Weight"
-            name="weight"
-            type="number"
-            value={curReco.weight}
-            onChange={handleChange}
-            InputProps={{ inputProps: { min: 0 } }}
-            variant="outlined"
-          />
-        </Box>
-
-        <Box px={1} width="100%" py={3}>
-          <SelectCustom
-            label="fallbackLocale"
-            onChangeSelect={(e) => setCurReco({ ...curReco, fallbackLocale: e.target.value })}
-            selectOptions={availableLocales}
-            value={curReco.fallbackLocale || ''}
-          />
-        </Box>
-      </Box>
-
-      <Box mx={2} pb={2}>
-        <Typography gutterBottom variant="h5">
-          Status
-        </Typography>
-
-        <Box display="flex" alignItems="center">
-          <FormControlLabel
-            control={(
-              <Switch
-                color="primary"
-                checked={curReco.status === 'ENABLED'}
-                name="status"
-              />
-            )}
-            onChange={() => updateReco(
-              'status',
-              curReco.status === 'ENABLED' ? 'DISABLED' : 'ENABLED',
-            )}
-            label={curReco.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
-          />
-        </Box>
       </Box>
     </CustomCard>
   )

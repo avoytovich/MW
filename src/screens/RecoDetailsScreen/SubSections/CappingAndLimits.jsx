@@ -1,159 +1,142 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 
 import {
   Box,
   Typography,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
   Grid,
-  Divider,
-  DialogActions,
+  TextField,
 } from '@material-ui/core';
 
+import DateRangePicker from '../../../components/utils/Modals/DateRangePicker';
 import CustomCard from '../../../components/utils/CustomCard';
+import { SelectCustom } from '../../../components/Inputs';
 import localization from '../../../localization';
 
-const DATE_VARIANTS = ['unlimited', 'after', 'before', 'between'];
+const validityPeriod = [
+  { id: 'after', value: 'after' },
+  { id: 'before', value: 'before' },
+  { id: 'between', value: 'between' },
+];
 
 const CappingAndLimits = ({ curReco, setCurReco }) => {
-  const curDate = curReco.startDate || new Date();
-  const curDateEnd = curReco.endDate || moment(curDate).add(1, 'day');
-  let curVariant = 'unlimited';
+  const [validPeriod, setValidPeriod] = useState('between');
 
-  if (curReco.startDate && curReco.endDate) {
-    curVariant = 'between';
-  } else if (curReco.startDate) {
-    curVariant = 'after';
-  } else if (curReco.endDate) {
-    curVariant = 'before';
-  }
+  useEffect(() => {
+    if(validPeriod === 'between') return;
 
-  const [variant, setVariant] = useState(curVariant);
-  const [date, setDate] = useState(curDate);
-  const [dateEnd, setDateEnd] = useState(curDateEnd);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const applyDate = () => {
     const newReco = { ...curReco };
 
-    delete newReco.startDate;
-    delete newReco.endDate;
-
-    if (variant === 'between') {
-      newReco.startDate = moment(date).valueOf();
-      newReco.endDate = moment(dateEnd).valueOf();
-    } else if (variant === 'after') {
-      newReco.startDate = moment(date).toISOString();
-    } else if (variant === 'before') {
-      newReco.endDate = moment(dateEnd).toISOString();
+    if (validPeriod === 'before') {
+      delete newReco.startDate;
+    } else if (validPeriod === 'after') {
+      delete newReco.endDate;
     }
 
-    setModalOpen(false);
     setCurReco(newReco);
+  }, [validPeriod]);
+
+  useEffect(() => {
+    let curVariant = 'between';
+  
+    if (curReco.startDate && curReco.endDate) {
+      curVariant = 'between';
+    } else if (curReco.startDate) {
+      curVariant = 'after';
+    } else if (curReco.endDate) {
+      curVariant = 'before';
+    }
+
+    setValidPeriod(curVariant);
+  }, []);
+
+  const selectionRange = {
+    startDate: curReco?.startDate ? new Date(curReco?.startDate) : new Date(),
+    endDate: curReco?.endDate ? new Date(curReco?.endDate) : new Date(),
+    key: 'selection',
   };
 
-  const setInit = () => {
-    setModalOpen(false);
+  const handleSelect = (ranges) => {
+    const { startDate, endDate } = ranges;
 
-    setTimeout(() => {
-      setVariant(curVariant);
-      setDate(curDate || new Date());
-      setDateEnd(curDateEnd || new Date());
-    }, 300);
+    setCurReco({
+      ...curReco,
+      startDate: moment(startDate).valueOf(),
+      endDate: moment(endDate).valueOf(),
+    });
   };
 
   return (
-    <>
-      <CustomCard title='Capping and limits'>
-        <Box display="flex" mx={2} pt={2} alignItems='center'>
-          <Typography variant='h5'>Period of validity:</Typography>
-
-          <Button color='primary' onClick={() => setModalOpen(true)} style={{ marginLeft: 15 }}>
-            {variant}
-            {variant !== 'unlimited' && (
-              <Typography variant='h6' style={{ marginLeft: 10 }}>
-                {moment(curDate).format('MM/DD/YYYY')}
-                {variant === 'between' && ` - ${moment(curDateEnd).format('MM/DD/YYYY')}`}
-              </Typography>
-            )}
-          </Button>
+    <CustomCard>
+      <Grid item md={12} xs={12}>
+        <Box p={2}>
+          <Typography variant='h5'>{localization.t('labels.periodOfValidity')}</Typography>
         </Box>
-      </CustomCard>
+      </Grid>
 
-      <Dialog
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        aria-labelledby='date-sub-filters'
-      >
-        <DialogTitle id='date-sub-filters'>
-          {DATE_VARIANTS.map((v) => (
-            <Button
-              key={v}
-              color={variant === v ? 'primary' : 'inherit'}
-              onClick={() => setVariant(v)}
-            >
-              {v}
-            </Button>
-          ))}
-        </DialogTitle>
+      <Grid container alignItems="center">
+        <Grid item md={3} sm={6}>
+          <Box py={2} pl={2}>
+            <SelectCustom
+              label='periodOfValidity'
+              onChangeSelect={(e) => setValidPeriod(e.target.value)}
+              selectOptions={validityPeriod}
+              value={validPeriod}
+            />
+          </Box>
+        </Grid>
 
-        {variant !== 'unlimited' && (
-          <DialogContent style={{ marginBottom: 20 }}>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <Grid container direction='column' justify='center' alignItems='center'>
-                <KeyboardDatePicker
-                  autoOk
-                  disableToolbar
-                  inputVariant='outlined'
-                  label={`Date ${variant === 'between' ? 'start' : variant}`}
-                  format='MM/DD/YYYY'
-                  value={date}
-                  onChange={(date_) => setDate(moment(date_).toISOString())}
+        <Grid item md={4} sm={6}>
+          {validPeriod === 'between' ? (
+            <Box p={2}>
+              <DateRangePicker
+                values={selectionRange}
+                handleChange={handleSelect}
+              />
+            </Box>
+          ) : validPeriod === 'after' ? (
+            <Box p={2}>
+              <form noValidate>
+                <TextField
+                  fullWidth
+                  name='startDate'
+                  value={
+                    curReco.startDate
+                      ? moment(curReco.startDate).format('YYYY-MM-DD')
+                      : ''
+                  }
+                  label={localization.t('labels.startDate')}
+                  type='date'
+                  variant='outlined'
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(e) => setCurReco({ ...curReco, startDate: moment(e.target.value).valueOf() })}
                 />
-
-                {variant === 'between' && (
-                  <KeyboardDatePicker
-                    style={{ marginTop: 20 }}
-                    autoOk
-                    disableToolbar
-                    inputVariant='outlined'
-                    label='Date end'
-                    format='MM/DD/YYYY'
-                    value={dateEnd}
-                    minDate={moment(date).add(1, 'day')}
-                    minDateMessage='End date should not be before start date'
-                    onChange={(date_) => setDateEnd(moment(date_).toISOString())}
-                  />
-                )}
-              </Grid>
-            </MuiPickersUtilsProvider>
-          </DialogContent>
-        )}
-
-        <Divider />
-
-        <DialogActions>
-          <Button color='secondary' onClick={setInit}>
-            {localization.t('forms.buttons.cancel')}
-          </Button>
-
-          <Button
-            color='primary'
-            disabled={variant === 'between' && moment(date).add(1, 'day').isAfter(dateEnd, 'day')}
-            onClick={applyDate}
-          >
-            {localization.t('forms.buttons.apply')}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </>
+              </form>
+            </Box>
+          ) : (
+            <Box p={2}>
+              <form noValidate>
+                <TextField
+                  fullWidth
+                  name='endDate'
+                  value={
+                    curReco.endDate
+                      ? moment(curReco.endDate).format('YYYY-MM-DD')
+                      : ''
+                  }
+                  label={localization.t('labels.endDate')}
+                  type='date'
+                  variant='outlined'
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(e) => setCurReco({ ...curReco, endDate: moment(e.target.value).valueOf() })}
+                />
+              </form>
+            </Box>
+          )}
+        </Grid>
+      </Grid>
+    </CustomCard>
   );
 };
 

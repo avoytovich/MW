@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 
 import { showNotification } from '../../redux/actions/HttpNotifications';
-
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import localization from '../../localization';
 import api from '../../api';
 import generateData from '../../services/useData/tableMarkups/orderDetails';
@@ -110,33 +110,25 @@ const OrderDetailsScreen = () => {
 
   return (
     <>
-      <Box display="flex" flexDirection="row" justifyContent="space-between">
-        <Box display="flex" flexDirection="column">
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-          >
-            <Box display="flex" flexDirection="row">
-              <Typography variant="body2" color="primary">
-                {localization.t('general.order')}
-                {' / '}
-              </Typography>
-              <Typography variant="body2" color="secondary">
-                {id}
-              </Typography>
-            </Box>
+      <Box display='flex' flexDirection='row' justifyContent='space-between'>
+        <Box display='flex' flexDirection='column'>
+          <Box mx={2}>
+            <CustomBreadcrumbs
+              url='/overview/orders'
+              section={localization.t('general.order')}
+              id={id}
+            />
           </Box>
           <Box py={2} mt={3}>
-            <Typography gutterBottom variant="h3">
+            <Typography gutterBottom variant='h3'>
               {id}
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center">
+          <Box display='flex' alignItems='center'>
             {customer && (
               <>
                 <Box pr={2}>
-                  <Typography variant="body2" gutterBottom>
+                  <Typography variant='body2' gutterBottom>
                     {localization.t('labels.customer')}
                   </Typography>
                 </Box>
@@ -153,14 +145,14 @@ const OrderDetailsScreen = () => {
           </Box>
         </Box>
 
-        <Box display="flex" alignItems="flex-end">
+        <Box display='flex' alignItems='flex-end'>
           <Button
-            aria-haspopup="true"
-            variant="contained"
-            color="primary"
-            aria-controls="checkoutMenu"
+            aria-haspopup='true'
+            variant='contained'
+            color='primary'
+            aria-controls='checkoutMenu'
             onClick={handleClick}
-            size="large"
+            size='large'
           >
           {localization.t('forms.buttons.actions')}
           </Button>
@@ -186,15 +178,15 @@ const OrderDetailsScreen = () => {
           </Menu>
         </Box>
       </Box>
-      <Box my={2} bgcolor="#fff">
+      <Box my={2} bgcolor='#fff'>
         <Tabs
           value={curTab}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor='primary'
+          textColor='primary'
           onChange={(event, newValue) => {
             setCurTab(newValue);
           }}
-          aria-label="disabled tabs example"
+          aria-label='disabled tabs example'
         >
           {tabLabels.map((tab) => (
             <Tab key={tab} label={localization.t(`labels.${tab}`)} />
@@ -204,9 +196,9 @@ const OrderDetailsScreen = () => {
       {curTab === 0 && orderRows && (
         <Grid container spacing={2}>
           <Grid item md={4} xs={12}>
-            <Box my={3} bgcolor="#fff" boxShadow={2} height="100%">
+            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
               <Box py={3} pl={2}>
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant='h4'>
                   {localization.t('labels.general')}
                 </Typography>
               </Box>
@@ -218,9 +210,9 @@ const OrderDetailsScreen = () => {
             </Box>
           </Grid>
           <Grid item md={4} xs={12}>
-            <Box my={3} bgcolor="#fff" boxShadow={2} height="100%">
+            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
               <Box py={3} pl={2}>
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant='h4'>
                   {localization.t('labels.endUser')}
                 </Typography>
               </Box>
@@ -229,9 +221,9 @@ const OrderDetailsScreen = () => {
             </Box>
           </Grid>
           <Grid item md={4} xs={12}>
-            <Box my={3} bgcolor="#fff" boxShadow={2} height="100%">
+            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
               <Box py={3} pl={2}>
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant='h4'>
                   {localization.t('labels.paymentAttempt1_1')}
                 </Typography>
               </Box>

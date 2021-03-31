@@ -9,15 +9,17 @@ const filterOptions = (all, selected, currentValue) => {
 const fromObjectToArray = (object, keyValue, defParam) => {
   const res = Object.keys({
     ...object,
-  }).map((item) => (keyValue === 'key'
-    ? {
-      key: item,
-      value: object[item],
-    }
-    : {
-      key: object[item],
-      value: item,
-    }));
+  }).map((item) =>
+    keyValue === 'key'
+      ? {
+          key: item,
+          value: object[item],
+        }
+      : {
+          key: object[item],
+          value: item,
+        },
+  );
   if (res.length === 0 && defParam) {
     res.push(defParam);
   }
@@ -38,4 +40,6 @@ const fromArrayToObject = (array, keyValue) => {
   return res;
 };
 
-export { filterOptions, fromObjectToArray, fromArrayToObject };
+const tabsLabels = ['general', 'cappingAndLimits', 'eligibility'];
+
+export { filterOptions, fromObjectToArray, fromArrayToObject, tabsLabels };
