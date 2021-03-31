@@ -55,6 +55,15 @@ const OrderDetailsScreen = () => {
     });
   };
 
+  const resyncPayment = () => {
+    api.resyncPayments(currentOrderData.id).then(() => {
+      dispatch(
+        showNotification(localization.t('general.updatesHaveBeenSaved')),
+      );
+    });
+    console.log('resyncPayments id', currentOrderData.id);
+  };
+
   useEffect(() => {
     let isCancelled = false;
 
@@ -153,7 +162,7 @@ const OrderDetailsScreen = () => {
             onClick={handleClick}
             size="large"
           >
-            Actions
+          {localization.t('forms.buttons.actions')}
           </Button>
           <Menu
             getContentAnchorEl={null}
@@ -169,12 +178,11 @@ const OrderDetailsScreen = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem>
-              <ConfirmationPopup />
+            <MenuItem><ConfirmationPopup currentOrderData={currentOrderData} id={id}/></MenuItem>
+            <MenuItem onClick={resyncPayment}>
+              <Button color="inherit" fullWidth>{localization.t('forms.buttons.resyncPayments')}</Button>
             </MenuItem>
-            <MenuItem>
-              <CancelOrderPopup />
-            </MenuItem>
+            <MenuItem><CancelOrderPopup currentOrderData={currentOrderData} id={id}/></MenuItem>
           </Menu>
         </Box>
       </Box>

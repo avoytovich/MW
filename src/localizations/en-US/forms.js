@@ -10,6 +10,10 @@ const Forms = {
     loginWithEmailAddress: 'or login with email address',
     forgotPassword: 'Forgot password',
     unlimited: 'Unlimited',
+    cancelOrder: 'Cancel Order',
+    cancelOrderPopupText: 'Are you sure you want to cancel Order, and refund payment to the end-user ?',
+    sendConfirmationEmail: 'Send confirmation mail again',
+    sendConfirmationEmailText: 'Send confirmation email on the following email address:',
   },
   inputs: {
     username: 'Username',
@@ -89,6 +93,12 @@ const Forms = {
     exact: 'Is Exactly',
     contains: 'Contains',
     googleLogin: 'LOGIN WITH GOOGLE',
+    actions: 'ACTIONS',
+    resyncPayments: 'Resync Payments',
+    resyncPaymentsNo: 'No',
+    resyncPaymentsConfirmed:'Yes, confirmed',
+    confirmationEmailCancel: 'Cancel',
+    confirmationEmailSend: 'Send',
   },
   links: {
     signUp: 'Sign Up',
@@ -139,6 +149,7 @@ const Forms = {
       invoice: 'Invoice banner',
       logo: 'Logo',
     },
+    confirmationEmailAddress: 'Email Address',
   },
 };
 

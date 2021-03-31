@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState }  from 'react';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 import SelectCustom from './../../../components/Inputs/SelectCustom';
 import { orderCancelAction } from '../../../services/selectOptions/selectOptions';
+import localization from '../../../localization';
+import api from '../../../api';
+
 import PropTypes from 'prop-types';
 
 
-const CancelOrderPopup = ({ props }) => {
-  const [open, setOpen] = React.useState(false);
+const CancelOrderPopup = ({ currentOrderData, id }) => {
+  const [open, setOpen] = useState(false);
+  const [cancelOrderReason, setCancelOrderReason] = useState('');
+
+  const cancelOrder = () => {
+    api.cancelOrder(currentOrderData.id, cancelOrderReason).then(() => {
+      dispatch(
+        showNotification(localization.t('general.updatesHaveBeenSaved')),
+      );
+    });
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -18,26 +30,30 @@ const CancelOrderPopup = ({ props }) => {
 
   return (
     <>
-      <Button fullWidth display="flex" justifyContent="flex-start" color="inherit" onClick={handleClickOpen}>
-        Cancel Order
+      <Button fullWidth display="flex" color="inherit" onClick={handleClickOpen}>
+        {localization.t('forms.text.cancelOrder')}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>
           <DialogContentText color="inherit">
-            Are you sure you want to cancel Order, and refund payment to the end-user ?
+            {localization.t('forms.text.cancelOrderPopupText')}
           </DialogContentText>
 
           <SelectCustom
             selectOptions={orderCancelAction}
+            value={cancelOrderReason}
+            onChangeSelect={(e) => {
+              setCancelOrderReason(e.target.value)
+            }}
             label={'cancelOrder'}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            No
+            {localization.t('forms.buttons.resyncPaymentsNo')}
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Yes, confirmed
+          <Button onClick={ () => { handleClose(); cancelOrder() }} color="primary">
+            {localization.t('forms.buttons.resyncPaymentsConfirmed')}
           </Button>
         </DialogActions>
       </Dialog>
