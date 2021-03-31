@@ -38,23 +38,12 @@ describe('Side Navigation', () => {
 
   context('Nav items actions', () => {
     it('should have the active navigation changed and highlighted on click', () => {
-      for (let i = 0; i < navigationItems.length; i++) {
-        for (let z = 0; z < navigationItems[i].items.length; z++) {
-          cy.get(`.listItem a[href="${navigationItems[i].items[z].href}"]`).click().should('have.class', 'active');
-          cy.url().should('contain', navigationItems[i].items[z].href);
-        };
-      };
-    });
-  });
-
-  context('Nav items actions', () => {
-    it('should have the active navigation changed and highlighted on click', () => {
-      for (let i = 0; i < navigationItems.length; i++) {
-        for (let z = 0; i < navigationItems[i].length; z++) {
-          cy.get(`.listItem a[href="${navigationItems[i].items[z].href}"]`).click().should('have.class', 'active');
-          cy.url().should('contain', navigationItems[i].items[z].href);
-        };
-      };
+      navigationItems.forEach(section => {
+        section.items.forEach(item => {
+          cy.get(`.listItem a[href="${item.href}"]`).click().should('have.class', 'active');
+          cy.url().should('contain', item.href);
+        })
+      })
     });
   });
 
