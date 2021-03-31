@@ -23,8 +23,12 @@ const Products = ({ orderData }) => {
   }, []);
 
   return (
-    <CustomCard title="Products">
-      <Box border={1} borderColor="secondary.main">
+    <CustomCard title="Products" divider={false}>
+      <Box
+        border={1}
+        borderRadius="borderRadius"
+        borderColor="#c7c7c7"
+      >
         <OrderDetailsTableComponent
           showColumn={defaultShow}
           tableData={products}

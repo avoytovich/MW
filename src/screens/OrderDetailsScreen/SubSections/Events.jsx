@@ -23,8 +23,12 @@ const Events = ({ orderData }) => {
   }, []);
 
   return (
-    <CustomCard title="Events">
-      <Box border={1} borderColor="secondary.main">
+    <CustomCard title="Events" divider={false}>
+      <Box
+        border={1}
+        borderRadius="borderRadius"
+        borderColor="#c7c7c7"
+      >
         <OrderDetailsTableComponent
           showColumn={defaultShow}
           tableData={events}

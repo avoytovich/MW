@@ -6,7 +6,7 @@ import {
   Divider,
 } from '@material-ui/core';
 
-const CustomCard = ({ title, children, ...other }) => (
+const CustomCard = ({ title, children, divider, ...other }) => (
   <Box
     my={3}
     bgcolor='#fff'
@@ -17,7 +17,7 @@ const CustomCard = ({ title, children, ...other }) => (
   >
     <Typography gutterBottom variant='h4'>{title}</Typography>
 
-    <Divider light />
+    {divider === false ? null : <Divider light />}
 
     {children}
   </Box>
