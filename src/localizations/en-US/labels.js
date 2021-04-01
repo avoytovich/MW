@@ -259,6 +259,8 @@ const labels = {
   customerId: 'Customer ID',
   events: 'Events',
   clientId: 'Client ID',
+  byProduct: 'By Product',
+  byParentProducts: 'By Parent Products',
 };
 
 export default labels;

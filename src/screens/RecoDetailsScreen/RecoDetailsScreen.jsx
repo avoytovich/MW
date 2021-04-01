@@ -12,7 +12,8 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
-
+import { recoRequiredFields, formateProductOptions } from './utils';
+import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 
@@ -34,7 +35,11 @@ const RecoDetailsScreen = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [curProducts, setProducts] = useState(null);
   const [curTab, setCurTab] = useState(0);
-
+  const [selectOptions, setSelectOptions] = useState({
+    stores: null,
+    products: null,
+    productsByParent: null,
+  });
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
@@ -46,7 +51,7 @@ const RecoDetailsScreen = () => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
-      setReco(curReco);
+      window.location.reload();
     });
   };
 
@@ -55,19 +60,30 @@ const RecoDetailsScreen = () => {
 
     return () => setHasChanges(false);
   }, [curReco, reco]);
-
   useEffect(() => {
     api.getRecoById(id).then(({ data }) => {
-      setReco(data);
-      setCurReco(data);
-
-      api
-        .getProducts(0, `&customerId=${data.customerId}`)
-        .then(({ data: { items: products } }) => {
-          const productsObj = [...products.map((p) => ({ id: p.id, name: p.genericName }))];
-
-          setProducts(productsObj);
-        });
+      const checkedReco = recoRequiredFields(data);
+      setReco(checkedReco);
+      setCurReco(checkedReco);
+      Promise.allSettled([
+        api.getStores(0, `&customerId=${data.customerId}`),
+        api.getProducts(0, `&customerId=${data.customerId}`),
+        api.getProducts(0, `&customerId=${data.customerId}&parentId=${null}`),
+      ]).then(([storeOptions, productOptions, parentProductOptions]) =>
+        setSelectOptions({
+          ...selectOptions,
+          stores:
+            structureSelectOptions(
+              storeOptions.value?.data.items,
+              'displayName',
+            ) || [],
+          products:
+            formateProductOptions(productOptions.value?.data?.items) || [],
+          productsByParent:
+            formateProductOptions(parentProductOptions.value?.data?.items) ||
+            [],
+        }),
+      );
     });
   }, []);
 
@@ -98,7 +114,7 @@ const RecoDetailsScreen = () => {
   if (curReco === null) return <LinearProgress />;
 
   return (
-    <div className="reco-details-screen">
+    <div className='reco-details-screen'>
       <CustomBreadcrumbs
         url='/marketing/recommendations'
         section={localization.t('general.recommendation')}
@@ -106,14 +122,16 @@ const RecoDetailsScreen = () => {
       />
 
       <Box py={2}>
-        <Typography gutterBottom variant="h3">{reco?.customerId}</Typography>
+        <Typography gutterBottom variant='h3'>
+          {reco?.customerId}
+        </Typography>
       </Box>
-      
-      <Box my={1} bgcolor="#fff">
+
+      <Box my={1} bgcolor='#fff'>
         <Tabs
           value={curTab}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor='primary'
+          textColor='primary'
           onChange={(e, newTab) => setCurTab(newTab)}
         >
           <Tab label='General' />
@@ -125,11 +143,11 @@ const RecoDetailsScreen = () => {
 
       <Zoom in={hasChanges}>
         <Button
-          id="save-reco-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
+          id='save-reco-button'
+          color='primary'
+          size='large'
+          type='submit'
+          variant='contained'
           onClick={saveIdentity}
         >
           Save
@@ -148,13 +166,15 @@ const RecoDetailsScreen = () => {
 
         {curTab === 1 && (
           <Eligibility
+            selectOptions={selectOptions}
             curReco={curReco}
             setCurReco={setCurReco}
-            products={[...curProducts]}
           />
         )}
 
-        {curTab === 2 && <CappingAndLimits curReco={curReco} setCurReco={setCurReco} />}
+        {curTab === 2 && (
+          <CappingAndLimits curReco={curReco} setCurReco={setCurReco} />
+        )}
 
         {curTab === 3 && (
           <Recommendations
