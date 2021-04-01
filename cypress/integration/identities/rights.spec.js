@@ -38,7 +38,7 @@ describe("Rights tab", () => {
       });
     });
   });
-  it.only("should have meta-roles displayed", () => {
+  it("should have meta-roles displayed", () => {
     cy.wait("@metaReq").then(({ response: { body } }) => {
       body.items.forEach(({ name }) => {
         cy.get(".rights-details-meta-roles").should("contain", name);
