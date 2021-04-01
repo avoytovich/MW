@@ -15,19 +15,13 @@ import { email } from '../../../services/helpers/inputValidators';
 import countriesOptions from '../../../services/selectOptions/countries';
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
-import { SelectWithChip, ModalChipInput } from '../../../components/Inputs';
+import { SelectWithChip } from '../../../components/Inputs';
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 
 const Eligibility = ({
   curDiscount,
-  curStores,
-  curProducts,
-  setStoresModalOpen,
-  setProductsModalOpen,
-  setParentProductsModalOpen,
   updateDiscount,
   setCurDiscount,
-  curProductsByParent,
   selectOptions,
   curMinCartAmount,
   setCurMinCartAmount,
@@ -44,26 +38,26 @@ const Eligibility = ({
           <FormControlLabel
             control={
               <Checkbox
-                name="MANUAL_RENEWAL"
-                color="primary"
+                name='MANUAL_RENEWAL'
+                color='primary'
                 checked={curDiscount?.sources?.indexOf('MANUAL_RENEWAL') >= 0}
               />
             }
             onChange={() =>
               updateDiscount('sources', 'MANUAL_RENEWAL', 'empty')
             }
-            label="Manual Renewal"
+            label='Manual Renewal'
           />
           <FormControlLabel
             control={
               <Checkbox
-                name="PURCHASE"
-                color="primary"
+                name='PURCHASE'
+                color='primary'
                 checked={curDiscount?.sources?.indexOf('PURCHASE') >= 0}
               />
             }
             onChange={() => updateDiscount('sources', 'PURCHASE', 'empty')}
-            label="Purchase"
+            label='Purchase'
           />
         </Box>
         <Box pt={2} pl={2}>
@@ -73,24 +67,24 @@ const Eligibility = ({
           <FormControlLabel
             control={
               <Checkbox
-                name="BUYER"
-                color="primary"
+                name='BUYER'
+                color='primary'
                 checked={curDiscount?.endUserTypes?.indexOf('BUYER') >= 0}
               />
             }
             onChange={() => updateDiscount('endUserTypes', 'BUYER', 'empty')}
-            label="Buyer"
+            label='Buyer'
           />
           <FormControlLabel
             control={
               <Checkbox
-                name="RESELLER"
-                color="primary"
+                name='RESELLER'
+                color='primary'
                 checked={curDiscount?.endUserTypes?.indexOf('RESELLER') >= 0}
               />
             }
             onChange={() => updateDiscount('endUserTypes', 'RESELLER', 'empty')}
-            label="Approved reseller"
+            label='Approved reseller'
           />
         </Box>
       </Grid>
@@ -106,7 +100,7 @@ const Eligibility = ({
         />
         <Box p={2}>
           <SelectWithChip
-            label="countries"
+            label='countries'
             value={curDiscount.countries}
             selectOptions={countriesOptions}
             onChangeSelect={(e) =>
@@ -129,31 +123,76 @@ const Eligibility = ({
       </Grid>
       <Grid item md={6} sm={12}>
         <Box p={2}>
-          <ModalChipInput
-            label="stores"
-            value={curStores || []}
-            handleOnClick={() => setStoresModalOpen(true)}
+          <SelectWithChip
+            label='stores'
+            value={curDiscount.storeIds}
+            selectOptions={selectOptions.stores}
+            onChangeSelect={(e) =>
+              setCurDiscount({
+                ...curDiscount,
+                storeIds: e.target.value,
+              })
+            }
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.storeIds].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                storeIds: newValue,
+              });
+            }}
           />
         </Box>
         <Box p={2}>
-          <ModalChipInput
-            label="products"
-            value={curProducts || []}
-            handleOnClick={() => setProductsModalOpen(true)}
+          <SelectWithChip
+            label='products'
+            value={curDiscount.productIds}
+            selectOptions={selectOptions.discountProducts}
+            onChangeSelect={(e) =>
+              setCurDiscount({
+                ...curDiscount,
+                productIds: e.target.value,
+              })
+            }
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.productIds].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                productIds: newValue,
+              });
+            }}
           />
         </Box>
         <Box p={2}>
-          <ModalChipInput
-            label="productsByParent"
-            value={curProductsByParent || []}
-            handleOnClick={() => setParentProductsModalOpen(true)}
+          <SelectWithChip
+            label='productsByParent'
+            value={curDiscount.parentProductIds}
+            selectOptions={selectOptions.parentProducts}
+            onChangeSelect={(e) =>
+              setCurDiscount({
+                ...curDiscount,
+                parentProductIds: e.target.value,
+              })
+            }
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.parentProductIds].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                parentProductIds: newValue,
+              });
+            }}
           />
         </Box>
       </Grid>
       <Grid item md={6} sm={12}>
         <Box p={2}>
           <SelectWithChip
-            label="productsByReference"
+            label='productsByReference'
             value={curDiscount.publisherRefIds}
             selectOptions={selectOptions.refProducts}
             onChangeSelect={(e) =>
@@ -175,7 +214,7 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <SelectWithChip
-            label="endUserGroups"
+            label='endUserGroups'
             value={curDiscount.endUserGroupIds}
             selectOptions={selectOptions.endUserGroups}
             onChangeSelect={(e) => {
@@ -221,13 +260,13 @@ const Eligibility = ({
             }}
             value={curDiscount.endUserEmails}
             multiple
-            id="tags-filled"
+            id='tags-filled'
             options={[]}
             freeSolo
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
                 <Chip
-                  variant="outlined"
+                  variant='outlined'
                   label={option}
                   {...getTagProps({ index })}
                 />
@@ -237,7 +276,7 @@ const Eligibility = ({
               <TextField
                 error={!!errorMessages.email}
                 helperText={errorMessages.email}
-                variant="outlined"
+                variant='outlined'
                 {...params}
                 label={localization.t('labels.endUserMails')}
               />
@@ -251,12 +290,6 @@ const Eligibility = ({
 
 Eligibility.propTypes = {
   curDiscount: PropTypes.object,
-  curStores: PropTypes.array,
-  curProducts: PropTypes.array,
-  setStoresModalOpen: PropTypes.func,
-  setParentProductsModalOpen: PropTypes.func,
-  setProductsModalOpen: PropTypes.func,
-  curProductsByParent: PropTypes.array,
   updateDiscount: PropTypes.func,
   setCurDiscount: PropTypes.func,
   selectOptions: PropTypes.object,

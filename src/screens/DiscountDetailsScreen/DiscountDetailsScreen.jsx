@@ -24,7 +24,6 @@ import api from '../../api';
 import DiscountSection from './DiscountSection';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import DialogWindows from './DialogWindows';
 
 import './discountDetailsScreen.scss';
 
@@ -38,16 +37,15 @@ const DiscountDetailsScreen = () => {
   const [discount, setDiscount] = useState(null);
   const [curDiscount, setCurDiscount] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
-  const [curStores, setStores] = useState(null);
-  const [curProducts, setProducts] = useState(null);
-  const [availStores, setAvailStores] = useState(null);
-  const [availProducts, setAvailProducts] = useState(null);
-  const [availParentProducts, setAvailParentProducts] = useState(null);
+
   const [selectOptions, setSelectOptions] = useState({
     refProducts: null,
     endUserGroups: null,
     countries: null,
     endUsers: null,
+    stores: null,
+    parentProducts: null,
+    discountProducts: null,
   });
 
   const [discountCodes, setDiscountCodes] = useState(null);
@@ -61,12 +59,6 @@ const DiscountDetailsScreen = () => {
 
   const [discountLabels, setDiscountLabels] = useState(null);
   const [curDiscountLabels, setCurDiscountLabels] = useState(null);
-
-  const [productsModal, setProductsModalOpen] = useState(false);
-  const [parentProductsModal, setParentProductsModalOpen] = useState(false);
-
-  const [storesModal, setStoresModalOpen] = useState(false);
-  const [curProductsByParent, setCurProductsByParent] = useState(null);
 
   const [amountType, setAmountType] = useState(null);
 
@@ -103,62 +95,6 @@ const DiscountDetailsScreen = () => {
         );
         window.location.reload();
       });
-    }
-  };
-
-  const removeItem = (item, type) => {
-    if (type === 'products') {
-      const newArr = [...curDiscount.productIds];
-
-      newArr.splice(newArr.indexOf(item.id), 1);
-      setCurDiscount((c) => ({ ...c, productIds: newArr }));
-      setProducts((p) => p.filter((pr) => pr.id !== item.id));
-      if (item.name !== 'Was removed') {
-        setAvailProducts((pr) => [...pr, item]);
-      }
-    } else if (type === 'stores') {
-      const newArr = [...curDiscount.storeIds];
-      newArr.splice(newArr.indexOf(item.id), 1);
-      setCurDiscount((c) => ({ ...c, storeIds: newArr }));
-      setStores((p) => p.filter((pr) => pr.id !== item.id));
-      setAvailStores((pr) => [...pr, item]);
-    } else if (type === 'parentProducts') {
-      const newArr = [...curDiscount.parentProductIds];
-      newArr.splice(newArr.indexOf(item.id), 1);
-      setCurDiscount((c) => ({ ...c, parentProductIds: newArr }));
-      setCurProductsByParent((p) => p.filter((pr) => pr.id !== item.id));
-      setAvailParentProducts((pr) => [...pr, item]);
-    }
-  };
-
-  const addItem = (item, type) => {
-    if (type === 'products') {
-      setCurDiscount((c) => {
-        const newProductIds = c.productIds
-          ? [...c.productIds, item.id]
-          : [...item.id];
-        return { ...c, productIds: newProductIds };
-      });
-      setProducts((p) => [...p, item]);
-      setAvailProducts((pr) => [...pr.filter((p) => p.id !== item.id)]);
-    } else if (type === 'stores') {
-      setCurDiscount((c) => {
-        const newStoreIds = c.storeIds
-          ? [...c.storeIds, item.id]
-          : [...item.id];
-        return { ...c, storeIds: newStoreIds };
-      });
-      setStores((p) => [...p, item]);
-      setAvailStores((pr) => [...pr.filter((p) => p.id !== item.id)]);
-    } else if (type === 'parentProducts') {
-      setCurDiscount((c) => {
-        const newParentProductIds = c.parentProductIds
-          ? [...c.parentProductIds, item.id]
-          : [...item.id];
-        return { ...c, parentProductIds: newParentProductIds };
-      });
-      setCurProductsByParent((p) => [...p, item]);
-      setAvailParentProducts((pr) => [...pr.filter((p) => p.id !== item.id)]);
     }
   };
 
@@ -244,23 +180,9 @@ const DiscountDetailsScreen = () => {
           parentProducts,
           endUsersGroups,
         ]) => {
-          const availStoresObj = [];
-          const storesObj = [];
-          const availParProductsObj = [];
-          const parProductsObj = [];
-          const availDiscountProductsObj = [];
-          const productsDiscountObj = [];
           const refDiscountProductsObjs = [];
 
-          stores.data?.items.forEach((store) => {
-            if (data?.storeIds?.indexOf(store.id) >= 0) {
-              storesObj.push({ id: store.id, name: store.name });
-            } else {
-              availStoresObj.push({ id: store.id, name: store.name });
-            }
-          });
-
-          discountProducts.data?.items.forEach((product) => {
+          discountProducts.value?.data.items.forEach((product) => {
             if (
               product.publisherRefId &&
               !refDiscountProductsObjs.filter(
@@ -272,38 +194,7 @@ const DiscountDetailsScreen = () => {
                 value: product.publisherRefId,
               });
             }
-            if (data?.productIds?.indexOf(product.id) >= 0) {
-              productsDiscountObj.push({
-                id: product.id,
-                name: product.genericName || 'Was removed',
-              });
-            } else if (product.genericName) {
-              availDiscountProductsObj.push({
-                id: product.id,
-                name: product.genericName,
-              });
-            }
           });
-          parentProducts.data?.items.forEach((product) => {
-            if (data?.parentProductIds?.indexOf(product.id) >= 0) {
-              parProductsObj.push({
-                id: product.id,
-                name: product.genericName,
-              });
-            } else {
-              availParProductsObj.push({
-                id: product.id,
-                name: product.genericName,
-              });
-            }
-          });
-          setAvailStores(availStoresObj);
-          setStores(storesObj);
-
-          setAvailProducts(availDiscountProductsObj);
-          setProducts(productsDiscountObj);
-          setAvailParentProducts(availParProductsObj);
-          setCurProductsByParent(parProductsObj);
           setSelectOptions({
             ...selectOptions,
             endUsers:
@@ -311,6 +202,18 @@ const DiscountDetailsScreen = () => {
             refProducts: refDiscountProductsObjs || [],
             endUserGroups:
               structureSelectOptions(endUsersGroups.data?.items, 'name') || [],
+            stores:
+              structureSelectOptions(stores.value?.data.items, 'name') || [],
+            parentProducts:
+              structureSelectOptions(
+                parentProducts.value?.data.items,
+                'genericName',
+              ) || [],
+            discountProducts:
+              structureSelectOptions(
+                discountProducts.value?.data.items,
+                'genericName',
+              ) || [],
           });
         },
       );
@@ -444,34 +347,12 @@ const DiscountDetailsScreen = () => {
             curMinCartAmount={curMinCartAmount}
             setCurMinCartAmount={setCurMinCartAmount}
             selectOptions={selectOptions}
-            curProductsByParent={curProductsByParent}
             curDiscount={curDiscount}
-            curStores={curStores}
-            curProducts={curProducts}
-            setStoresModalOpen={setStoresModalOpen}
-            setProductsModalOpen={setProductsModalOpen}
             updateDiscount={updateDiscount}
             setCurDiscount={setCurDiscount}
-            setParentProductsModalOpen={setParentProductsModalOpen}
           />
         </DiscountSection>
       )}
-      <DialogWindows
-        productsModal={productsModal}
-        setProductsModalOpen={setProductsModalOpen}
-        curProducts={curProducts}
-        availProducts={availProducts}
-        removeItem={removeItem}
-        addItem={addItem}
-        storesModal={storesModal}
-        curStores={curStores}
-        setStoresModalOpen={setStoresModalOpen}
-        availStores={availStores}
-        parentProductsModal={parentProductsModal}
-        setParentProductsModalOpen={setParentProductsModalOpen}
-        curProductsByParent={curProductsByParent}
-        availParentProducts={availParentProducts}
-      />
     </>
   );
 };
