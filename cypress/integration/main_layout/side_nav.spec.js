@@ -38,8 +38,22 @@ describe('Side Navigation', () => {
 
   context('Nav items actions', () => {
     it('should have the active navigation changed and highlighted on click', () => {
-      cy.get(`.listItem a[href="${navigationItems[0].items[1].href}"]`).click().should('have.class', 'active');
-      cy.url().should('contain', navigationItems[0].items[1].href);
+      navigationItems.forEach(section => {
+        section.items.forEach(item => {
+          cy.get(`.listItem a[href="${item.href}"]`).click().should('have.class', 'active');
+          cy.url().should('contain', item.href);
+        })
+      })
     });
   });
+
+  context('Customer selection', () => {
+    it('should display customer select dropbox', () => {
+      cy.get('#customers-select').scrollIntoView().should('be.visible');
+    })
+    it('should display customers list after click on dropdown', () => {
+      cy.get('#customers-select').click();
+      cy.get('[aria-controls=customers-select-popup]').should('be.visible')
+    })
+  })
 });

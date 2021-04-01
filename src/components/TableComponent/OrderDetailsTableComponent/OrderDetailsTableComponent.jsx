@@ -117,7 +117,10 @@ const TableComponent = ({
               </Grid>
             ) : (
               <Grid item xs zeroMinWidth key={header.value}>
-                <Box border={1} borderColor="secondary.main" p={3} >
+                <Box
+                  display='flex'
+                  height={1}
+                >
                   <Typography
                     variant="h6"
                     className="tableHeader"

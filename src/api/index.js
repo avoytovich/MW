@@ -91,7 +91,6 @@ const api = {
   },
   addNewPrice(data) {
     const url = '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
-    
     return axiosInstance({
       method: 'post',
       url,
@@ -109,7 +108,48 @@ const api = {
       data,
     });
   },
+  addNewDiscount(data) {
+    const url =
+      '/discounts?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
 
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  sendConfirmationMail(customerId, data) {
+    const url = `/orders/${customerId}/email/send?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  resyncPayments(customerId) {
+    const url = `/payment-proxy/payments/${customerId}/resync?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'post',
+      url,
+    });
+  },
+  cancelOrder(customerId, reason) {
+    const url = `/orders/${customerId}/fullcancel?dbVersion=27&cancellationReason=${reason}&reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'post',
+      url,
+    });
+  },
+
+  addNewIdentity(data) {
+    const url =
+      '/iam/identities?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
