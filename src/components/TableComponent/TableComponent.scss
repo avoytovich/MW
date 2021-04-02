@@ -30,22 +30,26 @@
   }
   .icons {
     cursor: pointer;
-    margin-left: 10px;
+    margin-left: 2px;
   }
   .deleteIcon {
-    color: $deleteIcon;
+    color: #959595;
   }
   .copyIcon {
-    color: $copyIcon;
+    color: #959595;
   }
   .editIcon {
-    color: $editIcon;
+    color: #959595;;
   }
   .statusEnabled {
     color: $copyIcon;
   }
   .statusDisable {
     color: $deleteIcon;
+  }
+
+  .deleteIcon:hover, .copyIcon:hover, .editIcon:hover {
+    color:#4791dc;
   }
 }
 .tableHeaderGrid {
@@ -55,6 +59,7 @@
   .tableHeader {
     display: inherit;
     white-space: nowrap;
+    // text-align: left;
   }
 }
 
@@ -64,7 +69,12 @@
     .importExportFab {
       margin: 20px;
       padding: 15px;
-      color: #fff;
+      background-color: #f9f9f9;
+      box-shadow: none;
+      color: #959595;
+      :hover {
+        color:#4791dc;
+      }
       .importExportIcon {
         left: -4px;
         position: relative;
@@ -75,7 +85,12 @@
     margin: 20px;
     padding: 15px;
     margin-left: -10px;
-    background-color: $deleteIcon;
+    background-color: #f9f9f9;
+    box-shadow: none;
+    color: #959595;
+    :hover {
+      color:#4791dc;
+    }
     .deleteIcon {
       left: -4px;
       position: relative;
