@@ -35,10 +35,13 @@ const RecoDetailsScreen = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [curProducts, setProducts] = useState(null);
   const [curTab, setCurTab] = useState(0);
+  const [recoSelectionMode, setRecSelectionMode] = useState(null);
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
     products: null,
     productsByParent: null,
+    recoByProduct: null,
+    recoByParent: null,
   });
   const handleChange = (e) => {
     e.persist();
@@ -63,30 +66,48 @@ const RecoDetailsScreen = () => {
   useEffect(() => {
     api.getRecoById(id).then(({ data }) => {
       const checkedReco = recoRequiredFields(data);
-      setReco(checkedReco);
-      setCurReco(checkedReco);
+      setRecSelectionMode(data.productIds ? 'fixedList' : 'listAssociation');
+      setReco(JSON.parse(JSON.stringify(checkedReco)));
+      setCurReco(JSON.parse(JSON.stringify(checkedReco)));
       Promise.allSettled([
         api.getStores(0, `&customerId=${data.customerId}`),
         api.getProducts(0, `&customerId=${data.customerId}`),
         api.getProducts(0, `&customerId=${data.customerId}&parentId=${null}`),
-      ]).then(([storeOptions, productOptions, parentProductOptions]) =>
-        setSelectOptions({
-          ...selectOptions,
-          stores:
-            structureSelectOptions(
-              storeOptions.value?.data.items,
-              'displayName',
-            ) || [],
-          products:
-            formateProductOptions(productOptions.value?.data?.items) || [],
-          productsByParent:
-            formateProductOptions(parentProductOptions.value?.data?.items) ||
-            [],
-        }),
+        api.getProducts(0, `&customerId=${data.customerId}&status=ENABLED`),
+        api.getProducts(
+          0,
+          `&customerId=${data.customerId}&parentId=${null}&status=ENABLED`,
+        ),
+      ]).then(
+        ([
+          storeOptions,
+          productOptions,
+          parentProductOptions,
+          recoByProductOptions,
+          recoByParentOptions,
+        ]) =>
+          setSelectOptions({
+            ...selectOptions,
+            stores:
+              structureSelectOptions(
+                storeOptions.value?.data.items,
+                'displayName',
+              ) || [],
+            products:
+              formateProductOptions(productOptions.value?.data?.items) || [],
+            productsByParent:
+              formateProductOptions(parentProductOptions.value?.data?.items) ||
+              [],
+            recoByProduct:
+              formateProductOptions(recoByProductOptions.value?.data?.items) ||
+              [],
+            recoByParent:
+              formateProductOptions(recoByParentOptions.value?.data?.items) ||
+              [],
+          }),
       );
     });
   }, []);
-
   const updateReco = (type, value, selections) => {
     let setValue = value;
 
@@ -120,13 +141,11 @@ const RecoDetailsScreen = () => {
         section={localization.t('general.recommendation')}
         id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
       />
-
       <Box py={2}>
         <Typography gutterBottom variant='h3'>
           {reco?.customerId}
         </Typography>
       </Box>
-
       <Box my={1} bgcolor='#fff'>
         <Tabs
           value={curTab}
@@ -137,10 +156,9 @@ const RecoDetailsScreen = () => {
           <Tab label='General' />
           <Tab label='Eligibility' />
           <Tab label='Capping and limits' />
-          <Tab label='Recommendations' disabled={!Array.isArray(curProducts)} />
+          <Tab label='Recommendations' />
         </Tabs>
       </Box>
-
       <Zoom in={hasChanges}>
         <Button
           id='save-reco-button'
@@ -153,7 +171,6 @@ const RecoDetailsScreen = () => {
           Save
         </Button>
       </Zoom>
-
       <Box pt={1}>
         {curTab === 0 && (
           <Basic
@@ -178,9 +195,11 @@ const RecoDetailsScreen = () => {
 
         {curTab === 3 && (
           <Recommendations
+            recoSelectionMode={recoSelectionMode}
+            setRecSelectionMode={setRecSelectionMode}
+            selectOptions={selectOptions}
             curReco={curReco}
             setCurReco={setCurReco}
-            products={[...curProducts]}
           />
         )}
       </Box>
