@@ -179,7 +179,7 @@ const api = {
   },
 
   getProducts(page = 0, filters, sortParams) {
-    let url = `/products?format=short&parentId=null&size=50&page=${page}`;
+    let url = `/products?format=full&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
