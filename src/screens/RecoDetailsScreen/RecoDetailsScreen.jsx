@@ -12,7 +12,11 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
-import { recoRequiredFields, formateProductOptions } from './utils';
+import {
+  recoRequiredFields,
+  formateProductOptions,
+  fromArrayToObj,
+} from './utils';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -33,9 +37,7 @@ const RecoDetailsScreen = () => {
   const [reco, setReco] = useState(null);
   const [curReco, setCurReco] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
-  const [curProducts, setProducts] = useState(null);
   const [curTab, setCurTab] = useState(0);
-  const [recoSelectionMode, setRecSelectionMode] = useState(null);
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
     products: null,
@@ -48,9 +50,17 @@ const RecoDetailsScreen = () => {
     const { name, value } = e.target;
     setCurReco({ ...curReco, [name]: value });
   };
-
   const saveIdentity = () => {
-    api.updateRecoById(id, curReco).then(() => {
+    const objToSend = { ...curReco };
+    if (curReco.function === 'idToIdsRecoRule') {
+      delete objToSend.productIds;
+      objToSend.byParentProductIds = fromArrayToObj(curReco.byParentProductIds);
+      objToSend.byProductIds = fromArrayToObj(curReco.byProductIds);
+    } else {
+      delete objToSend.byParentProductIds;
+      delete objToSend.byProductIds;
+    }
+    api.updateRecoById(id, objToSend).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
@@ -66,7 +76,6 @@ const RecoDetailsScreen = () => {
   useEffect(() => {
     api.getRecoById(id).then(({ data }) => {
       const checkedReco = recoRequiredFields(data);
-      setRecSelectionMode(data.productIds ? 'fixedList' : 'listAssociation');
       setReco(JSON.parse(JSON.stringify(checkedReco)));
       setCurReco(JSON.parse(JSON.stringify(checkedReco)));
       Promise.allSettled([
@@ -156,7 +165,7 @@ const RecoDetailsScreen = () => {
           <Tab label='General' />
           <Tab label='Eligibility' />
           <Tab label='Capping and limits' />
-          <Tab label='Recommendations' />
+          <Tab label='Recommendations' disabled={!selectOptions.recoByParent} />
         </Tabs>
       </Box>
       <Zoom in={hasChanges}>
@@ -195,8 +204,6 @@ const RecoDetailsScreen = () => {
 
         {curTab === 3 && (
           <Recommendations
-            recoSelectionMode={recoSelectionMode}
-            setRecSelectionMode={setRecSelectionMode}
             selectOptions={selectOptions}
             curReco={curReco}
             setCurReco={setCurReco}

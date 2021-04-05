@@ -3,37 +3,53 @@ const defRecoObject = {
   eligibleStoreIds: [],
   eligibleParentProductIds: [],
   productIds: [],
-  byProductIds: [],
-  byParentProductIds: [],
+  byProductIds: {},
+  byParentProductIds: {},
 };
 
 const fromObjectToArray = (object, keyName) => {
-  const res = Object.keys({
-    ...object,
-  }).map((item, index) => ({
-    key: `${index}_${keyName}`,
-    keyValue: item,
-    value: object[item],
-  }));
+  if (Object.keys(object).length === 0) {
+    return [
+      {
+        key: `0_${keyName}`,
+        keyValue: '',
+        value: [],
+      },
+    ];
+  } else {
+    const res = Object.keys({
+      ...object,
+    }).map((item, index) => ({
+      key: `${index}_${keyName}`,
+      keyValue: item,
+      value: object[item],
+    }));
 
-  return res;
+    return res;
+  }
 };
-
+const fromArrayToObj = (array) => {
+  const resObject = {};
+  array.forEach((item) => {
+    resObject[item.keyValue] = item.value;
+  });
+  return resObject;
+};
 const recoRequiredFields = (reco) => {
   let resObj = { ...defRecoObject, ...reco };
-
-  if (reco.byProductIds) {
-    const newByProductIds = fromObjectToArray(reco.byProductIds, 'productId');
-    resObj = { ...resObj, byProductIds: newByProductIds };
-  }
-  if (reco.byParentProductIds) {
-    const newByParentProductIds = fromObjectToArray(
-      reco.byParentProductIds,
-      'parentProductId',
-    );
-    resObj = { ...resObj, byParentProductIds: newByParentProductIds };
-  }
-  return resObj;
+  const newByProductIds = fromObjectToArray(
+    resObj.byProductIds,
+    'newByProductIds',
+  );
+  const newByParentProductIds = fromObjectToArray(
+    resObj.byParentProductIds,
+    'byParentProductIds',
+  );
+  return {
+    ...resObj,
+    byParentProductIds: newByParentProductIds,
+    byProductIds: newByProductIds,
+  };
 };
 const formateProductOptions = (options) => {
   let res = [];
@@ -60,4 +76,5 @@ export {
   formateProductOptions,
   fromObjectToArray,
   filterOptions,
+  fromArrayToObj,
 };

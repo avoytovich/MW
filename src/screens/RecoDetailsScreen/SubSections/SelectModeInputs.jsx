@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Grid } from '@material-ui/core';
+import { Box, Grid, Typography, IconButton } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { filterOptions } from '../utils';
+import localization from '../../../localization';
 
 import { SelectCustom, SelectWithChip } from '../../../components/Inputs';
 
@@ -17,9 +18,40 @@ const SelectModeInputs = ({
   curKey,
   curReco,
 }) => {
-  const handleRemove = (removeKey) => {};
-  const handleAdd = () => {};
+  const handleRemove = (index) => {
+    if (index === 0 && curValue.length === 1) {
+      setCurReco({
+        ...curReco,
+        [curKey]: [
+          {
+            key: `0_${curKey}`,
+            keyValue: '',
+            value: [],
+          },
+        ],
+      });
+    } else {
+      const newValue = [...curValue];
+      newValue.splice(index, 1);
+      setCurReco({ ...curReco, [curKey]: newValue });
+    }
+  };
 
+  const handleAdd = () => {
+    if (
+      curValue[curValue.length - 1].keyValue !== '' &&
+      curValue[curValue.length - 1].value.length > 0
+    ) {
+      const key = `${
+        Number(curValue[curValue.length - 1].key.split('_')[0]) + 1
+      }_${curKey}`;
+
+      setCurReco({
+        ...curReco,
+        [curKey]: [...curValue, { key, keyValue: '', value: [] }],
+      });
+    }
+  };
   return (
     <Grid container alignItems='center'>
       {curValue.map((item, index) => (
@@ -42,7 +74,7 @@ const SelectModeInputs = ({
               />
             </Box>
           </Grid>
-          <Grid item xs={7}>
+          <Grid item xs={6}>
             <Box p={2}>
               <SelectWithChip
                 label={labels[1]}
@@ -68,16 +100,44 @@ const SelectModeInputs = ({
               />
             </Box>
           </Grid>
-          <Grid item xs={1} className='iconsWrapper'>
-            {index === 0 ? (
-              <AddCircleIcon color='primary' onClick={handleAdd} />
-            ) : (
-              <ClearIcon
-                color='secondary'
-                onClick={() => handleRemove(item.key)}
-              />
-            )}
+          <Grid item xs={2} className='iconsWrapper'>
+            <Box display='flex'>
+              <IconButton
+                color='primary'
+                disabled={
+                  curValue.length === 1 &&
+                  item.keyValue === '' &&
+                  item.value.length === 0
+                }
+                onClick={() => handleRemove(index)}
+              >
+                <ClearIcon color='secondary' />
+              </IconButton>
+              {index === 0 && (
+                <IconButton
+                  color='primary'
+                  onClick={handleAdd}
+                  disabled={
+                    curValue[curValue.length - 1].keyValue === '' ||
+                    curValue[curValue.length - 1].value.length === 0
+                  }
+                >
+                  <AddCircleIcon />
+                </IconButton>
+              )}
+            </Box>
           </Grid>
+          {item.value.find((el) => el === item.keyValue) && (
+            <Grid item xs={12}>
+              <Box px={2} pb={2}>
+                <Typography color='error'>
+                  {localization.t(
+                    'errorNotifications.sourceProductIsAmongstItsOwnRecommendations',
+                  )}
+                </Typography>
+              </Box>
+            </Grid>
+          )}
         </Fragment>
       ))}
     </Grid>

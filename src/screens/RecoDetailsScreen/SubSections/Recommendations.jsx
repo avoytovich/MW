@@ -12,13 +12,7 @@ import { SelectWithChip } from '../../../components/Inputs';
 import SelectModeInputs from './SelectModeInputs';
 import CustomCard from '../../../components/utils/CustomCard';
 
-const Recommendations = ({
-  curReco,
-  selectOptions,
-  setCurReco,
-  recoSelectionMode,
-  setRecSelectionMode,
-}) => {
+const Recommendations = ({ curReco, selectOptions, setCurReco }) => {
   return (
     <CustomCard>
       <Box p={2}>
@@ -28,24 +22,28 @@ const Recommendations = ({
           <RadioGroup
             row
             name='RecoSelectionMode'
-            value={recoSelectionMode}
-            onChange={(e) => setRecSelectionMode(e.target.value)}
+            value={curReco.function}
+            onChange={(e) =>
+              setCurReco({
+                ...curReco,
+                function: e.target.value,
+              })
+            }
           >
             <FormControlLabel
-              value='fixedList'
+              value='predefinedIdsRecoRule'
               control={<Radio color='primary' />}
               label='Fixed list of products'
             />
             <FormControlLabel
-              value='listAssociation'
+              value='idToIdsRecoRule'
               control={<Radio color='primary' />}
               label='Product list association'
             />
           </RadioGroup>
         </Box>
       </Box>
-
-      {recoSelectionMode === 'fixedList' ? (
+      {curReco.function === 'predefinedIdsRecoRule' ? (
         <Box py={2} mx={2} className='outlined-products'>
           <SelectWithChip
             label='product'
@@ -110,8 +108,6 @@ Recommendations.propTypes = {
   curReco: PropTypes.object,
   setCurReco: PropTypes.func,
   selectOptions: PropTypes.object,
-  recoSelectionMode: PropTypes.string,
-  setRecSelectionMode: PropTypes.func,
 };
 
 export default Recommendations;
