@@ -18,6 +18,8 @@ const errorNotifications = {
   timeout: 'Timeout',
   network: 'Network',
   otherError: 'Something went wrong, please try again later!',
+  sourceProductIsAmongstItsOwnRecommendations:
+    'Source product is amongst its own recommendations',
 };
 
 export default errorNotifications;
