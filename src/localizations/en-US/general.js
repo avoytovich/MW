@@ -56,6 +56,8 @@ const general = {
   discount: 'Discount',
   price: 'Price',
   new: 'New',
+  selectNoSourceMeans:
+    'Select no source means the same as "all sources are selected"',
 };
 
 export default general;

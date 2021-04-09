@@ -263,6 +263,22 @@ const labels = {
   byParentProducts: 'By Parent Products',
   sourceProduct: 'Source Product',
   targetProducts: 'Target Products',
+  recommendationName: 'Recommendation Name',
+  crossSell: 'Cross Sell',
+  upSell: 'Up Sell',
+  upgrade: 'Upgrade',
+  cart: 'Cart',
+  interstitial: 'Interstitial',
+  purchase: 'Purchase',
+  manualRenewal: 'Manual Renewal',
+  purchase: 'Purchase',
+  recommendationsSelectionMode: 'Recommendations Selection Mode',
+  fixedListOfProducts: 'Fixed List Of Products',
+  productListAssociation: 'Product list association',
+  byProduct: 'By product',
+  byParentProduct: 'By parent product',
+  sourceProduct: 'Source Product',
+  targetProducts: 'Target Products',
 };
 
 export default labels;

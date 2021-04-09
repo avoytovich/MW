@@ -5,6 +5,7 @@ import {
   TextField,
   CircularProgress,
   InputAdornment,
+  Box,
 } from '@material-ui/core';
 import localization from '../../localization';
 
@@ -20,15 +21,39 @@ const SelectCustom = ({
     fullWidth
     select
     required={isRequired}
-    variant="outlined"
+    variant='outlined'
     disabled={!selectOptions || isDisabled}
-    value={value || ''}
     InputProps={{
       startAdornment: !selectOptions && (
         <InputAdornment>
           <CircularProgress />
         </InputAdornment>
       ),
+    }}
+    SelectProps={{
+      value: value || '',
+      onChange: onChangeSelect,
+      renderValue: (selected) => {
+        const selectedItem = selectOptions?.find(
+          (item) => item.id === selected,
+        );
+        if (selectOptions)
+          return (
+            <Box
+              display='flex'
+              alignItems='center'
+              flexDirection='row'
+              flexWrap='wrap'
+            >
+              {selectedItem?.value || selected}
+            </Box>
+          );
+      },
+      MenuProps: {
+        getContentAnchorEl: null,
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        transformOrigin: { vertical: 'top', horizontal: 'center' },
+      },
     }}
     label={localization.t(`labels.${label}`)}
     onChange={onChangeSelect}

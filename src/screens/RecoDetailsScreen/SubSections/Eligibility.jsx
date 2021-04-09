@@ -12,6 +12,7 @@ const Eligibility = ({ curReco, setCurReco, selectOptions }) => {
       <Box display='flex' py={2} mx={1} flexDirection='column'>
         <Box width='100%'>
           <SelectWithChip
+            isRequired
             label='stores'
             value={curReco.eligibleStoreIds}
             selectOptions={selectOptions.stores}

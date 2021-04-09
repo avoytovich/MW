@@ -5,6 +5,13 @@ const defRecoObject = {
   productIds: [],
   byProductIds: {},
   byParentProductIds: {},
+  function: 'idToIdsRecoRule',
+  levels: ['PRODUCT'],
+  name: '',
+  sources: ['PURCHASE'],
+  status: 'ENABLED',
+  weight: 0,
+  type: 'CROSS_SELL',
 };
 
 const fromObjectToArray = (object, keyName) => {

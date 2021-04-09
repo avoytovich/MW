@@ -16,6 +16,7 @@ import {
   structureSelectOptions,
   discountRequiredFields,
 } from '../../services/helpers/dataStructuring';
+import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import General from './SubSections/General';
 import Eligibility from './SubSections/Eligibility';
@@ -81,8 +82,6 @@ const DiscountDetailsScreen = () => {
     }
     if (id === 'add') {
       api.addNewDiscount(res).then((res) => {
-        const location = res.headers.location.split('/');
-        const id = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
@@ -243,17 +242,7 @@ const DiscountDetailsScreen = () => {
     setCurDiscount((c) => ({ ...c, [type]: setValue }));
   };
   if (id === 'add' && !nxState.selectedCustomer.id)
-    return (
-      <Box textAlign='center'>
-        <Typography gutterBottom variant='h4'>
-          {localization.t('general.noCustomer')}
-        </Typography>
-
-        <Typography gutterBottom variant='h5'>
-          {localization.t('general.selectCustomer')}
-        </Typography>
-      </Box>
-    );
+    return <SelectCustomerNotification />;
 
   if (curDiscount === null) return <LinearProgress />;
 
