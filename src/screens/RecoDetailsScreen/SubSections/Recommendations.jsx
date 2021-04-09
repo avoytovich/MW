@@ -11,13 +11,15 @@ import {
 import { SelectWithChip } from '../../../components/Inputs';
 import SelectModeInputs from './SelectModeInputs';
 import CustomCard from '../../../components/utils/CustomCard';
+import localization from '../../../localization';
 
 const Recommendations = ({ curReco, selectOptions, setCurReco }) => {
   return (
     <CustomCard>
       <Box p={2}>
-        <Typography variant='h5'>Recommendations selection mode</Typography>
-
+        <Typography variant='h5'>
+          {localization.t('labels.recommendationsSelectionMode')}
+        </Typography>
         <Box mt={4}>
           <RadioGroup
             row
@@ -33,12 +35,12 @@ const Recommendations = ({ curReco, selectOptions, setCurReco }) => {
             <FormControlLabel
               value='predefinedIdsRecoRule'
               control={<Radio color='primary' />}
-              label='Fixed list of products'
+              label={localization.t('labels.fixedListOfProducts')}
             />
             <FormControlLabel
               value='idToIdsRecoRule'
               control={<Radio color='primary' />}
-              label='Product list association'
+              label={localization.t('labels.productListAssociation')}
             />
           </RadioGroup>
         </Box>
@@ -71,7 +73,7 @@ const Recommendations = ({ curReco, selectOptions, setCurReco }) => {
           <Box>
             <Box p={2}>
               <Typography gutterBottom variant='h5'>
-                By product *
+                {`${localization.t('labels.byProduct')} *`}
               </Typography>
             </Box>
             <SelectModeInputs
@@ -86,7 +88,7 @@ const Recommendations = ({ curReco, selectOptions, setCurReco }) => {
           <Box>
             <Box p={2}>
               <Typography gutterBottom variant='h5'>
-                By parent product *
+                {`${localization.t('labels.byParentProduct')} *`}
               </Typography>
             </Box>
             <SelectModeInputs

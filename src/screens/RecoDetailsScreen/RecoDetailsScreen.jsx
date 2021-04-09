@@ -1,7 +1,7 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 
 import {
   LinearProgress,
@@ -17,6 +17,7 @@ import {
   formateProductOptions,
   fromArrayToObj,
 } from './utils';
+import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -32,6 +33,9 @@ import localization from '../../localization';
 import './recoDetailsScreen.scss';
 
 const RecoDetailsScreen = () => {
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const { id } = useParams();
   const [reco, setReco] = useState(null);
@@ -60,12 +64,22 @@ const RecoDetailsScreen = () => {
       delete objToSend.byParentProductIds;
       delete objToSend.byProductIds;
     }
-    api.updateRecoById(id, objToSend).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      window.location.reload();
-    });
+    if (id === 'add') {
+      api.addNewRecommendation(objToSend).then((res) => {
+        const location = res.headers.location.split('/');
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        history.push('/marketing/recommendations');
+      });
+    } else {
+      api.updateRecoById(id, objToSend).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        window.location.reload();
+      });
+    }
   };
 
   useEffect(() => {
@@ -74,7 +88,15 @@ const RecoDetailsScreen = () => {
     return () => setHasChanges(false);
   }, [curReco, reco]);
   useEffect(() => {
-    api.getRecoById(id).then(({ data }) => {
+    let recoRequest;
+    if (id === 'add') {
+      recoRequest = Promise.resolve({
+        data: { customerId: nxState.selectedCustomer.id },
+      });
+    } else {
+      recoRequest = api.getRecoById(id);
+    }
+    recoRequest.then(({ data }) => {
       const checkedReco = recoRequiredFields(data);
       setReco(JSON.parse(JSON.stringify(checkedReco)));
       setCurReco(JSON.parse(JSON.stringify(checkedReco)));
@@ -140,16 +162,20 @@ const RecoDetailsScreen = () => {
 
     setCurReco((c) => ({ ...c, [type]: setValue }));
   };
+  if (id === 'add' && !nxState.selectedCustomer.id)
+    return <SelectCustomerNotification />;
 
   if (curReco === null) return <LinearProgress />;
 
   return (
     <div className='reco-details-screen'>
-      <CustomBreadcrumbs
-        url='/marketing/recommendations'
-        section={localization.t('general.recommendation')}
-        id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
-      />
+      {id !== 'add' && (
+        <CustomBreadcrumbs
+          url='/marketing/recommendations'
+          section={localization.t('general.recommendation')}
+          id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
+        />
+      )}
       <Box py={2}>
         <Typography gutterBottom variant='h3'>
           {reco?.customerId}
@@ -170,6 +196,7 @@ const RecoDetailsScreen = () => {
       </Box>
       <Zoom in={hasChanges}>
         <Button
+          disabled={curReco.eligibleStoreIds.length < 1 || curReco.name === ''}
           id='save-reco-button'
           color='primary'
           size='large'
