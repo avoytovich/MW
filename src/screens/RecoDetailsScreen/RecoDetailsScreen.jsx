@@ -1,7 +1,7 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 
 import {
   LinearProgress,
@@ -12,7 +12,12 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
-import { recoRequiredFields, formateProductOptions } from './utils';
+import {
+  recoRequiredFields,
+  formateProductOptions,
+  fromArrayToObj,
+} from './utils';
+import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -28,31 +33,53 @@ import localization from '../../localization';
 import './recoDetailsScreen.scss';
 
 const RecoDetailsScreen = () => {
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const history = useHistory();
+
   const dispatch = useDispatch();
   const { id } = useParams();
   const [reco, setReco] = useState(null);
   const [curReco, setCurReco] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
-  const [curProducts, setProducts] = useState(null);
   const [curTab, setCurTab] = useState(0);
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
     products: null,
     productsByParent: null,
+    recoByProduct: null,
+    recoByParent: null,
   });
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
     setCurReco({ ...curReco, [name]: value });
   };
-
   const saveIdentity = () => {
-    api.updateRecoById(id, curReco).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      window.location.reload();
-    });
+    const objToSend = { ...curReco };
+    if (curReco.function === 'idToIdsRecoRule') {
+      delete objToSend.productIds;
+      objToSend.byParentProductIds = fromArrayToObj(curReco.byParentProductIds);
+      objToSend.byProductIds = fromArrayToObj(curReco.byProductIds);
+    } else {
+      delete objToSend.byParentProductIds;
+      delete objToSend.byProductIds;
+    }
+    if (id === 'add') {
+      api.addNewRecommendation(objToSend).then((res) => {
+        const location = res.headers.location.split('/');
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        history.push('/marketing/recommendations');
+      });
+    } else {
+      api.updateRecoById(id, objToSend).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        window.location.reload();
+      });
+    }
   };
 
   useEffect(() => {
@@ -61,32 +88,57 @@ const RecoDetailsScreen = () => {
     return () => setHasChanges(false);
   }, [curReco, reco]);
   useEffect(() => {
-    api.getRecoById(id).then(({ data }) => {
+    let recoRequest;
+    if (id === 'add') {
+      recoRequest = Promise.resolve({
+        data: { customerId: nxState.selectedCustomer.id },
+      });
+    } else {
+      recoRequest = api.getRecoById(id);
+    }
+    recoRequest.then(({ data }) => {
       const checkedReco = recoRequiredFields(data);
-      setReco(checkedReco);
-      setCurReco(checkedReco);
+      setReco(JSON.parse(JSON.stringify(checkedReco)));
+      setCurReco(JSON.parse(JSON.stringify(checkedReco)));
       Promise.allSettled([
         api.getStores(0, `&customerId=${data.customerId}`),
         api.getProducts(0, `&customerId=${data.customerId}`),
         api.getProducts(0, `&customerId=${data.customerId}&parentId=${null}`),
-      ]).then(([storeOptions, productOptions, parentProductOptions]) =>
-        setSelectOptions({
-          ...selectOptions,
-          stores:
-            structureSelectOptions(
-              storeOptions.value?.data.items,
-              'displayName',
-            ) || [],
-          products:
-            formateProductOptions(productOptions.value?.data?.items) || [],
-          productsByParent:
-            formateProductOptions(parentProductOptions.value?.data?.items) ||
-            [],
-        }),
+        api.getProducts(0, `&customerId=${data.customerId}&status=ENABLED`),
+        api.getProducts(
+          0,
+          `&customerId=${data.customerId}&parentId=${null}&status=ENABLED`,
+        ),
+      ]).then(
+        ([
+          storeOptions,
+          productOptions,
+          parentProductOptions,
+          recoByProductOptions,
+          recoByParentOptions,
+        ]) =>
+          setSelectOptions({
+            ...selectOptions,
+            stores:
+              structureSelectOptions(
+                storeOptions.value?.data.items,
+                'displayName',
+              ) || [],
+            products:
+              formateProductOptions(productOptions.value?.data?.items) || [],
+            productsByParent:
+              formateProductOptions(parentProductOptions.value?.data?.items) ||
+              [],
+            recoByProduct:
+              formateProductOptions(recoByProductOptions.value?.data?.items) ||
+              [],
+            recoByParent:
+              formateProductOptions(recoByParentOptions.value?.data?.items) ||
+              [],
+          }),
       );
     });
   }, []);
-
   const updateReco = (type, value, selections) => {
     let setValue = value;
 
@@ -110,23 +162,25 @@ const RecoDetailsScreen = () => {
 
     setCurReco((c) => ({ ...c, [type]: setValue }));
   };
+  if (id === 'add' && !nxState.selectedCustomer.id)
+    return <SelectCustomerNotification />;
 
   if (curReco === null) return <LinearProgress />;
 
   return (
     <div className='reco-details-screen'>
-      <CustomBreadcrumbs
-        url='/marketing/recommendations'
-        section={localization.t('general.recommendation')}
-        id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
-      />
-
+      {id !== 'add' && (
+        <CustomBreadcrumbs
+          url='/marketing/recommendations'
+          section={localization.t('general.recommendation')}
+          id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
+        />
+      )}
       <Box py={2}>
         <Typography gutterBottom variant='h3'>
           {reco?.customerId}
         </Typography>
       </Box>
-
       <Box my={1} bgcolor='#fff'>
         <Tabs
           value={curTab}
@@ -137,12 +191,12 @@ const RecoDetailsScreen = () => {
           <Tab label='General' />
           <Tab label='Eligibility' />
           <Tab label='Capping and limits' />
-          <Tab label='Recommendations' disabled={!Array.isArray(curProducts)} />
+          <Tab label='Recommendations' disabled={!selectOptions.recoByParent} />
         </Tabs>
       </Box>
-
       <Zoom in={hasChanges}>
         <Button
+          disabled={curReco.eligibleStoreIds.length < 1 || curReco.name === ''}
           id='save-reco-button'
           color='primary'
           size='large'
@@ -153,7 +207,6 @@ const RecoDetailsScreen = () => {
           Save
         </Button>
       </Zoom>
-
       <Box pt={1}>
         {curTab === 0 && (
           <Basic
@@ -178,9 +231,9 @@ const RecoDetailsScreen = () => {
 
         {curTab === 3 && (
           <Recommendations
+            selectOptions={selectOptions}
             curReco={curReco}
             setCurReco={setCurReco}
-            products={[...curProducts]}
           />
         )}
       </Box>

@@ -57,6 +57,7 @@ const general = {
   price: 'Price',
   new: 'New',
   logoCenter: 'Center.',
+  selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
 };
 
 export default general;

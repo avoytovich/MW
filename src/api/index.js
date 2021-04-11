@@ -90,7 +90,8 @@ const api = {
     });
   },
   addNewPrice(data) {
-    const url = '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url =
+      '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
@@ -111,7 +112,15 @@ const api = {
   addNewDiscount(data) {
     const url =
       '/discounts?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
-
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addNewRecommendation(data) {
+    const url =
+      '/product-recommendations?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
