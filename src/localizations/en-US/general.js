@@ -56,6 +56,7 @@ const general = {
   discount: 'Discount',
   price: 'Price',
   new: 'New',
+  logoCenter: 'Center.',
 };
 
 export default general;

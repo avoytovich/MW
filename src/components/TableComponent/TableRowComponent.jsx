@@ -132,7 +132,7 @@ const TableRowComponent = ({
         )}
 
         {markupSequence.map((item) => drawTableCell(item))}
-        <Grid xs={1}>
+        <Grid item xs>
         {rowHover && !customPath && (
           <Grid>
             <Box my={2}>
