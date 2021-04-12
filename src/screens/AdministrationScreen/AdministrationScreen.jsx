@@ -1,58 +1,123 @@
-import React, { useState } from 'react';
-import TableComponent from '../../components/TableComponent';
-import {
-  generateData,
-  defaultShow,
-} from '../../services/useData/tableMarkups/adminCustomers';
-import { useTableData } from '../../services/useData';
+import React, { useState, useEffect, Fragment } from 'react';
+import { Tabs, Tab, Box, Button, Zoom } from '@material-ui/core';
+import { useHistory, Link } from 'react-router-dom';
+import localization from '../../localization';
+
+import TabTable from './TabTable';
 import api from '../../api';
-import {
-  getSortParams,
-  saveSortParams,
-  sortKeys,
-} from '../../services/sorting';
+import { generateData as generateCustomers } from '../../services/useData/tableMarkups/adminCustomers';
+import { generateData as generateRoles } from '../../services/useData/tableMarkups/adminRoles';
+import { generateData as generatePrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
+import MetaRoles from './MetaRoles';
+
+const tabsData = [
+  {
+    label: 'customers',
+    path: `/settings/administration/customers`,
+    request: api.getCustomers,
+    sortKey: 'customerAdmin',
+    generateData: generateCustomers,
+  },
+  {
+    label: 'roles',
+    path: `/settings/administration/roles`,
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.role',
+    )}`,
+    request: api.getRoles,
+    secondaryRequests: [],
+    sortKey: 'roleAdmin',
+    generateData: generateRoles,
+  },
+  {
+    label: 'metaRoles',
+    path: `/settings/administration/metaRoles`,
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.metaRole',
+    )}`,
+    sortKey: 'metaRoleAdmin',
+  },
+  {
+    label: 'privileges',
+    path: `/settings/administration/privileges`,
+    request: api.getPrivileges,
+    sortKey: 'privilegesAdmin',
+    generateData: generatePrivileges,
+  },
+];
 
 const AdministrationScreen = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
-  const [makeUpdate, setMakeUpdate] = useState(0);
-  const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(
-    getSortParams(sortKeys.customerAdmin),
-  );
+  const history = useHistory();
+  const [curTab, setCurTab] = useState(0);
 
-  const handleSetSortParams = (params) => {
-    setSortParams(params);
-    saveSortParams(sortKeys.customerAdmin, params);
+  const pathname = history?.location?.pathname || 'customers';
+
+  useEffect(() => {
+    const section = pathname.split('/').pop();
+    const index = tabsData.findIndex((i) => i.label === section);
+    if (index < 0) {
+      return history.push('/settings/administration/customers');
+    }
+
+    setCurTab(index);
+
+    return () => setCurTab(0);
+  }, [pathname]);
+
+  const drawAddButton = () => {
+    const currentTad =
+      tabsData.find((item) => item.path === pathname) || tabsData[0];
+    return (
+      <Zoom in={!!currentTad.button}>
+        <Box alignSelf='flex-end'>
+          <Button
+            id='add-administration-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to={`${currentTad.path}/add`}
+          >
+            {currentTad.button}
+          </Button>
+        </Box>
+      </Zoom>
+    );
   };
-
-  const requests = async () => {
-    const res = await api.getCustomers(currentPage - 1, sortParams);
-    return generateData(res.data);
-  };
-  const adminCustomers = useTableData(
-    currentPage - 1,
-    setLoading,
-    makeUpdate,
-    'administration',
-    requests,
-    sortParams,
-  );
-  const handleDeleteCustomer = () => {};
-
-  const updatePage = (page) => setCurrentPage(page);
-
+  const changeTab = (tab) =>
+    history.push(`/settings/administration/${tabsData[tab].label}`);
   return (
-    <TableComponent
-      sortParams={sortParams}
-      setSortParams={handleSetSortParams}
-      handleDeleteItem={handleDeleteCustomer}
-      showColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
-      tableData={adminCustomers}
-      isLoading={isLoading}
-    />
+    <Box display='flex' flexDirection='column'>
+      {drawAddButton()}
+
+      <Tabs
+        value={curTab}
+        onChange={(e, newTab) => changeTab(newTab)}
+        indicatorColor='primary'
+        textColor='primary'
+      >
+        {tabsData.map((tab) => (
+          <Tab key={tab.path} label={localization.t(`labels.${tab.label}`)} />
+        ))}
+      </Tabs>
+      <Box mt={4} mb={2}>
+        {tabsData.map((tab, index) => (
+          <Fragment key={tab.label}>
+            {curTab === index &&
+              (tab.label === 'metaRoles' ? (
+                <MetaRoles sortKey={tab.sortKey} scope={tab.label} />
+              ) : (
+                <TabTable
+                  sortKey={tab.sortKey}
+                  generateData={tab.generateData}
+                  request={tab.request}
+                  scope={tab.label}
+                />
+              ))}
+          </Fragment>
+        ))}
+      </Box>
+    </Box>
   );
 };
 

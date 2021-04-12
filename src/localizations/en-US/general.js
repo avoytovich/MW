@@ -58,6 +58,9 @@ const general = {
   new: 'New',
   selectNoSourceMeans:
     'Select no source means the same as "all sources are selected"',
+  role: 'role',
+  customer: 'Customer',
+  metaRole: 'Meta-Role',
 };
 
 export default general;

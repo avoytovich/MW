@@ -214,31 +214,46 @@ const api = {
       url,
     });
   },
-  getPrivileges() {
-    const url = 'iam/privileges?format=short&size=150&page=0';
-
+  getPrivileges(page = 0, filters, sortParams) {
+    let url = `/iam/privileges?format=short&size=150&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getRoles() {
-    const url = 'iam/roles?format=short&size=150&page=0';
-
+  getRoles(page = 0, filters, sortParams) {
+    let url = `iam/roles?format=short&size=150&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getMetaRoles() {
-    const url = 'iam/meta-roles?format=short&size=150&page=0';
-
+  getMetaRoles(page = 0, filters, sortParams) {
+    let url = `iam/meta-roles?format=short&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getCustomers(page = 0, sortParams, filters) {
+  getCustomers(page = 0, filters, sortParams) {
     let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;

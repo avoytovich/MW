@@ -2,8 +2,8 @@ import localization from '../../../localization';
 
 const defaultShow = {
   name: true,
-  status: true,
-  email: true,
+  rights: true,
+  conditionsOfAvailabilty: true,
   createDate: true,
   updateDate: true,
 };
@@ -12,13 +12,15 @@ const markUp = {
   headers: [
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     {
-      value: localization.t('labels.status'),
-      id: 'status',
-      sortParam: 'status',
+      value: localization.t('labels.rights'),
+      id: 'rights',
     },
-    { value: localization.t('labels.email'), id: 'email', sortParam: 'email' },
     {
-      value: localization.t('labels.accountCreated'),
+      value: localization.t('labels.conditionsOfAvailabilty'),
+      id: 'conditionsOfAvailabilty',
+    },
+    {
+      value: localization.t('labels.createDate'),
       id: 'createDate',
       sortParam: 'createDate',
     },
@@ -32,17 +34,19 @@ const markUp = {
 
 const generateData = (data) => {
   const values = data.items.map((val) => {
-    let status = '';
-    if (val.status === 'RUNNING') {
-      status = localization.t('general.live');
-    } else if (val.status === 'TRIAL') {
-      status = localization.t('general.test');
-    }
+    const actionsAmount = [];
+    val.rights.forEach((item) => {
+      actionsAmount.push(...item.actions);
+    });
     return {
       id: val.id,
       name: val.name,
-      status,
-      email: val.email,
+      rights: `${actionsAmount.length || 0} actions in ${
+        val.rights.length || 0
+      } services`,
+      conditionsOfAvailabilty: `${
+        val.availabilityConditions?.length || 0
+      } conditions`,
       createDate: val.createDate,
       updateDate: val.updateDate,
     };
@@ -53,7 +57,6 @@ const generateData = (data) => {
   };
 
   Object.assign(markUp, { values, meta, defaultShow });
-
   return markUp;
 };
 
