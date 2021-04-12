@@ -811,6 +811,20 @@ const api = {
       url,
     });
   },
+  deleteRoleById(id) {
+    const url = `/iam/roles/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteMetaRoleById(id) {
+    const url = `/iam/meta-roles/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default api;
