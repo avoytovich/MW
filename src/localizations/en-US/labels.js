@@ -114,7 +114,7 @@ const labels = {
   userName: 'User Name',
   privileges: 'Privileges',
   roles: 'Roles',
-  metaRoles: 'Meta-roles',
+  metaRoles: 'Meta-Roles',
   fontFamily: 'Font Family',
   importCssRule: '@import css rule',
   themes: 'Themes',
@@ -279,6 +279,12 @@ const labels = {
   byParentProduct: 'By parent product',
   sourceProduct: 'Source Product',
   targetProducts: 'Target Products',
+  conditionsOfAvailabilty: 'Conditions Of Availabilty',
+  rights: 'Rights',
+  aggregatedRoles: 'Aggregated Roles',
+  serviceName: 'Service Name',
+  availableActions: 'Available Actions',
+  customers: 'Customers',
 };
 
 export default labels;
