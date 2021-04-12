@@ -95,7 +95,7 @@ const Forms = {
     clear: 'Clear',
     cancel: 'Cancel',
     exact: 'Is Exactly',
-    contains: 'Contains',
+    startsWith: 'Starts with',
     googleLogin: 'LOGIN WITH GOOGLE',
     actions: 'ACTIONS',
     resyncPayments: 'Resync Payments',
