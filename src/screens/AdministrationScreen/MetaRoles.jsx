@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
 import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
+import PropTypes from 'prop-types';
+
 import {
   getSortParams,
   saveSortParams,
@@ -11,8 +14,9 @@ import {
 } from '../../services/sorting';
 
 const MetaRoles = ({ sortKey, scope }) => {
+  const dispatch = useDispatch();
+
   const [currentPage, setCurrentPage] = useState(1);
-  // eslint-disable-next-line no-unused-vars
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(
@@ -44,7 +48,19 @@ const MetaRoles = ({ sortKey, scope }) => {
     requests,
     sortParams,
   );
-  const handleDelete = () => {};
+  const handleDelete = (id) => {
+    api.deleteMetaRoleById(id).then(() => {
+      const localizedLabel = `general.${scope}`;
+      setMakeUpdate((v) => v + 1);
+      dispatch(
+        showNotification(
+          `${localization.t(localizedLabel)} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
+        ),
+      );
+    });
+  };
   const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
@@ -58,6 +74,10 @@ const MetaRoles = ({ sortKey, scope }) => {
       isLoading={isLoading}
     />
   );
+};
+
+MetaRoles.propTypes = {
+  tabObject: PropTypes.object,
 };
 
 export default MetaRoles;
