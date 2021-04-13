@@ -5,8 +5,8 @@ import {
   Box, Checkbox, FormControlLabel, Typography,
 } from '@material-ui/core';
 
-import CustomCard from '../../../components/utils/CustomCard';
-import localization from '../../../localization';
+import CustomCard from '../../../../components/utils/CustomCard';
+import localization from '../../../../localization';
 
 const FeaturesSection = ({ currentCustomer, setCurrentCustomer }) => (
   <Box display="flex" flexDirection="column">
