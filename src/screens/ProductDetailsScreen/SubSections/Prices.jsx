@@ -19,6 +19,8 @@ import moment from 'moment';
 
 import ClearIcon from '@material-ui/icons/Clear';
 
+import PriceNumberFormat from '../../../components/ProductDetails/PriceNumberFormat';
+
 import ProductPriceRow from '../../../components/ProductDetails/ProductPriceRow';
 
 import {
@@ -132,7 +134,7 @@ const Prices = ({
                 <TableRow key={pr.currency + pr.country}>
                   <TableCell align="center">{pr.country || '-'}</TableCell>
                   <TableCell align="center">{pr.currency || '-'}</TableCell>
-                  <TableCell align="center">{pr.price || '-'}</TableCell>
+                  <TableCell align="center">{<PriceNumberFormat number={pr.price} currency={pr.currency}/> || '-'}</TableCell>
                   <TableCell align="center">{pr.msrp || '-'}</TableCell>
                   <TableCell align="center">{pr.upSell || '-'}</TableCell>
                   <TableCell align="center">{pr.crossSell || '-'}</TableCell>
