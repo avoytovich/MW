@@ -19,7 +19,7 @@ const InputCustom = ({
       multiline={isMultiline}
       required={isRequired}
       name={label}
-      value={value}
+      value={value || ''}
       fullWidth
       label={label ? localization.t(`labels.${label}`) : ''}
       type="text"
@@ -36,7 +36,7 @@ InputCustom.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   isRequired: PropTypes.bool,
-  idDisabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   isMultiline: PropTypes.bool,
   onChangeInput: PropTypes.func,
   helperText: PropTypes.string,

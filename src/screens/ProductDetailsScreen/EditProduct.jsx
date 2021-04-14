@@ -26,10 +26,7 @@ const EditProduct = () => {
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(null);
   const [checkOutStores, setCheckOutStores] = useState([]);
-  const [
-    productHasLocalizationChanges,
-    setProductLocalizationChanges,
-  ] = useState(false);
+  const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
   const [productVariations, setSubProductVariations] = useState({});
   const [productDetails, setProductDetails] = useState(null);
 
@@ -42,9 +39,7 @@ const EditProduct = () => {
       }
 
       api.updateProductById(currentProductData.id, sendObj).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
         window.location.reload();
       });
     }
@@ -56,9 +51,7 @@ const EditProduct = () => {
           productHasLocalizationChanges || productDetails,
         )
         .then(() => {
-          dispatch(
-            showNotification(localization.t('general.updatesHaveBeenSaved')),
-          );
+          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
           window.location.reload();
         });
     }
@@ -66,9 +59,7 @@ const EditProduct = () => {
   const filterCheckoutStores = () => {
     const res = [];
     currentProductData?.sellingStores.forEach((item) => {
-      const selectedStore = selectOptions.sellingStores.filter(
-        (store) => store.id === item,
-      );
+      const selectedStore = selectOptions.sellingStores.filter((store) => store.id === item);
 
       if (selectedStore[0]) {
         const { value, hostnames } = selectedStore[0];
@@ -112,9 +103,7 @@ const EditProduct = () => {
     ) {
       filterCheckoutStores();
     }
-    setProductChanges(
-      JSON.stringify(currentProductData) !== JSON.stringify(productData),
-    );
+    setProductChanges(JSON.stringify(currentProductData) !== JSON.stringify(productData));
 
     return () => {
       setProductChanges(false);

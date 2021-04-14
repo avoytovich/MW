@@ -24,13 +24,22 @@ const AddVariationModal = ({
 
   const handleClose = () => {
     setStep('firstStep');
+    setModalState({});
     onClose();
   };
+  console.log('CURRENT_DATA', currentProductData);
+  console.log('productDetails', productDetails);
   const handleCreateParameter = () => {
-    let newAvailableVariables = JSON.parse(
-      JSON.stringify(currentProductData.availableVariables),
+    console.log(
+      'currentProductData?.availableVariables',
+      currentProductData?.availableVariables,
     );
+    let newAvailableVariables = currentProductData?.availableVariables
+      ? JSON.parse(JSON.stringify(currentProductData.availableVariables))
+      : [];
     let frontToBack = JSON.parse(JSON.stringify(modalState));
+    console.log('newAvailableVariables', newAvailableVariables);
+    console.log('frontToBack', frontToBack);
     let dataForProductDescriptionRequest = {};
     let dataForProductRquest = {};
     let variableValueDescription = {};
@@ -91,9 +100,7 @@ const AddVariationModal = ({
     }
     dataForProductRquest = {
       defaultValue:
-        modalState.type === 'LIST'
-          ? 'val1'
-          : variableValueDescription?.valueForProduct[0],
+        modalState.type === 'LIST' ? 'val1' : variableValueDescription?.valueForProduct[0],
       field: frontToBack.field,
       labels: null,
       localizedValue: null,
@@ -108,10 +115,9 @@ const AddVariationModal = ({
     });
     setProductDetails({
       ...productDetails,
-      variableDescriptions: [
-        ...productDetails.variableDescriptions,
-        dataForProductDescriptionRequest,
-      ],
+      variableDescriptions: productDetails?.variableDescriptions
+        ? [...productDetails.variableDescriptions, dataForProductDescriptionRequest]
+        : dataForProductDescriptionRequest,
     });
     handleClose();
   };

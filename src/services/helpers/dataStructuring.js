@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const defaultProduct = {
   status: 'DISABLED',
   type: '',
@@ -100,7 +102,7 @@ const discountRequiredFields = (discount) => {
     parentProductIds: [],
     productIds: [],
     enduserId: '',
-    storeIds:[],
+    storeIds: [],
     codes: {},
     endUserGroupIds: [],
     endUserEmails: [],
@@ -136,9 +138,7 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
 const renewingProductsOptions = (options) =>
   options.map((item) => {
     const value = item?.genericName
-      ? `${item.genericName} (${item.publisherRefId}${
-          item.subscriptionTemplate ? ', ' : ''
-        }
+      ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}
           ${item.subscriptionTemplate || ''})`
       : item?.id;
     return { id: item.id, value };
@@ -188,6 +188,118 @@ const storeRequiredFields = (store) => {
   }
   return res;
 };
+const defaultTypes = {
+  array: [],
+  string: '',
+  object: null,
+};
+
+const createStandaloneValue = (value) => value;
+
+const createInheritableValue = (value, parentValue) => {
+  // console.log('Value', value);
+  // console.log('parentValue', parentValue);
+  const typeValue = typeof value;
+  const typeParentValue = typeof parentValue;
+  const state =
+    (typeof value === 'object' && _.isEmpty(value)) ||
+    _.isNil(value) ||
+    _.isEqual(value, parentValue)
+      ? 'inherits'
+      : 'overrides'; // initial state, user can force after
+
+  return {
+    parentValue: parentValue
+      ? parentValue
+      : value
+      ? defaultTypes[typeValue]
+      : defaultTypes[typeParentValue],
+    state,
+    // NC-915: when initialiy inheriting, a field value must be set to parentValue
+    // to allow switching to override mode starting with the value of the core product
+    // value: state === 'inherits' ? parentValue : value,
+    value: value
+      ? value
+      : parentValue
+      ? defaultTypes[typeParentValue]
+      : defaultTypes[typeValue],
+  };
+};
+
+const backToFront = (
+  parent,
+  resource = defaultProduct,
+  independentFields = [
+    'i18nFields',
+    'blackListedCountries',
+    'externalContext',
+    'productFamily',
+    'priceFunction',
+    'trialAllowed',
+    'subscriptionTemplate',
+    'trialDuration',
+    'fulfillmentTemplate',
+    'releaseDate',
+    'nextGenerationOf',
+    'id',
+  ],
+) => {
+  // if field in both parent and variant, associate fieldName with properly set inheritable
+  if (!parent) return;
+
+  const handler = (resourceOwn, parentOwn) =>
+    createInheritableValue(resourceOwn.value, parentOwn.parentValue);
+  const inputA = _.mapValues(resource, (value) => createInheritableValue(value, undefined));
+  const inputB = _.mapValues(parent, (value) => createInheritableValue(undefined, value));
+  let iResource = _.mergeWith(handler, inputA, inputB);
+  // managing fields which cannot inherit
+  iResource = _.mapValues(
+    // when field is forced to override, value will be standalone, as it is in a core product
+    iResource,
+    (value, key) =>
+      (independentFields || []).includes(key) ? createStandaloneValue(value.value) : value,
+  );
+
+  // if (independentFields) {
+  //   // i18nFields.innerFields with possibility to inheritance
+
+  //   const i18nFieldsA = { ...inputA.i18nFields.value };
+  //   const i18nFieldsB = { ...inputB.i18nFields.value };
+
+  //   const i18nKeysListA = Object.keys(i18nFieldsA);
+  //   const i18nKeysListB = Object.keys(i18nFieldsB);
+
+  //   const inheritedA = i18nKeysListA.reduce((accumulator, current) => {
+  //     accumulator[current] = _.mapValues(i18nFieldsA[current], (value) =>
+  //       createInheritableValue(value, undefined),
+  //     );
+  //     return accumulator;
+  //   }, {});
+
+  //   const inheritedB = i18nKeysListB.reduce((accumulator, current) => {
+  //     accumulator[current] = _.mapValues(i18nFieldsB[current], (value) =>
+  //       createInheritableValue(undefined, value),
+  //     );
+  //     return accumulator;
+  //   }, {});
+
+  //   const isNewProductVariant = Object.keys(inheritedA).length
+  //     ? Object.keys(inheritedA)
+  //     : Object.keys(inheritedB);
+
+  //   const combinedI18nInheritedFields = isNewProductVariant.reduce((accumulator, current) => {
+  //     accumulator[current] = _.mergeWith(
+  //       handler,
+  //       inheritedA[current],
+  //       inheritedB[current] || {},
+  //     );
+  //     return accumulator;
+  //   }, {});
+  //   iResource.i18nFields.value = combinedI18nInheritedFields;
+  // }
+  console.log('iResource', iResource);
+  return iResource;
+};
 
 export {
   storeRequiredFields,
@@ -197,4 +309,5 @@ export {
   renewingProductsOptions,
   defaultProduct,
   productsVariations,
+  backToFront,
 };

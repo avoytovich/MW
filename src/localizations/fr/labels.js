@@ -152,6 +152,7 @@ const labels = {
   localizedContent: 'Localized Content',
   productVariations: 'Product Variations',
   productFiles: 'Product Files',
+  backToParent: 'Back to Parent',
   discountLabels: 'Discount Labels',
   language: 'Language',
   discountLabel: 'Discount Label',
@@ -175,8 +176,7 @@ const labels = {
   selectFile: 'Select File',
   freeLabel: 'Free label',
   url: 'URL',
-  dropFileOrSelect:
-    'Select files from your computer or click add icon to enter custom URL',
+  dropFileOrSelect: 'Select files from your computer or click add icon to enter custom URL',
   relatedContents: 'Related Contents',
   resources: 'Resources',
   label: 'Label',

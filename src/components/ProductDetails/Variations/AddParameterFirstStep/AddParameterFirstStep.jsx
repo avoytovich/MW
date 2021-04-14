@@ -14,12 +14,7 @@ import { InputCustom } from '../../../Inputs';
 
 import '../variations.scss';
 
-const AddParameterFirstStep = ({
-  setStep,
-  setModalState,
-  onClose,
-  modalState,
-}) => {
+const AddParameterFirstStep = ({ setStep, setModalState, onClose, modalState }) => {
   const [value, setValue] = useState('LIST');
 
   return (
@@ -30,8 +25,8 @@ const AddParameterFirstStep = ({
         New Parameter
       </Typography>
       <Typography variant="h4" className="title">
-        First pick a name for this new parameter. This name will be used in
-        price functions definitions.
+        First pick a name for this new parameter. This name will be used in price functions
+        definitions.
       </Typography>
       <Typography variant="h6" className="label">
         Allowed: alphanumeric characters and underscore
@@ -44,6 +39,7 @@ const AddParameterFirstStep = ({
             field: e.target.value,
           })
         }
+        value={modalState?.field || ''}
         isRequired
       ></InputCustom>
       <Typography variant="h4" className="title">
@@ -54,9 +50,8 @@ const AddParameterFirstStep = ({
       </Typography>
       <InputCustom
         // label="some"
-        onChangeInput={(e) =>
-          setModalState({ ...modalState, label: e.target.value })
-        }
+        onChangeInput={(e) => setModalState({ ...modalState, label: e.target.value })}
+        value={modalState?.label || ''}
       ></InputCustom>
       <Typography variant="h4" className="title">
         Now choose the type of the parameter:
@@ -71,29 +66,24 @@ const AddParameterFirstStep = ({
           <FormControlLabel
             className="radio"
             value="LIST"
-            control={
-              <Radio color={value === 'LIST' ? 'primary' : 'secondary'} />
-            }
+            control={<Radio color={value === 'LIST' ? 'primary' : 'secondary'} />}
             label="LIST"
           />
           <Typography variant="h6" className="radioLabel">
-            Buyer will select a value amongst a set of predefined values. For
-            instance (s)he could select a tee-shirt size amongst{' '}
-            {('S', 'M', 'L', 'XL')}
+            Buyer will select a value amongst a set of predefined values. For instance (s)he
+            could select a tee-shirt size amongst {('S', 'M', 'L', 'XL')}
           </Typography>
         </Box>
         <Box>
           <FormControlLabel
             className="radio"
             value="RANGE"
-            control={
-              <Radio color={value === 'RANGE' ? 'primary' : 'secondary'} />
-            }
+            control={<Radio color={value === 'RANGE' ? 'primary' : 'secondary'} />}
             label="RANGE"
           />
           <Typography variant="h6" className="radioLabel">
-            Buyer will select a range amongst a set of predefined ranges. For
-            instance (s)he could select a number of licenses amongst{' '}
+            Buyer will select a range amongst a set of predefined ranges. For instance (s)he
+            could select a number of licenses amongst{' '}
             {('1-10 license(s)', '11-50 licenses', '51-100 licenses')}
           </Typography>
         </Box>

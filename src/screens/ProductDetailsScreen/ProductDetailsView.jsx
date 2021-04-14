@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-
 import { Zoom, Button, Box, Typography, Tabs, Tab } from '@material-ui/core';
 
 import localization from '../../localization';
@@ -14,6 +13,7 @@ import SectionLayout from '../../components/SectionLayout';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
+import SubProductVariations from './SubSections/SubProductVariations';
 
 const allTabs = [
   'general',
@@ -22,6 +22,7 @@ const allTabs = [
   'prices',
   'productVariations',
   'productFiles',
+  'backToParent',
 ];
 
 const ProductDetailsView = ({
@@ -38,19 +39,15 @@ const ProductDetailsView = ({
   productVariations,
   setProductDetails,
   productDetails,
+  parentId,
+  history,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
   const [saveDisabled, setSaveDisabled] = useState(false);
 
   useEffect(() => {
-    const {
-      catalogId,
-      publisherRefId,
-      genericName,
-      type,
-      prices,
-    } = currentProductData;
+    const { catalogId, publisherRefId, genericName, type, prices } = currentProductData;
 
     if (
       catalogId &&
@@ -65,25 +62,20 @@ const ProductDetailsView = ({
       setTabsDisabled(true);
     }
   }, [currentProductData]);
-
+  const disabledTab = !productId && !parentId;
   return (
     <>
       {productId && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/overview/products'
+            url="/overview/products"
             section={localization.t('general.product')}
             id={productId}
           />
         </Box>
       )}
 
-      <Box
-        display="flex"
-        flexDirection="row"
-        m={2}
-        justifyContent="space-between"
-      >
+      <Box display="flex" flexDirection="row" m={2} justifyContent="space-between">
         <Box alignSelf="center">
           {productId ? (
             <Typography data-test="productName" gutterBottom variant="h3">
@@ -91,17 +83,13 @@ const ProductDetailsView = ({
             </Typography>
           ) : (
             <Typography data-test="productName" gutterBottom variant="h3">
-              {localization.t('general.addProduct')}
+              {parentId ? 'VARIANT' : localization.t('general.addProduct')}
             </Typography>
           )}
         </Box>
 
         <Box display="flex" flexDirection="row">
-          <Zoom
-            in={
-              productHasChanges || !productId || productHasLocalizationChanges
-            }
-          >
+          <Zoom in={productHasChanges || !productId || productHasLocalizationChanges}>
             <Box mb={1} mr={1}>
               <Button
                 disabled={tabsDisabled || saveDisabled}
@@ -130,7 +118,18 @@ const ProductDetailsView = ({
           )}
         </Box>
       </Box>
-      <Box my={2} bgcolor="#fff">
+      <Box my={2} bgcolor="#fff" display="flex">
+        {parentId && (
+          <Box
+            alignItems="center"
+            display="flex"
+            maxWidth="200px"
+            onClick={() => history.goBack()}
+            color="primary"
+          >
+            <Typography color="primary">{localization.t(`labels.${allTabs[6]}`)}</Typography>
+          </Box>
+        )}
         <Tabs
           value={curTab}
           indicatorColor="primary"
@@ -141,23 +140,11 @@ const ProductDetailsView = ({
           aria-label="disabled tabs example"
         >
           <Tab label={localization.t(`labels.${allTabs[0]}`)} />
-          <Tab
-            disabled={!productId}
-            label={localization.t(`labels.${allTabs[1]}`)}
-          />
-          <Tab
-            disabled={!productId}
-            label={localization.t(`labels.${allTabs[2]}`)}
-          />
+          <Tab disabled={disabledTab} label={localization.t(`labels.${allTabs[1]}`)} />
+          <Tab disabled={disabledTab} label={localization.t(`labels.${allTabs[2]}`)} />
           <Tab label={localization.t(`labels.${allTabs[3]}`)} />
-          <Tab
-            disabled={!productId}
-            label={localization.t(`labels.${allTabs[4]}`)}
-          />
-          <Tab
-            disabled={!productId}
-            label={localization.t(`labels.${allTabs[5]}`)}
-          />
+          <Tab disabled={disabledTab} label={localization.t(`labels.${allTabs[4]}`)} />
+          <Tab disabled={disabledTab} label={localization.t(`labels.${allTabs[5]}`)} />
         </Tabs>
       </Box>
       <Box display="flex">
@@ -167,6 +154,7 @@ const ProductDetailsView = ({
               selectOptions={selectOptions}
               setProductData={setProductData}
               currentProductData={currentProductData}
+              parentId={parentId}
             />
           </SectionLayout>
         )}
@@ -200,16 +188,26 @@ const ProductDetailsView = ({
             />
           </SectionLayout>
         )}
-        {curTab === 4 && (
-          <Variations
-            selectOptions={selectOptions}
-            setProductData={setProductData}
-            currentProductData={currentProductData}
-            productVariations={productVariations}
-            setProductDetails={setProductDetails}
-            productDetails={productDetails}
-          />
-        )}
+        {curTab === 4 ? (
+          parentId ? (
+            <SubProductVariations
+              setProductData={setProductData}
+              setProductDetails={setProductDetails}
+              currentProductData={currentProductData}
+              productDetails={productDetails}
+              productVariations={productVariations}
+            />
+          ) : (
+            <Variations
+              selectOptions={selectOptions}
+              setProductData={setProductData}
+              currentProductData={currentProductData}
+              productVariations={productVariations}
+              setProductDetails={setProductDetails}
+              productDetails={productDetails}
+            />
+          )
+        ) : null}
         {curTab === 5 && (
           <SectionLayout label={allTabs[5]}>
             <ProductFiles
@@ -238,6 +236,8 @@ ProductDetailsView.propTypes = {
   productVariations: PropTypes.object,
   setProductDetails: PropTypes.func,
   productDetails: PropTypes.object,
+  parentId: PropTypes.string,
+  history: PropTypes.object,
 };
 
 export default ProductDetailsView;

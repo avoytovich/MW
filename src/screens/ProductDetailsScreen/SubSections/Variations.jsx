@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory, useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -37,6 +38,9 @@ const Variations = ({
   // MOCK !!!
   const defaultLocale = 'en-US';
   //
+  const history = useHistory();
+  const { id: productId } = useParams();
+
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
   const [open, setOpen] = useState(false);
 
@@ -54,14 +58,12 @@ const Variations = ({
   const handleClose = () => {
     setOpen(false);
   };
-
+  console.log('VARIATIONS', variations);
   return (
     <Box display="flex" flexDirection="column" width="100%">
       <SectionLayout label="productVariations" wrapperWidth="initial">
         <Box mt={3}>
-          <Typography>
-            Emphasized values override parent product's values.
-          </Typography>
+          <Typography>Emphasized values override parent product's values.</Typography>
         </Box>
         <Box mt={3}>
           <TableContainer component={Paper}>
@@ -97,16 +99,10 @@ const Variations = ({
                         {id}
                       </TableCell>
                       <TableCell align="center">{status || ''}</TableCell>
-                      <TableCell align="center">
-                        {publisherRefId || '-'}
-                      </TableCell>
+                      <TableCell align="center">{publisherRefId || '-'}</TableCell>
                       <TableCell align="center">{lifeTime || ''}</TableCell>
-                      <TableCell align="center">
-                        {fulfillmentTemplate || ''}
-                      </TableCell>
-                      <TableCell align="center">
-                        {subscriptionTemplate || ''}
-                      </TableCell>
+                      <TableCell align="center">{fulfillmentTemplate || ''}</TableCell>
+                      <TableCell align="center">{subscriptionTemplate || ''}</TableCell>
                       {variations?.availableVariables?.map(
                         ({ fieldValue, field, localizedValue }) => (
                           <TableCell key={field} align="center">
@@ -124,7 +120,12 @@ const Variations = ({
             <Button
               variant="outlined"
               color="primary"
-              onClick={() => null}
+              onClick={() => {
+                history.state = {
+                  parentId: productId,
+                };
+                history.push(`/products/add`);
+              }}
               disabled={!variations || !variations?.availableVariables?.length}
             >
               Add variant
@@ -136,8 +137,7 @@ const Variations = ({
         <SectionLayout label="bundledProducts" contentWidth="100%">
           {Object.entries(counts).map(([key, value]) => {
             const selectValue =
-              selectOptions?.renewingProducts?.find(({ id }) => id === key) ||
-              '';
+              selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
             return (
               <Box
@@ -152,12 +152,10 @@ const Variations = ({
                   childrenComponent={(props) => (
                     <TextField
                       name={key}
-                      aria-owns={
-                        props.open ? `mouse-over-popover ${key}` : undefined
-                      }
+                      aria-owns={props.open ? `mouse-over-popover ${key}` : undefined}
                       aria-haspopup="true"
                       disabled
-                      value={selectValue.value}
+                      value={selectValue.value || ''}
                       fullWidth
                       label={'Name or Id'}
                       type="text"
@@ -178,9 +176,7 @@ const Variations = ({
                         const index = currentProductData?.subProducts?.findIndex(
                           (item) => item === selectValue.id,
                         );
-                        const newSubProducts = [
-                          ...currentProductData.subProducts,
-                        ];
+                        const newSubProducts = [...currentProductData.subProducts];
                         newSubProducts.splice(index, 1);
                         setProductData({
                           ...currentProductData,
@@ -195,10 +191,7 @@ const Variations = ({
                       onClick={() => {
                         setProductData({
                           ...currentProductData,
-                          subProducts: [
-                            ...currentProductData.subProducts,
-                            selectValue.id,
-                          ],
+                          subProducts: [...currentProductData.subProducts, selectValue.id],
                         });
                       }}
                     >
@@ -249,10 +242,7 @@ const Variations = ({
                   setProductData({
                     ...currentProductData,
                     subProducts: currentProductData?.subProducts
-                      ? [
-                          ...currentProductData.subProducts,
-                          selectedBundledProduct,
-                        ]
+                      ? [...currentProductData.subProducts, selectedBundledProduct]
                       : [selectedBundledProduct],
                   });
                   setSelectedBundledProduct(null);
@@ -274,38 +264,36 @@ const Variations = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentProductData?.availableVariables?.map(
-                  ({ field, type }) => (
-                    <TableRow key={field}>
-                      <TableCell>{field}</TableCell>
-                      <TableCell>{type}</TableCell>
-                      <TableCell>
-                        <IconButton
-                          color="secondary"
-                          aria-label="clear"
-                          onClick={() => {
-                            const newAvailableVariables = currentProductData.availableVariables.filter(
-                              (item) => item.field !== field,
-                            );
-                            const newVariableDescriptions = productDetails.variableDescriptions.filter(
-                              ({ description }) => description !== field,
-                            );
-                            setProductData({
-                              ...currentProductData,
-                              availableVariables: newAvailableVariables,
-                            });
-                            setProductDetails({
-                              ...productDetails,
-                              variableDescriptions: newVariableDescriptions,
-                            });
-                          }}
-                        >
-                          <ClearIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ),
-                )}
+                {currentProductData?.availableVariables?.map(({ field, type }) => (
+                  <TableRow key={field}>
+                    <TableCell>{field}</TableCell>
+                    <TableCell>{type}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        color="secondary"
+                        aria-label="clear"
+                        onClick={() => {
+                          const newAvailableVariables = currentProductData.availableVariables.filter(
+                            (item) => item.field !== field,
+                          );
+                          const newVariableDescriptions = productDetails.variableDescriptions.filter(
+                            ({ description }) => description !== field,
+                          );
+                          setProductData({
+                            ...currentProductData,
+                            availableVariables: newAvailableVariables,
+                          });
+                          setProductDetails({
+                            ...productDetails,
+                            variableDescriptions: newVariableDescriptions,
+                          });
+                        }}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>

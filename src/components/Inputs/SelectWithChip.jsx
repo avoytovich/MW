@@ -14,6 +14,7 @@ const SelectWithChip = ({
   label,
   value,
   selectOptions,
+  isDisabled,
   onChangeSelect,
   onClickDelIcon,
   isDisabled,
@@ -27,20 +28,13 @@ const SelectWithChip = ({
       value: selectOptions ? value : [],
       onChange: onChangeSelect,
       renderValue: (selected) => (
-        <Box
-          display='flex'
-          alignItems='center'
-          flexDirection='row'
-          flexWrap='wrap'
-        >
+        <Box display="flex" alignItems="center" flexDirection="row" flexWrap="wrap">
           {selected?.map((chip) => {
-            const selectedItem = selectOptions?.filter(
-              (item) => item.id === chip,
-            )[0];
+            const selectedItem = selectOptions?.filter((item) => item.id === chip)[0];
             return (
-              <Box mb='2px' mr='2px' key={chip}>
+              <Box mb="2px" mr="2px" key={chip}>
                 <Chip
-                  variant='outlined'
+                  variant="outlined"
                   onDelete={() => onClickDelIcon(chip)}
                   onMouseDown={(e) => {
                     e.stopPropagation();
@@ -60,7 +54,7 @@ const SelectWithChip = ({
     }}
     disabled={!selectOptions || isDisabled}
     required={isRequired}
-    variant='outlined'
+    variant="outlined"
     InputProps={{
       startAdornment: !selectOptions && (
         <InputAdornment>
@@ -77,9 +71,7 @@ const SelectWithChip = ({
         </MenuItem>
       ))
     ) : (
-      <MenuItem disabled>
-        {localization.t('general.noAvailableOptions')}
-      </MenuItem>
+      <MenuItem disabled>{localization.t('general.noAvailableOptions')}</MenuItem>
     )}
   </TextField>
 );
@@ -87,6 +79,7 @@ const SelectWithChip = ({
 SelectWithChip.propTypes = {
   label: PropTypes.string,
   value: PropTypes.array,
+  isDisabled: PropTypes.bool,
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   onClickDelIcon: PropTypes.func,

@@ -11,28 +11,18 @@ import {
   TextField,
   InputAdornment,
 } from '@material-ui/core';
-import {
-  NumberInput,
-  SelectWithDeleteIcon,
-  SelectWithChip,
-} from '../../../components/Inputs';
+import { NumberInput, SelectWithDeleteIcon, SelectWithChip } from '../../../components/Inputs';
 import localization from '../../../localization';
 
-const FulfillmentAndSubscription = ({
-  setProductData,
-  currentProductData,
-  selectOptions,
-}) => (
+const FulfillmentAndSubscription = ({ setProductData, currentProductData, selectOptions }) => (
   <>
     <Box display="flex" flexDirection="row" alignItems="baseline">
       <Box p={2}>
-        <Typography color="secondary">
-          {localization.t('labels.allowTrial')}
-        </Typography>
+        <Typography color="secondary">{localization.t('labels.allowTrial')}</Typography>
       </Box>
       <Box p={2}>
         <FormControlLabel
-          control={(
+          control={
             <Switch
               disabled={!currentProductData.subscriptionTemplate}
               name="allowTrial"
@@ -43,9 +33,9 @@ const FulfillmentAndSubscription = ({
                 });
               }}
               color="primary"
-              checked={currentProductData.trialAllowed}
+              checked={currentProductData?.trialAllowed || false}
             />
-          )}
+          }
         />
       </Box>
     </Box>
@@ -61,10 +51,12 @@ const FulfillmentAndSubscription = ({
               subscriptionTemplate: e.target.value,
             });
           }}
-          onClickDelIcon={() => setProductData({
-            ...currentProductData,
-            subscriptionTemplate: '',
-          })}
+          onClickDelIcon={() =>
+            setProductData({
+              ...currentProductData,
+              subscriptionTemplate: '',
+            })
+          }
         />
       </Box>
       <Box p={2}>
@@ -94,11 +86,13 @@ const FulfillmentAndSubscription = ({
               fulfillmentTemplate: e.target.value,
             });
           }}
-          onClickDelIcon={() => setProductData({
-            ...currentProductData,
-            fulfillmentTemplate: '',
-            releaseDate: '',
-          })}
+          onClickDelIcon={() =>
+            setProductData({
+              ...currentProductData,
+              fulfillmentTemplate: '',
+              releaseDate: '',
+            })
+          }
         />
       </Box>
       <Box p={2} width="50%">
@@ -108,9 +102,7 @@ const FulfillmentAndSubscription = ({
             name="datetime"
             value={
               currentProductData.releaseDate
-                ? moment(currentProductData.releaseDate).format(
-                  'YYYY-MM-DDTkk:mm',
-                )
+                ? moment(currentProductData.releaseDate).format('YYYY-MM-DDTkk:mm')
                 : ''
             }
             label={localization.t('labels.preorderReleaseDate')}
@@ -120,7 +112,7 @@ const FulfillmentAndSubscription = ({
               endAdornment: currentProductData.releaseDate && (
                 <InputAdornment>
                   <CancelIcon
-                    className='cancelDateIcon'
+                    className="cancelDateIcon"
                     fontSize="small"
                     color="secondary"
                     onClick={() => {

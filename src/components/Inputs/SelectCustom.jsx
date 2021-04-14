@@ -1,12 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  MenuItem,
-  TextField,
-  CircularProgress,
-  InputAdornment,
-  Box,
-} from '@material-ui/core';
+import { MenuItem, TextField, CircularProgress, InputAdornment, Box } from '@material-ui/core';
 import localization from '../../localization';
 
 const SelectCustom = ({
@@ -21,7 +15,7 @@ const SelectCustom = ({
     fullWidth
     select
     required={isRequired}
-    variant='outlined'
+    variant="outlined"
     disabled={!selectOptions || isDisabled}
     InputProps={{
       startAdornment: !selectOptions && (
@@ -34,17 +28,10 @@ const SelectCustom = ({
       value: value || '',
       onChange: onChangeSelect,
       renderValue: (selected) => {
-        const selectedItem = selectOptions?.find(
-          (item) => item.id === selected,
-        );
+        const selectedItem = selectOptions?.find((item) => item.id === selected);
         if (selectOptions)
           return (
-            <Box
-              display='flex'
-              alignItems='center'
-              flexDirection='row'
-              flexWrap='wrap'
-            >
+            <Box display="flex" alignItems="center" flexDirection="row" flexWrap="wrap">
               {selectedItem?.value || selected}
             </Box>
           );
@@ -65,9 +52,7 @@ const SelectCustom = ({
         </MenuItem>
       ))
     ) : (
-      <MenuItem disabled>
-        {localization.t('general.noAvailableOptions')}
-      </MenuItem>
+      <MenuItem disabled>{localization.t('general.noAvailableOptions')}</MenuItem>
     )}
   </TextField>
 );
