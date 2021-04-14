@@ -23,18 +23,6 @@ const MetaRoleDetailScreen = () => {
   });
   const [hasChanges, setHasChanges] = useState(false);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
-  const requests = async () => {
-    const res =
-      id !== 'add'
-        ? await api.getMetaRole(id)
-        : {
-            data: {
-              customerId: nxState.selectedCustomer.id,
-            },
-          };
-
-    return res.data;
-  };
 
   const handleSave = () => {
     if (id === 'add') {
