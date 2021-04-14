@@ -9,6 +9,7 @@ import './NavItem.scss';
 const NavItem = ({
   title,
   href,
+  exact,
   icon: Icon,
 }) => (
   <ListItem
@@ -19,7 +20,7 @@ const NavItem = ({
       className='listItemButton'
       color='secondary'
       activeClassName='active'
-      // exact
+      exact={exact}
       to={href}
     >
       {Icon && <Icon size="20" />}

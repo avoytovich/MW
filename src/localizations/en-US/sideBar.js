@@ -5,6 +5,7 @@ const sideBar = {
     settings: 'Settings',
   },
   titles: {
+    dashboard: 'Dashboard',
     products: 'Products',
     stores: 'Stores',
     orders: 'Orders',
