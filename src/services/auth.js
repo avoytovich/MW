@@ -27,8 +27,8 @@ class Auth {
       (response) => response,
       (error) => {
         if (token && error.response && error.response.status === 401) {
-          this.logout();
-          window.location.reload();
+          // this.logout();
+          // window.location.reload();
         }
 
         return Promise.reject(error);
