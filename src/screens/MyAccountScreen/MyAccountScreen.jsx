@@ -11,6 +11,8 @@ import {
   Tabs,
   Tab,
   Dialog,
+  Typography,
+  Switch,
   InputAdornment,
   CircularProgress,
 } from '@material-ui/core';
@@ -19,6 +21,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
+import { setNexwayState } from '../../redux/actions/Account';
 import CustomCard from '../../components/utils/CustomCard';
 import TableItems from '../../components/utils/Modals/TableItems';
 import localization from '../../localization';
@@ -35,6 +38,14 @@ const MyAccountScreen = () => {
   const [productsModal, setProductsModalOpen] = useState(false);
   const [storesModal, setStoresModalOpen] = useState(false);
   const account = useSelector(({ account: { user } }) => user);
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const [errorDetails, setErrorDetails] = useState(!!nxState?.errorDetails);
+
+  useEffect(() => {
+    if (nxState?.errorDetails != errorDetails) {
+      dispatch(setNexwayState({ ...nxState, errorDetails }));
+    }
+  }, [errorDetails]);
 
   const handleChange = (e) => {
     e.persist();
@@ -236,6 +247,23 @@ const MyAccountScreen = () => {
             </Box>
           )}
         </Box>
+      </CustomCard>
+
+      <CustomCard title='My preferences'>
+        <Box pt={3} display='flex' alignItems='center'>
+          <Typography gutterBottom variant='h5'>Error details</Typography>
+
+          <Box display='flex' alignItems='center' ml='10px'>
+            <Switch
+              color='primary'
+              checked={errorDetails}
+              onChange={() => setErrorDetails(c => !c)}
+              name='errorDetails'
+            />
+          </Box>
+        </Box>
+        
+        <Typography component='em'>{errorDetails ? 'Show' : 'Hide'} Error Details</Typography>
       </CustomCard>
 
       <Dialog
