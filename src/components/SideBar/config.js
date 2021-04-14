@@ -9,11 +9,23 @@ import {
   Build,
   SwapHorizontalCircle,
   PeopleOutline,
+  Dashboard,
 } from '@material-ui/icons';
 
 import localization from '../../localization';
 
 const navConfig = [
+  {
+    items: [
+      {
+        id: 'dashboard',
+        title: localization.t('sideBar.titles.dashboard'),
+        href: '/',
+        exact: true,
+        icon: Dashboard,
+      }
+    ],
+  },
   {
     subheader: localization.t('sideBar.subheaders.overview'),
     items: [

@@ -20,10 +20,13 @@ const SignedRoutes = () => {
   return (
     <Switch>
       <Route
-        path='/overview/products/:id'
-        component={lazy(() =>
-          import('../../screens/ProductDetailsScreen/EditProduct'),
-        )}
+        path="/"
+        exact
+        component={lazy(() => import('../../screens/DashboardScreen'))}
+      />
+      <Route
+        path="/overview/products/:id"
+        component={lazy(() => import('../../screens/ProductDetailsScreen/EditProduct'))}
       />
       <Route
         path='/overview/products'
@@ -161,7 +164,8 @@ const SignedRoutes = () => {
           import('../../screens/ProductDetailsScreen/CreateProduct'),
         )}
       />
-      <Redirect to='/overview/products' />
+
+      <Redirect to='/' />
     </Switch>
   );
 };
