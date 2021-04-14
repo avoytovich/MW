@@ -30,7 +30,6 @@ const TabTable = ({ tabObject }) => {
 
   const handleDelete = (id) => {
     if (deleteFunc) {
-      console.log(id);
       deleteFunc(id).then(() => {
         const localizedLabel = `general.${label}`;
         setMakeUpdate((v) => v + 1);
