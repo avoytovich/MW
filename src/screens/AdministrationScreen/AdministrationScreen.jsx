@@ -17,6 +17,7 @@ const tabsData = [
     request: api.getCustomers,
     sortKey: 'customerAdmin',
     generateData: generateCustomers,
+    noActions: true,
   },
   {
     label: 'roles',
@@ -28,6 +29,7 @@ const tabsData = [
     secondaryRequests: [],
     sortKey: 'roleAdmin',
     generateData: generateRoles,
+    deleteFunc: api.deleteRoleById,
   },
   {
     label: 'metaRoles',
@@ -43,6 +45,7 @@ const tabsData = [
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,
+    noActions: true,
   },
 ];
 
@@ -58,9 +61,7 @@ const AdministrationScreen = () => {
     if (index < 0) {
       return history.push('/settings/administration/customers');
     }
-
     setCurTab(index);
-
     return () => setCurTab(0);
   }, [pathname]);
 
@@ -107,12 +108,7 @@ const AdministrationScreen = () => {
               (tab.label === 'metaRoles' ? (
                 <MetaRoles sortKey={tab.sortKey} scope={tab.label} />
               ) : (
-                <TabTable
-                  sortKey={tab.sortKey}
-                  generateData={tab.generateData}
-                  request={tab.request}
-                  scope={tab.label}
-                />
+                <TabTable tabObject={tab} />
               ))}
           </Fragment>
         ))}
