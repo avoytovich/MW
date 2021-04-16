@@ -285,6 +285,8 @@ const labels = {
   serviceName: 'Service Name',
   availableActions: 'Available Actions',
   customers: 'Customers',
+  aggregatedRoles: 'Aggregated Roles',
+  reasonForCurrentChange: 'Reason for current change',
 };
 
 export default labels;

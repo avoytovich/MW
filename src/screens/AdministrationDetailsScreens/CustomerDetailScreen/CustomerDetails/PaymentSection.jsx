@@ -15,7 +15,7 @@ import {
   InputLabel,
 } from '@material-ui/core';
 
-import localization from '../../../localization';
+import localization from '../../../../localization';
 
 const PaymentSection = ({
   currentCustomer,
