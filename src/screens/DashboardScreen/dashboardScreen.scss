@@ -1,0 +1,143 @@
+.dashboard{
+  .info-item-block{
+    padding: 25px 30px;
+    background: #fff;
+    font-size: 20px;
+
+    p {
+      font-size: 20px;
+    }
+
+    &:nth-child(2){
+      border-left: 1px solid #e2e2e2;
+      border-right: 1px solid #e2e2e2;
+    }
+
+    .price-info{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 25px;
+      margin-bottom: 10px;
+
+      .MuiSvgIcon-root{
+        margin-right: 15px;
+      }
+      
+      p {
+        font-size: 44px;
+
+        &.change-value{
+          font-size: 28px;
+        }
+      }
+
+      &.change-decrease{
+        .change-value, .MuiSvgIcon-root{
+          color: #ff0202;
+        }
+      }
+
+      &.change-increase{
+        .change-value, .MuiSvgIcon-root{
+          color: #4791dc;
+        }
+      }
+    }
+
+    .previous-change{
+      color: #b9b1b1;
+    }
+
+    &.selected{
+      background: #4791dc;
+      color: #fff;
+      
+      .previous-change,
+      .price-info .change-value,
+      .price-info .MuiSvgIcon-root{
+        color: #fff;
+      }
+    }
+  }
+
+  .chart-meta {
+    h4{
+      margin-bottom: 35px;
+      margin-top: 20px;
+    }
+  }
+
+  .select-by{
+    margin-right: 20px;
+    .MuiSelect-root{
+      font-size: 20px;
+      line-height: 20px;
+    }
+    
+
+    .MuiInputBase-root{
+      .MuiSvgIcon-root {
+        margin-top: 0;
+        color: #303030;
+      }
+    }
+
+    .MuiInput-underline{
+      &::before,
+      &::after{
+        border-bottom: none;
+      }
+    }
+  }
+
+  .chart-settings {
+    .MuiSvgIcon-root {
+      margin-left: 20px;
+      margin-top: 8px;
+      color: #b9b1b1;
+      cursor: pointer;
+
+      &.active {
+        color: #303030;
+      }
+    }
+  }
+
+  .revenue-table{
+    th, td {
+      &:first-child{
+        padding-left: 50px;
+      }
+    }
+
+    tr:nth-child(even) {
+      background: #fcfcfc;  
+    }
+
+    h4{
+      margin-bottom: 25px;
+    }
+  }
+
+  h4 {
+    font-size: 20px;
+    margin-bottom: 45px;
+  }
+
+  h5 {
+    font-size: 28px;
+    font-weight: normal;
+    margin-bottom: 25px;
+  }
+
+  h6 {
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  .MuiSelect-root{
+    background: #fff;
+    line-height: 16px;
+  }
+}

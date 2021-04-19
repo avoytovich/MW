@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { LinearProgress, Zoom, Button } from '@material-ui/core';
 
-import {
-  LinearProgress,
-  Box,
-  Typography,
-  Zoom,
-  Button,
-} from '@material-ui/core';
+import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
 import { requiredFields, structureSelectOptions } from './utils';
 import localization from '../../../localization';
 import { SelectWithChip, InputCustom } from '../../../components/Inputs';
@@ -28,18 +23,6 @@ const MetaRoleDetailScreen = () => {
   });
   const [hasChanges, setHasChanges] = useState(false);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
-  const requests = async () => {
-    const res =
-      id !== 'add'
-        ? await api.getMetaRole(id)
-        : {
-            data: {
-              customerId: nxState.selectedCustomer.id,
-            },
-          };
-
-    return res.data;
-  };
 
   const handleSave = () => {
     if (id === 'add') {
@@ -93,17 +76,7 @@ const MetaRoleDetailScreen = () => {
   if (curMetaRole === null) return <LinearProgress />;
 
   if (id === 'add' && !nxState.selectedCustomer.id)
-    return (
-      <Box textAlign='center'>
-        <Typography gutterBottom variant='h4'>
-          {localization.t('general.noCustomer')}
-        </Typography>
-
-        <Typography gutterBottom variant='h5'>
-          {localization.t('general.selectCustomer')}
-        </Typography>
-      </Box>
-    );
+    return <SelectCustomerNotification />;
 
   return (
     <div>
@@ -117,7 +90,7 @@ const MetaRoleDetailScreen = () => {
           variant='contained'
           onClick={handleSave}
         >
-          Save
+          {localization.t('general.save')}
         </Button>
       </Zoom>
       <InputCustom
@@ -150,8 +123,8 @@ const MetaRoleDetailScreen = () => {
           const newValue = [...curMetaRole.roleIds].filter(
             (val) => val !== chip,
           );
-          setProductData({
-            ...setCurMetaRole,
+          setCurMetaRole({
+            ...curMetaRole,
             roleIds: newValue,
           });
         }}
