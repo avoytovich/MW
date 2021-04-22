@@ -5,8 +5,8 @@ describe("My account configuration", () => {
     cy.visit("/login", { failOnStatusCode: false });
     cy.login();
     cy.visit("/my-account", { failOnStatusCode: false });
-    cy.route({ method: "GET", url: /\/stores.+/ }).as("storesRequest");
-    cy.route({ method: "GET", url: /\/products.+/ }).as("productsRequest");
+    cy.intercept({ method: "GET", url: /\/stores.+/ }).as("storesRequest");
+    cy.intercept({ method: "GET", url: /\/products.+/ }).as("productsRequest");
   });
 
   it("should have configuration details filled", () => {
@@ -22,9 +22,10 @@ describe("My account configuration", () => {
           storesNames.push(item.name);
         });
 
-        cy.get('.my-account-screen input[name="stores"]')
-          .should("exist")
-          .and("have.value", storesNames.join(","));
+        cy.get('.my-account-screen input[name="stores"]').and(
+          "have.value",
+          storesNames.join(",")
+        );
       }
     );
 
@@ -40,9 +41,10 @@ describe("My account configuration", () => {
           productsNames.push(item.genericName);
         });
 
-        cy.get('.my-account-screen input[name="catalogs"]')
-          .should("exist")
-          .and("have.value", productsNames.join(","));
+        cy.get('.my-account-screen input[name="catalogs"]').and(
+          "have.value",
+          productsNames.join(",")
+        );
       }
     );
   });
@@ -51,13 +53,13 @@ describe("My account configuration", () => {
     it("should open on edit", () => {
       cy.get(".table-items-modal").should("not.exist");
       cy.get('.my-account-screen input[name="catalogs"]').parent().click();
-      cy.get(".table-items-modal").should("exist");
+      cy.get(".table-items-modal");
     });
 
     it("should have item actions on hover", () => {
-      cy.get(".table-items-modal .table-item-row").first().as("rowItem");
-
-      cy.get("@rowItem")
+      cy.get(".table-items-modal .table-item-row")
+        .first()
+        .as("rowItem")
         .trigger("mouseover")
         .find(".action-items")
         .invoke("show")
