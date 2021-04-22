@@ -3,6 +3,10 @@ const Forms = {
     signIn: 'Sign in',
     tableFilters: 'Table Filters',
     noFilters: 'No Filters Available',
+    welcome: 'Welcome',
+  },
+  subHeaders: {
+    loginWelcomSubHeader: 'Through nexway’s Nexway Center interface, you will be able to get a 360-degree view of your e-store’s performance, and to access all orders in real time.',
   },
   text: {
     dontHaveAccount: "Don't have an account",
@@ -91,7 +95,7 @@ const Forms = {
     clear: 'Clear',
     cancel: 'Cancel',
     exact: 'Is Exactly',
-    contains: 'Contains',
+    startsWith: 'Starts with',
     googleLogin: 'LOGIN WITH GOOGLE',
     actions: 'ACTIONS',
     resyncPayments: 'Resync Payments',

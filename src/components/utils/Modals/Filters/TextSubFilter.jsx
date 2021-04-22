@@ -22,7 +22,7 @@ const TextSubFilter = ({ filter, config, setConfig }) => {
       color={curConfig ? 'primary' : 'secondary'}
       onClick={() => setConfig({ ...config, [filter.id]: { exact: !curConfig, type: 'text', label: filter.label } })}
     >
-      {curConfig ? localization.t('forms.buttons.exact') : localization.t('forms.buttons.contains')}
+      {curConfig ? localization.t('forms.buttons.exact') : localization.t('forms.buttons.startsWith')}
     </Button>
   );
 };

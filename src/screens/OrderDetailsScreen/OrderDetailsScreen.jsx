@@ -61,7 +61,6 @@ const OrderDetailsScreen = () => {
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
     });
-    console.log('resyncPayments id', currentOrderData.id);
   };
 
   useEffect(() => {

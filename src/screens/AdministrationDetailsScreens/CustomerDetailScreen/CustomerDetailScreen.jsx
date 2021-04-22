@@ -2,18 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import {
-  LinearProgress, Tabs, Tab, Zoom, Button,
-} from '@material-ui/core';
+import { LinearProgress, Tabs, Tab, Zoom, Button } from '@material-ui/core';
 import CustomerDetails from './CustomerDetails';
-import api from '../../api';
-import localization from '../../localization';
+import api from '../../../api';
+import localization from '../../../localization';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
+import { showNotification } from '../../../redux/actions/HttpNotifications';
 
-import './AdministrationDetailsScreen.scss';
+import './CustomerDetailScreen.scss';
 
-const AdministrationDetailsScreen = () => {
+const CustomerDetailScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [hasChanges, setHasChanges] = useState(false);
@@ -100,14 +98,14 @@ const AdministrationDetailsScreen = () => {
 
   if (isLoading) return <LinearProgress />;
   return (
-    <div className="customerAdministration-screen">
+    <div className='customerAdministration-screen'>
       <Tabs
         value={curTab}
         onChange={(newTab) => setCurTab(newTab)}
-        indicatorColor="primary"
-        textColor="primary"
+        indicatorColor='primary'
+        textColor='primary'
       >
-        <Tab label="Customer" />
+        <Tab label='Customer' />
       </Tabs>
 
       {curTab === 0 && currentCustomer && (
@@ -120,11 +118,11 @@ const AdministrationDetailsScreen = () => {
 
       <Zoom in={hasChanges}>
         <Button
-          id="save-customerAdministration-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
+          id='save-customerAdministration-button'
+          color='primary'
+          size='large'
+          type='submit'
+          variant='contained'
           onClick={saveCustomer}
         >
           {localization.t('forms.buttons.save')}
@@ -134,4 +132,4 @@ const AdministrationDetailsScreen = () => {
   );
 };
 
-export default AdministrationDetailsScreen;
+export default CustomerDetailScreen;

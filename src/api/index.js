@@ -52,6 +52,15 @@ const api = {
       data,
     });
   },
+  addNewMetaRole(data) {
+    let url =
+      '/iam/meta-roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addNewFont(data) {
     let url = 'designs/fonts';
     const reason = 'Nexway-Center';
@@ -90,7 +99,8 @@ const api = {
     });
   },
   addNewPrice(data) {
-    const url = '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url =
+      '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
@@ -111,7 +121,15 @@ const api = {
   addNewDiscount(data) {
     const url =
       '/discounts?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
-
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addNewRecommendation(data) {
+    const url =
+      '/product-recommendations?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
     return axiosInstance({
       method: 'post',
       url,
@@ -179,7 +197,7 @@ const api = {
   },
 
   getProducts(page = 0, filters, sortParams) {
-    let url = `/products?format=short&parentId=null&size=50&page=${page}`;
+    let url = `/products?format=full&size=50&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -205,31 +223,46 @@ const api = {
       url,
     });
   },
-  getPrivileges() {
-    const url = 'iam/privileges?format=short&size=150&page=0';
-
+  getPrivileges(page = 0, filters, sortParams) {
+    let url = `/iam/privileges?format=short&size=150&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getRoles() {
-    const url = 'iam/roles?format=short&size=150&page=0';
-
+  getRoles(page = 0, filters, sortParams) {
+    let url = `iam/roles?format=short&size=150&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getMetaRoles() {
-    const url = 'iam/meta-roles?format=short&size=150&page=0';
-
+  getMetaRoles(page = 0, filters, sortParams) {
+    let url = `iam/meta-roles?format=short&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,
     });
   },
-  getCustomers(page = 0, sortParams, filters) {
+  getCustomers(page = 0, filters, sortParams) {
     let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -594,10 +627,24 @@ const api = {
       url,
     });
   },
-
+  getMetaRoleById(id) {
+    const url = `/iam/meta-roles/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // PUT BY ID
   updateCustomerById(id, data) {
     const url = `/customers/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateMetaRoleById(id, data) {
+    const url = `/iam/meta-roles/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
     return axiosInstance({
       method: 'put',
       url,
@@ -782,6 +829,20 @@ const api = {
   },
   deleteLayoutById(id) {
     const url = `/designs/layouts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteRoleById(id) {
+    const url = `/iam/roles/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteMetaRoleById(id) {
+    const url = `/iam/meta-roles/${id}`;
     return axiosInstance({
       method: 'delete',
       url,

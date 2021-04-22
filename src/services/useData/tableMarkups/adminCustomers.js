@@ -5,6 +5,7 @@ const defaultShow = {
   status: true,
   email: true,
   createDate: true,
+  updateDate: true,
 };
 
 const markUp = {
@@ -20,6 +21,11 @@ const markUp = {
       value: localization.t('labels.accountCreated'),
       id: 'createDate',
       sortParam: 'createDate',
+    },
+    {
+      value: localization.t('labels.lastUpdate'),
+      id: 'updateDate',
+      sortParam: 'updateDate',
     },
   ],
 };
@@ -38,6 +44,7 @@ const generateData = (data) => {
       status,
       email: val.email,
       createDate: val.createDate,
+      updateDate: val.updateDate,
     };
   });
 

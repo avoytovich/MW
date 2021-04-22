@@ -4,9 +4,7 @@ import {
   Box,
   MenuItem,
   Chip,
-  FormControl,
-  InputLabel,
-  Select,
+  TextField,
   InputAdornment,
   CircularProgress,
 } from '@material-ui/core';
@@ -19,46 +17,30 @@ const SelectWithChip = ({
   onChangeSelect,
   onClickDelIcon,
   isDisabled,
+  isRequired,
 }) => (
-  <FormControl fullWidth variant="outlined">
-    <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
-    <Select
-      disabled={!selectOptions || isDisabled}
-      inputProps={{
-        name: label,
-      }}
-      MenuProps={{
-        getContentAnchorEl: null,
-        anchorOrigin: { vertical: 'top', horizontal: 'center' },
-        transformOrigin: { vertical: 'top', horizontal: 'center' },
-      }}
-      startAdornment={
-        !selectOptions && (
-          <InputAdornment>
-            <CircularProgress />
-          </InputAdornment>
-        )
-      }
-      label={localization.t(`labels.${label}`)}
-      multiple
-      value={selectOptions ? value : []}
-      onChange={onChangeSelect}
-      variant="outlined"
-      renderValue={(selected) => (
+  <TextField
+    fullWidth
+    select
+    SelectProps={{
+      multiple: true,
+      value: selectOptions ? value : [],
+      onChange: onChangeSelect,
+      renderValue: (selected) => (
         <Box
-          display="flex"
-          alignItems="center"
-          flexDirection="row"
-          flexWrap="wrap"
+          display='flex'
+          alignItems='center'
+          flexDirection='row'
+          flexWrap='wrap'
         >
           {selected?.map((chip) => {
             const selectedItem = selectOptions?.filter(
               (item) => item.id === chip,
             )[0];
             return (
-              <Box mb="2px" mr="2px" key={chip}>
+              <Box mb='2px' mr='2px' key={chip}>
                 <Chip
-                  variant="outlined"
+                  variant='outlined'
                   onDelete={() => onClickDelIcon(chip)}
                   onMouseDown={(e) => {
                     e.stopPropagation();
@@ -69,21 +51,37 @@ const SelectWithChip = ({
             );
           })}
         </Box>
-      )}
-    >
-      {selectOptions?.length ? (
-        selectOptions.map((item) => (
-          <MenuItem key={item.id} value={item.id}>
-            {item.value}
-          </MenuItem>
-        ))
-      ) : (
-        <MenuItem disabled>
-          {localization.t('general.noAvailableOptions')}
+      ),
+      MenuProps: {
+        getContentAnchorEl: null,
+        anchorOrigin: { vertical: 'top', horizontal: 'center' },
+        transformOrigin: { vertical: 'top', horizontal: 'center' },
+      },
+    }}
+    disabled={!selectOptions || isDisabled}
+    required={isRequired}
+    variant='outlined'
+    InputProps={{
+      startAdornment: !selectOptions && (
+        <InputAdornment>
+          <CircularProgress />
+        </InputAdornment>
+      ),
+    }}
+    label={localization.t(`labels.${label}`)}
+  >
+    {selectOptions?.length ? (
+      selectOptions.map((item) => (
+        <MenuItem key={item.id} value={item.id}>
+          {item.value}
         </MenuItem>
-      )}
-    </Select>
-  </FormControl>
+      ))
+    ) : (
+      <MenuItem disabled>
+        {localization.t('general.noAvailableOptions')}
+      </MenuItem>
+    )}
+  </TextField>
 );
 
 SelectWithChip.propTypes = {
@@ -93,6 +91,7 @@ SelectWithChip.propTypes = {
   onChangeSelect: PropTypes.func,
   onClickDelIcon: PropTypes.func,
   isDisabled: PropTypes.bool,
+  isRequired: PropTypes.bool,
 };
 
 export default SelectWithChip;
