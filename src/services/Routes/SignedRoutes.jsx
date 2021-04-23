@@ -78,7 +78,9 @@ const SignedRoutes = () => {
       />
       <Route
         path='/settings/administration/roles/:id'
-        component={() => <>role</>}
+        component={lazy(() =>
+          import('../../screens/AdministrationDetailsScreens/RoleDetailScreen'),
+        )}
       />
       <Route
         path='/settings/administration/privileges/:id'
