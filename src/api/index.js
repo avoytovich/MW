@@ -52,6 +52,24 @@ const api = {
       data,
     });
   },
+  addNewMetaRole(data) {
+    let url =
+      '/iam/meta-roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addNewRole(data) {
+    let url =
+      '/iam/roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addNewFont(data) {
     let url = 'designs/fonts';
     const reason = 'Nexway-Center';
@@ -379,6 +397,13 @@ const api = {
       url,
     });
   },
+  getConditionsOfAvailabilty() {
+    let url = '/iam/roles/availableAvailabilityConditions';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // GET FEW BY IDs
   getCustomersByIds(ids) {
     const url = `/customers/public?format=short/${ids}`;
@@ -618,10 +643,39 @@ const api = {
       url,
     });
   },
-
+  getMetaRoleById(id) {
+    const url = `/iam/meta-roles/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getRoleById(id) {
+    const url = `/iam/roles/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // PUT BY ID
   updateCustomerById(id, data) {
     const url = `/customers/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateMetaRoleById(id, data) {
+    const url = `/iam/meta-roles/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateRoleById(id, data) {
+    const url = `/iam/roles/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
     return axiosInstance({
       method: 'put',
       url,

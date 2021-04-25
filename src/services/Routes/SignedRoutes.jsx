@@ -62,15 +62,25 @@ const SignedRoutes = () => {
       />
       <Route
         path='/settings/administration/customers/:id'
-        component={() => <>customer</>}
+        component={lazy(() =>
+          import(
+            '../../screens/AdministrationDetailsScreens/CustomerDetailScreen'
+          ),
+        )}
       />
       <Route
         path='/settings/administration/metaRoles/:id'
-        component={() => <>metaRole</>}
+        component={lazy(() =>
+          import(
+            '../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'
+          ),
+        )}
       />
       <Route
         path='/settings/administration/roles/:id'
-        component={() => <>role</>}
+        component={lazy(() =>
+          import('../../screens/AdministrationDetailsScreens/RoleDetailScreen'),
+        )}
       />
       <Route
         path='/settings/administration/privileges/:id'
