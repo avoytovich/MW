@@ -285,6 +285,9 @@ const labels = {
   reasonForCurrentChange: 'Reason for current change',
   description: 'Description',
   serviceName: 'Service Name',
+  clearances: 'Clearances',
+  lastUpdateReason: 'Last Update Reason',
+  metaRole: 'Meta-Role'
 };
 
 export default labels;

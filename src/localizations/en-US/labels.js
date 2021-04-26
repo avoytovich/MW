@@ -288,7 +288,10 @@ const labels = {
   aggregatedRoles: 'Aggregated Roles',
   reasonForCurrentChange: 'Reason for current change',
   description: 'Description',
-  serviceName:'Service Name'
+  serviceName: 'Service Name',
+  clearances: 'Clearances',
+  lastUpdateReason: 'Last Update Reason',
+  metaRole: 'Meta-Role'
 };
 
 export default labels;
