@@ -46,7 +46,7 @@ const ChartBlock = ({ chartType }) => {
       },
     ],
   };
-  
+
   const options = {
     scales: {
       yAxes: [
@@ -57,9 +57,9 @@ const ChartBlock = ({ chartType }) => {
             padding: 5,
             mirror: chartType === 'line',
             callback: (value) => {
-              if(value%1000 === 0) return `$${value/1000}${value !== 0 ? 'K' : ''}`
+              if(value%1000 === 0) return `$${value/1000}${value !== 0 ? 'K' : ''}`;
             },
-            max: 5000
+            max: 5000,
           },
           gridLines: {
             drawBorder: false,
@@ -80,11 +80,11 @@ const ChartBlock = ({ chartType }) => {
       display: false,
     },
     elements: {
-      point:{
+      point: {
         radius: 0,
         hitRadius: 10,
         hoverRadius: 5,
-      }
+      },
     },
     grouped: false,
     maintainAspectRatio: false,
@@ -93,19 +93,23 @@ const ChartBlock = ({ chartType }) => {
 
   return (
     <Box width='100%' height='350px' className='chart-wrapper'>
-      {chartType === 'line' && <Line
-        data={data}
-        options={options}
-        height='100%'
-        width='100%'
-      />}
+      {chartType === 'line' && (
+        <Line
+          data={data}
+          options={options}
+          height='100%'
+          width='100%'
+        />
+      )}
 
-      {chartType === 'bar' && <Bar
-        data={data}
-        options={options}
-        height='100%'
-        width='100%'
-      />}
+      {chartType === 'bar' && (
+        <Bar
+          data={data}
+          options={options}
+          height='100%'
+          width='100%'
+        />
+      )}
     </Box>
   );
 };

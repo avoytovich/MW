@@ -100,7 +100,7 @@ const discountRequiredFields = (discount) => {
     parentProductIds: [],
     productIds: [],
     enduserId: '',
-    storeIds:[],
+    storeIds: [],
     codes: {},
     endUserGroupIds: [],
     endUserEmails: [],
@@ -133,35 +133,38 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
   return res;
 };
 
-const renewingProductsOptions = (options) =>
+const renewingProductsOptions = (options) => (
   options.map((item) => {
     const value = item?.genericName
       ? `${item.genericName} (${item.publisherRefId}${
-          item.subscriptionTemplate ? ', ' : ''
-        }
-          ${item.subscriptionTemplate || ''})`
+        item.subscriptionTemplate ? ', ' : ''
+      } ${item.subscriptionTemplate || ''})`
       : item?.id;
-    return { id: item.id, value };
-  });
 
-const productsVariations = (renewingProducts, productId) =>
+    return { id: item.id, value };
+  })
+);
+
+const productsVariations = (renewingProducts, productId) => (
   productId
     ? renewingProducts
-        ?.filter((item) => item.id === productId)
-        .reduce((accumulator, current) => {
-          current.availableVariables = current?.availableVariables?.reduce(
-            (acc, curr) => [
-              ...acc,
-              {
-                ...curr,
-                fieldValue: current[curr.field],
-              },
-            ],
-            [],
-          );
-          return [...accumulator, current];
-        }, [])[0]
-    : {};
+      ?.filter((item) => item.id === productId)
+      .reduce((accumulator, current) => {
+        // eslint-disable-next-line
+        current.availableVariables = current?.availableVariables?.reduce(
+          (acc, curr) => [
+            ...acc,
+            {
+              ...curr,
+              fieldValue: current[curr.field],
+            },
+          ],
+          [],
+        );
+        return [...accumulator, current];
+      }, [])[0]
+    : {}
+);
 
 const storeRequiredFields = (store) => {
   const res = { ...defaultStore, ...store };

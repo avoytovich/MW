@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { Zoom, Button, Box, Typography, Tabs, Tab } from '@material-ui/core';
+import {
+  Zoom, Button, Box, Typography, Tabs, Tab,
+} from '@material-ui/core';
 
 import localization from '../../localization';
 import ProductFiles from './SubSections/ProductFiles';
@@ -51,12 +53,12 @@ const ProductDetailsView = ({
     } = currentProductData;
 
     if (
-      catalogId &&
-      publisherRefId &&
-      genericName &&
-      type &&
-      prices.defaultCurrency &&
-      prices.priceByCountryByCurrency[prices.defaultCurrency]?.default?.value
+      catalogId
+      && publisherRefId
+      && genericName
+      && type
+      && prices.defaultCurrency
+      && prices.priceByCountryByCurrency[prices.defaultCurrency]?.default?.value
     ) {
       setTabsDisabled(false);
     } else {
