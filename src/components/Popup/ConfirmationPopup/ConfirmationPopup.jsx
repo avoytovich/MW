@@ -1,15 +1,15 @@
-import React, { useState }  from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import React, { useState } from 'react';
+import {
+  Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText,
+} from '@material-ui/core';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 
 import api from '../../../api';
 
-
 const ConfirmationPopup = ({ id, currentOrderData }) => {
   const [open, setOpen] = useState(false);
-  const [confirmation, setConfirmation] = useState({to: currentOrderData.endUser.email, template: "ORDERCONFIRMATION"})
-
+  const [confirmation, setConfirmation] = useState({ to: currentOrderData.endUser.email, template: 'ORDERCONFIRMATION' });
 
   const sendConfirmationMailAgain = () => {
     api.sendConfirmationMail(id, confirmation).then(() => {
@@ -40,7 +40,7 @@ const ConfirmationPopup = ({ id, currentOrderData }) => {
           <TextField
             autoFocus
             value={confirmation.to || ''}
-            onChange={(e) => setConfirmation( { ...confirmation, to: e.target.value} )}
+            onChange={(e) => setConfirmation({ ...confirmation, to: e.target.value })}
             margin="dense"
             id="name"
             label={localization.t('forms.labels.confirmationEmailAddress')}
@@ -52,7 +52,7 @@ const ConfirmationPopup = ({ id, currentOrderData }) => {
           <Button onClick={handleClose} color="primary">
             {localization.t('forms.buttons.confirmationEmailCancel')}
           </Button>
-          <Button onClick={ () => { handleClose(); sendConfirmationMailAgain() }} color="primary">
+          <Button onClick={() => { handleClose(); sendConfirmationMailAgain(); }} color="primary">
             {localization.t('forms.buttons.confirmationEmailSend')}
           </Button>
         </DialogActions>

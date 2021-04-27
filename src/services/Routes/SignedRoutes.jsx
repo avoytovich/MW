@@ -1,6 +1,8 @@
 // ToDo[major]: add exact routes for not staging env
 import React, { lazy, useEffect } from 'react';
-import { Switch, Redirect, Route, useHistory } from 'react-router-dom';
+import {
+  Switch, Redirect, Route, useHistory,
+} from 'react-router-dom';
 import Session from '../session';
 
 const SignedRoutes = () => {
@@ -62,25 +64,19 @@ const SignedRoutes = () => {
       />
       <Route
         path='/settings/administration/customers/:id'
-        component={lazy(() =>
-          import(
-            '../../screens/AdministrationDetailsScreens/CustomerDetailScreen'
-          ),
-        )}
+        component={lazy(() => import(
+          '../../screens/AdministrationDetailsScreens/CustomerDetailScreen'
+        ))}
       />
       <Route
         path='/settings/administration/metaRoles/:id'
-        component={lazy(() =>
-          import(
-            '../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'
-          ),
-        )}
+        component={lazy(() => import(
+          '../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'
+        ))}
       />
       <Route
         path='/settings/administration/roles/:id'
-        component={lazy(() =>
-          import('../../screens/AdministrationDetailsScreens/RoleDetailScreen'),
-        )}
+        component={lazy(() => import('../../screens/AdministrationDetailsScreens/RoleDetailScreen'))}
       />
       <Route
         path='/settings/administration/privileges/:id'
@@ -116,45 +112,31 @@ const SignedRoutes = () => {
       />
       <Route
         path='/checkout-experience/themes/add'
-        component={lazy(() =>
-          import('../../screens/ThemeScreen/ThemeAddScreen'),
-        )}
+        component={lazy(() => import('../../screens/ThemeScreen/ThemeAddScreen'))}
       />
       <Route
         path='/checkout-experience/layouts/add'
-        component={lazy(() =>
-          import('../../screens/LayoutScreen/LayoutAddScreen'),
-        )}
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
       />
       <Route
         path='/checkout-experience/translations/add'
-        component={lazy(() =>
-          import('../../screens/TranslationScreen/TranslationAddScreen'),
-        )}
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
       />
       <Route
         path='/checkout-experience/themes/:id'
-        component={lazy(() =>
-          import('../../screens/ThemeScreen/ThemeEditScreen'),
-        )}
+        component={lazy(() => import('../../screens/ThemeScreen/ThemeEditScreen'))}
       />
       <Route
         path='/checkout-experience/layouts/:id'
-        component={lazy(() =>
-          import('../../screens/LayoutScreen/LayoutEditScreen'),
-        )}
+        component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
       />
       <Route
         path='/checkout-experience/translations/:id'
-        component={lazy(() =>
-          import('../../screens/TranslationScreen/TranslationEditScreen'),
-        )}
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
       />
       <Route
         path='/checkout-experience/fonts/:id'
-        component={lazy(() =>
-          import('../../screens/FontScreen/FontEditScreen'),
-        )}
+        component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
       />
       <Route
         path='/checkout-experience'
@@ -162,9 +144,7 @@ const SignedRoutes = () => {
       />
       <Route
         path='/products/add'
-        component={lazy(() =>
-          import('../../screens/ProductDetailsScreen/CreateProduct'),
-        )}
+        component={lazy(() => import('../../screens/ProductDetailsScreen/CreateProduct'))}
       />
 
       <Redirect to='/' />

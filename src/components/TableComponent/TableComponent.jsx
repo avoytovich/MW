@@ -131,7 +131,7 @@ const TableComponent = ({
               </Grid>
             )),
         )}
-        <Grid item xs></Grid>
+        <Grid item xs />
       </Grid>
 
       <Box className="tableBodyGrid">

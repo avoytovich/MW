@@ -33,11 +33,13 @@ const SelectCustom = ({
     SelectProps={{
       value: value || '',
       onChange: onChangeSelect,
+      // eslint-disable-next-line
       renderValue: (selected) => {
         const selectedItem = selectOptions?.find(
           (item) => item.id === selected,
         );
-        if (selectOptions)
+
+        if (selectOptions) {
           return (
             <Box
               display='flex'
@@ -48,6 +50,7 @@ const SelectCustom = ({
               {selectedItem?.value || selected}
             </Box>
           );
+        }
       },
       MenuProps: {
         getContentAnchorEl: null,

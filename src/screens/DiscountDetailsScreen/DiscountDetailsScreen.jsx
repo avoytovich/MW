@@ -81,7 +81,7 @@ const DiscountDetailsScreen = () => {
       delete res.codes;
     }
     if (id === 'add') {
-      api.addNewDiscount(res).then((res) => {
+      api.addNewDiscount(res).then(() => {
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
@@ -99,11 +99,11 @@ const DiscountDetailsScreen = () => {
 
   useEffect(() => {
     setHasChanges(
-      JSON.stringify(curDiscount) !== JSON.stringify(discount) ||
-        JSON.stringify(amountCurrency) !== JSON.stringify(curAmountCurrency) ||
-        JSON.stringify(discountLabels) !== JSON.stringify(curDiscountLabels) ||
-        JSON.stringify(discountCodes) !== JSON.stringify(curDiscountCodes) ||
-        JSON.stringify(minCartAmount) !== JSON.stringify(curMinCartAmount),
+      JSON.stringify(curDiscount) !== JSON.stringify(discount)
+        || JSON.stringify(amountCurrency) !== JSON.stringify(curAmountCurrency)
+        || JSON.stringify(discountLabels) !== JSON.stringify(curDiscountLabels)
+        || JSON.stringify(discountCodes) !== JSON.stringify(curDiscountCodes)
+        || JSON.stringify(minCartAmount) !== JSON.stringify(curMinCartAmount),
     );
 
     return () => setHasChanges(false);
@@ -183,8 +183,8 @@ const DiscountDetailsScreen = () => {
 
           discountProducts.value?.data.items.forEach((product) => {
             if (
-              product.publisherRefId &&
-              !refDiscountProductsObjs.filter(
+              product.publisherRefId
+              && !refDiscountProductsObjs.filter(
                 (e) => e.id === product.publisherRefId,
               ).length > 0
             ) {
@@ -241,8 +241,7 @@ const DiscountDetailsScreen = () => {
 
     setCurDiscount((c) => ({ ...c, [type]: setValue }));
   };
-  if (id === 'add' && !nxState.selectedCustomer.id)
-    return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
 
   if (curDiscount === null) return <LinearProgress />;
 
@@ -269,8 +268,8 @@ const DiscountDetailsScreen = () => {
             {id !== 'add'
               ? discount.name
               : `${localization.t('general.new')} ${localization.t(
-                  'general.discount',
-                )}`}
+                'general.discount',
+              )}`}
           </Typography>
         </Box>
 

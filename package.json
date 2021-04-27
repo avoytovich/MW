@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./src --ext .js,.jsx --no-error-on-unmatched-pattern",
+    "lint-fix": "eslint ./src --ext .js,.jsx --fix",
     "dev": "webpack-dev-server --mode=development --env.NODE_ENV=development",
     "prod": "webpack --mode=production --env.NODE_ENV=production",
     "cy:local": "CYPRESS_BASE_URL=http://localhost:8080 cypress run",

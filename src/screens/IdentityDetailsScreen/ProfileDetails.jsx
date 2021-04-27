@@ -14,7 +14,6 @@ import localization from '../../localization';
 import CustomCard from '../../components/utils/CustomCard';
 
 const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
-
   const [identityType, setIdentityType] = useState(
     identity.clientId ? 'application' : 'user',
   );
@@ -120,12 +119,10 @@ const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
                 <Switch
                   color='primary'
                   checked={!identity.inactive}
-                  onChange={() =>
-                    changeIdentity({
-                      ...identity,
-                      inactive: !identity.clientId,
-                    })
-                  }
+                  onChange={() => changeIdentity({
+                    ...identity,
+                    inactive: !identity.clientId,
+                  })}
                   name='status'
                 />
 
@@ -170,6 +167,7 @@ const ProfileDetails = ({ identity, changeIdentity, newIdentity }) => {
 ProfileDetails.propTypes = {
   identity: PropTypes.object,
   changeIdentity: PropTypes.func,
+  newIdentity: PropTypes.bool,
 };
 
 export default ProfileDetails;

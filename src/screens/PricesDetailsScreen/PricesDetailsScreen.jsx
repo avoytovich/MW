@@ -87,7 +87,7 @@ const PricesDetailsScreen = () => {
 
   useEffect(() => {
     const { selectedCustomer } = nxState;
-    
+
     const initData = {
       customerId: selectedCustomer?.id,
       currency: '',
@@ -103,9 +103,9 @@ const PricesDetailsScreen = () => {
       if (selectedCustomer?.id) {
         api
           .getProducts(0, `&customerId=${selectedCustomer?.id}&status=ENABLED`)
-          .then(({ data: { items }}) => {
+          .then(({ data: { items } }) => {
             const products = items.map((it) => ({ id: it.id, value: it.genericName }));
-            
+
             setAvailProducts(products);
           });
       }
@@ -136,7 +136,7 @@ const PricesDetailsScreen = () => {
     if (e.target.value === 'default' && curPrice?.country) {
       const newPrice = { ...curPrice };
       delete newPrice.country;
-      
+
       setCurPrice({ ...newPrice });
     } else {
       setCurPrice((c) => ({ ...c, country: e.target.value }));
@@ -151,17 +151,19 @@ const PricesDetailsScreen = () => {
 
   if (curPrice === null) return <LinearProgress />;
 
-  if (id === 'add' && !curPrice?.customerId) return (
-    <Box textAlign='center'>
-      <Typography gutterBottom variant="h4">
-        {localization.t('general.noCustomer')}
-      </Typography>
+  if (id === 'add' && !curPrice?.customerId) {
+    return (
+      <Box textAlign='center'>
+        <Typography gutterBottom variant="h4">
+          {localization.t('general.noCustomer')}
+        </Typography>
 
-      <Typography gutterBottom variant="h5">
-        {localization.t('general.selectCustomer')}
-      </Typography>
-    </Box>
-  );
+        <Typography gutterBottom variant="h5">
+          {localization.t('general.selectCustomer')}
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <div className="price-details-screen">
@@ -174,7 +176,7 @@ const PricesDetailsScreen = () => {
       <Box my={2}>
         <Typography gutterBottom variant="h3">{price?.customerId}</Typography>
       </Box>
-      
+
       <Zoom in={hasChanges}>
         <Button
           id="save-price-button"
@@ -199,7 +201,7 @@ const PricesDetailsScreen = () => {
               <Typography variant="h6">{price?.productId}</Typography>
 
               <FileCopyOutlinedIcon
-                style={{ opacity: .25, marginLeft: 10, cursor: 'pointer' }}
+                style={{ opacity: 0.25, marginLeft: 10, cursor: 'pointer' }}
                 onClick={() => history.push(`/overview/products/${price?.productId}`)}
               />
             </Box>
@@ -307,7 +309,11 @@ const PricesDetailsScreen = () => {
             </Box>
 
             <Box mt='8px'>
-              <Typography variant="h5">{localization.t('labels.periodOfValidity')} *</Typography>
+              <Typography variant="h5">
+                {localization.t('labels.periodOfValidity')}
+                {' '}
+                *
+              </Typography>
 
               <Box py={2} display='flex'>
                 <Box width='200px'>

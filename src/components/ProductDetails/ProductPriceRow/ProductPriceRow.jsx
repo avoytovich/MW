@@ -9,24 +9,21 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
-import localization from '../../../localization';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import {
   SelectCustom,
-} from '../../../components/Inputs';
+} from '../../Inputs';
 
 import {
   priceCurrency,
   countryOptions,
 } from '../../../services/selectOptions/selectOptions';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-
 const ProductPriceRow = ({
   setProductData,
   currentProductData,
- }) => {
-
+}) => {
   const [currency, setCurrency] = useState('');
   const [country, setCountry] = useState('');
 
@@ -59,8 +56,11 @@ const ProductPriceRow = ({
         ...currentProductData.prices,
         priceByCountryByCurrency: {
           ...currentProductData.prices.priceByCountryByCurrency,
-          [currency]: { ...currentProductData?.prices?.priceByCountryByCurrency[currency], ...countryObj},
-        }
+          [currency]: {
+            ...currentProductData?.prices?.priceByCountryByCurrency[currency],
+            ...countryObj,
+          },
+        },
       },
     });
 
@@ -80,16 +80,16 @@ const ProductPriceRow = ({
 
   const handleCurrency = (e) => {
     setCurrency(e.target.value);
-  }
+  };
   const handleCountry = (e) => {
     setCountry(e.target.value);
-  }
+  };
   const handleCheckbox = (e) => {
     setNewRow({
       ...newRow,
       [e.target.name]: e.target.checked,
     });
-  }
+  };
 
   return (
     <>
@@ -192,8 +192,9 @@ const ProductPriceRow = ({
   );
 };
 
-// PricesSection.propTypes = {
-//   setProductData: PropTypes.func,
-// };
+ProductPriceRow.propTypes = {
+  setProductData: PropTypes.func,
+  currentProductData: PropTypes.object,
+};
 
 export default ProductPriceRow;

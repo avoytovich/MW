@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-// import { showNotification } from '../../../../redux/actions/HttpNotifications';
-
+import { showNotification } from '../../../redux/actions/HttpNotifications';
+import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';
 
 import { useTableData } from '../../../services/useData';
@@ -15,7 +15,9 @@ import {
 const TabTable = ({ tabObject }) => {
   const dispatch = useDispatch();
 
-  const { sortKey, generateData, request, deleteFunc, label } = tabObject;
+  const {
+    sortKey, generateData, request, deleteFunc, label,
+  } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);

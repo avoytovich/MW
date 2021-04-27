@@ -8,7 +8,7 @@ const { dispatch } = store;
 
 const errorHandler = (error) => {
   const { response } = error;
-  const { errorDetails } = JSON.parse(localStorage.getItem('nexwayState'));
+  const { errorDetails } = JSON.parse(localStorage.getItem('nexwayState')) || {};
 
   let message = '';
 

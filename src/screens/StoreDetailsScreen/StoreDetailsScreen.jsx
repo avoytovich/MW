@@ -232,9 +232,9 @@ const StoreDetailsScreen = () => {
             <Box mb={1} mr={1}>
               <Button
                 disabled={
-                  checkLabelDuplicate(currentStoreResources) ||
-                  (currentStoreData.externalContextAlias &&
-                    !!currentStoreData.externalContextGenerationParams.length)
+                  checkLabelDuplicate(currentStoreResources)
+                  || (currentStoreData.externalContextAlias
+                    && !!currentStoreData.externalContextGenerationParams.length)
                 }
                 id='save-discount-button'
                 color='primary'

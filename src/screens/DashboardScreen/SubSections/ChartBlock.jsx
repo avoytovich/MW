@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import { Line, Bar } from 'react-chartjs-2';
 
 const ChartBlock = ({ chartType }) => {
@@ -11,7 +12,7 @@ const ChartBlock = ({ chartType }) => {
       '13', '14', '15', '16',
       '17', '18', '19', '20',
       '21', '22', '23', '24',
-      '25', '26', '27', '28'
+      '25', '26', '27', '28',
     ],
     datasets: [
       {
@@ -56,8 +57,9 @@ const ChartBlock = ({ chartType }) => {
             beginAtZero: true,
             padding: 5,
             mirror: chartType === 'line',
+            // eslint-disable-next-line
             callback: (value) => {
-              if(value%1000 === 0) return `$${value/1000}${value !== 0 ? 'K' : ''}`;
+              if (value % 1000 === 0) return `$${value / 1000}${value !== 0 ? 'K' : ''}`;
             },
             max: 5000,
           },
@@ -112,6 +114,10 @@ const ChartBlock = ({ chartType }) => {
       )}
     </Box>
   );
+};
+
+ChartBlock.propTypes = {
+  chartType: PropTypes.string,
 };
 
 export default ChartBlock;

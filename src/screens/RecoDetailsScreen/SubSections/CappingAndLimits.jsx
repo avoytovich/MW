@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -24,7 +25,7 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
   const [validPeriod, setValidPeriod] = useState('between');
 
   useEffect(() => {
-    if(validPeriod === 'between') return;
+    if (validPeriod === 'between') return;
 
     const newReco = { ...curReco };
 
@@ -39,7 +40,7 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
 
   useEffect(() => {
     let curVariant = 'between';
-  
+
     if (curReco.startDate && curReco.endDate) {
       curVariant = 'between';
     } else if (curReco.startDate) {
@@ -110,7 +111,10 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
                   type='date'
                   variant='outlined'
                   InputLabelProps={{ shrink: true }}
-                  onChange={(e) => setCurReco({ ...curReco, startDate: moment(e.target.value).valueOf() })}
+                  onChange={(e) => setCurReco({
+                    ...curReco,
+                    startDate: moment(e.target.value).valueOf(),
+                  })}
                 />
               </form>
             </Box>
@@ -129,7 +133,10 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
                   type='date'
                   variant='outlined'
                   InputLabelProps={{ shrink: true }}
-                  onChange={(e) => setCurReco({ ...curReco, endDate: moment(e.target.value).valueOf() })}
+                  onChange={(e) => setCurReco({
+                    ...curReco,
+                    endDate: moment(e.target.value).valueOf(),
+                  })}
                 />
               </form>
             </Box>

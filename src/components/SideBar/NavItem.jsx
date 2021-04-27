@@ -38,6 +38,7 @@ NavItem.propTypes = {
   href: PropTypes.string,
   icon: PropTypes.any,
   title: PropTypes.string.isRequired,
+  exact: PropTypes.bool,
 };
 
 export default NavItem;
