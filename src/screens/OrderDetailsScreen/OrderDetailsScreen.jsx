@@ -34,7 +34,7 @@ const OrderDetailsScreen = () => {
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
-  const [orderHasChanges, setOrderChanges] = useState(false);
+  // const [orderHasChanges, setOrderChanges] = useState(false);
   const [orderRows, setOrderRows] = useState(null);
   const [customer, setCustomer] = useState({ name: '-' });
 
@@ -46,14 +46,14 @@ const OrderDetailsScreen = () => {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
-  const saveDetails = () => {
+  /* const saveDetails = () => {
     api.updateOrderById(currentOrderData.id, currentOrderData).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
       window.location.reload();
     });
-  };
+  }; */
 
   const resyncPayment = () => {
     api.resyncPayments(currentOrderData.id).then(() => {
@@ -96,14 +96,14 @@ const OrderDetailsScreen = () => {
     };
   }, []);
 
-  useEffect(() => {
+  /* useEffect(() => {
     setOrderChanges(
       JSON.stringify(currentOrderData) !== JSON.stringify(orderData),
     );
     return () => {
       setOrderChanges(false);
     };
-  }, [currentOrderData, orderData]);
+  }, [currentOrderData, orderData]); */
 
   if (isLoading) return <LinearProgress />;
 
@@ -153,7 +153,7 @@ const OrderDetailsScreen = () => {
             onClick={handleClick}
             size='large'
           >
-          {localization.t('forms.buttons.actions')}
+            {localization.t('forms.buttons.actions')}
           </Button>
           <Menu
             getContentAnchorEl={null}
@@ -169,11 +169,11 @@ const OrderDetailsScreen = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem><ConfirmationPopup currentOrderData={currentOrderData} id={id}/></MenuItem>
+            <MenuItem><ConfirmationPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
             <MenuItem onClick={resyncPayment}>
               <Button color="inherit" fullWidth>{localization.t('forms.buttons.resyncPayments')}</Button>
             </MenuItem>
-            <MenuItem><CancelOrderPopup currentOrderData={currentOrderData} id={id}/></MenuItem>
+            <MenuItem><CancelOrderPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
           </Menu>
         </Box>
       </Box>

@@ -83,10 +83,10 @@ const EditProduct = () => {
         setCurrentProductData(JSON.parse(newHashes));
         setLoading(false);
       }
-      const { customerId, id, descriptionId } = product;
+      const { customerId, id: _id, descriptionId } = product;
       handleGetOptions(
         customerId,
-        id,
+        _id,
         descriptionId,
         isCancelled,
         setSelectOptions,
@@ -102,8 +102,8 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (
-      JSON.stringify(currentProductData?.sellingStores) !==
-      JSON.stringify(productData?.sellingStores)
+      JSON.stringify(currentProductData?.sellingStores)
+      !== JSON.stringify(productData?.sellingStores)
     ) {
       filterCheckoutStores();
     }

@@ -9,7 +9,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ImportExportIcon from '@material-ui/icons/ImportExport';
 import './TableComponent.scss';
 
-const TableItemsActions = ({ items, headers, onDelete, setItems }) => {
+const TableItemsActions = ({
+  items, headers, onDelete, setItems,
+}) => {
   const csvHeaders = [...headers].map((header) => ({
     label: header.value,
     key: header.id,
@@ -61,6 +63,7 @@ TableItemsActions.propTypes = {
   items: PropTypes.array,
   headers: PropTypes.array,
   onDelete: PropTypes.func,
+  setItems: PropTypes.func,
 };
 
 export default TableItemsActions;

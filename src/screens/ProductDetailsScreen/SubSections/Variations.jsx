@@ -157,7 +157,7 @@ const Variations = ({
                       disabled
                       value={selectValue.value}
                       fullWidth
-                      label={'Name or Id'}
+                      label="Name or Id"
                       type="text"
                       variant="outlined"
                       onMouseEnter={props.handlePopoverOpen}
@@ -248,9 +248,9 @@ const Variations = ({
                     ...currentProductData,
                     subProducts: currentProductData?.subProducts
                       ? [
-                          ...currentProductData.subProducts,
-                          selectedBundledProduct,
-                        ]
+                        ...currentProductData.subProducts,
+                        selectedBundledProduct,
+                      ]
                       : [selectedBundledProduct],
                   });
                   setSelectedBundledProduct(null);
@@ -281,9 +281,9 @@ const Variations = ({
                           color="secondary"
                           aria-label="clear"
                           onClick={() => {
-                            const newAvailableVariables = currentProductData.availableVariables.filter(
-                              (item) => item.field !== field,
-                            );
+                            const newAvailableVariables = currentProductData.availableVariables
+                              .filter((item) => item.field !== field);
+
                             setProductData({
                               ...currentProductData,
                               availableVariables: newAvailableVariables,
@@ -325,8 +325,9 @@ Variations.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
-  inputErrors: PropTypes.object,
-  setInputErrors: PropTypes.func,
+  open: PropTypes.bool,
+  handlePopoverClose: PropTypes.func,
+  handlePopoverOpen: PropTypes.func,
   productVariations: PropTypes.shape({
     bundledProducts: PropTypes.array,
     variations: PropTypes.object,

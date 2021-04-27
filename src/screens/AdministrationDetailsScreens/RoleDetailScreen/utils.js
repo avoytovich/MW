@@ -75,12 +75,11 @@ const createKey = (obj, newServiceName) => {
   let keyNumber = 0;
 
   if (obj.rights[newServiceName]) {
-    keyNumber =
-      Number(
-        obj.rights[newServiceName][
-          obj.rights[newServiceName].length - 1
-        ].key.split('_')[1],
-      ) + 1;
+    keyNumber = Number(
+      obj.rights[newServiceName][
+        obj.rights[newServiceName].length - 1
+      ].key.split('_')[1],
+    ) + 1;
   }
   return `${newServiceName}_${keyNumber}`;
 };

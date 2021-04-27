@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Tabs, Tab, Box, Button, Zoom } from '@material-ui/core';
+import {
+  Tabs, Tab, Box, Button, Zoom,
+} from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
 import localization from '../../localization';
 
@@ -13,7 +15,7 @@ import MetaRoles from './MetaRoles';
 const tabsData = [
   {
     label: 'customers',
-    path: `/settings/administration/customers`,
+    path: '/settings/administration/customers',
     request: api.getCustomers,
     sortKey: 'customerAdmin',
     generateData: generateCustomers,
@@ -21,7 +23,7 @@ const tabsData = [
   },
   {
     label: 'roles',
-    path: `/settings/administration/roles`,
+    path: '/settings/administration/roles',
     button: `${localization.t('general.add')} ${localization.t(
       'general.role',
     )}`,
@@ -33,7 +35,7 @@ const tabsData = [
   },
   {
     label: 'metaRoles',
-    path: `/settings/administration/metaRoles`,
+    path: '/settings/administration/metaRoles',
     button: `${localization.t('general.add')} ${localization.t(
       'general.metaRole',
     )}`,
@@ -41,7 +43,7 @@ const tabsData = [
   },
   {
     label: 'privileges',
-    path: `/settings/administration/privileges`,
+    path: '/settings/administration/privileges',
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,
@@ -66,8 +68,7 @@ const AdministrationScreen = () => {
   }, [pathname]);
 
   const drawAddButton = () => {
-    const currentTad =
-      tabsData.find((item) => item.path === pathname) || tabsData[0];
+    const currentTad = tabsData.find((item) => item.path === pathname) || tabsData[0];
     return (
       <Zoom in={!!currentTad.button}>
         <Box alignSelf='flex-end'>
@@ -85,8 +86,7 @@ const AdministrationScreen = () => {
       </Zoom>
     );
   };
-  const changeTab = (tab) =>
-    history.push(`/settings/administration/${tabsData[tab].label}`);
+  const changeTab = (tab) => history.push(`/settings/administration/${tabsData[tab].label}`);
   return (
     <Box display='flex' flexDirection='column'>
       {drawAddButton()}
@@ -104,8 +104,8 @@ const AdministrationScreen = () => {
       <Box mt={4} mb={2}>
         {tabsData.map((tab, index) => (
           <Fragment key={tab.label}>
-            {curTab === index &&
-              (tab.label === 'metaRoles' ? (
+            {curTab === index
+              && (tab.label === 'metaRoles' ? (
                 <MetaRoles sortKey={tab.sortKey} scope={tab.label} />
               ) : (
                 <TabTable tabObject={tab} />

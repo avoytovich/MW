@@ -34,19 +34,18 @@ const IdentityDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const requests = async () => {
-    const res =
-      id !== 'add'
-        ? await api.getIdentityById(id)
-        : {
-            data: {
-              email: '',
-              firstName: '',
-              lastName: '',
-              userName: '',
-              clientId: '',
-              customerId: nxState.selectedCustomer.id,
-            },
-          };
+    const res = id !== 'add'
+      ? await api.getIdentityById(id)
+      : {
+        data: {
+          email: '',
+          firstName: '',
+          lastName: '',
+          userName: '',
+          clientId: '',
+          customerId: nxState.selectedCustomer.id,
+        },
+      };
 
     return res.data;
   };
@@ -63,11 +62,11 @@ const IdentityDetailsScreen = () => {
     if (id === 'add') {
       api.addNewIdentity(filterBlankKeys).then((res) => {
         const location = res.headers.location.split('/');
-        const id = location[location.length - 1];
+        const identityId = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/identities/${id}`);
+        history.push(`/settings/identities/${identityId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -93,7 +92,7 @@ const IdentityDetailsScreen = () => {
 
   if (isLoading) return <LinearProgress />;
 
-  if (id === 'add' && !nxState.selectedCustomer.id)
+  if (id === 'add' && !nxState.selectedCustomer.id) {
     return (
       <Box textAlign='center'>
         <Typography gutterBottom variant='h4'>
@@ -105,6 +104,7 @@ const IdentityDetailsScreen = () => {
         </Typography>
       </Box>
     );
+  }
 
   return (
     <div className='identity-details-screen'>
@@ -135,8 +135,8 @@ const IdentityDetailsScreen = () => {
       <Zoom in={hasChanges}>
         <Button
           disabled={
-            !curIdentity.email ||
-            (!curIdentity.userName && !curIdentity.clientId)
+            !curIdentity.email
+            || (!curIdentity.userName && !curIdentity.clientId)
           }
           id='save-identity-button'
           color='primary'

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
+import PropTypes from 'prop-types';
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
 import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
-import PropTypes from 'prop-types';
 
 import {
   getSortParams,

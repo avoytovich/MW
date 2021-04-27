@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import api from '../../api';
 import { Link } from 'react-router-dom';
 import { Box, Button } from '@material-ui/core';
+import api from '../../api';
 import {
   generateData,
   defaultShow,
@@ -49,17 +49,16 @@ const IdentitiesScreen = () => {
     sortParams,
   );
 
-  const handleDeleteIdentity = (id) =>
-    api.deleteIdentityById(id).then(() => {
-      setMakeUpdate((v) => v + 1);
-      dispatch(
-        showNotification(
-          `${localization.t('general.identity')} ${id} ${localization.t(
-            'general.hasBeenSuccessfullyDeleted',
-          )}`,
-        ),
-      );
-    });
+  const handleDeleteIdentity = (id) => api.deleteIdentityById(id).then(() => {
+    setMakeUpdate((v) => v + 1);
+    dispatch(
+      showNotification(
+        `${localization.t('general.identity')} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`,
+      ),
+    );
+  });
 
   const updatePage = (page) => setCurrentPage(page);
 

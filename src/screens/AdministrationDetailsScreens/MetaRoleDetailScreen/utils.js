@@ -1,8 +1,6 @@
 const defaultMetaRoleObj = { roleIds: [], reason: '', name: '' };
 
-const requiredFields = (obj) => {
-  return { ...defaultMetaRoleObj, ...obj };
-};
+const requiredFields = (obj) => ({ ...defaultMetaRoleObj, ...obj });
 
 const structureSelectOptions = (options) => {
   let res = [];
@@ -14,4 +12,4 @@ const structureSelectOptions = (options) => {
   }
   return res;
 };
-export { requiredFields, structureSelectOptions,defaultMetaRoleObj };
+export { requiredFields, structureSelectOptions, defaultMetaRoleObj };

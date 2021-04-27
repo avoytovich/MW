@@ -48,8 +48,6 @@ const general = {
   selectCustomer:
     'Please select a customer which will own the created resource.',
   campaign: 'Campaign',
-  recommendation: 'Recommendation',
-  discount: 'Discount',
   price: 'Price',
   new: 'New',
   selectNoSourceMeans:

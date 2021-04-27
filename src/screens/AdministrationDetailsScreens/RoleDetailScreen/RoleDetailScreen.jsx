@@ -93,8 +93,7 @@ const RoleDetailScreen = () => {
 
   if (curRole === null) return <LinearProgress />;
 
-  if (id === 'add' && !nxState.selectedCustomer.id)
-    return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
   return (
     <div>
       <Zoom in={hasChanges}>
@@ -113,9 +112,7 @@ const RoleDetailScreen = () => {
       <InputCustom
         label='reasonForCurrentChange'
         value={curRole.reason}
-        onChangeInput={(e) =>
-          setCurRole({ ...curRole, reason: e.target.value })
-        }
+        onChangeInput={(e) => setCurRole({ ...curRole, reason: e.target.value })}
       />
       <InputCustom
         label='name'
@@ -127,20 +124,16 @@ const RoleDetailScreen = () => {
         label='description'
         isMultiline
         value={curRole.description}
-        onChangeInput={(e) =>
-          setCurRole({ ...curRole, description: e.target.value })
-        }
+        onChangeInput={(e) => setCurRole({ ...curRole, description: e.target.value })}
       />
       <SelectWithChip
         label='conditionsOfAvailabilty'
         value={curRole.availabilityConditions}
         selectOptions={selectOptions.conditionsOfAvailabilty}
-        onChangeSelect={(e) =>
-          setCurRole({
-            ...curRole,
-            availabilityConditions: e.target.value,
-          })
-        }
+        onChangeSelect={(e) => setCurRole({
+          ...curRole,
+          availabilityConditions: e.target.value,
+        })}
         onClickDelIcon={(chip) => {
           const newValue = [...curRole.availabilityConditions].filter(
             (val) => val !== chip,

@@ -150,7 +150,8 @@ const orderCancelAction = [
   { id: 'UNW', value: 'UNT (Unwilling subscription)' },
   { id: 'VAT', value: 'VAT (VAT issue)' },
   { id: 'MRG', value: 'MRG (Wrong product choice)' },
-]
+];
+
 const installmentOptions = [
   { id: 1, value: 1 },
   { id: 2, value: 2 },

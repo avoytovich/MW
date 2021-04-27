@@ -13,7 +13,6 @@ const handleGetOptions = (
   setSelectOptions,
   selectOptions,
   setSubProductVariations,
-  setProductLocalizationChanges,
 ) => {
   let subscriptionOptions = null;
 
@@ -43,7 +42,6 @@ const handleGetOptions = (
         catalogs,
         priceFunctionsOptions,
         subProducts,
-        productDetails,
         subscriptions,
       ]) => {
         if (!subscriptionOptions) {

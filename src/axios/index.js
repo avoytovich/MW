@@ -8,8 +8,8 @@ const { dispatch } = store;
 
 const errorHandler = (error) => {
   const { response } = error;
-  const { errorDetails } = JSON.parse(localStorage.getItem('nexwayState'));
-  
+  const { errorDetails } = JSON.parse(localStorage.getItem('nexwayState')) || {};
+
   let message = '';
 
   if (errorDetails) {
@@ -27,7 +27,7 @@ const errorHandler = (error) => {
       case 598:
       case 599:
         message = localization.t('errorNotifications.network'); break;
-  
+
       default: message = error.message || localization.t('errorNotifications.otherError');
     }
   }

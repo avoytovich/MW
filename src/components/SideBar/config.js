@@ -23,7 +23,7 @@ const navConfig = [
         href: '/',
         exact: true,
         icon: Dashboard,
-      }
+      },
     ],
   },
   {

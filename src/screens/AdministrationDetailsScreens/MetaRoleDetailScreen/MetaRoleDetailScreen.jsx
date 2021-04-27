@@ -59,12 +59,10 @@ const MetaRoleDetailScreen = () => {
       setMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
       setCurMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
     });
-    api.getRoles().then(({ data }) =>
-      setSelectOptions({
-        ...selectOptions,
-        roles: structureSelectOptions(data.items) || [],
-      }),
-    );
+    api.getRoles().then(({ data }) => setSelectOptions({
+      ...selectOptions,
+      roles: structureSelectOptions(data.items) || [],
+    }));
   }, [update]);
 
   useEffect(() => {
@@ -75,8 +73,7 @@ const MetaRoleDetailScreen = () => {
 
   if (curMetaRole === null) return <LinearProgress />;
 
-  if (id === 'add' && !nxState.selectedCustomer.id)
-    return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
 
   return (
     <div>
@@ -96,29 +93,23 @@ const MetaRoleDetailScreen = () => {
       <InputCustom
         label='reasonForCurrentChange'
         value={curMetaRole.reason}
-        onChangeInput={(e) =>
-          setCurMetaRole({ ...curMetaRole, reason: e.target.value })
-        }
+        onChangeInput={(e) => setCurMetaRole({ ...curMetaRole, reason: e.target.value })}
         isRequired
       />
       <InputCustom
         label='name'
         value={curMetaRole.name}
-        onChangeInput={(e) =>
-          setCurMetaRole({ ...curMetaRole, name: e.target.value })
-        }
+        onChangeInput={(e) => setCurMetaRole({ ...curMetaRole, name: e.target.value })}
         isRequired
       />
       <SelectWithChip
         label='aggregatedRoles'
         value={curMetaRole.roleIds}
         selectOptions={selectOptions.roles}
-        onChangeSelect={(e) =>
-          setCurMetaRole({
-            ...curMetaRole,
-            roleIds: e.target.value,
-          })
-        }
+        onChangeSelect={(e) => setCurMetaRole({
+          ...curMetaRole,
+          roleIds: e.target.value,
+        })}
         onClickDelIcon={(chip) => {
           const newValue = [...curMetaRole.roleIds].filter(
             (val) => val !== chip,

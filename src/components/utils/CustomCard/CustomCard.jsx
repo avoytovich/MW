@@ -6,7 +6,9 @@ import {
   Divider,
 } from '@material-ui/core';
 
-const CustomCard = ({ title, children, noDivider, ...other }) => (
+const CustomCard = ({
+  title, children, noDivider, ...other
+}) => (
   <Box
     my={3}
     bgcolor='#fff'
@@ -26,6 +28,7 @@ const CustomCard = ({ title, children, noDivider, ...other }) => (
 CustomCard.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
+  noDivider: PropTypes.bool,
 };
 
 export default CustomCard;

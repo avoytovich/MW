@@ -23,7 +23,7 @@ import FullNameAvatar from '../utils/FullNameAvatar';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import './TableComponent.scss';
-import PriceNumberFormat from './../../components/ProductDetails/PriceNumberFormat';
+import PriceNumberFormat from '../ProductDetails/PriceNumberFormat';
 
 const TableRowComponent = ({
   rowItem,
@@ -67,7 +67,7 @@ const TableRowComponent = ({
       if (item.id === 'createDate' || item.id === 'updateDate') {
         valueToShow = moment(rowItem[item.id]).format('D MMM YYYY');
       } if (item.id === 'value') {
-        valueToShow = <PriceNumberFormat number={rowItem[item.id]} currency={rowItem.currency}/>
+        valueToShow = <PriceNumberFormat number={rowItem[item.id]} currency={rowItem.currency} />;
       } else {
         valueToShow = rowItem[item.id];
       }
@@ -136,7 +136,7 @@ const TableRowComponent = ({
 
         {markupSequence.map((item) => drawTableCell(item))}
         <Grid item xs>
-        {rowHover && !customPath && (
+          {rowHover && !customPath && (
           <Grid>
             <Box my={2}>
               {!noActions && (
@@ -149,7 +149,7 @@ const TableRowComponent = ({
               <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
             </Box>
           </Grid>
-        )}
+          )}
         </Grid>
       </Grid>
     </Box>
