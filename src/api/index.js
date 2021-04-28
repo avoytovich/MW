@@ -204,6 +204,18 @@ const api = {
       url,
     });
   },
+  getSubscriptions(page, filters) {
+    let url = `/subscription-manager/subscriptions?format=short&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 
   getProducts(page = 0, filters, sortParams) {
     let url = `/products?format=full&size=50&page=${page}`;

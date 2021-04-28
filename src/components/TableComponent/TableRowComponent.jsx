@@ -138,7 +138,7 @@ const TableRowComponent = ({
         <Grid item xs>
           {rowHover && !customPath && (
           <Grid>
-            <Box my={2}>
+            <Box my={2} textAlign='center'>
               {!noActions && (
                 <DeleteIcon
                   onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
