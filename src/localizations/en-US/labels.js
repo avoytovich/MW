@@ -283,6 +283,9 @@ const labels = {
   customers: 'Customers',
   reasonForCurrentChange: 'Reason for current change',
   description: 'Description',
+  lifecycleId: 'Lifecycle ID',
+  enduserId: 'Enduser ID',
+  subscriptionName: 'Subscription Name',
 };
 
 export default labels;
