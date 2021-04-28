@@ -670,6 +670,13 @@ const api = {
       url,
     });
   },
+  getPrivilegeById(id) {
+    const url = `/iam/privileges/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   // PUT BY ID
   updateCustomerById(id, data) {
     const url = `/customers/${id}`;
