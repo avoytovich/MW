@@ -419,9 +419,8 @@ const api = {
       url,
     });
   },
-  getConditionsOfAvailabilty() {
-    const url = '/iam/roles/availableAvailabilityConditions';
-
+  getConditionsOfAvailability() {
+    let url = '/iam/roles/availableAvailabilityConditions';
     return axiosInstance({
       method: 'get',
       url,

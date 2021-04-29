@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { LinearProgress, Zoom, Button } from '@material-ui/core';
-
+import { Typography, Box, Zoom, Button, Tabs, Tab, Breadcrumbs, LinearProgress } from '@material-ui/core';
 import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
-import ClearancesInputs from './ClearancesInputs';
 import {
   addDenialOptions,
   formPrivilegeOptions,
   requiredFields,
   formattingForSending,
 } from './utils';
+import SectionLayout from '../../../components/SectionLayout';
+import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 import localization from '../../../localization';
-import { SelectWithChip, InputCustom } from '../../../components/Inputs';
+import General from './SubSections/General'
+import Clearances from './SubSections/Clearances';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
 
@@ -20,12 +21,13 @@ const RoleDetailScreen = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
-  const [update, setUpdate] = useState(0);
 
+  const [update, setUpdate] = useState(0);
+  const [curTab, setCurTab] = useState(0);
   const [role, setRole] = useState(null);
   const [curRole, setCurRole] = useState(null);
   const [selectOptions, setSelectOptions] = useState({
-    conditionsOfAvailabilty: null,
+    conditionsOfAvailability: null,
     privileges: null,
     serviceNames: null,
   });
@@ -41,7 +43,7 @@ const RoleDetailScreen = () => {
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/administration/metaRoles/${id}`);
+        history.push(`/settings/administration/roles/${id}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -69,16 +71,16 @@ const RoleDetailScreen = () => {
       setCurRole(JSON.parse(JSON.stringify(checkedRole)));
     });
     Promise.allSettled([
-      api.getConditionsOfAvailabilty(),
+      api.getConditionsOfAvailability(),
       api.getPrivileges(),
-    ]).then(([ConditionsOfAvailabiltyOptions, clearancesOptions]) => {
+    ]).then(([conditionsOfAvailabilityOptions, clearancesOptions]) => {
       const clearances = formPrivilegeOptions(
         clearancesOptions.value?.data.items,
       );
       setSelectOptions({
         ...selectOptions,
-        conditionsOfAvailabilty:
-          addDenialOptions(ConditionsOfAvailabiltyOptions.value?.data) || [],
+        conditionsOfAvailability:
+          addDenialOptions(conditionsOfAvailabilityOptions.value?.data) || [],
         privileges: clearances.privileges || [],
         serviceNames: clearances.serviceNames || [],
       });
@@ -96,59 +98,71 @@ const RoleDetailScreen = () => {
   if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
   return (
     <div>
-      <Zoom in={hasChanges}>
-        <Button
-          disabled={!curRole.name}
-          id='save-role-button'
-          color='primary'
-          size='large'
-          type='submit'
-          variant='contained'
-          onClick={handleSave}
+      {id !== 'add' && (
+        <Box mx={2}>
+          <CustomBreadcrumbs
+            url='/settings/administration/roles'
+            section={localization.t('labels.roles')}
+            id={curRole?.id}
+          />
+        </Box>
+      )}
+      <Box
+        display='flex'
+        flexDirection='row'
+        mt={2}
+        mx={2}
+        justifyContent='space-between'
+      >
+        <Box alignSelf='center'>
+          <Typography gutterBottom variant='h3'>
+            {id !== 'add'
+              ? curRole?.name
+              : `${localization.t('general.new')} ${localization.t(
+                'labels.role',
+              )}`}
+          </Typography>
+        </Box>
+        <Zoom in={hasChanges}>
+          <Button
+            disabled={!curRole.name}
+            id='save-role-button'
+            color='primary'
+            size='large'
+            type='submit'
+            variant='contained'
+            onClick={handleSave}
+          >
+            {localization.t('general.save')}
+          </Button>
+        </Zoom>
+      </Box>
+      <Box my={2} bgcolor="#fff">
+        <Tabs
+          value={curTab}
+          onChange={(e, newTab) => setCurTab(newTab)}
+          indicatorColor='primary'
+          textColor='primary'
         >
-          {localization.t('general.save')}
-        </Button>
-      </Zoom>
-      <InputCustom
-        label='reasonForCurrentChange'
-        value={curRole.reason}
-        onChangeInput={(e) => setCurRole({ ...curRole, reason: e.target.value })}
-      />
-      <InputCustom
-        label='name'
-        value={curRole.name}
-        onChangeInput={(e) => setCurRole({ ...curRole, name: e.target.value })}
-        isRequired
-      />
-      <InputCustom
-        label='description'
-        isMultiline
-        value={curRole.description}
-        onChangeInput={(e) => setCurRole({ ...curRole, description: e.target.value })}
-      />
-      <SelectWithChip
-        label='conditionsOfAvailabilty'
-        value={curRole.availabilityConditions}
-        selectOptions={selectOptions.conditionsOfAvailabilty}
-        onChangeSelect={(e) => setCurRole({
-          ...curRole,
-          availabilityConditions: e.target.value,
-        })}
-        onClickDelIcon={(chip) => {
-          const newValue = [...curRole.availabilityConditions].filter(
-            (val) => val !== chip,
-          );
-          setCurRole({
-            ...curRole,
-            availabilityConditions: newValue,
-          });
-        }}
-      />
-      <ClearancesInputs
-        setCurRole={setCurRole}
-        curRole={curRole}
-        selectOptions={selectOptions}
-      />
+          <Tab label={`${localization.t('labels.general')}`} />
+          <Tab label={`${localization.t('labels.clearances')}`} />
+        </Tabs>
+      </Box>
+      {curTab === 0 && (
+        <SectionLayout label='general'>
+          <General
+            setCurRole={setCurRole}
+            curRole={curRole}
+          /></SectionLayout>
+      )}
+      {curTab === 1 && (
+        <SectionLayout label='clearances'>
+          <Clearances
+            setCurRole={setCurRole}
+            curRole={curRole}
+            selectOptions={selectOptions}
+          />
+        </SectionLayout>)}
     </div>
   );
 };
