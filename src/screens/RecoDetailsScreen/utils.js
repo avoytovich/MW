@@ -23,17 +23,17 @@ const fromObjectToArray = (object, keyName) => {
         value: [],
       },
     ];
-  } else {
-    const res = Object.keys({
-      ...object,
-    }).map((item, index) => ({
-      key: `${index}_${keyName}`,
-      keyValue: item,
-      value: object[item],
-    }));
-
-    return res;
   }
+
+  const res = Object.keys({
+    ...object,
+  }).map((item, index) => ({
+    key: `${index}_${keyName}`,
+    keyValue: item,
+    value: object[item],
+  }));
+
+  return res;
 };
 const fromArrayToObj = (array) => {
   const resObject = {};
@@ -43,15 +43,18 @@ const fromArrayToObj = (array) => {
   return resObject;
 };
 const recoRequiredFields = (reco) => {
-  let resObj = { ...defRecoObject, ...reco };
+  const resObj = { ...defRecoObject, ...reco };
+
   const newByProductIds = fromObjectToArray(
     resObj.byProductIds,
     'newByProductIds',
   );
+
   const newByParentProductIds = fromObjectToArray(
     resObj.byParentProductIds,
     'byParentProductIds',
   );
+
   return {
     ...resObj,
     byParentProductIds: newByParentProductIds,

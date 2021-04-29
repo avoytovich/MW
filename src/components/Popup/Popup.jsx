@@ -60,7 +60,7 @@ const Popup = ({ text, childrenComponent }) => {
 };
 
 Popup.propTypes = {
-  children: PropTypes.func,
+  childrenComponent: PropTypes.func,
   text: PropTypes.string,
 };
 

@@ -36,26 +36,24 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <FormControlLabel
-            control={
+            control={(
               <Checkbox
                 name='MANUAL_RENEWAL'
                 color='primary'
                 checked={curDiscount?.sources?.indexOf('MANUAL_RENEWAL') >= 0}
               />
-            }
-            onChange={() =>
-              updateDiscount('sources', 'MANUAL_RENEWAL', 'empty')
-            }
+            )}
+            onChange={() => updateDiscount('sources', 'MANUAL_RENEWAL', 'empty')}
             label='Manual Renewal'
           />
           <FormControlLabel
-            control={
+            control={(
               <Checkbox
                 name='PURCHASE'
                 color='primary'
                 checked={curDiscount?.sources?.indexOf('PURCHASE') >= 0}
               />
-            }
+            )}
             onChange={() => updateDiscount('sources', 'PURCHASE', 'empty')}
             label='Purchase'
           />
@@ -65,24 +63,24 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <FormControlLabel
-            control={
+            control={(
               <Checkbox
                 name='BUYER'
                 color='primary'
                 checked={curDiscount?.endUserTypes?.indexOf('BUYER') >= 0}
               />
-            }
+            )}
             onChange={() => updateDiscount('endUserTypes', 'BUYER', 'empty')}
             label='Buyer'
           />
           <FormControlLabel
-            control={
+            control={(
               <Checkbox
                 name='RESELLER'
                 color='primary'
                 checked={curDiscount?.endUserTypes?.indexOf('RESELLER') >= 0}
               />
-            }
+            )}
             onChange={() => updateDiscount('endUserTypes', 'RESELLER', 'empty')}
             label='Approved reseller'
           />
@@ -103,12 +101,10 @@ const Eligibility = ({
             label='countries'
             value={curDiscount.countries}
             selectOptions={countriesOptions}
-            onChangeSelect={(e) =>
-              setCurDiscount({
-                ...curDiscount,
-                countries: e.target.value,
-              })
-            }
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              countries: e.target.value,
+            })}
             onClickDelIcon={(chip) => {
               const newValue = [...curDiscount.countries].filter(
                 (val) => val !== chip,
@@ -127,12 +123,10 @@ const Eligibility = ({
             label='stores'
             value={curDiscount.storeIds}
             selectOptions={selectOptions.stores}
-            onChangeSelect={(e) =>
-              setCurDiscount({
-                ...curDiscount,
-                storeIds: e.target.value,
-              })
-            }
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              storeIds: e.target.value,
+            })}
             onClickDelIcon={(chip) => {
               const newValue = [...curDiscount.storeIds].filter(
                 (val) => val !== chip,
@@ -149,12 +143,10 @@ const Eligibility = ({
             label='products'
             value={curDiscount.productIds}
             selectOptions={selectOptions.discountProducts}
-            onChangeSelect={(e) =>
-              setCurDiscount({
-                ...curDiscount,
-                productIds: e.target.value,
-              })
-            }
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              productIds: e.target.value,
+            })}
             onClickDelIcon={(chip) => {
               const newValue = [...curDiscount.productIds].filter(
                 (val) => val !== chip,
@@ -171,12 +163,10 @@ const Eligibility = ({
             label='productsByParent'
             value={curDiscount.parentProductIds}
             selectOptions={selectOptions.parentProducts}
-            onChangeSelect={(e) =>
-              setCurDiscount({
-                ...curDiscount,
-                parentProductIds: e.target.value,
-              })
-            }
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              parentProductIds: e.target.value,
+            })}
             onClickDelIcon={(chip) => {
               const newValue = [...curDiscount.parentProductIds].filter(
                 (val) => val !== chip,
@@ -195,12 +185,10 @@ const Eligibility = ({
             label='productsByReference'
             value={curDiscount.publisherRefIds}
             selectOptions={selectOptions.refProducts}
-            onChangeSelect={(e) =>
-              setCurDiscount({
-                ...curDiscount,
-                publisherRefIds: e.target.value,
-              })
-            }
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              publisherRefIds: e.target.value,
+            })}
             onClickDelIcon={(chip) => {
               const newValue = [...curDiscount.publisherRefIds].filter(
                 (val) => val !== chip,
@@ -263,15 +251,13 @@ const Eligibility = ({
             id='tags-filled'
             options={[]}
             freeSolo
-            renderTags={(value, getTagProps) =>
-              value.map((option, index) => (
-                <Chip
-                  variant='outlined'
-                  label={option}
-                  {...getTagProps({ index })}
-                />
-              ))
-            }
+            renderTags={(value, getTagProps) => value.map((option, index) => (
+              <Chip
+                variant='outlined'
+                label={option}
+                {...getTagProps({ index })}
+              />
+            ))}
             renderInput={(params) => (
               <TextField
                 error={!!errorMessages.email}

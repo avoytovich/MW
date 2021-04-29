@@ -26,7 +26,7 @@ const CustomerHandling = () => {
   useEffect(() => {
     if (search) {
       api
-        .getCustomers(0,`&name=${search}*`, 'name',)
+        .getCustomers(0, `&name=${search}*`, 'name')
         .then(({ data: { items } }) => {
           setCustomers([...items]);
         });
@@ -121,9 +121,7 @@ const CustomerHandling = () => {
           options={autoOptions}
           inputValue={search}
           value={nxState?.selectedCustomer?.id || null}
-          getOptionSelected={(option) =>
-            option.id === nxState?.selectedCustomer?.id
-          }
+          getOptionSelected={(option) => option.id === nxState?.selectedCustomer?.id}
           getOptionDisabled={(option) => option.id === 'none'}
           onChange={changeCustomer}
           disableClearable={!search}

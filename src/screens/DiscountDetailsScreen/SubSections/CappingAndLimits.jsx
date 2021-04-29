@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, TextField, Grid } from '@material-ui/core';
+import {
+  Box, Typography, TextField, Grid,
+} from '@material-ui/core';
 import moment from 'moment';
 
 import { validityPeriod } from '../../../services/selectOptions/selectOptions';
@@ -95,7 +97,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
           )}
         </Grid>
       </Grid>
-      
+
       <Box width={1} p={2}>
         <Grid container spacing={2}>
           <Grid item md={4} sm={12}>
@@ -103,9 +105,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
               <NumberInput
                 label='maximumUses'
                 value={curDiscount.maxUsages}
-                onChangeInput={(e) =>
-                  setCurDiscount({ ...curDiscount, maxUsages: e.target.value })
-                }
+                onChangeInput={(e) => setCurDiscount({ ...curDiscount, maxUsages: e.target.value })}
                 minMAx={{ min: 1, max: 9999, step: 1 }}
               />
             </Box>
@@ -115,12 +115,10 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
               <NumberInput
                 label='maximumUsesPerStore'
                 value={curDiscount.maxUsePerStore}
-                onChangeInput={(e) =>
-                  setCurDiscount({
-                    ...curDiscount,
-                    maxUsePerStore: e.target.value,
-                  })
-                }
+                onChangeInput={(e) => setCurDiscount({
+                  ...curDiscount,
+                  maxUsePerStore: e.target.value,
+                })}
                 minMAx={{ min: 1, max: 9999, step: 1 }}
               />
             </Box>
@@ -130,12 +128,10 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
               <NumberInput
                 label='maximumUsesPerEndUser'
                 value={curDiscount.maxUsePerEndUser}
-                onChangeInput={(e) =>
-                  setCurDiscount({
-                    ...curDiscount,
-                    maxUsePerEndUser: e.target.value,
-                  })
-                }
+                onChangeInput={(e) => setCurDiscount({
+                  ...curDiscount,
+                  maxUsePerEndUser: e.target.value,
+                })}
                 minMAx={{ min: 1, max: 9999, step: 1 }}
               />
             </Box>

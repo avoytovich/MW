@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Grid, Typography, Box, Card, CardMedia } from '@material-ui/core';
+import {
+  Grid, Typography, CardMedia,
+} from '@material-ui/core';
 import Logo from '../../assets/NexwayWhiteLogo.png';
 import localization from '../../localization';
 
@@ -26,16 +28,14 @@ const AuthorizationLayout = ({ children }) => (
           direction='row'
           justify='center'
           alignItems='center'
-        >
-        </Grid>
+        />
         <Grid
           container
           className='authWrapper2'
           direction='row'
           justify='center'
           alignItems='center'
-        >
-        </Grid>
+        />
       </Grid>
 
       <Grid md={8} xs={8} item>

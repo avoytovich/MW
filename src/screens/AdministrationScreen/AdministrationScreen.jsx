@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Tabs, Tab, Box, Button, Zoom } from '@material-ui/core';
+import {
+  Tabs, Tab, Box, Button, Zoom,
+} from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
 import localization from '../../localization';
 
@@ -73,8 +75,7 @@ const AdministrationScreen = () => {
   }, [pathname]);
 
   const drawAddButton = () => {
-    const currentTad =
-      tabsData.find((item) => item.path === pathname) || tabsData[0];
+    const currentTad = tabsData.find((item) => item.path === pathname) || tabsData[0];
     return (
       <Zoom in={!!currentTad.button}>
         <Box alignSelf='flex-end'>

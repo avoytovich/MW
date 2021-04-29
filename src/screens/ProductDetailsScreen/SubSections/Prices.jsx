@@ -35,7 +35,6 @@ import api from '../../../api';
 const Prices = ({
   currentProductData,
   setProductData,
-  productData,
   setSaveDisabled,
 }) => {
   const [prices, setPrices] = useState([]);
@@ -51,6 +50,7 @@ const Prices = ({
       const pricesArr = [];
 
       Object.entries(pricesData).forEach(([key, val]) => {
+        // eslint-disable-next-line
         Object.entries(val).map(([k, v]) => {
           pricesArr.push({
             currency: key,
@@ -61,15 +61,16 @@ const Prices = ({
         });
       });
 
-      const needDefault = pricesList.filter((it) => !currentProductData?.prices?.priceByCountryByCurrency[it]['default']);
+      const needsDefault = pricesList
+        .filter((it) => !currentProductData?.prices?.priceByCountryByCurrency[it].default);
 
-      if (needDefault.length) {
+      if (needsDefault.length) {
         setSaveDisabled(true);
       } else {
         setSaveDisabled(false);
       }
 
-      setNeedDefault(needDefault.length ? needDefault : false);
+      setNeedDefault(needsDefault.length ? needsDefault : false);
       setPrices([...pricesArr]);
     }
   }, [currentProductData.prices]);
@@ -91,7 +92,10 @@ const Prices = ({
       delete pricesData[item.currency];
     }
 
-    setProductData((c) => ({...c, prices: { ...c.prices, priceByCountryByCurrency: pricesData }}));
+    setProductData((c) => ({
+      ...c,
+      prices: { ...c.prices, priceByCountryByCurrency: pricesData },
+    }));
   };
 
   return (
@@ -101,7 +105,7 @@ const Prices = ({
           <SelectCustom
             label='defaultCurrency'
             value={currentProductData?.prices?.defaultCurrency}
-            selectOptions={[...priceCurrency.filter(pr => pricesList.includes(pr.id))]}
+            selectOptions={[...priceCurrency.filter((pr) => pricesList.includes(pr.id))]}
             onChangeSelect={(e) => {
               setProductData({
                 ...currentProductData,
@@ -125,7 +129,7 @@ const Prices = ({
                 <TableCell align="center">Upsell price</TableCell>
                 <TableCell align="center">Cross-sell price</TableCell>
                 <TableCell align="center">VAT included</TableCell>
-                <TableCell></TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
 
@@ -134,7 +138,7 @@ const Prices = ({
                 <TableRow key={pr.currency + pr.country}>
                   <TableCell align="center">{pr.country || '-'}</TableCell>
                   <TableCell align="center">{pr.currency || '-'}</TableCell>
-                  <TableCell align="center">{<PriceNumberFormat number={pr.price} currency={pr.currency}/> || '-'}</TableCell>
+                  <TableCell align="center">{<PriceNumberFormat number={pr.price} currency={pr.currency} /> || '-'}</TableCell>
                   <TableCell align="center">{pr.msrp || '-'}</TableCell>
                   <TableCell align="center">{pr.upSell || '-'}</TableCell>
                   <TableCell align="center">{pr.crossSell || '-'}</TableCell>
@@ -183,7 +187,8 @@ const Prices = ({
                 Date range
               </Typography>
               <Typography>
-                The following table represents values set with the new price service, you can click on each ID to navigate and mange them.
+                The following table represents values set with the new price service,
+                you can click on each ID to navigate and mange them.
               </Typography>
             </Box>
 
@@ -239,9 +244,7 @@ const Prices = ({
 Prices.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
-  selectOptions: PropTypes.object,
-  inputErrors: PropTypes.object,
-  setInputErrors: PropTypes.func,
+  setSaveDisabled: PropTypes.func,
 };
 
 export default Prices;

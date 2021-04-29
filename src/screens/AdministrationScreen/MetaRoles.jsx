@@ -3,11 +3,11 @@ import { useDispatch } from 'react-redux';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 
+import PropTypes from 'prop-types';
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
 import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
-import PropTypes from 'prop-types';
 
 import {
   getSortParams,

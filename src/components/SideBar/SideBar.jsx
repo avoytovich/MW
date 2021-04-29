@@ -52,7 +52,7 @@ const SideBar = ({ open }) => (
           <Box p={2}>
             {navConfig.map((config) => (
               <List
-                key={config.subheader}
+                key={config.subheader || config?.items[0]?.id}
                 subheader={(
                   <ListSubheader
                     disableGutters

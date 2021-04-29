@@ -18,7 +18,6 @@ const ThemeEditScreen = () => {
   const [themeData, setThemeData] = useState(null);
   const [hasChanges, setChanges] = useState(false);
 
-
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [currentTheme, setCurrentTheme] = useState(null);
 

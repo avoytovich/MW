@@ -100,7 +100,7 @@ const Forms = {
     actions: 'ACTIONS',
     resyncPayments: 'Resync Payments',
     resyncPaymentsNo: 'No',
-    resyncPaymentsConfirmed:'Yes, confirmed',
+    resyncPaymentsConfirmed: 'Yes, confirmed',
     confirmationEmailCancel: 'Cancel',
     confirmationEmailSend: 'Send',
   },

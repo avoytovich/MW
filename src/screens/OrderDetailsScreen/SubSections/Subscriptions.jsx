@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   Box,
@@ -8,7 +7,7 @@ import {
 
 import CustomCard from '../../../components/utils/CustomCard';
 
-const Subscriptions = ({ orderData }) => (
+const Subscriptions = () => (
   <CustomCard title="Subscriptions">
     <Box display="flex" py={5} pb={2}>
       <Box px={1} width=" 100%">
@@ -37,9 +36,5 @@ const Subscriptions = ({ orderData }) => (
     </Box>
   </CustomCard>
 );
-
-Subscriptions.propTypes = {
-  orderData: PropTypes.object,
-};
 
 export default Subscriptions;
