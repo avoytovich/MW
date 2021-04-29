@@ -420,7 +420,7 @@ const api = {
     });
   },
   getConditionsOfAvailability() {
-    let url = '/iam/roles/availableAvailabilityConditions';
+    const url = '/iam/roles/availableAvailabilityConditions';
     return axiosInstance({
       method: 'get',
       url,
@@ -556,6 +556,13 @@ const api = {
   },
   getCampaignById(id) {
     const url = `/marketing-campaign/campaigns/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubscriptionById(id) {
+    const url = `/subscription-manager/subscriptions/${id}`;
     return axiosInstance({
       method: 'get',
       url,
