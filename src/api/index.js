@@ -397,7 +397,7 @@ const api = {
       url,
     });
   },
-  getConditionsOfAvailabilty() {
+  getConditionsOfAvailability() {
     let url = '/iam/roles/availableAvailabilityConditions';
     return axiosInstance({
       method: 'get',

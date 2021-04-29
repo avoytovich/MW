@@ -279,7 +279,6 @@ const labels = {
   byParentProduct: 'By parent product',
   sourceProduct: 'Source Product',
   targetProducts: 'Target Products',
-  conditionsOfAvailabilty: 'Conditions Of Availabilty',
   rights: 'Rights',
   aggregatedRoles: 'Aggregated Roles',
   serviceName: 'Service Name',
@@ -291,7 +290,9 @@ const labels = {
   serviceName: 'Service Name',
   clearances: 'Clearances',
   lastUpdateReason: 'Last Update Reason',
-  metaRole: 'Meta-Role'
+  metaRole: 'Meta-Role',
+  role: 'Role',
+  conditionsOfAvailability:'Conditions of availability'
 };
 
 export default labels;
