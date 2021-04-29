@@ -90,7 +90,7 @@ const RecoDetailsScreen = () => {
     let recoRequest;
     if (id === 'add') {
       recoRequest = Promise.resolve({
-        data: { customerId: nxState.selectedCustomer.id },
+        data: { customerId: nxState?.selectedCustomer?.id },
       });
     } else {
       recoRequest = api.getRecoById(id);
@@ -160,7 +160,7 @@ const RecoDetailsScreen = () => {
 
     setCurReco((c) => ({ ...c, [type]: setValue }));
   };
-  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState?.selectedCustomer?.id) return <SelectCustomerNotification />;
 
   if (curReco === null) return <LinearProgress />;
 
