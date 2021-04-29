@@ -1,6 +1,5 @@
 const general = {
-  welcomeMessage:
-    'Hella narwhal Cosby sweater McSweeneys, salvia kitsch before they sold out.',
+  welcomeMessage: 'Hella narwhal Cosby sweater McSweeneys, salvia kitsch before they sold out.',
   lightMode: 'Light mode',
   darkMode: 'Dark mode',
   error: 'Something went wrong! Please try again later!',
@@ -45,24 +44,17 @@ const general = {
   addPrice: 'Add Price',
   addRecommendation: 'Add Recommendation',
   noAvailableOptions: 'No available options',
-  marketingNameMandatory:
-    'Marketing name is mandatory for the default language.',
+  marketingNameMandatory: 'Marketing name is mandatory for the default language.',
   noCustomer: 'No customer selected',
-  selectCustomer:
-    'Please select a customer which will own the created resource.',
+  selectCustomer: 'Please select a customer which will own the created resource.',
   itemHasBeenCopied: 'Item Has BeenCopied',
   campaign: 'Campaign',
-  recommendation: 'Recommendation',
-  discount: 'Discount',
-  price: 'Price',
   new: 'New',
-  selectNoSourceMeans:
-    'Select no source means the same as "all sources are selected"',
+  selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
   role: 'role',
   customer: 'Customer',
   metaRole: 'Meta-Role',
   logoCenter: 'Center.',
-  selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
 };
 
 export default general;

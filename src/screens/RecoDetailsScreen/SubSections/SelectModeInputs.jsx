@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Grid, Typography, IconButton } from '@material-ui/core';
+import {
+  Box, Grid, Typography, IconButton,
+} from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -39,8 +41,8 @@ const SelectModeInputs = ({
 
   const handleAdd = () => {
     if (
-      curValue[curValue.length - 1].keyValue !== '' &&
-      curValue[curValue.length - 1].value.length > 0
+      curValue[curValue.length - 1].keyValue !== ''
+      && curValue[curValue.length - 1].value.length > 0
     ) {
       const key = `${
         Number(curValue[curValue.length - 1].key.split('_')[0]) + 1
@@ -63,7 +65,7 @@ const SelectModeInputs = ({
                 value={item.keyValue}
                 selectOptions={filterOptions(
                   selectOptions,
-                  curValue.map((item) => item.keyValue),
+                  curValue.map((item_) => item_.keyValue),
                   item.keyValue,
                 )}
                 onChangeSelect={(e) => {
@@ -105,9 +107,9 @@ const SelectModeInputs = ({
               <IconButton
                 color='primary'
                 disabled={
-                  curValue.length === 1 &&
-                  item.keyValue === '' &&
-                  item.value.length === 0
+                  curValue.length === 1
+                  && item.keyValue === ''
+                  && item.value.length === 0
                 }
                 onClick={() => handleRemove(index)}
               >
@@ -118,8 +120,8 @@ const SelectModeInputs = ({
                   color='primary'
                   onClick={handleAdd}
                   disabled={
-                    curValue[curValue.length - 1].keyValue === '' ||
-                    curValue[curValue.length - 1].value.length === 0
+                    curValue[curValue.length - 1].keyValue === ''
+                    || curValue[curValue.length - 1].value.length === 0
                   }
                 >
                   <AddCircleIcon />
@@ -149,7 +151,7 @@ export default SelectModeInputs;
 SelectModeInputs.propTypes = {
   curValue: PropTypes.array,
   setCurReco: PropTypes.func,
-  additionalOption: PropTypes.object,
+  curKey: PropTypes.string,
   labels: PropTypes.array,
   selectOptions: PropTypes.array,
   curReco: PropTypes.object,

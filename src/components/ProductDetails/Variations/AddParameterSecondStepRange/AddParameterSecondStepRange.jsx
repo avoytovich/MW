@@ -8,17 +8,14 @@ import {
   Button,
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ClearIcon from '@material-ui/icons/Clear';
 
 import { NumberInput } from '../../../Inputs';
 
 import '../variations.scss';
 
 const AddParameterSecondStepRange = ({
-  setModalState,
   onClose,
   onSubmit,
-  modalState,
 }) => (
   <>
     <Typography variant="h2" className="header">
@@ -43,14 +40,14 @@ const AddParameterSecondStepRange = ({
       <Box width="122px" marginRight="20px">
         <NumberInput
           // value={1}
-          onChangeInput={(e) => null}
+          onChangeInput={() => null}
           minMAx={{ min: 1, max: 11 }}
         />
       </Box>
       <Box width="122px" marginRight="20px">
         <NumberInput
           // value={2}
-          onChangeInput={(e) => null}
+          onChangeInput={() => null}
           minMAx={{ min: 2, max: 11 }}
         />
       </Box>
@@ -89,10 +86,8 @@ const AddParameterSecondStepRange = ({
 );
 
 AddParameterSecondStepRange.propTypes = {
-  setModalState: PropTypes.func,
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
-  modalState: PropTypes.object,
 };
 
 export default AddParameterSecondStepRange;

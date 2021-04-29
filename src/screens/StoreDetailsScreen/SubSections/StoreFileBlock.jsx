@@ -9,7 +9,9 @@ import { InputCustom, SelectCustom } from '../../../components/Inputs';
 import FileUpload from '../../../components/utils/FileUpload';
 import '../storeDetailsScreen.scss';
 
-const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
+const StoreFileBlock = ({
+  item, updateResources, deleteItem, index,
+}) => {
   const [urlLoading, setUrlLoading] = useState(true);
 
   const [initImage, setInitImage] = useState('');
@@ -57,9 +59,7 @@ const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
             label="label"
             value={item.label}
             selectOptions={resourceLabel}
-            onChangeSelect={(e) =>
-              updateResources(index, 'label', e.target.value)
-            }
+            onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
           />
         </Box>
         <Grid container spacing={1} alignItems="center">
@@ -67,14 +67,14 @@ const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
             <InputCustom
               label="url"
               value={item.url}
-              onChangeInput={(e) =>
-                updateResources(index, 'url', e.target.value)
-              }
+              onChangeInput={(e) => updateResources(index, 'url', e.target.value)}
             />
           </Grid>
           <Grid item md={1} sm={1} className="iconWrapper">
             <ClearIcon
-             color="secondary" onClick={() => deleteItem(item.key)} />
+              color="secondary"
+              onClick={() => deleteItem(item.key)}
+            />
           </Grid>
         </Grid>
       </Box>

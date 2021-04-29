@@ -53,8 +53,8 @@ const api = {
     });
   },
   addNewMetaRole(data) {
-    let url =
-      '/iam/meta-roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/iam/meta-roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
     return axiosInstance({
       method: 'post',
       url,
@@ -62,8 +62,8 @@ const api = {
     });
   },
   addNewRole(data) {
-    let url =
-      '/iam/roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/iam/roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
     return axiosInstance({
       method: 'post',
       url,
@@ -99,8 +99,8 @@ const api = {
     });
   },
   addNewProduct(data) {
-    const url =
-      '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/products?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
     return axiosInstance({
       method: 'post',
       url,
@@ -108,8 +108,8 @@ const api = {
     });
   },
   addNewPrice(data) {
-    const url =
-      '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/prices?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
     return axiosInstance({
       method: 'post',
       url,
@@ -128,8 +128,8 @@ const api = {
     });
   },
   addNewDiscount(data) {
-    const url =
-      '/discounts?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/discounts?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
     return axiosInstance({
       method: 'post',
       url,
@@ -137,8 +137,8 @@ const api = {
     });
   },
   addNewRecommendation(data) {
-    const url =
-      '/product-recommendations?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/product-recommendations?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
     return axiosInstance({
       method: 'post',
       url,
@@ -169,8 +169,8 @@ const api = {
   },
 
   addNewIdentity(data) {
-    const url =
-      '/iam/identities?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    const url = '/iam/identities?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
     return axiosInstance({
       method: 'post',
       url,
@@ -199,6 +199,18 @@ const api = {
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getSubscriptions(page, filters) {
+    let url = `/subscription-manager/subscriptions?format=short&size=50&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
     return axiosInstance({
       method: 'get',
       url,
@@ -652,6 +664,13 @@ const api = {
   },
   getRoleById(id) {
     const url = `/iam/roles/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getPrivilegeById(id) {
+    const url = `/iam/privileges/${id}`;
     return axiosInstance({
       method: 'get',
       url,

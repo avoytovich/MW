@@ -11,23 +11,25 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper
 } from '@material-ui/core';
-
-import ChartBlock from './SubSections/ChartBlock';
-import InfoItemBlock from './SubSections/InfoItemBlock';
 
 import TimelineIcon from '@material-ui/icons/Timeline';
 import BarChartIcon from '@material-ui/icons/BarChart';
-
-import localization from '../../localization';
+import ChartBlock from './SubSections/ChartBlock';
+import InfoItemBlock from './SubSections/InfoItemBlock';
 
 import './dashboardScreen.scss';
 
 const rows = [
-  { date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00' },
-  { date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00' },
-  { date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00' }
+  {
+    date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00',
+  },
+  {
+    date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00',
+  },
+  {
+    date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00',
+  },
 ];
 
 const DashboardScreen = () => {
@@ -171,7 +173,7 @@ const DashboardScreen = () => {
           <Typography variant='h4'>Revenue</Typography>
         </Box>
 
-        <TableContainer >
+        <TableContainer>
           <Table>
             <TableHead>
               <TableRow>
@@ -188,6 +190,7 @@ const DashboardScreen = () => {
 
             <TableBody>
               {rows.map((row, ind) => (
+                // eslint-disable-next-line
                 <TableRow key={ind}>
                   <TableCell component="th" scope="row">
                     {row.date}

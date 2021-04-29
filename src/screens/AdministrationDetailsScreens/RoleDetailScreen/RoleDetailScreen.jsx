@@ -95,8 +95,7 @@ const RoleDetailScreen = () => {
 
   if (curRole === null) return <LinearProgress />;
 
-  if (id === 'add' && !nxState.selectedCustomer.id)
-    return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
   return (
     <div>
       {id !== 'add' && (
