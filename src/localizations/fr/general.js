@@ -41,6 +41,7 @@ const general = {
   add: 'Add',
   noPackagesFound: 'No packages found',
   addProduct: 'Add Product',
+  addCampaign: 'Add Campaign',
   noAvailableOptions: 'No available options',
   marketingNameMandatory:
     'Marketing name is mandatory for the default language.',
