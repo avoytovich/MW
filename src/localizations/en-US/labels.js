@@ -1,5 +1,6 @@
 const labels = {
   creationDate: 'Creation Date',
+  anniversaryDate: 'Anniversary date',
   lastUpdate: 'Last Update',
   name: 'Name',
   publisherRefID: 'Publisher Ref ID',
@@ -275,8 +276,6 @@ const labels = {
   fixedListOfProducts: 'Fixed List Of Products',
   productListAssociation: 'Product list association',
   byParentProduct: 'By parent product',
-  sourceProduct: 'Source Product',
-  targetProducts: 'Target Products',
   conditionsOfAvailabilty: 'Conditions Of Availabilty',
   rights: 'Rights',
   aggregatedRoles: 'Aggregated Roles',
@@ -285,7 +284,6 @@ const labels = {
   customers: 'Customers',
   reasonForCurrentChange: 'Reason for current change',
   description: 'Description',
-  serviceName: 'Service Name',
   clearances: 'Clearances',
   lastUpdateReason: 'Last Update Reason',
   metaRole: 'Meta-Role',
@@ -293,8 +291,13 @@ const labels = {
   conditionsOfAvailability: 'Conditions of availability',
   privilege: 'Privilege',
   lifecycleId: 'Lifecycle ID',
+  lifecycle: 'Lifecycle',
   enduserId: 'Enduser ID',
+  subscriptionId: 'Subscription ID',
   subscriptionName: 'Subscription Name',
+  modelId: 'Model ID',
+  numDaysBeforeAnniversary: 'Number of days before anniversary',
+  nextBillingDate: 'Next billing date',
 };
 
 export default labels;

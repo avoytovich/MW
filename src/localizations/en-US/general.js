@@ -48,7 +48,7 @@ const general = {
   marketingNameMandatory: 'Marketing name is mandatory for the default language.',
   noCustomer: 'No customer selected',
   selectCustomer: 'Please select a customer which will own the created resource.',
-  itemHasBeenCopied: 'Item Has BeenCopied',
+  itemHasBeenCopied: 'Item Has Been Copied',
   campaign: 'Campaign',
   new: 'New',
   selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
@@ -56,6 +56,7 @@ const general = {
   customer: 'Customer',
   metaRole: 'Meta-Role',
   logoCenter: 'Center.',
+  subscription: 'Subscription',
 };
 
 export default general;
