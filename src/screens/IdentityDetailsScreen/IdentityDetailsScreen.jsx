@@ -11,10 +11,10 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
-import General from './SubSections/General'
+import General from './SubSections/General';
+import Identification from './SubSections/Identification';
 import localization from '../../localization';
-import ProfileDetails from './ProfileDetails';
-import RightsDetails from './RightsDetails';
+
 import { useDetailsData } from '../../services/useData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
@@ -121,28 +121,31 @@ const IdentityDetailsScreen = () => {
       </Tabs>
 
       {curTab === 0 && curIdentity && (
-        < SectionLayout label='general'>
+        <SectionLayout label='general'>
           <General
             curIdentity={curIdentity}
             setCurIdentity={setCurIdentity}
           />
-        </ SectionLayout>
+        </SectionLayout>
 
       )}
       {curTab === 1 && curIdentity && (
-        < SectionLayout label='identification'>
-
-        </ SectionLayout>
+        <SectionLayout label='identification'>
+          <Identification
+            curIdentity={curIdentity}
+            setCurIdentity={setCurIdentity}
+          />
+        </SectionLayout>
       )}
       {curTab === 2 && curIdentity && (
-        < SectionLayout label='permissions'>
+        <SectionLayout label='permissions'>
 
-        </ SectionLayout>
+        </SectionLayout>
       )}
       {curTab === 3 && curIdentity && (
         < SectionLayout label='emails'>
 
-        </ SectionLayout>
+        </SectionLayout>
       )}
       <Zoom in={hasChanges}>
         <Button

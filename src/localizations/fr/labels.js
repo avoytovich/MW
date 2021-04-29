@@ -279,7 +279,6 @@ const labels = {
   customers: 'Customers',
   reasonForCurrentChange: 'Reason for current change',
   description: 'Description',
-  serviceName: 'Service Name',
   clearances: 'Clearances',
   lastUpdateReason: 'Last Update Reason',
   metaRole: 'Meta-Role',
@@ -288,6 +287,11 @@ const labels = {
   lifecycleId: 'Lifecycle ID',
   enduserId: 'Enduser ID',
   subscriptionName: 'Subscription Name',
+  contactEmailAddress: 'Contact Email Address',
+  firsName: 'Firs Name',
+  identification: 'Identification',
+  permissions: 'Permissions',
+  emails: 'Emails',
 };
 
 export default labels;
