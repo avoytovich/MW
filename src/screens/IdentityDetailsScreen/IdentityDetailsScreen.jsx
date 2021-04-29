@@ -11,14 +11,14 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
-
+import General from './SubSections/General'
 import localization from '../../localization';
 import ProfileDetails from './ProfileDetails';
 import RightsDetails from './RightsDetails';
 import { useDetailsData } from '../../services/useData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
-
+import SectionLayout from '../../components/SectionLayout';
 import './identityDetailsScreen.scss';
 
 const IdentityDetailsScreen = () => {
@@ -114,23 +114,35 @@ const IdentityDetailsScreen = () => {
         indicatorColor='primary'
         textColor='primary'
       >
-        <Tab label='Profile' />
-        <Tab label='Rights' disabled={id === 'add'} />
+        <Tab label='General' />
+        <Tab label='Identification' />
+        <Tab label='Permissions' />
+        <Tab label='Emails' />
       </Tabs>
 
       {curTab === 0 && curIdentity && (
-        <ProfileDetails
-          newIdentity={id === 'add'}
-          identity={curIdentity}
-          changeIdentity={setCurIdentity}
-        />
+        < SectionLayout label='general'>
+          <General
+            curIdentity={curIdentity}
+            setCurIdentity={setCurIdentity}
+          />
+        </ SectionLayout>
+
       )}
       {curTab === 1 && curIdentity && (
-        <RightsDetails
-          identity={curIdentity}
-          initIdentity={identity}
-          changeIdentity={setCurIdentity}
-        />
+        < SectionLayout label='identification'>
+
+        </ SectionLayout>
+      )}
+      {curTab === 2 && curIdentity && (
+        < SectionLayout label='permissions'>
+
+        </ SectionLayout>
+      )}
+      {curTab === 3 && curIdentity && (
+        < SectionLayout label='emails'>
+
+        </ SectionLayout>
       )}
       <Zoom in={hasChanges}>
         <Button
