@@ -287,7 +287,9 @@ const labels = {
   serviceName: 'Service Name',
   clearances: 'Clearances',
   lastUpdateReason: 'Last Update Reason',
-  metaRole: 'Meta-Role'
+  metaRole: 'Meta-Role',
+  role: 'Role',
+  privilege: 'Privilege',
 };
 
 export default labels;
