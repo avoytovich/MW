@@ -51,6 +51,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/OrdersScreen'))}
       />
       <Route
+        path='/overview/subscriptions/:id'
+        component={lazy(() => import('../../screens/SubscriptionDetailsScreen'))}
+      />
+      <Route
         path='/overview/subscriptions'
         component={lazy(() => import('../../screens/SubscriptionsScreen'))}
       />
@@ -68,15 +72,11 @@ const SignedRoutes = () => {
       />
       <Route
         path='/settings/administration/customers/:id'
-        component={lazy(() => import(
-          '../../screens/AdministrationDetailsScreens/CustomerDetailScreen'
-        ))}
+        component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
       />
       <Route
         path='/settings/administration/metaRoles/:id'
-        component={lazy(() => import(
-          '../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'
-        ))}
+        component={lazy(() => import('../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'))}
       />
       <Route
         path='/settings/administration/roles/:id'

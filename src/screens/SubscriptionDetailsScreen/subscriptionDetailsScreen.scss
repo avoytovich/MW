@@ -1,0 +1,9 @@
+@import '../../styles/variables.scss';
+
+.subscription-details-screen{
+  position: relative;
+
+  .subsDetailsRow:nth-child(even) {
+    background-color: $tablesOddRow;
+  }  
+}
