@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import localization from '../../../../localization';
 import { createKey } from '../utils';
 import { SelectWithChip, SelectCustom } from '../../../../components/Inputs';
+import './ClearancesInputs.scss';
 
 const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
   const [newServiceName, setNewServiceName] = useState('');
@@ -51,86 +52,88 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
 
   return (
     <>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow style={{ background: '#eee' }}>
-              <TableCell>{localization.t('labels.serviceName')}</TableCell>
-              <TableCell>{localization.t('labels.privileges')}Privileges</TableCell>
-              <TableCell>{localization.t('labels.conditionsOfAvailability')}</TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {Object.keys(curRole.rights).map((right) => (
-              curRole.rights[right].map((item, index) => (
-                <TableRow key={`${right}_${index}`}>
-                  {index === 0 && <TableCell component="th" rowSpan={curRole.rights[right].length} scope="row">
-                    {right}
-                  </TableCell>}
-                  <TableCell>
-                    <SelectWithChip
-                      value={item.actions}
-                      selectOptions={selectOptions.privileges?.[right]}
-                      onChangeSelect={(e) => {
-                        const newArray = [...curRole.rights[right]];
-                        newArray[index].actions = e.target.value;
-                        setCurRole({
-                          ...curRole,
-                          rights: { ...curRole.rights, [right]: newArray },
-                        });
-                      }}
-                      onClickDelIcon={(chip) => {
-                        const newArray = [...curRole.rights[right]];
-                        const newValue = [...newArray[index].actions].filter(
-                          (val) => val !== chip,
-                        );
-                        newArray[index].actions = newValue;
-                        setCurRole({
-                          ...curRole,
-                          rights: { ...curRole.rights, [right]: newArray },
-                        });
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <SelectWithChip
-                      value={item.availabilityConditions}
-                      selectOptions={selectOptions.conditionsOfAvailability}
-                      onChangeSelect={(e) => {
-                        const newArray = [...curRole.rights[right]];
-                        newArray[index].availabilityConditions = e.target.value;
-                        setCurRole({
-                          ...curRole,
-                          rights: { ...curRole.rights, [right]: newArray },
-                        });
-                      }}
-                      onClickDelIcon={(chip) => {
-                        const newArray = [...curRole.rights[right]];
-                        const newValue = [
-                          ...newArray[index].availabilityConditions,
-                        ].filter((val) => val !== chip);
-                        newArray[index].availabilityConditions = newValue;
-                        setCurRole({
-                          ...curRole,
-                          rights: { ...curRole.rights, [right]: newArray },
-                        });
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell align="right">
-                    <Box>
-                      <IconButton color='primary' onClick={() => handleRemove(right, index)}>
-                        <ClearIcon color='secondary' />
-                      </IconButton>
-                    </Box>
-                  </TableCell>
-                </TableRow>
-              ))
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer >
+      {Object.keys(curRole.rights).length > 0 &&
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow style={{ background: '#eee' }}>
+                <TableCell >{localization.t('labels.serviceName')}</TableCell>
+                <TableCell className='tableCellWithBorder'>{localization.t('labels.privileges')}</TableCell>
+                <TableCell className='tableCellWithBorder'>{localization.t('labels.conditionsOfAvailability')}</TableCell>
+                <TableCell align="right"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {Object.keys(curRole.rights).map((right) => (
+                curRole.rights[right].map((item, index) => (
+                  <TableRow key={`${right}_${index}`}>
+                    {index === 0 && <TableCell component="th" rowSpan={curRole.rights[right].length} scope="row">
+                      {right}
+                    </TableCell>}
+                    <TableCell className='tableCellWithBorder'>
+                      <SelectWithChip
+                        value={item.actions}
+                        selectOptions={selectOptions.privileges?.[right]}
+                        onChangeSelect={(e) => {
+                          const newArray = [...curRole.rights[right]];
+                          newArray[index].actions = e.target.value;
+                          setCurRole({
+                            ...curRole,
+                            rights: { ...curRole.rights, [right]: newArray },
+                          });
+                        }}
+                        onClickDelIcon={(chip) => {
+                          const newArray = [...curRole.rights[right]];
+                          const newValue = [...newArray[index].actions].filter(
+                            (val) => val !== chip,
+                          );
+                          newArray[index].actions = newValue;
+                          setCurRole({
+                            ...curRole,
+                            rights: { ...curRole.rights, [right]: newArray },
+                          });
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell className='tableCellWithBorder'>
+                      <SelectWithChip
+                        value={item.availabilityConditions}
+                        selectOptions={selectOptions.conditionsOfAvailability}
+                        onChangeSelect={(e) => {
+                          const newArray = [...curRole.rights[right]];
+                          newArray[index].availabilityConditions = e.target.value;
+                          setCurRole({
+                            ...curRole,
+                            rights: { ...curRole.rights, [right]: newArray },
+                          });
+                        }}
+                        onClickDelIcon={(chip) => {
+                          const newArray = [...curRole.rights[right]];
+                          const newValue = [
+                            ...newArray[index].availabilityConditions,
+                          ].filter((val) => val !== chip);
+                          newArray[index].availabilityConditions = newValue;
+                          setCurRole({
+                            ...curRole,
+                            rights: { ...curRole.rights, [right]: newArray },
+                          });
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell align="right">
+                      <Box>
+                        <IconButton color='primary' onClick={() => handleRemove(right, index)}>
+                          <ClearIcon color='secondary' />
+                        </IconButton>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer >
+      }
       <Box py={3} width='25%'>
         <SelectCustom
           label='serviceName'

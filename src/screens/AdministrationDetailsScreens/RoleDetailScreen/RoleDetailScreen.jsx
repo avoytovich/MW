@@ -43,7 +43,7 @@ const RoleDetailScreen = () => {
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/administration/metaRoles/${id}`);
+        history.push(`/settings/administration/roles/${id}`);
         setUpdate((u) => u + 1);
       });
     } else {

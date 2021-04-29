@@ -28,12 +28,14 @@ const General = ({ curRole, setCurRole }) => (
           </Box>
         </Grid>
         <Grid item md={4} sm={12}>
-          <Box pt={4} pl={2}>
-            <Typography color="secondary">{localization.t('labels.lastUpdateReason')}</Typography>
-          </Box>
-          <Box p={2}>
-            <Typography>{curRole.lastUpdateReason}</Typography>
-          </Box>
+          {curRole.lastUpdateReason &&
+            <><Box pt={4} pl={2}>
+              <Typography color="secondary">{localization.t('labels.lastUpdateReason')}</Typography>
+            </Box>
+              <Box p={2}>
+                <Typography>{curRole.lastUpdateReason}</Typography>
+              </Box>
+            </>}
         </Grid>
       </Grid>
       <Box p={2} mt={3} width='70%'>
