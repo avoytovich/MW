@@ -21,15 +21,15 @@ const clearancesArrayFormatting = (array) => {
     if (res[item.serviceName]) {
       res[item.serviceName].push({
         key: `${item.serviceName}_${index}`,
-        actions: item.actions,
-        availabilityConditions: item.availabilityConditions,
+        actions: item.actions || [],
+        availabilityConditions: item.availabilityConditions || [],
       });
     } else {
       res[item.serviceName] = [
         {
           key: `${item.serviceName}_${index}`,
-          actions: item.actions,
-          availabilityConditions: item.availabilityConditions,
+          actions: item.actions || [],
+          availabilityConditions: item.availabilityConditions || [],
         },
       ];
     }
