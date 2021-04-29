@@ -43,6 +43,7 @@ const general = {
   addProduct: 'Add Product',
   addPrice: 'Add Price',
   addRecommendation: 'Add Recommendation',
+  addCampaign: 'Add Campaign',
   noAvailableOptions: 'No available options',
   marketingNameMandatory: 'Marketing name is mandatory for the default language.',
   noCustomer: 'No customer selected',

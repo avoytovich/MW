@@ -177,6 +177,16 @@ const api = {
       data,
     });
   },
+
+  addNewCampaign(data) {
+    const url = '/marketing-campaign/campaigns';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   // GET ALL
   getOrders(page, filters, sortParams) {
     let url = `/orders?format=short&size=50&page=${page}`;
