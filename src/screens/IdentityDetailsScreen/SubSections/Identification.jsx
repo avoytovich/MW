@@ -1,51 +1,95 @@
 import React from 'react';
 import {
   LinearProgress,
-  Typography,
   Box,
+  Button,
+  Typography,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 import { InputCustom } from '../../../components/Inputs';
+import SecretKeysTable from './SecretKeysTable';
 
-const Identification = ({ curIdentity, setCurIdentity }) => (
-  curIdentity === null
-    ? <LinearProgress />
-    : (
-      <>
-        <Box display="flex" flexDirection="row" alignItems="baseline">
-          <Box p={2}>
-            <Typography color="secondary">
-              {localization.t('labels.userName')}
-            </Typography>
-          </Box>
-          <Box p={2}>
-            <Typography>
-              {curIdentity.userName}
-            </Typography>
-          </Box>
-        </Box>
-        <Box p={2} width='70%'>
-          <InputCustom
-            label='firsName'
-            value={curIdentity.firstName}
-            onChangeInput={(e) => setCurIdentity({ ...curIdentity, firstName: e.target.value })}
-          />
-        </Box>
-        <Box p={2} width='70%'>
-          <InputCustom
-            label='lastName'
-            value={curIdentity.lastName}
-            onChangeInput={(e) => setCurIdentity({ ...curIdentity, lastName: e.target.value })}
-          />
-        </Box>
-      </>
-    )
-);
+const Identification = ({
+  curIdentity, setCurIdentity, identityType, addSecretKey, removeSecretKey,
+}) => {
+  if (curIdentity === null) return <LinearProgress />;
+
+  return identityType === 'user' ? (
+    <Box width='70%'>
+      <Box p={2}>
+        <InputCustom
+          isRequired
+          idDisabled={!!curIdentity.id}
+          label='userName'
+          value={curIdentity.userName}
+          onChangeInput={(e) => setCurIdentity({ ...curIdentity, userName: e.target.value })}
+        />
+      </Box>
+      <Box p={2}>
+        <InputCustom
+          label='firsName'
+          value={curIdentity.firstName}
+          onChangeInput={(e) => setCurIdentity({ ...curIdentity, firstName: e.target.value })}
+        />
+      </Box>
+      <Box p={2}>
+        <InputCustom
+          label='lastName'
+          value={curIdentity.lastName}
+          onChangeInput={(e) => setCurIdentity({ ...curIdentity, lastName: e.target.value })}
+        />
+      </Box>
+    </Box>
+  ) : (
+    <>
+      <Box p={2}>
+        <InputCustom
+          label='clientId'
+          value={curIdentity.clientId}
+          onChangeInput={(e) => setCurIdentity({ ...curIdentity, clientId: e.target.value })}
+        />
+      </Box>
+      {curIdentity.id
+          && (
+            <>
+              <Box px={2} pt={3}>
+                <Typography color="secondary">
+                  {localization.t('labels.secretKeys')}
+                </Typography>
+              </Box>
+              <Box px={2} pb={3}>
+                <Typography>{localization.t('general.maxNumberOfSecretKeys')}</Typography>
+              </Box>
+              {curIdentity.secretKeys.length > 0
+                && (
+                  <SecretKeysTable
+                    removeSecretKey={removeSecretKey}
+                    curIdentity={curIdentity}
+                  />
+                )}
+              <Box p={2}>
+                <Button
+                  disabled={curIdentity.secretKeys.length > 4}
+                  onClick={addSecretKey}
+                  variant="outlined"
+                  color='primary'
+                >
+                  {`${localization.t('labels.add')} ${localization.t('labels.secret')}`}
+                </Button>
+              </Box>
+            </>
+          )}
+    </>
+  );
+};
 
 Identification.propTypes = {
   curIdentity: PropTypes.object,
   setCurIdentity: PropTypes.func,
+  identityType: PropTypes.string,
+  addSecretKey: PropTypes.func,
+  removeSecretKey: PropTypes.func,
 };
 
 export default Identification;

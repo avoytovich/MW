@@ -177,7 +177,13 @@ const api = {
       data,
     });
   },
-
+  addNewSecretKeyToIdentity(id) {
+    const url = `/iam/identities/${id}/secret?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'post',
+      url,
+    });
+  },
   addNewCampaign(data) {
     const url = '/marketing-campaign/campaigns';
 
@@ -910,6 +916,13 @@ const api = {
   },
   deleteMetaRoleById(id) {
     const url = `/iam/meta-roles/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteIdentitySecretKeyById(identityId, secret) {
+    const url = `/iam/identities/${identityId}/secret/${secret}`;
     return axiosInstance({
       method: 'delete',
       url,

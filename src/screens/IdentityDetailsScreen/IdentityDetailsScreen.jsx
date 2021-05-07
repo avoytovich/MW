@@ -13,9 +13,11 @@ import {
 } from '@material-ui/core';
 import General from './SubSections/General';
 import Identification from './SubSections/Identification';
+import Permissions from './SubSections/Permissions';
+import Emails from './SubSections/Emails';
 import localization from '../../localization';
 
-import { useDetailsData } from '../../services/useData';
+import { structureSelectOptions, identityRequiredFields } from '../../services/helpers/dataStructuring';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import SectionLayout from '../../components/SectionLayout';
@@ -29,29 +31,75 @@ const IdentityDetailsScreen = () => {
   const { id } = useParams();
   const history = useHistory();
 
+  const [selectOptions, setSelectOptions] = useState({
+    roles: null,
+    metaRoles: null,
+    customers: null,
+  });
   const [curIdentity, setCurIdentity] = useState(null);
+  const [identity, setIdentity] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [identityType, setIdentityType] = useState('user');
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  const requests = async () => {
-    const res = id !== 'add'
-      ? await api.getIdentityById(id)
-      : {
+  useEffect(() => {
+    let isCancelled = false;
+    setLoading(true);
+    const identityData = id !== 'add'
+      ? api.getIdentityById(id)
+      : Promise.resolve({
         data: {
-          email: '',
-          firstName: '',
-          lastName: '',
-          userName: '',
-          clientId: '',
           customerId: nxState.selectedCustomer.id,
         },
-      };
+      });
+    identityData.then(({ data }) => {
+      if (!isCancelled) {
+        const checkedIdentity = identityRequiredFields(data);
+        setIdentity({ ...checkedIdentity });
+        setCurIdentity({ ...checkedIdentity });
+        setLoading(false);
+        if (data.clientId) {
+          setIdentityType('application');
+        }
+      }
+      if (id !== 'add') {
+        Promise.allSettled([
+          api.getRoleById(`usableForIdentity/${id}`),
+          api.getMetaRoles(0, `&customerId=${data.customerId}`),
+          api.getCustomers(),
+        ]).then(([rolesOptions, metaRolesOptions, customersOptions]) => {
+          setSelectOptions({
+            ...selectOptions,
+            roles: structureSelectOptions(rolesOptions.value?.data.items, 'name') || [],
+            metaRoles: structureSelectOptions(metaRolesOptions.value?.data.items, 'name') || [],
+            customers: structureSelectOptions(customersOptions.value?.data.items, 'name') || [],
+          });
+        });
+      }
+    })
+      .catch(() => {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      });
 
-    return res.data;
+    return () => { isCancelled = true; };
+  }, [update]);
+
+  const addSecretKey = () => {
+    api.addNewSecretKeyToIdentity(id).then(() => {
+      dispatch(
+        showNotification(localization.t('general.keyHasBeenAdded')),
+      );
+      setUpdate((u) => u + 1);
+    });
   };
-
-  const identity = useDetailsData(setLoading, requests, update);
-
+  const removeSecretKey = (secret) => api.deleteIdentitySecretKeyById(id, secret).then(() => {
+    dispatch(
+      showNotification(localization.t('general.keyHasBeenRemoved')),
+    );
+    setUpdate((u) => u + 1);
+  });
   const saveIdentity = () => {
     const filterBlankKeys = { ...curIdentity };
     Object.keys(filterBlankKeys).forEach((key) => {
@@ -84,12 +132,6 @@ const IdentityDetailsScreen = () => {
     return () => setHasChanges(false);
   }, [curIdentity]);
 
-  useEffect(() => {
-    setCurIdentity({ ...identity });
-
-    return () => setCurIdentity(null);
-  }, [curTab, identity]);
-
   if (isLoading) return <LinearProgress />;
 
   if (id === 'add' && !nxState.selectedCustomer.id) {
@@ -98,7 +140,6 @@ const IdentityDetailsScreen = () => {
         <Typography gutterBottom variant='h4'>
           {localization.t('general.noCustomer')}
         </Typography>
-
         <Typography gutterBottom variant='h5'>
           {localization.t('general.selectCustomer')}
         </Typography>
@@ -116,35 +157,43 @@ const IdentityDetailsScreen = () => {
       >
         <Tab label='General' />
         <Tab label='Identification' />
-        <Tab label='Permissions' />
-        <Tab label='Emails' />
+        <Tab label='Permissions' disabled={id === 'add'} />
+        <Tab label='Emails' disabled={id === 'add'} />
       </Tabs>
 
       {curTab === 0 && curIdentity && (
         <SectionLayout label='general'>
           <General
+            identityType={identityType}
+            setIdentityType={setIdentityType}
             curIdentity={curIdentity}
             setCurIdentity={setCurIdentity}
           />
         </SectionLayout>
-
       )}
       {curTab === 1 && curIdentity && (
         <SectionLayout label='identification'>
           <Identification
+            addSecretKey={addSecretKey}
+            identityType={identityType}
             curIdentity={curIdentity}
             setCurIdentity={setCurIdentity}
+            removeSecretKey={removeSecretKey}
           />
         </SectionLayout>
       )}
       {curTab === 2 && curIdentity && (
         <SectionLayout label='permissions'>
-
+          <Permissions
+            curIdentity={curIdentity}
+            setCurIdentity={setCurIdentity}
+            selectOptions={selectOptions}
+          />
         </SectionLayout>
       )}
       {curTab === 3 && curIdentity && (
-        < SectionLayout label='emails'>
-
+        <SectionLayout label='emails'>
+          <Emails curIdentity={curIdentity} />
         </SectionLayout>
       )}
       <Zoom in={hasChanges}>
@@ -160,7 +209,7 @@ const IdentityDetailsScreen = () => {
           variant='contained'
           onClick={saveIdentity}
         >
-          Save
+          {localization.t('general.save')}
         </Button>
       </Zoom>
     </div>
