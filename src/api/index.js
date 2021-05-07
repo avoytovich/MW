@@ -61,6 +61,15 @@ const api = {
       data,
     });
   },
+  addNewStore(data) {
+    const url = '/stores?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addNewRole(data) {
     const url = '/iam/roles?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
 

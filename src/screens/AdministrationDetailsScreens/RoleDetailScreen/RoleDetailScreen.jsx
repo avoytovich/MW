@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography, Box, Zoom, Button, Tabs, Tab, Breadcrumbs, LinearProgress } from '@material-ui/core';
+import {
+  Typography,
+  Box,
+  Zoom,
+  Button,
+  Tabs,
+  Tab,
+  LinearProgress,
+} from '@material-ui/core';
 import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
 import {
   addDenialOptions,
@@ -12,7 +20,7 @@ import {
 import SectionLayout from '../../../components/SectionLayout';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 import localization from '../../../localization';
-import General from './SubSections/General'
+import General from './SubSections/General';
 import Clearances from './SubSections/Clearances';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
@@ -39,11 +47,11 @@ const RoleDetailScreen = () => {
     if (id === 'add') {
       api.addNewRole(objToSend).then((res) => {
         const location = res.headers.location.split('/');
-        const id = location[location.length - 1];
+        const newId = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/administration/roles/${id}`);
+        history.push(`/settings/administration/roles/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -57,15 +65,15 @@ const RoleDetailScreen = () => {
   };
 
   useEffect(() => {
-    let role;
+    let roleRequest;
     if (id === 'add') {
-      role = Promise.resolve({
+      roleRequest = Promise.resolve({
         data: { customerId: nxState.selectedCustomer.id },
       });
     } else {
-      role = api.getRoleById(id);
+      roleRequest = api.getRoleById(id);
     }
-    role.then(({ data }) => {
+    roleRequest.then(({ data }) => {
       const checkedRole = requiredFields(data);
       setRole(JSON.parse(JSON.stringify(checkedRole)));
       setCurRole(JSON.parse(JSON.stringify(checkedRole)));
@@ -153,7 +161,8 @@ const RoleDetailScreen = () => {
           <General
             setCurRole={setCurRole}
             curRole={curRole}
-          /></SectionLayout>
+          />
+        </SectionLayout>
       )}
       {curTab === 1 && (
         <SectionLayout label='clearances'>
@@ -162,7 +171,8 @@ const RoleDetailScreen = () => {
             curRole={curRole}
             selectOptions={selectOptions}
           />
-        </SectionLayout>)}
+        </SectionLayout>
+      )}
     </div>
   );
 };

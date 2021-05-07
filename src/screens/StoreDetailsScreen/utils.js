@@ -40,6 +40,7 @@ const filterOptions = (all, selected, currentIndex) => {
   const res = all.filter((option) => !keys.includes(option.id));
   return res;
 };
+
 const resourceLabel = [
   { id: 'logoFavicon', value: localization.t('labels.logoFavicon') },
   {
@@ -52,6 +53,7 @@ const resourceLabel = [
   },
   { id: 'logoStore', value: localization.t('labels.logoStore') },
 ];
+
 const structureResources = (data) => {
   const resultArray = [];
   resourcesKeys.forEach((key, index) => {
@@ -61,9 +63,32 @@ const structureResources = (data) => {
   });
   return resultArray;
 };
+
 const checkLabelDuplicate = (values) => {
   const valueArr = values.map((item) => item.label);
   return valueArr.some((item, id) => valueArr.indexOf(item) !== id);
+};
+
+const formatBeforeSending = (currentStoreData, currentStoreResources, resourcesHasChanges) => {
+  const updatedData = { ...currentStoreData };
+  Object.keys(updatedData).forEach((item) => {
+    if (updatedData[item] === '') {
+      delete updatedData[item];
+    }
+  });
+
+  if (resourcesHasChanges) {
+    let notUsedKeys = [...resourcesKeys];
+    currentStoreResources.forEach((item) => {
+      notUsedKeys = notUsedKeys.filter((key) => key !== item.label);
+      updatedData[item.label] = item.url;
+    });
+    notUsedKeys.forEach((key) => {
+      delete updatedData[key];
+    });
+  }
+
+  return updatedData;
 };
 export {
   formDesignOptions,
@@ -73,4 +98,5 @@ export {
   checkLabelDuplicate,
   resourcesKeys,
   tabLabels,
+  formatBeforeSending,
 };
