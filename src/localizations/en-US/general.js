@@ -57,6 +57,14 @@ const general = {
   metaRole: 'Meta-Role',
   logoCenter: 'Center.',
   subscription: 'Subscription',
+  privileges: {
+    general: 'General',
+    createdate: 'Create date',
+    lastupdate: 'Last update',
+    lastupdatereason: 'Last update reason',
+    servicename: 'Service name',
+    availableactions: 'Available actions',
+  },
 };
 
 export default general;
