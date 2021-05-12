@@ -49,7 +49,7 @@ const CheckboxInput = ({
             onChange={(e) => {
               handleUpdateCheckbox(e.target.checked, item.name);
             }}
-            label={localization.t('labels.resellerAuthentication')}
+            label={localization.t(`labels.${item.label}`)}
           />
         ))}
       </Box>

@@ -193,6 +193,20 @@ const storeRequiredFields = (store) => {
   return res;
 };
 
+const identityRequiredFields = (identity) => {
+  const defaultIdentity = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    userName: '',
+    clientId: '',
+    authorizedCustomerIds: [],
+    roleIds: [],
+    metaRoleIds: [],
+    inactive: true,
+  };
+  return { ...defaultIdentity, ...identity };
+};
 export {
   storeRequiredFields,
   productRequiredFields,
@@ -201,4 +215,5 @@ export {
   renewingProductsOptions,
   defaultProduct,
   productsVariations,
+  identityRequiredFields,
 };
