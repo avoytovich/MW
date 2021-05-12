@@ -3,14 +3,16 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import {
-  LinearProgress, Tabs, Tab, Zoom, Button,
+  LinearProgress, Tabs, Tab, Zoom, Button, Box, Typography,
 } from '@material-ui/core';
 import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
-import CustomerDetails from './CustomerDetails';
 import api from '../../../api';
 import localization from '../../../localization';
-import checkRequiredFields from './utils';
+import { checkRequiredFields, formatBeforeSanding } from './utils';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
+import TabSection from '../../../components/utils/TabSection';
+import General from './SubSections/General';
+import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 
 import './CustomerDetailScreen.scss';
 
@@ -31,7 +33,7 @@ const CustomerDetailScreen = () => {
   const [currentCustomer, setCurrentCustomer] = useState(null);
 
   const saveCustomer = () => {
-    api.updateCustomerById(id, currentCustomer).then(() => {
+    api.updateCustomerById(id, formatBeforeSanding(currentCustomer)).then(() => {
       dispatch(
         showNotification(localization.t('general.updatesHaveBeenSaved')),
       );
@@ -50,8 +52,6 @@ const CustomerDetailScreen = () => {
     }
     customerRequest.then(({ data }) => {
       const checkedData = checkRequiredFields(data);
-      console.log('CheckedData', checkedData)
-
       setCustomerData(checkedData);
       setCurrentCustomer(checkedData);
       Promise.allSettled([
@@ -67,8 +67,7 @@ const CustomerDetailScreen = () => {
         });
       });
     });
-  }, [curTab, update]);
-  console.log('selectOptions',selectOptions)
+  }, [update]);
 
   useEffect(() => {
     setHasChanges(
@@ -80,35 +79,71 @@ const CustomerDetailScreen = () => {
   if (currentCustomer === null) return <LinearProgress />;
   return (
     <div className='customerAdministration-screen'>
-      <Tabs
-        value={curTab}
-        onChange={(newTab) => setCurTab(newTab)}
-        indicatorColor='primary'
-        textColor='primary'
+      {id !== 'add' && (
+        <Box mx={2}>
+          <CustomBreadcrumbs
+            url='/settings/administration/customers'
+            section={localization.t('general.customer')}
+            id={customerData.id}
+          />
+        </Box>
+      )}
+      <Box
+        display='flex'
+        flexDirection='row'
+        m={2}
+        justifyContent='space-between'
       >
-        <Tab label='Customer' />
-      </Tabs>
-
+        <Box alignSelf='center'>
+          <Typography data-test='discountName' gutterBottom variant='h3'>
+            {customerData.name}
+          </Typography>
+        </Box>
+        <Zoom in={hasChanges}>
+          <Button
+            id='save-customerAdministration-button'
+            color='primary'
+            size='large'
+            type='submit'
+            variant='contained'
+            onClick={saveCustomer}
+          >
+            {localization.t('forms.buttons.save')}
+          </Button>
+        </Zoom>
+      </Box>
+      <Box my={2} bgcolor='#fff'>
+        <Tabs
+          value={curTab}
+          onChange={(e, newTab) => setCurTab(newTab)}
+          indicatorColor='primary'
+          textColor='primary'
+        >
+          <Tab label='General' />
+          <Tab label='Features' />
+          <Tab label='Payment Service Configuration' />
+          <Tab label='Assets' />
+        </Tabs>
+      </Box>
       {curTab === 0 && currentCustomer && (
-        <CustomerDetails
-          currentCustomer={currentCustomer}
-          setCurrentCustomer={setCurrentCustomer}
-          selectOptions={selectOptions}
-        />
+        <TabSection label='general'>
+          <General
+            currentCustomer={currentCustomer}
+            setCurrentCustomer={setCurrentCustomer}
+            selectOptions={selectOptions}
+          />
+        </TabSection>
+      )}
+      {curTab === 1 && currentCustomer && (
+        <TabSection label='features' />
+      )}
+      {curTab === 2 && currentCustomer && (
+        <TabSection label='paymentServiceConfiguration' />
+      )}
+      {curTab === 3 && currentCustomer && (
+        <TabSection label='assets' />
       )}
 
-      <Zoom in={hasChanges}>
-        <Button
-          id='save-customerAdministration-button'
-          color='primary'
-          size='large'
-          type='submit'
-          variant='contained'
-          onClick={saveCustomer}
-        >
-          {localization.t('forms.buttons.save')}
-        </Button>
-      </Zoom>
     </div>
   );
 };

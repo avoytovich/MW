@@ -298,6 +298,16 @@ const labels = {
   modelId: 'Model ID',
   numDaysBeforeAnniversary: 'Number of days before anniversary',
   nextBillingDate: 'Next billing date',
+  paymentServiceConfiguration: 'Payment Service Configuration',
+  assets: 'Assets',
+  cancelPeriod: 'Cancel Period',
+  authenticationRealm: 'Authentication Realm',
+  apiSecret: 'API Secret',
+  realmName: 'Realm Name',
+  test: 'Test',
+  live: 'Live',
+  remittableId: 'Remittable ID',
+  features: 'Features',
 };
 
 export default labels;
