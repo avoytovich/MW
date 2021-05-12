@@ -150,6 +150,10 @@ const SignedRoutes = () => {
         path='/products/add'
         component={lazy(() => import('../../screens/ProductDetailsScreen/CreateProduct'))}
       />
+      <Route
+        path='/overview/invoices-credit-notes'
+        component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
+      />
 
       <Redirect to='/' />
     </Switch>
