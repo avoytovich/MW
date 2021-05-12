@@ -224,5 +224,29 @@ const getOneByIdApi = {
       url,
     });
   },
+  getCreditNote(id) {
+    const url = `/invoices/credits/${id}/pdf`;
+    return axiosInstance({
+      headers: {
+        'Content-Type': 'application/pdf',
+        accept: 'application/pdf',
+      },
+      responseType: "blob",
+      method: 'get',
+      url,
+    });
+  },
+  getInvoices(id) {
+    const url = `/invoices/invoices/${id}/pdf`;
+    return axiosInstance({
+      headers: {
+        'Content-Type': 'application/pdf',
+        accept: 'application/pdf',
+      },
+      responseType: "blob",
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;

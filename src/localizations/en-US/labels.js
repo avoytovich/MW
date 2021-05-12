@@ -310,6 +310,8 @@ const labels = {
   secret: 'secret',
   deleteSecretKey: 'Delete Secret Key',
   add: 'Add',
+  invoiceCreditNotesTypeOfId: 'Type of ID',
+  invoiceCreditNotesId: 'ID',
 };
 
 export default labels;
