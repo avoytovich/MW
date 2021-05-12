@@ -34,10 +34,11 @@ const defaultProduct = {
 };
 
 const defaultStore = {
-  status: '',
+  status: 'ENABLED',
+  name: '',
   emailSenderOverride: '',
   routes: [{ hostname: '' }],
-  defaultLocale: [],
+  defaultLocale: '',
   saleLocales: [],
   storeWebsite: '',
   displayName: '',
@@ -50,7 +51,7 @@ const defaultStore = {
   blackListedCountries: [],
   restrictedCountries: [],
   installmentOptions: [],
-  fallbackCartCountry: '',
+  // fallbackCartCountry: '',
   externalContextGenerationParams: [],
   designs: {
     endUserPortal: {
