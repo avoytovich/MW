@@ -52,24 +52,28 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
 
   return (
     <>
-      {Object.keys(curRole.rights).length > 0 &&
+      {Object.keys(curRole.rights).length > 0
+        && (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow style={{ background: '#eee' }}>
-                <TableCell >{localization.t('labels.serviceName')}</TableCell>
+                <TableCell>{localization.t('labels.serviceName')}</TableCell>
                 <TableCell className='tableCellWithBorder'>{localization.t('labels.privileges')}</TableCell>
                 <TableCell className='tableCellWithBorder'>{localization.t('labels.conditionsOfAvailability')}</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell align="right" />
               </TableRow>
             </TableHead>
             <TableBody>
               {Object.keys(curRole.rights).map((right) => (
                 curRole.rights[right].map((item, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
                   <TableRow key={`${right}_${index}`}>
-                    {index === 0 && <TableCell component="th" rowSpan={curRole.rights[right].length} scope="row">
+                    {index === 0 && (
+                    <TableCell component="th" rowSpan={curRole.rights[right].length} scope="row">
                       {right}
-                    </TableCell>}
+                    </TableCell>
+                    )}
                     <TableCell className='tableCellWithBorder'>
                       <SelectWithChip
                         value={item.actions}
@@ -132,8 +136,8 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
               ))}
             </TableBody>
           </Table>
-        </TableContainer >
-      }
+        </TableContainer>
+        )}
       <Box py={3} width='25%'>
         <SelectCustom
           label='serviceName'
@@ -143,7 +147,7 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
         />
       </Box>
     </>
-  )
+  );
 };
 
 ClearancesInputs.propTypes = {
@@ -153,9 +157,3 @@ ClearancesInputs.propTypes = {
 };
 
 export default ClearancesInputs;
-
-
-
-
-
-

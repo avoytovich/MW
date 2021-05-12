@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Button, Box } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+
 import api from '../../api';
 import {
   getSortParams,
@@ -63,16 +66,30 @@ const StoresScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
 
   return (
-    <TableComponent
-      sortParams={sortParams}
-      setSortParams={handleSetSortParams}
-      handleDeleteItem={handleDeleteStore}
-      showColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
-      tableData={stores}
-      isLoading={isLoading}
-    />
+    <>
+      <Box display="flex" justifyContent="flex-end" p="15px">
+        <Button
+          id="add-product"
+          color="primary"
+          size="large"
+          variant="contained"
+          component={Link}
+          to="/overview/stores/add"
+        >
+          {`${localization.t('general.add')} ${localization.t('labels.store')}`}
+        </Button>
+      </Box>
+      <TableComponent
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
+        handleDeleteItem={handleDeleteStore}
+        showColumn={defaultShow}
+        currentPage={currentPage}
+        updatePage={updatePage}
+        tableData={stores}
+        isLoading={isLoading}
+      />
+    </>
   );
 };
 

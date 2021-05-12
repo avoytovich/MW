@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography, Box, Zoom, Button, Tabs, Tab, Breadcrumbs } from '@material-ui/core';
+import {
+  Typography,
+  Box,
+  Zoom,
+  Button,
+  Tabs,
+  Tab,
+  Breadcrumbs,
+} from '@material-ui/core';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 import SectionLayout from '../../../components/SectionLayout';
 
@@ -10,7 +18,7 @@ import { requiredFields, structureSelectOptions } from './utils';
 import localization from '../../../localization';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
-import General from './SubSections/General'
+import General from './SubSections/General';
 import Clearances from './SubSections/Clearances';
 
 const MetaRoleDetailScreen = () => {
@@ -32,11 +40,11 @@ const MetaRoleDetailScreen = () => {
     if (id === 'add') {
       api.addNewMetaRole(curMetaRole).then((res) => {
         const location = res.headers.location.split('/');
-        const id = location[location.length - 1];
+        const newId = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/administration/metaRoles/${id}`);
+        history.push(`/settings/administration/metaRoles/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -50,15 +58,15 @@ const MetaRoleDetailScreen = () => {
   };
 
   useEffect(() => {
-    let metaRole;
+    let metaRoleRequest;
     if (id === 'add') {
-      metaRole = Promise.resolve({
+      metaRoleRequest = Promise.resolve({
         data: { customerId: nxState.selectedCustomer.id },
       });
     } else {
-      metaRole = api.getMetaRoleById(id);
+      metaRoleRequest = api.getMetaRoleById(id);
     }
-    metaRole.then(({ data }) => {
+    metaRoleRequest.then(({ data }) => {
       const checkedMetaRole = requiredFields(data);
       setMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
       setCurMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
@@ -75,8 +83,7 @@ const MetaRoleDetailScreen = () => {
     return () => setHasChanges(false);
   }, [curMetaRole]);
 
-  if (id === 'add' && !nxState.selectedCustomer.id)
-    return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
 
   return (
 
@@ -144,20 +151,22 @@ const MetaRoleDetailScreen = () => {
         </Tabs>
       </Box>
       {curTab === 0 && (
-        < SectionLayout label='general'>
+        <SectionLayout label='general'>
           <General
             setCurMetaRole={setCurMetaRole}
             curMetaRole={curMetaRole}
-          /></SectionLayout>
+          />
+        </SectionLayout>
       )}
       {curTab === 1 && (
-        < SectionLayout label='clearances'>
+        <SectionLayout label='clearances'>
           <Clearances
             setCurMetaRole={setCurMetaRole}
             curMetaRole={curMetaRole}
             selectOptions={selectOptions}
           />
-        </ SectionLayout>)}
+        </SectionLayout>
+      )}
     </div>
   );
 };

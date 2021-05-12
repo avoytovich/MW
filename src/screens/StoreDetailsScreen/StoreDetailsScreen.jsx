@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   LinearProgress,
   Zoom,
@@ -27,19 +27,23 @@ import {
   formDesignOptions,
   structureResources,
   checkLabelDuplicate,
-  resourcesKeys,
   tabLabels,
+  formatBeforeSending,
 } from './utils';
 
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const [curTab, setCurTab] = useState(0);
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const [currentStoreResources, setCurrentStoreResources] = useState([]);
   const [storeResources, setStoreResources] = useState([]);
   const [resourcesHasChanges, setResourcesHasChanges] = useState(false);
+  const [update, setUpdate] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -67,111 +71,125 @@ const StoreDetailsScreen = () => {
     return res;
   };
 
+  const handleDisabledSave = (currentStoreData?.externalContextAlias
+    && !!currentStoreData?.externalContextGenerationParams.length)
+    || !currentStoreData?.name
+    || !currentStoreData?.defaultLocale
+    || !currentStoreData?.displayName
+    || !currentStoreData?.routes[0].hostname;
+
   const saveDetails = () => {
-    const updatedData = { ...currentStoreData };
-    if (resourcesHasChanges) {
-      let notUsedKeys = [...resourcesKeys];
-      currentStoreResources.forEach((item) => {
-        notUsedKeys = notUsedKeys.filter((key) => key !== item.label);
-        updatedData[item.label] = item.url;
+    const updatedData = formatBeforeSending(
+      currentStoreData,
+      currentStoreResources,
+      resourcesHasChanges,
+    );
+    if (id === 'add') {
+      api.addNewStore(updatedData).then((res) => {
+        const location = res.headers.location.split('/');
+        const newId = location[location.length - 1];
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        history.push(`/overview/stores/${newId}`);
+        setUpdate((u) => u + 1);
       });
-      notUsedKeys.forEach((key) => {
-        delete updatedData[key];
+    } else {
+      api.updateStoreById(currentStoreData.id, updatedData).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        setUpdate((u) => u + 1);
       });
     }
-    api.updateStoreById(currentStoreData.id, updatedData).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      window.location.reload();
-    });
   };
 
   useEffect(() => {
     let isCancelled = false;
-    const requests = async () => {
-      try {
-        api.getStoreById(id).then(({ data: store }) => {
-          if (!isCancelled) {
-            const checkedStore = storeRequiredFields(store);
-            const resourcesArray = structureResources(store);
-            setStoreResources(JSON.parse(JSON.stringify(resourcesArray)));
-            setCurrentStoreResources(
-              JSON.parse(JSON.stringify(resourcesArray)),
+    let roleRequest;
+    if (id === 'add') {
+      roleRequest = Promise.resolve({
+        data: { customerId: nxState.selectedCustomer.id },
+      });
+    } else {
+      roleRequest = api.getStoreById(id);
+    }
+
+    roleRequest.then(({ data: store }) => {
+      if (!isCancelled) {
+        const checkedStore = storeRequiredFields(store);
+        const resourcesArray = structureResources(store);
+        setStoreResources(JSON.parse(JSON.stringify(resourcesArray)));
+        setCurrentStoreResources(
+          JSON.parse(JSON.stringify(resourcesArray)),
+        );
+        setStoreData(checkedStore);
+        setCurrentStoreData(checkedStore);
+        api
+          .getCustomerById(store?.customerId)
+          .then(({ data: customer }) => {
+            setCurrentCustomerData(customer);
+          });
+        setLoading(false);
+
+        Promise.allSettled([
+          api.getDesignsThemes(),
+          api.getDesignsFonts(),
+          api.getDesignsLayouts(),
+          api.getDesignsTranslations(),
+          api.getPaymentMethodsOptions(),
+        ]).then(
+          ([
+            themeOptions,
+            fontOptions,
+            layoutOptions,
+            translationOptions,
+            paymentMethodsOptions,
+          ]) => {
+            const customersIds = getCustomersIdsArray(
+              ...fontOptions.value.data.items,
+              ...themeOptions.value.data.items,
+              ...layoutOptions.value.data.items,
+              ...translationOptions.value.data.items,
             );
-            setStoreData(checkedStore);
-            setCurrentStoreData(checkedStore);
+
             api
-              .getCustomerById(store?.customerId)
-              .then(({ data: customer }) => {
-                setCurrentCustomerData(customer);
+              .getCustomersByIds(customersIds.join('&'))
+              .then(({ data: customers }) => {
+                setSelectOptions({
+                  ...selectOptions,
+                  customers: customers.items,
+                  font: formDesignOptions(
+                    fontOptions.value?.data.items,
+                    customers.items,
+                  ),
+                  theme: formDesignOptions(
+                    themeOptions.value?.data.items,
+                    customers.items,
+                  ),
+                  paymentMethods: structureSelectOptions(
+                    paymentMethodsOptions.value?.data,
+                    'id',
+                  ),
+                  layout: formDesignOptions(
+                    layoutOptions.value?.data.items,
+                    customers.items,
+                  ),
+                  translation: formDesignOptions(
+                    translationOptions.value?.data.items,
+                    customers.items,
+                  ),
+                });
               });
-            setLoading(false);
-
-            Promise.allSettled([
-              api.getDesignsThemes(),
-              api.getDesignsFonts(),
-              api.getDesignsLayouts(),
-              api.getDesignsTranslations(),
-              api.getPaymentMethodsOptions(),
-            ]).then(
-              ([
-                themeOptions,
-                fontOptions,
-                layoutOptions,
-                translationOptions,
-                paymentMethodsOptions,
-              ]) => {
-                const customersIds = getCustomersIdsArray(
-                  ...fontOptions.value.data.items,
-                  ...themeOptions.value.data.items,
-                  ...layoutOptions.value.data.items,
-                  ...translationOptions.value.data.items,
-                );
-
-                api
-                  .getCustomersByIds(customersIds.join('&'))
-                  .then(({ data: customers }) => {
-                    setSelectOptions({
-                      ...selectOptions,
-                      customers: customers.items,
-                      font: formDesignOptions(
-                        fontOptions.value?.data.items,
-                        customers.items,
-                      ),
-                      theme: formDesignOptions(
-                        themeOptions.value?.data.items,
-                        customers.items,
-                      ),
-                      paymentMethods: structureSelectOptions(
-                        paymentMethodsOptions.value?.data,
-                        'id',
-                      ),
-                      layout: formDesignOptions(
-                        layoutOptions.value?.data.items,
-                        customers.items,
-                      ),
-                      translation: formDesignOptions(
-                        translationOptions.value?.data.items,
-                        customers.items,
-                      ),
-                    });
-                  });
-              },
-            );
-          }
-        });
-      } catch (error) {
-        if (!isCancelled) {
-          setLoading(false);
-        }
+          },
+        );
       }
-    };
-    requests();
+    });
+
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [update]);
   useEffect(() => {
     setResourcesHasChanges(
       JSON.stringify(currentStoreResources) !== JSON.stringify(storeResources),
@@ -233,8 +251,7 @@ const StoreDetailsScreen = () => {
               <Button
                 disabled={
                   checkLabelDuplicate(currentStoreResources)
-                  || (currentStoreData.externalContextAlias
-                    && !!currentStoreData.externalContextGenerationParams.length)
+                  || handleDisabledSave
                 }
                 id='save-discount-button'
                 color='primary'

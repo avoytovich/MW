@@ -57,6 +57,20 @@ const general = {
   metaRole: 'Meta-Role',
   logoCenter: 'Center.',
   subscription: 'Subscription',
+  privileges: {
+    general: 'General',
+    createdate: 'Create date',
+    lastupdate: 'Last update',
+    lastupdatereason: 'Last update reason',
+    servicename: 'Service name',
+    availableactions: 'Available actions',
+  },
+  keyHasBeenAdded: 'Key Has Been Added',
+  keyHasBeenRemoved: 'Key Has BeenRemoved',
+  noResourcesMatchCriteria: 'No resources match criteria',
+  typeOfIdentity: 'The type of identity is choosen at creation and cannot be modified afterwards. Choose "User" to declare a human agent, and "Application"to obtain credentials for your bots accessing Monetize services.',
+  maxNumberOfSecretKeys: 'The maximum number of secret keys is 5',
+  listOfIdentityCustomers: 'This is the list of customers this identity is allowed to manage, in addition to the customer owning this identity.',
 };
 
 export default general;

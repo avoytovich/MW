@@ -295,6 +295,11 @@ const labels = {
   enduserId: 'Enduser ID',
   subscriptionId: 'Subscription ID',
   subscriptionName: 'Subscription Name',
+  contactEmailAddress: 'Contact Email Address',
+  firsName: 'Firs Name',
+  identification: 'Identification',
+  permissions: 'Permissions',
+  emails: 'Emails',
   modelId: 'Model ID',
   numDaysBeforeAnniversary: 'Number of days before anniversary',
   nextBillingDate: 'Next billing date',
@@ -308,6 +313,13 @@ const labels = {
   live: 'Live',
   remittableId: 'Remittable ID',
   features: 'Features',
+  emailId: 'Email ID',
+  managedCustomers: 'Managed Customers',
+  secretKeys: 'Secret Keys',
+  secretKey: 'Secret Key',
+  secret: 'secret',
+  deleteSecretKey: 'Delete Secret Key',
+  add: 'Add',
 };
 
 export default labels;
