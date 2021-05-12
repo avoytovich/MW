@@ -15,16 +15,19 @@ import MetaRoles from './MetaRoles';
 const tabsData = [
   {
     label: 'customer',
-    path: `/settings/administration/customers`,
+    path: '/settings/administration/customers',
     request: api.getCustomers,
     sortKey: 'customerAdmin',
     generateData: generateCustomers,
     noActions: true,
     scope: 'customers',
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.customer',
+    )}`,
   },
   {
     label: 'role',
-    path: `/settings/administration/roles`,
+    path: '/settings/administration/roles',
     button: `${localization.t('general.add')} ${localization.t(
       'general.role',
     )}`,
@@ -38,7 +41,7 @@ const tabsData = [
   },
   {
     label: 'metaRole',
-    path: `/settings/administration/metaRoles`,
+    path: '/settings/administration/metaRoles',
     button: `${localization.t('general.add')} ${localization.t(
       'general.metaRole',
     )}`,
@@ -48,7 +51,7 @@ const tabsData = [
   },
   {
     label: 'privilege',
-    path: `/settings/administration/privileges`,
+    path: '/settings/administration/privileges',
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,
@@ -111,12 +114,12 @@ const AdministrationScreen = () => {
       <Box mt={4} mb={2}>
         {tabsData.map((tab, index) => (
           <Fragment key={tab.label}>
-            {curTab === index &&
-              (tab.label === 'metaRole' ? (
+            {curTab === index
+              && (tab.label === 'metaRole' ? (
                 <MetaRoles sortKey={tab.sortKey} scope={tab.scope} label={tab.label} />
               ) : (
-                  <TabTable tabObject={tab} />
-                ))}
+                <TabTable tabObject={tab} />
+              ))}
           </Fragment>
         ))}
       </Box>

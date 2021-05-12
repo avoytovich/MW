@@ -5,10 +5,11 @@ import { useDispatch } from 'react-redux';
 import {
   LinearProgress, Tabs, Tab, Zoom, Button,
 } from '@material-ui/core';
+import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
 import CustomerDetails from './CustomerDetails';
 import api from '../../../api';
 import localization from '../../../localization';
-
+import checkRequiredFields from './utils';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 
 import './CustomerDetailScreen.scss';
@@ -28,7 +29,7 @@ const CustomerDetailScreen = () => {
   const [curTab, setCurTab] = useState(0);
 
   const [currentCustomer, setCurrentCustomer] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+
   const saveCustomer = () => {
     api.updateCustomerById(id, currentCustomer).then(() => {
       dispatch(
@@ -37,59 +38,37 @@ const CustomerDetailScreen = () => {
       setUpdate((u) => u + 1);
     });
   };
-  const checkIfValuesExist = (data) => {
-    let res = { ...data };
-    if (!data.paymentServiceConfiguration.availableAdditionalPaymentTypes) {
-      res = {
-        ...res,
-        paymentServiceConfiguration: {
-          ...res.paymentServiceConfiguration,
-          availableAdditionalPaymentTypes: [],
-        },
-      };
-    }
-    if (!data.paymentServiceConfiguration.blackListedPaymentTypes) {
-      res = {
-        ...res,
-        paymentServiceConfiguration: {
-          ...res.paymentServiceConfiguration,
-          blackListedPaymentTypes: [],
-        },
-      };
-    }
-    return res;
-  };
+
   useEffect(() => {
-    let isCancelled = false;
-    const requests = async () => {
-      try {
-        const customer = await api.getCustomerById(id);
-        const subscriptionsOptions = await api.getSubscriptionsOptions();
-        const fulfillmentsOptions = await api.getFulfillmentsOptions();
-        const paymentTypesOptions = await api.getPaymentConfigOptions();
-        if (!isCancelled) {
-          const CheckedData = checkIfValuesExist(customer.data);
-          setCustomerData(CheckedData);
-          setCurrentCustomer(CheckedData);
-          setSelectOptions({
-            ...selectOptions,
-            subscriptions: subscriptionsOptions.data.items,
-            fulfillments: fulfillmentsOptions.data.items,
-            paymentTypes: paymentTypesOptions.data.paymentTypes,
-          });
-          setLoading(false);
-        }
-      } catch (error) {
-        if (!isCancelled) {
-          setLoading(false);
-        }
-      }
-    };
-    requests();
-    return () => {
-      isCancelled = true;
-    };
+    let customerRequest;
+    if (id === 'add') {
+      customerRequest = Promise.resolve({
+        data: {},
+      });
+    } else {
+      customerRequest = api.getCustomerById(id);
+    }
+    customerRequest.then(({ data }) => {
+      const checkedData = checkRequiredFields(data);
+      console.log('CheckedData', checkedData)
+
+      setCustomerData(checkedData);
+      setCurrentCustomer(checkedData);
+      Promise.allSettled([
+        api.getSubscriptionsOptions(),
+        api.getFulfillmentsOptions(),
+        api.getPaymentConfigOptions(),
+      ]).then(([subscriptionsOptions, fulfillmentsOptions, paymentTypesOptions]) => {
+        setSelectOptions({
+          ...selectOptions,
+          subscriptions: structureSelectOptions(subscriptionsOptions.value?.data.items, 'code') || [],
+          fulfillments: structureSelectOptions(fulfillmentsOptions.value?.data.items, 'name') || [],
+          paymentTypes: paymentTypesOptions.value?.data.paymentTypes,
+        });
+      });
+    });
   }, [curTab, update]);
+  console.log('selectOptions',selectOptions)
 
   useEffect(() => {
     setHasChanges(
@@ -98,7 +77,7 @@ const CustomerDetailScreen = () => {
     return () => setHasChanges(false);
   }, [currentCustomer]);
 
-  if (isLoading) return <LinearProgress />;
+  if (currentCustomer === null) return <LinearProgress />;
   return (
     <div className='customerAdministration-screen'>
       <Tabs
