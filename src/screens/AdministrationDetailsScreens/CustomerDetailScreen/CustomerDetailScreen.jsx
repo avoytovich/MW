@@ -8,10 +8,12 @@ import {
 import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
 import api from '../../../api';
 import localization from '../../../localization';
-import { checkRequiredFields, formatBeforeSanding } from './utils';
+import { checkRequiredFields, formatBeforeSanding, formatPaymentOptions } from './utils';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import TabSection from '../../../components/utils/TabSection';
 import General from './SubSections/General';
+import Features from './SubSections/Features';
+import PaymentServiceConfiguration from './SubSections/PaymentServiceConfiguration';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 
 import './CustomerDetailScreen.scss';
@@ -24,8 +26,9 @@ const CustomerDetailScreen = () => {
   const [selectOptions, setSelectOptions] = useState({
     subscriptions: null,
     fulfillments: null,
-    availablePaymentTypes: null,
+    additionalPaymentTypes: null,
     blackPaymentTypes: null,
+    forcedPaymentTypes: null,
   });
   const [customerData, setCustomerData] = useState(null);
   const [curTab, setCurTab] = useState(0);
@@ -59,16 +62,18 @@ const CustomerDetailScreen = () => {
         api.getFulfillmentsOptions(),
         api.getPaymentConfigOptions(),
       ]).then(([subscriptionsOptions, fulfillmentsOptions, paymentTypesOptions]) => {
+        const allPayments = formatPaymentOptions(paymentTypesOptions.value?.data.paymentTypes);
         setSelectOptions({
           ...selectOptions,
           subscriptions: structureSelectOptions(subscriptionsOptions.value?.data.items, 'code') || [],
           fulfillments: structureSelectOptions(fulfillmentsOptions.value?.data.items, 'name') || [],
-          paymentTypes: paymentTypesOptions.value?.data.paymentTypes,
+          additionalPaymentTypes: allPayments.additional || [],
+          blackPaymentTypes: allPayments.black || [],
+          forcedPaymentTypes: allPayments.forced || [],
         });
       });
     });
   }, [update]);
-
   useEffect(() => {
     setHasChanges(
       JSON.stringify(currentCustomer) !== JSON.stringify(customerData),
@@ -135,10 +140,21 @@ const CustomerDetailScreen = () => {
         </TabSection>
       )}
       {curTab === 1 && currentCustomer && (
-        <TabSection label='features' />
+        <TabSection label='features'>
+          <Features
+            currentCustomer={currentCustomer}
+            setCurrentCustomer={setCurrentCustomer}
+          />
+        </TabSection>
       )}
       {curTab === 2 && currentCustomer && (
-        <TabSection label='paymentServiceConfiguration' />
+        <TabSection label='paymentServiceConfiguration'>
+          <PaymentServiceConfiguration
+            currentCustomer={currentCustomer}
+            setCurrentCustomer={setCurrentCustomer}
+            selectOptions={selectOptions}
+          />
+        </TabSection>
       )}
       {curTab === 3 && currentCustomer && (
         <TabSection label='assets' />

@@ -39,4 +39,30 @@ const formatBeforeSanding = (data) => {
   return resObj;
 };
 
-export { checkRequiredFields, formatBeforeSanding };
+const formatPaymentOptions = (options) => {
+  const additional = [];
+  const black = [];
+  const forced = [];
+
+  options.forEach((item) => {
+    if (item.status === 'DEFAULT') {
+      black.push({ id: item.id, value: item.id });
+    } else if (item.status === 'OPTIONAL') {
+      additional.push({ id: item.id, value: item.id });
+    }
+    if (!item.creditCard) {
+      forced.push({ id: item.id, value: item.id });
+    }
+  });
+  return { additional, black, forced };
+};
+const checkBoxObj = {
+  platformModules: ['sgOrdersManagement', 'resellerManagement', 'onboardingManagement',
+    'remittanceManagement', 'productManagement'],
+  workflowAgreement: ['seller', 'sellOnBehalf', 'createInvoice', 'sendOrderConfirmationEmail'],
+  technicalFeatures: ['subscriptionUpgradeAuthorized', 'usingSubscriptionV1', 'usingFulfillmentV1'],
+};
+
+export {
+  checkRequiredFields, formatBeforeSanding, checkBoxObj, formatPaymentOptions,
+};
