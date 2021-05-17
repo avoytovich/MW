@@ -342,6 +342,7 @@ const labels = {
   minPaymentAmountInPercent: 'Min Payment Amount in Percent',
   maxPaymentsParts: 'Max Payments Parts',
   paymentVendor: 'Payment Vendor',
+  createEndUserWithoutSubscription: 'Create end-user without subscription',
 };
 
 export default labels;
