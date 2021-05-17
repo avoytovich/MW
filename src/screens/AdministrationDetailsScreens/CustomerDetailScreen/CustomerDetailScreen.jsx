@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 
 import {
   LinearProgress, Tabs, Tab, Zoom, Button, Box, Typography,
@@ -8,17 +8,26 @@ import {
 import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
 import api from '../../../api';
 import localization from '../../../localization';
-import { checkRequiredFields, formatBeforeSanding, formatPaymentOptions } from './utils';
+import {
+  checkRequiredFields,
+  formatBeforeSanding,
+  formatPaymentOptions,
+  assetsLabels,
+  checkLabelDuplicate,
+} from './utils';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import TabSection from '../../../components/utils/TabSection';
 import General from './SubSections/General';
 import Features from './SubSections/Features';
+import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
 import PaymentServiceConfiguration from './SubSections/PaymentServiceConfiguration';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 
 import './CustomerDetailScreen.scss';
 
 const CustomerDetailScreen = () => {
+  const history = useHistory();
+
   const { id } = useParams();
   const dispatch = useDispatch();
   const [hasChanges, setHasChanges] = useState(false);
@@ -36,16 +45,29 @@ const CustomerDetailScreen = () => {
   const [currentCustomer, setCurrentCustomer] = useState(null);
 
   const saveCustomer = () => {
-    api.updateCustomerById(id, formatBeforeSanding(currentCustomer)).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      setUpdate((u) => u + 1);
-    });
+    if (id === 'add') {
+      api.addCustomerById(currentCustomer).then((res) => {
+        const location = res.headers.location.split('/');
+        const newId = location[location.length - 1];
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        history.push(`/settings/administration/customers/${newId}`);
+        setUpdate((u) => u + 1);
+      });
+    } else {
+      api.updateCustomerById(id, formatBeforeSanding(currentCustomer)).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        setUpdate((u) => u + 1);
+      });
+    }
   };
 
   useEffect(() => {
     let customerRequest;
+    const createCustomer = id === 'add';
     if (id === 'add') {
       customerRequest = Promise.resolve({
         data: {},
@@ -54,7 +76,7 @@ const CustomerDetailScreen = () => {
       customerRequest = api.getCustomerById(id);
     }
     customerRequest.then(({ data }) => {
-      const checkedData = checkRequiredFields(data);
+      const checkedData = checkRequiredFields(data, createCustomer);
       setCustomerData(checkedData);
       setCurrentCustomer(checkedData);
       Promise.allSettled([
@@ -112,6 +134,7 @@ const CustomerDetailScreen = () => {
             type='submit'
             variant='contained'
             onClick={saveCustomer}
+            disabled={checkLabelDuplicate(currentCustomer.assets)}
           >
             {localization.t('forms.buttons.save')}
           </Button>
@@ -126,8 +149,9 @@ const CustomerDetailScreen = () => {
         >
           <Tab label='General' />
           <Tab label='Features' />
-          <Tab label='Payment Service Configuration' />
-          <Tab label='Assets' />
+          <Tab label='Payment Service Configuration' disabled={id === 'add'} />
+          <Tab label='Reports' disabled={id === 'add'} />
+          <Tab label='Assets' disabled={id === 'add'} />
         </Tabs>
       </Box>
       {curTab === 0 && currentCustomer && (
@@ -157,7 +181,19 @@ const CustomerDetailScreen = () => {
         </TabSection>
       )}
       {curTab === 3 && currentCustomer && (
-        <TabSection label='assets' />
+        <TabSection label='reports' />
+      )}
+      {curTab === 4 && currentCustomer && (
+        <TabSection label='assets'>
+          <AssetsResource
+            labelOptions={assetsLabels}
+            maxPayloadFiles={2}
+            resources={currentCustomer.assets}
+            setResources={(newValue) => {
+              setCurrentCustomer({ ...currentCustomer, assets: newValue });
+            }}
+          />
+        </TabSection>
       )}
 
     </div>

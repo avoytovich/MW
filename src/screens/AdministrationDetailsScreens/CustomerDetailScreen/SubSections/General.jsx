@@ -24,59 +24,37 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
   };
   return (
     <Grid container>
+      <Grid item md={12}>
+        {currentCustomer.id
+          && (
+          <Box p={2}>
+            <SwitchInput
+              label='status'
+              handleChange={(e) => {
+                setCurrentCustomer({
+                  ...currentCustomer,
+                  status: e.target.checked ? 'RUNNING' : 'TRIAL',
+                });
+              }}
+              isChecked={currentCustomer.status !== 'TRIAL'}
+              switchLabel={localization.t(
+                `labels.${
+                  currentCustomer.status !== 'TRIAL' ? 'live' : 'test'
+                }`,
+              )}
+            />
+          </Box>
+          )}
+      </Grid>
       <Grid item md={6}>
         <Box p={2}>
-          <SwitchInput
-            label='status'
-            handleChange={(e) => {
-              setCurrentCustomer({
-                ...currentCustomer,
-                status: e.target.checked ? 'RUNNING' : 'TRIAL',
-              });
-            }}
-            isChecked={currentCustomer.status !== 'TRIAL'}
-            switchLabel={localization.t(
-              `labels.${
-                currentCustomer.status !== 'TRIAL' ? 'live' : 'test'
-              }`,
-            )}
-          />
-        </Box>
-        <Box p={2}>
           <InputCustom
-            label='name'
+            label='customerName'
             value={currentCustomer.name}
             onChangeInput={(e) => {
               setCurrentCustomer({
                 ...currentCustomer,
                 name: e.target.value,
-              });
-            }}
-            idDisabled={!!currentCustomer.id}
-          />
-        </Box>
-        <Box p={2}>
-          <InputCustom
-            isDisabled={!!currentCustomer.id}
-            label='email'
-            value={currentCustomer.email}
-            onChangeInput={(e) => {
-              setCurrentCustomer({
-                ...currentCustomer,
-                email: e.target.value,
-              });
-            }}
-            idDisabled={!!currentCustomer.id}
-          />
-        </Box>
-        <Box p={2}>
-          <InputCustom
-            label='realmName'
-            value={currentCustomer.iamClient.realmName}
-            onChangeInput={(e) => {
-              setCurrentCustomer({
-                ...currentCustomer,
-                iamClient: { ...currentCustomer.iamClient, realmName: e.target.value },
               });
             }}
             idDisabled={!!currentCustomer.id}
@@ -97,6 +75,19 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
             </Box>
           )}
         <Box p={2}>
+          <InputCustom
+            label='realmName'
+            value={currentCustomer.iamClient.realmName}
+            onChangeInput={(e) => {
+              setCurrentCustomer({
+                ...currentCustomer,
+                iamClient: { ...currentCustomer.iamClient, realmName: e.target.value },
+              });
+            }}
+            idDisabled={!!currentCustomer.id}
+          />
+        </Box>
+        <Box p={2}>
           <Box pb={1}>
             <Typography color="secondary">
               {localization.t('labels.apiSecret')}
@@ -110,81 +101,107 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
             having clientId = "api-services"
           </Typography>
         </Box>
-
-      </Grid>
-      <Grid item md={6}>
-        <Box p={2}>
-          <SwitchInput
-            label='createEndUserWithoutSubscription'
-            handleChange={(e) => {
-              setCurrentCustomer({
-                ...currentCustomer,
-                createEndUserWithoutSubscription: e.target.checked,
-              });
-            }}
-            isChecked={currentCustomer.createEndUserWithoutSubscription}
-          />
-        </Box>
-        <Box p={2}>
-          <SelectWithChip
-            label='fulfillmentTemplates'
-            value={currentCustomer.fulfillments}
-            selectOptions={selectOptions.fulfillments}
-            onChangeSelect={(e) => setCurrentCustomer({
-              ...currentCustomer,
-              fulfillments: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...currentCustomer.fulfillments].filter(
-                (val) => val !== chip,
-              );
-              setCurrentCustomer({
-                ...currentCustomer,
-                fulfillments: newValue,
-              });
-            }}
-          />
-        </Box>
-        <Box p={2}>
-          <SelectWithChip
-            label='subscriptionsModels'
-            value={currentCustomer.subscriptions}
-            selectOptions={selectOptions.subscriptions}
-            onChangeSelect={(e) => setCurrentCustomer({
-              ...currentCustomer,
-              subscriptions: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...currentCustomer.subscriptions].filter(
-                (val) => val !== chip,
-              );
-              setCurrentCustomer({
-                ...currentCustomer,
-                subscriptions: newValue,
-              });
-            }}
-          />
-        </Box>
-        <Box p={2}>
-          <NumberInput
-            label='cancelPeriod'
-            value={currentCustomer.cancelPeriod}
-            onChangeInput={(e) => setCurrentCustomer({
-              ...currentCustomer,
-              cancelPeriod: e.target.value,
-            })}
-          />
-        </Box>
         <Box p={2}>
           <InputCustom
-            label='remittableId'
-            value={currentCustomer.remittableId}
-            onChangeInput={(e) => setCurrentCustomer({
-              ...currentCustomer,
-              remittableId: e.target.value,
-            })}
+            isDisabled={!!currentCustomer.id}
+            label='email'
+            value={currentCustomer.email}
+            onChangeInput={(e) => {
+              setCurrentCustomer({
+                ...currentCustomer,
+                email: e.target.value,
+              });
+            }}
+            idDisabled={!!currentCustomer.id}
           />
         </Box>
+      </Grid>
+      <Grid item md={6}>
+        {currentCustomer.id && (
+          <Box p={2}>
+            <SelectWithChip
+              label='fulfillmentTemplates'
+              value={currentCustomer.fulfillments}
+              selectOptions={selectOptions.fulfillments}
+              onChangeSelect={(e) => setCurrentCustomer({
+                ...currentCustomer,
+                fulfillments: e.target.value,
+              })}
+              onClickDelIcon={(chip) => {
+                const newValue = [...currentCustomer.fulfillments].filter(
+                  (val) => val !== chip,
+                );
+                setCurrentCustomer({
+                  ...currentCustomer,
+                  fulfillments: newValue,
+                });
+              }}
+            />
+          </Box>
+        )}
+        {currentCustomer.id && (
+          <Box p={2}>
+            <SelectWithChip
+              label='subscriptionsModels'
+              value={currentCustomer.subscriptions}
+              selectOptions={selectOptions.subscriptions}
+              onChangeSelect={(e) => setCurrentCustomer({
+                ...currentCustomer,
+                subscriptions: e.target.value,
+              })}
+              onClickDelIcon={(chip) => {
+                const newValue = [...currentCustomer.subscriptions].filter(
+                  (val) => val !== chip,
+                );
+                setCurrentCustomer({
+                  ...currentCustomer,
+                  subscriptions: newValue,
+                });
+              }}
+            />
+          </Box>
+        )}
+        {currentCustomer.id && (
+          <Box p={2}>
+            <NumberInput
+              label='cancelPeriod'
+              minMAx={{ min: 0 }}
+              value={currentCustomer.cancelPeriod}
+              onChangeInput={(e) => setCurrentCustomer({
+                ...currentCustomer,
+                cancelPeriod: e.target.value,
+              })}
+            />
+          </Box>
+        )}
+        {currentCustomer.id
+          && (
+            <Box p={2}>
+              <SwitchInput
+                label='createEndUserWithoutSubscription'
+                handleChange={(e) => {
+                  setCurrentCustomer({
+                    ...currentCustomer,
+                    createEndUserWithoutSubscription: e.target.checked,
+                  });
+                }}
+                isChecked={currentCustomer.createEndUserWithoutSubscription}
+              />
+            </Box>
+          )}
+        {currentCustomer.id
+          && (
+            <Box p={2}>
+              <InputCustom
+                label='remittableId'
+                value={currentCustomer.remittableId}
+                onChangeInput={(e) => setCurrentCustomer({
+                  ...currentCustomer,
+                  remittableId: e.target.value,
+                })}
+              />
+            </Box>
+          )}
       </Grid>
     </Grid>
   );

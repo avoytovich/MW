@@ -49,7 +49,6 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
             </Typography>
           </Grid>
           <Grid item md={7}>
-
             <PlusMinusInput
               value={currentCustomer.paymentServiceConfiguration.maxPaymentsParts}
               handleUpdate={(value) => setCurrentCustomer({

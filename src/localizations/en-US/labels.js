@@ -305,7 +305,7 @@ const labels = {
   nextBillingDate: 'Next billing date',
   paymentServiceConfiguration: 'Payment Service Configuration',
   assets: 'Assets',
-  cancelPeriod: 'Cancel Period',
+  cancelPeriod: 'Cancel period (in days, 0 or empty = no cancel period)',
   authenticationRealm: 'Authentication Realm',
   apiSecret: 'API Secret',
   realmName: 'Realm Name',
@@ -343,6 +343,10 @@ const labels = {
   maxPaymentsParts: 'Max Payments Parts',
   paymentVendor: 'Payment Vendor',
   createEndUserWithoutSubscription: 'Create end-user without subscription',
+  customerName: 'Customer Name',
+  onboardingGuide: 'Onboarding Guide',
+  onboardingTerms: 'Onboarding Terms',
+  reports: 'Reports',
 };
 
 export default labels;

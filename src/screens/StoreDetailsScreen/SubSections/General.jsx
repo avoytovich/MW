@@ -26,21 +26,23 @@ const checkBoxObj = [
 const General = ({ currentStoreData, setCurrentStoreData }) => (
   <>
     <Grid item md={12}>
-      <SwitchInput
-        label='status'
-        handleChange={(e) => {
-          setCurrentStoreData({
-            ...currentStoreData,
-            status: e.target.checked ? 'ENABLED' : 'DISABLED',
-          });
-        }}
-        isChecked={currentStoreData.status === 'ENABLED'}
-        switchLabel={localization.t(
-          `labels.${
-            currentStoreData.status === 'ENABLED' ? 'enabled' : 'disabled'
-          }`,
-        )}
-      />
+      <Box p={2}>
+        <SwitchInput
+          label='status'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              status: e.target.checked ? 'ENABLED' : 'DISABLED',
+            });
+          }}
+          isChecked={currentStoreData.status === 'ENABLED'}
+          switchLabel={localization.t(
+            `labels.${
+              currentStoreData.status === 'ENABLED' ? 'enabled' : 'disabled'
+            }`,
+          )}
+        />
+      </Box>
     </Grid>
     <Grid item md={6} sm={12}>
       <Box p={2}>
@@ -115,16 +117,18 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
           }}
         />
       </Box>
-      <SwitchInput
-        label='allowInstallments'
-        handleChange={(e) => {
-          setCurrentStoreData({
-            ...currentStoreData,
-            allowInstallments: e.target.checked,
-          });
-        }}
-        isChecked={currentStoreData.allowInstallments}
-      />
+      <Box p={2}>
+        <SwitchInput
+          label='allowInstallments'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              allowInstallments: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.allowInstallments}
+        />
+      </Box>
       <Box p={2}>
         <SelectWithChip
           isDisabled={!currentStoreData.allowInstallments}
@@ -147,56 +151,68 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         />
       </Box>
       <Box p={2}>
-        <InputCustom label='gtmId' onChangeInput={() => {}} />
+        <InputCustom label='gtmId' onChangeInput={() => { }} />
       </Box>
       <Box p={2}>
-        <InputCustom label='gtmIdOwnedByNexway' onChangeInput={() => {}} />
+        <InputCustom label='gtmIdOwnedByNexway' onChangeInput={() => { }} />
       </Box>
-      <SwitchInput
-        label='forceEndUserCreation'
-        handleChange={() => {}}
-        isChecked={currentStoreData.forceEndUserCreation}
-      />
-      <SwitchInput
-        label='promoteOneClickPayment'
-        handleChange={(e) => {
-          setCurrentStoreData({
-            ...currentStoreData,
-            promoteOneClickPayment: e.target.checked,
-          });
-        }}
-        isChecked={currentStoreData.promoteOneClickPayment}
-      />
-      <SwitchInput
-        label='displayProductDeliveryOnCheckoutConfirmation'
-        handleChange={(e) => {
-          setCurrentStoreData({
-            ...currentStoreData,
-            allowOrderDetailsOnCheckoutConfirmation: e.target.checked,
-          });
-        }}
-        isChecked={currentStoreData.allowOrderDetailsOnCheckoutConfirmation}
-      />
-      <SwitchInput
-        label='enableRecipientCode'
-        handleChange={(e) => {
-          setCurrentStoreData({
-            ...currentStoreData,
-            recipientCodeMandatory: e.target.checked,
-          });
-        }}
-        isChecked={currentStoreData.recipientCodeMandatory}
-      />
-      <SwitchInput
-        label='allowQuotes'
-        handleChange={(e) => {
-          setCurrentStoreData({
-            ...currentStoreData,
-            allowQuotes: e.target.checked,
-          });
-        }}
-        isChecked={currentStoreData.allowQuotes}
-      />
+      <Box p={2}>
+        <SwitchInput
+          label='forceEndUserCreation'
+          handleChange={() => { }}
+          isChecked={currentStoreData.forceEndUserCreation}
+        />
+      </Box>
+      <Box p={2}>
+        <SwitchInput
+          label='promoteOneClickPayment'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              promoteOneClickPayment: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.promoteOneClickPayment}
+        />
+      </Box>
+      <Box p={2}>
+        <SwitchInput
+          label='displayProductDeliveryOnCheckoutConfirmation'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              allowOrderDetailsOnCheckoutConfirmation: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.allowOrderDetailsOnCheckoutConfirmation}
+        />
+      </Box>
+      <Box p={2}>
+
+        <SwitchInput
+          label='enableRecipientCode'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              recipientCodeMandatory: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.recipientCodeMandatory}
+        />
+      </Box>
+      <Box p={2}>
+
+        <SwitchInput
+          label='allowQuotes'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              allowQuotes: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.allowQuotes}
+        />
+      </Box>
       <CheckboxInput
         currentStoreData={currentStoreData}
         checkBoxData={checkBoxObj}
@@ -288,21 +304,23 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
           }}
         />
       </Box>
-      <SwitchInput
-        label='useGeoIpToForceEnduserCountry'
-        handleChange={(e) => {
-          setCurrentStoreData({
-            ...currentStoreData,
-            forceGeoipLocalization: e.target.checked,
-          });
-        }}
-        isChecked={currentStoreData.forceGeoipLocalization}
-        switchLabel={localization.t(
-          `labels.${
-            currentStoreData.forceGeoipLocalization ? 'enabled' : 'disabled'
-          }`,
-        )}
-      />
+      <Box p={2}>
+        <SwitchInput
+          label='useGeoIpToForceEnduserCountry'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              forceGeoipLocalization: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.forceGeoipLocalization}
+          switchLabel={localization.t(
+            `labels.${
+              currentStoreData.forceGeoipLocalization ? 'enabled' : 'disabled'
+            }`,
+          )}
+        />
+      </Box>
       <Box p={2}>
         <SelectCustom
           label='fallbackCartCountry'
@@ -318,7 +336,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         <InputCustom
           helperText={
             currentStoreData.externalContextAlias
-            && !!currentStoreData.externalContextGenerationParams.length
+              && !!currentStoreData.externalContextGenerationParams.length
               ? 'Context should be only one '
               : null
           }
@@ -341,7 +359,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => (
         <InputCustom
           helperText={
             currentStoreData.externalContextAlias
-            && !!currentStoreData.externalContextGenerationParams.length
+              && !!currentStoreData.externalContextGenerationParams.length
               ? 'Context should be only one '
               : null
           }

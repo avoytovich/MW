@@ -343,6 +343,10 @@ const labels = {
   maxPaymentsParts: 'Max Payments Parts',
   paymentVendor: 'Payment Vendor',
   createEndUserWithoutSubscription: 'Create end-user without subscription',
+  customerName: 'Customer Name',
+  onboardingGuide: 'Onboarding Guide',
+  onboardingTerms: 'Onboarding Terms',
+  reports: 'Reports',
 };
 
 export default labels;

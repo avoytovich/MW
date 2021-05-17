@@ -15,7 +15,7 @@ import Payment from './SubSections/Payment';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import General from './SubSections/General';
 import Design from './SubSections/Design';
-import AssetsResource from './SubSections/AssetsResource';
+import AssetsResource from '../../components/AssetsResoursesWithSelectLabel';
 import StoreSection from './StoreSection';
 import {
   storeRequiredFields,
@@ -29,6 +29,7 @@ import {
   checkLabelDuplicate,
   tabLabels,
   formatBeforeSending,
+  resourceLabel,
 } from './utils';
 
 import api from '../../api';
@@ -308,6 +309,8 @@ const StoreDetailsScreen = () => {
         {curTab === 3 && (
           <StoreSection label={tabLabels[3]}>
             <AssetsResource
+              labelOptions={resourceLabel}
+              maxPayloadFiles={4}
               resources={currentStoreResources}
               setResources={setCurrentStoreResources}
               currentStoreData={currentStoreData}
