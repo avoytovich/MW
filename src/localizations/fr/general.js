@@ -41,15 +41,14 @@ const general = {
   add: 'Add',
   noPackagesFound: 'No packages found',
   addProduct: 'Add Product',
+  addCampaign: 'Add Campaign',
   noAvailableOptions: 'No available options',
   marketingNameMandatory:
     'Marketing name is mandatory for the default language.',
-  itemHasBeenCopied: 'Item Has BeenCopied',
+  itemHasBeenCopied: 'Item Has Been Copied',
   selectCustomer:
     'Please select a customer which will own the created resource.',
   campaign: 'Campaign',
-  recommendation: 'Recommendation',
-  discount: 'Discount',
   price: 'Price',
   new: 'New',
   selectNoSourceMeans:
@@ -57,6 +56,13 @@ const general = {
   role: 'role',
   customer: 'Customer',
   metaRole: 'Meta-Role',
+  subscription: 'Subscription',
+  keyHasBeenAdded: 'Key Has Been Added',
+  keyHasBeenRemoved: 'Key Has BeenRemoved',
+  noResourcesMatchCriteria: 'No resources match criteria',
+  typeOfIdentity: 'The type of identity is choosen at creation and cannot be modified afterwards. Choose "User" to declare a human agent, and "Application"to obtain credentials for your bots accessing Monetize services.',
+  maxNumberOfSecretKeys: 'The maximum number of secret keys is 5',
+  listOfIdentityCustomers: 'This is the list of customers this identity is allowed to manage, in addition to the customer owning this identity.',
 };
 
 export default general;

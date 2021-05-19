@@ -1,3 +1,3 @@
-import ProductDetailsScreen from './ProductDetailsScreen';
+import ProductDetailsScreen from './ProductDetailsView';
 
 export default ProductDetailsScreen;

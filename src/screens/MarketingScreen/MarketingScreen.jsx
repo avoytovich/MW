@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
-import { Tabs, Tab, Box, Button } from '@material-ui/core';
+import {
+  Tabs, Tab, Box, Button,
+} from '@material-ui/core';
 
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
@@ -14,28 +16,28 @@ import './marketingScreen.scss';
 const availTabs = [
   {
     label: 'campaigns',
-    path: `/marketing/campaigns`,
+    path: '/marketing/campaigns',
     button: `${localization.t('general.add')} ${localization.t(
       'general.campaign',
     )}`,
   },
   {
     label: 'recommendations',
-    path: `/marketing/recommendations`,
+    path: '/marketing/recommendations',
     button: `${localization.t('general.add')} ${localization.t(
       'general.recommendation',
     )}`,
   },
   {
     label: 'discounts',
-    path: `/marketing/discounts`,
+    path: '/marketing/discounts',
     button: `${localization.t('general.add')} ${localization.t(
       'general.discount',
     )}`,
   },
   {
     label: 'prices',
-    path: `/marketing/prices`,
+    path: '/marketing/prices',
     button: `${localization.t('general.add')} ${localization.t(
       'general.price',
     )}`,
@@ -61,8 +63,7 @@ const MarketingScreen = () => {
   }, [pathname]);
 
   const drawAddButton = () => {
-    const currentTad =
-      availTabs.find((item) => item.path === pathname) || availTabs[0];
+    const currentTad = availTabs.find((item) => item.path === pathname) || availTabs[0];
     return (
       <Button
         id='add-marketing-button'

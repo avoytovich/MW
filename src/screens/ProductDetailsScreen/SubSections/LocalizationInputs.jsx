@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from 'react';
 
 import ReactQuill from 'react-quill';
@@ -55,6 +54,7 @@ const LocalizationInputs = ({ data = {}, handleChange, isDefault }) => {
 
           <div
             className='localization-text-block'
+            // eslint-disable-next-line
             dangerouslySetInnerHTML={{ __html: newData[val] }}
           />
 
@@ -63,6 +63,10 @@ const LocalizationInputs = ({ data = {}, handleChange, isDefault }) => {
       )}
     </>
   );
+
+  LocalizationInput.propTypes = {
+    val: PropTypes.string,
+  };
 
   return (
     <Box display='flex' width='100%' flexDirection='column'>
@@ -98,6 +102,7 @@ const LocalizationInputs = ({ data = {}, handleChange, isDefault }) => {
 LocalizationInputs.propTypes = {
   data: PropTypes.object,
   handleChange: PropTypes.func,
+  isDefault: PropTypes.bool,
 };
 
 export default LocalizationInputs;

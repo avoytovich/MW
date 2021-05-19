@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import { Line, Bar } from 'react-chartjs-2';
 
 const ChartBlock = ({ chartType }) => {
@@ -11,7 +12,7 @@ const ChartBlock = ({ chartType }) => {
       '13', '14', '15', '16',
       '17', '18', '19', '20',
       '21', '22', '23', '24',
-      '25', '26', '27', '28'
+      '25', '26', '27', '28',
     ],
     datasets: [
       {
@@ -46,7 +47,7 @@ const ChartBlock = ({ chartType }) => {
       },
     ],
   };
-  
+
   const options = {
     scales: {
       yAxes: [
@@ -56,10 +57,11 @@ const ChartBlock = ({ chartType }) => {
             beginAtZero: true,
             padding: 5,
             mirror: chartType === 'line',
+            // eslint-disable-next-line
             callback: (value) => {
-              if(value%1000 === 0) return `$${value/1000}${value !== 0 ? 'K' : ''}`
+              if (value % 1000 === 0) return `$${value / 1000}${value !== 0 ? 'K' : ''}`;
             },
-            max: 5000
+            max: 5000,
           },
           gridLines: {
             drawBorder: false,
@@ -80,11 +82,11 @@ const ChartBlock = ({ chartType }) => {
       display: false,
     },
     elements: {
-      point:{
+      point: {
         radius: 0,
         hitRadius: 10,
         hoverRadius: 5,
-      }
+      },
     },
     grouped: false,
     maintainAspectRatio: false,
@@ -93,21 +95,29 @@ const ChartBlock = ({ chartType }) => {
 
   return (
     <Box width='100%' height='350px' className='chart-wrapper'>
-      {chartType === 'line' && <Line
-        data={data}
-        options={options}
-        height='100%'
-        width='100%'
-      />}
+      {chartType === 'line' && (
+        <Line
+          data={data}
+          options={options}
+          height='100%'
+          width='100%'
+        />
+      )}
 
-      {chartType === 'bar' && <Bar
-        data={data}
-        options={options}
-        height='100%'
-        width='100%'
-      />}
+      {chartType === 'bar' && (
+        <Bar
+          data={data}
+          options={options}
+          height='100%'
+          width='100%'
+        />
+      )}
     </Box>
   );
+};
+
+ChartBlock.propTypes = {
+  chartType: PropTypes.string,
 };
 
 export default ChartBlock;

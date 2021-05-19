@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { LinearProgress, Zoom, Button } from '@material-ui/core';
+import {
+  Typography,
+  Box,
+  Zoom,
+  Button,
+  Tabs,
+  Tab,
+  Breadcrumbs,
+} from '@material-ui/core';
+import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
+import SectionLayout from '../../../components/SectionLayout';
 
 import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
 import { requiredFields, structureSelectOptions } from './utils';
 import localization from '../../../localization';
-import { SelectWithChip, InputCustom } from '../../../components/Inputs';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
+import General from './SubSections/General';
+import Clearances from './SubSections/Clearances';
 
 const MetaRoleDetailScreen = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
+  const [curTab, setCurTab] = useState(0);
   const [update, setUpdate] = useState(0);
 
   const [metaRole, setMetaRole] = useState(null);
@@ -28,11 +40,11 @@ const MetaRoleDetailScreen = () => {
     if (id === 'add') {
       api.addNewMetaRole(curMetaRole).then((res) => {
         const location = res.headers.location.split('/');
-        const id = location[location.length - 1];
+        const newId = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/administration/metaRoles/${id}`);
+        history.push(`/settings/administration/metaRoles/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -46,25 +58,23 @@ const MetaRoleDetailScreen = () => {
   };
 
   useEffect(() => {
-    let metaRole;
+    let metaRoleRequest;
     if (id === 'add') {
-      metaRole = Promise.resolve({
+      metaRoleRequest = Promise.resolve({
         data: { customerId: nxState.selectedCustomer.id },
       });
     } else {
-      metaRole = api.getMetaRoleById(id);
+      metaRoleRequest = api.getMetaRoleById(id);
     }
-    metaRole.then(({ data }) => {
+    metaRoleRequest.then(({ data }) => {
       const checkedMetaRole = requiredFields(data);
       setMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
       setCurMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
     });
-    api.getRoles().then(({ data }) =>
-      setSelectOptions({
-        ...selectOptions,
-        roles: structureSelectOptions(data.items) || [],
-      }),
-    );
+    api.getRoles().then(({ data }) => setSelectOptions({
+      ...selectOptions,
+      roles: structureSelectOptions(data.items) || [],
+    }));
   }, [update]);
 
   useEffect(() => {
@@ -73,62 +83,90 @@ const MetaRoleDetailScreen = () => {
     return () => setHasChanges(false);
   }, [curMetaRole]);
 
-  if (curMetaRole === null) return <LinearProgress />;
-
-  if (id === 'add' && !nxState.selectedCustomer.id)
-    return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
 
   return (
+
     <div>
-      <Zoom in={hasChanges}>
-        <Button
-          disabled={!curMetaRole.name}
-          id='save-metaRole-button'
-          color='primary'
-          size='large'
-          type='submit'
-          variant='contained'
-          onClick={handleSave}
+      {id !== 'add' && (
+        <Box mx={2}>
+          <CustomBreadcrumbs
+            url='/settings/administration/metaRoles'
+            section={localization.t('labels.metaRoles')}
+            id={curMetaRole?.id}
+          />
+        </Box>
+      )}
+
+      <Box
+        display='flex'
+        flexDirection='row'
+        mt={2}
+        mx={2}
+        justifyContent='space-between'
+      >
+        <Box alignSelf='center'>
+          <Typography gutterBottom variant='h3'>
+            {id !== 'add'
+              ? metaRole?.name
+              : `${localization.t('general.new')} ${localization.t(
+                'labels.metaRole',
+              )}`}
+          </Typography>
+
+        </Box>
+        <Zoom in={hasChanges}>
+          <Button
+            disabled={!curMetaRole?.name}
+            id='save-metaRole-button'
+            color='primary'
+            size='large'
+            type='submit'
+            variant='contained'
+            onClick={handleSave}
+          >
+            {localization.t('general.save')}
+          </Button>
+        </Zoom>
+      </Box>
+      <Box ml={2} pb={2}>
+        <Breadcrumbs color='secondary' aria-label='breadcrumb'>
+          <Typography color='primary'>
+            {localization.t('labels.customerId')}
+          </Typography>
+          <Typography color='secondary'>
+            {curMetaRole?.customerId}
+          </Typography>
+        </Breadcrumbs>
+      </Box>
+      <Box my={2} bgcolor="#fff">
+        <Tabs
+          value={curTab}
+          onChange={(e, newTab) => setCurTab(newTab)}
+          indicatorColor='primary'
+          textColor='primary'
         >
-          {localization.t('general.save')}
-        </Button>
-      </Zoom>
-      <InputCustom
-        label='reasonForCurrentChange'
-        value={curMetaRole.reason}
-        onChangeInput={(e) =>
-          setCurMetaRole({ ...curMetaRole, reason: e.target.value })
-        }
-        isRequired
-      />
-      <InputCustom
-        label='name'
-        value={curMetaRole.name}
-        onChangeInput={(e) =>
-          setCurMetaRole({ ...curMetaRole, name: e.target.value })
-        }
-        isRequired
-      />
-      <SelectWithChip
-        label='aggregatedRoles'
-        value={curMetaRole.roleIds}
-        selectOptions={selectOptions.roles}
-        onChangeSelect={(e) =>
-          setCurMetaRole({
-            ...curMetaRole,
-            roleIds: e.target.value,
-          })
-        }
-        onClickDelIcon={(chip) => {
-          const newValue = [...curMetaRole.roleIds].filter(
-            (val) => val !== chip,
-          );
-          setCurMetaRole({
-            ...curMetaRole,
-            roleIds: newValue,
-          });
-        }}
-      />
+          <Tab label={`${localization.t('labels.general')}`} />
+          <Tab label={`${localization.t('labels.clearances')}`} />
+        </Tabs>
+      </Box>
+      {curTab === 0 && (
+        <SectionLayout label='general'>
+          <General
+            setCurMetaRole={setCurMetaRole}
+            curMetaRole={curMetaRole}
+          />
+        </SectionLayout>
+      )}
+      {curTab === 1 && (
+        <SectionLayout label='clearances'>
+          <Clearances
+            setCurMetaRole={setCurMetaRole}
+            curMetaRole={curMetaRole}
+            selectOptions={selectOptions}
+          />
+        </SectionLayout>
+      )}
     </div>
   );
 };

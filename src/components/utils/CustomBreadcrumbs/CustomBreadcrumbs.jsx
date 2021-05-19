@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
@@ -23,14 +23,17 @@ const CustomBreadcrumbs = ({ section, url, id }) => {
       </Typography>
 
       <Typography component='div' color='secondary'>
-        <Box fontWeight={500}>&nbsp;{id}</Box>
+        <Box fontWeight={500}>
+          {' '}
+          {id}
+        </Box>
       </Typography>
     </Box>
   );
 };
 
 CustomBreadcrumbs.propTypes = {
-  title: PropTypes.string,
+  section: PropTypes.string,
   url: PropTypes.string,
   id: PropTypes.string,
 };

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { showNotification } from '../../redux/actions/HttpNotifications';
+import localization from '../../localization';
 
+import PropTypes from 'prop-types';
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
 import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
-import PropTypes from 'prop-types';
 
 import {
   getSortParams,
@@ -13,9 +15,8 @@ import {
   sortKeys,
 } from '../../services/sorting';
 
-const MetaRoles = ({ sortKey, scope }) => {
+const MetaRoles = ({ sortKey, scope, label }) => {
   const dispatch = useDispatch();
-
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ const MetaRoles = ({ sortKey, scope }) => {
   );
   const handleDelete = (id) => {
     api.deleteMetaRoleById(id).then(() => {
-      const localizedLabel = `general.${scope}`;
+      const localizedLabel = `labels.${label}`;
       setMakeUpdate((v) => v + 1);
       dispatch(
         showNotification(
@@ -78,6 +79,8 @@ const MetaRoles = ({ sortKey, scope }) => {
 
 MetaRoles.propTypes = {
   tabObject: PropTypes.object,
+  label: PropTypes.string,
+  scope: PropTypes.string,
 };
 
 export default MetaRoles;

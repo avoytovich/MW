@@ -33,15 +33,16 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.items.map((val) => {
-    return {
+  const values = data.items.map((val) => (
+    {
       id: val.id,
       serviceName: val.serviceName,
       availableActions: val.availableActions?.length || 0,
       createDate: val.createDate,
       updateDate: val.updateDate,
-    };
-  });
+    }
+  ));
+
   const meta = {
     totalPages: data.totalPages,
   };

@@ -3,7 +3,7 @@ import localization from '../../../localization';
 const defaultShow = {
   name: true,
   rights: true,
-  conditionsOfAvailabilty: true,
+  conditionsOfAvailability: true,
   createDate: true,
   updateDate: true,
 };
@@ -16,8 +16,8 @@ const markUp = {
       id: 'rights',
     },
     {
-      value: localization.t('labels.conditionsOfAvailabilty'),
-      id: 'conditionsOfAvailabilty',
+      value: localization.t('labels.conditionsOfAvailability'),
+      id: 'conditionsOfAvailability',
     },
     {
       value: localization.t('labels.createDate'),
@@ -44,7 +44,7 @@ const generateData = (data) => {
       rights: `${actionsAmount.length || 0} actions in ${
         val.rights.length || 0
       } services`,
-      conditionsOfAvailabilty: `${
+      conditionsOfAvailability: `${
         val.availabilityConditions?.length || 0
       } conditions`,
       createDate: val.createDate,

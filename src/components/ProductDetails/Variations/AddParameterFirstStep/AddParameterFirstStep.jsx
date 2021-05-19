@@ -38,14 +38,12 @@ const AddParameterFirstStep = ({
       </Typography>
       <InputCustom
         // label="some"
-        onChangeInput={(e) =>
-          setModalState({
-            ...modalState,
-            field: e.target.value,
-          })
-        }
+        onChangeInput={(e) => setModalState({
+          ...modalState,
+          field: e.target.value,
+        })}
         isRequired
-      ></InputCustom>
+      />
       <Typography variant="h4" className="title">
         Give a display string for this parameter, in language 'en-US'.
       </Typography>
@@ -54,10 +52,8 @@ const AddParameterFirstStep = ({
       </Typography>
       <InputCustom
         // label="some"
-        onChangeInput={(e) =>
-          setModalState({ ...modalState, label: e.target.value })
-        }
-      ></InputCustom>
+        onChangeInput={(e) => setModalState({ ...modalState, label: e.target.value })}
+      />
       <Typography variant="h4" className="title">
         Now choose the type of the parameter:
       </Typography>
@@ -78,7 +74,8 @@ const AddParameterFirstStep = ({
           />
           <Typography variant="h6" className="radioLabel">
             Buyer will select a value amongst a set of predefined values. For
-            instance (s)he could select a tee-shirt size amongst{' '}
+            instance (s)he could select a tee-shirt size amongst
+            {' '}
             {('S', 'M', 'L', 'XL')}
           </Typography>
         </Box>
@@ -93,7 +90,8 @@ const AddParameterFirstStep = ({
           />
           <Typography variant="h6" className="radioLabel">
             Buyer will select a range amongst a set of predefined ranges. For
-            instance (s)he could select a number of licenses amongst{' '}
+            instance (s)he could select a number of licenses amongst
+            {' '}
             {('1-10 license(s)', '11-50 licenses', '51-100 licenses')}
           </Typography>
         </Box>
