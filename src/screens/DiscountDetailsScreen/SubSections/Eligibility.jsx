@@ -23,8 +23,6 @@ const Eligibility = ({
   updateDiscount,
   setCurDiscount,
   selectOptions,
-  curMinCartAmount,
-  setCurMinCartAmount,
 }) => {
   const [errorMessages, setErrorMessages] = useState({ email: null });
 
@@ -47,6 +45,7 @@ const Eligibility = ({
             label='Manual Renewal'
           />
           <FormControlLabel
+            data-test='purchase'
             control={(
               <Checkbox
                 name='PURCHASE'
@@ -91,8 +90,8 @@ const Eligibility = ({
           <Typography>{localization.t('labels.minimumCartAmount')}</Typography>
         </Box>
         <EditKeyValueInputs
-          curValue={curMinCartAmount}
-          setCurValue={setCurMinCartAmount}
+          curValue={curDiscount.thresholds}
+          setCurValue={(value) => setCurDiscount({ ...curDiscount, thresholds: value })}
           selectOptions={priceCurrency}
           labels={['currency', 'amount']}
         />
@@ -224,6 +223,7 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <Autocomplete
+            data-test='endUserEmails'
             onChange={(e, newValue) => {
               if (curDiscount.endUserEmails.length > newValue.length) {
                 setCurDiscount({
@@ -279,8 +279,6 @@ Eligibility.propTypes = {
   updateDiscount: PropTypes.func,
   setCurDiscount: PropTypes.func,
   selectOptions: PropTypes.object,
-  curMinCartAmount: PropTypes.array,
-  setCurMinCartAmount: PropTypes.func,
 };
 
 export default Eligibility;

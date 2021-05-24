@@ -25,23 +25,16 @@ import {
 const General = ({
   curDiscount,
   setCurDiscount,
-  curAmountCurrency,
-  setCurAmountCurrency,
-  curDiscountLabels,
-  setCurDiscountLabels,
   selectOptions,
-  setCurDiscountCodes,
-  curDiscountCodes,
   setAmountType,
   amountType,
 }) => {
-  const handleUpdateAmount = (value) => {
-    if (value === 'byPercentage' && !curDiscount.discountRate) {
+  const handleUpdateAmount = (e) => {
+    if (e.target.value === 'byPercentage' && !curDiscount.discountRate) {
       setCurDiscount({ ...curDiscount, discountRate: 1 });
     }
-    setAmountType(value);
+    setAmountType(e.target.value);
   };
-
   return (
     <>
       <Grid item md={6} sm={12}>
@@ -110,8 +103,8 @@ const General = ({
           </Typography>
         </Box>
         <EditKeyValueInputs
-          curValue={curDiscountLabels}
-          setCurValue={setCurDiscountLabels}
+          curValue={curDiscount.localizedLabels}
+          setCurValue={(value) => setCurDiscount({ ...curDiscount, localizedLabels: value })}
           selectOptions={availableLocales}
           additionalOption={{ value: 'neutral', id: 'neutral' }}
           labels={['language', 'discountLabel']}
@@ -135,10 +128,11 @@ const General = ({
         <Box p={2}>
           <RadioGroup
             row
+            data-test='amountRadioGroup'
             aria-label="Amount"
             name="Amount"
             value={amountType}
-            onChange={(e) => handleUpdateAmount(e.target.value)}
+            onChange={handleUpdateAmount}
           >
             <FormControlLabel
               value="byPercentage"
@@ -161,20 +155,22 @@ const General = ({
                 onChangeInput={(e) => {
                   setCurDiscount({
                     ...curDiscount,
-                    discountRate: e.target.value,
+                    discountRate: Number(e.target.value),
                   });
                 }}
                 minMAx={{ min: 1, max: 100, step: 1 }}
               />
             </Box>
           ) : (
-            curAmountCurrency && (
-              <EditKeyValueInputs
-                curValue={curAmountCurrency}
-                setCurValue={setCurAmountCurrency}
-                selectOptions={priceCurrency}
-                labels={['currency', 'amount']}
-              />
+            curDiscount.amountByCurrency && (
+            <EditKeyValueInputs
+              curValue={curDiscount.amountByCurrency}
+              setCurValue={(value) => setCurDiscount(
+                { ...curDiscount, amountByCurrency: value },
+              )}
+              selectOptions={priceCurrency}
+              labels={['currency', 'amount']}
+            />
             )
           )}
         </Box>
@@ -211,8 +207,8 @@ const General = ({
         {curDiscount.model === 'COUPON' && (
           <EditKeyValueInputs
             labels={['language', 'code']}
-            curValue={curDiscountCodes}
-            setCurValue={setCurDiscountCodes}
+            curValue={curDiscount.codes}
+            setCurValue={(value) => setCurDiscount({ ...curDiscount, codes: value })}
             selectOptions={availableLocales}
             additionalOption={{ value: 'default', id: 'default' }}
           />
@@ -225,13 +221,7 @@ const General = ({
 General.propTypes = {
   curDiscount: PropTypes.object,
   setCurDiscount: PropTypes.func,
-  curAmountCurrency: PropTypes.array,
-  setCurAmountCurrency: PropTypes.func,
-  curDiscountLabels: PropTypes.array,
-  setCurDiscountLabels: PropTypes.func,
   selectOptions: PropTypes.object,
-  setCurDiscountCodes: PropTypes.func,
-  curDiscountCodes: PropTypes.array,
   setAmountType: PropTypes.func,
   amountType: PropTypes.string,
 };
