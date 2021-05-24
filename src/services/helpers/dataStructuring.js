@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import * as R from 'ramda';
 
 const defaultProduct = {
   status: 'DISABLED',
@@ -188,41 +188,36 @@ const storeRequiredFields = (store) => {
   }
   return res;
 };
-const defaultTypes = {
+
+const types = {
   array: [],
   string: '',
-  object: null,
+  boolean: false,
+  object: {},
 };
 
-const createStandaloneValue = (value) => value;
+const createStandaloneValue = (value) => {
+  if (!value?.state) return value;
+
+  let valueType = typeof value.value;
+
+  if (valueType === 'object' && Array.isArray(value.value)) {
+    valueType = 'array';
+  }
+  return value?.state === 'inherits' ? types[valueType] : value.value;
+};
 
 const createInheritableValue = (value, parentValue) => {
-  // console.log('Value', value);
-  // console.log('parentValue', parentValue);
-  const typeValue = typeof value;
-  const typeParentValue = typeof parentValue;
   const state =
-    (typeof value === 'object' && _.isEmpty(value)) ||
-    _.isNil(value) ||
-    _.isEqual(value, parentValue)
+    R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue)
       ? 'inherits'
       : 'overrides'; // initial state, user can force after
-
   return {
-    parentValue: parentValue
-      ? parentValue
-      : value
-      ? defaultTypes[typeValue]
-      : defaultTypes[typeParentValue],
+    parentValue,
     state,
     // NC-915: when initialiy inheriting, a field value must be set to parentValue
     // to allow switching to override mode starting with the value of the core product
-    // value: state === 'inherits' ? parentValue : value,
-    value: value
-      ? value
-      : parentValue
-      ? defaultTypes[typeParentValue]
-      : defaultTypes[typeValue],
+    value: state === 'inherits' ? parentValue : value,
   };
 };
 
@@ -230,8 +225,7 @@ const backToFront = (
   parent,
   resource = defaultProduct,
   independentFields = [
-    'i18nFields',
-    'blackListedCountries',
+    // 'blackListedCountries',
     'externalContext',
     'productFamily',
     'priceFunction',
@@ -242,6 +236,11 @@ const backToFront = (
     'releaseDate',
     'nextGenerationOf',
     'id',
+    'parentId',
+    // 'sellingStores',
+    // 'availableVariables',
+    // 'lifeTime',
+    // 'genericName',
   ],
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable
@@ -249,57 +248,70 @@ const backToFront = (
 
   const handler = (resourceOwn, parentOwn) =>
     createInheritableValue(resourceOwn.value, parentOwn.parentValue);
-  const inputA = _.mapValues(resource, (value) => createInheritableValue(value, undefined));
-  const inputB = _.mapValues(parent, (value) => createInheritableValue(undefined, value));
-  let iResource = _.mergeWith(handler, inputA, inputB);
+  const inputA = R.mapObjIndexed(
+    (value) => createInheritableValue(value, undefined),
+    resource,
+  );
+  const inputB = R.mapObjIndexed(
+    (value) => createInheritableValue(undefined, value),
+    parent || {},
+  );
+  let iResource = R.mergeWith(handler, inputA, inputB);
   // managing fields which cannot inherit
-  iResource = _.mapValues(
+  iResource = R.mapObjIndexed(
     // when field is forced to override, value will be standalone, as it is in a core product
+    (value, key) => {
+      if ((independentFields || []).includes(key)) {
+        return createStandaloneValue(value);
+      }
+      return value;
+    },
     iResource,
-    (value, key) =>
-      (independentFields || []).includes(key) ? createStandaloneValue(value.value) : value,
   );
 
-  // if (independentFields) {
-  //   // i18nFields.innerFields with possibility to inheritance
-
-  //   const i18nFieldsA = { ...inputA.i18nFields.value };
-  //   const i18nFieldsB = { ...inputB.i18nFields.value };
-
-  //   const i18nKeysListA = Object.keys(i18nFieldsA);
-  //   const i18nKeysListB = Object.keys(i18nFieldsB);
-
-  //   const inheritedA = i18nKeysListA.reduce((accumulator, current) => {
-  //     accumulator[current] = _.mapValues(i18nFieldsA[current], (value) =>
-  //       createInheritableValue(value, undefined),
-  //     );
-  //     return accumulator;
-  //   }, {});
-
-  //   const inheritedB = i18nKeysListB.reduce((accumulator, current) => {
-  //     accumulator[current] = _.mapValues(i18nFieldsB[current], (value) =>
-  //       createInheritableValue(undefined, value),
-  //     );
-  //     return accumulator;
-  //   }, {});
-
-  //   const isNewProductVariant = Object.keys(inheritedA).length
-  //     ? Object.keys(inheritedA)
-  //     : Object.keys(inheritedB);
-
-  //   const combinedI18nInheritedFields = isNewProductVariant.reduce((accumulator, current) => {
-  //     accumulator[current] = _.mergeWith(
-  //       handler,
-  //       inheritedA[current],
-  //       inheritedB[current] || {},
-  //     );
-  //     return accumulator;
-  //   }, {});
-  //   iResource.i18nFields.value = combinedI18nInheritedFields;
-  // }
-  console.log('iResource', iResource);
   return iResource;
 };
+
+// unwrap will remove the inheritance state layer from each property and put the inner value instead
+// const stateEquals = R.propEq('state');
+// const innerValue = R.prop('value');
+// const frontToBack = () =>
+//   R.map(
+//     R.cond([
+//       [stateEquals('standalone'), innerValue],
+
+//       [
+//         stateEquals('overrides'),
+//         R.ifElse(R.compose(R.isNil, innerValue), R.always(''), innerValue),
+//       ],
+
+//       [R.T, R.always(undefined)],
+//     ]),
+//   );
+
+// MANDATORY FIELDS
+const mandatoryFields = ['lifeTime', 'publisherRefId', 'salesMode'];
+const trial = 'trialAllowed';
+
+const frontToBack = (data) =>
+  Object.entries(data).reduce((accumulator, [key, value]) => {
+    let newValue = !value.state
+      ? value
+      : value?.state === 'overrides'
+      ? value?.value
+      : undefined;
+    if (mandatoryFields.includes(key) && !newValue) {
+      newValue = value?.parentValue;
+    }
+
+    if (typeof newValue !== 'undefined') {
+      accumulator = {
+        ...accumulator,
+        [key]: newValue,
+      };
+    }
+    return accumulator;
+  }, {});
 
 export {
   storeRequiredFields,
@@ -310,4 +322,5 @@ export {
   defaultProduct,
   productsVariations,
   backToFront,
+  frontToBack,
 };

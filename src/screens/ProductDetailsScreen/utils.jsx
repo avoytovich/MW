@@ -26,14 +26,14 @@ const handleGetOptions = (
     id ? api.getSubProductsById(id) : null,
     descriptionId ? api.getProductDescriptionById(descriptionId) : null,
   ];
-
   api.getCustomerById(customerId).then(({ data: curCustomer }) => {
     if (curCustomer?.usingSubscriptionV1) {
       promiseArray.push(api.getSubscriptionModelsByCustomerId(customerId));
     } else {
-      subscriptionOptions = Object.keys(
-        curCustomer?.subscriptions,
-      ).map((item) => ({ id: item, value: item }));
+      subscriptionOptions = Object.keys(curCustomer?.subscriptions).map((item) => ({
+        id: item,
+        value: item,
+      }));
     }
     Promise.all(promiseArray).then(
       ([
@@ -47,10 +47,7 @@ const handleGetOptions = (
         subscriptions,
       ]) => {
         if (!subscriptionOptions) {
-          subscriptionOptions = structureSelectOptions(
-            subscriptions.data?.items,
-            'name',
-          );
+          subscriptionOptions = structureSelectOptions(subscriptions.data?.items, 'name');
         }
         setSubProductVariations({
           bundledProducts: subProducts?.data?.items,
@@ -63,25 +60,13 @@ const handleGetOptions = (
           setSelectOptions({
             ...selectOptions,
             sellingStores:
-              structureSelectOptions(
-                sellingStores.data?.items,
-                'name',
-                'hostnames',
-              ) || [],
-            renewingProducts:
-              renewingProductsOptions(renewingProducts.data?.items) || [],
+              structureSelectOptions(sellingStores.data?.items, 'name', 'hostnames') || [],
+            renewingProducts: renewingProductsOptions(renewingProducts.data?.items) || [],
             fulfillmentTemplates:
-              structureSelectOptions(
-                fulfillmentTemplates.data?.items,
-                'name',
-              ) || [],
-            catalogs:
-              structureSelectOptions(catalogs.data?.items, 'name') || [],
+              structureSelectOptions(fulfillmentTemplates.data?.items, 'name') || [],
+            catalogs: structureSelectOptions(catalogs.data?.items, 'name') || [],
             priceFunctions:
-              structureSelectOptions(
-                priceFunctionsOptions.data?.items,
-                'name',
-              ) || [],
+              structureSelectOptions(priceFunctionsOptions.data?.items, 'name') || [],
             subscriptionModels: subscriptionOptions || [],
           });
         }

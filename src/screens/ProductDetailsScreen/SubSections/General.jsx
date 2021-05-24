@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Switch, FormControlLabel, Typography, Button } from '@material-ui/core';
-import InsertLinkIcon from '@material-ui/icons/InsertLink';
+import { Box, Switch, Typography } from '@material-ui/core';
 
 import {
   lifeTime,
@@ -28,15 +27,20 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
 
   useEffect(() => {
     let LifeTimeNumber = false;
-    const res = currentProductData.lifeTime.match(/[a-zA-Z]+|[0-9]+/g);
-    console.log('RESULT', res);
+    const lT = currentProductData?.lifeTime?.state
+      ? currentProductData?.lifeTime?.state === 'inherits'
+        ? currentProductData?.lifeTime?.parentValue
+        : currentProductData?.lifeTime?.value
+      : currentProductData?.lifeTime;
+    const res = lT.match(/[a-zA-Z]+|[0-9]+/g);
+
     if (res && res.length > 1 && res[1] !== 'DAY') {
       setLifeTimeUpdateValue({ number: res[0], value: res[1] });
       LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR';
     } else if (res) {
       setLifeTimeUpdateValue({
         ...lifeTimeUpdateValue,
-        value: currentProductData.lifeTime,
+        value: lT,
       });
       LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR';
     } else {
@@ -44,41 +48,58 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
     }
     setShowLifeTimeNumber(LifeTimeNumber);
     return () => {};
-  }, []);
+  }, [currentProductData?.lifeTime?.state]);
 
   useEffect(() => {
     const newLifeTime = showLifeTimeNumber
       ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
       : lifeTimeUpdateValue.value;
-    setProductData({ ...currentProductData, lifeTime: newLifeTime });
+
+    currentProductData?.lifeTime?.state
+      ? currentProductData?.lifeTime?.state === 'inherits'
+        ? setProductData({
+            ...currentProductData,
+            lifeTime: {
+              ...currentProductData.lifeTime,
+              parentValue: newLifeTime,
+            },
+          })
+        : setProductData({
+            ...currentProductData,
+            lifeTime: {
+              ...currentProductData.lifeTime,
+              value: newLifeTime,
+            },
+          })
+      : setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
 
   return (
     <>
-      <Box display="flex" flexDirection="row" alignItems="baseline">
+      <Box display='flex' flexDirection='row' alignItems='baseline'>
         <Box p={2}>
-          <Typography color="secondary">{localization.t('labels.status')}</Typography>
+          <Typography color='secondary'>{localization.t('labels.status')}</Typography>
         </Box>
         <Box p={2}>
           <InheritanceField
             field={'status'}
             onChange={setProductData}
-            value={currentProductData.status}
+            value={currentProductData?.status}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             {/* <FormControlLabel
               control={ */}
             <Switch
-              name="status"
+              name='status'
               onChange={(e) => {
                 setProductData({
                   ...currentProductData,
                   status: e.target.checked ? 'ENABLED' : 'DISABLED',
                 });
               }}
-              color="primary"
-              checked={currentProductData.status === 'ENABLED'}
+              color='primary'
+              checked={currentProductData?.status === 'ENABLED'}
             />
             {/* }
               label={localization.t(
@@ -88,18 +109,19 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           </InheritanceField>
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2} width="50%" display="flex">
+      <Box display='flex' flexDirection='row' alignItems='center'>
+        <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field={'catalogId'}
             onChange={setProductData}
             value={currentProductData?.catalogId}
+            selectOptions={selectOptions.catalogs || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectCustom
               isRequired
-              label="catalog"
+              label='catalog'
               value={currentProductData.catalogId}
               selectOptions={selectOptions.catalogs}
               onChangeSelect={(e) => {
@@ -111,7 +133,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             />
           </InheritanceField>
         </Box>
-        <Box p={2} width="50%" display="flex">
+        <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field={'genericName'}
             onChange={setProductData}
@@ -120,11 +142,10 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             currentProductData={currentProductData}
           >
             <InputCustom
-              label="name"
+              label='name'
               isRequired
               value={currentProductData.genericName}
               onChangeInput={(e) => {
-                console.log('WTF', e);
                 setProductData({
                   ...currentProductData,
                   genericName: e.target.value,
@@ -134,17 +155,18 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           </InheritanceField>
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2} width="50%" display="flex">
+      <Box display='flex' flexDirection='row' alignItems='center'>
+        <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field={'type'}
             onChange={setProductData}
             value={currentProductData.type}
+            selectOptions={type || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectCustom
-              label="type"
+              label='type'
               isRequired
               value={currentProductData.type}
               selectOptions={type}
@@ -157,7 +179,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             />
           </InheritanceField>
         </Box>
-        <Box p={2} width="50%" display="flex">
+        <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field={'publisherRefId'}
             onChange={setProductData}
@@ -167,7 +189,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           >
             <InputCustom
               isRequired
-              label="publisherRefID"
+              label='publisherRefID'
               value={currentProductData.publisherRefId}
               onChangeInput={(e) =>
                 setProductData({
@@ -179,19 +201,20 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           </InheritanceField>
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2} width="50%" display="flex">
+      <Box display='flex' flexDirection='row' alignItems='center'>
+        <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field={'businessSegment'}
             onChange={setProductData}
             value={currentProductData.businessSegment}
+            selectOptions={businessSegment || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectWithDeleteIcon
-              label="businessSegment"
+              label='businessSegment'
               value={currentProductData.businessSegment}
-              selectOptions={businessSegment}
+              selectOptions={businessSegment || []}
               onChangeSelect={(e) => {
                 setProductData({
                   ...currentProductData,
@@ -207,17 +230,19 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             />
           </InheritanceField>
         </Box>
-        <Box display="flex">
-          <Box p={2} minWidth="170px" display="flex">
+        <Box display='flex'>
+          <Box p={2} minWidth='170px' display='flex'>
             <InheritanceField
+              field='lifeTime'
               onChange={setProductData}
-              value={currentProductData.businessSegment}
+              value={currentProductData.lifeTime}
+              selectOptions={lifeTime || []}
               parentId={parentId}
               currentProductData={currentProductData}
             >
               <SelectCustom
-                label="lifeTime"
-                value={lifeTimeUpdateValue.value}
+                label='lifeTime'
+                value={currentProductData.lifeTime}
                 selectOptions={lifeTime}
                 onChangeSelect={(e) => {
                   setShowLifeTimeNumber(
@@ -232,33 +257,27 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             </InheritanceField>
           </Box>
           {showLifeTimeNumber && (
-            <Box minWidth="165px" p={2}>
-              <InheritanceField
-                onChange={setProductData}
-                value={currentProductData.businessSegment}
-                parentId={parentId}
-                currentProductData={currentProductData}
-              >
-                <NumberInput
-                  label="maxPaymentsPart"
-                  value={lifeTimeUpdateValue.number}
-                  onChangeInput={(e) => {
-                    setLifeTimeUpdateValue({
-                      ...lifeTimeUpdateValue,
-                      number: e.target.value,
-                    });
-                  }}
-                  minMAx={{ min: 1, max: 11 }}
-                />
-              </InheritanceField>
+            <Box minWidth='165px' p={2}>
+              <NumberInput
+                isDisabled={currentProductData?.lifeTime?.state === 'inherits'}
+                label='maxPaymentsPart'
+                value={lifeTimeUpdateValue.number}
+                onChangeInput={(e) => {
+                  setLifeTimeUpdateValue({
+                    ...lifeTimeUpdateValue,
+                    number: e.target.value,
+                  });
+                }}
+                minMAx={{ min: 1, max: 11 }}
+              />
             </Box>
           )}
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box display="flex" flexDirection="row" alignItems="baseline" width="50%" pr={2}>
+      <Box display='flex' flexDirection='row' alignItems='center'>
+        <Box display='flex' flexDirection='row' alignItems='baseline' width='50%' pr={2}>
           <Box p={2}>
-            <Typography color="secondary">
+            <Typography color='secondary'>
               {localization.t('labels.physicalProduct')}
             </Typography>
           </Box>
@@ -270,25 +289,25 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
               parentId={parentId}
               currentProductData={currentProductData}
             >
-              <FormControlLabel
-                control={
-                  <Switch
-                    name="physicalProduct"
-                    onChange={(e) => {
-                      setProductData({
-                        ...currentProductData,
-                        physical: e.target.checked,
-                      });
-                    }}
-                    color="primary"
-                    checked={currentProductData.physical}
-                  />
-                }
+              {/* <FormControlLabel
+                control={ */}
+              <Switch
+                name='physicalProduct'
+                onChange={(e) => {
+                  setProductData({
+                    ...currentProductData,
+                    physical: e.target.checked,
+                  });
+                }}
+                color='primary'
+                checked={currentProductData.physical}
               />
+              {/* }
+              /> */}
             </InheritanceField>
           </Box>
         </Box>
-        <Box p={2} width="50%">
+        <Box p={2} width='50%'>
           <InheritanceField
             field={'externalContext'}
             onChange={setProductData}
@@ -298,7 +317,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           >
             <InputCustom
               isMultiline
-              label="externalContext"
+              label='externalContext'
               value={currentProductData.externalContext}
               onChangeInput={(e) =>
                 setProductData({
@@ -310,17 +329,18 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           </InheritanceField>
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2} width="50%">
+      <Box display='flex' flexDirection='row' alignItems='center'>
+        <Box p={2} width='50%'>
           <InheritanceField
             field={'sellingStores'}
             onChange={setProductData}
             value={currentProductData.sellingStores}
+            selectOptions={selectOptions.sellingStores || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectWithChip
-              label="sellingStores"
+              label='sellingStores'
               value={currentProductData.sellingStores}
               selectOptions={selectOptions.sellingStores}
               onChangeSelect={(e) =>
@@ -341,7 +361,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             />
           </InheritanceField>
         </Box>
-        <Box p={2} width="50%">
+        <Box p={2} width='50%'>
           <InheritanceField
             field={'productFamily'}
             onChange={setProductData}
@@ -350,7 +370,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             currentProductData={currentProductData}
           >
             <InputCustom
-              label="family"
+              label='family'
               value={currentProductData.productFamily}
               onChangeInput={(e) =>
                 setProductData({
@@ -362,18 +382,19 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           </InheritanceField>
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2} width="50%">
+      <Box display='flex' flexDirection='row' alignItems='center'>
+        <Box p={2} width='50%'>
           <InheritanceField
             field={'blackListedCountries'}
             onChange={setProductData}
-            value={currentProductData.blackListedCountries}
+            value={currentProductData.blackListedCountries || []}
+            selectOptions={countriesOptions || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectWithChip
-              label="blockedCountries"
-              value={currentProductData.blackListedCountries}
+              label='blockedCountries'
+              value={currentProductData.blackListedCountries || []}
               selectOptions={countriesOptions}
               onChangeSelect={(e) =>
                 setProductData({
@@ -393,18 +414,19 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             />
           </InheritanceField>
         </Box>
-        <Box p={2} width="50%">
+        <Box p={2} width='50%'>
           <InheritanceField
             field={'priceFunction'}
             onChange={setProductData}
             value={currentProductData.priceFunction}
+            selectOptions={selectOptions.priceFunctions || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectWithDeleteIcon
-              label="priceFunction"
+              label='priceFunction'
               value={currentProductData.priceFunction}
-              selectOptions={selectOptions.priceFunctions}
+              selectOptions={selectOptions.priceFunctions || []}
               onChangeSelect={(e) => {
                 setProductData({
                   ...currentProductData,

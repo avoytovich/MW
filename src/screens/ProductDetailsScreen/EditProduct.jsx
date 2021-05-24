@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
+import * as R from 'ramda';
+
 import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import handleGetOptions from './utils';
-import { productRequiredFields } from '../../services/helpers/dataStructuring';
+import {
+  productRequiredFields,
+  backToFront,
+  frontToBack,
+} from '../../services/helpers/dataStructuring';
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -32,7 +38,9 @@ const EditProduct = () => {
 
   const saveDetails = () => {
     if (productHasChanges) {
-      const sendObj = { ...currentProductData };
+      const sendObj = currentProductData?.parentId
+        ? frontToBack(currentProductData)
+        : { ...currentProductData };
 
       if (!sendObj.businessSegment) {
         delete sendObj.businessSegment;
@@ -43,12 +51,20 @@ const EditProduct = () => {
         window.location.reload();
       });
     }
-    if (productHasLocalizationChanges || productDetails) {
-      console.log('TUPA_WIWTSIA', productHasLocalizationChanges);
+    if (productHasLocalizationChanges) {
+      const detailsData = frontToBack(productHasLocalizationChanges);
+      const localizationData = frontToBack(productHasLocalizationChanges);
+      if (!detailsData?.customerId) {
+        detailsData.customerId = currentProductData?.customerId?.state
+          ? currentProductData?.customerId?.value
+          : currentProductData?.customerId;
+      }
       api
         .updateProductLocalsById(
-          currentProductData.descriptionId,
-          productHasLocalizationChanges || productDetails,
+          currentProductData?.descriptionId?.state
+            ? currentProductData.descriptionId.value
+            : currentProductData.descriptionId,
+          detailsData,
         )
         .then(() => {
           dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
@@ -58,8 +74,13 @@ const EditProduct = () => {
   };
   const filterCheckoutStores = () => {
     const res = [];
-    currentProductData?.sellingStores.forEach((item) => {
-      const selectedStore = selectOptions.sellingStores.filter((store) => store.id === item);
+    const storesList = currentProductData?.sellingStores?.state
+      ? currentProductData?.sellingStores?.state === 'inherits'
+        ? currentProductData?.sellingStores?.parentValue
+        : currentProductData?.sellingStores?.value
+      : currentProductData?.sellingStores;
+    storesList.forEach((item) => {
+      const selectedStore = selectOptions?.sellingStores?.filter((store) => store.id === item);
 
       if (selectedStore[0]) {
         const { value, hostnames } = selectedStore[0];
@@ -71,13 +92,24 @@ const EditProduct = () => {
 
   useEffect(() => {
     let isCancelled = false;
+
     api.getProductById(id).then(({ data: product }) => {
       if (!isCancelled) {
-        const checkedProduct = productRequiredFields(product);
-        setProductData(checkedProduct);
-        const newHashes = JSON.stringify(checkedProduct);
-        setCurrentProductData(JSON.parse(newHashes));
-        setLoading(false);
+        if (product?.parentId) {
+          api.getProductById(product.parentId).then(({ data }) => {
+            const result = backToFront(productRequiredFields(data), product);
+            const productData = JSON.parse(JSON.stringify(result));
+            setProductData(productData);
+            setCurrentProductData(result);
+            setLoading(false);
+          });
+        } else {
+          const checkedProduct = productRequiredFields(product);
+          setProductData(checkedProduct);
+          const newHashes = JSON.stringify(checkedProduct);
+          setCurrentProductData(JSON.parse(newHashes));
+          setLoading(false);
+        }
       }
       const { customerId, id, descriptionId } = product;
       handleGetOptions(
@@ -94,7 +126,7 @@ const EditProduct = () => {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (
@@ -133,6 +165,7 @@ const EditProduct = () => {
       productVariations={productVariations}
       setProductDetails={setProductDetails}
       productDetails={productDetails}
+      parentId={currentProductData?.parentId}
     />
   );
 };

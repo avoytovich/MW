@@ -20,7 +20,7 @@ const SelectWithDeleteIcon = ({
   onChangeSelect,
   onClickDelIcon,
 }) => (
-  <FormControl fullWidth variant="outlined">
+  <FormControl fullWidth variant='outlined'>
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
       value={selectOptions && value ? value : ''}
@@ -31,7 +31,7 @@ const SelectWithDeleteIcon = ({
       disabled={!selectOptions || isDisabled}
       label={localization.t(`labels.${label}`)}
       onChange={onChangeSelect}
-      variant="outlined"
+      variant='outlined'
       startAdornment={
         !selectOptions && (
           <InputAdornment>
@@ -42,9 +42,9 @@ const SelectWithDeleteIcon = ({
       endAdornment={
         value && (
           <CancelIcon
-            className="cancelSelectIcon"
-            fontSize="small"
-            color="secondary"
+            className='cancelSelectIcon'
+            fontSize='small'
+            color='secondary'
             onClick={isDisabled ? () => null : onClickDelIcon}
             onMouseDown={(e) => {
               e.stopPropagation();

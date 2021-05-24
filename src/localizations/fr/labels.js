@@ -283,6 +283,7 @@ const labels = {
   customers: 'Customers',
   aggregatedRoles: 'Aggregated Roles',
   reasonForCurrentChange: 'Reason for current change',
+  nameOrId: 'Name or ID',
 };
 
 export default labels;

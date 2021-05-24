@@ -14,27 +14,27 @@ const SelectWithChip = ({
   label,
   value,
   selectOptions,
-  isDisabled,
   onChangeSelect,
   onClickDelIcon,
   isDisabled,
   isRequired,
+  isMultiple = true,
 }) => (
   <TextField
     fullWidth
     select
     SelectProps={{
-      multiple: true,
+      multiple: isMultiple,
       value: selectOptions ? value : [],
       onChange: onChangeSelect,
       renderValue: (selected) => (
-        <Box display="flex" alignItems="center" flexDirection="row" flexWrap="wrap">
+        <Box display='flex' alignItems='center' flexDirection='row' flexWrap='wrap'>
           {selected?.map((chip) => {
             const selectedItem = selectOptions?.filter((item) => item.id === chip)[0];
             return (
-              <Box mb="2px" mr="2px" key={chip}>
+              <Box mb='2px' mr='2px' key={chip}>
                 <Chip
-                  variant="outlined"
+                  variant='outlined'
                   onDelete={() => onClickDelIcon(chip)}
                   onMouseDown={(e) => {
                     e.stopPropagation();
@@ -54,7 +54,7 @@ const SelectWithChip = ({
     }}
     disabled={!selectOptions || isDisabled}
     required={isRequired}
-    variant="outlined"
+    variant='outlined'
     InputProps={{
       startAdornment: !selectOptions && (
         <InputAdornment>

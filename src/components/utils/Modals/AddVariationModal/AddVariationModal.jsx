@@ -20,26 +20,19 @@ const AddVariationModal = ({
 }) => {
   const [step, setStep] = useState('firstStep');
   const [modalState, setModalState] = useState({});
-  console.log('MODAL_STATE', modalState);
 
   const handleClose = () => {
     setStep('firstStep');
     setModalState({});
     onClose();
   };
-  console.log('CURRENT_DATA', currentProductData);
-  console.log('productDetails', productDetails);
+
   const handleCreateParameter = () => {
-    console.log(
-      'currentProductData?.availableVariables',
-      currentProductData?.availableVariables,
-    );
     let newAvailableVariables = currentProductData?.availableVariables
       ? JSON.parse(JSON.stringify(currentProductData.availableVariables))
       : [];
     let frontToBack = JSON.parse(JSON.stringify(modalState));
-    console.log('newAvailableVariables', newAvailableVariables);
-    console.log('frontToBack', frontToBack);
+
     let dataForProductDescriptionRequest = {};
     let dataForProductRquest = {};
     let variableValueDescription = {};
@@ -158,7 +151,7 @@ const AddVariationModal = ({
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Box className="container">{modalBody[step]}</Box>
+      <Box className='container'>{modalBody[step]}</Box>
     </Modal>
   );
 };

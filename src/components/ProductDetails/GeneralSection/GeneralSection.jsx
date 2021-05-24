@@ -46,7 +46,7 @@ const GeneralSection = ({
   return (
     <>
       <SelectCustom
-        label="type"
+        label='type'
         value={currentProductData.type}
         selectOptions={type}
         onChangeSelect={(e) => {
@@ -62,18 +62,18 @@ const GeneralSection = ({
         }}
       />
       <SelectWithChip
-        label="sellingStores"
+        label='sellingStores'
         value={currentProductData.sellingStores}
         selectOptions={selectOptions.sellingStores}
         optionName={(item) => item?.displayName}
-        onChangeSelect={(e) => setProductData({
-          ...currentProductData,
-          sellingStores: e.target.value,
-        })}
+        onChangeSelect={(e) =>
+          setProductData({
+            ...currentProductData,
+            sellingStores: e.target.value,
+          })
+        }
         onClickDelIcon={(chip) => {
-          const newValue = [...currentProductData.sellingStores].filter(
-            (val) => val !== chip,
-          );
+          const newValue = [...currentProductData.sellingStores].filter((val) => val !== chip);
           setProductData({
             ...currentProductData,
             sellingStores: newValue,
@@ -81,13 +81,11 @@ const GeneralSection = ({
         }}
       />
       <SelectCustom
-        label="lifeTime"
+        label='lifeTime'
         value={lifeTimeUpdateValue.value}
         selectOptions={lifeTime}
         onChangeSelect={(e) => {
-          setShowLifeTimeNumber(
-            e.target.value === 'MONTH' || e.target.value === 'YEAR',
-          );
+          setShowLifeTimeNumber(e.target.value === 'MONTH' || e.target.value === 'YEAR');
           setLifeTimeUpdateValue({
             ...lifeTimeUpdateValue,
             value: e.target.value,
@@ -101,7 +99,7 @@ const GeneralSection = ({
       />
       {showLifeTimeNumber && (
         <NumberInput
-          label="maxPaymentsPart"
+          label='maxPaymentsPart'
           value={lifeTimeUpdateValue.number}
           onChangeInput={(e) => {
             setLifeTimeUpdateValue({

@@ -8,7 +8,11 @@ import handleGetOptions from './utils';
 import { defaultProduct } from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
-import { productRequiredFields, backToFront } from '../../services/helpers/dataStructuring';
+import {
+  productRequiredFields,
+  backToFront,
+  frontToBack,
+} from '../../services/helpers/dataStructuring';
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
@@ -43,7 +47,6 @@ const CreateProduct = () => {
   useEffect(() => {
     const parentId = history?.state?.parentId;
     let isCancelled = false;
-
     parentId
       ? api.getProductById(parentId).then(({ data: product }) => {
           if (!isCancelled) {
@@ -83,7 +86,18 @@ const CreateProduct = () => {
     if (!currentProductData.businessSegment) {
       delete currentProductData.businessSegment;
     }
-    api.addNewProduct(currentProductData).then((res) => {
+
+    const dataToSave = frontToBack(currentProductData);
+    if (!dataToSave?.customerId) {
+      dataToSave.customerId = currentProductData?.customerId?.state
+        ? currentProductData?.customerId?.value
+        : currentProductData?.customerId;
+    }
+    if (currentProductData?.id) {
+      delete dataToSave.id;
+      dataToSave.parentId = currentProductData?.id;
+    }
+    api.addNewProduct(dataToSave).then((res) => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
       dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
@@ -102,7 +116,9 @@ const CreateProduct = () => {
       saveData={saveProduct}
       productVariations={productVariations}
       parentId={history?.state?.parentId}
-      history={history}
+      productDetails={productDetails}
+      setProductLocalizationChanges={setProductLocalizationChanges}
+      productHasLocalizationChanges={productHasLocalizationChanges}
     />
   );
 };

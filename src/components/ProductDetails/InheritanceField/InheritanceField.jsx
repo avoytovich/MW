@@ -5,19 +5,80 @@ import InsertLinkIcon from '@material-ui/icons/InsertLink';
 import LinkOffIcon from '@material-ui/icons/LinkOff';
 
 const InheritanceField = (props) => {
-  // return null;
-  const { children: Children, value, onChange, parentId, currentProductData, field } = props;
-  if (value?.value === 'ENABLED') {
-    console.log('ENABLED', value);
-  }
+  const {
+    children: Children,
+    value,
+    onChange,
+    parentId,
+    currentProductData,
+    field,
+    valuePath,
+  } = props;
 
   if (!Children) return null;
   if (!parentId || !value?.state) return Children;
 
+  const handleOnClickDelIcon = (chip) => {
+    const { value: inheritanceValue, onChange } = props;
+    const newValue = [...inheritanceValue.value].filter((val) => val !== chip);
+
+    onChange({
+      ...currentProductData,
+      [field]: {
+        ...inheritanceValue,
+        value: newValue,
+      },
+    });
+  };
+
   const handleChange = (value) => {
     const { value: inheritanceValue, onChange } = props;
-    // console.log('VALUE', typeof value);
-    // console.log('inheritanceValue', inheritanceValue);
+    if (field === 'availableVariables') {
+      let newVariables = [...inheritanceValue.value];
+      newVariables[valuePath].defaultValue = value.target.value;
+
+      onChange({
+        ...currentProductData,
+        [field]: {
+          ...inheritanceValue,
+          value: newVariables,
+        },
+      });
+      return;
+    }
+    if (field === 'status') {
+      onChange({
+        ...currentProductData,
+        [field]: {
+          ...inheritanceValue,
+          value: value?.target?.value === 'ENABLED' ? 'DISABLED' : 'ENABLED',
+        },
+      });
+      return;
+    }
+    if (field === 'physical') {
+      onChange({
+        ...currentProductData,
+        [field]: {
+          ...inheritanceValue,
+          value: !inheritanceValue.value,
+        },
+      });
+      return;
+    }
+    if (field === 'defaultCurrency') {
+      onChange({
+        ...currentProductData,
+        prices: {
+          ...inheritanceValue,
+          value: {
+            ...inheritanceValue.value,
+            [field]: value.target.value,
+          },
+        },
+      });
+      return;
+    }
     onChange({
       ...currentProductData,
       [field]: {
@@ -28,18 +89,23 @@ const InheritanceField = (props) => {
   };
 
   let inputValue = value.state === 'inherits' ? value.parentValue : value.value;
-  if (field === 'status') {
-    // inputValue = value.state === 'inherits' && inputValue === 'ENABLED' ? true : false;
-    console.log('INPUT_VALUE', inputValue);
-    // inputProps['checked'] = inputValue;
+
+  if (field === 'defaultCurrency') {
+    inputValue = inputValue[field];
+  }
+
+  if (field === 'availableVariables') {
+    // inputValue = inputValue[valuePath].defaultValue;
   }
 
   const inputProps = {
     value: inputValue,
     isDisabled: value.state === 'inherits',
+    disabled: value.state === 'inherits',
     onChange: handleChange, // overrides the one in wrappedProps, to allow proxying
     onChangeInput: handleChange, // overrides the one in wrappedProps, to allow proxying
     onChangeSelect: handleChange, // overrides the one in wrappedProps, to allow proxying
+    onClickDelIcon: handleOnClickDelIcon,
     onBlur: () => null,
     onDragStart: () => null,
     onDrop: () => null,
@@ -48,6 +114,10 @@ const InheritanceField = (props) => {
 
   if (field === 'status') {
     inputProps['checked'] = inputValue === 'ENABLED' ? true : false;
+  }
+
+  if (field === 'physical') {
+    inputProps['checked'] = inputValue;
   }
 
   const newChildren = {
@@ -59,8 +129,6 @@ const InheritanceField = (props) => {
   };
 
   const onClickInheritanceButton = () => {
-    // const { state, value } = value;
-    console.log('INHERITANCE_HANDLER', value);
     onChange({
       ...currentProductData,
       [field]: {
@@ -69,6 +137,10 @@ const InheritanceField = (props) => {
       },
     });
   };
+
+  if (field === 'defaultCurrency') {
+    return newChildren;
+  }
 
   return (
     <>
@@ -81,7 +153,7 @@ const InheritanceField = (props) => {
         }
       >
         <Button
-          size="small"
+          size='small'
           color={value.state === 'inherits' ? 'secondary' : 'primary'}
           onClick={() => onClickInheritanceButton()}
         >
@@ -95,6 +167,7 @@ const InheritanceField = (props) => {
 InheritanceField.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.any,
+  key: PropTypes.string,
 };
 
 export default InheritanceField;
