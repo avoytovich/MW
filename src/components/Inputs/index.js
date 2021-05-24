@@ -6,6 +6,7 @@ import InputCustom from './InputCustom';
 import ModalChipInput from './ModalChipInput';
 import SwitchInput from './SwitchInput';
 import CheckboxInput from './CheckboxInput';
+import PlusMinusInput from './PlusMinusInput';
 
 export {
   SelectWithChip,
@@ -16,4 +17,5 @@ export {
   ModalChipInput,
   SwitchInput,
   CheckboxInput,
+  PlusMinusInput,
 };

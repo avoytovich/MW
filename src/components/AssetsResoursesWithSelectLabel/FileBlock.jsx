@@ -4,13 +4,12 @@ import PropTypes from 'prop-types';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { CircularProgress, Grid, Box } from '@material-ui/core';
-import { resourceLabel } from '../utils';
-import { InputCustom, SelectCustom } from '../../../components/Inputs';
-import FileUpload from '../../../components/utils/FileUpload';
-import '../storeDetailsScreen.scss';
+import { InputCustom, SelectCustom } from '../Inputs';
+import FileUpload from '../utils/FileUpload';
+import './AssetsResource.scss';
 
-const StoreFileBlock = ({
-  item, updateResources, deleteItem, index,
+const FileBlock = ({
+  item, updateResources, deleteItem, index, labelOptions,
 }) => {
   const [urlLoading, setUrlLoading] = useState(true);
 
@@ -49,7 +48,7 @@ const StoreFileBlock = ({
             s
             setUrlFetching={setUrlFetching}
             initialFiles={initImage}
-            setHasSave={() => {}}
+            setHasSave={() => { }}
           />
         )}
       </Box>
@@ -58,7 +57,7 @@ const StoreFileBlock = ({
           <SelectCustom
             label="label"
             value={item.label}
-            selectOptions={resourceLabel}
+            selectOptions={labelOptions}
             onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
           />
         </Box>
@@ -82,11 +81,12 @@ const StoreFileBlock = ({
   );
 };
 
-StoreFileBlock.propTypes = {
+FileBlock.propTypes = {
   item: PropTypes.object,
   updateResources: PropTypes.func,
   deleteItem: PropTypes.func,
   index: PropTypes.number,
+  labelOptions: PropTypes.array,
 };
 
-export default StoreFileBlock;
+export default FileBlock;

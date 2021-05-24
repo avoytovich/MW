@@ -9,7 +9,7 @@ import localization from '../../localization';
 const SwitchInput = ({
   label, handleChange, isChecked, switchLabel,
 }) => (
-  <Box display="flex" p={2} flexDirection="row" alignItems="center">
+  <Box display="flex" flexDirection="row" alignItems="center">
     <Box>
       <Typography>{localization.t(`labels.${label}`)}</Typography>
     </Box>

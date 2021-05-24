@@ -4,15 +4,16 @@ import PublishIcon from '@material-ui/icons/Publish';
 import {
   Box, Divider, Button, Typography,
 } from '@material-ui/core';
+import localization from '../../localization';
+import FileBlock from './FileBlock';
 
-import StoreFileBlock from './StoreFileBlock';
-
-const AssetsResource = ({ resources, setResources }) => {
+const AssetsResource = ({
+  resources, setResources, maxPayloadFiles, labelOptions,
+}) => {
   const deleteItem = (key) => {
     const newResources = resources.filter((item) => item.key !== key);
     setResources(newResources);
   };
-
   const updateResources = (index, key, value) => {
     const newResources = [...resources];
     newResources[index][key] = value;
@@ -28,7 +29,7 @@ const AssetsResource = ({ resources, setResources }) => {
     <>
       <Box width={1} p={2}>
         <Typography variant="body2">
-          Select files from your computer or click to enter custom URL
+          {localization.t('general.selectFiles')}
         </Typography>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" width={1}>
@@ -36,7 +37,8 @@ const AssetsResource = ({ resources, setResources }) => {
           && resources.map((content, index) => (
             <Box key={content.key} width={1} p={2}>
               <Box width={1} pb={4}>
-                <StoreFileBlock
+                <FileBlock
+                  labelOptions={labelOptions}
                   deleteItem={deleteItem}
                   data={resources}
                   item={content}
@@ -48,7 +50,7 @@ const AssetsResource = ({ resources, setResources }) => {
               <Divider light />
             </Box>
           ))}
-        {resources.length < 4 && (
+        {(!maxPayloadFiles || resources.length < maxPayloadFiles) && (
           <Box>
             <Button
               startIcon={<PublishIcon />}
@@ -56,7 +58,7 @@ const AssetsResource = ({ resources, setResources }) => {
               variant="outlined"
               color="primary"
             >
-              upload files
+              {localization.t('general.uploadFiles')}
             </Button>
           </Box>
         )}
@@ -68,6 +70,8 @@ const AssetsResource = ({ resources, setResources }) => {
 AssetsResource.propTypes = {
   resources: PropTypes.array,
   setResources: PropTypes.func,
+  maxPayloadFiles: PropTypes.number,
+  labelOptions: PropTypes.array,
 };
 
 export default AssetsResource;
