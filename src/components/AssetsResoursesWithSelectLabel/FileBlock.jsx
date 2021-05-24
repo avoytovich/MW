@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { CircularProgress, Grid, Box } from '@material-ui/core';
-import { resourceLabel } from '../utils';
-import { InputCustom, SelectCustom } from '../../../components/Inputs';
-import FileUpload from '../../../components/utils/FileUpload';
-import '../storeDetailsScreen.scss';
+import { InputCustom, SelectCustom } from '../Inputs';
+import FileUpload from '../utils/FileUpload';
+import './AssetsResource.scss';
 
-const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
+const FileBlock = ({
+  item, updateResources, deleteItem, index, labelOptions,
+}) => {
   const [urlLoading, setUrlLoading] = useState(true);
 
   const [initImage, setInitImage] = useState('');
@@ -47,7 +48,7 @@ const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
             s
             setUrlFetching={setUrlFetching}
             initialFiles={initImage}
-            setHasSave={() => {}}
+            setHasSave={() => { }}
           />
         )}
       </Box>
@@ -56,10 +57,8 @@ const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
           <SelectCustom
             label="label"
             value={item.label}
-            selectOptions={resourceLabel}
-            onChangeSelect={(e) =>
-              updateResources(index, 'label', e.target.value)
-            }
+            selectOptions={labelOptions}
+            onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
           />
         </Box>
         <Grid container spacing={1} alignItems="center">
@@ -67,14 +66,14 @@ const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
             <InputCustom
               label="url"
               value={item.url}
-              onChangeInput={(e) =>
-                updateResources(index, 'url', e.target.value)
-              }
+              onChangeInput={(e) => updateResources(index, 'url', e.target.value)}
             />
           </Grid>
           <Grid item md={1} sm={1} className="iconWrapper">
             <ClearIcon
-             color="secondary" onClick={() => deleteItem(item.key)} />
+              color="secondary"
+              onClick={() => deleteItem(item.key)}
+            />
           </Grid>
         </Grid>
       </Box>
@@ -82,11 +81,12 @@ const StoreFileBlock = ({ item, updateResources, deleteItem, index }) => {
   );
 };
 
-StoreFileBlock.propTypes = {
+FileBlock.propTypes = {
   item: PropTypes.object,
   updateResources: PropTypes.func,
   deleteItem: PropTypes.func,
   index: PropTypes.number,
+  labelOptions: PropTypes.array,
 };
 
-export default StoreFileBlock;
+export default FileBlock;

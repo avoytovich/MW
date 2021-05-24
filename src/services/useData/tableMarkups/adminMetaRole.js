@@ -35,10 +35,7 @@ const markUp = {
 const generateData = (data, customers) => {
   let customer;
   const values = data.items.map((val) => {
-    customer =
-      val.customerId === 'Nexway'
-        ? val.customerId
-        : customers.find((item) => item.id === val.customerId)?.name;
+    customer = val.customerId === 'Nexway' ? val.customerId : customers.find((item) => item.id === val.customerId)?.name;
 
     return {
       id: val.id,

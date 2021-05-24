@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import React, { useState, useEffect, useRef } from 'react';
 
 import ReactQuill from 'react-quill';
@@ -140,6 +139,10 @@ const LocalizationInputs = ({ data = {}, handleChange, isDefault, parentId }) =>
     </InheritanceField>
   );
 
+  LocalizationInput.propTypes = {
+    val: PropTypes.string,
+  };
+
   return (
     <Box display='flex' width='100%' flexDirection='column'>
       <Box width='50%' px={4} mb={4} position='relative'>
@@ -179,6 +182,7 @@ LocalizationInputs.propTypes = {
   data: PropTypes.object,
   handleChange: PropTypes.func,
   parentId: PropTypes.string,
+  isDefault: PropTypes.bool,
 };
 
 export default LocalizationInputs;

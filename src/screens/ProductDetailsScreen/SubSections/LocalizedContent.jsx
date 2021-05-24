@@ -3,7 +3,9 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Box, Tabs, Tab, LinearProgress } from '@material-ui/core';
+import {
+  Box, Tabs, Tab, LinearProgress,
+} from '@material-ui/core';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -164,8 +166,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
   useEffect(() => getValues(), [value]);
 
   useEffect(() => {
-    const hasChanges =
-      JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
+    const hasChanges = JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
 
     if (hasChanges) {
       makeNewData();

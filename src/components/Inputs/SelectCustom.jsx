@@ -15,7 +15,7 @@ const SelectCustom = ({
     fullWidth
     select
     required={isRequired}
-    variant="outlined"
+    variant='outlined'
     disabled={!selectOptions || isDisabled}
     InputProps={{
       startAdornment: !selectOptions && (
@@ -27,14 +27,17 @@ const SelectCustom = ({
     SelectProps={{
       value: value || '',
       onChange: onChangeSelect,
+      // eslint-disable-next-line
       renderValue: (selected) => {
         const selectedItem = selectOptions?.find((item) => item.id === selected);
-        if (selectOptions)
+
+        if (selectOptions) {
           return (
-            <Box display="flex" alignItems="center" flexDirection="row" flexWrap="wrap">
+            <Box display='flex' alignItems='center' flexDirection='row' flexWrap='wrap'>
               {selectedItem?.value || selected}
             </Box>
           );
+        }
       },
       MenuProps: {
         getContentAnchorEl: null,

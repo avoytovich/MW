@@ -29,13 +29,7 @@ import { SelectCustom } from '../../../components/Inputs';
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 import api from '../../../api';
 
-const Prices = ({
-  currentProductData,
-  setProductData,
-  productData,
-  setSaveDisabled,
-  parentId,
-}) => {
+const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId }) => {
   const [prices, setPrices] = useState([]);
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const [needDefault, setNeedDefault] = useState(null);
@@ -55,6 +49,7 @@ const Prices = ({
       const pricesArr = [];
 
       Object.entries(pricesData).forEach(([key, val]) => {
+        // eslint-disable-next-line
         Object.entries(val).map(([k, v]) => {
           pricesArr.push({
             currency: key,
@@ -67,13 +62,13 @@ const Prices = ({
 
       const needDefault = pricesList.filter((it) => !priceByCountryByCurrency[it]['default']);
 
-      if (needDefault.length) {
+      if (needsDefault.length) {
         setSaveDisabled(true);
       } else {
         setSaveDisabled(false);
       }
 
-      setNeedDefault(needDefault.length ? needDefault : false);
+      setNeedDefault(needsDefault.length ? needsDefault : false);
       setPrices([...pricesArr]);
     }
   }, [currentProductData.prices]);
@@ -280,6 +275,7 @@ Prices.propTypes = {
   inputErrors: PropTypes.object,
   setInputErrors: PropTypes.func,
   parentId: PropTypes.string,
+  setSaveDisabled: PropTypes.func,
 };
 
 export default Prices;

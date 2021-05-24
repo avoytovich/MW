@@ -26,6 +26,7 @@ const handleGetOptions = (
     id ? api.getSubProductsById(id) : null,
     descriptionId ? api.getProductDescriptionById(descriptionId) : null,
   ];
+
   api.getCustomerById(customerId).then(({ data: curCustomer }) => {
     if (curCustomer?.usingSubscriptionV1) {
       promiseArray.push(api.getSubscriptionModelsByCustomerId(customerId));
@@ -43,7 +44,6 @@ const handleGetOptions = (
         catalogs,
         priceFunctionsOptions,
         subProducts,
-        productDetails,
         subscriptions,
       ]) => {
         if (!subscriptionOptions) {

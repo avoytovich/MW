@@ -65,8 +65,7 @@ const RecoDetailsScreen = () => {
       delete objToSend.byProductIds;
     }
     if (id === 'add') {
-      api.addNewRecommendation(objToSend).then((res) => {
-        const location = res.headers.location.split('/');
+      api.addNewRecommendation(objToSend).then(() => {
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
@@ -91,7 +90,7 @@ const RecoDetailsScreen = () => {
     let recoRequest;
     if (id === 'add') {
       recoRequest = Promise.resolve({
-        data: { customerId: nxState.selectedCustomer.id },
+        data: { customerId: nxState?.selectedCustomer?.id },
       });
     } else {
       recoRequest = api.getRecoById(id);
@@ -116,26 +115,25 @@ const RecoDetailsScreen = () => {
           parentProductOptions,
           recoByProductOptions,
           recoByParentOptions,
-        ]) =>
-          setSelectOptions({
-            ...selectOptions,
-            stores:
+        ]) => setSelectOptions({
+          ...selectOptions,
+          stores:
               structureSelectOptions(
                 storeOptions.value?.data.items,
                 'displayName',
               ) || [],
-            products:
+          products:
               formateProductOptions(productOptions.value?.data?.items) || [],
-            productsByParent:
-              formateProductOptions(parentProductOptions.value?.data?.items) ||
-              [],
-            recoByProduct:
-              formateProductOptions(recoByProductOptions.value?.data?.items) ||
-              [],
-            recoByParent:
-              formateProductOptions(recoByParentOptions.value?.data?.items) ||
-              [],
-          }),
+          productsByParent:
+              formateProductOptions(parentProductOptions.value?.data?.items)
+              || [],
+          recoByProduct:
+              formateProductOptions(recoByProductOptions.value?.data?.items)
+              || [],
+          recoByParent:
+              formateProductOptions(recoByParentOptions.value?.data?.items)
+              || [],
+        }),
       );
     });
   }, []);
@@ -162,8 +160,7 @@ const RecoDetailsScreen = () => {
 
     setCurReco((c) => ({ ...c, [type]: setValue }));
   };
-  if (id === 'add' && !nxState.selectedCustomer.id)
-    return <SelectCustomerNotification />;
+  if (id === 'add' && !nxState?.selectedCustomer?.id) return <SelectCustomerNotification />;
 
   if (curReco === null) return <LinearProgress />;
 

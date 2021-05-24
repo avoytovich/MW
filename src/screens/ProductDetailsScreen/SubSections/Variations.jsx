@@ -326,8 +326,9 @@ Variations.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
-  inputErrors: PropTypes.object,
-  setInputErrors: PropTypes.func,
+  open: PropTypes.bool,
+  handlePopoverClose: PropTypes.func,
+  handlePopoverOpen: PropTypes.func,
   productVariations: PropTypes.shape({
     bundledProducts: PropTypes.array,
     variations: PropTypes.object,

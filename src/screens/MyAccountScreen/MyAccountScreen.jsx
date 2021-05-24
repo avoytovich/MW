@@ -42,7 +42,7 @@ const MyAccountScreen = () => {
   const [errorDetails, setErrorDetails] = useState(!!nxState?.errorDetails);
 
   useEffect(() => {
-    if (nxState?.errorDetails != errorDetails) {
+    if (nxState?.errorDetails !== errorDetails) {
       dispatch(setNexwayState({ ...nxState, errorDetails }));
     }
   }, [errorDetails]);
@@ -257,13 +257,17 @@ const MyAccountScreen = () => {
             <Switch
               color='primary'
               checked={errorDetails}
-              onChange={() => setErrorDetails(c => !c)}
+              onChange={() => setErrorDetails((c) => !c)}
               name='errorDetails'
             />
           </Box>
         </Box>
-        
-        <Typography component='em'>{errorDetails ? 'Show' : 'Hide'} Error Details</Typography>
+
+        <Typography component='em'>
+          {errorDetails ? 'Show' : 'Hide'}
+          {' '}
+          Error Details
+        </Typography>
       </CustomCard>
 
       <Dialog

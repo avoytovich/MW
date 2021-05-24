@@ -43,7 +43,7 @@ const CreateProduct = () => {
   useEffect(() => {
     setCurrentProductData({ ...currentProductData, customerId });
   }, [customerId]);
-  //ToDo: refactor handleGetOptions props !!!
+  // ToDo: refactor handleGetOptions props !!!
   useEffect(() => {
     const parentId = history?.state?.parentId;
     let isCancelled = false;

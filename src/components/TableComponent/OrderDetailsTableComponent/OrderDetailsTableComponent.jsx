@@ -9,7 +9,7 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 
-import OrderDetailsTableRowComponent from '../OrderDetailsTableComponent/OrderDetailsTableRowComponent';
+import OrderDetailsTableRowComponent from './OrderDetailsTableRowComponent';
 import TableItemsActions from '../TableItemsActions';
 import PaginationComponent from '../../PaginationComponent';
 

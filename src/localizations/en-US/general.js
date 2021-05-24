@@ -1,6 +1,5 @@
 const general = {
-  welcomeMessage:
-    'Hella narwhal Cosby sweater McSweeneys, salvia kitsch before they sold out.',
+  welcomeMessage: 'Hella narwhal Cosby sweater McSweeneys, salvia kitsch before they sold out.',
   lightMode: 'Light mode',
   darkMode: 'Dark mode',
   error: 'Something went wrong! Please try again later!',
@@ -44,25 +43,36 @@ const general = {
   addProduct: 'Add Product',
   addPrice: 'Add Price',
   addRecommendation: 'Add Recommendation',
+  addCampaign: 'Add Campaign',
   noAvailableOptions: 'No available options',
-  marketingNameMandatory:
-    'Marketing name is mandatory for the default language.',
+  marketingNameMandatory: 'Marketing name is mandatory for the default language.',
   noCustomer: 'No customer selected',
-  selectCustomer:
-    'Please select a customer which will own the created resource.',
-  itemHasBeenCopied: 'Item Has BeenCopied',
+  selectCustomer: 'Please select a customer which will own the created resource.',
+  itemHasBeenCopied: 'Item Has Been Copied',
   campaign: 'Campaign',
-  recommendation: 'Recommendation',
-  discount: 'Discount',
-  price: 'Price',
   new: 'New',
-  selectNoSourceMeans:
-    'Select no source means the same as "all sources are selected"',
+  selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
   role: 'role',
   customer: 'Customer',
   metaRole: 'Meta-Role',
   logoCenter: 'Center.',
-  selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
+  subscription: 'Subscription',
+  privileges: {
+    general: 'General',
+    createdate: 'Create date',
+    lastupdate: 'Last update',
+    lastupdatereason: 'Last update reason',
+    servicename: 'Service name',
+    availableactions: 'Available actions',
+  },
+  keyHasBeenAdded: 'Key Has Been Added',
+  keyHasBeenRemoved: 'Key Has BeenRemoved',
+  noResourcesMatchCriteria: 'No resources match criteria',
+  typeOfIdentity: 'The type of identity is choosen at creation and cannot be modified afterwards. Choose "User" to declare a human agent, and "Application"to obtain credentials for your bots accessing Monetize services.',
+  maxNumberOfSecretKeys: 'The maximum number of secret keys is 5',
+  listOfIdentityCustomers: 'This is the list of customers this identity is allowed to manage, in addition to the customer owning this identity.',
+  selectFiles: 'Select files from your computer or click to enter custom URL',
+  uploadFiles: ' upload files',
 };
 
 export default general;

@@ -36,10 +36,11 @@ const defaultProduct = {
 };
 
 const defaultStore = {
-  status: '',
+  status: 'ENABLED',
+  name: '',
   emailSenderOverride: '',
   routes: [{ hostname: '' }],
-  defaultLocale: [],
+  defaultLocale: '',
   saleLocales: [],
   storeWebsite: '',
   displayName: '',
@@ -52,7 +53,7 @@ const defaultStore = {
   blackListedCountries: [],
   restrictedCountries: [],
   installmentOptions: [],
-  fallbackCartCountry: '',
+  // fallbackCartCountry: '',
   externalContextGenerationParams: [],
   designs: {
     endUserPortal: {
@@ -123,7 +124,7 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
   let res = [];
   if (options) {
     res = options.map((option) => {
-      const resObj = { id: option.id, value: option[optionValue] };
+      const resObj = { id: option.id || option[optionValue], value: option[optionValue] };
       if (otherOptions) {
         otherOptions.forEach((element) => {
           resObj[element] = option[element];
@@ -141,6 +142,7 @@ const renewingProductsOptions = (options) =>
       ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}
           ${item.subscriptionTemplate || ''})`
       : item?.id;
+
     return { id: item.id, value };
   });
 
@@ -149,6 +151,7 @@ const productsVariations = (renewingProducts, productId) =>
     ? renewingProducts
         ?.filter((item) => item.id === productId)
         .reduce((accumulator, current) => {
+          // eslint-disable-next-line
           current.availableVariables = current?.availableVariables?.reduce(
             (acc, curr) => [
               ...acc,
@@ -313,6 +316,20 @@ const frontToBack = (data) =>
     return accumulator;
   }, {});
 
+const identityRequiredFields = (identity) => {
+  const defaultIdentity = {
+    email: '',
+    firstName: '',
+    lastName: '',
+    userName: '',
+    clientId: '',
+    authorizedCustomerIds: [],
+    roleIds: [],
+    metaRoleIds: [],
+    inactive: true,
+  };
+  return { ...defaultIdentity, ...identity };
+};
 export {
   storeRequiredFields,
   productRequiredFields,
@@ -323,4 +340,5 @@ export {
   productsVariations,
   backToFront,
   frontToBack,
+  identityRequiredFields,
 };

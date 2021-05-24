@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-// import { showNotification } from '../../../../redux/actions/HttpNotifications';
-
+import { showNotification } from '../../../redux/actions/HttpNotifications';
+import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';
 
 import { useTableData } from '../../../services/useData';
@@ -15,7 +15,7 @@ import {
 const TabTable = ({ tabObject }) => {
   const dispatch = useDispatch();
 
-  const { sortKey, generateData, request, deleteFunc, label } = tabObject;
+  const { sortKey, generateData, request, deleteFunc, label, scope } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ const TabTable = ({ tabObject }) => {
   const handleDelete = (id) => {
     if (deleteFunc) {
       deleteFunc(id).then(() => {
-        const localizedLabel = `general.${label}`;
+        const localizedLabel = `labels.${label}`;
         setMakeUpdate((v) => v + 1);
         dispatch(
           showNotification(
@@ -51,7 +51,7 @@ const TabTable = ({ tabObject }) => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    label,
+    scope,
     requests,
     sortParams,
   );

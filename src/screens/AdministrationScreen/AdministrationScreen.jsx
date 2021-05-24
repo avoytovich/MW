@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Tabs, Tab, Box, Button, Zoom } from '@material-ui/core';
+import {
+  Tabs, Tab, Box, Button, Zoom,
+} from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
 import localization from '../../localization';
 
@@ -12,16 +14,20 @@ import MetaRoles from './MetaRoles';
 
 const tabsData = [
   {
-    label: 'customers',
-    path: `/settings/administration/customers`,
+    label: 'customer',
+    path: '/settings/administration/customers',
     request: api.getCustomers,
     sortKey: 'customerAdmin',
     generateData: generateCustomers,
     noActions: true,
+    scope: 'customers',
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.customer',
+    )}`,
   },
   {
-    label: 'roles',
-    path: `/settings/administration/roles`,
+    label: 'role',
+    path: '/settings/administration/roles',
     button: `${localization.t('general.add')} ${localization.t(
       'general.role',
     )}`,
@@ -30,22 +36,28 @@ const tabsData = [
     sortKey: 'roleAdmin',
     generateData: generateRoles,
     deleteFunc: api.deleteRoleById,
+    scope: 'roles',
+
   },
   {
-    label: 'metaRoles',
-    path: `/settings/administration/metaRoles`,
+    label: 'metaRole',
+    path: '/settings/administration/metaRoles',
     button: `${localization.t('general.add')} ${localization.t(
       'general.metaRole',
     )}`,
     sortKey: 'metaRoleAdmin',
+    scope: 'metaRoles',
+
   },
   {
-    label: 'privileges',
-    path: `/settings/administration/privileges`,
+    label: 'privilege',
+    path: '/settings/administration/privileges',
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,
     noActions: true,
+    scope: 'privileges',
+
   },
 ];
 
@@ -57,7 +69,7 @@ const AdministrationScreen = () => {
 
   useEffect(() => {
     const section = pathname.split('/').pop();
-    const index = tabsData.findIndex((i) => i.label === section);
+    const index = tabsData.findIndex((i) => i.scope === section);
     if (index < 0) {
       return history.push('/settings/administration/customers');
     }
@@ -66,8 +78,7 @@ const AdministrationScreen = () => {
   }, [pathname]);
 
   const drawAddButton = () => {
-    const currentTad =
-      tabsData.find((item) => item.path === pathname) || tabsData[0];
+    const currentTad = tabsData.find((item) => item.path === pathname) || tabsData[0];
     return (
       <Zoom in={!!currentTad.button}>
         <Box alignSelf='flex-end'>
@@ -85,8 +96,7 @@ const AdministrationScreen = () => {
       </Zoom>
     );
   };
-  const changeTab = (tab) =>
-    history.push(`/settings/administration/${tabsData[tab].label}`);
+  const changeTab = (tab) => history.push(`/settings/administration/${tabsData[tab].scope}`);
   return (
     <Box display='flex' flexDirection='column'>
       {drawAddButton()}
@@ -104,9 +114,9 @@ const AdministrationScreen = () => {
       <Box mt={4} mb={2}>
         {tabsData.map((tab, index) => (
           <Fragment key={tab.label}>
-            {curTab === index &&
-              (tab.label === 'metaRoles' ? (
-                <MetaRoles sortKey={tab.sortKey} scope={tab.label} />
+            {curTab === index
+              && (tab.label === 'metaRole' ? (
+                <MetaRoles sortKey={tab.sortKey} scope={tab.scope} label={tab.label} />
               ) : (
                 <TabTable tabObject={tab} />
               ))}

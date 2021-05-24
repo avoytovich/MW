@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ./src/* --no-error-on-unmatched-pattern",
+    "lint": "eslint ./src --ext .js,.jsx --no-error-on-unmatched-pattern",
+    "lint-fix": "eslint ./src --ext .js,.jsx --fix",
     "dev": "webpack-dev-server --mode=development --env.NODE_ENV=development",
     "prod": "webpack --mode=production --env.NODE_ENV=production",
     "cy:local": "CYPRESS_BASE_URL=http://localhost:8080 cypress run",
@@ -15,12 +16,12 @@
   },
   "devDependencies": {
     "@babel/core": "7.11.6",
+    "@babel/eslint-parser": "7.13.14",
     "@babel/plugin-proposal-class-properties": "7.10.4",
     "@babel/plugin-transform-runtime": "7.12.1",
     "@babel/polyfill": "7.11.5",
     "@babel/preset-env": "7.11.5",
     "@babel/preset-react": "7.10.4",
-    "babel-eslint": "10.1.0",
     "babel-jest": "26.6.3",
     "babel-loader": "8.1.0",
     "babel-plugin-named-asset-import": "0.3.6",

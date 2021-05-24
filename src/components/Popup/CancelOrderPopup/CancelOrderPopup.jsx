@@ -1,12 +1,12 @@
-import React, { useState }  from 'react';
-import { Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
-import SelectCustom from './../../../components/Inputs/SelectCustom';
+import React, { useState } from 'react';
+import {
+  Button, Dialog, DialogActions, DialogContent, DialogContentText,
+} from '@material-ui/core';
+
+import SelectCustom from '../../Inputs/SelectCustom';
 import { orderCancelAction } from '../../../services/selectOptions/selectOptions';
 import localization from '../../../localization';
 import api from '../../../api';
-
-import PropTypes from 'prop-types';
-
 
 const CancelOrderPopup = ({ currentOrderData, id }) => {
   const [open, setOpen] = useState(false);
@@ -43,16 +43,16 @@ const CancelOrderPopup = ({ currentOrderData, id }) => {
             selectOptions={orderCancelAction}
             value={cancelOrderReason}
             onChangeSelect={(e) => {
-              setCancelOrderReason(e.target.value)
+              setCancelOrderReason(e.target.value);
             }}
-            label={'cancelOrder'}
+            label="cancelOrder"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             {localization.t('forms.buttons.resyncPaymentsNo')}
           </Button>
-          <Button onClick={ () => { handleClose(); cancelOrder() }} color="primary">
+          <Button onClick={() => { handleClose(); cancelOrder(); }} color="primary">
             {localization.t('forms.buttons.resyncPaymentsConfirmed')}
           </Button>
         </DialogActions>

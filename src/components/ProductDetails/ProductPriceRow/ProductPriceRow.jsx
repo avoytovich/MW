@@ -9,13 +9,11 @@ import {
   FormControlLabel,
   Checkbox,
 } from '@material-ui/core';
-import localization from '../../../localization';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import { SelectCustom } from '../../../components/Inputs';
 
 import { priceCurrency, countryOptions } from '../../../services/selectOptions/selectOptions';
-
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
   const [currency, setCurrency] = useState('');
