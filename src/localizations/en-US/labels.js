@@ -296,7 +296,6 @@ const labels = {
   subscriptionId: 'Subscription ID',
   subscriptionName: 'Subscription Name',
   contactEmailAddress: 'Contact Email Address',
-  firsName: 'Firs Name',
   identification: 'Identification',
   permissions: 'Permissions',
   emails: 'Emails',

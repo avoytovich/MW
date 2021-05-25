@@ -28,7 +28,7 @@ const Identification = ({
       </Box>
       <Box p={2}>
         <InputCustom
-          label='firsName'
+          label='firstName'
           value={curIdentity.firstName}
           onChangeInput={(e) => setCurIdentity({ ...curIdentity, firstName: e.target.value })}
         />
