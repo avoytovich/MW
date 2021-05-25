@@ -32,8 +32,6 @@ const DiscountDetailsScreen = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const discountData = useDiscountDetails(id, nxState);
-
   const {
     discount,
     curDiscount,
@@ -42,7 +40,7 @@ const DiscountDetailsScreen = () => {
     setCurDiscount,
     setAmountType,
     selectOptions,
-  } = discountData;
+  } = useDiscountDetails(id, nxState);
 
   const saveDiscount = () => {
     const res = { ...curDiscount };
