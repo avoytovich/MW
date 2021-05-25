@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { discountRequiredFields } from './utils';
+import { discountRequiredFields } from '../../screens/DiscountDetailsScreen/utils';
 import {
   structureSelectOptions,
-} from '../../services/helpers/dataStructuring';
+} from '../helpers/dataStructuring';
 import api from '../../api';
 
 const useDiscountDetails = (id, nxState) => {

@@ -22,7 +22,7 @@ import api from '../../api';
 import DiscountSection from './DiscountSection';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import useDiscountDetails from './useDiscountDetails';
+import useDiscountDetails from '../../services/useData/useDiscountDetails';
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsScreen = () => {
@@ -41,7 +41,6 @@ const DiscountDetailsScreen = () => {
     amountType,
     setCurDiscount,
     setAmountType,
-
     selectOptions,
   } = discountData;
 
@@ -78,9 +77,6 @@ const DiscountDetailsScreen = () => {
     }
   };
 
-
-
-  // ToDO refactor from here and recodetails
   const updateDiscount = (type, value, selections) => {
     let setValue = value;
     if (!curDiscount[type]) {
@@ -100,7 +96,6 @@ const DiscountDetailsScreen = () => {
         setValue = [...curDiscount[type], value];
       }
     }
-
     setCurDiscount((c) => ({ ...c, [type]: setValue }));
   };
   if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
@@ -118,7 +113,6 @@ const DiscountDetailsScreen = () => {
           />
         </Box>
       )}
-
       <Box
         display='flex'
         flexDirection='row'
@@ -150,7 +144,6 @@ const DiscountDetailsScreen = () => {
           </Box>
         </Zoom>
       </Box>
-
       <Box my={2} bgcolor='#fff'>
         <Tabs
           value={curTab}
