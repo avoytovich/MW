@@ -1,0 +1,53 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+
+import {
+  Box, Checkbox, FormControlLabel, Typography, Grid,
+} from '@material-ui/core';
+
+import localization from '../../../../localization';
+import { checkBoxObj } from '../utils';
+
+const Features = ({ currentCustomer, setCurrentCustomer }) => (
+  <Grid container>
+    {Object.keys(checkBoxObj).map((item) => (
+      <Grid item md={4} key={item}>
+        <Box pt={2} pl={2}>
+          <Typography>{localization.t(`labels.${item}`)}</Typography>
+        </Box>
+        <Box p={2}>
+          {checkBoxObj[item].map((checkParam) => (
+            <FormControlLabel
+              style={{ width: '100%' }}
+              key={checkParam}
+              control={(
+                <Checkbox
+
+                  indeterminate={false}
+                  name={checkParam}
+                  color="primary"
+                  checked={currentCustomer.features[checkParam]}
+                />
+              )}
+              onChange={(e) => setCurrentCustomer(
+                {
+                  ...currentCustomer,
+                  features: { ...currentCustomer.features, [checkParam]: e.target.checked },
+                },
+              )}
+              label={localization.t(`labels.${checkParam}`)}
+            />
+          ))}
+        </Box>
+
+      </Grid>
+    ))}
+  </Grid>
+
+);
+Features.propTypes = {
+  currentCustomer: PropTypes.object,
+  setCurrentCustomer: PropTypes.func,
+};
+
+export default Features;

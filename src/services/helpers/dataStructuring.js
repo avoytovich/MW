@@ -94,7 +94,7 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
   let res = [];
   if (options) {
     res = options.map((option) => {
-      const resObj = { id: option.id, value: option[optionValue] };
+      const resObj = { id: option.id || option[optionValue], value: option[optionValue] };
       if (otherOptions) {
         otherOptions.forEach((element) => {
           resObj[element] = option[element];
