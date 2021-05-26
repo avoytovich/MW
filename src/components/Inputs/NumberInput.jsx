@@ -7,6 +7,7 @@ const NumberInput = ({
   label, value, onChangeInput, minMAx, isDisabled,
 }) => (
   <TextField
+    data-test={label}
     disabled={isDisabled}
     name={label}
     value={value}
