@@ -22,6 +22,7 @@ const SelectWithDeleteIcon = ({
   <FormControl fullWidth variant="outlined">
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
+      data-test={label}
       value={selectOptions ? value : ''}
       inputProps={{
         name: label,
@@ -32,25 +33,25 @@ const SelectWithDeleteIcon = ({
       onChange={onChangeSelect}
       variant="outlined"
       startAdornment={
-        !selectOptions && (
-          <InputAdornment>
-            <CircularProgress />
-          </InputAdornment>
-        )
-      }
+          !selectOptions && (
+            <InputAdornment>
+              <CircularProgress />
+            </InputAdornment>
+          )
+        }
       endAdornment={
-        value && (
-          <CancelIcon
-            className="cancelSelectIcon"
-            fontSize="small"
-            color="secondary"
-            onClick={onClickDelIcon}
-            onMouseDown={(e) => {
-              e.stopPropagation();
-            }}
-          />
-        )
-      }
+          value && (
+            <CancelIcon
+              className="cancelSelectIcon"
+              fontSize="small"
+              color="secondary"
+              onClick={onClickDelIcon}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          )
+        }
     >
       {selectOptions?.length ? (
         selectOptions.map((option) => (

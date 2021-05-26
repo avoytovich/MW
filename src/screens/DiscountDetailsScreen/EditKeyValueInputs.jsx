@@ -76,7 +76,7 @@ const EditKeyValueInputs = ({
                     onChangeInput={(e) => {
                       const newValue = [...curValue].map((el) => {
                         if (el.key === item.key) {
-                          el.value = e.target.value;
+                          el.value = Number(e.target.value);
                         }
                         return el;
                       });
