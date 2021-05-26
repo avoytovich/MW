@@ -1,7 +1,7 @@
 export default (() => {
   const [, initPath] = window.location.pathname.split('/');
 
-  const isBranchPath = !!initPath.match(/^IAP-[0-9]+$/);
+  const isBranchPath = !!initPath.match(/^iap-[0-9]+$/);
 
-  return isBranchPath ? `/${initPath}` : '';
+  return isBranchPath && process.env.ENV_MODE === 'staging' ? `/${initPath}` : '';
 })();
