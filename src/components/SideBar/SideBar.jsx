@@ -14,6 +14,7 @@ import NavItem from './NavItem';
 import navConfig from './config';
 
 import CustomerHandling from '../CustomerHandling';
+import './SideBar.scss';
 
 const SideBar = ({ open }) => (
   <Drawer
@@ -30,6 +31,7 @@ const SideBar = ({ open }) => (
           bgcolor='primary.main'
           color='#fff'
           p={2}
+          className={`bar-style-${process?.env?.ENV_MODE}`}
           height={64}
           mb={-3}
         >
