@@ -1,6 +1,9 @@
 @import '../../styles/variables.scss';
 
 .listItem  {
+  .apiLink {
+    margin-right: 14px;
+  }
   .listItemButton {
     width: 100%;
     display: flex;
