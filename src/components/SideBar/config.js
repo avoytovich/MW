@@ -103,8 +103,9 @@ const navConfig = [
       {
         id: 'api',
         title: localization.t('sideBar.titles.api'),
-        href: `${defPath}/settings/api`,
+        href: 'https://api-doc.staging.nexway.build',
         icon: SwapHorizontalCircle,
+        external: true,
       },
       {
         id: 'services-configuration',
