@@ -12,6 +12,7 @@ import {
   Dashboard,
 } from '@material-ui/icons';
 
+import defPath from '../../services/helpers/routingHelper';
 import localization from '../../localization';
 
 const navConfig = [
@@ -20,7 +21,7 @@ const navConfig = [
       {
         id: 'dashboard',
         title: localization.t('sideBar.titles.dashboard'),
-        href: '/',
+        href: `${defPath}/`,
         exact: true,
         icon: Dashboard,
       },
@@ -32,31 +33,31 @@ const navConfig = [
       {
         id: 'products',
         title: localization.t('sideBar.titles.products'),
-        href: '/overview/products',
+        href: `${defPath}/overview/products`,
         icon: FolderOpen,
       },
       {
         id: 'stores',
         title: localization.t('sideBar.titles.stores'),
-        href: '/overview/stores',
+        href: `${defPath}/overview/stores`,
         icon: FolderOpen,
       },
       {
         id: 'orders',
         title: localization.t('sideBar.titles.orders'),
-        href: '/overview/orders',
+        href: `${defPath}/overview/orders`,
         icon: FolderOpen,
       },
       {
         id: 'invoices-credit-notes',
         title: localization.t('sideBar.titles.invoicesCreditNotes'),
-        href: '/overview/invoices-credit-notes',
+        href: `${defPath}/overview/invoices-credit-notes`,
         icon: FolderOpen,
       },
       {
         id: 'subscriptions',
         title: localization.t('sideBar.titles.subscriptions'),
-        href: '/overview/subscriptions',
+        href: `${defPath}/overview/subscriptions`,
         icon: FolderOpen,
       },
     ],
@@ -67,31 +68,31 @@ const navConfig = [
       {
         id: 'sales-customers',
         title: localization.t('sideBar.titles.salesCustomers'),
-        href: '/tobedefined/sales-customers',
+        href: `${defPath}/tobedefined/sales-customers`,
         icon: Visibility,
       },
       {
         id: 'marketing',
         title: localization.t('sideBar.titles.marketing'),
-        href: '/marketing',
+        href: `${defPath}/marketing`,
         icon: EmojiObjects,
       },
       {
         id: 'checkout-experience',
         title: localization.t('sideBar.titles.checkoutExperience'),
-        href: '/checkout-experience',
+        href: `${defPath}/checkout-experience`,
         icon: Toll,
       },
       {
         id: 'reports',
         title: localization.t('sideBar.titles.reports'),
-        href: '/tobedefined/reports',
+        href: `${defPath}/tobedefined/reports`,
         icon: Link,
       },
       {
         id: 'myaccount',
         title: localization.t('sideBar.titles.myAccount'),
-        href: '/my-account',
+        href: `${defPath}/my-account`,
         icon: FormatQuote,
       },
     ],
@@ -109,19 +110,19 @@ const navConfig = [
       {
         id: 'services-configuration',
         title: localization.t('sideBar.titles.servicesConfiguration'),
-        href: '/settings/services-configuration',
+        href: `${defPath}/settings/services-configuration`,
         icon: Build,
       },
       {
         id: 'administration',
         title: localization.t('sideBar.titles.administration'),
-        href: '/settings/administration',
+        href: `${defPath}/settings/administration`,
         icon: Settings,
       },
       {
         id: 'identities',
         title: localization.t('sideBar.titles.identities'),
-        href: '/settings/identities',
+        href: `${defPath}/settings/identities`,
         icon: PeopleOutline,
       },
     ],

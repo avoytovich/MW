@@ -1,8 +1,12 @@
 // ToDo[major]: add exact routes for not staging env
 import React, { lazy, useEffect } from 'react';
 import {
-  Switch, Redirect, Route, useHistory,
+  Switch,
+  Redirect,
+  Route,
+  useHistory,
 } from 'react-router-dom';
+import defPath from '../helpers/routingHelper';
 import Session from '../session';
 
 const SignedRoutes = () => {
@@ -22,140 +26,140 @@ const SignedRoutes = () => {
   return (
     <Switch>
       <Route
-        path="/"
+        path={`${defPath}/`}
         exact
         component={lazy(() => import('../../screens/DashboardScreen'))}
       />
       <Route
-        path="/overview/products/:id"
+        path={`${defPath}/overview/products/:id`}
         component={lazy(() => import('../../screens/ProductDetailsScreen/EditProduct'))}
       />
       <Route
-        path='/overview/products'
+        path={`${defPath}/overview/products`}
         component={lazy(() => import('../../screens/ProductsScreen'))}
       />
       <Route
-        path='/overview/stores/:id'
+        path={`${defPath}/overview/stores/:id`}
         component={lazy(() => import('../../screens/StoreDetailsScreen'))}
       />
       <Route
-        path='/overview/stores'
+        path={`${defPath}/overview/stores`}
         component={lazy(() => import('../../screens/StoresScreen'))}
       />
       <Route
-        path='/overview/orders/:id'
+        path={`${defPath}/overview/orders/:id`}
         component={lazy(() => import('../../screens/OrderDetailsScreen'))}
       />
       <Route
-        path='/overview/orders'
+        path={`${defPath}/overview/orders`}
         component={lazy(() => import('../../screens/OrdersScreen'))}
       />
       <Route
-        path='/overview/subscriptions/:id'
+        path={`${defPath}/overview/subscriptions/:id`}
         component={lazy(() => import('../../screens/SubscriptionDetailsScreen'))}
       />
       <Route
-        path='/overview/subscriptions'
+        path={`${defPath}/overview/subscriptions`}
         component={lazy(() => import('../../screens/SubscriptionsScreen'))}
       />
       <Route
-        path='/my-account'
+        path={`${defPath}/my-account`}
         component={lazy(() => import('../../screens/MyAccountScreen'))}
       />
       <Route
-        path='/settings/identities/:id'
+        path={`${defPath}/settings/identities/:id`}
         component={lazy(() => import('../../screens/IdentityDetailsScreen'))}
       />
       <Route
-        path='/settings/identities'
+        path={`${defPath}/settings/identities`}
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
       <Route
-        path='/settings/administration/customers/:id'
+        path={`${defPath}/settings/administration/customers/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
       />
       <Route
-        path='/settings/administration/metaRoles/:id'
+        path={`${defPath}/settings/administration/metaRoles/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'))}
       />
       <Route
-        path='/settings/administration/roles/:id'
+        path={`${defPath}/settings/administration/roles/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/RoleDetailScreen'))}
       />
       <Route
-        path='/settings/administration/privileges/:id'
+        path={`${defPath}/settings/administration/privileges/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/PrivilegesDetailScreen'))}
       />
       <Route
-        path='/settings/administration'
+        path={`${defPath}/settings/administration`}
         component={lazy(() => import('../../screens/AdministrationScreen'))}
       />
       <Route
-        path='/marketing/discounts/:id'
+        path={`${defPath}/marketing/discounts/:id`}
         component={lazy(() => import('../../screens/DiscountDetailsScreen'))}
       />
       <Route
-        path='/marketing/recommendations/:id'
+        path={`${defPath}/marketing/recommendations/:id`}
         component={lazy(() => import('../../screens/RecoDetailsScreen'))}
       />
       <Route
-        path='/marketing/campaigns/:id'
+        path={`${defPath}/marketing/campaigns/:id`}
         component={lazy(() => import('../../screens/CampaignDetailsScreen'))}
       />
       <Route
-        path='/marketing/prices/:id'
+        path={`${defPath}/marketing/prices/:id`}
         component={lazy(() => import('../../screens/PricesDetailsScreen'))}
       />
       <Route
-        path='/marketing'
+        path={`${defPath}/marketing`}
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />
       <Route
-        path='/checkout-experience/fonts/add'
+        path={`${defPath}/checkout-experience/fonts/add`}
         component={lazy(() => import('../../screens/FontScreen/FontAddScreen'))}
       />
       <Route
-        path='/checkout-experience/themes/add'
+        path={`${defPath}/checkout-experience/themes/add`}
         component={lazy(() => import('../../screens/ThemeScreen/ThemeAddScreen'))}
       />
       <Route
-        path='/checkout-experience/layouts/add'
+        path={`${defPath}/checkout-experience/layouts/add`}
         component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
       />
       <Route
-        path='/checkout-experience/translations/add'
+        path={`${defPath}/checkout-experience/translations/add`}
         component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
       />
       <Route
-        path='/checkout-experience/themes/:id'
+        path={`${defPath}/checkout-experience/themes/:id`}
         component={lazy(() => import('../../screens/ThemeScreen/ThemeEditScreen'))}
       />
       <Route
-        path='/checkout-experience/layouts/:id'
+        path={`${defPath}/checkout-experience/layouts/:id`}
         component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
       />
       <Route
-        path='/checkout-experience/translations/:id'
+        path={`${defPath}/checkout-experience/translations/:id`}
         component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
       />
       <Route
-        path='/checkout-experience/fonts/:id'
+        path={`${defPath}/checkout-experience/fonts/:id`}
         component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
       />
       <Route
-        path='/checkout-experience'
+        path={`${defPath}/checkout-experience`}
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}
       />
       <Route
-        path='/products/add'
+        path={`${defPath}/products/add`}
         component={lazy(() => import('../../screens/ProductDetailsScreen/CreateProduct'))}
       />
       <Route
-        path='/overview/invoices-credit-notes'
+        path={`${defPath}/overview/invoices-credit-notes`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
 
-      <Redirect to='/' />
+      <Redirect to={`${defPath}/`} />
     </Switch>
   );
 };
