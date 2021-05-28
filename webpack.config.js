@@ -4,7 +4,7 @@ const path = require('path');
 
 const fileDep = path.resolve(__dirname, 'dist');
 
-module.exports = {
+module.exports = (env) => ({
   context: __dirname,
   entry: ['@babel/polyfill', './src/index.jsx'],
   output: {
@@ -37,12 +37,13 @@ module.exports = {
       filename: 'index.html',
     }),
     new webpack.DefinePlugin({
-      'process.env': {
-        BUILT_AT: webpack.DefinePlugin.runtimeValue(Date.now, [fileDep]),
-      },
+      'process.env.BUILT_AT': webpack.DefinePlugin.runtimeValue(Date.now, [fileDep]),
+      'process.env.ENV_MODE': JSON.stringify(env.ENV_MODE),
+      'process.env.API_SERVER':
+        env.ENV_MODE === 'production' ? JSON.stringify('https://api.nexway.build') : JSON.stringify('https://api.staging.nexway.build'),
     }),
   ],
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-};
+});
