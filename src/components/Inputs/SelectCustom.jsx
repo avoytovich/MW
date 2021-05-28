@@ -20,21 +20,22 @@ const SelectCustom = ({
   <TextField
     fullWidth
     select
+    data-test={label}
     required={isRequired}
     variant='outlined'
     disabled={!selectOptions || isDisabled}
     InputProps={{
       startAdornment: !selectOptions && (
-        <InputAdornment>
-          <CircularProgress />
-        </InputAdornment>
+      <InputAdornment>
+        <CircularProgress />
+      </InputAdornment>
       ),
     }}
     SelectProps={{
       value: value || '',
       onChange: onChangeSelect,
       // eslint-disable-next-line
-      renderValue: (selected) => {
+        renderValue: (selected) => {
         const selectedItem = selectOptions?.find(
           (item) => item.id === selected,
         );
