@@ -10,7 +10,7 @@ module.exports = (env) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
-    publicPath: '/iap-10616',
+    publicPath: '/',
   },
   devServer: {
     historyApiFallback: true,
