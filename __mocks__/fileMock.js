@@ -20,13 +20,14 @@ const discountObj = {
   externalContext: 'testExternalContext',
   endDate: Date.now() + 6.048e8,
   endUserTypes: ['BUYER', 'RESELLER'],
-  localizedLabels: {
-    neutral: 'neutral LocalizedLabel',
-    'fr-FR': 'fr- FR LocalizedLabel',
-  },
+  amountByCurrency: [{
+    key: '',
+    value: '',
+  }],
+  localizedLabels: [],
 };
 
-const selectOptions = {
+const selectOptionsObj = {
   refProducts: [{ id: 1, value: ' refProduct_1' }],
   endUserGroups: [{ id: 1, value: 'endUserGroup_1' }],
   countries: [{ id: 'AD', value: 'Andorra' }],
@@ -35,4 +36,4 @@ const selectOptions = {
   parentProducts: [{ id: 1, value: 'parentProduct_1' }],
   discountProducts: [{ id: 1, value: ' discountProduct_1' }],
 };
-export { discountObj, selectOptions };
+export { discountObj, selectOptionsObj };

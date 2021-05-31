@@ -117,10 +117,10 @@ const EditKeyValueInputs = ({
       ) : (
         <Box display="flex">
           <Box p={2}>
-            <AddCircleIcon color="primary" onClick={handleAdd} />
+            <AddCircleIcon data-test='addNewInputsIcon' color="primary" onClick={handleAdd} />
           </Box>
           <Box p={2}>
-            <Typography>Add new value</Typography>
+            <Typography data-test='addNewInputsText'>Add new value</Typography>
           </Box>
         </Box>
       )}

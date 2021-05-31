@@ -1,26 +1,13 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import DiscountDetailsScreen from './DiscountDetailsScreen';
-import { Tab } from '@material-ui/core';
+import { Tab, LinearProgress, Tabs, Button } from '@material-ui/core';
+import useDiscountDetails from '../../services/useData/useDiscountDetails';
+import General from './SubSections/General';
+import CappingAndLimits from './SubSections/CappingAndLimits';
+import Eligibility from './SubSections/Eligibility';
 
-import { discountObj, selectOptions } from '../../../__mocks__/fileMock';
-const customerId = 1;
-import api from '../../api';
-
-jest.mock('../../api', () => ({
-  getDiscountById: jest.fn().mockImplementation(() => Promise.resolve({ data: { customerId: customerId } }),
-  ),
-  getEndUsersByCustomerId: jest.fn().mockImplementation(() => Promise.resolve({ value: { data: { items: [] } } }),
-  ),
-  getStores: jest.fn().mockImplementation(() => Promise.resolve({ value: { data: { items: [] } } }),
-  ),
-  getDiscountProductsByIds: jest.fn().mockImplementation(() => Promise.resolve({ value: { data: { items: [] } } }),
-  ),
-  getParentProductsByIds: jest.fn().mockImplementation(() => Promise.resolve({ value: { data: { items: [] } } }),
-  ),
-  getEndUsersGroupsByCustomerId: jest.fn().mockImplementation(() => Promise.resolve({ value: { data: { items: [] } } }),
-  ),
-}));
+jest.mock('../../services/useData/useDiscountDetails', () => jest.fn());
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
   useSelector: jest.fn().mockImplementation(() => { }),
@@ -35,62 +22,67 @@ jest.mock('react-redux', () => ({
   useSelector: jest.fn().mockImplementation(() => { }),
 }));
 
-
-const setDiscountCodes = jest.fn().mockImplementation(() => [discountObj]);
-const setCurDiscountCodes = jest.fn().mockImplementation(() => [discountObj]);
-const setHasChanges = jest.fn().mockImplementation(() => false);
-
-
-const useStateSpy = jest.spyOn(React, 'useState');
-useStateSpy.mockImplementation((initial) => [initial, mockSetState]);
-
-
-
-
 describe('<DiscountDetailsScreen/> ', () => {
   let wrapper;
-
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  describe('on mount', () => {
-    it('should call api.getDiscountById', () => {
-      mount(<DiscountDetailsScreen />);
-      expect(api.getDiscountById).toHaveBeenCalledTimes(1);
-      expect(api.getDiscountById).toHaveBeenCalledWith(12);
-
-    });
-    it('should call callback after getDiscountById', () => {
-      mount(<DiscountDetailsScreen />);
-      api.getDiscountById().then(() => {
-        expect(api.getEndUsersByCustomerId).toHaveBeenCalledTimes(1);
-        expect(api.getEndUsersByCustomerId).toHaveBeenCalledWith(customerId);
-
-        expect(api.getStores).toHaveBeenCalledTimes(1);
-        expect(api.getStores).toHaveBeenCalledWith(0, `&customerId=${customerId}`);
-
-        expect(api.getDiscountProductsByIds).toHaveBeenCalledTimes(1);
-        expect(api.getDiscountProductsByIds).toHaveBeenCalledWith(customerId);
-
-        expect(api.getParentProductsByIds).toHaveBeenCalledTimes(1);
-        expect(api.getParentProductsByIds).toHaveBeenCalledWith(customerId, null);
-
-        expect(api.getEndUsersGroupsByCustomerId).toHaveBeenCalledTimes(1);
-        expect(api.getEndUsersGroupsByCustomerId).toHaveBeenCalledWith(customerId);
-      })
-    });
-  });
-  beforeEach(() => {
+  it('should return LinearProgress if curDiscount is null', () => {
+    useDiscountDetails.mockImplementation(() => ({
+      discount: null,
+      curDiscount: null,
+    })
+    )
     wrapper = shallow(
       <DiscountDetailsScreen />,
     );
-  });
-  it('should contains 3 tabs', () => {
-    const tabs = wrapper.find(Tab);
-    expect(tabs.length).toEqual(3)
+    expect(wrapper.contains(<LinearProgress />)).toBe(true)
+    jest.clearAllMocks();
 
   });
 
 
+  describe('DiscountDetailsScreen with data is nut null', () => {
+
+    beforeEach(() => {
+      useDiscountDetails.mockImplementation(() => ({
+        discount: {},
+        curDiscount: {},
+      })
+      )
+      wrapper = shallow(
+        <DiscountDetailsScreen />,
+      );
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should contains 3 tabs', () => {
+      const tabs = wrapper.find(Tab);
+      expect(tabs.length).toEqual(3)
+    });
+
+    it('should return General component on first tab', () => {
+      wrapper.find({ 'data-test': "tabs" }).props().onChange({}, 0);
+      expect(wrapper.find(General)).toHaveLength(1);
+      expect(wrapper.find(CappingAndLimits)).toHaveLength(0);
+      expect(wrapper.find(Eligibility)).toHaveLength(0);
+    });
+
+    it('should return CappingAndLimits component on second tab', () => {
+      wrapper.find({ 'data-test': "tabs" }).props().onChange({}, 1);
+      expect(wrapper.find(General)).toHaveLength(0);
+      expect(wrapper.find(CappingAndLimits)).toHaveLength(1);
+      expect(wrapper.find(Eligibility)).toHaveLength(0);
+    });
+
+    it('should return Eligibility component on third tab', () => {
+      wrapper.find({ 'data-test': "tabs" }).props().onChange({}, 2);
+      expect(wrapper.find(General)).toHaveLength(0);
+      expect(wrapper.find(CappingAndLimits)).toHaveLength(0);
+      expect(wrapper.find(Eligibility)).toHaveLength(1);
+    });
+  })
 });
+
+
+

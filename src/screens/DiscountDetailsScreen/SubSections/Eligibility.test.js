@@ -1,20 +1,21 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Eligibility from './Eligibility';
-import { discountObj, selectOptions } from '../../../../__mocks__/fileMock';
-
-const curMinCartAmount = { key: "CAD", value: "1" }
+import { SelectWithChip } from '../../../components/Inputs';
+import { discountObj } from '../../../../__mocks__/fileMock';
+import EditKeyValueInputs from '../EditKeyValueInputs';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 describe('DiscountDetailsScreen <Eligibility/>', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(
+    wrapper = shallow(
       <Eligibility
         curDiscount={discountObj}
         updateDiscount={jest.fn()}
         setCurDiscount={jest.fn()}
-        selectOptions={selectOptions}
+        selectOptions={{}}
       />,
     );
   });
@@ -22,16 +23,18 @@ describe('DiscountDetailsScreen <Eligibility/>', () => {
     jest.clearAllMocks();
   });
 
-  it('inputs/paragraphs should be populated with discount details data', () => {
-    const { countries, storeIds, parentProductIds, publisherRefIds, endUserGroupIds } = discountObj;
-    expect(wrapper.find({ 'data-test': "countries" }).find('input').instance().value).toEqual(countries.join(','));
-    expect(wrapper.find({ 'data-test': "products" }).find('input').instance().value).toEqual(storeIds.join(','));
-    expect(wrapper.find({ 'data-test': "productsByParent" }).find('input').instance().value).toEqual(parentProductIds.join(','));
-    expect(wrapper.find({ 'data-test': "productsByReference" }).find('input').instance().value).toEqual(publisherRefIds.join(','));
-    expect(wrapper.find({ 'data-test': "endUserGroups" }).find('input').instance().value).toEqual(endUserGroupIds.join(','));
-    expect(wrapper.find('input[name="MANUAL_RENEWAL"]').instance().checked).toEqual(true);
-    expect(wrapper.find('input[name="PURCHASE"]').instance().checked).toEqual(false);
-    expect(wrapper.find('input[name="BUYER"]').instance().checked).toEqual(true);
-    expect(wrapper.find('input[name="RESELLER"]').instance().checked).toEqual(true);
+  it('draw all input components on the page', () => {
+    expect(wrapper.find({ 'data-test': "manualRenewal" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "purchase" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "buyer" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "reseller" }).length).toEqual(1)
+    expect(wrapper.find(EditKeyValueInputs).length).toEqual(1)
+    expect(wrapper.find(Autocomplete).length).toEqual(1)
+    expect(wrapper.find(SelectWithChip).length).toEqual(6)
+  });
+  it('should update error message if new email value is not valid', () => {
+    const useStateSpy = jest.spyOn(React, 'useState')
+    wrapper.find(Autocomplete).props().onChange({ target: { value: 'testValue' } }, [1, 2, 3]);
+    expect(useStateSpy).toHaveBeenCalled();
   });
 });

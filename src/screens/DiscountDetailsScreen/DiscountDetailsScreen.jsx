@@ -31,9 +31,6 @@ const DiscountDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
   const dispatch = useDispatch();
   const { id } = useParams();
-
-  const discountData = useDiscountDetails(id, nxState);
-
   const {
     discount,
     curDiscount,
@@ -42,7 +39,7 @@ const DiscountDetailsScreen = () => {
     setCurDiscount,
     setAmountType,
     selectOptions,
-  } = discountData;
+  } = useDiscountDetails(id, nxState);
 
   const saveDiscount = () => {
     const res = { ...curDiscount };
@@ -146,6 +143,7 @@ const DiscountDetailsScreen = () => {
       </Box>
       <Box my={2} bgcolor='#fff'>
         <Tabs
+          data-test='tabs'
           value={curTab}
           indicatorColor='primary'
           textColor='primary'

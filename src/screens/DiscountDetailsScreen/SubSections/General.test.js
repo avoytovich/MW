@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import General from './General';
 import { discountObj, selectOptions } from '../../../../__mocks__/fileMock';
 
@@ -15,77 +15,43 @@ describe('DiscountDetailsScreen <General/>', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(
+    wrapper = shallow(
       <General
+        curDiscount={discountObj}
+        updateDiscount={jest.fn()}
+        setCurDiscount={jest.fn()}
+        selectOptions={{}}
         amountType={amountType}
-        setAmountType={newAmountType => {
-          amountType = newAmountType
-          wrapper.setProps({ amountType });
+        setAmountType={(newAmountType) => {
+          amountType = newAmountType;
+          wrapper.setProps({ amountType: amountType });
         }}
-        setCurDiscountCodes={jest.fn()}
-        curDiscountLabels={[
-          { key: "neutral", value: "neutral LocalizedLabel" },
-          { key: 'fr-FR', value: "fr- FR LocalizedLabel" }
-        ]}
-        setCurDiscountLabels={jest.fn()}
-        curAmountCurrency={[curAmountCurrency]}
-        setCurAmountCurrency={jest.fn()}
-        curDiscount={discountData}
-        setCurDiscount={(newDiscountData) => {
-          discountData = newDiscountData;
-        }}
-        selectOptions={selectOptions}
       />,
     );
+
   });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('inputs/paragraphs should be populated with discount details data', () => {
-    const { enduserId, name, model, externalContext } = discountData;
-    expect(wrapper.find('input[name="endUser"]').instance().value).toEqual(enduserId);
-    expect(wrapper.find('input[name="discountRuleName"]').instance().value).toEqual(name);
-    expect(wrapper.find('textarea[name="externalContext"]').instance().value).toEqual(externalContext);
-    expect(wrapper.find('input[value="CAMPAIGN"]').instance().checked).toEqual(model === "CAMPAIGN");
-    expect(wrapper.find('input[value="COUPON"]').instance().checked).toEqual(model === "COUPON");
-    expect(wrapper.find('input[value="SINGLE_USE_CODE"]').instance().checked).toEqual(model === "SINGLE_USE_CODE");
+  it('draw all input components on the page', () => {
+    expect(wrapper.find({ 'data-test': "status" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "amountRadioGroup" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "model" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "externalContext" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "discountRuleName" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "localizedLabels" }).length).toEqual(1)
   });
 
-  it('On amountType equal byPercentage, should be percentsInput visible with correct data ', async () => {
-    expect(
-      wrapper.find('input[value="byPercentage"]').props().checked,
-    ).toEqual(true);
-    expect(
-      wrapper.find('input[value="byCurrency"]').props().checked,
-    ).toEqual(false);
-    const amountWrapper = wrapper.find({ 'data-test': "percents" });
-    expect(amountWrapper.find('input').instance().value).toEqual(discountData.discountRate);
-
-    expect(wrapper.contains(wrapper.find({ 'data-test': "currency" }))).toBe(false)
-    expect(wrapper.contains(wrapper.find({ 'data-test': "amount" }))).toBe(false)
+  it('On amountType equal byPercentage, percentsInput should be percentsInput visible', () => {
+    expect(wrapper.find({ 'data-test': "percents" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "amountByCurrency" }).length).toEqual(0)
   });
 
-  it('On amountType change to  byCurrency, inputs currency and amount should be visible with correct data ', async () => {
-    wrapper.find({ 'data-test': "amountRadioGroup" }).first().props().onChange({ target: { value: 'byCurrency' } });
-    expect(wrapper.contains(wrapper.find({ 'data-test': "percents" }))).toBe(false)
-    expect(
-      wrapper.find('input[value="byPercentage"]').props().checked,
-    ).toEqual(false);
-    expect(
-      wrapper.find('input[value="byCurrency"]').props().checked,
-    ).toEqual(true);
-    const currencyWrapper = wrapper.find({ 'data-test': "currency" });
-    expect(currencyWrapper.find('input').instance().value).toEqual(curAmountCurrency.key);
-    const amountWrapper = wrapper.find({ 'data-test': "amount" });
-    expect(amountWrapper.find('input').instance().value).toEqual(curAmountCurrency.value);
-  });
-
-  it('should change discountData when some update is made', async () => {
-    const newValue = 'newExternalContext';
-    wrapper.find('textarea[name="externalContext"]').simulate('change', {
-      target: { name: 'externalContext', value: newValue },
-    });
-    expect(discountData.externalContext).toEqual(newValue);
+  it('On amountType change to  byCurrency, inputs currency and amount should be visible', () => {
+    wrapper.find({ 'data-test': "amountRadioGroup" }).props().onChange({ target: { value: 'byCurrency' } });
+    wrapper.update()
+    expect(wrapper.find({ 'data-test': "percents" }).length).toEqual(0)
+    expect(wrapper.find({ 'data-test': "amountByCurrency" }).length).toEqual(1)
   });
 });
