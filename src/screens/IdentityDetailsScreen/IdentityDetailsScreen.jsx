@@ -99,6 +99,7 @@ const IdentityDetailsScreen = () => {
   return (
     <div className='identity-details-screen'>
       <Tabs
+        data-test='tabs'
         value={curTab}
         onChange={(e, newTab) => setCurTab(newTab)}
         indicatorColor='primary'
