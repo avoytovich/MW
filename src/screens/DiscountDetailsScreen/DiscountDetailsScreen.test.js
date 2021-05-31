@@ -17,10 +17,6 @@ jest.mock('react-router-dom', () => ({
   useParams: jest.fn(() => ({ id: 12 })),
   useHistory: jest.fn(() => ({})),
 }));
-jest.mock('react-redux', () => ({
-  useDispatch: jest.fn(),
-  useSelector: jest.fn().mockImplementation(() => { }),
-}));
 
 describe('<DiscountDetailsScreen/> ', () => {
   let wrapper;
