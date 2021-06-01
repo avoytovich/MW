@@ -20,6 +20,7 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => (
         </Box>
         <Box p={2}>
           <SelectWithChip
+            data-test='managedCustomers'
             label='managedCustomers'
             value={curIdentity.authorizedCustomerIds}
             selectOptions={selectOptions.customers}
@@ -42,6 +43,7 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => (
         </Box>
         <Box p={2}>
           <SelectWithChip
+            data-test='roles'
             label='roles'
             value={curIdentity.roleIds}
             selectOptions={selectOptions.roles}
@@ -64,6 +66,7 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => (
         </Box>
         <Box p={2}>
           <SelectWithChip
+            data-test='metaRoles'
             label='metaRoles'
             value={curIdentity.metaRoleIds}
             selectOptions={selectOptions.metaRoles}

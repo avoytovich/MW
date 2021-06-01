@@ -25,7 +25,7 @@ describe('DiscountDetailsScreen <Identification/>', () => {
     expect(wrapper.contains(<LinearProgress />)).toBe(true)
   });
 
-  it('if identityType = user should return userName, firstName and lastName inputs  ', () => {
+  it(' should return userName, firstName and lastName inputs  ', () => {
     wrapper = shallow(
       <Identification
         curIdentity={{}}
@@ -39,8 +39,9 @@ describe('DiscountDetailsScreen <Identification/>', () => {
     expect(wrapper.find({ 'data-test': "firstName" }).length).toEqual(1)
     expect(wrapper.find({ 'data-test': "lastName" }).length).toEqual(1)
     expect(wrapper.find({ 'data-test': "addSecretButton" }).length).toEqual(0)
-    expect(wrapper.contains(<SecretKeysTable />)).toBe(false)
+    expect(wrapper.find(SecretKeysTable)).toHaveLength(0);
   });
+  
   describe('If identityType = application', () => {
     afterEach(() => {
       jest.clearAllMocks();
@@ -63,6 +64,7 @@ describe('DiscountDetailsScreen <Identification/>', () => {
       expect(wrapper.find({ 'data-test': "firstName" }).length).toEqual(0)
       expect(wrapper.find(SecretKeysTable)).toHaveLength(0);
     });
+
     it('if curIdentity.id exist and curIdentity.secretKeys.length > 0  should return clientId, addSecretButton and SecretKeysTable', () => {
       wrapper = shallow(
         <Identification
