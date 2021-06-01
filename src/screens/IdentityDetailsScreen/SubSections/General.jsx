@@ -34,6 +34,7 @@ const General = ({
             </Box>
             <Box p={2}>
               <FormControlLabel
+                data-test='status'
                 control={(
                   <Switch
                     name="status"
@@ -59,7 +60,7 @@ const General = ({
                 <Typography color="secondary">{localization.t('labels.createDate')}</Typography>
               </Box>
               <Box p={2}>
-                <Typography>{moment(curIdentity.createDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
+                <Typography data-test='createDate'>{moment(curIdentity.createDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
               </Box>
             </Grid>
             <Grid item md={4} sm={12}>
@@ -67,7 +68,7 @@ const General = ({
                 <Typography color="secondary">{localization.t('labels.lastUpdate')}</Typography>
               </Box>
               <Box p={2}>
-                <Typography>{moment(curIdentity.updateDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
+                <Typography data-test='updateDate'>{moment(curIdentity.updateDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
               </Box>
             </Grid>
           </Grid>
@@ -86,18 +87,21 @@ const General = ({
         <Box p={2}>
           <RadioGroup
             row
+            data-test='type'
             aria-label='Type'
             name='Type'
             value={identityType}
             onChange={(e) => setIdentityType(e.target.value)}
           >
             <FormControlLabel
+              data-test='user'
               value='user'
               disabled={!!curIdentity.id}
               control={<Radio color='primary' />}
               label={localization.t('labels.user')}
             />
             <FormControlLabel
+              data-test='application'
               disabled={!!curIdentity.id}
               value='application'
               control={<Radio color='primary' />}
@@ -108,6 +112,7 @@ const General = ({
         </Box>
         <Box p={2} mt={3} width='70%'>
           <InputCustom
+            data-test='contactEmailAddress'
             label='contactEmailAddress'
             value={curIdentity.email}
             onChangeInput={(e) => setCurIdentity({ ...curIdentity, email: e.target.value })}

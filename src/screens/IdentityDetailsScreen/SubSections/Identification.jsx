@@ -19,6 +19,7 @@ const Identification = ({
     <Box width='70%'>
       <Box p={2}>
         <InputCustom
+          data-test='userName'
           isRequired
           idDisabled={!!curIdentity.id}
           label='userName'
@@ -28,13 +29,15 @@ const Identification = ({
       </Box>
       <Box p={2}>
         <InputCustom
-          label='firsName'
+          data-test='firstName'
+          label='firstName'
           value={curIdentity.firstName}
           onChangeInput={(e) => setCurIdentity({ ...curIdentity, firstName: e.target.value })}
         />
       </Box>
       <Box p={2}>
         <InputCustom
+          data-test='lastName'
           label='lastName'
           value={curIdentity.lastName}
           onChangeInput={(e) => setCurIdentity({ ...curIdentity, lastName: e.target.value })}
@@ -45,6 +48,7 @@ const Identification = ({
     <>
       <Box p={2}>
         <InputCustom
+          data-test='clientId'
           label='clientId'
           value={curIdentity.clientId}
           onChangeInput={(e) => setCurIdentity({ ...curIdentity, clientId: e.target.value })}
@@ -70,6 +74,7 @@ const Identification = ({
                 )}
               <Box p={2}>
                 <Button
+                  data-test='addSecretButton'
                   disabled={curIdentity.secretKeys.length > 4}
                   onClick={addSecretKey}
                   variant="outlined"
