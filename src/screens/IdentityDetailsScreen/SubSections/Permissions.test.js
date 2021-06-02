@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { LinearProgress } from '@material-ui/core';
 import Permissions from './Permissions';
 
-describe('DiscountDetailsScreen <Permissions/>', () => {
+describe('IdentityDetailsScreen <Permissions/>', () => {
   let wrapper;
 
   afterEach(() => {

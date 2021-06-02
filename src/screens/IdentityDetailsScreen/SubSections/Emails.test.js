@@ -1,19 +1,27 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { LinearProgress, TableContainer } from '@material-ui/core';
+import { formattedCreateDates } from '../../../../__mocks__/fileMock';
+import localization from '../../../localization';
+
 import Emails from './Emails';
+const tableHeaders = [
+  localization.t('labels.id'),
+  localization.t('labels.emailId'),
+  localization.t('labels.createDate'),
+  localization.t('labels.type')
+];
 const emails = [{
   createDate: 1613120768811,
   emailId: 'emailId',
   id: 'id',
   type: 'type'
 }]
-const formattedDate = '2021/02/12 11:06 (+02:00)';
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
 }));
 
-describe('DiscountDetailsScreen <Emails/>', () => {
+describe('IdentityDetailsScreen <Emails/>', () => {
   let wrapper;
 
   afterEach(() => {
@@ -58,13 +66,22 @@ describe('DiscountDetailsScreen <Emails/>', () => {
         }}
       />
     );
-    expect(wrapper.find({ 'data-test': "tableHeader" }).length).toEqual(4)
-    expect(wrapper.find({ 'data-test': "tableRow" }).length).toEqual(1)
-    expect(wrapper.find({ 'data-test': "idCell" }).text()).toEqual(emails[0].id);
-    expect(wrapper.find({ 'data-test': "emailIdCell" }).text()).toEqual(emails[0].emailId);
-    expect(wrapper.find({ 'data-test': "createDateCell" }).text()).toEqual(formattedDate);
-    expect(wrapper.find({ 'data-test': "typeCell" }).text()).toEqual(emails[0].type);
-
-
+    expect(wrapper.find({ 'data-test': "tableHeader" }).length).toEqual(tableHeaders.length)
+    expect(wrapper.find({ 'data-test': "tableRow" }).length).toEqual(emails.length)
+    wrapper.find({ 'data-test': "tableHeader" }).forEach((tableHeader, index) =>
+      expect(tableHeader.text()).toEqual(tableHeaders[index])
+    )
+    wrapper.find({ 'data-test': "idCell" }).forEach((item, index) =>
+      expect(item.text()).toEqual(emails[index].id)
+    )
+    wrapper.find({ 'data-test': "emailIdCell" }).forEach((item, index) =>
+      expect(item.text()).toEqual(emails[index].emailId)
+    )
+    wrapper.find({ 'data-test': "typeCell" }).forEach((item, index) =>
+      expect(item.text()).toEqual(emails[index].type)
+    )
+    wrapper.find({ 'data-test': "createDateCell" }).forEach((item, index) =>
+      expect(item.text()).toEqual(formattedCreateDates[emails[index].createDate])
+    )
   });
 });

@@ -5,7 +5,7 @@ import SecretKeysTable from './SecretKeysTable';
 
 import Identification from './Identification';
 
-describe('DiscountDetailsScreen <Identification/>', () => {
+describe('IdentityDetailsScreen <Identification/>', () => {
   let wrapper;
 
   afterEach(() => {
@@ -41,7 +41,7 @@ describe('DiscountDetailsScreen <Identification/>', () => {
     expect(wrapper.find({ 'data-test': "addSecretButton" }).length).toEqual(0)
     expect(wrapper.find(SecretKeysTable)).toHaveLength(0);
   });
-  
+
   describe('If identityType = application', () => {
     afterEach(() => {
       jest.clearAllMocks();
