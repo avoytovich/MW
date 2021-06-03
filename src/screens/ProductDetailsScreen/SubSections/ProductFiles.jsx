@@ -29,8 +29,8 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
   };
 
   useEffect(() => {
-    currentProductData?.relatedContents &&
-      setContents([...currentProductData.relatedContents]);
+    currentProductData?.relatedContents
+      && setContents([...currentProductData.relatedContents]);
   }, [currentProductData.relatedContents]);
 
   useEffect(() => {

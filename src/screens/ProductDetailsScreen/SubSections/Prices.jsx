@@ -27,6 +27,8 @@ import InheritanceField from '../../../components/ProductDetails/InheritanceFiel
 import { SelectCustom } from '../../../components/Inputs';
 
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
+import { checkValue } from '../../../services/helpers/dataStructuring';
+
 import api from '../../../api';
 
 const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId }) => {
@@ -34,11 +36,10 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const [needDefault, setNeedDefault] = useState(null);
 
-  const priceByCountryByCurrency = !currentProductData?.prices?.state
-    ? currentProductData?.prices?.priceByCountryByCurrency
-    : currentProductData?.prices?.state === 'inherits'
-    ? currentProductData?.prices?.parentValue?.priceByCountryByCurrency
-    : currentProductData?.prices?.value?.priceByCountryByCurrency;
+  const priceByCountryByCurrency = checkValue(
+    currentProductData?.prices,
+    currentProductData?.prices?.state,
+  )?.priceByCountryByCurrency;
 
   const pricesList = Object.keys(priceByCountryByCurrency);
 
@@ -60,7 +61,7 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
         });
       });
 
-      const needDefault = pricesList.filter((it) => !priceByCountryByCurrency[it]['default']);
+      const needsDefault = pricesList.filter((it) => !priceByCountryByCurrency[it].default);
 
       if (needsDefault.length) {
         setSaveDisabled(true);
@@ -90,10 +91,20 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
       delete pricesData[item.currency];
     }
 
-    setProductData((c) => ({
-      ...c,
-      prices: { ...c.prices, priceByCountryByCurrency: pricesData },
-    }));
+    setProductData((c) => {
+      return {
+        ...c,
+        prices: c.prices?.state
+          ? {
+              ...c.prices,
+              value: {
+                ...c.prices.value,
+                priceByCountryByCurrency: pricesData,
+              },
+            }
+          : { ...c.prices, priceByCountryByCurrency: pricesData },
+      };
+    });
   };
 
   return (
@@ -101,7 +112,7 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
       <Box px={2} className='product-prices'>
         <Box width={245} mb={4}>
           <InheritanceField
-            field={'defaultCurrency'}
+            field='defaultCurrency'
             onChange={setProductData}
             value={currentProductData?.prices}
             parentId={parentId}
@@ -126,7 +137,7 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
 
         <TableContainer component={Paper}>
           <InheritanceField
-            field={'prices'}
+            field='prices'
             onChange={setProductData}
             value={currentProductData?.prices}
             parentId={parentId}
@@ -144,7 +155,7 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
                 <TableCell align='center'>Upsell price</TableCell>
                 <TableCell align='center'>Cross-sell price</TableCell>
                 <TableCell align='center'>VAT included</TableCell>
-                <TableCell></TableCell>
+                <TableCell />
               </TableRow>
             </TableHead>
 

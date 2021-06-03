@@ -8,6 +8,8 @@ import {
   businessSegment,
 } from '../../../services/selectOptions/selectOptions';
 import countriesOptions from '../../../services/selectOptions/countries';
+import { checkValue } from '../../../services/helpers/dataStructuring';
+
 import localization from '../../../localization';
 import {
   SelectWithChip,
@@ -27,11 +29,8 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
 
   useEffect(() => {
     let LifeTimeNumber = false;
-    const lT = currentProductData?.lifeTime?.state
-      ? currentProductData?.lifeTime?.state === 'inherits'
-        ? currentProductData?.lifeTime?.parentValue
-        : currentProductData?.lifeTime?.value
-      : currentProductData?.lifeTime;
+    const lT = checkValue(currentProductData?.lifeTime, currentProductData?.lifeTime?.state);
+
     const res = lT.match(/[a-zA-Z]+|[0-9]+/g);
 
     if (res && res.length > 1 && res[1] !== 'DAY') {
@@ -74,6 +73,22 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
       : setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
 
+  const stylesForVariations = parentId
+    ? {
+        display: 'grid',
+        gridTemplateColumns: `1fr 60px`,
+      }
+    : {};
+
+  const stylesForVariationsLifeTime = parentId
+    ? {
+        display: 'grid',
+        gridTemplateAreas: 'lifeTime count inheritButton',
+        gridTemplateColumns: '1fr 1fr 50px',
+        gridTemplateRows: '1fr',
+      }
+    : {};
+
   return (
     <>
       <Box display='flex' flexDirection='row' alignItems='baseline'>
@@ -82,7 +97,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
         <Box p={2}>
           <InheritanceField
-            field={'status'}
+            field='status'
             onChange={setProductData}
             value={currentProductData?.status}
             parentId={parentId}
@@ -112,7 +127,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
-            field={'catalogId'}
+            field='catalogId'
             onChange={setProductData}
             value={currentProductData?.catalogId}
             selectOptions={selectOptions.catalogs || []}
@@ -135,7 +150,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
-            field={'genericName'}
+            field='genericName'
             onChange={setProductData}
             value={currentProductData.genericName}
             parentId={parentId}
@@ -158,7 +173,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
-            field={'type'}
+            field='type'
             onChange={setProductData}
             value={currentProductData.type}
             selectOptions={type || []}
@@ -181,7 +196,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
-            field={'publisherRefId'}
+            field='publisherRefId'
             onChange={setProductData}
             value={currentProductData.publisherRefId}
             parentId={parentId}
@@ -204,7 +219,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
-            field={'businessSegment'}
+            field='businessSegment'
             onChange={setProductData}
             value={currentProductData.businessSegment}
             selectOptions={businessSegment || []}
@@ -242,6 +257,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             >
               <SelectCustom
                 label='lifeTime'
+                gridArea='lifeTime'
                 value={currentProductData.lifeTime}
                 selectOptions={lifeTime}
                 onChangeSelect={(e) => {
@@ -257,7 +273,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             </InheritanceField>
           </Box>
           {showLifeTimeNumber && (
-            <Box minWidth='165px' p={2}>
+            <Box minWidth='165px' p={2} gridArea='count'>
               <NumberInput
                 isDisabled={currentProductData?.lifeTime?.state === 'inherits'}
                 label='maxPaymentsPart'
@@ -283,7 +299,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           </Box>
           <Box p={2}>
             <InheritanceField
-              field={'physical'}
+              field='physical'
               onChange={setProductData}
               value={currentProductData.physical}
               parentId={parentId}
@@ -309,7 +325,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
         <Box p={2} width='50%'>
           <InheritanceField
-            field={'externalContext'}
+            field='externalContext'
             onChange={setProductData}
             value={currentProductData.externalContext}
             parentId={parentId}
@@ -330,9 +346,9 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
       </Box>
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box p={2} width='50%'>
+        <Box p={2} width='50%' {...stylesForVariations}>
           <InheritanceField
-            field={'sellingStores'}
+            field='sellingStores'
             onChange={setProductData}
             value={currentProductData.sellingStores}
             selectOptions={selectOptions.sellingStores || []}
@@ -363,7 +379,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
         <Box p={2} width='50%'>
           <InheritanceField
-            field={'productFamily'}
+            field='productFamily'
             onChange={setProductData}
             value={currentProductData.productFamily}
             parentId={parentId}
@@ -383,9 +399,9 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
       </Box>
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box p={2} width='50%'>
+        <Box p={2} width='50%' {...stylesForVariations}>
           <InheritanceField
-            field={'blackListedCountries'}
+            field='blackListedCountries'
             onChange={setProductData}
             value={currentProductData.blackListedCountries || []}
             selectOptions={countriesOptions || []}
@@ -416,7 +432,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
         </Box>
         <Box p={2} width='50%'>
           <InheritanceField
-            field={'priceFunction'}
+            field='priceFunction'
             onChange={setProductData}
             value={currentProductData.priceFunction}
             selectOptions={selectOptions.priceFunctions || []}

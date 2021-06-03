@@ -22,7 +22,7 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
       </Box>
       <Box p={2}>
         <FormControlLabel
-          control={
+          control={(
             <Switch
               disabled={!currentProductData.subscriptionTemplate}
               name="allowTrial"
@@ -35,7 +35,7 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
               color="primary"
               checked={currentProductData?.trialAllowed || false}
             />
-          }
+          )}
         />
       </Box>
     </Box>
@@ -51,12 +51,10 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
               subscriptionTemplate: e.target.value,
             });
           }}
-          onClickDelIcon={() =>
-            setProductData({
-              ...currentProductData,
-              subscriptionTemplate: '',
-            })
-          }
+          onClickDelIcon={() => setProductData({
+            ...currentProductData,
+            subscriptionTemplate: '',
+          })}
         />
       </Box>
       <Box p={2}>
@@ -86,13 +84,11 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
               fulfillmentTemplate: e.target.value,
             });
           }}
-          onClickDelIcon={() =>
-            setProductData({
-              ...currentProductData,
-              fulfillmentTemplate: '',
-              releaseDate: '',
-            })
-          }
+          onClickDelIcon={() => setProductData({
+            ...currentProductData,
+            fulfillmentTemplate: '',
+            releaseDate: '',
+          })}
         />
       </Box>
       <Box p={2} width="50%">

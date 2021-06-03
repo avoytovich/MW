@@ -131,7 +131,7 @@ const Variations = ({
                 history.state = {
                   parentId: productId,
                 };
-                history.push(`/products/add`);
+                history.push('/products/add');
               }}
               disabled={!currentProductData?.availableVariables?.length}
             >
@@ -143,8 +143,7 @@ const Variations = ({
       <Box display='flex'>
         <SectionLayout label='bundledProducts' contentWidth='100%'>
           {Object.entries(counts).map(([key, value]) => {
-            const selectValue =
-              selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+            const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
             return (
               <Box
@@ -164,7 +163,7 @@ const Variations = ({
                       disabled
                       value={selectValue.value || ''}
                       fullWidth
-                      label={'Name or Id'}
+                      label="Name or Id"
                       type='text'
                       variant='outlined'
                       onMouseEnter={props.handlePopoverOpen}
@@ -267,7 +266,7 @@ const Variations = ({
                 <TableRow>
                   <TableCell>Parameter Name</TableCell>
                   <TableCell>Name</TableCell>
-                  <TableCell></TableCell>
+                  <TableCell />
                 </TableRow>
               </TableHead>
               <TableBody>

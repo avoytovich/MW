@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, TextField, IconButton, Button, Tooltip } from '@material-ui/core';
+import {
+  Box, Typography, TextField, IconButton, Button, Tooltip,
+} from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 
 import { NumberInput } from '../../../Inputs';
@@ -16,15 +18,12 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
 
   const minParametersCount = parametersList.length < 2;
 
-  const findMax = (list) =>
-    Math.max.apply(
-      Math,
-      list.map(({ to }) => to),
-    );
+  const findMax = (list) => Math.max.apply(
+    Math,
+    list.map(({ to }) => to),
+  );
 
-  const toNumber = (number) => {
-    return typeof number === 'number' ? number : parseInt(number);
-  };
+  const toNumber = (number) => (typeof number === 'number' ? number : parseInt(number));
   return (
     <>
       <Typography variant='h2' className='header'>
@@ -105,13 +104,13 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
               if (val <= max) return;
               val >= range.to
                 ? setRange({
-                    from: val,
-                    to: val + 1,
-                  })
+                  from: val,
+                  to: val + 1,
+                })
                 : setRange({
-                    from: val,
-                    to: range.to,
-                  });
+                  from: val,
+                  to: range.to,
+                });
             }}
             minMAx={{ min: 1, max: range.from + 1 }}
           />
@@ -136,13 +135,11 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
             name=''
             value={range.label}
             type='text'
-            onChange={(e) =>
-              setRange({
-                from: range.from,
-                to: range.to,
-                label: e.target.value,
-              })
-            }
+            onChange={(e) => setRange({
+              from: range.from,
+              to: range.to,
+              label: e.target.value,
+            })}
             fullWidth
             variant='outlined'
           />

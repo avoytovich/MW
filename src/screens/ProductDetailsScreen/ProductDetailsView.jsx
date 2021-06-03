@@ -43,6 +43,7 @@ const ProductDetailsView = ({
   setProductDetails,
   productDetails,
   parentId,
+  variablesDescriptions,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
@@ -57,7 +58,7 @@ const ProductDetailsView = ({
             ?.default?.value
         : prices?.value?.priceByCountryByCurrency[prices?.value?.defaultCurrency]?.default
             ?.value
-      : prices.priceByCountryByCurrency[prices.defaultCurrency]?.default?.value;
+      : prices?.defaultCurrency;
 
     if (catalogId && publisherRefId && genericName && type && currency) {
       setTabsDisabled(false);
@@ -220,9 +221,10 @@ const ProductDetailsView = ({
               setProductDetails={setProductDetails}
               currentProductData={currentProductData}
               productDetails={productDetails}
-              productVariations={currentProductData?.availableVariables}
+              productVariations={productVariations}
               parentId={parentId}
               selectOptions={selectOptions}
+              variablesDescriptions={variablesDescriptions}
             />
           ) : (
             <Variations

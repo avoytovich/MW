@@ -14,7 +14,9 @@ import { InputCustom } from '../../../Inputs';
 
 import '../variations.scss';
 
-const AddParameterFirstStep = ({ setStep, setModalState, onClose, modalState }) => {
+const AddParameterFirstStep = ({
+  setStep, setModalState, onClose, modalState,
+}) => {
   const [value, setValue] = useState('LIST');
 
   return (
@@ -33,12 +35,10 @@ const AddParameterFirstStep = ({ setStep, setModalState, onClose, modalState }) 
       </Typography>
       <InputCustom
         // label="some"
-        onChangeInput={(e) =>
-          setModalState({
-            ...modalState,
-            field: e.target.value,
-          })
-        }
+        onChangeInput={(e) => setModalState({
+          ...modalState,
+          field: e.target.value,
+        })}
         value={modalState?.field || ''}
         isRequired
       />
@@ -52,7 +52,7 @@ const AddParameterFirstStep = ({ setStep, setModalState, onClose, modalState }) 
         // label="some"
         onChangeInput={(e) => setModalState({ ...modalState, label: e.target.value })}
         value={modalState?.label || ''}
-      ></InputCustom>
+      />
       <Typography variant='h4' className='title'>
         Now choose the type of the parameter:
       </Typography>
@@ -71,7 +71,9 @@ const AddParameterFirstStep = ({ setStep, setModalState, onClose, modalState }) 
           />
           <Typography variant='h6' className='radioLabel'>
             Buyer will select a value amongst a set of predefined values. For instance (s)he
-            could select a tee-shirt size amongst {('S', 'M', 'L', 'XL')}
+            could select a tee-shirt size amongst
+            {' '}
+            {('S', 'M', 'L', 'XL')}
           </Typography>
         </Box>
         <Box>
@@ -83,7 +85,8 @@ const AddParameterFirstStep = ({ setStep, setModalState, onClose, modalState }) 
           />
           <Typography variant='h6' className='radioLabel'>
             Buyer will select a range amongst a set of predefined ranges. For instance (s)he
-            could select a number of licenses amongst{' '}
+            could select a number of licenses amongst
+            {' '}
             {('1-10 license(s)', '11-50 licenses', '51-100 licenses')}
           </Typography>
         </Box>

@@ -28,10 +28,10 @@ const AddVariationModal = ({
   };
 
   const handleCreateParameter = () => {
-    let newAvailableVariables = currentProductData?.availableVariables
+    const newAvailableVariables = currentProductData?.availableVariables
       ? JSON.parse(JSON.stringify(currentProductData.availableVariables))
       : [];
-    let frontToBack = JSON.parse(JSON.stringify(modalState));
+    const frontToBack = JSON.parse(JSON.stringify(modalState));
 
     let dataForProductDescriptionRequest = {};
     let dataForProductRquest = {};

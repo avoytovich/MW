@@ -66,12 +66,10 @@ const GeneralSection = ({
         value={currentProductData.sellingStores}
         selectOptions={selectOptions.sellingStores}
         optionName={(item) => item?.displayName}
-        onChangeSelect={(e) =>
-          setProductData({
-            ...currentProductData,
-            sellingStores: e.target.value,
-          })
-        }
+        onChangeSelect={(e) => setProductData({
+          ...currentProductData,
+          sellingStores: e.target.value,
+        })}
         onClickDelIcon={(chip) => {
           const newValue = [...currentProductData.sellingStores].filter((val) => val !== chip);
           setProductData({

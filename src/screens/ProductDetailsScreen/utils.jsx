@@ -2,6 +2,8 @@ import {
   structureSelectOptions,
   renewingProductsOptions,
   productsVariations,
+  localizedValues,
+  backToFront,
 } from '../../services/helpers/dataStructuring';
 import api from '../../api';
 
@@ -45,16 +47,17 @@ const handleGetOptions = (
         priceFunctionsOptions,
         subProducts,
         subscriptions,
+        productDetails,
       ]) => {
         if (!subscriptionOptions) {
-          subscriptionOptions = structureSelectOptions(subscriptions.data?.items, 'name');
+          subscriptionOptions = structureSelectOptions(subscriptions?.data?.items, 'name');
         }
         setSubProductVariations({
           bundledProducts: subProducts?.data?.items,
           variations: productsVariations(renewingProducts?.data?.items, id),
         });
 
-        setProductDetails(productDetails?.data);
+        // setProductDetails(productDetails?.data);
 
         if (!isCancelled) {
           setSelectOptions({
@@ -75,4 +78,96 @@ const handleGetOptions = (
   });
 };
 
-export default handleGetOptions;
+const handleGetProductDetails = (
+  descriptionId,
+  setVariablesDescriptions,
+  setProductDetails,
+) => {
+  if (!descriptionId) return;
+  let result = {};
+  if (descriptionId?.state) {
+    Promise.all([
+      api.getProductDescriptionById(descriptionId?.value),
+      api.getProductDescriptionById(descriptionId?.parentValue),
+    ]).then(([productDescr, parentDescr]) => {
+      const avail = [];
+
+      localizedValues.forEach((it) => {
+        if (productDescr?.data[it]) {
+          Object.keys(productDescr?.data[it]).forEach((loc) => {
+            if (avail.indexOf(loc) < 0) {
+              avail.push(loc);
+            }
+          });
+        }
+      });
+
+      const { data } = productDescr;
+      const { data: dataParent } = parentDescr;
+      const i18nFields = avail.reduce((accumulator, current) => {
+        const childLocalizedValues = localizedValues.reduce((acc, curr) => {
+          return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
+        }, {});
+        const parentLocalizedValues = localizedValues.reduce((acc, curr) => {
+          return { ...acc, [curr]: dataParent[curr] ? dataParent[curr][current] : '' };
+        }, {});
+        return {
+          ...accumulator,
+          [current]: backToFront(parentLocalizedValues, childLocalizedValues),
+        };
+      }, {});
+
+      const productDescrData = { ...productDescr?.data };
+      localizedValues.forEach((item) => delete productDescrData[item]);
+      productDescrData['i18nFields'] = i18nFields;
+
+      // setCurData({ ...productDescrData });
+      // setInitData(JSON.stringify({ ...productDescrData }));
+      // setAvailLocales(avail);
+      if (dataParent?.variableDescriptions) {
+        setVariablesDescriptions(dataParent?.variableDescriptions);
+      }
+      setProductDetails(productDescrData);
+
+      result['avail'] = avail;
+    });
+    return;
+  }
+  api.getProductDescriptionById(descriptionId).then(({ data }) => {
+    const avail = [];
+    localizedValues.forEach((it) => {
+      if (data[it]) {
+        Object.keys(data[it]).forEach((loc) => {
+          if (avail.indexOf(loc) < 0) {
+            avail.push(loc);
+          }
+        });
+      }
+    });
+
+    const i18nFields = avail.reduce((accumulator, current) => {
+      const childLocalizedValues = localizedValues.reduce((acc, curr) => {
+        return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
+      }, {});
+
+      return {
+        ...accumulator,
+        [current]: childLocalizedValues,
+      };
+    }, {});
+
+    const productDescrData = { ...data };
+    localizedValues.forEach((item) => delete productDescrData[item]);
+    productDescrData['i18nFields'] = i18nFields;
+
+    // setCurData({ ...productDescrData });
+    // setInitData(JSON.stringify({ ...productDescrData }));
+    // setAvailLocales(avail);
+    if (data?.variableDescriptions) {
+      setVariablesDescriptions(data?.variableDescriptions);
+    }
+    setProductDetails(productDescrData);
+  });
+};
+
+export { handleGetOptions, handleGetProductDetails };

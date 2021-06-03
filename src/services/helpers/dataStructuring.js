@@ -80,6 +80,15 @@ const defaultStore = {
   },
 };
 
+const localizedValues = [
+  'localizedLongDesc',
+  'localizedManualRenewalEmailDesc',
+  'localizedMarketingName',
+  'localizedPurchaseEmailDesc',
+  'localizedShortDesc',
+  'localizedThankYouDesc',
+];
+
 const productRequiredFields = (product) => {
   let resourcesKeys = null;
 
@@ -218,8 +227,6 @@ const createInheritableValue = (value, parentValue) => {
   return {
     parentValue,
     state,
-    // NC-915: when initialiy inheriting, a field value must be set to parentValue
-    // to allow switching to override mode starting with the value of the core product
     value: state === 'inherits' ? parentValue : value,
   };
 };
@@ -228,7 +235,6 @@ const backToFront = (
   parent,
   resource = defaultProduct,
   independentFields = [
-    // 'blackListedCountries',
     'externalContext',
     'productFamily',
     'priceFunction',
@@ -240,10 +246,6 @@ const backToFront = (
     'nextGenerationOf',
     'id',
     'parentId',
-    // 'sellingStores',
-    // 'availableVariables',
-    // 'lifeTime',
-    // 'genericName',
   ],
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable
@@ -261,48 +263,26 @@ const backToFront = (
   );
   let iResource = R.mergeWith(handler, inputA, inputB);
   // managing fields which cannot inherit
-  iResource = R.mapObjIndexed(
-    // when field is forced to override, value will be standalone, as it is in a core product
-    (value, key) => {
-      if ((independentFields || []).includes(key)) {
-        return createStandaloneValue(value);
-      }
-      return value;
-    },
-    iResource,
-  );
+  iResource = R.mapObjIndexed((value, key) => {
+    if ((independentFields || []).includes(key)) {
+      return createStandaloneValue(value);
+    }
+    return value;
+  }, iResource);
 
   return iResource;
 };
 
-// unwrap will remove the inheritance state layer from each property and put the inner value instead
-// const stateEquals = R.propEq('state');
-// const innerValue = R.prop('value');
-// const frontToBack = () =>
-//   R.map(
-//     R.cond([
-//       [stateEquals('standalone'), innerValue],
-
-//       [
-//         stateEquals('overrides'),
-//         R.ifElse(R.compose(R.isNil, innerValue), R.always(''), innerValue),
-//       ],
-
-//       [R.T, R.always(undefined)],
-//     ]),
-//   );
-
 // MANDATORY FIELDS
 const mandatoryFields = ['lifeTime', 'publisherRefId', 'salesMode'];
-const trial = 'trialAllowed';
 
 const frontToBack = (data) =>
   Object.entries(data).reduce((accumulator, [key, value]) => {
-    let newValue = !value.state
+    let newValue = !value?.state
       ? value
       : value?.state === 'overrides'
-      ? value?.value
-      : undefined;
+      ? value?.value // eslint-disable-line
+      : undefined; // eslint-disable-line
     if (mandatoryFields.includes(key) && !newValue) {
       newValue = value?.parentValue;
     }
@@ -315,6 +295,9 @@ const frontToBack = (data) =>
     }
     return accumulator;
   }, {});
+
+const checkValue = (data, state) =>
+  !state ? data : state === 'inherits' ? data.parentValue : data.value;
 
 const identityRequiredFields = (identity) => {
   const defaultIdentity = {
@@ -341,4 +324,6 @@ export {
   backToFront,
   frontToBack,
   identityRequiredFields,
+  checkValue,
+  localizedValues,
 };

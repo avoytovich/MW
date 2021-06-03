@@ -19,24 +19,14 @@ import SectionLayout from '../../../components/SectionLayout';
 import InheritanceField from '../../../components/ProductDetails/InheritanceField';
 import Popup from '../../../components/Popup';
 
-const defaultLocale = 'en-US';
-const test = 'fr-FR';
-
 const SubProductVariations = ({
   setProductData,
-  setProductDetails,
   currentProductData,
-  productVariations,
-  productDetails,
   parentId,
   selectOptions,
+  variablesDescriptions,
 }) => {
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
-
-  const variables =
-    productVariations?.state === 'inherits'
-      ? productVariations?.parentValue
-      : productVariations?.value;
 
   const counts = {};
   const subProductsList =
@@ -44,12 +34,13 @@ const SubProductVariations = ({
       ? currentProductData?.subProducts.parentValue
       : currentProductData?.subProducts.value;
 
-  subProductsList.forEach((x) => {
+  subProductsList?.forEach((x) => {
     counts[x] = (counts[x] || 0) + 1;
   });
 
+  const bundledDisabled = currentProductData?.subProducts?.state === 'inherits';
   return (
-    <Box display='flex'>
+    <Box display='flex' width='100%'>
       <SectionLayout label='bundledProducts' contentWidth='100%'>
         {Object.entries(counts).map(([key, value]) => {
           const selectValue =
@@ -73,7 +64,7 @@ const SubProductVariations = ({
                     disabled
                     value={selectValue.value || ''}
                     fullWidth
-                    label={'Name or Id'}
+                    label='Name or Id'
                     type='text'
                     variant='outlined'
                     onMouseEnter={props.handlePopoverOpen}
@@ -83,21 +74,25 @@ const SubProductVariations = ({
               />
               <Box marginLeft='17px' height='inherit'>
                 <ButtonGroup
-                  disabled={productVariations?.state === 'inherits'}
+                  disabled={bundledDisabled}
                   size='large'
                   aria-label='large outlined button group'
                   style={{ height: '100%' }}
                 >
                   <Button
+                    disabled={bundledDisabled}
                     onClick={() => {
-                      const index = currentProductData?.subProducts?.findIndex(
+                      const index = currentProductData?.subProducts?.value?.findIndex(
                         (item) => item === selectValue.id,
                       );
-                      const newSubProducts = [...currentProductData.subProducts];
+                      const newSubProducts = [...currentProductData?.subProducts?.value];
                       newSubProducts.splice(index, 1);
                       setProductData({
                         ...currentProductData,
-                        subProducts: newSubProducts,
+                        subProducts: {
+                          ...currentProductData.subProducts,
+                          value: newSubProducts,
+                        },
                       });
                     }}
                   >
@@ -105,10 +100,14 @@ const SubProductVariations = ({
                   </Button>
                   <Button disabled>{value}</Button>
                   <Button
+                    disabled={bundledDisabled}
                     onClick={() => {
                       setProductData({
                         ...currentProductData,
-                        subProducts: [...currentProductData.subProducts, selectValue.id],
+                        subProducts: {
+                          ...currentProductData?.subProducts,
+                          value: [...currentProductData?.subProducts?.value, selectValue.id],
+                        },
                       });
                     }}
                   >
@@ -120,13 +119,16 @@ const SubProductVariations = ({
                 <IconButton
                   color='secondary'
                   aria-label='clear'
-                  disabled={productVariations?.state === 'inherits'}
+                  disabled={bundledDisabled}
                   onClick={() => {
                     setProductData({
                       ...currentProductData,
-                      subProducts: currentProductData.subProducts.value.filter(
-                        (item) => item !== selectValue.id,
-                      ),
+                      subProducts: {
+                        ...currentProductData.subProducts,
+                        value: currentProductData.subProducts.value.filter(
+                          (item) => item !== selectValue.id,
+                        ),
+                      },
                     });
                   }}
                 >
@@ -136,7 +138,8 @@ const SubProductVariations = ({
             </Box>
           );
         })}
-        {productVariations?.state !== 'inherits' && (
+
+        {!bundledDisabled && (
           <Box
             display='flex'
             justifyContent='space-between'
@@ -160,9 +163,10 @@ const SubProductVariations = ({
                 onClick={() => {
                   setProductData({
                     ...currentProductData,
-                    subProducts: currentProductData?.subProducts
-                      ? [...currentProductData.subProducts, selectedBundledProduct]
-                      : [selectedBundledProduct],
+                    subProducts: {
+                      ...currentProductData.subProducts,
+                      value: [...currentProductData.subProducts.value, selectedBundledProduct],
+                    },
                   });
                   setSelectedBundledProduct(null);
                 }}
@@ -174,63 +178,68 @@ const SubProductVariations = ({
         )}
         <Box>
           <InheritanceField
-            field={'availableVariables'}
+            field='subProducts'
             onChange={setProductData}
-            value={currentProductData?.availableVariables}
+            value={currentProductData?.subProducts}
             parentId={parentId}
             currentProductData={currentProductData}
           >
-            <Box style={{ display: 'none' }}></Box>
+            <Box style={{ display: 'none' }} />
           </InheritanceField>
         </Box>
       </SectionLayout>
       <SectionLayout label='variationParameters' width='100%'>
         <Box display='flex' flexDirection='column'>
-          {variables?.map(({ field, defaultValue, localizedValue, value }, i) => {
-            return (
-              <Box display='flex' alignItems='center' key={field}>
-                <Typography>{field}</Typography>
-                <InheritanceField
-                  field='availableVariables'
-                  valuePath={i}
-                  onChange={setProductData}
-                  value={currentProductData?.availableVariables}
-                  parentId={parentId}
-                  currentProductData={currentProductData}
-                >
-                  <RadioGroup
-                    aria-label='type'
-                    name='type'
-                    // value={defaultValue}
-                    // onChange={(e) => {
-                    //   let newVariables = [...currentProductData.availableVariables];
-                    //   newVariables[i].defaultValue = e.target.value;
-                    //   setProductData({
-                    //     ...currentProductData,
-                    //     availableVariables: newVariables,
-                    //   });
-                    //   console.log('E', e.target.value);
-                    // }}
+          {variablesDescriptions?.map(
+            ({ label, description, variableValueDescriptions }, i) => {
+              const disabled = currentProductData[description]?.state === 'inherits';
+              return (
+                <Box display='flex' alignItems='center' key={label || description}>
+                  <Typography>{label || description}</Typography>
+                  <Box
+                    display='flex'
+                    justifyContent='space-between'
+                    alignItems='center'
+                    marginLeft='20px'
+                    width='100%'
                   >
-                    <Box display='flex'>
-                      {value.map((item) => {
-                        return (
-                          <FormControlLabel
-                            key={item}
-                            className='radio'
-                            value={item}
-                            disabled={productVariations?.state === 'inherits'}
-                            control={<Radio color='primary' />}
-                            label={localizedValue ? `${localizedValue[item][test]}` : item}
-                          />
-                        );
-                      })}
-                    </Box>
-                  </RadioGroup>
-                </InheritanceField>
-              </Box>
-            );
-          })}
+                    <InheritanceField
+                      field={description}
+                      valuePath={i}
+                      onChange={setProductData}
+                      value={currentProductData[description]}
+                      parentId={parentId}
+                      currentProductData={currentProductData}
+                    >
+                      <RadioGroup aria-label={description} name={description} disabled>
+                        <Box display='flex'>
+                          {variableValueDescriptions?.map(
+                            ({ descValue, description, localizedValue }) => (
+                              <FormControlLabel
+                                key={description}
+                                className='radio'
+                                value={description}
+                                disabled={disabled}
+                                control={<Radio color='primary' />}
+                                label={
+                                  descValue || '?'
+                                  // localizedValue
+                                  //   ? `${localizedValue[test]}`
+                                  //   : !descValue || typeof descValue == 'undefined'
+                                  //   ? '?'
+                                  //   : descValue
+                                }
+                              />
+                            ),
+                          )}
+                        </Box>
+                      </RadioGroup>
+                    </InheritanceField>
+                  </Box>
+                </Box>
+              );
+            },
+          )}
         </Box>
       </SectionLayout>
     </Box>

@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-import { SelectCustom } from '../../../components/Inputs';
+import { SelectCustom } from '../../Inputs';
 
 import { priceCurrency, countryOptions } from '../../../services/selectOptions/selectOptions';
 
@@ -44,28 +44,28 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
       ...currentProductData,
       prices: parentId
         ? {
-            ...currentProductData.prices,
-            value: {
-              ...currentProductData.prices.value,
-              priceByCountryByCurrency: {
-                ...currentProductData.prices.value.priceByCountryByCurrency,
-                [currency]: {
-                  ...currentProductData?.prices?.priceByCountryByCurrency?.value[currency],
-                  ...countryObj,
-                },
-              },
-            },
-          }
-        : {
-            ...currentProductData.prices,
+          ...currentProductData.prices,
+          value: {
+            ...currentProductData.prices.value,
             priceByCountryByCurrency: {
-              ...currentProductData.prices.priceByCountryByCurrency,
+              ...currentProductData.prices.value.priceByCountryByCurrency,
               [currency]: {
-                ...currentProductData?.prices?.priceByCountryByCurrency[currency],
+                ...currentProductData?.prices?.priceByCountryByCurrency?.value[currency],
                 ...countryObj,
               },
             },
           },
+        }
+        : {
+          ...currentProductData.prices,
+          priceByCountryByCurrency: {
+            ...currentProductData.prices.priceByCountryByCurrency,
+            [currency]: {
+              ...currentProductData?.prices?.priceByCountryByCurrency[currency],
+              ...countryObj,
+            },
+          },
+        },
     });
 
     setCurrency('');
@@ -174,14 +174,14 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
 
         <TableCell align='center' style={{ minWidth: '50px' }}>
           <FormControlLabel
-            control={
+            control={(
               <Checkbox
                 checked={newRow.vatIncluded}
                 onChange={handleCheckbox}
                 name='vatIncluded'
                 color='primary'
               />
-            }
+            )}
             style={{ margin: 0 }}
           />
         </TableCell>

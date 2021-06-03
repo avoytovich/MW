@@ -4,15 +4,15 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import api from '../../api';
 import { showNotification } from '../../redux/actions/HttpNotifications';
-import handleGetOptions from './utils';
-import { defaultProduct } from '../../services/helpers/dataStructuring';
-import localization from '../../localization';
-import ProductDetailsView from './ProductDetailsView';
+import { handleGetOptions, handleGetProductDetails } from './utils';
 import {
+  defaultProduct,
   productRequiredFields,
   backToFront,
   frontToBack,
 } from '../../services/helpers/dataStructuring';
+import localization from '../../localization';
+import ProductDetailsView from './ProductDetailsView';
 
 const CreateProduct = () => {
   const dispatch = useDispatch();
@@ -31,29 +31,28 @@ const CreateProduct = () => {
   });
   const [productVariations, setSubProductVariations] = useState({});
 
-  const [isLoading, setLoading] = useState(true);
-  const [productHasChanges, setProductChanges] = useState(false);
-
-  const [productData, setProductData] = useState(null);
-  const [checkOutStores, setCheckOutStores] = useState([]);
   const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
 
   const [productDetails, setProductDetails] = useState(null);
+  const [variablesDescriptions, setVariablesDescriptions] = useState([]);
 
   useEffect(() => {
     setCurrentProductData({ ...currentProductData, customerId });
   }, [customerId]);
   // ToDo: refactor handleGetOptions props !!!
+  const parentId = history?.state?.parentId;
   useEffect(() => {
-    const parentId = history?.state?.parentId;
     let isCancelled = false;
     parentId
       ? api.getProductById(parentId).then(({ data: product }) => {
           if (!isCancelled) {
             const checkedProduct = productRequiredFields(product);
-            setProductData(checkedProduct);
+            handleGetProductDetails(
+              checkedProduct?.descriptionId,
+              setVariablesDescriptions,
+              setProductDetails,
+            );
             setCurrentProductData(backToFront(checkedProduct));
-            setLoading(false);
           }
           const { customerId, id, descriptionId } = product;
           handleGetOptions(
@@ -93,9 +92,9 @@ const CreateProduct = () => {
         ? currentProductData?.customerId?.value
         : currentProductData?.customerId;
     }
-    if (currentProductData?.id) {
+    if (parentId) {
       delete dataToSave.id;
-      dataToSave.parentId = currentProductData?.id;
+      dataToSave['parentId'] = parentId;
     }
     api.addNewProduct(dataToSave).then((res) => {
       const location = res.headers.location.split('/');
@@ -108,6 +107,7 @@ const CreateProduct = () => {
   if (!customerId) {
     return <>Select customer</>;
   }
+
   return (
     <ProductDetailsView
       selectOptions={selectOptions}
@@ -119,6 +119,7 @@ const CreateProduct = () => {
       productDetails={productDetails}
       setProductLocalizationChanges={setProductLocalizationChanges}
       productHasLocalizationChanges={productHasLocalizationChanges}
+      variablesDescriptions={variablesDescriptions}
     />
   );
 };

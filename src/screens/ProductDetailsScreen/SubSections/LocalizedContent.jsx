@@ -2,10 +2,9 @@
 import React, { useState, useEffect, forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as R from 'ramda';
 
-import {
-  Box, Tabs, Tab, LinearProgress,
-} from '@material-ui/core';
+import { Box, Tabs, Tab, LinearProgress } from '@material-ui/core';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -17,16 +16,7 @@ import LocalizationInputs from './LocalizationInputs';
 import { SelectCustom } from '../../../components/Inputs';
 
 import { availableLocales } from '../../../services/selectOptions/selectOptions';
-import { backToFront } from '../../../services/helpers/dataStructuring';
-
-const localizedValues = [
-  'localizedLongDesc',
-  'localizedManualRenewalEmailDesc',
-  'localizedMarketingName',
-  'localizedPurchaseEmailDesc',
-  'localizedShortDesc',
-  'localizedThankYouDesc',
-];
+import { backToFront, localizedValues } from '../../../services/helpers/dataStructuring';
 
 const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
   const dispatch = useDispatch();
@@ -40,51 +30,63 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
 
   const makeNewData = (locale) => {
     const dataToSave = { ...curData };
+    dataToSave.i18nFields[value || locale] = { ...newTabValues };
+    // Object.entries(newTabValues).forEach(([v, k]) => {
+    //   if (newTabValues[v] !== curTabValues[v]) {
+    //     const dataKey = `localized${v.charAt(0).toUpperCase() + v.slice(1)}`;
 
-    Object.entries(newTabValues).forEach(([v, k]) => {
-      if (newTabValues[v] !== curTabValues[v]) {
-        const dataKey = `localized${v.charAt(0).toUpperCase() + v.slice(1)}`;
-
-        if (!k) {
-          delete dataToSave[dataKey][locale || value];
-        } else {
-          if (k?.state) {
-            dataToSave[dataKey].value[locale || value] = k?.value;
-          } else {
-            dataToSave[dataKey][locale || value] = k;
-          }
-        }
-      }
-    });
+    //     if (!k) {
+    //       delete dataToSave[dataKey][locale || value];
+    //     } else if (k?.state) {
+    //       dataToSave[dataKey].value[locale || value] = k?.value;
+    //     } else {
+    //       dataToSave[dataKey][locale || value] = k;
+    //     }
+    //   }
+    // });
     setCurData({ ...dataToSave });
     setNewData({ ...dataToSave });
   };
 
   const getValues = () => {
-    const inputValues = {};
+    const inputValues = !value
+      ? localizedValues.reduce((acc, cur) => {
+          return {
+            ...acc,
+            [cur]: parentId
+              ? {
+                  value: '',
+                  state: 'overrides',
+                  parentValue: '',
+                }
+              : '',
+          };
+        }, {})
+      : { ...curData.i18nFields[value] };
 
-    localizedValues.forEach((v) => {
-      if (curData && curData[v] && curData[v].state) {
-        let newKey = v.replace('localized', '');
-        newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1);
+    // localizedValues.forEach((v) => {
+    //   if (curData && curData[v] && curData[v].state) {
+    //     let newKey = v.replace('localized', '');
+    //     newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1);
 
-        inputValues[newKey] = {
-          value: curData[v].value[value],
-          state: !!curData[v].value[value]
-            ? 'overrides'
-            : curData[v].parentValue[value]
-            ? 'inherits'
-            : 'overrides',
-          parentValue: curData[v].parentValue[value],
-        };
-      }
-      if (curData && curData[v] && curData[v][value]) {
-        let newKey = v.replace('localized', '');
-        newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1);
+    //     inputValues[newKey] = {
+    //       value: curData[v].value[value],
+    //       state:
+    //         R.isEmpty(curData[v].value[value]) ||
+    //         R.isNil(curData[v].value[value]) ||
+    //         R.equals(curData[v].value[value], curData[v].parentValue[value])
+    //           ? 'inherits'
+    //           : 'overrides',
+    //       parentValue: curData[v].parentValue[value],
+    //     };
+    //   }
+    //   if (curData && curData[v] && curData[v][value]) {
+    //     let newKey = v.replace('localized', '');
+    //     newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1);
 
-        inputValues[newKey] = curData[v][value];
-      }
-    });
+    //     inputValues[newKey] = curData[v][value];
+    //   }
+    // });
 
     setCurTabValues({ ...inputValues });
     setNewTabValues({ ...inputValues });
@@ -97,7 +99,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
 
     const dataToSave = { ...curData };
 
-    localizedValues.forEach((it) => delete dataToSave[it][locale]);
+    delete dataToSave.i18nFields[locale];
 
     setAvailLocales((c) => c.filter((l) => l !== locale));
     setCurData({ ...dataToSave });
@@ -137,10 +139,28 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
             });
           }
         });
-        const result = backToFront(parentDescr?.data, productDescr?.data);
 
-        setCurData({ ...result });
-        setInitData(JSON.stringify({ ...result }));
+        const { data } = productDescr;
+        const { data: dataParent } = parentDescr;
+        const i18nFields = avail.reduce((accumulator, current) => {
+          const childLocalizedValues = localizedValues.reduce((acc, curr) => {
+            return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
+          }, {});
+          const parentLocalizedValues = localizedValues.reduce((acc, curr) => {
+            return { ...acc, [curr]: dataParent[curr] ? dataParent[curr][current] : '' };
+          }, {});
+          return {
+            ...accumulator,
+            [current]: backToFront(parentLocalizedValues, childLocalizedValues),
+          };
+        }, {});
+
+        const productDescrData = { ...productDescr?.data };
+        localizedValues.forEach((item) => delete productDescrData[item]);
+        productDescrData['i18nFields'] = i18nFields;
+
+        setCurData({ ...productDescrData });
+        setInitData(JSON.stringify({ ...productDescrData }));
         setAvailLocales(avail);
       });
       return;
@@ -157,8 +177,23 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
         }
       });
 
-      setCurData({ ...data });
-      setInitData(JSON.stringify({ ...data }));
+      const i18nFields = avail.reduce((accumulator, current) => {
+        const childLocalizedValues = localizedValues.reduce((acc, curr) => {
+          return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
+        }, {});
+
+        return {
+          ...accumulator,
+          [current]: childLocalizedValues,
+        };
+      }, {});
+
+      const productDescrData = { ...data };
+      localizedValues.forEach((item) => delete productDescrData[item]);
+      productDescrData['i18nFields'] = i18nFields;
+
+      setCurData({ ...productDescrData });
+      setInitData(JSON.stringify({ ...productDescrData }));
       setAvailLocales(avail);
     });
   }, [currentProductData.descriptionId]);
@@ -166,7 +201,8 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
   useEffect(() => getValues(), [value]);
 
   useEffect(() => {
-    const hasChanges = JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
+    const hasChanges =
+      JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
 
     if (hasChanges) {
       makeNewData();
@@ -198,16 +234,14 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
               }`}
               key={locale}
               value={locale}
-              component={forwardRef(({ children, ...props }, ref) => {
-                return (
-                  <div role='button' {...props} ref={ref}>
-                    {children}
-                    {locale !== curData?.fallbackLocale && (
-                      <ClearIcon onClick={(e) => removeLocale(e, locale)} />
-                    )}
-                  </div>
-                );
-              })}
+              component={forwardRef(({ children, ...props }, ref) => (
+                <div role='button' {...props} ref={ref}>
+                  {children}
+                  {locale !== curData?.fallbackLocale && (
+                    <ClearIcon onClick={(e) => removeLocale(e, locale)} />
+                  )}
+                </div>
+              ))}
             />
           ))}
 
@@ -238,6 +272,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
       <Box display='flex' flexDirection='row' alignItems='baseline' width='80%'>
         <LocalizationInputs
           handleChange={handleChange}
+          setNewTabValues={setNewTabValues}
           data={newTabValues}
           isDefault={
             value === curData?.fallbackLocale || value === curData?.fallbackLocale?.value

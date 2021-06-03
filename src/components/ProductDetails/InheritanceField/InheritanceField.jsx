@@ -33,19 +33,7 @@ const InheritanceField = (props) => {
 
   const handleChange = (value) => {
     const { value: inheritanceValue, onChange } = props;
-    if (field === 'availableVariables') {
-      let newVariables = [...inheritanceValue.value];
-      newVariables[valuePath].defaultValue = value.target.value;
 
-      onChange({
-        ...currentProductData,
-        [field]: {
-          ...inheritanceValue,
-          value: newVariables,
-        },
-      });
-      return;
-    }
     if (field === 'status') {
       onChange({
         ...currentProductData,
@@ -94,10 +82,6 @@ const InheritanceField = (props) => {
     inputValue = inputValue[field];
   }
 
-  if (field === 'availableVariables') {
-    // inputValue = inputValue[valuePath].defaultValue;
-  }
-
   const inputProps = {
     value: inputValue,
     isDisabled: value.state === 'inherits',
@@ -113,11 +97,11 @@ const InheritanceField = (props) => {
   };
 
   if (field === 'status') {
-    inputProps['checked'] = inputValue === 'ENABLED' ? true : false;
+    inputProps.checked = inputValue === 'ENABLED';
   }
 
   if (field === 'physical') {
-    inputProps['checked'] = inputValue;
+    inputProps.checked = inputValue;
   }
 
   const newChildren = {

@@ -8,11 +8,12 @@ import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
-import handleGetOptions from './utils';
+import { handleGetOptions, handleGetProductDetails } from './utils';
 import {
   productRequiredFields,
   backToFront,
   frontToBack,
+  localizedValues,
 } from '../../services/helpers/dataStructuring';
 
 const EditProduct = () => {
@@ -35,6 +36,7 @@ const EditProduct = () => {
   const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
   const [productVariations, setSubProductVariations] = useState({});
   const [productDetails, setProductDetails] = useState(null);
+  const [variablesDescriptions, setVariablesDescriptions] = useState([]);
 
   const saveDetails = () => {
     if (productHasChanges) {
@@ -51,11 +53,34 @@ const EditProduct = () => {
         window.location.reload();
       });
     }
+
     if (productHasLocalizationChanges) {
-      const detailsData = frontToBack(productHasLocalizationChanges);
-      const localizationData = frontToBack(productHasLocalizationChanges);
-      if (!detailsData?.customerId) {
-        detailsData.customerId = currentProductData?.customerId?.state
+      const i18nFields = Object.entries(productHasLocalizationChanges.i18nFields).reduce(
+        (accumulator, [key, value]) => {
+          return { ...accumulator, [key]: frontToBack(value || {}) };
+        },
+        {},
+      );
+
+      const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
+        const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
+          if (!!i18nFields[key][cur]) {
+            return { ...ac, [key]: value[cur] };
+          }
+          return ac;
+        }, {});
+        return {
+          ...acc,
+          [cur]: localizedValue || {},
+        };
+      }, {});
+
+      if (productHasLocalizationChanges.i18nFields) {
+        delete productHasLocalizationChanges.i18nFields;
+      }
+      const dataToSave = R.mergeRight(productHasLocalizationChanges, localizedValuesToSave);
+      if (!productHasLocalizationChanges?.customerId) {
+        productHasLocalizationChanges.customerId = currentProductData?.customerId?.state
           ? currentProductData?.customerId?.value
           : currentProductData?.customerId;
       }
@@ -64,7 +89,7 @@ const EditProduct = () => {
           currentProductData?.descriptionId?.state
             ? currentProductData.descriptionId.value
             : currentProductData.descriptionId,
-          detailsData,
+          dataToSave,
         )
         .then(() => {
           dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
@@ -99,6 +124,11 @@ const EditProduct = () => {
           api.getProductById(product.parentId).then(({ data }) => {
             const result = backToFront(productRequiredFields(data), product);
             const productData = JSON.parse(JSON.stringify(result));
+            handleGetProductDetails(
+              result?.descriptionId,
+              setVariablesDescriptions,
+              setProductDetails,
+            );
             setProductData(productData);
             setCurrentProductData(result);
             setLoading(false);
@@ -130,8 +160,8 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (
-      JSON.stringify(currentProductData?.sellingStores)
-      !== JSON.stringify(productData?.sellingStores)
+      JSON.stringify(currentProductData?.sellingStores) !==
+      JSON.stringify(productData?.sellingStores)
     ) {
       filterCheckoutStores();
     }
@@ -166,6 +196,7 @@ const EditProduct = () => {
       setProductDetails={setProductDetails}
       productDetails={productDetails}
       parentId={currentProductData?.parentId}
+      variablesDescriptions={variablesDescriptions}
     />
   );
 };
