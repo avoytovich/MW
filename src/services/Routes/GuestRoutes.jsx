@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 
 import Session from '../session';
+import defPath from '../helpers/routingHelper';
 
 import AuthScreen from '../../screens/AuthScreen';
 import RecoveryPasswordScreen from '../../screens/RecoveryPasswordScreen';
@@ -31,21 +32,21 @@ const SignedRoutes = () => {
       >
         <Switch location={location}>
           <Route
-            path='/login'
+            path={`${defPath}/login`}
             component={AuthScreen}
           />
 
           <Route
-            path='/recover-password'
+            path={`${defPath}/recover-password`}
             component={RecoveryPasswordScreen}
           />
 
           <Route
-            path='/update-password/:token'
+            path={`${defPath}/update-password/:token`}
             component={UpdatePasswordScreen}
           />
 
-          <Redirect to='/login' />
+          <Redirect to={`${defPath}/login`} />
         </Switch>
       </CSSTransition>
     </SwitchTransition>

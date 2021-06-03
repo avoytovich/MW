@@ -23,8 +23,9 @@ const SelectWithChip = ({
   <TextField
     fullWidth
     select
+    data-test={label}
     SelectProps={{
-      multiple: isMultiple,
+      multiple: true,
       value: selectOptions ? value : [],
       onChange: onChangeSelect,
       renderValue: (selected) => (
@@ -62,7 +63,7 @@ const SelectWithChip = ({
         </InputAdornment>
       ),
     }}
-    label={localization.t(`labels.${label}`)}
+    label={label ? localization.t(`labels.${label}`) : null}
   >
     {selectOptions?.length ? (
       selectOptions.map((item) => (

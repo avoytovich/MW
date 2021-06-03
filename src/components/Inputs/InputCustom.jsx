@@ -14,6 +14,7 @@ const InputCustom = ({
 }) => (
   <form autoComplete='off'>
     <TextField
+      data-test={label}
       helperText={helperText}
       disabled={isDisabled}
       multiline={isMultiline}

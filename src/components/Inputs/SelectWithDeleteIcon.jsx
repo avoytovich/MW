@@ -24,6 +24,7 @@ const SelectWithDeleteIcon = ({
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
       value={selectOptions && value ? value : ''}
+      data-test={label}
       inputProps={{
         name: label,
         id: label,

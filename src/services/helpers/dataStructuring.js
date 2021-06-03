@@ -101,34 +101,6 @@ const productRequiredFields = (product) => {
   return { ...defaultProduct, ...product, resources: resourcesKeys };
 };
 
-const discountRequiredFields = (discount) => {
-  const defDiscount = {
-    publisherRefIds: [],
-    name: '',
-    maxUsages: '',
-    maxUsePerStore: '',
-    maxUsePerEndUser: '',
-    countries: [],
-    parentProductIds: [],
-    productIds: [],
-    enduserId: '',
-    storeIds: [],
-    codes: {},
-    endUserGroupIds: [],
-    endUserEmails: [],
-    level: 'PRODUCT',
-    model: 'CAMPAIGN',
-    status: 'ENABLED',
-    discountRate: 1,
-    endDate: Date.now() + 6.048e8,
-    endUserTypes: ['BUYER', 'RESELLER'],
-  };
-  const resObj = { ...defDiscount, ...discount };
-  if (resObj.discountRate && resObj.discountRate < 1) {
-    resObj.discountRate = discount.discountRate * 100;
-  }
-  return resObj;
-};
 const structureSelectOptions = (options, optionValue, ...otherOptions) => {
   let res = [];
   if (options) {
@@ -317,7 +289,6 @@ export {
   storeRequiredFields,
   productRequiredFields,
   structureSelectOptions,
-  discountRequiredFields,
   renewingProductsOptions,
   defaultProduct,
   productsVariations,
