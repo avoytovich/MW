@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { Zoom, Button, Box, Typography, Tabs, Tab } from '@material-ui/core';
+import {
+  Zoom, Button, Box, Typography, Tabs, Tab,
+} from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 
 import localization from '../../localization';
@@ -51,13 +53,15 @@ const ProductDetailsView = ({
   const history = useHistory();
 
   useEffect(() => {
-    const { catalogId, publisherRefId, genericName, type, prices } = currentProductData;
-    const currency = prices?.state
+    const {
+      catalogId, publisherRefId, genericName, type, prices,
+    } = currentProductData;
+    const currency = prices?.state // eslint-disable-line
       ? prices?.state === 'inherits'
         ? prices?.parentValue?.priceByCountryByCurrency[prices?.parentValue?.defaultCurrency]
-            ?.default?.value
+          ?.default?.value
         : prices?.value?.priceByCountryByCurrency[prices?.value?.defaultCurrency]?.default
-            ?.value
+          ?.value
       : prices?.defaultCurrency;
 
     if (catalogId && publisherRefId && genericName && type && currency) {
@@ -138,12 +142,12 @@ const ProductDetailsView = ({
           {parentId && (
             <Tab
               style={{ color: 'white', backgroundColor: '#9ec5ec' }}
-              label={
+              label={(
                 <Box display='flex' alignItems='center'>
                   <ArrowBack color='white' />
                   {localization.t(`labels.${backButton}`)}
                 </Box>
-              }
+              )}
               value={7}
             />
           )}
@@ -214,7 +218,7 @@ const ProductDetailsView = ({
             />
           </SectionLayout>
         )}
-        {curTab === 4 ? (
+        {curTab === 4 ? ( // eslint-disable-line
           parentId ? (
             <SubProductVariations
               setProductData={setProductData}
@@ -266,6 +270,7 @@ ProductDetailsView.propTypes = {
   setProductDetails: PropTypes.func,
   productDetails: PropTypes.object,
   parentId: PropTypes.string,
+  variablesDescriptions: PropTypes.array,
 };
 
 export default ProductDetailsView;

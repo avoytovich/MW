@@ -56,15 +56,13 @@ const EditProduct = () => {
 
     if (productHasLocalizationChanges) {
       const i18nFields = Object.entries(productHasLocalizationChanges.i18nFields).reduce(
-        (accumulator, [key, value]) => {
-          return { ...accumulator, [key]: frontToBack(value || {}) };
-        },
+        (accumulator, [key, value]) => ({ ...accumulator, [key]: frontToBack(value || {}) }),
         {},
       );
 
       const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
         const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
-          if (!!i18nFields[key][cur]) {
+          if (i18nFields[key][cur]) {
             return { ...ac, [key]: value[cur] };
           }
           return ac;
@@ -99,7 +97,7 @@ const EditProduct = () => {
   };
   const filterCheckoutStores = () => {
     const res = [];
-    const storesList = currentProductData?.sellingStores?.state
+    const storesList = currentProductData?.sellingStores?.state // eslint-disable-line
       ? currentProductData?.sellingStores?.state === 'inherits'
         ? currentProductData?.sellingStores?.parentValue
         : currentProductData?.sellingStores?.value
@@ -123,13 +121,13 @@ const EditProduct = () => {
         if (product?.parentId) {
           api.getProductById(product.parentId).then(({ data }) => {
             const result = backToFront(productRequiredFields(data), product);
-            const productData = JSON.parse(JSON.stringify(result));
+            const initData = JSON.parse(JSON.stringify(result));
             handleGetProductDetails(
               result?.descriptionId,
               setVariablesDescriptions,
               setProductDetails,
             );
-            setProductData(productData);
+            setProductData(initData);
             setCurrentProductData(result);
             setLoading(false);
           });
@@ -160,8 +158,8 @@ const EditProduct = () => {
 
   useEffect(() => {
     if (
-      JSON.stringify(currentProductData?.sellingStores) !==
-      JSON.stringify(productData?.sellingStores)
+      JSON.stringify(currentProductData?.sellingStores)
+      !== JSON.stringify(productData?.sellingStores)
     ) {
       filterCheckoutStores();
     }

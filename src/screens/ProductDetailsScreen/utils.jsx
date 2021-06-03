@@ -15,7 +15,7 @@ const handleGetOptions = (
   setSelectOptions,
   selectOptions,
   setSubProductVariations,
-  setProductDetails,
+  // setProductDetails,
 ) => {
   let subscriptionOptions = null;
 
@@ -47,7 +47,7 @@ const handleGetOptions = (
         priceFunctionsOptions,
         subProducts,
         subscriptions,
-        productDetails,
+        // productDetails,
       ]) => {
         if (!subscriptionOptions) {
           subscriptionOptions = structureSelectOptions(subscriptions?.data?.items, 'name');
@@ -84,7 +84,7 @@ const handleGetProductDetails = (
   setProductDetails,
 ) => {
   if (!descriptionId) return;
-  let result = {};
+  const result = {};
   if (descriptionId?.state) {
     Promise.all([
       api.getProductDescriptionById(descriptionId?.value),
@@ -105,12 +105,17 @@ const handleGetProductDetails = (
       const { data } = productDescr;
       const { data: dataParent } = parentDescr;
       const i18nFields = avail.reduce((accumulator, current) => {
-        const childLocalizedValues = localizedValues.reduce((acc, curr) => {
-          return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
-        }, {});
-        const parentLocalizedValues = localizedValues.reduce((acc, curr) => {
-          return { ...acc, [curr]: dataParent[curr] ? dataParent[curr][current] : '' };
-        }, {});
+        const childLocalizedValues = localizedValues.reduce(
+          (acc, curr) => ({ ...acc, [curr]: data[curr] ? data[curr][current] : '' }),
+          {},
+        );
+        const parentLocalizedValues = localizedValues.reduce(
+          (acc, curr) => ({
+            ...acc,
+            [curr]: dataParent[curr] ? dataParent[curr][current] : '',
+          }),
+          {},
+        );
         return {
           ...accumulator,
           [current]: backToFront(parentLocalizedValues, childLocalizedValues),
@@ -119,7 +124,8 @@ const handleGetProductDetails = (
 
       const productDescrData = { ...productDescr?.data };
       localizedValues.forEach((item) => delete productDescrData[item]);
-      productDescrData['i18nFields'] = i18nFields;
+      // eslint-desible-next-line
+      productDescrData.i18nFields = i18nFields;
 
       // setCurData({ ...productDescrData });
       // setInitData(JSON.stringify({ ...productDescrData }));
@@ -129,7 +135,7 @@ const handleGetProductDetails = (
       }
       setProductDetails(productDescrData);
 
-      result['avail'] = avail;
+      result.avail = avail;
     });
     return;
   }
@@ -146,9 +152,10 @@ const handleGetProductDetails = (
     });
 
     const i18nFields = avail.reduce((accumulator, current) => {
-      const childLocalizedValues = localizedValues.reduce((acc, curr) => {
-        return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
-      }, {});
+      const childLocalizedValues = localizedValues.reduce(
+        (acc, curr) => ({ ...acc, [curr]: data[curr] ? data[curr][current] : '' }),
+        {},
+      );
 
       return {
         ...accumulator,
@@ -158,7 +165,8 @@ const handleGetProductDetails = (
 
     const productDescrData = { ...data };
     localizedValues.forEach((item) => delete productDescrData[item]);
-    productDescrData['i18nFields'] = i18nFields;
+    // eslint-desible-next-line
+    productDescrData.i18nFields = i18nFields;
 
     // setCurData({ ...productDescrData });
     // setInitData(JSON.stringify({ ...productDescrData }));

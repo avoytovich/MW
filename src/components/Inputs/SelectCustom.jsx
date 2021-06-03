@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { MenuItem, TextField, CircularProgress, InputAdornment, Box } from '@material-ui/core';
+import {
+  MenuItem, TextField, CircularProgress, InputAdornment, Box,
+} from '@material-ui/core';
 import localization from '../../localization';
 
 const SelectCustom = ({

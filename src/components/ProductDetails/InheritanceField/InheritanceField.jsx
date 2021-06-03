@@ -6,20 +6,14 @@ import LinkOffIcon from '@material-ui/icons/LinkOff';
 
 const InheritanceField = (props) => {
   const {
-    children: Children,
-    value,
-    onChange,
-    parentId,
-    currentProductData,
-    field,
-    valuePath,
+    children: Children, value, parentId, currentProductData, field, onChange,
   } = props;
 
   if (!Children) return null;
   if (!parentId || !value?.state) return Children;
 
   const handleOnClickDelIcon = (chip) => {
-    const { value: inheritanceValue, onChange } = props;
+    const { value: inheritanceValue } = props;
     const newValue = [...inheritanceValue.value].filter((val) => val !== chip);
 
     onChange({
@@ -32,7 +26,7 @@ const InheritanceField = (props) => {
   };
 
   const handleChange = (value) => {
-    const { value: inheritanceValue, onChange } = props;
+    const { value: inheritanceValue } = props;
 
     if (field === 'status') {
       onChange({
@@ -151,7 +145,10 @@ const InheritanceField = (props) => {
 InheritanceField.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.any,
-  key: PropTypes.string,
+  children: PropTypes.node,
+  parentId: PropTypes.string,
+  currentProductData: PropTypes.object,
+  field: PropTypes.string,
 };
 
 export default InheritanceField;

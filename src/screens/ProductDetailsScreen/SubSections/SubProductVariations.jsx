@@ -25,14 +25,16 @@ const SubProductVariations = ({
   parentId,
   selectOptions,
   variablesDescriptions,
+  open,
+  handlePopoverOpen,
+  handlePopoverClose,
 }) => {
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
 
   const counts = {};
-  const subProductsList =
-    currentProductData?.subProducts?.state === 'inherits'
-      ? currentProductData?.subProducts.parentValue
-      : currentProductData?.subProducts.value;
+  const subProductsList = currentProductData?.subProducts?.state === 'inherits'
+    ? currentProductData?.subProducts.parentValue
+    : currentProductData?.subProducts.value;
 
   subProductsList?.forEach((x) => {
     counts[x] = (counts[x] || 0) + 1;
@@ -43,8 +45,7 @@ const SubProductVariations = ({
     <Box display='flex' width='100%'>
       <SectionLayout label='bundledProducts' contentWidth='100%'>
         {Object.entries(counts).map(([key, value]) => {
-          const selectValue =
-            selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+          const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
           return (
             <Box
@@ -56,10 +57,10 @@ const SubProductVariations = ({
             >
               <Popup
                 text={selectValue.value}
-                childrenComponent={(props) => (
+                childrenComponent={() => (
                   <TextField
                     name={key}
-                    aria-owns={props.open ? `mouse-over-popover ${key}` : undefined}
+                    aria-owns={open ? `mouse-over-popover ${key}` : undefined}
                     aria-haspopup='true'
                     disabled
                     value={selectValue.value || ''}
@@ -67,8 +68,8 @@ const SubProductVariations = ({
                     label='Name or Id'
                     type='text'
                     variant='outlined'
-                    onMouseEnter={props.handlePopoverOpen}
-                    onMouseLeave={props.handlePopoverClose}
+                    onMouseEnter={handlePopoverOpen}
+                    onMouseLeave={handlePopoverClose}
                   />
                 )}
               />
@@ -214,11 +215,11 @@ const SubProductVariations = ({
                       <RadioGroup aria-label={description} name={description} disabled>
                         <Box display='flex'>
                           {variableValueDescriptions?.map(
-                            ({ descValue, description, localizedValue }) => (
+                            ({ descValue, description: _description }) => (
                               <FormControlLabel
-                                key={description}
+                                key={_description}
                                 className='radio'
-                                value={description}
+                                value={_description}
                                 disabled={disabled}
                                 control={<Radio color='primary' />}
                                 label={
@@ -248,12 +249,13 @@ const SubProductVariations = ({
 
 SubProductVariations.propTypes = {
   setProductData: PropTypes.func,
-  setProductDetails: PropTypes.func,
   currentProductData: PropTypes.object,
-  productVariations: PropTypes.object,
-  productDetails: PropTypes.object,
   parentId: PropTypes.string,
   selectOptions: PropTypes.object,
+  open: PropTypes.bool,
+  handlePopoverOpen: PropTypes.func,
+  handlePopoverClose: PropTypes.func,
+  variablesDescriptions: PropTypes.array,
 };
 
 export default SubProductVariations;

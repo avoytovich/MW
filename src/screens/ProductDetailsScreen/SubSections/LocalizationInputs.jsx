@@ -43,17 +43,17 @@ const LocalizationInputs = ({
 
     newData[name]?.state
       ? handleChange(
-          name,
-          curContent === '<p><br></p>'
-            ? {
-                ...newData[name],
-                value: '',
-              }
-            : {
-                ...newData[name],
-                value: curContent,
-              },
-        )
+        name,
+        curContent === '<p><br></p>'
+          ? {
+            ...newData[name],
+            value: '',
+          }
+          : {
+            ...newData[name],
+            value: curContent,
+          },
+      )
       : handleChange(name, curContent === '<p><br></p>' ? '' : curContent);
     setEditing(false);
   };
@@ -112,9 +112,9 @@ const LocalizationInputs = ({
 
   const stylesForVariations = parentId
     ? {
-        display: 'grid',
-        gridTemplateColumns: `1fr 50px`,
-      }
+      display: 'grid',
+      gridTemplateColumns: '1fr 50px',
+    }
     : {};
 
   return (

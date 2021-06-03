@@ -25,7 +25,7 @@ const NavItem = ({
           rel="noreferrer"
           className='listItemButton'
         >
-          {Icon && <Icon size="20" className='apiLink'/>}
+          {Icon && <Icon size="20" className='apiLink' />}
           {title}
         </a>
       )

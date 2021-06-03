@@ -58,6 +58,23 @@ const Variations = ({
     setOpen(false);
   };
 
+  const handleDeleteVariable = (field) => {
+    const newAvailableVariables = currentProductData.availableVariables.filter(
+      (item) => item.field !== field,
+    );
+    const newVariableDescriptions = productDetails.variableDescriptions.filter(
+      ({ description }) => description !== field,
+    );
+    setProductData({
+      ...currentProductData,
+      availableVariables: newAvailableVariables,
+    });
+    setProductDetails({
+      ...productDetails,
+      variableDescriptions: newVariableDescriptions,
+    });
+  };
+
   return (
     <Box display='flex' flexDirection='column' width='100%'>
       <SectionLayout label='productVariations' wrapperWidth='initial'>
@@ -163,7 +180,7 @@ const Variations = ({
                       disabled
                       value={selectValue.value || ''}
                       fullWidth
-                      label="Name or Id"
+                      label='Name or Id'
                       type='text'
                       variant='outlined'
                       onMouseEnter={props.handlePopoverOpen}
@@ -278,22 +295,7 @@ const Variations = ({
                       <IconButton
                         color='secondary'
                         aria-label='clear'
-                        onClick={() => {
-                          const newAvailableVariables = currentProductData.availableVariables.filter(
-                            (item) => item.field !== field,
-                          );
-                          const newVariableDescriptions = productDetails.variableDescriptions.filter(
-                            ({ description }) => description !== field,
-                          );
-                          setProductData({
-                            ...currentProductData,
-                            availableVariables: newAvailableVariables,
-                          });
-                          setProductDetails({
-                            ...productDetails,
-                            variableDescriptions: newVariableDescriptions,
-                          });
-                        }}
+                        onClick={() => handleDeleteVariable(field)}
                       >
                         <ClearIcon />
                       </IconButton>

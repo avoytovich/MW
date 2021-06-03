@@ -4,6 +4,7 @@ import {
   Box, Typography, TextField, IconButton, Button, Tooltip,
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import { NumberInput } from '../../../Inputs';
 
@@ -11,13 +12,15 @@ import '../variations.scss';
 
 const defauldRange = { from: 1, to: 2, label: '' };
 
-const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
+const AddParameterSecondStepRange = ({
+  onClose, onSubmit, modalState, setModalState,
+}) => {
   const [range, setRange] = useState(defauldRange);
   const [parametersList, setParametersList] = useState([]);
   const [max, setMax] = useState(0);
 
   const minParametersCount = parametersList.length < 2;
-
+  // eslint-disable-next-line
   const findMax = (list) => Math.max.apply(
     Math,
     list.map(({ to }) => to),
@@ -49,7 +52,7 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
             <NumberInput
               value={from}
               isDisabled
-              onChangeInput={(e) => null}
+              onChangeInput={() => null}
               minMAx={{ min: 1, max: Infinity }}
             />
           </Box>
@@ -57,7 +60,7 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
             <NumberInput
               value={to}
               isDisabled
-              onChangeInput={(e) => null}
+              onChangeInput={() => null}
               minMAx={{ min: 2, max: Infinity }}
             />
           </Box>
@@ -78,8 +81,8 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
               aria-label='remove'
               onClick={() => {
                 const newParametersList = parametersList.slice(0, i);
-                const max = findMax(newParametersList);
-                setRange({ from: max + 1, to: max + 2, label: '' });
+                const newMax = findMax(newParametersList);
+                setRange({ from: newMax + 1, to: newMax + 2, label: '' });
                 setParametersList(newParametersList);
                 setModalState({
                   ...modalState,
@@ -154,11 +157,11 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
                 { from: range.from, to: range.to, label: range.label },
               ]);
               setRange({ from: range.to + 1, to: range.to + 2, label: '' });
-              const max = findMax([
+              const newMax = findMax([
                 ...parametersList,
                 { from: range.from, to: range.to, label: range.label },
               ]);
-              setMax(max);
+              setMax(newMax);
               setModalState({
                 ...modalState,
                 rangesList: [
@@ -200,6 +203,8 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState }) => {
 AddParameterSecondStepRange.propTypes = {
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
+  modalState: PropTypes.object,
+  setModalState: PropTypes.func,
 };
 
 export default AddParameterSecondStepRange;

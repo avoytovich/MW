@@ -31,7 +31,9 @@ import { checkValue } from '../../../services/helpers/dataStructuring';
 
 import api from '../../../api';
 
-const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId }) => {
+const Prices = ({
+  currentProductData, setProductData, setSaveDisabled, parentId,
+}) => {
   const [prices, setPrices] = useState([]);
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const [needDefault, setNeedDefault] = useState(null);
@@ -91,20 +93,18 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
       delete pricesData[item.currency];
     }
 
-    setProductData((c) => {
-      return {
-        ...c,
-        prices: c.prices?.state
-          ? {
-              ...c.prices,
-              value: {
-                ...c.prices.value,
-                priceByCountryByCurrency: pricesData,
-              },
-            }
-          : { ...c.prices, priceByCountryByCurrency: pricesData },
-      };
-    });
+    setProductData((c) => ({
+      ...c,
+      prices: c.prices?.state
+        ? {
+          ...c.prices,
+          value: {
+            ...c.prices.value,
+            priceByCountryByCurrency: pricesData,
+          },
+        }
+        : { ...c.prices, priceByCountryByCurrency: pricesData },
+    }));
   };
 
   return (
@@ -172,14 +172,14 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
                   <TableCell align='center'>{pr.crossSell || '-'}</TableCell>
                   <TableCell align='center' style={{ minWidth: '120px', padding: 0 }}>
                     <FormControlLabel
-                      control={
+                      control={(
                         <Checkbox
                           disabled
                           checked={pr.vatIncluded}
                           name='checkedB'
                           color='primary'
                         />
-                      }
+                      )}
                       style={{ margin: 0 }}
                     />
                   </TableCell>
@@ -282,9 +282,6 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
 Prices.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
-  selectOptions: PropTypes.object,
-  inputErrors: PropTypes.object,
-  setInputErrors: PropTypes.func,
   parentId: PropTypes.string,
   setSaveDisabled: PropTypes.func,
 };

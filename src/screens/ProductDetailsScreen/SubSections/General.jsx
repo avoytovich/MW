@@ -20,7 +20,9 @@ import {
 } from '../../../components/Inputs';
 import InheritanceField from '../../../components/ProductDetails/InheritanceField';
 
-const General = ({ setProductData, currentProductData, selectOptions, parentId }) => {
+const General = ({
+  setProductData, currentProductData, selectOptions, parentId,
+}) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
     number: 1,
     value: '',
@@ -54,40 +56,40 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
       ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
       : lifeTimeUpdateValue.value;
 
-    currentProductData?.lifeTime?.state
+    currentProductData?.lifeTime?.state // eslint-disable-line
       ? currentProductData?.lifeTime?.state === 'inherits'
         ? setProductData({
-            ...currentProductData,
-            lifeTime: {
-              ...currentProductData.lifeTime,
-              parentValue: newLifeTime,
-            },
-          })
+          ...currentProductData,
+          lifeTime: {
+            ...currentProductData.lifeTime,
+            parentValue: newLifeTime,
+          },
+        })
         : setProductData({
-            ...currentProductData,
-            lifeTime: {
-              ...currentProductData.lifeTime,
-              value: newLifeTime,
-            },
-          })
+          ...currentProductData,
+          lifeTime: {
+            ...currentProductData.lifeTime,
+            value: newLifeTime,
+          },
+        })
       : setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
 
   const stylesForVariations = parentId
     ? {
-        display: 'grid',
-        gridTemplateColumns: `1fr 60px`,
-      }
+      display: 'grid',
+      gridTemplateColumns: '1fr 60px',
+    }
     : {};
 
-  const stylesForVariationsLifeTime = parentId
-    ? {
-        display: 'grid',
-        gridTemplateAreas: 'lifeTime count inheritButton',
-        gridTemplateColumns: '1fr 1fr 50px',
-        gridTemplateRows: '1fr',
-      }
-    : {};
+  // const stylesForVariationsLifeTime = parentId
+  //   ? {
+  //       display: 'grid',
+  //       gridTemplateAreas: 'lifeTime count inheritButton',
+  //       gridTemplateColumns: '1fr 1fr 50px',
+  //       gridTemplateRows: '1fr',
+  //     }
+  //   : {};
 
   return (
     <>
@@ -206,12 +208,10 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
               isRequired
               label='publisherRefID'
               value={currentProductData.publisherRefId}
-              onChangeInput={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  publisherRefId: e.target.value,
-                })
-              }
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                publisherRefId: e.target.value,
+              })}
             />
           </InheritanceField>
         </Box>
@@ -335,12 +335,10 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
               isMultiline
               label='externalContext'
               value={currentProductData.externalContext}
-              onChangeInput={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  externalContext: e.target.value,
-                })
-              }
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                externalContext: e.target.value,
+              })}
             />
           </InheritanceField>
         </Box>
@@ -359,12 +357,10 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
               label='sellingStores'
               value={currentProductData.sellingStores}
               selectOptions={selectOptions.sellingStores}
-              onChangeSelect={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  sellingStores: e.target.value,
-                })
-              }
+              onChangeSelect={(e) => setProductData({
+                ...currentProductData,
+                sellingStores: e.target.value,
+              })}
               onClickDelIcon={(chip) => {
                 const newValue = [...currentProductData.sellingStores].filter(
                   (val) => val !== chip,
@@ -388,12 +384,10 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             <InputCustom
               label='family'
               value={currentProductData.productFamily}
-              onChangeInput={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  productFamily: e.target.value,
-                })
-              }
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                productFamily: e.target.value,
+              })}
             />
           </InheritanceField>
         </Box>
@@ -412,12 +406,10 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
               label='blockedCountries'
               value={currentProductData.blackListedCountries || []}
               selectOptions={countriesOptions}
-              onChangeSelect={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  blackListedCountries: e.target.value,
-                })
-              }
+              onChangeSelect={(e) => setProductData({
+                ...currentProductData,
+                blackListedCountries: e.target.value,
+              })}
               onClickDelIcon={(chip) => {
                 const newValue = [...currentProductData.blackListedCountries].filter(
                   (val) => val !== chip,

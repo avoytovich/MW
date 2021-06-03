@@ -25,7 +25,7 @@ const SelectWithChip = ({
     select
     data-test={label}
     SelectProps={{
-      multiple: true,
+      multiple: isMultiple,
       value: selectOptions ? value : [],
       onChange: onChangeSelect,
       renderValue: (selected) => (
@@ -84,8 +84,8 @@ SelectWithChip.propTypes = {
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   onClickDelIcon: PropTypes.func,
-  isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
+  isMultiple: PropTypes.bool,
 };
 
 export default SelectWithChip;

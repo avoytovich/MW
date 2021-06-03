@@ -2,9 +2,10 @@
 import React, { useState, useEffect, forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import * as R from 'ramda';
 
-import { Box, Tabs, Tab, LinearProgress } from '@material-ui/core';
+import {
+  Box, Tabs, Tab, LinearProgress,
+} from '@material-ui/core';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -50,18 +51,19 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
 
   const getValues = () => {
     const inputValues = !value
-      ? localizedValues.reduce((acc, cur) => {
-          return {
-            ...acc,
-            [cur]: parentId
-              ? {
-                  value: '',
-                  state: 'overrides',
-                  parentValue: '',
-                }
-              : '',
-          };
-        }, {})
+      ? localizedValues.reduce(
+        (acc, cur) => ({
+          ...acc,
+          [cur]: parentId
+            ? {
+              value: '',
+              state: 'overrides',
+              parentValue: '',
+            }
+            : '',
+        }),
+        {},
+      )
       : { ...curData.i18nFields[value] };
 
     // localizedValues.forEach((v) => {
@@ -143,12 +145,17 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
         const { data } = productDescr;
         const { data: dataParent } = parentDescr;
         const i18nFields = avail.reduce((accumulator, current) => {
-          const childLocalizedValues = localizedValues.reduce((acc, curr) => {
-            return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
-          }, {});
-          const parentLocalizedValues = localizedValues.reduce((acc, curr) => {
-            return { ...acc, [curr]: dataParent[curr] ? dataParent[curr][current] : '' };
-          }, {});
+          const childLocalizedValues = localizedValues.reduce(
+            (acc, curr) => ({ ...acc, [curr]: data[curr] ? data[curr][current] : '' }),
+            {},
+          );
+          const parentLocalizedValues = localizedValues.reduce(
+            (acc, curr) => ({
+              ...acc,
+              [curr]: dataParent[curr] ? dataParent[curr][current] : '',
+            }),
+            {},
+          );
           return {
             ...accumulator,
             [current]: backToFront(parentLocalizedValues, childLocalizedValues),
@@ -157,7 +164,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
 
         const productDescrData = { ...productDescr?.data };
         localizedValues.forEach((item) => delete productDescrData[item]);
-        productDescrData['i18nFields'] = i18nFields;
+        productDescrData.i18nFields = i18nFields;
 
         setCurData({ ...productDescrData });
         setInitData(JSON.stringify({ ...productDescrData }));
@@ -178,9 +185,10 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
       });
 
       const i18nFields = avail.reduce((accumulator, current) => {
-        const childLocalizedValues = localizedValues.reduce((acc, curr) => {
-          return { ...acc, [curr]: data[curr] ? data[curr][current] : '' };
-        }, {});
+        const childLocalizedValues = localizedValues.reduce(
+          (acc, curr) => ({ ...acc, [curr]: data[curr] ? data[curr][current] : '' }),
+          {},
+        );
 
         return {
           ...accumulator,
@@ -190,7 +198,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
 
       const productDescrData = { ...data };
       localizedValues.forEach((item) => delete productDescrData[item]);
-      productDescrData['i18nFields'] = i18nFields;
+      productDescrData.i18nFields = i18nFields;
 
       setCurData({ ...productDescrData });
       setInitData(JSON.stringify({ ...productDescrData }));
@@ -201,8 +209,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
   useEffect(() => getValues(), [value]);
 
   useEffect(() => {
-    const hasChanges =
-      JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
+    const hasChanges = JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
 
     if (hasChanges) {
       makeNewData();

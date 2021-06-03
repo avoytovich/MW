@@ -117,35 +117,33 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
   return res;
 };
 
-const renewingProductsOptions = (options) =>
-  options.map((item) => {
-    const value = item?.genericName
-      ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}
+const renewingProductsOptions = (options) => options.map((item) => {
+  const value = item?.genericName
+    ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}
           ${item.subscriptionTemplate || ''})`
-      : item?.id;
+    : item?.id;
 
-    return { id: item.id, value };
-  });
+  return { id: item.id, value };
+});
 
-const productsVariations = (renewingProducts, productId) =>
-  productId
-    ? renewingProducts
-        ?.filter((item) => item.id === productId)
-        .reduce((accumulator, current) => {
-          // eslint-disable-next-line
+const productsVariations = (renewingProducts, productId) => (productId
+  ? renewingProducts
+    ?.filter((item) => item.id === productId)
+    .reduce((accumulator, current) => {
+      // eslint-disable-next-line
           current.availableVariables = current?.availableVariables?.reduce(
-            (acc, curr) => [
-              ...acc,
-              {
-                ...curr,
-                fieldValue: current[curr.field],
-              },
-            ],
-            [],
-          );
-          return [...accumulator, current];
-        }, [])[0]
-    : {};
+        (acc, curr) => [
+          ...acc,
+          {
+            ...curr,
+            fieldValue: current[curr.field],
+          },
+        ],
+        [],
+      );
+      return [...accumulator, current];
+    }, [])[0]
+  : {});
 
 const storeRequiredFields = (store) => {
   const res = { ...defaultStore, ...store };
@@ -192,10 +190,9 @@ const createStandaloneValue = (value) => {
 };
 
 const createInheritableValue = (value, parentValue) => {
-  const state =
-    R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue)
-      ? 'inherits'
-      : 'overrides'; // initial state, user can force after
+  const state = R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue)
+    ? 'inherits'
+    : 'overrides'; // initial state, user can force after
   return {
     parentValue,
     state,
@@ -221,10 +218,9 @@ const backToFront = (
   ],
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable
-  if (!parent) return;
+  if (!parent) resource;
 
-  const handler = (resourceOwn, parentOwn) =>
-    createInheritableValue(resourceOwn.value, parentOwn.parentValue);
+  const handler = (resourceOwn, parentOwn) => createInheritableValue(resourceOwn.value, parentOwn.parentValue);
   const inputA = R.mapObjIndexed(
     (value) => createInheritableValue(value, undefined),
     resource,
@@ -249,12 +245,13 @@ const backToFront = (
 const mandatoryFields = ['lifeTime', 'publisherRefId', 'salesMode'];
 
 const frontToBack = (data) =>
+  // eslint-disable-next-line
   Object.entries(data).reduce((accumulator, [key, value]) => {
-    let newValue = !value?.state
+    let newValue = !value?.state // eslint-disable-line
       ? value
       : value?.state === 'overrides'
-      ? value?.value // eslint-disable-line
-      : undefined; // eslint-disable-line
+        ? value?.value
+        : undefined;
     if (mandatoryFields.includes(key) && !newValue) {
       newValue = value?.parentValue;
     }
@@ -269,7 +266,7 @@ const frontToBack = (data) =>
   }, {});
 
 const checkValue = (data, state) =>
-  !state ? data : state === 'inherits' ? data.parentValue : data.value;
+  (!state ? data : state === 'inherits' ? data.parentValue : data.value); // eslint-disable-line
 
 const identityRequiredFields = (identity) => {
   const defaultIdentity = {

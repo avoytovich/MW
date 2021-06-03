@@ -61,7 +61,7 @@ const AddVariationModal = ({
         );
     } else {
       variableValueDescription = frontToBack?.rangesList.reduce(
-        (acc, { from, to, label }, i) => {
+        (acc, { from, to, label }) => {
           const value1 = {
             description: `${from}-${to}`,
             localizedValue: {
