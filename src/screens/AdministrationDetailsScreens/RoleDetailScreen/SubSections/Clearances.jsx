@@ -26,6 +26,7 @@ const Clearances = ({ curRole, setCurRole, selectOptions }) => (
         </Box>
         <Box pt={2}>
           <SelectWithChip
+            data-test='conditionsOfAvailability'
             label='conditionsOfAvailability'
             value={curRole.availabilityConditions}
             selectOptions={selectOptions.conditionsOfAvailability}
