@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import localization from '../../../localization';
-import { formattedCreateDates } from '../../../../__mocks__/fileMock';
+import { formattedCreateDates, testDate } from '../../../../__mocks__/fileMock';
 import SecretKeysTable from './SecretKeysTable';
 const secrets = [{
-  createDate: 1613120768811,
+  createDate: testDate,
   secret: 'secret',
 }]
 const tableHeaders = [

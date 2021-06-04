@@ -18,7 +18,7 @@ const General = ({ curRole, setCurRole }) => (
               <Typography color="secondary">{localization.t('labels.createDate')}</Typography>
             </Box>
             <Box p={2}>
-              <Typography>{moment(curRole.createDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
+              <Typography data-test='createDate'>{moment(curRole.createDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
             </Box>
           </Grid>
           <Grid item md={4} sm={12}>
@@ -26,25 +26,26 @@ const General = ({ curRole, setCurRole }) => (
               <Typography color="secondary">{localization.t('labels.lastUpdate')}</Typography>
             </Box>
             <Box p={2}>
-              <Typography>{moment(curRole.updateDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
+              <Typography data-test='updateDate'>{moment(curRole.updateDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
             </Box>
           </Grid>
           <Grid item md={4} sm={12}>
             {curRole.lastUpdateReason
-            && (
-            <>
-              <Box pt={4} pl={2}>
-                <Typography color="secondary">{localization.t('labels.lastUpdateReason')}</Typography>
-              </Box>
-              <Box p={2}>
-                <Typography>{curRole.lastUpdateReason}</Typography>
-              </Box>
-            </>
-            )}
+              && (
+                <>
+                  <Box pt={4} pl={2}>
+                    <Typography color="secondary">{localization.t('labels.lastUpdateReason')}</Typography>
+                  </Box>
+                  <Box p={2}>
+                    <Typography data-test='lastUpdateReason'>{curRole.lastUpdateReason}</Typography>
+                  </Box>
+                </>
+              )}
           </Grid>
         </Grid>
         <Box p={2} mt={3} width='70%'>
           <InputCustom
+            data-test='name'
             label='name'
             value={curRole.name}
             onChangeInput={(e) => setCurRole({ ...curRole, name: e.target.value })}
@@ -53,6 +54,7 @@ const General = ({ curRole, setCurRole }) => (
         </Box>
         <Box p={2} width='70%'>
           <InputCustom
+            data-test='description'
             label='description'
             isMultiline
             value={curRole.description}
@@ -61,6 +63,7 @@ const General = ({ curRole, setCurRole }) => (
         </Box>
         <Box p={2} width='70%'>
           <InputCustom
+            data-test='reasonForCurrentChange'
             label='reasonForCurrentChange'
             value={curRole.reason}
             onChangeInput={(e) => setCurRole({ ...curRole, reason: e.target.value })}

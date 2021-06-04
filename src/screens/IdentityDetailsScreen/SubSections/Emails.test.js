@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { LinearProgress, TableContainer } from '@material-ui/core';
-import { formattedCreateDates } from '../../../../__mocks__/fileMock';
+import { formattedCreateDates, testDate } from '../../../../__mocks__/fileMock';
 import localization from '../../../localization';
 
 import Emails from './Emails';
@@ -12,7 +12,7 @@ const tableHeaders = [
   localization.t('labels.type')
 ];
 const emails = [{
-  createDate: 1613120768811,
+  createDate: testDate,
   emailId: 'emailId',
   id: 'id',
   type: 'type'
