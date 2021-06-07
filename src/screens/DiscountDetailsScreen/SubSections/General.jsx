@@ -44,6 +44,7 @@ const General = ({
           </Box>
           <Box px={2}>
             <FormControlLabel
+              data-test='status'
               control={(
                 <Switch
                   name="status"
@@ -67,6 +68,7 @@ const General = ({
         </Box>
         <Box p={2}>
           <SelectWithDeleteIcon
+            data-test='endUser'
             label="endUser"
             value={curDiscount.enduserId}
             selectOptions={selectOptions.endUsers}
@@ -86,6 +88,7 @@ const General = ({
         </Box>
         <Box p={2}>
           <InputCustom
+            data-test='discountRuleName'
             label="discountRuleName"
             isRequired
             value={curDiscount.name}
@@ -103,6 +106,7 @@ const General = ({
           </Typography>
         </Box>
         <EditKeyValueInputs
+          data-test='localizedLabels'
           curValue={curDiscount.localizedLabels}
           setCurValue={(value) => setCurDiscount({ ...curDiscount, localizedLabels: value })}
           selectOptions={availableLocales}
@@ -111,6 +115,7 @@ const General = ({
         />
         <Box p={2}>
           <InputCustom
+            data-test='externalContext'
             isMultiline
             label="externalContext"
             value={curDiscount.externalContext}
@@ -150,6 +155,7 @@ const General = ({
           {amountType === 'byPercentage' ? (
             <Box p={2}>
               <NumberInput
+                data-test='percents'
                 label="percents"
                 value={curDiscount.discountRate}
                 onChangeInput={(e) => {
@@ -164,6 +170,7 @@ const General = ({
           ) : (
             curDiscount.amountByCurrency && (
             <EditKeyValueInputs
+              data-test='amountByCurrency'
               curValue={curDiscount.amountByCurrency}
               setCurValue={(value) => setCurDiscount(
                 { ...curDiscount, amountByCurrency: value },
@@ -182,6 +189,7 @@ const General = ({
         <Box p={2}>
           <RadioGroup
             row
+            data-test='model'
             aria-label="Model"
             name="Model"
             value={curDiscount.model}
@@ -206,6 +214,7 @@ const General = ({
         </Box>
         {curDiscount.model === 'COUPON' && (
           <EditKeyValueInputs
+            data-test='codes'
             labels={['language', 'code']}
             curValue={curDiscount.codes}
             setCurValue={(value) => setCurDiscount({ ...curDiscount, codes: value })}
