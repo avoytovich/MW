@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,8 +16,7 @@ import Identification from './SubSections/Identification';
 import Permissions from './SubSections/Permissions';
 import Emails from './SubSections/Emails';
 import localization from '../../localization';
-
-import { structureSelectOptions, identityRequiredFields } from '../../services/helpers/dataStructuring';
+import useIdentityDetails from '../../services/useData/useIdentityDetails';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import SectionLayout from '../../components/SectionLayout';
@@ -25,66 +24,21 @@ import './identityDetailsScreen.scss';
 
 const IdentityDetailsScreen = () => {
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState(true);
   const [curTab, setCurTab] = useState(0);
-  const [update, setUpdate] = useState(0);
   const { id } = useParams();
   const history = useHistory();
-
-  const [selectOptions, setSelectOptions] = useState({
-    roles: null,
-    metaRoles: null,
-    customers: null,
-  });
-  const [curIdentity, setCurIdentity] = useState(null);
-  const [identity, setIdentity] = useState(null);
-  const [hasChanges, setHasChanges] = useState(false);
-  const [identityType, setIdentityType] = useState('user');
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  useEffect(() => {
-    let isCancelled = false;
-    setLoading(true);
-    const identityData = id !== 'add'
-      ? api.getIdentityById(id)
-      : Promise.resolve({
-        data: {
-          customerId: nxState.selectedCustomer.id,
-        },
-      });
-    identityData.then(({ data }) => {
-      if (!isCancelled) {
-        const checkedIdentity = identityRequiredFields(data);
-        setIdentity({ ...checkedIdentity });
-        setCurIdentity({ ...checkedIdentity });
-        setLoading(false);
-        if (data.clientId) {
-          setIdentityType('application');
-        }
-      }
-      if (id !== 'add') {
-        Promise.allSettled([
-          api.getRoleById(`usableForIdentity/${id}`),
-          api.getMetaRoles(0, `&customerId=${data.customerId}`),
-          api.getCustomers(),
-        ]).then(([rolesOptions, metaRolesOptions, customersOptions]) => {
-          setSelectOptions({
-            ...selectOptions,
-            roles: structureSelectOptions(rolesOptions.value?.data.items, 'name') || [],
-            metaRoles: structureSelectOptions(metaRolesOptions.value?.data.items, 'name') || [],
-            customers: structureSelectOptions(customersOptions.value?.data.items, 'name') || [],
-          });
-        });
-      }
-    })
-      .catch(() => {
-        if (!isCancelled) {
-          setLoading(false);
-        }
-      });
-
-    return () => { isCancelled = true; };
-  }, [update]);
+  const {
+    setUpdate,
+    curIdentity,
+    isLoading,
+    identityType,
+    setIdentityType,
+    setCurIdentity,
+    hasChanges,
+    selectOptions,
+  } = useIdentityDetails(id, nxState);
 
   const addSecretKey = () => {
     api.addNewSecretKeyToIdentity(id).then(() => {
@@ -126,11 +80,6 @@ const IdentityDetailsScreen = () => {
       });
     }
   };
-  useEffect(() => {
-    setHasChanges(JSON.stringify(curIdentity) !== JSON.stringify(identity));
-
-    return () => setHasChanges(false);
-  }, [curIdentity]);
 
   if (isLoading) return <LinearProgress />;
 
