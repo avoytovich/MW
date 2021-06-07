@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,11 +12,10 @@ import {
 } from '@material-ui/core';
 import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
 import {
-  addDenialOptions,
-  formPrivilegeOptions,
-  requiredFields,
+
   formattingForSending,
 } from './utils';
+import useRoleDetailsData from '../../../services/useData/useRoleDetailsData';
 import SectionLayout from '../../../components/SectionLayout';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 import localization from '../../../localization';
@@ -26,21 +25,19 @@ import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
 
 const RoleDetailScreen = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
-  const history = useHistory();
-
-  const [update, setUpdate] = useState(0);
   const [curTab, setCurTab] = useState(0);
-  const [role, setRole] = useState(null);
-  const [curRole, setCurRole] = useState(null);
-  const [selectOptions, setSelectOptions] = useState({
-    conditionsOfAvailability: null,
-    privileges: null,
-    serviceNames: null,
-  });
-  const [hasChanges, setHasChanges] = useState(false);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+
+  const {
+    hasChanges,
+    setUpdate,
+    curRole,
+    setCurRole,
+    selectOptions,
+  } = useRoleDetailsData(id, nxState);
 
   const handleSave = () => {
     const objToSend = formattingForSending(curRole);
@@ -63,43 +60,6 @@ const RoleDetailScreen = () => {
       });
     }
   };
-
-  useEffect(() => {
-    let roleRequest;
-    if (id === 'add') {
-      roleRequest = Promise.resolve({
-        data: { customerId: nxState.selectedCustomer.id },
-      });
-    } else {
-      roleRequest = api.getRoleById(id);
-    }
-    roleRequest.then(({ data }) => {
-      const checkedRole = requiredFields(data);
-      setRole(JSON.parse(JSON.stringify(checkedRole)));
-      setCurRole(JSON.parse(JSON.stringify(checkedRole)));
-    });
-    Promise.allSettled([
-      api.getConditionsOfAvailability(),
-      api.getPrivileges(),
-    ]).then(([conditionsOfAvailabilityOptions, clearancesOptions]) => {
-      const clearances = formPrivilegeOptions(
-        clearancesOptions.value?.data.items,
-      );
-      setSelectOptions({
-        ...selectOptions,
-        conditionsOfAvailability:
-          addDenialOptions(conditionsOfAvailabilityOptions.value?.data) || [],
-        privileges: clearances.privileges || [],
-        serviceNames: clearances.serviceNames || [],
-      });
-    });
-  }, [update]);
-
-  useEffect(() => {
-    setHasChanges(JSON.stringify(curRole) !== JSON.stringify(role));
-
-    return () => setHasChanges(false);
-  }, [curRole]);
 
   if (curRole === null) return <LinearProgress />;
 
