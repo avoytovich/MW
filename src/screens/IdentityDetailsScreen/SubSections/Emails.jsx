@@ -34,18 +34,18 @@ const Emails = ({ curIdentity }) => {
         <Table>
           <TableHead>
             <TableRow style={{ background: '#eee' }}>
-              <TableCell>{localization.t('labels.id')}</TableCell>
-              <TableCell className='tableCellWithBorder'>{localization.t('labels.emailId')}</TableCell>
-              <TableCell className='tableCellWithBorder'>{localization.t('labels.createDate')}</TableCell>
-              <TableCell className='tableCellWithBorder'>{localization.t('labels.type')}</TableCell>
+              <TableCell data-test='tableHeader'>{localization.t('labels.id')}</TableCell>
+              <TableCell data-test='tableHeader' className='tableCellWithBorder'>{localization.t('labels.emailId')}</TableCell>
+              <TableCell data-test='tableHeader' className='tableCellWithBorder'>{localization.t('labels.createDate')}</TableCell>
+              <TableCell data-test='tableHeader' className='tableCellWithBorder'>{localization.t('labels.type')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {curIdentity.emails.map((item) => (
-              <TableRow key={item.id}>
+              <TableRow data-test='tableRow' key={item.id}>
                 <TableCell>
                   <Box display='flex' alignItems='center' justifyContent='space-between'>
-                    <Box className='rowValue'><Typography color='primary'>{item.id}</Typography></Box>
+                    <Box className='rowValue'><Typography data-test='idCell' color='primary'>{item.id}</Typography></Box>
                     <Box pl={1}>
                       <FileCopyIcon
                         onClick={() => makeCopy(item.id)}
@@ -54,13 +54,13 @@ const Emails = ({ curIdentity }) => {
                     </Box>
                   </Box>
                 </TableCell>
-                <TableCell className='tableCellWithBorder'>
+                <TableCell data-test='emailIdCell' className='tableCellWithBorder'>
                   {item.emailId}
                 </TableCell>
-                <TableCell className='tableCellWithBorder'>
+                <TableCell data-test='createDateCell' className='tableCellWithBorder'>
                   {moment(item.createDate).format('YYYY/MM/DD kk:mm (Z)')}
                 </TableCell>
-                <TableCell className='tableCellWithBorder'>
+                <TableCell data-test='typeCell' className='tableCellWithBorder'>
                   {item.type}
                 </TableCell>
               </TableRow>
@@ -71,7 +71,7 @@ const Emails = ({ curIdentity }) => {
     </Box>
   ) : (
     <Box textAlign='center'>
-      <Typography>
+      <Typography data-test='noResourcesMatchCriteria'>
         {localization.t('general.noResourcesMatchCriteria')}
       </Typography>
     </Box>
