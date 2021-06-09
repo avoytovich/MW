@@ -1,3 +1,7 @@
+const formattedCreateDates = { 1613120768811: '2021/02/12 11:06 (+02:00)' };
+
+const testDate = 1613120768811;
+
 const discountObj = {
   publisherRefIds: [1],
   name: '',
@@ -36,4 +40,10 @@ const selectOptionsObj = {
   parentProducts: [{ id: 1, value: 'parentProduct_1' }],
   discountProducts: [{ id: 1, value: ' discountProduct_1' }],
 };
-export { discountObj, selectOptionsObj };
+
+export {
+  discountObj,
+  selectOptionsObj,
+  formattedCreateDates,
+  testDate,
+};
