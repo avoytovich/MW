@@ -1,67 +1,90 @@
 import React from 'react';
-import { Tab } from '@material-ui/core';
-import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
-
+import { Tab,LinearProgress } from '@material-ui/core';
+import { shallow } from 'enzyme';
+import General from './SubSections/General';
+import Identification from './SubSections/Identification';
+import Permissions from './SubSections/Permissions';
+import Emails from './SubSections/Emails';
 import IdentityDetailsScreen from './IdentityDetailsScreen';
-import ProfileDetails from './ProfileDetails';
-import RightsDetails from './RightsDetails';
-import api from '../../api';
+import useIdentityDetails from '../../services/useData/useIdentityDetails';
 
-jest.mock('react-redux', () => ({ useDispatch: jest.fn() }));
-jest.mock('react-router-dom', () => ({ useParams: jest.fn(() => ({ id: 'test-id' })) }));
-
-jest.mock('../../api', () => ({
-  getIdentityById: jest.fn(),
-  updateIdentityById: jest.fn(),
+jest.mock('../../services/useData/useIdentityDetails', () => jest.fn());
+jest.mock('react-redux', () => ({
+  useDispatch: jest.fn(),
+  useSelector: jest.fn().mockImplementation(() => { }),
 }));
 
-jest.mock('../../services/useData', () => ({
-  ...jest.requireActual('../../services/useData'),
-  usePrivilegesData: jest.fn(),
-  useRolesData: jest.fn(),
-  useMetaRolesData: jest.fn(),
+jest.mock('react-router-dom', () => ({
+  useParams: jest.fn(() => ({ id: 12 })),
+  useHistory: jest.fn(() => ({})),
 }));
 
-describe('<IdentityDetailsScreen />', () => {
+describe('<IdentityDetailsScreen/> ', () => {
   let wrapper;
-
-  beforeEach(async () => {
-    await act(async() => {
-      wrapper = mount(<IdentityDetailsScreen />);
-    });
-    
-    wrapper.update();
-  });
-
-  afterAll(() => {
+  it('should return LinearProgress if isLoading is true', () => {
+    useIdentityDetails.mockImplementation(() => ({
+      isLoading: true,
+    })
+    )
+    wrapper = shallow(
+      <IdentityDetailsScreen />,
+    );
+    expect(wrapper.contains(<LinearProgress />)).toBe(true)
     jest.clearAllMocks();
   });
 
-  it('should fetch identity by ID from params', () => {
-    expect(api.getIdentityById).toHaveBeenCalledTimes(1);
-    expect(api.getIdentityById).toHaveBeenCalledWith('test-id');
-  });
+  describe('IdentityDetailsScreen with data is nut null', () => {
 
-  it('should have two tabs with Profile and Rights', () => {
-    expect(wrapper.find(Tab)).toHaveLength(2);
-    expect(wrapper.find(Tab).first().text()).toEqual('Profile');
-    expect(wrapper.find(Tab).last().text()).toEqual('Rights');
-  });
+    beforeEach(() => {
+      useIdentityDetails.mockImplementation(() => ({
+        curIdentity: {},
+      })
+      )
+      wrapper = shallow(
+        <IdentityDetailsScreen />,
+      );
+    });
 
-  it('should show <ProfileDetails /> if Profile tab is active', () => {
-    expect(wrapper.find(Tab).first().getDOMNode().attributes.getNamedItem('aria-selected').value).toEqual('true');
-    expect(wrapper.find(Tab).last().getDOMNode().attributes.getNamedItem('aria-selected').value).toEqual('false');
-    expect(wrapper.find(ProfileDetails)).toHaveLength(1);
-    expect(wrapper.find(RightsDetails)).toHaveLength(0);
-  });
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
 
-  it('should show <RightsDetails /> if Rights tab is active', () => {
-    wrapper.find(Tab).last().simulate('click');
-    
-    expect(wrapper.find(Tab).first().getDOMNode().attributes.getNamedItem('aria-selected').value).toEqual('false');
-    expect(wrapper.find(Tab).last().getDOMNode().attributes.getNamedItem('aria-selected').value).toEqual('true');
-    expect(wrapper.find(ProfileDetails)).toHaveLength(0);
-    expect(wrapper.find(RightsDetails)).toHaveLength(1);
-  });
+    it('should contains 4 tabs', () => {
+      const tabs = wrapper.find(Tab);
+      expect(tabs.length).toEqual(4)
+    });
+
+    it('should return General component on first tab', () => {
+      wrapper.find({ 'data-test': "tabs" }).props().onChange({}, 0);
+      expect(wrapper.find(General)).toHaveLength(1);
+      expect(wrapper.find(Identification)).toHaveLength(0);
+      expect(wrapper.find(Permissions)).toHaveLength(0);
+      expect(wrapper.find(Emails)).toHaveLength(0);
+    });
+
+    it('should return CappingAndLimits component on second tab', () => {
+      wrapper.find({ 'data-test': "tabs" }).props().onChange({}, 1);
+      expect(wrapper.find(General)).toHaveLength(0);
+      expect(wrapper.find(Identification)).toHaveLength(1);
+      expect(wrapper.find(Permissions)).toHaveLength(0);
+      expect(wrapper.find(Emails)).toHaveLength(0);
+    });
+
+    it('should return Eligibility component on third tab', () => {
+      wrapper.find({ 'data-test': "tabs" }).props().onChange({}, 2);
+      expect(wrapper.find(General)).toHaveLength(0);
+      expect(wrapper.find(Identification)).toHaveLength(0);
+      expect(wrapper.find(Permissions)).toHaveLength(1);
+      expect(wrapper.find(Emails)).toHaveLength(0);
+    });
+
+    it('should return Emails component on fourth tab', () => {
+      wrapper.find({ 'data-test': "tabs" }).props().onChange({}, 3);
+      expect(wrapper.find(General)).toHaveLength(0);
+      expect(wrapper.find(Identification)).toHaveLength(0);
+      expect(wrapper.find(Permissions)).toHaveLength(0);
+      expect(wrapper.find(Emails)).toHaveLength(1);
+    });
+  })
 });
+
