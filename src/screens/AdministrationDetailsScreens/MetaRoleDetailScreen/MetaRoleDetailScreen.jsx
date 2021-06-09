@@ -28,6 +28,7 @@ const MetaRoleDetailScreen = () => {
   const [curTab, setCurTab] = useState(0);
 
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+
   const {
     curMetaRole,
     setUpdate,
@@ -36,6 +37,7 @@ const MetaRoleDetailScreen = () => {
     setCurMetaRole,
     selectOptions,
   } = useMetaRoleDetailData(id, nxState);
+
   const handleSave = () => {
     if (id === 'add') {
       api.addNewMetaRole(curMetaRole).then((res) => {
