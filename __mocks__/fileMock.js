@@ -40,6 +40,7 @@ const selectOptionsObj = {
   parentProducts: [{ id: 1, value: 'parentProduct_1' }],
   discountProducts: [{ id: 1, value: ' discountProduct_1' }],
 };
+
 export {
   discountObj,
   selectOptionsObj,
