@@ -32,7 +32,7 @@ const SignedRoutes = () => {
       >
         <Switch location={location}>
           <Route
-            path={`${defPath}/login`}
+            path={[`${defPath}/:realm`, '/']}
             component={AuthScreen}
           />
 
@@ -46,7 +46,7 @@ const SignedRoutes = () => {
             component={UpdatePasswordScreen}
           />
 
-          <Redirect to={`${defPath}/login`} />
+          <Redirect to={`${defPath}/`} />
         </Switch>
       </CSSTransition>
     </SwitchTransition>

@@ -50,9 +50,9 @@ class Auth {
     }
   }
 
-  loginWithEmailAndPassword(username, password) {
+  loginWithEmailAndPassword(username, password, realm = 'nexway') {
     return api
-      .signIn({ username, password })
+      .signIn({ username, password, realm })
       .then(({ data }) => {
         if (data.access_token) {
           this.setSession(data.access_token);
