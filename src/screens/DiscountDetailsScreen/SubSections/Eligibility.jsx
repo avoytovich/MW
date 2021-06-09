@@ -25,7 +25,6 @@ const Eligibility = ({
   selectOptions,
 }) => {
   const [errorMessages, setErrorMessages] = useState({ email: null });
-
   return (
     <>
       <Grid item md={6} xs={12}>
@@ -34,6 +33,7 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <FormControlLabel
+            data-test='manualRenewal'
             control={(
               <Checkbox
                 name='MANUAL_RENEWAL'
@@ -62,6 +62,7 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <FormControlLabel
+            data-test='buyer'
             control={(
               <Checkbox
                 name='BUYER'
@@ -73,6 +74,7 @@ const Eligibility = ({
             label='Buyer'
           />
           <FormControlLabel
+            data-test='reseller'
             control={(
               <Checkbox
                 name='RESELLER'
