@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import {
-  Button, Dialog, DialogActions, DialogContent, DialogContentText,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
 } from '@material-ui/core';
 
 import SelectCustom from '../../Inputs/SelectCustom';
@@ -8,15 +13,13 @@ import { orderCancelAction } from '../../../services/selectOptions/selectOptions
 import localization from '../../../localization';
 import api from '../../../api';
 
-const CancelOrderPopup = ({ currentOrderData, id }) => {
+const CancelOrderPopup = ({ currentOrderData }) => {
   const [open, setOpen] = useState(false);
   const [cancelOrderReason, setCancelOrderReason] = useState('');
 
   const cancelOrder = () => {
     api.cancelOrder(currentOrderData.id, cancelOrderReason).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
     });
   };
 
@@ -30,12 +33,12 @@ const CancelOrderPopup = ({ currentOrderData, id }) => {
 
   return (
     <>
-      <Button fullWidth display="flex" color="inherit" onClick={handleClickOpen}>
+      <Button fullWidth display='flex' color='inherit' onClick={handleClickOpen}>
         {localization.t('forms.text.cancelOrder')}
       </Button>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
         <DialogContent>
-          <DialogContentText color="inherit">
+          <DialogContentText color='inherit'>
             {localization.t('forms.text.cancelOrderPopupText')}
           </DialogContentText>
 
@@ -45,14 +48,20 @@ const CancelOrderPopup = ({ currentOrderData, id }) => {
             onChangeSelect={(e) => {
               setCancelOrderReason(e.target.value);
             }}
-            label="cancelOrder"
+            label='cancelOrder'
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleClose} color='primary'>
             {localization.t('forms.buttons.resyncPaymentsNo')}
           </Button>
-          <Button onClick={() => { handleClose(); cancelOrder(); }} color="primary">
+          <Button
+            onClick={() => {
+              handleClose();
+              cancelOrder();
+            }}
+            color='primary'
+          >
             {localization.t('forms.buttons.resyncPaymentsConfirmed')}
           </Button>
         </DialogActions>
@@ -61,9 +70,8 @@ const CancelOrderPopup = ({ currentOrderData, id }) => {
   );
 };
 
-// Popup.propTypes = {
-//   children: PropTypes.func,
-//   text: PropTypes.string,
-// };
+Popup.propTypes = {
+  currentOrderData: PropTypes.object,
+};
 
 export default CancelOrderPopup;

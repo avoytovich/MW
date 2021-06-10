@@ -7,44 +7,79 @@ import { Box } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 
+import InheritanceField from '../../../components/ProductDetails/InheritanceField';
+import { checkValue } from '../../../services/helpers/dataStructuring';
+
 import localization from '../../../localization';
 
 import 'react-quill/dist/quill.bubble.css';
 import './localizations.scss';
 
-const initValues = {
-  marketingName: '',
-  shortDesc: '',
-  longDesc: '',
-  thankYouDesc: '',
-};
-
-const LocalizationInputs = ({ data = {}, handleChange, isDefault }) => {
+const LocalizationInputs = ({
+  data = {},
+  handleChange,
+  isDefault,
+  parentId,
+  setNewTabValues,
+}) => {
   const [newData, setNewData] = useState({ ...data });
   const [isEditing, setEditing] = useState(false);
   const editor = useRef();
 
-  useEffect(() => setNewData(() => ({ ...initValues, ...data })), [data]);
+  useEffect(() => {
+    setNewData(() => ({ ...data }));
+  }, [data]);
+
+  useEffect(() => {
+    const hasChanges = JSON.stringify(data) !== JSON.stringify(newData);
+    if (hasChanges) {
+      setNewTabValues({ ...newData });
+    }
+    return () => {};
+  }, [newData]);
 
   const updateNewData = (name) => {
     const curContent = editor.current.getEditorContents();
 
-    handleChange(name, curContent === '<p><br></p>' ? '' : curContent);
+    newData[name]?.state
+      ? handleChange(
+        name,
+        curContent === '<p><br></p>'
+          ? {
+            ...newData[name],
+            value: '',
+          }
+          : {
+            ...newData[name],
+            value: curContent,
+          },
+      )
+      : handleChange(name, curContent === '<p><br></p>' ? '' : curContent);
     setEditing(false);
   };
 
   const LocalizationInput = ({ val }) => (
-    <>
+    <InheritanceField
+      field={val}
+      onChange={setNewData}
+      value={newData[val]}
+      parentId={parentId}
+      currentProductData={newData}
+    >
       {isEditing === val ? (
         <Box position='relative'>
           <ReactQuill
             theme='bubble'
-            value={newData[val]}
+            value={checkValue(newData[val], newData[val]?.state)}
             placeholder={localization.t(`labels.${val}`)}
             ref={editor}
           />
 
-          <SaveIcon className='edit-loc-field' color='secondary' onClick={() => updateNewData(val)} />
+          <SaveIcon
+            className='edit-loc-field'
+            color='secondary'
+            onClick={() => updateNewData(val)}
+          />
         </Box>
       ) : (
         <Box position='relative' className='localization-input-holder'>
@@ -54,46 +89,64 @@ const LocalizationInputs = ({ data = {}, handleChange, isDefault }) => {
 
           <div
             className='localization-text-block'
-            // eslint-disable-next-line
-            dangerouslySetInnerHTML={{ __html: newData[val] }}
+            dangerouslySetInnerHTML={{
+              __html: checkValue(newData[val], newData[val]?.state),
+            }}
           />
 
-          <EditIcon className='edit-loc-field' color='secondary' onClick={() => setEditing(val)} />
+          {!newData[val]?.state || newData[val]?.state === 'overrides' ? (
+            <EditIcon
+              className='edit-loc-field'
+              color='secondary'
+              onClick={() => setEditing(val)}
+            />
+          ) : null}
         </Box>
       )}
-    </>
+    </InheritanceField>
   );
 
   LocalizationInput.propTypes = {
     val: PropTypes.string,
   };
 
+  const stylesForVariations = parentId
+    ? {
+      display: 'grid',
+      gridTemplateColumns: '1fr 50px',
+    }
+    : {};
+
   return (
     <Box display='flex' width='100%' flexDirection='column'>
-      <Box width='50%' px={4} mb={4} position='relative'>
-        <LocalizationInput val='marketingName' />
+      <Box width='50%' px={4} mb={4} position='relative' {...stylesForVariations}>
+        <LocalizationInput val='localizedMarketingName' />
 
-        {isDefault && !data?.marketingName && <div className='error-message'>{localization.t('general.marketingNameMandatory')}</div>}
+        {isDefault && !data?.localizedMarketingName && (
+          <div className='error-message'>
+            {localization.t('general.marketingNameMandatory')}
+          </div>
+        )}
       </Box>
 
-      <Box width='100%' px={4} mb={4}>
-        <LocalizationInput val='shortDesc' />
+      <Box width='100%' px={4} mb={4} {...stylesForVariations}>
+        <LocalizationInput val='localizedShortDesc' />
       </Box>
 
-      <Box width='100%' px={4} mb={4}>
-        <LocalizationInput val='longDesc' />
+      <Box width='100%' px={4} mb={4} {...stylesForVariations}>
+        <LocalizationInput val='localizedLongDesc' />
       </Box>
 
-      <Box width='100%' px={4} mb={4}>
-        <LocalizationInput val='thankYouDesc' />
+      <Box width='100%' px={4} mb={4} {...stylesForVariations}>
+        <LocalizationInput val='localizedThankYouDesc' />
       </Box>
 
-      <Box width='100%' px={4} mb={4}>
-        <LocalizationInput val='purchaseEmailDesc' />
+      <Box width='100%' px={4} mb={4} {...stylesForVariations}>
+        <LocalizationInput val='localizedPurchaseEmailDesc' />
       </Box>
 
-      <Box width='100%' px={4} mb={4}>
-        <LocalizationInput val='manualRenewalEmailDesc' />
+      <Box width='100%' px={4} mb={4} {...stylesForVariations}>
+        <LocalizationInput val='localizedManualRenewalEmailDesc' />
       </Box>
     </Box>
   );
@@ -102,7 +155,9 @@ const LocalizationInputs = ({ data = {}, handleChange, isDefault }) => {
 LocalizationInputs.propTypes = {
   data: PropTypes.object,
   handleChange: PropTypes.func,
+  parentId: PropTypes.string,
   isDefault: PropTypes.bool,
+  setNewTabValues: PropTypes.func,
 };
 
 export default LocalizationInputs;

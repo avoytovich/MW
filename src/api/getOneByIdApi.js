@@ -231,7 +231,7 @@ const getOneByIdApi = {
         'Content-Type': 'application/pdf',
         accept: 'application/pdf',
       },
-      responseType: "blob",
+      responseType: 'blob',
       method: 'get',
       url,
     });
@@ -243,7 +243,7 @@ const getOneByIdApi = {
         'Content-Type': 'application/pdf',
         accept: 'application/pdf',
       },
-      responseType: "blob",
+      responseType: 'blob',
       method: 'get',
       url,
     });
