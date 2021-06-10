@@ -27,28 +27,30 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
       <Grid item md={12}>
         {currentCustomer.id
           && (
-          <Box p={2}>
-            <SwitchInput
-              label='status'
-              handleChange={(e) => {
-                setCurrentCustomer({
-                  ...currentCustomer,
-                  status: e.target.checked ? 'RUNNING' : 'TRIAL',
-                });
-              }}
-              isChecked={currentCustomer.status !== 'TRIAL'}
-              switchLabel={localization.t(
-                `labels.${
-                  currentCustomer.status !== 'TRIAL' ? 'live' : 'test'
-                }`,
-              )}
-            />
-          </Box>
+            <Box p={2}>
+              <SwitchInput
+                data-test='status'
+                label='status'
+                handleChange={(e) => {
+                  setCurrentCustomer({
+                    ...currentCustomer,
+                    status: e.target.checked ? 'RUNNING' : 'TRIAL',
+                  });
+                }}
+                isChecked={currentCustomer.status !== 'TRIAL'}
+                switchLabel={localization.t(
+                  `labels.${
+                    currentCustomer.status !== 'TRIAL' ? 'live' : 'test'
+                  }`,
+                )}
+              />
+            </Box>
           )}
       </Grid>
       <Grid item md={6}>
         <Box p={2}>
           <InputCustom
+            data-test='customerName'
             label='customerName'
             value={currentCustomer.name}
             onChangeInput={(e) => {
@@ -69,13 +71,14 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
                 </Typography>
               </Box>
               <Box display='flex'>
-                <Typography color='primary'>{currentCustomer.id}</Typography>
+                <Typography color='primary' data-test='customerId'>{currentCustomer.id}</Typography>
                 <Box px={1}><FileCopy color='secondary' onClick={() => makeCopy(currentCustomer.id)} /></Box>
               </Box>
             </Box>
           )}
         <Box p={2}>
           <InputCustom
+            data-test='realmName'
             label='realmName'
             value={currentCustomer.iamClient.realmName}
             onChangeInput={(e) => {
@@ -103,6 +106,7 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
         </Box>
         <Box p={2}>
           <InputCustom
+            data-test='email'
             isDisabled={!!currentCustomer.id}
             label='email'
             value={currentCustomer.email}
@@ -116,10 +120,11 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
           />
         </Box>
       </Grid>
-      <Grid item md={6}>
-        {currentCustomer.id && (
+      {currentCustomer.id && (
+        <Grid item md={6}>
           <Box p={2}>
             <SelectWithChip
+              data-test='fulfillmentTemplates'
               label='fulfillmentTemplates'
               value={currentCustomer.fulfillments}
               selectOptions={selectOptions.fulfillments}
@@ -138,10 +143,9 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
               }}
             />
           </Box>
-        )}
-        {currentCustomer.id && (
           <Box p={2}>
             <SelectWithChip
+              data-test='subscriptionsModels'
               label='subscriptionsModels'
               value={currentCustomer.subscriptions}
               selectOptions={selectOptions.subscriptions}
@@ -160,10 +164,9 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
               }}
             />
           </Box>
-        )}
-        {currentCustomer.id && (
           <Box p={2}>
             <NumberInput
+              data-test='cancelPeriod'
               label='cancelPeriod'
               minMAx={{ min: 0 }}
               value={currentCustomer.cancelPeriod}
@@ -173,36 +176,32 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
               })}
             />
           </Box>
-        )}
-        {currentCustomer.id
-          && (
-            <Box p={2}>
-              <SwitchInput
-                label='createEndUserWithoutSubscription'
-                handleChange={(e) => {
-                  setCurrentCustomer({
-                    ...currentCustomer,
-                    createEndUserWithoutSubscription: e.target.checked,
-                  });
-                }}
-                isChecked={currentCustomer.createEndUserWithoutSubscription}
-              />
-            </Box>
-          )}
-        {currentCustomer.id
-          && (
-            <Box p={2}>
-              <InputCustom
-                label='remittableId'
-                value={currentCustomer.remittableId}
-                onChangeInput={(e) => setCurrentCustomer({
+          <Box p={2}>
+            <SwitchInput
+              data-test='createEndUserWithoutSubscription'
+              label='createEndUserWithoutSubscription'
+              handleChange={(e) => {
+                setCurrentCustomer({
                   ...currentCustomer,
-                  remittableId: e.target.value,
-                })}
-              />
-            </Box>
-          )}
-      </Grid>
+                  createEndUserWithoutSubscription: e.target.checked,
+                });
+              }}
+              isChecked={currentCustomer.createEndUserWithoutSubscription}
+            />
+          </Box>
+          <Box p={2}>
+            <InputCustom
+              data-test='remittableId'
+              label='remittableId'
+              value={currentCustomer.remittableId}
+              onChangeInput={(e) => setCurrentCustomer({
+                ...currentCustomer,
+                remittableId: e.target.value,
+              })}
+            />
+          </Box>
+        </Grid>
+      )}
     </Grid>
   );
 };
