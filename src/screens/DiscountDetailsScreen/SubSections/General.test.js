@@ -1,43 +1,12 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import General from './General';
+import { discountObj, selectOptions } from '../../../../__mocks__/fileMock';
 
-let discountData = {
-  publisherRefIds: [],
-  name: '',
-  maxUsages: '',
-  maxUsePerStore: '',
-  maxUsePerEndUser: '',
-  countries: [],
-  parentProductIds: [],
-  productIds: [],
-  enduserId: '',
-  storeIds: [],
-  codes: {},
-  endUserGroupIds: [],
-  endUserEmails: [],
-  level: 'PRODUCT',
-  model: 'CAMPAIGN',
-  status: 'ENABLED',
-  discountRate: 1,
-  endDate: Date.now() + 6.048e8,
-  endUserTypes: ['BUYER', 'RESELLER'],
-  localizedLabels: {
-    neutral: "neutral LocalizedLabel",
-    'fr-FR': "fr- FR LocalizedLabel"
-  }
-
-};
+let discountData = { ...discountObj };
+const curAmountCurrency = { key: "AED", value: "1" };
 let amountType = 'byPercentage'
-const selectOptions = {
-  refProducts: [],
-  endUserGroups: [],
-  countries: [],
-  endUsers: [],
-  stores: [],
-  parentProducts: [],
-  discountProducts: [],
-};
+
 const curDiscountCodes = [{
   key: "default",
   value: ""
@@ -46,53 +15,43 @@ describe('DiscountDetailsScreen <General/>', () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = mount(
+    wrapper = shallow(
       <General
+        curDiscount={discountObj}
+        updateDiscount={jest.fn()}
+        setCurDiscount={jest.fn()}
+        selectOptions={{}}
         amountType={amountType}
-        setAmountType={jest.fn()}
-        curDiscountCodes={curDiscountCodes}
-        setCurDiscountCodes={jest.fn()}
-        curDiscountLabels={[
-          { key: "neutral", value: "neutral LocalizedLabel" },
-          { key: 'fr-FR', value: "fr- FR LocalizedLabel" }
-        ]}
-        setCurDiscountLabels={jest.fn()}
-        curAmountCurrency={[{ key: "CHF", value: 2 }]}
-        setCurAmountCurrency={jest.fn()}
-        curDiscount={discountData}
-        setCurDiscount={(newDiscountData) => {
-          discountData = newDiscountData;
+        setAmountType={(newAmountType) => {
+          amountType = newAmountType;
+          wrapper.setProps({ amountType: amountType });
         }}
-        selectOptions={selectOptions}
       />,
     );
+
   });
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('inputs/paragraphs should be populated with discount details data', () => {
-    const { enduserId, name, discountRate, model } = discountData;
-    // console.log(wrapper.debug())
-    expect(wrapper.find('input[name="endUser"]').instance().value).toEqual(enduserId);
-    expect(wrapper.find('input[name="discountRuleName"]').instance().value).toEqual(name);
-    expect(wrapper.find('input[value="CAMPAIGN"]').instance().checked).toEqual(model === "CAMPAIGN");
-    expect(wrapper.find('input[value="COUPON"]').instance().checked).toEqual(model === "COUPON");
-    expect(wrapper.find('input[value="SINGLE_USE_CODE"]').instance().checked).toEqual(model === "SINGLE_USE_CODE");
-
-
+  it('draw all input components on the page', () => {
+    expect(wrapper.find({ 'data-test': "status" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "amountRadioGroup" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "model" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "externalContext" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "discountRuleName" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "localizedLabels" }).length).toEqual(1)
   });
 
-  // it('should change productData when some update is made', async () => {
-  //   const newValue = 'SOFTWARE';
-  //   wrapper.find('input[name="type"]').simulate('change', {
-  //     target: { name: 'type', value: newValue },
-  //   });
-  //   expect(productData.type).toEqual(newValue);
-  // });
+  it('On amountType equal byPercentage, percentsInput should be percentsInput visible', () => {
+    expect(wrapper.find({ 'data-test': "percents" }).length).toEqual(1)
+    expect(wrapper.find({ 'data-test': "amountByCurrency" }).length).toEqual(0)
+  });
 
-  it('On amountType equal byPercentage, should be percentsInput visible and ', async () => {
-    const { discountRate } = discountData;
-    expect(wrapper.find('input[name="percents"]').instance().value).toEqual(`${discountRate}`);
+  it('On amountType change to  byCurrency, inputs currency and amount should be visible', () => {
+    wrapper.find({ 'data-test': "amountRadioGroup" }).props().onChange({ target: { value: 'byCurrency' } });
+    wrapper.update()
+    expect(wrapper.find({ 'data-test': "percents" }).length).toEqual(0)
+    expect(wrapper.find({ 'data-test': "amountByCurrency" }).length).toEqual(1)
   });
 });

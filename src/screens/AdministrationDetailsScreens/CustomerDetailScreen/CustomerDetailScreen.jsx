@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
 import {
   LinearProgress, Tabs, Tab, Zoom, Button, Box, Typography,
 } from '@material-ui/core';
-import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
 import api from '../../../api';
 import localization from '../../../localization';
+import useCustomerDetailData from '../../../services/useData/useCustomerDetailData';
 import {
-  checkRequiredFields,
   formatBeforeSanding,
-  formatPaymentOptions,
   assetsLabels,
   checkLabelDuplicate,
 } from './utils';
@@ -27,22 +25,18 @@ import './CustomerDetailScreen.scss';
 
 const CustomerDetailScreen = () => {
   const history = useHistory();
-
   const { id } = useParams();
   const dispatch = useDispatch();
-  const [hasChanges, setHasChanges] = useState(false);
-  const [update, setUpdate] = useState(0);
-  const [selectOptions, setSelectOptions] = useState({
-    subscriptions: null,
-    fulfillments: null,
-    additionalPaymentTypes: null,
-    blackPaymentTypes: null,
-    forcedPaymentTypes: null,
-  });
-  const [customerData, setCustomerData] = useState(null);
   const [curTab, setCurTab] = useState(0);
 
-  const [currentCustomer, setCurrentCustomer] = useState(null);
+  const {
+    customerData,
+    currentCustomer,
+    setCurrentCustomer,
+    hasChanges,
+    setUpdate,
+    selectOptions,
+  } = useCustomerDetailData(id);
 
   const saveCustomer = () => {
     if (id === 'add') {
@@ -64,44 +58,6 @@ const CustomerDetailScreen = () => {
       });
     }
   };
-
-  useEffect(() => {
-    let customerRequest;
-    const createCustomer = id === 'add';
-    if (id === 'add') {
-      customerRequest = Promise.resolve({
-        data: {},
-      });
-    } else {
-      customerRequest = api.getCustomerById(id);
-    }
-    customerRequest.then(({ data }) => {
-      const checkedData = checkRequiredFields(data, createCustomer);
-      setCustomerData(checkedData);
-      setCurrentCustomer(checkedData);
-      Promise.allSettled([
-        api.getSubscriptionsOptions(),
-        api.getFulfillmentsOptions(),
-        api.getPaymentConfigOptions(),
-      ]).then(([subscriptionsOptions, fulfillmentsOptions, paymentTypesOptions]) => {
-        const allPayments = formatPaymentOptions(paymentTypesOptions.value?.data.paymentTypes);
-        setSelectOptions({
-          ...selectOptions,
-          subscriptions: structureSelectOptions(subscriptionsOptions.value?.data.items, 'code') || [],
-          fulfillments: structureSelectOptions(fulfillmentsOptions.value?.data.items, 'name') || [],
-          additionalPaymentTypes: allPayments.additional || [],
-          blackPaymentTypes: allPayments.black || [],
-          forcedPaymentTypes: allPayments.forced || [],
-        });
-      });
-    });
-  }, [update]);
-  useEffect(() => {
-    setHasChanges(
-      JSON.stringify(currentCustomer) !== JSON.stringify(customerData),
-    );
-    return () => setHasChanges(false);
-  }, [currentCustomer]);
 
   if (currentCustomer === null) return <LinearProgress />;
   return (

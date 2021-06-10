@@ -18,7 +18,7 @@ const General = ({ curMetaRole, setCurMetaRole }) => (
               <Typography color="secondary">{localization.t('labels.createDate')}</Typography>
             </Box>
             <Box p={2}>
-              <Typography>{moment(curMetaRole.createDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
+              <Typography data-test='createDate'>{moment(curMetaRole.createDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
             </Box>
           </Grid>
           <Grid item md={4} sm={12}>
@@ -26,24 +26,25 @@ const General = ({ curMetaRole, setCurMetaRole }) => (
               <Typography color="secondary">{localization.t('labels.lastUpdate')}</Typography>
             </Box>
             <Box p={2}>
-              <Typography>{moment(curMetaRole.updateDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
+              <Typography data-test='updateDate'>{moment(curMetaRole.updateDate).format('YYYY/MM/DD kk:mm (Z)')}</Typography>
             </Box>
           </Grid>
           <Grid item md={4} sm={12}>
             {curMetaRole.lastUpdateReason && (
-            <>
-              <Box pt={4} pl={2}>
-                <Typography color="secondary">{localization.t('labels.lastUpdateReason')}</Typography>
-              </Box>
-              <Box p={2}>
-                <Typography>{curMetaRole.lastUpdateReason}</Typography>
-              </Box>
-            </>
+              <>
+                <Box pt={4} pl={2}>
+                  <Typography color="secondary">{localization.t('labels.lastUpdateReason')}</Typography>
+                </Box>
+                <Box p={2}>
+                  <Typography data-test='lastUpdateReason'>{curMetaRole.lastUpdateReason}</Typography>
+                </Box>
+              </>
             )}
           </Grid>
         </Grid>
         <Box p={2} mt={3} width='70%'>
           <InputCustom
+            data-test='reasonForCurrentChange'
             label='reasonForCurrentChange'
             value={curMetaRole.reason}
             onChangeInput={(e) => setCurMetaRole({ ...curMetaRole, reason: e.target.value })}
@@ -52,6 +53,7 @@ const General = ({ curMetaRole, setCurMetaRole }) => (
         </Box>
         <Box p={2} width='70%'>
           <InputCustom
+            data-test='name'
             label='name'
             value={curMetaRole.name}
             onChangeInput={(e) => setCurMetaRole({ ...curMetaRole, name: e.target.value })}

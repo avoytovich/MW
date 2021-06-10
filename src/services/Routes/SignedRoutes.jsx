@@ -6,8 +6,10 @@ import {
   Route,
   useHistory,
 } from 'react-router-dom';
+
 import defPath from '../helpers/routingHelper';
 import Session from '../session';
+import { KNOWN_REALMS } from '../constants';
 
 const SignedRoutes = () => {
   const history = useHistory();
@@ -16,7 +18,7 @@ const SignedRoutes = () => {
     const redirect = Session.getRedirect();
     Session.clearRedirect();
 
-    if (redirect && redirect !== '/' && redirect !== '/login') {
+    if (redirect && redirect !== '/' && KNOWN_REALMS.indexOf(redirect) < 0) {
       history.push(redirect);
     }
 

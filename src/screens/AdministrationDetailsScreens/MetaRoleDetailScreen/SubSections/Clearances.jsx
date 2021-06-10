@@ -9,6 +9,7 @@ const Clearances = ({ curMetaRole, setCurMetaRole, selectOptions }) => (
     : (
       <Box p={2}>
         <SelectWithChip
+          data-test='aggregatedRoles'
           label='aggregatedRoles'
           value={curMetaRole.roleIds}
           selectOptions={selectOptions.roles}

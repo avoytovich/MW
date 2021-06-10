@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -16,12 +17,13 @@ const initialValues = { username: '', password: '' };
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const { realm } = useParams();
 
   const handleOnSubmit = async ({ username, password, setSubmitting }) => {
     setSubmitting(true);
 
     try {
-      dispatch(login(username, password));
+      dispatch(login(username, password, realm));
 
       const localNxState = JSON.parse(localStorage.getItem('nexwayState'));
       dispatch(setNexwayState(localNxState));

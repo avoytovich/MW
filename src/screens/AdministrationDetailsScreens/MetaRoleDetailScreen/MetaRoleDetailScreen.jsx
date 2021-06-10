@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -10,11 +10,11 @@ import {
   Tab,
   Breadcrumbs,
 } from '@material-ui/core';
+import useMetaRoleDetailData from '../../../services/useData/useMetaRoleDetailData';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 import SectionLayout from '../../../components/SectionLayout';
 
 import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
-import { requiredFields, structureSelectOptions } from './utils';
 import localization from '../../../localization';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
@@ -26,15 +26,17 @@ const MetaRoleDetailScreen = () => {
   const { id } = useParams();
   const history = useHistory();
   const [curTab, setCurTab] = useState(0);
-  const [update, setUpdate] = useState(0);
 
-  const [metaRole, setMetaRole] = useState(null);
-  const [curMetaRole, setCurMetaRole] = useState(null);
-  const [selectOptions, setSelectOptions] = useState({
-    roles: null,
-  });
-  const [hasChanges, setHasChanges] = useState(false);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+
+  const {
+    curMetaRole,
+    setUpdate,
+    metaRole,
+    hasChanges,
+    setCurMetaRole,
+    selectOptions,
+  } = useMetaRoleDetailData(id, nxState);
 
   const handleSave = () => {
     if (id === 'add') {
@@ -56,32 +58,6 @@ const MetaRoleDetailScreen = () => {
       });
     }
   };
-
-  useEffect(() => {
-    let metaRoleRequest;
-    if (id === 'add') {
-      metaRoleRequest = Promise.resolve({
-        data: { customerId: nxState.selectedCustomer.id },
-      });
-    } else {
-      metaRoleRequest = api.getMetaRoleById(id);
-    }
-    metaRoleRequest.then(({ data }) => {
-      const checkedMetaRole = requiredFields(data);
-      setMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
-      setCurMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
-    });
-    api.getRoles().then(({ data }) => setSelectOptions({
-      ...selectOptions,
-      roles: structureSelectOptions(data.items) || [],
-    }));
-  }, [update]);
-
-  useEffect(() => {
-    setHasChanges(JSON.stringify(curMetaRole) !== JSON.stringify(metaRole));
-
-    return () => setHasChanges(false);
-  }, [curMetaRole]);
 
   if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
 

@@ -11,10 +11,7 @@ const postApi = {
     return axiosInstance({
       method: 'post',
       url,
-      data: {
-        ...data,
-        realm: 'nexway',
-      },
+      data,
     });
   },
   recoverPassword(data) {
