@@ -24,7 +24,7 @@ jest.mock('react-router-dom', () => ({
 describe('<CustomerDetailScreen/> ', () => {
   let wrapper;
 
-  it('Should not draw CustomBreadcrumbs if id is equal "add"', () => {
+  it('Should not draw CustomBreadcrumbs if id is equals "add"', () => {
     useParams.mockImplementation(() => ({ id: 'add' }))
     useCustomerDetailData.mockImplementation(() => ({
       currentCustomer: {},
@@ -35,6 +35,23 @@ describe('<CustomerDetailScreen/> ', () => {
       <CustomerDetailScreen />,
     );
     expect(wrapper.find(CustomBreadcrumbs)).toHaveLength(0);
+    jest.clearAllMocks();
+  });
+
+  it('PaymentServiceConfiguration, reports and assets tabs should be disabled if id equals "add" ', () => {
+    useParams.mockImplementation(() => ({ id: 'add' }))
+    useCustomerDetailData.mockImplementation(() => ({
+      currentCustomer: {},
+      customerData: {},
+    })
+    )
+    wrapper = shallow(
+      <CustomerDetailScreen />,
+    );
+    expect(wrapper.find({ 'data-test': "paymentServiceConfiguration" }).props().disabled).toEqual(true);
+    expect(wrapper.find({ 'data-test': "reports" }).props().disabled).toEqual(true);
+    expect(wrapper.find({ 'data-test': "assets" }).props().disabled).toEqual(true);
+
     jest.clearAllMocks();
   });
 
@@ -75,6 +92,14 @@ describe('<CustomerDetailScreen/> ', () => {
       it('should contains 5 tabs', () => {
         const tabs = wrapper.find(Tab);
         expect(tabs.length).toEqual(5)
+      });
+
+      it('PaymentServiceConfiguration, reports and assets tabs should not be disabled', () => {
+        expect(wrapper.find({ 'data-test': "paymentServiceConfiguration" }).props().disabled).toEqual(false);
+        expect(wrapper.find({ 'data-test': "reports" }).props().disabled).toEqual(false);
+        expect(wrapper.find({ 'data-test': "assets" }).props().disabled).toEqual(false);
+
+        jest.clearAllMocks();
       });
 
       it('should return General component on first tab', () => {
