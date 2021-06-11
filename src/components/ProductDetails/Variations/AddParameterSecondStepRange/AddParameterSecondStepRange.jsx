@@ -26,6 +26,59 @@ const AddParameterSecondStepRange = ({
     list.map(({ to }) => to),
   );
 
+  const handleRemoveParamether = (index) => {
+    const newParametersList = parametersList.slice(0, index);
+    const newMax = findMax(newParametersList);
+    setRange({ from: newMax + 1, to: newMax + 2, label: '' });
+    setParametersList(newParametersList);
+    setModalState({
+      ...modalState,
+      rangesList: newParametersList,
+    });
+    !newParametersList.length && setRange(defauldRange) && setMax(0);
+  };
+
+  const handleRangeFrom = (value) => {
+    const val = toNumber(value);
+    if (val <= max) return;
+    val >= range.to
+      ? setRange({
+        from: val,
+        to: val + 1,
+      })
+      : setRange({
+        from: val,
+        to: range.to,
+      });
+  };
+
+  const handleRangeTo = (value) => {
+    const val = toNumber(value);
+
+    if (val < max + 1) return;
+    setRange({
+      from: range.from,
+      to: val,
+    });
+  };
+
+  const handleAddParameterRow = () => {
+    setParametersList([
+      ...parametersList,
+      { from: range.from, to: range.to, label: range.label },
+    ]);
+    setRange({ from: range.to + 1, to: range.to + 2, label: '' });
+    const newMax = findMax([
+      ...parametersList,
+      { from: range.from, to: range.to, label: range.label },
+    ]);
+    setMax(newMax);
+    setModalState({
+      ...modalState,
+      rangesList: [...parametersList, { from: range.from, to: range.to, label: range.label }],
+    });
+  };
+
   const toNumber = (number) => (typeof number === 'number' ? number : parseInt(number));
   return (
     <>
@@ -79,17 +132,7 @@ const AddParameterSecondStepRange = ({
             <IconButton
               color='secondary'
               aria-label='remove'
-              onClick={() => {
-                const newParametersList = parametersList.slice(0, i);
-                const newMax = findMax(newParametersList);
-                setRange({ from: newMax + 1, to: newMax + 2, label: '' });
-                setParametersList(newParametersList);
-                setModalState({
-                  ...modalState,
-                  rangesList: newParametersList,
-                });
-                !newParametersList.length && setRange(defauldRange) && setMax(0);
-              }}
+              onClick={() => handleRemoveParamether(i)}
             >
               <Tooltip title='Remove this and below'>
                 <ClearIcon size='medium' color='secondary' />
@@ -102,34 +145,14 @@ const AddParameterSecondStepRange = ({
         <Box width='122px' marginRight='20px'>
           <NumberInput
             value={range.from}
-            onChangeInput={(e) => {
-              const val = toNumber(e.target.value);
-              if (val <= max) return;
-              val >= range.to
-                ? setRange({
-                  from: val,
-                  to: val + 1,
-                })
-                : setRange({
-                  from: val,
-                  to: range.to,
-                });
-            }}
+            onChangeInput={(e) => handleRangeFrom(e.target.value)}
             minMAx={{ min: 1, max: range.from + 1 }}
           />
         </Box>
         <Box width='122px' marginRight='20px'>
           <NumberInput
             value={range.to}
-            onChangeInput={(e) => {
-              const val = toNumber(e.target.value);
-
-              if (val < max + 1) return;
-              setRange({
-                from: range.from,
-                to: val,
-              });
-            }}
+            onChangeInput={(e) => handleRangeTo(e.target.value)}
             minMAx={{ min: range.from + 1, max: Infinity }}
           />
         </Box>
@@ -151,25 +174,7 @@ const AddParameterSecondStepRange = ({
           <IconButton
             aria-label='add to shopping cart'
             disabled={!range.label}
-            onClick={() => {
-              setParametersList([
-                ...parametersList,
-                { from: range.from, to: range.to, label: range.label },
-              ]);
-              setRange({ from: range.to + 1, to: range.to + 2, label: '' });
-              const newMax = findMax([
-                ...parametersList,
-                { from: range.from, to: range.to, label: range.label },
-              ]);
-              setMax(newMax);
-              setModalState({
-                ...modalState,
-                rangesList: [
-                  ...parametersList,
-                  { from: range.from, to: range.to, label: range.label },
-                ],
-              });
-            }}
+            onClick={handleAddParameterRow}
           >
             <AddCircleOutlineIcon
               size='medium'

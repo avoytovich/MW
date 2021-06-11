@@ -33,7 +33,7 @@ const SecretKeysTable = ({ curIdentity, removeSecretKey }) => {
         <Table>
           <TableHead>
             <TableRow style={{ background: '#eee' }}>
-              <TableCell data-test='tableHeader' >{localization.t('labels.secretKey')}</TableCell>
+              <TableCell data-test='tableHeader'>{localization.t('labels.secretKey')}</TableCell>
               <TableCell data-test='tableHeader' className='tableCellWithBorder'>{localization.t('labels.createDate')}</TableCell>
               <TableCell data-test='tableHeader' align="center" className='tableCellWithBorder'>{localization.t('labels.deleteSecretKey')}</TableCell>
             </TableRow>

@@ -127,9 +127,6 @@ const handleGetProductDetails = (
       // eslint-desible-next-line
       productDescrData.i18nFields = i18nFields;
 
-      // setCurData({ ...productDescrData });
-      // setInitData(JSON.stringify({ ...productDescrData }));
-      // setAvailLocales(avail);
       if (dataParent?.variableDescriptions) {
         setVariablesDescriptions(dataParent?.variableDescriptions);
       }
@@ -168,9 +165,6 @@ const handleGetProductDetails = (
     // eslint-desible-next-line
     productDescrData.i18nFields = i18nFields;
 
-    // setCurData({ ...productDescrData });
-    // setInitData(JSON.stringify({ ...productDescrData }));
-    // setAvailLocales(avail);
     if (data?.variableDescriptions) {
       setVariablesDescriptions(data?.variableDescriptions);
     }
