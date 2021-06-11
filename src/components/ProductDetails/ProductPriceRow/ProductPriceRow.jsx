@@ -11,31 +11,21 @@ import {
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-import {
-  SelectCustom,
-} from '../../Inputs';
+import { SelectCustom } from '../../Inputs';
 
-import {
-  priceCurrency,
-  countryOptions,
-} from '../../../services/selectOptions/selectOptions';
+import { priceCurrency, countryOptions } from '../../../services/selectOptions/selectOptions';
 
-const ProductPriceRow = ({
-  setProductData,
-  currentProductData,
-}) => {
+const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
   const [currency, setCurrency] = useState('');
   const [country, setCountry] = useState('');
 
-  const [newRow, setNewRow] = useState(
-    {
-      value: '',
-      msrp: '',
-      upSell: '',
-      crossSell: '',
-      vatIncluded: false,
-    },
-  );
+  const [newRow, setNewRow] = useState({
+    value: '',
+    msrp: '',
+    upSell: '',
+    crossSell: '',
+    vatIncluded: false,
+  });
 
   const addRow = () => {
     const newState = {
@@ -52,16 +42,30 @@ const ProductPriceRow = ({
 
     setProductData({
       ...currentProductData,
-      prices: {
-        ...currentProductData.prices,
-        priceByCountryByCurrency: {
-          ...currentProductData.prices.priceByCountryByCurrency,
-          [currency]: {
-            ...currentProductData?.prices?.priceByCountryByCurrency[currency],
-            ...countryObj,
+      prices: parentId
+        ? {
+          ...currentProductData.prices,
+          value: {
+            ...currentProductData.prices.value,
+            priceByCountryByCurrency: {
+              ...currentProductData.prices.value.priceByCountryByCurrency,
+              [currency]: {
+                ...currentProductData?.prices?.priceByCountryByCurrency?.value[currency],
+                ...countryObj,
+              },
+            },
+          },
+        }
+        : {
+          ...currentProductData.prices,
+          priceByCountryByCurrency: {
+            ...currentProductData.prices.priceByCountryByCurrency,
+            [currency]: {
+              ...currentProductData?.prices?.priceByCountryByCurrency[currency],
+              ...countryObj,
+            },
           },
         },
-      },
     });
 
     setCurrency('');
@@ -94,10 +98,10 @@ const ProductPriceRow = ({
   return (
     <>
       <TableRow className='new-price-row'>
-        <TableCell align="center">
+        <TableCell align='center'>
           <Box>
             <SelectCustom
-              label="priceCountry"
+              label='priceCountry'
               value={country}
               selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
               onChangeSelect={handleCountry}
@@ -105,10 +109,10 @@ const ProductPriceRow = ({
           </Box>
         </TableCell>
 
-        <TableCell align="center">
+        <TableCell align='center'>
           <Box>
             <SelectCustom
-              label="priceCurrency"
+              label='priceCurrency'
               value={currency}
               selectOptions={priceCurrency}
               onChangeSelect={handleCurrency}
@@ -116,75 +120,78 @@ const ProductPriceRow = ({
           </Box>
         </TableCell>
 
-        <TableCell align="center">
-          <Box px={1} width=" 100%">
+        <TableCell align='center'>
+          <Box px={1} width=' 100%'>
             <TextField
               fullWidth
-              name="value"
-              type="text"
+              name='value'
+              type='text'
               value={newRow.value}
               onChange={handleChange}
-              variant="outlined"
+              variant='outlined'
             />
           </Box>
         </TableCell>
 
-        <TableCell align="center">
-          <Box px={1} width=" 100%">
+        <TableCell align='center'>
+          <Box px={1} width=' 100%'>
             <TextField
               fullWidth
-              name="msrp"
-              type="text"
+              name='msrp'
+              type='text'
               value={newRow.msrp}
               onChange={handleChange}
-              variant="outlined"
+              variant='outlined'
             />
           </Box>
         </TableCell>
 
-        <TableCell align="center">
-          <Box px={1} width=" 100%">
+        <TableCell align='center'>
+          <Box px={1} width=' 100%'>
             <TextField
               fullWidth
-              name="upSell"
-              type="text"
+              name='upSell'
+              type='text'
               value={newRow.upSell}
               onChange={handleChange}
-              variant="outlined"
+              variant='outlined'
             />
           </Box>
         </TableCell>
 
-        <TableCell align="center">
-          <Box px={1} width=" 100%">
+        <TableCell align='center'>
+          <Box px={1} width=' 100%'>
             <TextField
               fullWidth
-              name="crossSell"
-              type="text"
+              name='crossSell'
+              type='text'
               value={newRow.crossSell}
               onChange={handleChange}
-              variant="outlined"
+              variant='outlined'
             />
           </Box>
         </TableCell>
 
-        <TableCell align="center" style={{ minWidth: '50px' }}>
+        <TableCell align='center' style={{ minWidth: '50px' }}>
           <FormControlLabel
             control={(
               <Checkbox
                 checked={newRow.vatIncluded}
                 onChange={handleCheckbox}
-                name="vatIncluded"
-                color="primary"
+                name='vatIncluded'
+                color='primary'
               />
             )}
             style={{ margin: 0 }}
           />
         </TableCell>
 
-        <TableCell align="center" className='transparent-cell' style={{ minWidth: '50px' }}>
+        <TableCell align='center' className='transparent-cell' style={{ minWidth: '50px' }}>
           <Button onClick={addRow} disabled={!country || !currency}>
-            <AddCircleIcon color="primary" style={{ opacity: !country || !currency ? 0.5 : 1 }} />
+            <AddCircleIcon
+              color='primary'
+              style={{ opacity: !country || !currency ? 0.5 : 1 }}
+            />
           </Button>
         </TableCell>
       </TableRow>
@@ -195,6 +202,7 @@ const ProductPriceRow = ({
 ProductPriceRow.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
+  parentId: PropTypes.string,
 };
 
 export default ProductPriceRow;

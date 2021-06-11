@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory, useParams } from 'react-router-dom';
 
 import {
   Box,
@@ -16,7 +17,6 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
-
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -32,11 +32,14 @@ const Variations = ({
   currentProductData,
   productVariations: { bundledProducts = [], variations },
   setProductDetails,
-  productHasLocalizationChanges,
+  productDetails,
 }) => {
   // MOCK !!!
   const defaultLocale = 'en-US';
   //
+  const history = useHistory();
+  const { id: productId } = useParams();
+
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
   const [open, setOpen] = useState(false);
 
@@ -55,27 +58,42 @@ const Variations = ({
     setOpen(false);
   };
 
+  const handleDeleteVariable = (field) => {
+    const newAvailableVariables = currentProductData.availableVariables.filter(
+      (item) => item.field !== field,
+    );
+    const newVariableDescriptions = productDetails.variableDescriptions.filter(
+      ({ description }) => description !== field,
+    );
+    setProductData({
+      ...currentProductData,
+      availableVariables: newAvailableVariables,
+    });
+    setProductDetails({
+      ...productDetails,
+      variableDescriptions: newVariableDescriptions,
+    });
+  };
+
   return (
-    <Box display="flex" flexDirection="column" width="100%">
-      <SectionLayout label="productVariations" wrapperWidth="initial">
+    <Box display='flex' flexDirection='column' width='100%'>
+      <SectionLayout label='productVariations' wrapperWidth='initial'>
         <Box mt={3}>
-          <Typography>
-            Emphasized values override parent product's values.
-          </Typography>
+          <Typography>Emphasized values override parent product's values.</Typography>
         </Box>
         <Box mt={3}>
           <TableContainer component={Paper}>
-            <Table className="table" aria-label="simple table">
+            <Table className='table' aria-label='simple table'>
               <TableHead>
                 <TableRow>
                   <TableCell>Id</TableCell>
-                  <TableCell align="center">Status</TableCell>
-                  <TableCell align="center">Publisher reference</TableCell>
-                  <TableCell align="center">Lifetime</TableCell>
-                  <TableCell align="center">Fulfillment Model</TableCell>
-                  <TableCell align="center">Subscription Model</TableCell>
+                  <TableCell align='center'>Status</TableCell>
+                  <TableCell align='center'>Publisher reference</TableCell>
+                  <TableCell align='center'>Lifetime</TableCell>
+                  <TableCell align='center'>Fulfillment Model</TableCell>
+                  <TableCell align='center'>Subscription Model</TableCell>
                   {variations?.availableVariables?.map(({ field }) => (
-                    <TableCell key={field} align="center">
+                    <TableCell key={field} align='center'>
                       {field}
                     </TableCell>
                   ))}
@@ -92,24 +110,26 @@ const Variations = ({
                     subscriptionTemplate,
                   } = item;
                   return (
-                    <TableRow key={id}>
-                      <TableCell component="th" scope="row">
+                    <TableRow
+                      key={id}
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        history.push(`/overview/products/${id}`, {
+                          parentId: productId,
+                        });
+                      }}
+                    >
+                      <TableCell component='th' scope='row'>
                         {id}
                       </TableCell>
-                      <TableCell align="center">{status || ''}</TableCell>
-                      <TableCell align="center">
-                        {publisherRefId || '-'}
-                      </TableCell>
-                      <TableCell align="center">{lifeTime || ''}</TableCell>
-                      <TableCell align="center">
-                        {fulfillmentTemplate || ''}
-                      </TableCell>
-                      <TableCell align="center">
-                        {subscriptionTemplate || ''}
-                      </TableCell>
+                      <TableCell align='center'>{status || ''}</TableCell>
+                      <TableCell align='center'>{publisherRefId || '-'}</TableCell>
+                      <TableCell align='center'>{lifeTime || ''}</TableCell>
+                      <TableCell align='center'>{fulfillmentTemplate || ''}</TableCell>
+                      <TableCell align='center'>{subscriptionTemplate || ''}</TableCell>
                       {variations?.availableVariables?.map(
                         ({ fieldValue, field, localizedValue }) => (
-                          <TableCell key={field} align="center">
+                          <TableCell key={field} align='center'>
                             {localizedValue[fieldValue][defaultLocale]}
                           </TableCell>
                         ),
@@ -122,53 +142,56 @@ const Variations = ({
           </TableContainer>
           <Box mt={3}>
             <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => null}
-              disabled={!variations || !variations?.availableVariables?.length}
+              variant='outlined'
+              color='primary'
+              onClick={() => {
+                history.state = {
+                  parentId: productId,
+                };
+                history.push('/products/add');
+              }}
+              disabled={!currentProductData?.availableVariables?.length}
             >
               Add variant
             </Button>
           </Box>
         </Box>
       </SectionLayout>
-      <Box display="flex">
-        <SectionLayout label="bundledProducts" contentWidth="100%">
+      <Box display='flex'>
+        <SectionLayout label='bundledProducts' contentWidth='100%'>
           {Object.entries(counts).map(([key, value]) => {
             const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
             return (
               <Box
                 key={key}
-                display="flex"
-                justifyContent="space-between"
-                marginBottom="30px"
-                marginRight="30px"
+                display='flex'
+                justifyContent='space-between'
+                marginBottom='30px'
+                marginRight='30px'
               >
                 <Popup
                   text={selectValue.value}
                   childrenComponent={(props) => (
                     <TextField
                       name={key}
-                      aria-owns={
-                        props.open ? `mouse-over-popover ${key}` : undefined
-                      }
-                      aria-haspopup="true"
+                      aria-owns={props.open ? `mouse-over-popover ${key}` : undefined}
+                      aria-haspopup='true'
                       disabled
-                      value={selectValue.value}
+                      value={selectValue.value || ''}
                       fullWidth
-                      label="Name or Id"
-                      type="text"
-                      variant="outlined"
+                      label='Name or Id'
+                      type='text'
+                      variant='outlined'
                       onMouseEnter={props.handlePopoverOpen}
                       onMouseLeave={props.handlePopoverClose}
                     />
                   )}
                 />
-                <Box marginLeft="17px" height="inherit">
+                <Box marginLeft='17px' height='inherit'>
                   <ButtonGroup
-                    size="large"
-                    aria-label="large outlined button group"
+                    size='large'
+                    aria-label='large outlined button group'
                     style={{ height: '100%' }}
                   >
                     <Button
@@ -176,9 +199,7 @@ const Variations = ({
                         const index = currentProductData?.subProducts?.findIndex(
                           (item) => item === selectValue.id,
                         );
-                        const newSubProducts = [
-                          ...currentProductData.subProducts,
-                        ];
+                        const newSubProducts = [...currentProductData.subProducts];
                         newSubProducts.splice(index, 1);
                         setProductData({
                           ...currentProductData,
@@ -193,10 +214,7 @@ const Variations = ({
                       onClick={() => {
                         setProductData({
                           ...currentProductData,
-                          subProducts: [
-                            ...currentProductData.subProducts,
-                            selectValue.id,
-                          ],
+                          subProducts: [...currentProductData.subProducts, selectValue.id],
                         });
                       }}
                     >
@@ -204,10 +222,10 @@ const Variations = ({
                     </Button>
                   </ButtonGroup>
                 </Box>
-                <Box marginLeft="20px">
+                <Box marginLeft='20px'>
                   <IconButton
-                    color="secondary"
-                    aria-label="clear"
+                    color='secondary'
+                    aria-label='clear'
                     onClick={() => {
                       setProductData({
                         ...currentProductData,
@@ -224,87 +242,71 @@ const Variations = ({
             );
           })}
           <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            marginBottom="30px"
-            marginRight="30px"
+            display='flex'
+            justifyContent='space-between'
+            alignItems='center'
+            marginBottom='30px'
+            marginRight='30px'
           >
             <SelectCustom
-              label="price"
+              label='nameOrId'
               value={selectedBundledProduct || ''}
               selectOptions={selectOptions?.renewingProducts || []}
               onChangeSelect={(e) => {
                 setSelectedBundledProduct(e.target.value);
               }}
             />
-            <Box marginLeft="20px">
+            <Box marginLeft='20px'>
               <IconButton
                 color={selectedBundledProduct ? 'primary' : 'secondary'}
-                aria-label="add to shopping cart"
+                aria-label='add to shopping cart'
                 disabled={!selectedBundledProduct}
                 onClick={() => {
                   setProductData({
                     ...currentProductData,
                     subProducts: currentProductData?.subProducts
-                      ? [
-                        ...currentProductData.subProducts,
-                        selectedBundledProduct,
-                      ]
+                      ? [...currentProductData.subProducts, selectedBundledProduct]
                       : [selectedBundledProduct],
                   });
                   setSelectedBundledProduct(null);
                 }}
               >
-                <AddCircleOutlineIcon size="medium" color="primary" />
+                <AddCircleOutlineIcon size='medium' color='primary' />
               </IconButton>
             </Box>
           </Box>
         </SectionLayout>
-        <SectionLayout label="variationParameters" width="100%">
+        <SectionLayout label='variationParameters' width='100%'>
           <TableContainer component={Paper}>
-            <Table className="table" aria-label="simple table">
+            <Table className='table' aria-label='simple table'>
               <TableHead>
                 <TableRow>
                   <TableCell>Parameter Name</TableCell>
                   <TableCell>Name</TableCell>
+                  <TableCell />
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentProductData?.availableVariables?.map(
-                  ({ field, type }) => (
-                    <TableRow key={field}>
-                      <TableCell>{field}</TableCell>
-                      <TableCell>{type}</TableCell>
-                      <TableCell>
-                        <IconButton
-                          color="secondary"
-                          aria-label="clear"
-                          onClick={() => {
-                            const newAvailableVariables = currentProductData.availableVariables
-                              .filter((item) => item.field !== field);
-
-                            setProductData({
-                              ...currentProductData,
-                              availableVariables: newAvailableVariables,
-                            });
-                            setProductDetails({
-                              ...productHasLocalizationChanges,
-                              variableDescriptions: newAvailableVariables,
-                            });
-                          }}
-                        >
-                          <ClearIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ),
-                )}
+                {currentProductData?.availableVariables?.map(({ field, type }) => (
+                  <TableRow key={field}>
+                    <TableCell>{field}</TableCell>
+                    <TableCell>{type}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        color='secondary'
+                        aria-label='clear'
+                        onClick={() => handleDeleteVariable(field)}
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
-          <Box marginTop="30px">
-            <Button variant="outlined" color="primary" onClick={handleOpen}>
+          <Box marginTop='30px'>
+            <Button variant='outlined' color='primary' onClick={handleOpen}>
               Add Variation
             </Button>
           </Box>
@@ -314,7 +316,7 @@ const Variations = ({
             setProductData={setProductData}
             currentProductData={currentProductData}
             setProductDetails={setProductDetails}
-            productHasLocalizationChanges={productHasLocalizationChanges}
+            productDetails={productDetails}
           />
         </SectionLayout>
       </Box>
@@ -333,7 +335,7 @@ Variations.propTypes = {
     variations: PropTypes.object,
   }),
   setProductDetails: PropTypes.func,
-  productHasLocalizationChanges: PropTypes.bool,
+  productDetails: PropTypes.object,
 };
 
 export default Variations;

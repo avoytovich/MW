@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  MenuItem,
-  TextField,
-  CircularProgress,
-  InputAdornment,
-  Box,
+  MenuItem, TextField, CircularProgress, InputAdornment, Box,
 } from '@material-ui/core';
 import localization from '../../localization';
 
@@ -26,28 +22,21 @@ const SelectCustom = ({
     disabled={!selectOptions || isDisabled}
     InputProps={{
       startAdornment: !selectOptions && (
-      <InputAdornment>
-        <CircularProgress />
-      </InputAdornment>
+        <InputAdornment>
+          <CircularProgress />
+        </InputAdornment>
       ),
     }}
     SelectProps={{
       value: value || '',
       onChange: onChangeSelect,
       // eslint-disable-next-line
-        renderValue: (selected) => {
-        const selectedItem = selectOptions?.find(
-          (item) => item.id === selected,
-        );
+      renderValue: (selected) => {
+        const selectedItem = selectOptions?.find((item) => item.id === selected);
 
         if (selectOptions) {
           return (
-            <Box
-              display='flex'
-              alignItems='center'
-              flexDirection='row'
-              flexWrap='wrap'
-            >
+            <Box display='flex' alignItems='center' flexDirection='row' flexWrap='wrap'>
               {selectedItem?.value || selected}
             </Box>
           );
@@ -69,9 +58,7 @@ const SelectCustom = ({
         </MenuItem>
       ))
     ) : (
-      <MenuItem disabled>
-        {localization.t('general.noAvailableOptions')}
-      </MenuItem>
+      <MenuItem disabled>{localization.t('general.noAvailableOptions')}</MenuItem>
     )}
   </TextField>
 );

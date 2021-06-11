@@ -15,7 +15,9 @@ import {
 const TabTable = ({ tabObject }) => {
   const dispatch = useDispatch();
 
-  const { sortKey, generateData, request, deleteFunc, label, scope } = tabObject;
+  const {
+    sortKey, generateData, request, deleteFunc, label, scope,
+  } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);

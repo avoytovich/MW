@@ -16,25 +16,29 @@ const AddVariationModal = ({
   setProductData,
   currentProductData,
   setProductDetails,
-  productHasLocalizationChanges,
+  productDetails,
 }) => {
   const [step, setStep] = useState('firstStep');
   const [modalState, setModalState] = useState({});
 
   const handleClose = () => {
     setStep('firstStep');
+    setModalState({});
     onClose();
   };
+
   const handleCreateParameter = () => {
-    const newAvailableVariables = JSON.parse(
-      JSON.stringify(currentProductData.availableVariables),
-    );
+    const newAvailableVariables = currentProductData?.availableVariables
+      ? JSON.parse(JSON.stringify(currentProductData.availableVariables))
+      : [];
     const frontToBack = JSON.parse(JSON.stringify(modalState));
+
     let dataForProductDescriptionRequest = {};
     let dataForProductRquest = {};
+    let variableValueDescription = {};
 
     if (modalState.type === 'LIST') {
-      const variableValueDescription = frontToBack?.listValue
+      variableValueDescription = frontToBack?.listValue
         .split('\n')
         .filter((item) => item)
         .reduce(
@@ -55,28 +59,47 @@ const AddVariationModal = ({
           },
           { valueForDetails: [], valueForProduct: [] },
         );
+    } else {
+      variableValueDescription = frontToBack?.rangesList.reduce(
+        (acc, { from, to, label }) => {
+          const value1 = {
+            description: `${from}-${to}`,
+            localizedValue: {
+              'en-US': label,
+            },
+          };
+          const value2 = `${from}-${to}`;
+          return {
+            ...acc,
+            valueForDetails: [...acc.valueForDetails, value1],
+            valueForProduct: [...acc.valueForProduct, value2],
+          };
+        },
+        { valueForDetails: [], valueForProduct: [] },
+      );
+    }
 
+    dataForProductDescriptionRequest = {
+      description: frontToBack.field,
+      variableValueDescriptions: variableValueDescription.valueForDetails,
+    };
+
+    if (frontToBack.label) {
       dataForProductDescriptionRequest = {
-        description: frontToBack.field,
-        variableValueDescriptions: variableValueDescription.valueForDetails,
-      };
-
-      if (frontToBack.label) {
-        dataForProductDescriptionRequest = {
-          ...dataForProductDescriptionRequest,
-          label: frontToBack.label,
-          labels: { 'en-US': frontToBack.label },
-        };
-      }
-      dataForProductRquest = {
-        defaultValue: 'val1',
-        field: frontToBack.field,
-        labels: null,
-        localizedValue: null,
-        type: frontToBack.type,
-        value: variableValueDescription.valueForProduct,
+        ...dataForProductDescriptionRequest,
+        label: frontToBack.label,
+        labels: { 'en-US': frontToBack.label },
       };
     }
+    dataForProductRquest = {
+      defaultValue:
+        modalState.type === 'LIST' ? 'val1' : variableValueDescription?.valueForProduct[0],
+      field: frontToBack.field,
+      labels: null,
+      localizedValue: null,
+      type: frontToBack.type,
+      value: variableValueDescription.valueForProduct,
+    };
 
     newAvailableVariables.push(dataForProductRquest);
     setProductData({
@@ -84,13 +107,12 @@ const AddVariationModal = ({
       availableVariables: newAvailableVariables,
     });
     setProductDetails({
-      ...productHasLocalizationChanges,
-      variableDescriptions: [
-        ...productHasLocalizationChanges.variableDescriptions,
-        dataForProductDescriptionRequest,
-      ],
+      ...productDetails,
+      variableDescriptions: productDetails?.variableDescriptions
+        ? [...productDetails.variableDescriptions, dataForProductDescriptionRequest]
+        : dataForProductDescriptionRequest,
     });
-    onClose();
+    handleClose();
   };
 
   const modalBody = {
@@ -129,7 +151,7 @@ const AddVariationModal = ({
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <Box className="container">{modalBody[step]}</Box>
+      <Box className='container'>{modalBody[step]}</Box>
     </Modal>
   );
 };
@@ -140,7 +162,7 @@ AddVariationModal.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   setProductDetails: PropTypes.func,
-  productHasLocalizationChanges: PropTypes.bool,
+  productDetails: PropTypes.object,
 };
 
 export default AddVariationModal;
