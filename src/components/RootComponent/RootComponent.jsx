@@ -12,6 +12,8 @@ import '../../styles/main.scss';
 const RootComponent = () => {
   const history = useHistory();
 
+  console.log('envObj:', process?.env?.envObj);
+
   return (
     <>
       <CssBaseline />

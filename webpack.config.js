@@ -41,6 +41,7 @@ module.exports = (env) => ({
       'process.env.ENV_MODE': JSON.stringify(env.ENV_MODE),
       'process.env.API_SERVER':
         env.ENV_MODE === 'production' ? JSON.stringify('https://api.nexway.build') : JSON.stringify('https://api.staging.nexway.build'),
+      'process.env.envObj': JSON.stringify(env),
     }),
   ],
   resolve: {
