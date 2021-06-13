@@ -13,6 +13,7 @@ const RootComponent = () => {
   const history = useHistory();
 
   console.log('envObj:', process?.env?.envObj);
+  console.log('env:', process?.env);
 
   return (
     <>
