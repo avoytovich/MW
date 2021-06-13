@@ -6,7 +6,7 @@
     "lint": "eslint ./src --ext .js,.jsx --no-error-on-unmatched-pattern",
     "lint-fix": "eslint ./src --ext .js,.jsx --fix",
     "dev": "webpack-dev-server --mode=development --env.ENV_MODE=development dotenv",
-    "stage": "dotenv webpack --mode=production --env.ENV_MODE=staging --env.branch=${branchName} --env.branchTest=test",
+    "stage": "webpack --mode=production --env.ENV_MODE=staging --env.branch=${branchName} --env.branchTest=test dotenv",
     "prod": "webpack --mode=production --env.ENV_MODE=production",
     "cy:local": "CYPRESS_BASE_URL=http://localhost:8080 cypress run",
     "cy:open:local": "CYPRESS_BASE_URL=http://localhost:8080 cypress open",
