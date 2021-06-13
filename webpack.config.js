@@ -6,9 +6,6 @@ const fileDep = path.resolve(__dirname, 'dist');
 
 module.exports = (env) => ({
   context: __dirname,
-  node: {
-    fs: 'empty',
-  },
   entry: ['@babel/polyfill', './src/index.jsx'],
   output: {
     path: path.resolve(__dirname, 'dist'),
