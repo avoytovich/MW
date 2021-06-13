@@ -42,7 +42,7 @@ const SignedRoutes = () => {
           />
 
           <Route
-            path={[`${defPath}/:realm`, '/']}
+            path={[`${defPath}/:realm`, `${defPath}/`]}
             exact
             component={AuthScreen}
           />
