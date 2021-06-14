@@ -10,7 +10,7 @@ module.exports = (env) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
-    publicPath: '/iap-10761/', // /iap-10761/
+    publicPath: env.branch ? `/${env.branch}/` : '/',
   },
   devServer: {
     historyApiFallback: true,
