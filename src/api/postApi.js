@@ -1,17 +1,28 @@
 import { axiosInstance } from '../axios';
+import { KNOWN_REALMS } from '../services/constants';
 
 const postApi = {
   signIn(data) {
+    let realm = data?.realm;
     let url = '/iam/tokens';
 
     const reason = 'Nexway-Center';
+
     if (reason) {
       url += `?reason=${reason}`;
     }
+
+    if (KNOWN_REALMS.indexOf(realm) < 0) {
+      realm = 'nexway';
+    }
+
     return axiosInstance({
       method: 'post',
       url,
-      data,
+      data: {
+        ...data,
+        realm,
+      },
     });
   },
   recoverPassword(data) {
