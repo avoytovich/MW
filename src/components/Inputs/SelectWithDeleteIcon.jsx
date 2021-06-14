@@ -15,43 +15,44 @@ import './Inputs.scss';
 const SelectWithDeleteIcon = ({
   label,
   value,
+  isDisabled,
   selectOptions,
   onChangeSelect,
   onClickDelIcon,
 }) => (
-  <FormControl fullWidth variant="outlined">
+  <FormControl fullWidth variant='outlined'>
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
+      value={selectOptions && value ? value : ''}
       data-test={label}
-      value={selectOptions ? value : ''}
       inputProps={{
         name: label,
         id: label,
       }}
-      disabled={!selectOptions}
+      disabled={!selectOptions || isDisabled}
       label={localization.t(`labels.${label}`)}
       onChange={onChangeSelect}
-      variant="outlined"
+      variant='outlined'
       startAdornment={
-          !selectOptions && (
-            <InputAdornment>
-              <CircularProgress />
-            </InputAdornment>
-          )
-        }
+        !selectOptions && (
+          <InputAdornment>
+            <CircularProgress />
+          </InputAdornment>
+        )
+      }
       endAdornment={
-          value && (
-            <CancelIcon
-              className="cancelSelectIcon"
-              fontSize="small"
-              color="secondary"
-              onClick={onClickDelIcon}
-              onMouseDown={(e) => {
-                e.stopPropagation();
-              }}
-            />
-          )
-        }
+        value && (
+          <CancelIcon
+            className='cancelSelectIcon'
+            fontSize='small'
+            color='secondary'
+            onClick={isDisabled ? () => null : onClickDelIcon}
+            onMouseDown={(e) => {
+              e.stopPropagation();
+            }}
+          />
+        )
+      }
     >
       {selectOptions?.length ? (
         selectOptions.map((option) => (
@@ -60,9 +61,7 @@ const SelectWithDeleteIcon = ({
           </MenuItem>
         ))
       ) : (
-        <MenuItem disabled>
-          {localization.t('general.noAvailableOptions')}
-        </MenuItem>
+        <MenuItem disabled>{localization.t('general.noAvailableOptions')}</MenuItem>
       )}
     </Select>
   </FormControl>
@@ -71,6 +70,7 @@ const SelectWithDeleteIcon = ({
 SelectWithDeleteIcon.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
+  isDisabled: PropTypes.bool,
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   onClickDelIcon: PropTypes.func,

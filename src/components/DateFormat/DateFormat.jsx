@@ -1,5 +1,4 @@
 const DateFormat = ({ date }) => {
-
   const dateFormat = {
     year: 'numeric',
     month: '2-digit',

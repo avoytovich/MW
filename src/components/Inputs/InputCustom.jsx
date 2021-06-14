@@ -8,27 +8,27 @@ const InputCustom = ({
   value,
   onChangeInput,
   isRequired,
-  idDisabled,
+  isDisabled,
   isMultiline,
   helperText,
 }) => (
-  <form autoComplete="off">
+  <form autoComplete='off'>
     <TextField
       data-test={label}
       helperText={helperText}
-      disabled={idDisabled}
+      disabled={isDisabled}
       multiline={isMultiline}
       required={isRequired}
       name={label}
-      value={value}
+      value={value || ''}
       fullWidth
       label={label ? localization.t(`labels.${label}`) : ''}
-      type="text"
+      type='text'
       InputProps={{
         form: { autocomplete: 'off' },
       }}
       onChange={onChangeInput}
-      variant="outlined"
+      variant='outlined'
     />
   </form>
 );
@@ -37,7 +37,7 @@ InputCustom.propTypes = {
   label: PropTypes.string,
   value: PropTypes.string,
   isRequired: PropTypes.bool,
-  idDisabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   isMultiline: PropTypes.bool,
   onChangeInput: PropTypes.func,
   helperText: PropTypes.string,

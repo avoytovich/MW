@@ -5,8 +5,8 @@ import {
 import { showNotification } from './HttpNotifications';
 import localization from '../../localization';
 
-const login = (username, password) => async (dispatch) => {
-  const result = await auth.loginWithEmailAndPassword(username, password);
+const login = (username, password, realm) => async (dispatch) => {
+  const result = await auth.loginWithEmailAndPassword(username, password, realm);
   // eslint-disable-next-line camelcase
   const { access_token } = result;
   const user = { access_token, ...auth.decodeToken(access_token) };

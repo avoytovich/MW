@@ -29,62 +29,56 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
   };
 
   useEffect(() => {
-    currentProductData?.relatedContents && setContents([...currentProductData.relatedContents]);
+    currentProductData?.relatedContents
+      && setContents([...currentProductData.relatedContents]);
   }, [currentProductData.relatedContents]);
 
   useEffect(() => {
-    currentProductData?.resources && setResources([...currentProductData.resources]);
+    // currentProductData?.resources && setResources([...currentProductData.resources]);
   }, [currentProductData.resources]);
 
   return (
     <Box p={2} pt={0}>
-      <Typography variant='h6' style={{ fontWeight: '400' }}>{localization.t('labels.dropFileOrSelect')}</Typography>
+      <Typography variant='h6' style={{ fontWeight: '400' }}>
+        {localization.t('labels.dropFileOrSelect')}
+      </Typography>
 
       <Box my={4}>
         <Typography variant='h5'>{localization.t('labels.relatedContents')}</Typography>
       </Box>
 
-      {
-        contents.map((content, index) => (
-          <Box key={content.file + content.label}>
-            <ProductFileBlock
-              data={[...contents]}
-              item={{ ...content }}
-              updateData={updateContents}
-              index={index}
-              type='file'
-            />
-            <Divider light />
-          </Box>
-        ))
-      }
+      {contents.map((content, index) => (
+        <Box key={content.file + content.label}>
+          <ProductFileBlock
+            data={[...contents]}
+            item={{ ...content }}
+            updateData={updateContents}
+            index={index}
+            type='file'
+          />
+          <Divider light />
+        </Box>
+      ))}
 
-      <ProductFileBlock
-        data={[...contents]}
-        updateData={updateContents}
-        type='file'
-        empty
-      />
+      <ProductFileBlock data={[...contents]} updateData={updateContents} type='file' empty />
 
       <Box my={4}>
         <Typography variant='h5'>{localization.t('labels.resources')}</Typography>
       </Box>
 
-      {
-        resources.map((resource, index) => (
-          <Box key={resource.url + resource.label}>
-            <ProductFileBlock
-              data={[...resources]}
-              item={{ ...resource }}
-              updateData={updateResources}
-              index={index}
-              type='url'
-              withSelect
-            />
-            <Divider light />
-          </Box>
-        ))
-      }
+      {resources.map((resource, index) => (
+        <Box key={resource.url + resource.label}>
+          <ProductFileBlock
+            data={[...resources]}
+            item={{ ...resource }}
+            updateData={updateResources}
+            index={index}
+            type='url'
+            withSelect
+          />
+          <Divider light />
+        </Box>
+      ))}
 
       <ProductFileBlock
         data={[...resources]}

@@ -33,15 +33,15 @@ const SecretKeysTable = ({ curIdentity, removeSecretKey }) => {
         <Table>
           <TableHead>
             <TableRow style={{ background: '#eee' }}>
-              <TableCell>{localization.t('labels.secretKey')}</TableCell>
-              <TableCell className='tableCellWithBorder'>{localization.t('labels.createDate')}</TableCell>
-              <TableCell align="center" className='tableCellWithBorder'>{localization.t('labels.deleteSecretKey')}</TableCell>
+              <TableCell data-test='tableHeader' >{localization.t('labels.secretKey')}</TableCell>
+              <TableCell data-test='tableHeader' className='tableCellWithBorder'>{localization.t('labels.createDate')}</TableCell>
+              <TableCell data-test='tableHeader' align="center" className='tableCellWithBorder'>{localization.t('labels.deleteSecretKey')}</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {curIdentity.secretKeys.map((item) => (
-              <TableRow key={item.secret}>
-                <TableCell>
+              <TableRow key={item.secret} data-test='tableRow'>
+                <TableCell data-test='secretCell'>
                   <Box display='flex' alignItems='center' justifyContent='space-between'>
                     <Box className='rowValue'><Typography color='primary'>{item.secret}</Typography></Box>
                     <Box pl={1}>
@@ -52,10 +52,10 @@ const SecretKeysTable = ({ curIdentity, removeSecretKey }) => {
                     </Box>
                   </Box>
                 </TableCell>
-                <TableCell className='tableCellWithBorder'>
+                <TableCell data-test='createDateCell' className='tableCellWithBorder'>
                   {moment(item.createDate).format('YYYY/MM/DD kk:mm (Z)')}
                 </TableCell>
-                <TableCell align="center" className='tableCellWithBorder'>
+                <TableCell data-test='clearIconCell' align="center" className='tableCellWithBorder'>
                   <IconButton color='primary' onClick={() => removeSecretKey(item.secret)}>
                     <ClearIcon color='secondary' />
                   </IconButton>
