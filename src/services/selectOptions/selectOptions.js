@@ -111,19 +111,6 @@ const businessSegment = [
   { value: 'B2C', id: 'B2C' },
 ];
 
-const countryOptions = [
-  { value: 'AD (Andora)', id: 'AD (Andora)' },
-  { value: 'AE (United Arab Emirates)', id: 'AE (United Arab Emirates)' },
-  { value: 'AF (Afganistan)', id: 'AF (Afganistan)' },
-  { value: 'AG (Antigua and Barbuda)', id: 'AG (Antigua and Barbuda)' },
-  { value: 'AI (Anguilla)', id: 'AI (Anguilla)' },
-  { value: 'AL (Albania)', id: 'AL (Albania)' },
-  { value: 'AM (Armenia)', id: 'AM (Armenia)' },
-  { value: 'AO (Angola)', id: 'AO (Angola)' },
-  { value: 'AQ (Antarctica)', id: 'AQ (Antarctica)' },
-  { value: 'AR (Argentina)', id: 'AR (Argentina)' },
-];
-
 const defaultCurrency = [
   { id: '-', value: '-' },
   { id: 'AED', value: 'AED' },
@@ -190,7 +177,6 @@ export {
   availableLocales,
   businessSegment,
   priceCurrency,
-  countryOptions,
   defaultCurrency,
   orderCancelAction,
   installmentOptions,

@@ -131,7 +131,7 @@ const productsVariations = (renewingProducts, productId) => (productId
     ?.filter((item) => item.id === productId)
     .reduce((accumulator, current) => {
       // eslint-disable-next-line
-          current.availableVariables = current?.availableVariables?.reduce(
+      current.availableVariables = current?.availableVariables?.reduce(
         (acc, curr) => [
           ...acc,
           {
@@ -282,6 +282,11 @@ const identityRequiredFields = (identity) => {
   };
   return { ...defaultIdentity, ...identity };
 };
+
+const countiesOptionsFormatting = (array) => array.map((item) => (
+  { id: item.alpha2Code, value: item.name }
+));
+
 export {
   storeRequiredFields,
   productRequiredFields,
@@ -294,4 +299,5 @@ export {
   identityRequiredFields,
   checkValue,
   localizedValues,
+  countiesOptionsFormatting,
 };

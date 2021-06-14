@@ -237,6 +237,20 @@ const getAllApi = {
       url,
     });
   },
+  getCountryOptions() {
+    const url = '/referential-manager/country?size=400&sort=name,asc';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getLocaleOptions() {
+    const url = '/referential-manager/locale?size=400';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default getAllApi;
