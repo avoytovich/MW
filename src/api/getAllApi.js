@@ -245,7 +245,7 @@ const getAllApi = {
     });
   },
   getLocaleOptions() {
-    const url = '/referential-manager/locale?size=400';
+    const url = '/referential-manager/locale?size=400&sort=code,asc';
     return axiosInstance({
       method: 'get',
       url,

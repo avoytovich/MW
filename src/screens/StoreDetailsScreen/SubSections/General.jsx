@@ -4,10 +4,9 @@ import {
   Box, Typography, Grid, Button,
 } from '@material-ui/core';
 import {
-  availableLocales,
   installmentOptions,
 } from '../../../services/selectOptions/selectOptions';
-import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
+import { getCountriesOptions, getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
 import localization from '../../../localization';
 import {
@@ -25,6 +24,7 @@ const checkBoxObj = [
 ];
 const General = ({ currentStoreData, setCurrentStoreData }) => {
   const countriesOptions = getCountriesOptions();
+  const availableLocales = getLanguagesOptions();
 
   return (
     <>

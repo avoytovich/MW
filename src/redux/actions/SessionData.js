@@ -10,5 +10,13 @@ const setCountriesOptions = (newState) => (dispatch) => {
     },
   });
 };
+const setLanguagesOptions = (newState) => (dispatch) => {
+  dispatch({
+    type: UPDATE_SESSION_STATE,
+    payload: {
+      languages: [...newState],
+    },
+  });
+};
 
-export default setCountriesOptions;
+export { setCountriesOptions, setLanguagesOptions };

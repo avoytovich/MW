@@ -10,10 +10,9 @@ import {
   Grid,
 } from '@material-ui/core';
 import {
-  availableLocales,
   priceCurrency,
 } from '../../../services/selectOptions/selectOptions';
-
+import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
 import {
@@ -35,6 +34,8 @@ const General = ({
     }
     setAmountType(e.target.value);
   };
+  const availableLocales = getLanguagesOptions();
+
   return (
     <>
       <Grid item md={6} sm={12}>
