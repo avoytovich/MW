@@ -45,37 +45,37 @@ const CreateProduct = () => {
     let isCancelled = false;
     parentId
       ? api.getProductById(parentId).then(({ data: product }) => {
-        if (!isCancelled) {
-          const checkedProduct = productRequiredFields(product);
-          handleGetProductDetails(
-            checkedProduct?.descriptionId,
-            setVariablesDescriptions,
+          if (!isCancelled) {
+            const checkedProduct = productRequiredFields(product);
+            handleGetProductDetails(
+              checkedProduct?.descriptionId,
+              setVariablesDescriptions,
+              setProductDetails,
+            );
+            setCurrentProductData(backToFront(checkedProduct));
+          }
+          const { customerId: _customerId, id, descriptionId } = product;
+          handleGetOptions(
+            _customerId,
+            id,
+            descriptionId,
+            isCancelled,
+            setSelectOptions,
+            selectOptions,
+            setSubProductVariations,
             setProductDetails,
           );
-          setCurrentProductData(backToFront(checkedProduct));
-        }
-        const { customerId: _customerId, id, descriptionId } = product;
-        handleGetOptions(
-          _customerId,
-          id,
-          descriptionId,
+        })
+      : handleGetOptions(
+          customerId,
+          null,
+          null,
           isCancelled,
           setSelectOptions,
           selectOptions,
           setSubProductVariations,
-          setProductDetails,
+          () => {},
         );
-      })
-      : handleGetOptions(
-        customerId,
-        null,
-        null,
-        isCancelled,
-        setSelectOptions,
-        selectOptions,
-        setSubProductVariations,
-        () => {},
-      );
     return () => {
       isCancelled = true;
     };
@@ -105,7 +105,7 @@ const CreateProduct = () => {
   };
 
   if (!customerId) {
-    return <>Select customer</>;
+    return <div data-test='emptyProductDetailsView'>Select customer</div>;
   }
 
   return (
