@@ -32,9 +32,10 @@ const SubProductVariations = ({
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
 
   const counts = {};
-  const subProductsList = currentProductData?.subProducts?.state === 'inherits'
-    ? currentProductData?.subProducts.parentValue
-    : currentProductData?.subProducts.value;
+  const subProductsList =
+    currentProductData?.subProducts?.state === 'inherits'
+      ? currentProductData?.subProducts.parentValue
+      : currentProductData?.subProducts.value;
 
   subProductsList?.forEach((x) => {
     counts[x] = (counts[x] || 0) + 1;
@@ -70,7 +71,8 @@ const SubProductVariations = ({
     <Box display='flex' width='100%'>
       <SectionLayout label='bundledProducts' contentWidth='100%'>
         {Object.entries(counts).map(([key, value]) => {
-          const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+          const selectValue =
+            selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
           return (
             <Box
@@ -105,11 +107,21 @@ const SubProductVariations = ({
                   aria-label='large outlined button group'
                   style={{ height: '100%' }}
                 >
-                  <Button disabled={bundledDisabled} onClick={handleDecrementBundledProduct}>
+                  <Button
+                    data-test='decrementSubProduct'
+                    disabled={bundledDisabled}
+                    onClick={handleDecrementBundledProduct}
+                  >
                     -
                   </Button>
-                  <Button disabled>{value}</Button>
-                  <Button disabled={bundledDisabled} onClick={handleIncrementBundledProduct}>
+                  <Button data-test='subProductCount' disabled>
+                    {value}
+                  </Button>
+                  <Button
+                    data-test='incrementSubProduct'
+                    disabled={bundledDisabled}
+                    onClick={handleIncrementBundledProduct}
+                  >
                     +
                   </Button>
                 </ButtonGroup>
@@ -145,6 +157,7 @@ const SubProductVariations = ({
             alignItems='center'
             marginBottom='30px'
             marginRight='30px'
+            data-test='bundledSectionDisabled'
           >
             <SelectCustom
               label='nameOrId'
@@ -210,7 +223,11 @@ const SubProductVariations = ({
                       parentId={parentId}
                       currentProductData={currentProductData}
                     >
-                      <RadioGroup aria-label={description} name={description} disabled>
+                      <RadioGroup
+                        aria-label={description}
+                        name={description}
+                        data-test='variationParameter'
+                      >
                         <Box display='flex'>
                           {variableValueDescriptions?.map(
                             ({ descValue, description: _description }) => (

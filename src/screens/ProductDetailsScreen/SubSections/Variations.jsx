@@ -99,7 +99,7 @@ const Variations = ({
                   ))}
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody data-test='productVariants'>
                 {bundledProducts?.map((item) => {
                   const {
                     id,
@@ -143,6 +143,7 @@ const Variations = ({
           <Box mt={3}>
             <Button
               variant='outlined'
+              data-test='addVariant'
               color='primary'
               onClick={() => {
                 history.state = {
@@ -160,7 +161,8 @@ const Variations = ({
       <Box display='flex'>
         <SectionLayout label='bundledProducts' contentWidth='100%'>
           {Object.entries(counts).map(([key, value]) => {
-            const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+            const selectValue =
+              selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
             return (
               <Box
@@ -195,6 +197,7 @@ const Variations = ({
                     style={{ height: '100%' }}
                   >
                     <Button
+                      data-test='decrementSubProduct'
                       onClick={() => {
                         const index = currentProductData?.subProducts?.findIndex(
                           (item) => item === selectValue.id,
@@ -209,8 +212,11 @@ const Variations = ({
                     >
                       -
                     </Button>
-                    <Button disabled>{value}</Button>
+                    <Button data-test='subProductCount' disabled>
+                      {value}
+                    </Button>
                     <Button
+                      data-test='incrementSubProduct'
                       onClick={() => {
                         setProductData({
                           ...currentProductData,
