@@ -41,6 +41,31 @@ const SubProductVariations = ({
     counts[x] = (counts[x] || 0) + 1;
   });
 
+  const handleDecrementBundledProduct = () => {
+    const index = currentProductData?.subProducts?.value?.findIndex(
+      (item) => item === selectValue.id,
+    );
+    const newSubProducts = [...currentProductData?.subProducts?.value];
+    newSubProducts.splice(index, 1);
+    setProductData({
+      ...currentProductData,
+      subProducts: {
+        ...currentProductData.subProducts,
+        value: newSubProducts,
+      },
+    });
+  };
+
+  const handleIncrementBundledProduct = () => {
+    setProductData({
+      ...currentProductData,
+      subProducts: {
+        ...currentProductData?.subProducts,
+        value: [...currentProductData?.subProducts?.value, selectValue.id],
+      },
+    });
+  };
+
   const bundledDisabled = currentProductData?.subProducts?.state === 'inherits';
   return (
     <Box display='flex' width='100%'>
@@ -85,20 +110,7 @@ const SubProductVariations = ({
                   <Button
                     data-test='decrementSubProduct'
                     disabled={bundledDisabled}
-                    onClick={() => {
-                      const index = currentProductData?.subProducts?.value?.findIndex(
-                        (item) => item === selectValue.id,
-                      );
-                      const newSubProducts = [...currentProductData?.subProducts?.value];
-                      newSubProducts.splice(index, 1);
-                      setProductData({
-                        ...currentProductData,
-                        subProducts: {
-                          ...currentProductData.subProducts,
-                          value: newSubProducts,
-                        },
-                      });
-                    }}
+                    onClick={handleDecrementBundledProduct}
                   >
                     -
                   </Button>
@@ -106,17 +118,9 @@ const SubProductVariations = ({
                     {value}
                   </Button>
                   <Button
-                    disabled={bundledDisabled}
                     data-test='incrementSubProduct'
-                    onClick={() => {
-                      setProductData({
-                        ...currentProductData,
-                        subProducts: {
-                          ...currentProductData?.subProducts,
-                          value: [...currentProductData?.subProducts?.value, selectValue.id],
-                        },
-                      });
-                    }}
+                    disabled={bundledDisabled}
+                    onClick={handleIncrementBundledProduct}
                   >
                     +
                   </Button>
