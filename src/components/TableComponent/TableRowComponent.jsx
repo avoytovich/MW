@@ -23,7 +23,7 @@ import FullNameAvatar from '../utils/FullNameAvatar';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import './TableComponent.scss';
-import PriceNumberFormat from '../ProductDetails/PriceNumberFormat';
+import PriceNumberFormat from '../PriceNumberFormat';
 
 const TableRowComponent = ({
   rowItem,
@@ -137,18 +137,18 @@ const TableRowComponent = ({
         {markupSequence.map((item) => drawTableCell(item))}
         <Grid item xs>
           {rowHover && !customPath && (
-          <Grid>
-            <Box my={2} textAlign='center'>
-              {!noActions && (
-                <DeleteIcon
-                  onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-                  className="deleteIcon icons"
-                />
-              )}
-              <EditIcon className="editIcon icons" />
-              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
-            </Box>
-          </Grid>
+            <Grid>
+              <Box my={2} textAlign='center'>
+                {!noActions && (
+                  <DeleteIcon
+                    onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                    className="deleteIcon icons"
+                  />
+                )}
+                <EditIcon className="editIcon icons" />
+                <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+              </Box>
+            </Grid>
           )}
         </Grid>
       </Grid>
