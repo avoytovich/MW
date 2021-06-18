@@ -6,12 +6,14 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { paymentDefaults } from '../../../services/selectOptions/selectOptions';
 import { SelectWithChip } from '../../../components/Inputs';
 import { filterOptions } from '../utils';
-import countriesOptions from '../../../services/selectOptions/countries';
+import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import localization from '../../../localization';
 
 import '../storeDetailsScreen.scss';
 
 const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
+  const countriesOptions = getCountriesOptions();
+
   const handleUpdatePayment = (value, group) => {
     const newArray = [
       ...currentStoreData.designs.paymentComponent
@@ -137,90 +139,90 @@ const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
       </Box>
       {currentStoreData.designs.paymentComponent
         .rankedPaymentTabsByCountriesList.length === 1 && (
-        <Box display="flex" alignItems="center" p={2}>
-          <AddCircleIcon color="primary" onClick={handleAddGroup} />
-          <Box pl={1}>Add Group</Box>
-        </Box>
+          <Box display="flex" alignItems="center" p={2}>
+            <AddCircleIcon color="primary" onClick={handleAddGroup} />
+            <Box pl={1}>Add Group</Box>
+          </Box>
       )}
       {currentStoreData.designs.paymentComponent.rankedPaymentTabsByCountriesList.map(
         (item, index) => index !== 0 && (
-        <Box p={2} key={item.countries.join()}>
-          <Box pb={1}>
-            <Typography>
-              {`${localization.t('labels.group')} #${index}`}
-            </Typography>
-          </Box>
-          <Box width={1} pt={2}>
-            <Grid container spacing={1} alignItems="center">
-              <Grid item md={6} sm={12}>
-                <SelectWithChip
-                  label="countries"
-                  value={item.countries}
-                  selectOptions={filterOptions(
-                    countriesOptions,
-                    currentStoreData.designs.paymentComponent
-                      .rankedPaymentTabsByCountriesList,
-                    index,
-                  )}
-                  onChangeSelect={(e) => {
-                    handleUpdatePayment(e.target.value, {
-                      key: 'countries',
+          <Box p={2} key={item.countries.join()}>
+            <Box pb={1}>
+              <Typography>
+                {`${localization.t('labels.group')} #${index}`}
+              </Typography>
+            </Box>
+            <Box width={1} pt={2}>
+              <Grid container spacing={1} alignItems="center">
+                <Grid item md={6} sm={12}>
+                  <SelectWithChip
+                    label="countries"
+                    value={item.countries}
+                    selectOptions={filterOptions(
+                      countriesOptions,
+                      currentStoreData.designs.paymentComponent
+                        .rankedPaymentTabsByCountriesList,
                       index,
-                    });
-                  }}
-                  onClickDelIcon={(chip) => {
-                    const newValue = [...item.countries].filter(
-                      (val) => val !== chip,
-                    );
-                    handleUpdatePayment(newValue, {
-                      key: 'countries',
-                      index,
-                    });
-                  }}
-                />
-              </Grid>
-              <Grid item md={5} sm={11}>
-                <SelectWithChip
-                  label="paymentTypes"
-                  value={item.rankedPaymentTabs}
-                  selectOptions={paymentDefaults}
-                  onChangeSelect={(e) => handleUpdatePayment(e.target.value, {
-                    key: 'rankedPaymentTabs',
-                    index,
-                  })}
-                  onClickDelIcon={(chip) => {
-                    const newValue = [...item.rankedPaymentTabs].filter(
-                      (val) => val !== chip,
-                    );
-                    handleUpdatePayment(newValue, {
+                    )}
+                    onChangeSelect={(e) => {
+                      handleUpdatePayment(e.target.value, {
+                        key: 'countries',
+                        index,
+                      });
+                    }}
+                    onClickDelIcon={(chip) => {
+                      const newValue = [...item.countries].filter(
+                        (val) => val !== chip,
+                      );
+                      handleUpdatePayment(newValue, {
+                        key: 'countries',
+                        index,
+                      });
+                    }}
+                  />
+                </Grid>
+                <Grid item md={5} sm={11}>
+                  <SelectWithChip
+                    label="paymentTypes"
+                    value={item.rankedPaymentTabs}
+                    selectOptions={paymentDefaults}
+                    onChangeSelect={(e) => handleUpdatePayment(e.target.value, {
                       key: 'rankedPaymentTabs',
                       index,
-                    });
-                  }}
-                />
-              </Grid>
-              <Grid item md={1} sm={1} className="iconWrapper">
-                {index === 1 ? (
-                  <>
+                    })}
+                    onClickDelIcon={(chip) => {
+                      const newValue = [...item.rankedPaymentTabs].filter(
+                        (val) => val !== chip,
+                      );
+                      handleUpdatePayment(newValue, {
+                        key: 'rankedPaymentTabs',
+                        index,
+                      });
+                    }}
+                  />
+                </Grid>
+                <Grid item md={1} sm={1} className="iconWrapper">
+                  {index === 1 ? (
+                    <>
+                      <ClearIcon
+                        color="secondary"
+                        onClick={() => handleRemoveGroup(index)}
+                      />
+                      <AddCircleIcon
+                        color="primary"
+                        onClick={handleAddGroup}
+                      />
+                    </>
+                  ) : (
                     <ClearIcon
                       color="secondary"
                       onClick={() => handleRemoveGroup(index)}
                     />
-                    <AddCircleIcon
-                      color="primary"
-                      onClick={handleAddGroup}
-                    />
-                  </>
-                ) : (
-                  <ClearIcon
-                    color="secondary"
-                    onClick={() => handleRemoveGroup(index)}
-                  />
-                )}
+                  )}
+                </Grid>
               </Grid>
-            </Grid>
+            </Box>
           </Box>
-        </Box>
         ),
       )}
     </Box>

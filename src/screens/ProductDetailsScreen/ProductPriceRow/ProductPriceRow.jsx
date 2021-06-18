@@ -11,14 +11,14 @@ import {
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-import { SelectCustom } from '../../Inputs';
-
-import { priceCurrency, countryOptions } from '../../../services/selectOptions/selectOptions';
+import { SelectCustom } from '../../../components/Inputs';
+import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
+import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 
 const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
   const [currency, setCurrency] = useState('');
   const [country, setCountry] = useState('');
-
+  const countryOptions = getCountriesOptions();
   const [newRow, setNewRow] = useState({
     value: '',
     msrp: '',
