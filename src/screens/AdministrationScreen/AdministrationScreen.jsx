@@ -52,6 +52,9 @@ const tabsData = [
   {
     label: 'privilege',
     path: '/settings/administration/privileges',
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.privilege',
+    )}`,
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,

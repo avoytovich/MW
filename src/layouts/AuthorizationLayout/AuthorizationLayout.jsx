@@ -13,10 +13,12 @@ const AuthorizationLayout = ({ children }) => (
   <Grid className='authWrapperContainer' container direction="column">
     <Grid className='authWrapperLogoContainer'>
       <Grid className='authWrapperLogo'>
-        <CardMedia
-          image={Logo}
-          className='nexWayLogo'
-        />
+        <a href="/">
+          <CardMedia
+            image={Logo}
+            className='nexWayLogo'
+          />
+        </a>
       </Grid>
       <Typography variant="h4" xs={1}>{localization.t('general.logoCenter')}</Typography>
     </Grid>
