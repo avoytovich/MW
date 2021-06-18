@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
 
-import ProductDetailsScreen from './ProductDetailsScreen';
+import EditProduct from './EditProduct';
 import ProductDetails from '../../components/ProductDetails';
 import api from '../../api';
 
@@ -30,27 +30,33 @@ jest.mock('../../api', () => ({
   getRenewingProductsByCustomerId: jest.fn(),
   getSubscriptionModelsByCustomerId: jest.fn(),
   getFulfillmentTemplateByCustomerId: jest.fn(),
+  getCatalogsByCustomerId: jest.fn(),
+  getPriceFunctionsCustomerByIds: jest.fn(),
+}));
+jest.mock('react-router-dom', () => ({
+  useParams: jest.fn(() => ({ id: 12 })),
+  useHistory: jest.fn(() => ({})),
 }));
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
 }));
-jest.mock('react-router-dom', () => ({
-  useParams: jest.fn(() => ({ id: 12 })),
-}));
 
 const mockSetState = jest.fn();
 const useStateSpy = jest.spyOn(React, 'useState');
+
 useStateSpy.mockImplementation((init) => [init, mockSetState]);
 
-describe('ProductDetailsScreen', () => {
+describe('EditProduct', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   describe('when component mounts', () => {
     it('should call api.getProductById', () => {
-      mount(<ProductDetailsScreen />);
-      expect(api.getProductById).toHaveBeenCalledTimes(1);
+      mount(<EditProduct />);
+      // expect(
+      //   api.getProductById.then({ data: expectedCurrentProductData }),
+      // ).toHaveBeenCalledTimes(1);
       expect(api.getProductById).toHaveBeenCalledWith(12);
     });
 
@@ -58,7 +64,7 @@ describe('ProductDetailsScreen', () => {
       api.getProductById.mockImplementation(() =>
         Promise.resolve({ data: { customerId: customerId } }),
       );
-      mount(<ProductDetailsScreen />);
+      mount(<EditProduct />);
       await api.getProductById();
       expect(api.getSellingStoreOptions).toHaveBeenCalledTimes(1);
       expect(api.getSellingStoreOptions).toHaveBeenCalledWith(customerId);
@@ -68,60 +74,48 @@ describe('ProductDetailsScreen', () => {
       api.getProductById.mockImplementation(() =>
         Promise.resolve({ data: { customerId: customerId } }),
       );
-      api.getSellingStoreOptions.mockImplementation(() =>
-        Promise.resolve({ data: {} }),
-      );
-      mount(<ProductDetailsScreen />);
+      api.getSellingStoreOptions.mockImplementation(() => Promise.resolve({ data: {} }));
+      mount(<EditProduct />);
       await api.getProductById();
       await api.getSellingStoreOptions();
       expect(api.getRenewingProductsByCustomerId).toHaveBeenCalledTimes(1);
-      expect(api.getRenewingProductsByCustomerId).toHaveBeenCalledWith(
-        customerId,
-      );
+      expect(api.getRenewingProductsByCustomerId).toHaveBeenCalledWith(customerId);
     });
 
     it('should call api.getSubscriptionModelsByCustomerId', async () => {
       api.getProductById.mockImplementation(() =>
         Promise.resolve({ data: { customerId: customerId } }),
       );
-      api.getSellingStoreOptions.mockImplementation(() =>
-        Promise.resolve({ data: {} }),
-      );
+      api.getSellingStoreOptions.mockImplementation(() => Promise.resolve({ data: {} }));
       api.getRenewingProductsByCustomerId.mockImplementation(() =>
         Promise.resolve({ data: {} }),
       );
-      mount(<ProductDetailsScreen />);
+      mount(<EditProduct />);
       await api.getProductById();
       await api.getSellingStoreOptions();
       await api.getRenewingProductsByCustomerId();
       expect(api.getSubscriptionModelsByCustomerId).toHaveBeenCalledTimes(1);
-      expect(api.getSubscriptionModelsByCustomerId).toHaveBeenCalledWith(
-        customerId,
-      );
+      expect(api.getSubscriptionModelsByCustomerId).toHaveBeenCalledWith(customerId);
     });
 
     it('should call api.getFulfillmentTemplateByCustomerId', async () => {
       api.getProductById.mockImplementation(() =>
         Promise.resolve({ data: { customerId: customerId } }),
       );
-      api.getSellingStoreOptions.mockImplementation(() =>
-        Promise.resolve({ data: {} }),
-      );
+      api.getSellingStoreOptions.mockImplementation(() => Promise.resolve({ data: {} }));
       api.getRenewingProductsByCustomerId.mockImplementation(() =>
         Promise.resolve({ data: {} }),
       );
       api.getSubscriptionModelsByCustomerId.mockImplementation(() =>
         Promise.resolve({ data: {} }),
       );
-      mount(<ProductDetailsScreen />);
+      mount(<EditProduct />);
       await api.getProductById();
       await api.getSellingStoreOptions();
       await api.getRenewingProductsByCustomerId();
       await api.getSubscriptionModelsByCustomerId();
       expect(api.getFulfillmentTemplateByCustomerId).toHaveBeenCalledTimes(1);
-      expect(api.getFulfillmentTemplateByCustomerId).toHaveBeenCalledWith(
-        customerId,
-      );
+      expect(api.getFulfillmentTemplateByCustomerId).toHaveBeenCalledWith(customerId);
     });
   });
 
@@ -152,7 +146,7 @@ describe('ProductDetailsScreen', () => {
     api.getFulfillmentTemplateByCustomerId.mockImplementation(() =>
       Promise.resolve({ data: { items: [{ id: 1 }, { id: 2 }] } }),
     );
-    const wrapper = mount(<ProductDetailsScreen />);
+    const wrapper = mount(<EditProduct />);
     await act(async () => {
       await api.getProductById();
       await api.getSellingStoreOptions();

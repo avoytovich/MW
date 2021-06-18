@@ -32,11 +32,6 @@ const SignedRoutes = () => {
       >
         <Switch location={location}>
           <Route
-            path={[`${defPath}/:realm`, '/']}
-            component={AuthScreen}
-          />
-
-          <Route
             path={`${defPath}/recover-password`}
             component={RecoveryPasswordScreen}
           />
@@ -44,6 +39,12 @@ const SignedRoutes = () => {
           <Route
             path={`${defPath}/update-password/:token`}
             component={UpdatePasswordScreen}
+          />
+
+          <Route
+            path={[`${defPath}/:realm`, `${defPath}/`]}
+            exact
+            component={AuthScreen}
           />
 
           <Redirect to={`${defPath}/`} />

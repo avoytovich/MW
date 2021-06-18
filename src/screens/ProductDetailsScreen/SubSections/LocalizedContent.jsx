@@ -33,19 +33,6 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
   const makeNewData = (locale) => {
     const dataToSave = { ...curData };
     dataToSave.i18nFields[value || locale] = { ...newTabValues };
-    // Object.entries(newTabValues).forEach(([v, k]) => {
-    //   if (newTabValues[v] !== curTabValues[v]) {
-    //     const dataKey = `localized${v.charAt(0).toUpperCase() + v.slice(1)}`;
-
-    //     if (!k) {
-    //       delete dataToSave[dataKey][locale || value];
-    //     } else if (k?.state) {
-    //       dataToSave[dataKey].value[locale || value] = k?.value;
-    //     } else {
-    //       dataToSave[dataKey][locale || value] = k;
-    //     }
-    //   }
-    // });
     setCurData({ ...dataToSave });
     setNewData({ ...dataToSave });
   };
@@ -66,30 +53,6 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
         {},
       )
       : { ...curData.i18nFields[value] };
-
-    // localizedValues.forEach((v) => {
-    //   if (curData && curData[v] && curData[v].state) {
-    //     let newKey = v.replace('localized', '');
-    //     newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1);
-
-    //     inputValues[newKey] = {
-    //       value: curData[v].value[value],
-    //       state:
-    //         R.isEmpty(curData[v].value[value]) ||
-    //         R.isNil(curData[v].value[value]) ||
-    //         R.equals(curData[v].value[value], curData[v].parentValue[value])
-    //           ? 'inherits'
-    //           : 'overrides',
-    //       parentValue: curData[v].parentValue[value],
-    //     };
-    //   }
-    //   if (curData && curData[v] && curData[v][value]) {
-    //     let newKey = v.replace('localized', '');
-    //     newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1);
-
-    //     inputValues[newKey] = curData[v][value];
-    //   }
-    // });
 
     setCurTabValues({ ...inputValues });
     setNewTabValues({ ...inputValues });
