@@ -131,7 +131,7 @@ const productsVariations = (renewingProducts, productId) => (productId
     ?.filter((item) => item.id === productId)
     .reduce((accumulator, current) => {
       // eslint-disable-next-line
-          current.availableVariables = current?.availableVariables?.reduce(
+      current.availableVariables = current?.availableVariables?.reduce(
         (acc, curr) => [
           ...acc,
           {
@@ -282,6 +282,17 @@ const identityRequiredFields = (identity) => {
   };
   return { ...defaultIdentity, ...identity };
 };
+
+const countriesOptionsFormatting = (array) => array.map((item) => (
+  { id: item.alpha2Code, value: item.name }
+));
+
+const languagesOptionsFormatting = (array) => array.map((item) => {
+  const languageNames = new Intl.DisplayNames([item.code], { type: 'language' });
+  return (
+    { id: item.code, value: languageNames.of(item.code) });
+});
+
 export {
   storeRequiredFields,
   productRequiredFields,
@@ -294,4 +305,6 @@ export {
   identityRequiredFields,
   checkValue,
   localizedValues,
+  countriesOptionsFormatting,
+  languagesOptionsFormatting,
 };

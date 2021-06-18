@@ -50,27 +50,6 @@ const validityPeriod = [
   { id: 'before', value: 'before' },
 ];
 
-const availableLocales = [
-  { value: 'ar-AE: Arabic (United Arab Emirates)', id: 'ar-AE' },
-  { value: 'ar-DZ: Arabic (Algeria)', id: 'ar-DZ' },
-  { value: 'ar-MA: Arabic (Morocco)', id: 'ar-MA' },
-  { value: 'cs-CZ: Czech (Czech Republic)', id: 'cs-CZ' },
-  { value: 'da-DK: Danish (Denmark)', id: 'da-DK' },
-  { value: 'de-CH: German (Switzerland)', id: 'de-CH' },
-  { value: 'de-DE: German (Germany)', id: 'de-DE' },
-  { value: 'el-GR: Greek (Greece)', id: 'el-GR' },
-  { value: 'en-AU: English (Australia)', id: 'en-AU' },
-  { value: 'en-IL: English (Israel)', id: 'en-IL' },
-  { value: 'en-US: English (United States)', id: 'en-US' },
-  { value: 'es-ES: Spanish (Spain)', id: 'es-ES' },
-  { value: 'fi-FI: Finnish (Finland)', id: 'fi-FI' },
-  { value: 'fr-FR: French (France)', id: 'fr-FR' },
-  { value: 'it-IT: Italian (Italy)', id: 'it-IT' },
-  { value: 'ru-RU: Russian (Russia)', id: 'ru-RU' },
-  { value: 'uk-UA: Ukrainian (Ukraine)', id: 'uk-UA' },
-  { value: 'zh-CN: Chinese (China)', id: 'zh-CN' },
-];
-
 const priceCurrency = [
   { value: 'AED (UAE Dirham)', id: 'AED' },
   { value: 'ARS (Argentine Peso)', id: 'ARS' },
@@ -109,19 +88,6 @@ const priceCurrency = [
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
   { value: 'B2C', id: 'B2C' },
-];
-
-const countryOptions = [
-  { value: 'AD (Andora)', id: 'AD (Andora)' },
-  { value: 'AE (United Arab Emirates)', id: 'AE (United Arab Emirates)' },
-  { value: 'AF (Afganistan)', id: 'AF (Afganistan)' },
-  { value: 'AG (Antigua and Barbuda)', id: 'AG (Antigua and Barbuda)' },
-  { value: 'AI (Anguilla)', id: 'AI (Anguilla)' },
-  { value: 'AL (Albania)', id: 'AL (Albania)' },
-  { value: 'AM (Armenia)', id: 'AM (Armenia)' },
-  { value: 'AO (Angola)', id: 'AO (Angola)' },
-  { value: 'AQ (Antarctica)', id: 'AQ (Antarctica)' },
-  { value: 'AR (Argentina)', id: 'AR (Argentina)' },
 ];
 
 const defaultCurrency = [
@@ -187,10 +153,8 @@ export {
   type,
   storeDetailsCardText,
   orderDetailStatus,
-  availableLocales,
   businessSegment,
   priceCurrency,
-  countryOptions,
   defaultCurrency,
   orderCancelAction,
   installmentOptions,

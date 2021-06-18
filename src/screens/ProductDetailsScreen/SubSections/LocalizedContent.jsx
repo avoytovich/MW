@@ -16,7 +16,7 @@ import api from '../../../api';
 import LocalizationInputs from './LocalizationInputs';
 import { SelectCustom } from '../../../components/Inputs';
 
-import { availableLocales } from '../../../services/selectOptions/selectOptions';
+import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { backToFront, localizedValues } from '../../../services/helpers/dataStructuring';
 
 const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
@@ -28,6 +28,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
   const [curTabValues, setCurTabValues] = useState({});
   const [newTabValues, setNewTabValues] = useState({});
   const [newLangValue, setNewLangValue] = useState('');
+  const availableLocales = getLanguagesOptions();
 
   const makeNewData = (locale) => {
     const dataToSave = { ...curData };

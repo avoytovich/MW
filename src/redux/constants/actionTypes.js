@@ -17,3 +17,6 @@ export const SET_TABLE_FILTERS = 'table/setFilters';
 export const RESET_TABLE_FILTERS = 'table/resetFilters';
 export const SET_TABLE_SEARCH = 'table/setSearch';
 export const RESET_TABLE_SEARCH = 'table/resetSearch';
+
+// SessionData
+export const UPDATE_SESSION_STATE = 'session/updateSessionState';
