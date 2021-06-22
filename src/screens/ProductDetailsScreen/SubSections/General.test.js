@@ -3,14 +3,6 @@ import { mount } from 'enzyme';
 
 import General from './General';
 
-import {
-  SelectWithChip,
-  SelectCustom,
-  NumberInput,
-  InputCustom,
-  SelectWithDeleteIcon,
-} from '../../../components/Inputs';
-
 const defaultProduct = {
   status: 'DISABLED',
   type: 'GAMES',
@@ -20,7 +12,7 @@ const defaultProduct = {
   lifeTime: 'PERMANENT',
   physical: false,
   sellingStores: [1, 2],
-  blackListedCountries: [],
+  blackListedCountries: ['country1', 'country2'],
   trialAllowed: false,
   subscriptionTemplate: '',
   trialDuration: '',
@@ -52,12 +44,14 @@ const selectOptions = {
     { id: 1, displayName: 'test_1' },
     { id: 2, displayName: 'test_2' },
   ],
+  catalogs: [],
+  priceFunctions: []
 };
 
 const parentId = 'parentId';
 
 const mockHistoryPush = jest.fn();
-const setProductData = () => jest.fn();
+const setProductData = jest.fn();
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -66,6 +60,13 @@ jest.mock('react-router-dom', () => ({
   }),
   useParams: jest.fn(() => ({})),
 }));
+
+jest.mock("react-redux", () => ({
+  ...jest.requireActual("react-redux"),
+  useSelector:() => jest.fn().mockImplementation(({ sessionData: { countries } }) => countries),
+  useDispatch: () => jest.fn().mockImplementation(() => {})
+}));
+
 
 const mockSetState = () => jest.fn();
 const useStateSpy = jest.spyOn(React, 'useState');
@@ -160,10 +161,10 @@ describe('Product <General/>', () => {
   });
 
   it('input[blockedCountries] should be populated with product details data', () => {
-    const { blockedCountries } = defaultProduct;
+    const { blackListedCountries } = defaultProduct;
     const wrap = wrapper.find('div[data-test="blockedCountries"]');
     expect(wrap.exists()).toBeTruthy();
-    expect(wrap.find('input').instance().value).toEqual(blockedCountries);
+    expect(wrap.find('input').instance().value).toEqual(blackListedCountries);
   });
 
   it('Life time count input shold exist', () => {
