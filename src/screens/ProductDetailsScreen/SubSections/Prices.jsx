@@ -19,9 +19,9 @@ import moment from 'moment';
 
 import ClearIcon from '@material-ui/icons/Clear';
 
-import PriceNumberFormat from '../../../components/ProductDetails/PriceNumberFormat';
+import PriceNumberFormat from '../../../components/PriceNumberFormat';
 
-import ProductPriceRow from '../../../components/ProductDetails/ProductPriceRow';
+import ProductPriceRow from '../ProductPriceRow';
 
 import InheritanceField from '../../../components/ProductDetails/InheritanceField';
 import { SelectCustom } from '../../../components/Inputs';

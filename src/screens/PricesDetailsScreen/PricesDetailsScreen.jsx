@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-
+import { getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 import { SelectCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
@@ -26,7 +26,6 @@ import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
 
 import {
   priceCurrency,
-  countryOptions,
 } from '../../services/selectOptions/selectOptions';
 
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -37,6 +36,7 @@ import localization from '../../localization';
 import './pricesDetailsScreen.scss';
 
 const PricesDetailsScreen = () => {
+  const countriesOptions = getCountriesOptions();
   const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
@@ -278,7 +278,7 @@ const PricesDetailsScreen = () => {
             <SelectCustom
               label="priceCountry"
               value={curPrice?.country || ''}
-              selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
+              selectOptions={[{ id: 'default', value: 'default' }, ...countriesOptions]}
               onChangeSelect={handleCountry}
             />
 
