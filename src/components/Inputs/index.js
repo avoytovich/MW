@@ -7,6 +7,7 @@ import ModalChipInput from './ModalChipInput';
 import SwitchInput from './SwitchInput';
 import CheckboxInput from './CheckboxInput';
 import PlusMinusInput from './PlusMinusInput';
+import SelectWithChipImages from './SelectWithChipImages';
 
 export {
   SelectWithChip,
@@ -18,4 +19,5 @@ export {
   SwitchInput,
   CheckboxInput,
   PlusMinusInput,
+  SelectWithChipImages,
 };
