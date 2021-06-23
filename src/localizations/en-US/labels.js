@@ -360,6 +360,13 @@ const labels = {
   clientID: 'Client ID',
   tokenURL: 'Token URL',
   scopesOneByLine: 'Scopes(one by line)',
+  TLSAuthMode: 'TLS Auth Mode',
+  none: 'None',
+  client: 'Client',
+  server: 'Server',
+  clientCertificates: 'Client Certificates',
+  privateKey: 'Private Key',
+  cACertificate: 'CA Certificate',
 };
 
 export default labels;

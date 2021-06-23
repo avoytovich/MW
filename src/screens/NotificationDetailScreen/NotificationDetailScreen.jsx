@@ -14,6 +14,7 @@ import {
 import General from './SubSections/General';
 import HttpHeaders from './SubSections/HttpHeaders';
 import OAuthConfiguration from './SubSections/OAuthConfiguration';
+import TLSconfiguration from './SubSections/TLSconfiguration';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import localization from '../../localization';
@@ -163,6 +164,10 @@ const NotificationDetailScreen = () => {
       {
         curTab === 3 && curNotification && (
           <SectionLayout label='tlsConfiguration'>
+            <TLSconfiguration
+              curNotification={curNotification}
+              setCurNotification={setCurNotification}
+            />
           </SectionLayout>
         )
       }
