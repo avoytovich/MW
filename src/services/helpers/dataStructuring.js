@@ -302,7 +302,17 @@ const notificationRequiredFields = (obj) => {
     targetedCustomerIds: [],
     emails: [],
     url: '',
-    httpHeaders: { 'Content-Type': [], Version: [] },
+    httpClientConfiguration: {
+      httpHeaders: { 'Content-Type': [], Version: [] },
+      clientCredentialOauth2Config: {
+        clientId: '',
+        clientSecret: '',
+        tokenUrl: '',
+        scopes: [],
+      },
+      tlsConfiguration: { tlsAuthMode: 'none' },
+    },
+
   };
   return { ...defaultObj, ...obj, receiverType };
 };

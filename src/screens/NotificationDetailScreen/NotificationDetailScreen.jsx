@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import General from './SubSections/General';
 import HttpHeaders from './SubSections/HttpHeaders';
+import OAuthConfiguration from './SubSections/OAuthConfiguration';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import localization from '../../localization';
@@ -152,7 +153,10 @@ const NotificationDetailScreen = () => {
       {
         curTab === 2 && curNotification && (
           <SectionLayout label='oAuthConfiguration'>
-
+            <OAuthConfiguration
+              curNotification={curNotification}
+              setCurNotification={setCurNotification}
+            />
           </SectionLayout>
         )
       }

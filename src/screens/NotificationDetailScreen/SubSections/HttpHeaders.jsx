@@ -38,7 +38,7 @@ const HttpHeaders = ({ setCurNotification, curNotification }) => {
         <Box p={2}>
           <InputCustom
             label='contentTypeOneByLine'
-            value={curNotification.httpHeaders['Content-Type'].join('\r\n')}
+            value={curNotification.httpClientConfiguration.httpHeaders['Content-Type'].join('\r\n')}
             onChangeInput={(e) => {
               let res = [];
               if (e.target.value) {
@@ -46,7 +46,10 @@ const HttpHeaders = ({ setCurNotification, curNotification }) => {
               }
               setCurNotification({
                 ...curNotification,
-                httpHeaders: { ...curNotification.httpHeaders, 'Content-Type': res },
+                httpClientConfiguration: {
+                  ...curNotification.httpClientConfiguration,
+                  httpHeaders: { ...curNotification.httpClientConfiguration.httpHeaders, 'Content-Type': res },
+                },
               });
             }}
             isMultiline
@@ -57,7 +60,7 @@ const HttpHeaders = ({ setCurNotification, curNotification }) => {
         <Box p={2}>
           <InputCustom
             label='versionOneByLine'
-            value={curNotification.httpHeaders.Version.join('\r\n')}
+            value={curNotification.httpClientConfiguration.httpHeaders.Version.join('\r\n')}
             onChangeInput={(e) => {
               let res = [];
               if (e.target.value) {
@@ -65,7 +68,13 @@ const HttpHeaders = ({ setCurNotification, curNotification }) => {
               }
               setCurNotification({
                 ...curNotification,
-                httpHeaders: { ...curNotification.httpHeaders, Version: res },
+                httpClientConfiguration: {
+                  ...curNotification.httpClientConfiguration,
+                  httpHeaders: {
+                    ...curNotification.httpClientConfiguration.httpHeaders,
+                    Version: res,
+                  },
+                },
               });
             }}
             isMultiline
