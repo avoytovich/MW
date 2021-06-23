@@ -347,6 +347,15 @@ const labels = {
   onboardingGuide: 'Onboarding Guide',
   onboardingTerms: 'Onboarding Terms',
   reports: 'Reports',
+  httpHeaders: 'HTTP Headers',
+  oAuthConfiguration: 'OAuth 2.0 configuration',
+  tlsConfiguration: 'TLS configuration',
+  receiverType: 'Receiver Type',
+  webhook: 'Webhook',
+  targetedCustomers: 'Targeted Customers',
+  contentTypeOneByLine: 'Content-type (one by line)',
+  versionOneByLine: 'Version (one by line)',
+  emailsOneByLine: 'Emails (one by line)',
 };
 
 export default labels;

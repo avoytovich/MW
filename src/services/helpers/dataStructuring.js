@@ -293,6 +293,20 @@ const languagesOptionsFormatting = (array) => array.map((item) => {
     { id: item.code, value: languageNames.of(item.code) });
 });
 
+const notificationRequiredFields = (obj) => {
+  const receiverType = obj.emails ? 'email' : 'webhook';
+  const defaultObj = {
+    name: '',
+    status: 'Active',
+    notificationDefinitionIds: [],
+    targetedCustomerIds: [],
+    emails: [],
+    url: '',
+    httpHeaders: { 'Content-Type': [], Version: [] },
+  };
+  return { ...defaultObj, ...obj, receiverType };
+};
+
 export {
   storeRequiredFields,
   productRequiredFields,
@@ -307,4 +321,5 @@ export {
   localizedValues,
   countriesOptionsFormatting,
   languagesOptionsFormatting,
+  notificationRequiredFields,
 };
