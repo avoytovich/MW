@@ -34,7 +34,7 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
   }, [currentProductData.relatedContents]);
 
   useEffect(() => {
-    // currentProductData?.resources && setResources([...currentProductData.resources]);
+    currentProductData?.resources && setResources([...currentProductData.resources]);
   }, [currentProductData.resources]);
 
   return (
@@ -48,7 +48,7 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
       </Box>
 
       {contents.map((content, index) => (
-        <Box key={content.file + content.label}>
+        <Box data-test='productFileContentItem' key={content.file + content.label}>
           <ProductFileBlock
             data={[...contents]}
             item={{ ...content }}
@@ -67,7 +67,7 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
       </Box>
 
       {resources.map((resource, index) => (
-        <Box key={resource.url + resource.label}>
+        <Box data-test='productFileResourceItem' key={resource.url + resource.label}>
           <ProductFileBlock
             data={[...resources]}
             item={{ ...resource }}
