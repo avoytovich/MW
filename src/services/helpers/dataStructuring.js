@@ -310,11 +310,48 @@ const notificationRequiredFields = (obj) => {
         tokenUrl: '',
         scopes: [],
       },
-      tlsConfiguration: { tlsAuthMode: 'none' },
+      tlsConfiguration: { tlsAuthMode: '' },
     },
-
   };
-  return { ...defaultObj, ...obj, receiverType };
+
+  const httpHeaders = {
+    ...defaultObj.httpClientConfiguration.httpHeaders,
+    ...obj.httpClientConfiguration?.httpHeaders,
+  };
+  const clientCredentialOauth2Config = {
+    ...defaultObj.httpClientConfiguration.clientCredentialOauth2Config,
+    ...obj.httpClientConfiguration?.clientCredentialOauth2Config,
+  };
+  const tlsConfiguration = {
+    ...defaultObj.httpClientConfiguration.tlsConfiguration,
+    ...obj.httpClientConfiguration?.tlsConfiguration,
+  };
+
+  return {
+    ...defaultObj,
+    ...obj,
+    receiverType,
+    httpClientConfiguration: { httpHeaders, clientCredentialOauth2Config, tlsConfiguration },
+  };
+};
+
+const removeEmptyPropsInObject = (data) => {
+  const res = { ...data };
+  delete res.receiverType;
+  if (typeof res !== 'object') {
+    return res;
+  }
+  return Object.keys(res).reduce((accumulator, key) => {
+    const isObject = typeof res[key] === 'object';
+    const isNotEmptyArray = Array.isArray(res[key]) && res[key].length > 0;
+    const value = isObject && !isNotEmptyArray ? removeEmptyPropsInObject(res[key]) : res[key];
+    const isEmptyObject = isObject && !Object.keys(value).length;
+    if (value === '' || isEmptyObject) {
+      return accumulator;
+    }
+
+    return Object.assign(accumulator, { [key]: value });
+  }, {});
 };
 
 export {
@@ -332,4 +369,5 @@ export {
   countriesOptionsFormatting,
   languagesOptionsFormatting,
   notificationRequiredFields,
+  removeEmptyPropsInObject,
 };

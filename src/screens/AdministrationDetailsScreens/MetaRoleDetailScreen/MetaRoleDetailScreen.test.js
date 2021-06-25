@@ -35,7 +35,6 @@ describe('<MetaRoleDetailScreen/> ', () => {
     wrapper = shallow(
       <MetaRoleDetailScreen />,
     );
-    console.log(wrapper.debug())
     expect(wrapper.find(SelectCustomerNotification)).toHaveLength(1);
     jest.clearAllMocks();
 

@@ -20,7 +20,7 @@ import SelectCustomerNotification from '../../components/utils/SelectCustomerNot
 import localization from '../../localization';
 import { useNotificationDetail } from '../../services/useData';
 import { urlIsValid } from '../../services/helpers/inputValidators';
-
+import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import SectionLayout from '../../components/SectionLayout';
@@ -43,37 +43,24 @@ const NotificationDetailScreen = () => {
   } = useNotificationDetail(id, nxState);
 
   const handleSave = () => {
-    console.log(curNotification)
-    // const filterBlankKeys = { ...curNotification };
-    // Object.keys(filterBlankKeys).forEach((key) => {
-    //   if (!filterBlankKeys[key]) {
-    //     delete filterBlankKeys[key];
-    //   }
-    // });
-    // if (id === 'add') {
-    //   api.addNewIdentity(filterBlankKeys).then((res) => {
-    //     const location = res.headers.location.split('/');
-    //     const identityId = location[location.length - 1];
-    //     dispatch(
-    //       showNotification(localization.t('general.updatesHaveBeenSaved')),
-    //     );
-    //     history.push(`/settings/identities/${identityId}`);
-    //     setUpdate((u) => u + 1);
-    //   });
-    // } else {
-    //   api.updateIdentityById(id, filterBlankKeys).then(() => {
-    //     dispatch(
-    //       showNotification(localization.t('general.updatesHaveBeenSaved')),
-    //     );
-    //     setUpdate((u) => u + 1);
-    //   });
-    // }
+    const formattedNotification = removeEmptyPropsInObject(curNotification);
+    if (id === 'add') {
+      api.addNotification(formattedNotification).then((res) => {
+        const location = res.headers.location.split('/');
+        const identityId = location[location.length - 1];
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        history.push(`/resource/notificationReceivers/${identityId}`);
+        setUpdate((u) => u + 1);
+      });
+    }
   };
 
   if (isLoading) return <LinearProgress />;
 
   if (id === 'add' && !nxState.selectedCustomer.id) {
-    return <SelectCustomerNotification />
+    return <SelectCustomerNotification />;
   }
 
   return (

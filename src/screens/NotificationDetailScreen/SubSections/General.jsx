@@ -52,7 +52,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
         </Box>
 
       </Grid>
-      <Grid item md={6}>
+      <Grid item md={6} sm={12}>
         <Box p={2}>
           <InputCustom
             label='name'
@@ -62,7 +62,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
           />
         </Box>
       </Grid>
-      <Grid item md={6}>
+      <Grid item md={6} sm={12}>
         <Box p={2}>
           <SelectWithChip
             label='events'
@@ -85,8 +85,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
           />
         </Box>
       </Grid>
-      <Grid item md={6}>
-
+      <Grid item md={6} sm={12}>
         <Box p={2}>
           <SelectWithChip
             label='targetedCustomers'
@@ -109,7 +108,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
         </Box>
       </Grid>
 
-      <Grid item md={6}>
+      <Grid item md={6} sm={12}>
 
         <Box display='flex' m={2} pb={2}>
           <div>
@@ -146,7 +145,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
       </Grid>
       {curNotification.receiverType === 'email'
         && (
-          <Grid item md={6}>
+          <Grid item md={6} sm={12}>
             <Box p={2}>
               <Autocomplete
                 onChange={(e, newValue) => {

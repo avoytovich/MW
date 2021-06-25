@@ -58,7 +58,7 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
       </Box>
     </Grid>
     <Grid item md={6}>
-      {curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode !== 'none' && (
+      {curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode && curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode !== 'none' && (
         <>
           {curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode === 'client' && (
             <Box p={2}>
