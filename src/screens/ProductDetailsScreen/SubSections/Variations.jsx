@@ -161,8 +161,7 @@ const Variations = ({
       <Box display='flex'>
         <SectionLayout label='bundledProducts' contentWidth='100%'>
           {Object.entries(counts).map(([key, value]) => {
-            const selectValue =
-              selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+            const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
             return (
               <Box
