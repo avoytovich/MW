@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Switch, Typography } from '@material-ui/core';
-
 import {
   lifeTime,
   type,
   businessSegment,
 } from '../../../services/selectOptions/selectOptions';
-import countriesOptions from '../../../services/selectOptions/countries';
 import { checkValue } from '../../../services/helpers/dataStructuring';
-
+import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import localization from '../../../localization';
 import {
   SelectWithChip,
@@ -28,6 +26,8 @@ const General = ({
     value: '',
   });
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
+
+  const countriesOptions = getCountriesOptions();
 
   useEffect(() => {
     let LifeTimeNumber = false;

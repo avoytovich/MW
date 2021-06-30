@@ -12,11 +12,11 @@ import {
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { email } from '../../../services/helpers/inputValidators';
 
-import countriesOptions from '../../../services/selectOptions/countries';
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
 import { SelectWithChip } from '../../../components/Inputs';
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
+import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
 const Eligibility = ({
   curDiscount,
@@ -25,6 +25,8 @@ const Eligibility = ({
   selectOptions,
 }) => {
   const [errorMessages, setErrorMessages] = useState({ email: null });
+  const countriesOptions = getCountriesOptions();
+
   return (
     <>
       <Grid item md={6} xs={12}>
