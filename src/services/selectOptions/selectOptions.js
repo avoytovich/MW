@@ -147,8 +147,9 @@ const paymentDefaults = [
 
 const paymentImages = {
   bank_transfer: '1VsLXXzQfUpHHAMGv774Y9QnIUDDh3lOq',
-  credit_card: '1VsLXXzQfUpHHAMGv774Y9QnIUDDh3lOq',
-  directebanking: '1VsLXXzQfUpHHAMGv774Y9QnIUDDh3lOq',
+  cheque: '1k7ULP3GlkpV9KIZOCxMSRl-TZ-GktV_P',
+  credit_card: '17wyp3j5qEhm9ELiNw1tmBPT2suUXMWN8',
+  directebanking: '1fid0t5hghVbpzAs0lYBHn75YsiAjoqt3',
   mistercash: '1cc9BtGYBCg9-jIsV1s0ksvsjQokEkqr9',
   bacs: '1rg-dHgXWzHeFvNag-tMKAfoXU238Iaqc',
   boleto: '1NViBmvLxrPHlPKMTlVEvhf1MKiUr5d5T',

@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import {
   Box,
   MenuItem,
-  Chip,
   TextField,
   InputAdornment,
   CircularProgress,
-  Avatar,
 } from '@material-ui/core';
 import CancelIcon from '@material-ui/icons/Cancel';
 
@@ -36,38 +34,35 @@ const SelectWithChipImages = ({
         <Box display='flex' alignItems='center' flexDirection='row' flexWrap='wrap'>
           {selected?.map((chip) => {
             const selectedItem = selectOptions?.filter((item) => item.id === chip)[0];
-            const src = 'https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-332.jpg';
-            console.log(selected);
             return (
-              <Box mb='2px' mr='2px' key={chip}>
-                {/* <Chip
-                  variant='outlined'
-                  onDelete={() => onClickDelIcon(chip)}s
-                  onMouseDown={(e) => {
-                    e.stopPropagation();
-                  }}
-                > */}
-                <Box
-                  width='70px'
-                  style={{
-                    position: 'relative',
-                  }}
+              <Box
+                mx={2}
+                key={chip}
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  backgroundRepeat: 'no-repeat',
+                  position: 'relative',
+                  backgroundPosition: 'center',
+                  backgroundSize: 'contain',
+                  backgroundImage: `url(https://drive.google.com/uc?id=${paymentImages[selectedItem.id]})`,
+                }}
+              >
+                <Box style={{
+                  position: 'absolute',
+                  top: -9,
+                  right: -9,
+                }}
                 >
-                  <img width='100%' src={`https://drive.google.com/uc?id=${paymentImages[selectedItem.id]}`} />
-                  <Box style={{
-                    position: 'absolute',
-                    top: -9,
-                    right: -9,
-                  }}
-                  >
-                    <CancelIcon
-                        onClick={() => onClickDelIcon(chip)}
-                        fontSize='small'
-                        color='secondary'
-                      />
-                  </Box>
+                  <CancelIcon
+                    onMouseDown={(e) => {
+                      e.stopPropagation();
+                    }}
+                    onClick={() => onClickDelIcon(chip)}
+                    fontSize='small'
+                    color='secondary'
+                  />
                 </Box>
-
               </Box>
             );
           })}
