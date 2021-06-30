@@ -18,11 +18,11 @@ const Features = ({ currentCustomer, setCurrentCustomer }) => (
         <Box p={2}>
           {checkBoxObj[item].map((checkParam) => (
             <FormControlLabel
+              data-test={checkParam}
               style={{ width: '100%' }}
               key={checkParam}
               control={(
                 <Checkbox
-
                   indeterminate={false}
                   name={checkParam}
                   color="primary"
