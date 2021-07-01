@@ -103,11 +103,11 @@ const CustomerDetailScreen = () => {
           indicatorColor='primary'
           textColor='primary'
         >
-          <Tab label='General' />
-          <Tab label='Features' />
-          <Tab label='Payment Service Configuration' disabled={id === 'add'} />
-          <Tab label='Reports' disabled={id === 'add'} />
-          <Tab label='Assets' disabled={id === 'add'} />
+          <Tab data-test='general' label='General' />
+          <Tab data-test='features' label='Features' />
+          <Tab data-test='paymentServiceConfiguration' label='Payment Service Configuration' disabled={id === 'add'} />
+          <Tab data-test='reports' label='Reports' disabled={id === 'add'} />
+          <Tab data-test='assets' label='Assets' disabled={id === 'add'} />
         </Tabs>
       </Box>
       {curTab === 0 && currentCustomer && (
