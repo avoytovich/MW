@@ -160,6 +160,14 @@ const SignedRoutes = () => {
         path={`${defPath}/overview/invoices-credit-notes`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
+      <Route
+        path={`${defPath}/notification-definition/:id`}
+        component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
+      />
+      <Route
+        path={`${defPath}/notification-definition`}
+        component={lazy(() => import('../../screens/NotificationDefinitionScreen'))}
+      />
 
       <Redirect to={`${defPath}/`} />
     </Switch>

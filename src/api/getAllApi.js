@@ -251,6 +251,22 @@ const getAllApi = {
       url,
     });
   },
+  getNotificationDefinition(page = 0, filters, sortParams) {
+    let url = `/customer-notifier/notification-definitions?format=short&size=10&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default getAllApi;

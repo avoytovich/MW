@@ -21,6 +21,7 @@ const general = {
   sessionEnded: 'Session ended!',
   identity: 'Identity',
   order: 'Order',
+  notificationDefinition: 'Notification-definition',
   product: 'Product',
   store: 'Store',
   recommendation: 'Recommendation',
