@@ -347,6 +347,17 @@ const labels = {
   onboardingGuide: 'Onboarding Guide',
   onboardingTerms: 'Onboarding Terms',
   reports: 'Reports',
+  notification: 'Notifications',
+  notificationDefinitions: 'Notification Definitions',
+  notificationHistory: 'Notifications History',
+  notificationNotificationsId: 'Notifications ID',
+  notificationCustomer: 'Customer',
+  notificationName: 'Name',
+  notificationUrl: 'Url',
+  notificationEmails: 'Emails',
+  oneByLine: ' (one by line)',
+  notificationEvents: 'Events',
+  notificationStatus: 'Status',
 };
 
 export default labels;
