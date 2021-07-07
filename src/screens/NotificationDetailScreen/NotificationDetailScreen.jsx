@@ -47,11 +47,11 @@ const NotificationDetailScreen = () => {
     if (id === 'add') {
       api.addNotification(formattedNotification).then((res) => {
         const location = res.headers.location.split('/');
-        const identityId = location[location.length - 1];
+        const newId = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/notifications/${identityId}`);
+        history.push(`/settings/notifications/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
