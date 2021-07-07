@@ -112,6 +112,25 @@ const filters = {
       ],
     },
   ],
+  'notification-definition': [
+    { id: 'id', label: localization.t('labels.id'), type: 'text' },
+    { id: 'name', label: localization.t('labels.name'), type: 'text' },
+    {
+      id: 'updateDate',
+      label: localization.t('labels.lastUpdate'),
+      type: 'date',
+    },
+    {
+      id: 'eventMatcher.subject',
+      label: localization.t('labels.subject'),
+      type: 'text',
+    },
+    {
+      id: 'eventMatcher.fact',
+      label: localization.t('labels.fact'),
+      type: 'text',
+    },
+  ],
   notifications: [
     {
       id: 'notificationsId',

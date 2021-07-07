@@ -165,6 +165,14 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
       <Route
+        path={`${defPath}/notification-definition/:id`}
+        component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
+      />
+      <Route
+        path={`${defPath}/notification-definition`}
+        component={lazy(() => import('../../screens/NotificationDefinitionScreen'))}
+      />
+      <Route
         path={`${defPath}/resource/notificationReceivers/:id`}
         component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />

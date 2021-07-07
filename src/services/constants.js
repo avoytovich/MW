@@ -1,5 +1,5 @@
 const VALID_REFRESH_SCOPES = ['products', 'stores', 'orders', 'notifications'];
-const VALID_FILTER_SCOPES = ['products', 'stores', 'orders', 'notifications'];
+const VALID_FILTER_SCOPES = ['products', 'stores', 'orders', 'notifications', 'notification-definition'];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];
 
