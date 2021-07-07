@@ -248,5 +248,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getNotificationById(id) {
+    const url = `/customer-notifier/receivers/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;

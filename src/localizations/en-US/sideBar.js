@@ -20,6 +20,7 @@ const sideBar = {
     servicesConfiguration: 'Services Configuration',
     administration: 'Administration',
     identities: 'Identities',
+    notification: 'Notifications',
   },
 };
 
