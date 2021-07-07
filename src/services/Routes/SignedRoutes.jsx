@@ -176,7 +176,6 @@ const SignedRoutes = () => {
         path={`${defPath}/overview/invoices-credit-notes`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
-
       <Redirect to={`${defPath}/`} />
     </Switch>
   );

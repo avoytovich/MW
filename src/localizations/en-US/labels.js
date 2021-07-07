@@ -381,6 +381,7 @@ const labels = {
   clientCertificates: 'Client Certificates',
   privateKey: 'Private Key',
   cACertificate: 'CA Certificate',
+  notificationid: 'Notifications ID',
 };
 
 export default labels;

@@ -14,7 +14,7 @@ import api from '../../api';
 const tabsData = [
   {
     label: 'notification',
-    path: '/settings/notifications/customers',
+    path: '/settings/notifications',
     request: api.getNotifications,
     sortKey: 'notification',
     generateData: generateNotifications,
@@ -22,13 +22,12 @@ const tabsData = [
   },
   {
     label: 'notificationDefinitions',
-    path: '/settings/notifications/notificationDefinitions',
-    scope: 'notificationDefinitions',
-
+    path: '/settings/notification-definition',
+    scope: 'notification-definition',
   },
   {
     label: 'notificationHistory',
-    path: '/settings/notifications/notificationHistory',
+    path: '/settings/notificationHistory',
     scope: 'notificationHistory',
   },
 ];
@@ -49,7 +48,7 @@ const NotficationScreen = () => {
     return () => setCurTab(0);
   }, [pathname]);
 
-  const changeTab = (tab) => history.push(`/settings/notifications/${tabsData[tab].scope}`);
+  const changeTab = (tab) => history.push(`/settings/${tabsData[tab].scope}`);
 
   return (
     <>
