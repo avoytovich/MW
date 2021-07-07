@@ -347,6 +347,11 @@ const labels = {
   onboardingGuide: 'Onboarding Guide',
   onboardingTerms: 'Onboarding Terms',
   reports: 'Reports',
+  emailsOneByLine: 'Emails (one by line)',
+  clientSecret: 'Client Secret',
+  clientID: 'Client ID',
+  tokenURL: 'Token URL',
+  scopesOneByLine: 'Scopes(one by line)',
 };
 
 export default labels;

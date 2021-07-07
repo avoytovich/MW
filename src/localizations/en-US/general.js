@@ -74,6 +74,7 @@ const general = {
   selectFiles: 'Select files from your computer or click to enter custom URL',
   uploadFiles: ' upload files',
   privilege: 'privilege',
+  notification: 'Notification',
 };
 
 export default general;
