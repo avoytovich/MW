@@ -76,6 +76,7 @@ const general = {
   privilege: 'privilege',
   notificationEnabled: 'Enabled',
   notificationDisabled: 'Disabled',
+  notification: 'Notification',
 };
 
 export default general;
