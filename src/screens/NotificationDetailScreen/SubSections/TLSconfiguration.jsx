@@ -57,12 +57,13 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
         </div>
       </Box>
     </Grid>
-    <Grid item md={6}>
+    <Grid item md={10}>
       {curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode && curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode !== 'none' && (
         <>
           {curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode === 'client' && (
             <Box p={2}>
               <InputCustom
+                rowsMax={4}
                 label='clientCertificates'
                 value={curNotification.httpClientConfiguration.tlsConfiguration.clientCertificates}
                 onChangeInput={(e) => {
@@ -83,6 +84,7 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
           )}
           <Box p={2}>
             <InputCustom
+              rowsMax={4}
               label='privateKey'
               value={curNotification.httpClientConfiguration.tlsConfiguration.privateKey}
               onChangeInput={(e) => {
@@ -102,6 +104,7 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
           </Box>
           <Box p={2}>
             <InputCustom
+              rowsMax={4}
               label='cACertificate'
               value={curNotification.httpClientConfiguration.tlsConfiguration.serverCACertificates}
               onChangeInput={(e) => {
