@@ -77,6 +77,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
       <Route
+        path={`${defPath}/settings/notifications`}
+        component={lazy(() => import('../../screens/NotificationScreen'))}
+      />
+      <Route
         path={`${defPath}/settings/administration/customers/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
       />

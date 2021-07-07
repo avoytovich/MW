@@ -118,6 +118,20 @@ const getAllApi = {
     });
   },
 
+  getNotifications(page = 0, filters, sortParams) {
+    let url = `https://api.staging.nexway.build/customer-notifier/receivers?format=short&status=Active&sort=status%2Casc&size=500&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   getCampaigns(page, filters) {
     let url = `/marketing-campaign/campaigns?format=short&sort=updateDate,desc&size=50&page=${page}`;
 
