@@ -51,7 +51,7 @@ const NotificationDetailScreen = () => {
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/resource/notificationReceivers/${identityId}`);
+        history.push(`/settings/notifications/${identityId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -75,7 +75,7 @@ const NotificationDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/resource/notificationReceivers'
+            url='/settings/notifications'
             section={localization.t('general.notification')}
             id={notification.id}
           />
@@ -118,10 +118,10 @@ const NotificationDetailScreen = () => {
           indicatorColor='primary'
           textColor='primary'
         >
-          <Tab label='General' />
-          <Tab label='HTTP Headers' disabled={curNotification.receiverType === 'email'} />
-          <Tab label='OAuth 2.0 configuration' disabled={curNotification.receiverType === 'email'} />
-          <Tab label='TLS configuration' disabled={curNotification.receiverType === 'email'} />
+          <Tab label={localization.t('labels.general')} />
+          <Tab label={localization.t('labels.httpHeaders')} disabled={curNotification.receiverType === 'email'} />
+          <Tab label={localization.t('labels.oAuthConfiguration')} disabled={curNotification.receiverType === 'email'} />
+          <Tab label={localization.t('labels.tlsConfiguration')} disabled={curNotification.receiverType === 'email'} />
         </Tabs>
       </Box>
       {
