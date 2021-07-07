@@ -11,9 +11,11 @@ const InputCustom = ({
   isDisabled,
   isMultiline,
   helperText,
+  hasError,
 }) => (
   <form autoComplete='off'>
     <TextField
+      error={hasError}
       data-test={label}
       helperText={helperText}
       disabled={isDisabled}
@@ -39,6 +41,7 @@ InputCustom.propTypes = {
   isRequired: PropTypes.bool,
   isDisabled: PropTypes.bool,
   isMultiline: PropTypes.bool,
+  hasError: PropTypes.bool,
   onChangeInput: PropTypes.func,
   helperText: PropTypes.string,
 };

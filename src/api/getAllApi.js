@@ -105,7 +105,21 @@ const getAllApi = {
     });
   },
   getCustomers(page = 0, filters, sortParams) {
-    let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
+    let url = `/customers?format=short&size=50&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getNotifications(page = 0, filters, sortParams) {
+    let url = `https://api.staging.nexway.build/customer-notifier/receivers?format=short&status=Active&sort=status%2Casc&size=500&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -246,6 +260,13 @@ const getAllApi = {
   },
   getLocaleOptions() {
     const url = '/referential-manager/locale?size=400&sort=code,asc';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getEventsOptions() {
+    const url = '/customer-notifier/notification-definitions?format=short&size=30&page=0';
     return axiosInstance({
       method: 'get',
       url,
