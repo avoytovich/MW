@@ -66,6 +66,8 @@ const general = {
   listOfIdentityCustomers: 'This is the list of customers this identity is allowed to manage, in addition to the customer owning this identity.',
   selectFiles: 'Select files from your computer or click to enter custom URL',
   uploadFiles: ' upload files',
+  notification: 'Notification',
+
 };
 
 export default general;
