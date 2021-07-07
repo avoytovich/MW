@@ -44,7 +44,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
               )}
               label={localization.t(
                 `labels.${
-                  curNotification.status === 'Active' ? 'enabled' : 'disabled'
+                curNotification.status === 'Active' ? 'enabled' : 'disabled'
                 }`,
               )}
             />
@@ -55,6 +55,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
       <Grid item md={6} sm={12}>
         <Box p={2}>
           <InputCustom
+            data-test='name'
             label='name'
             value={curNotification.name}
             onChangeInput={(e) => setCurNotification({ ...curNotification, name: e.target.value })}
@@ -65,6 +66,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
       <Grid item md={6} sm={12}>
         <Box p={2}>
           <SelectWithChip
+            data-test='events'
             label='events'
             value={curNotification.notificationDefinitionIds}
             selectOptions={selectOptions.events}
@@ -88,6 +90,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
       <Grid item md={6} sm={12}>
         <Box p={2}>
           <SelectWithChip
+            data-test='targetedCustomers'
             label='targetedCustomers'
             value={curNotification.targetedCustomerIds}
             selectOptions={selectOptions.customers}
@@ -118,6 +121,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
 
             <Box>
               <RadioGroup
+                data-test='receiverType'
                 row
                 aria-label='receiverType'
                 name='receiverType'
@@ -148,6 +152,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
           <Grid item md={6} sm={12}>
             <Box p={2}>
               <Autocomplete
+                data-test='emailInput'
                 onChange={(e, newValue) => {
                   if (curNotification.emails.length > newValue.length) {
                     setCurNotification({

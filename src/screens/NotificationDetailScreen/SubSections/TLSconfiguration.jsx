@@ -22,6 +22,7 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
           </Typography>
           <Box>
             <RadioGroup
+              data-test='tlsAuthMode'
               row
               aria-label='tlsAuthMode'
               name='tlsAuthMode'
@@ -63,6 +64,7 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
           {curNotification.httpClientConfiguration.tlsConfiguration.tlsAuthMode === 'client' && (
             <Box p={2}>
               <InputCustom
+                data-test='clientCertificates'
                 rowsMax={4}
                 label='clientCertificates'
                 value={curNotification.httpClientConfiguration.tlsConfiguration.clientCertificates}
@@ -84,6 +86,7 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
           )}
           <Box p={2}>
             <InputCustom
+              data-test='privateKey'
               rowsMax={4}
               label='privateKey'
               value={curNotification.httpClientConfiguration.tlsConfiguration.privateKey}
@@ -104,6 +107,7 @@ const TLSconfiguration = ({ setCurNotification, curNotification }) => (
           </Box>
           <Box p={2}>
             <InputCustom
+              data-test='cACertificate'
               rowsMax={4}
               label='cACertificate'
               value={curNotification.httpClientConfiguration.tlsConfiguration.serverCACertificates}

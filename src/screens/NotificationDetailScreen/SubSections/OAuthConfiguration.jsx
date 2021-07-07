@@ -15,6 +15,7 @@ const OAuthConfiguration = ({ setCurNotification, curNotification }) => {
       <Grid item md={6}>
         <Box p={2}>
           <InputCustom
+            data-test='clientID'
             label='clientID'
             value={curNotification.httpClientConfiguration.clientCredentialOauth2Config.clientId}
             onChangeInput={(e) => {
@@ -35,6 +36,7 @@ const OAuthConfiguration = ({ setCurNotification, curNotification }) => {
       <Grid item md={6}>
         <Box p={2}>
           <InputCustom
+            data-test='clientSecret'
             label='clientSecret'
             value={
               curNotification.httpClientConfiguration.clientCredentialOauth2Config.clientSecret
@@ -57,6 +59,7 @@ const OAuthConfiguration = ({ setCurNotification, curNotification }) => {
       <Grid item md={6}>
         <Box p={2}>
           <InputCustom
+            data-test='tokenURL'
             hasError={!!errorMessages}
             helperText={errorMessages}
             label='tokenURL'
@@ -85,6 +88,7 @@ const OAuthConfiguration = ({ setCurNotification, curNotification }) => {
       <Grid item md={6}>
         <Box p={2}>
           <InputCustom
+            data-test='scopesOneByLine'
             label='scopesOneByLine'
             value={curNotification.httpClientConfiguration.clientCredentialOauth2Config.scopes.join('\r\n')}
             onChangeInput={(e) => {
