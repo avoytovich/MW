@@ -54,6 +54,13 @@ const NotificationDetailScreen = () => {
         history.push(`/resource/notificationReceivers/${identityId}`);
         setUpdate((u) => u + 1);
       });
+    } else {
+      api.updateNotificationById(id, formattedNotification).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
+        setUpdate((u) => u + 1);
+      });
     }
   };
 
