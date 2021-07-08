@@ -21,7 +21,6 @@ const errorNotifications = {
   sourceProductIsAmongstItsOwnRecommendations:
     'Source product is amongst its own recommendations',
   invalidUrl: 'Invalid Url',
-
 };
 
 export default errorNotifications;
