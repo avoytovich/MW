@@ -1,8 +1,7 @@
 const general = {
-  welcomeMessage:
-    'Hella narwhal Cosby sweater McSweeneys, salvia kitsch before they sold out.',
-  lightMode: 'Mode lumière',
-  darkMode: 'Mode sombre',
+  welcomeMessage: 'Hella narwhal Cosby sweater McSweeneys, salvia kitsch before they sold out.',
+  lightMode: 'Light mode',
+  darkMode: 'Dark mode',
   error: 'Something went wrong! Please try again later!',
   filters: 'Filters',
   reset: 'Reset',
@@ -26,6 +25,7 @@ const general = {
   store: 'Store',
   recommendation: 'Recommendation',
   discount: 'Discount',
+  price: 'Price',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
   selectImage: ' Select image',
@@ -42,22 +42,30 @@ const general = {
   add: 'Add',
   noPackagesFound: 'No packages found',
   addProduct: 'Add Product',
+  addPrice: 'Add Price',
+  addRecommendation: 'Add Recommendation',
   addCampaign: 'Add Campaign',
   noAvailableOptions: 'No available options',
-  marketingNameMandatory:
-    'Marketing name is mandatory for the default language.',
+  marketingNameMandatory: 'Marketing name is mandatory for the default language.',
+  noCustomer: 'No customer selected',
+  selectCustomer: 'Please select a customer which will own the created resource.',
   itemHasBeenCopied: 'Item Has Been Copied',
-  selectCustomer:
-    'Please select a customer which will own the created resource.',
   campaign: 'Campaign',
-  price: 'Price',
   new: 'New',
-  selectNoSourceMeans:
-    'Select no source means the same as "all sources are selected"',
+  selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
   role: 'role',
   customer: 'Customer',
   metaRole: 'Meta-Role',
+  logoCenter: 'Center.',
   subscription: 'Subscription',
+  privileges: {
+    general: 'General',
+    createdate: 'Create date',
+    lastupdate: 'Last update',
+    lastupdatereason: 'Last update reason',
+    servicename: 'Service name',
+    availableactions: 'Available actions',
+  },
   keyHasBeenAdded: 'Key Has Been Added',
   keyHasBeenRemoved: 'Key Has BeenRemoved',
   noResourcesMatchCriteria: 'No resources match criteria',
@@ -66,8 +74,10 @@ const general = {
   listOfIdentityCustomers: 'This is the list of customers this identity is allowed to manage, in addition to the customer owning this identity.',
   selectFiles: 'Select files from your computer or click to enter custom URL',
   uploadFiles: ' upload files',
+  privilege: 'privilege',
+  notificationEnabled: 'Enabled',
+  notificationDisabled: 'Disabled',
   notification: 'Notification',
-
 };
 
 export default general;
