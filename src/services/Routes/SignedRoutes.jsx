@@ -77,6 +77,22 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
       <Route
+        path={`${defPath}/settings/notification-definition/:id`}
+        component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/notification-definition`}
+        component={lazy(() => import('../../screens/NotificationDefinitionScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/notifications/:id`}
+        component={lazy(() => import('../../screens/NotificationDetailScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/notifications`}
+        component={lazy(() => import('../../screens/NotificationScreen'))}
+      />
+      <Route
         path={`${defPath}/settings/administration/customers/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
       />
@@ -159,10 +175,6 @@ const SignedRoutes = () => {
       <Route
         path={`${defPath}/overview/invoices-credit-notes`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
-      />
-      <Route
-        path={`${defPath}/resource/notificationReceivers/:id`}
-        component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />
       <Redirect to={`${defPath}/`} />
     </Switch>
