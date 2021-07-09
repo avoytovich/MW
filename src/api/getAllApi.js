@@ -1,8 +1,10 @@
 import { axiosInstance } from '../axios';
 
 const getAllApi = {
-  getOrders(page, filters, sortParams) {
-    let url = `/orders?format=short&size=50&page=${page}`;
+  getOrders({
+    page, size = 30, filters, sortParams,
+  }) {
+    let url = `/orders?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -14,8 +16,10 @@ const getAllApi = {
       url,
     });
   },
-  getStores(page, filters, sortParams) {
-    let url = `/stores?format=short&size=50&page=${page}`;
+  getStores({
+    page, size = 30, filters, sortParams,
+  }) {
+    let url = `/stores?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -204,8 +208,8 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsTranslations(page = 0, sortParams) {
-    let url = `/designs/i18ns?format=short&size=50&page=${page}`;
+  getDesignsTranslations({ page = 0, size, sortParams }) {
+    let url = `/designs/i18ns?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -214,8 +218,8 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsFonts(page = 0, sortParams) {
-    let url = `/designs/fonts?format=short&size=50&page=${page}`;
+  getDesignsFonts({ page = 0, size, sortParams }) {
+    let url = `/designs/fonts?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -224,8 +228,8 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsThemes(page = 0, sortParams) {
-    let url = `/designs/themes?format=short&size=50&page=${page}`;
+  getDesignsThemes({ page = 0, size, sortParams }) {
+    let url = `/designs/themes?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -234,8 +238,8 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsLayouts(page = 0, sortParams) {
-    let url = `/designs/layouts?format=short&size=50&page=${page}`;
+  getDesignsLayouts({ page = 0, size, sortParams }) {
+    let url = `/designs/layouts?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }

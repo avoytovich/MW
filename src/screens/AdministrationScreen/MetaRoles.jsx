@@ -29,9 +29,9 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     saveSortParams(sortKeys[sortKey], params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (reduxRowPerPage, filtersUrl) => {
     const costumersIds = [];
-    const res = await api.getMetaRoles(currentPage - 1, filtersUrl, sortParams);
+    const res = await api.getMetaRoles(currentPage - 1, reduxRowPerPage, filtersUrl, sortParams);
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {

@@ -10,7 +10,12 @@ import {
 
 const setTableScope = (scope) => ({
   type: SET_TABLE_SCOPE,
-  payload: { scope, filters: [], search: '', rowsPerPage: 20 },
+  payload: {
+    scope,
+    filters: [],
+    search: '',
+    rowsPerPage: '30',
+  },
 });
 
 const refreshTable = (scope) => async (dispatch) => {

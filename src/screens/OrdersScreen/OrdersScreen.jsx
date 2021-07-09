@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Box } from '@material-ui/core';
 
 import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
@@ -15,6 +16,7 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import TableTopBar from '../../components/TableTopBar';
 
 const OrdersScreen = () => {
   const dispatch = useDispatch();
@@ -28,10 +30,15 @@ const OrdersScreen = () => {
     saveSortParams(sortKeys.orders, params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowPerPage, filtersUrl) => {
     const costumersIds = [];
     const storeIds = [];
-    const res = await api.getOrders(currentPage - 1, filtersUrl, sortParams);
+    const res = await api.getOrders({
+      page: currentPage - 1,
+      size: rowPerPage,
+      filters: filtersUrl,
+      sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customer.id}`;
       const store = `id=${item.endUser?.storeId}`;
@@ -69,16 +76,19 @@ const OrdersScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
 
   return (
-    <TableComponent
-      sortParams={sortParams}
-      setSortParams={handleSetSortParams}
-      handleDeleteItem={handleDeleteOrder}
-      showColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
-      tableData={orders}
-      isLoading={isLoading}
-    />
+    <Box pb={3}>
+      <TableTopBar />
+      <TableComponent
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
+        handleDeleteItem={handleDeleteOrder}
+        showColumn={defaultShow}
+        currentPage={currentPage}
+        updatePage={updatePage}
+        tableData={orders}
+        isLoading={isLoading}
+      />
+    </Box>
   );
 };
 

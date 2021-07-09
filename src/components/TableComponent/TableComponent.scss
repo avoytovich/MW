@@ -2,7 +2,7 @@
 
 .tableRowGrid {
   display: flex;
-  padding: 5px 15px;
+  padding: 5px 0;
   min-height: 64px;
 
   &:nth-of-type(odd) {
@@ -53,9 +53,8 @@
   }
 }
 .tableHeaderGrid {
-  padding: 8px 15px;
+  padding: 15px 0;
   overflow-x: hidden;
-  background-color: $tableHeader;
   .tableHeader {
     display: inherit;
     white-space: nowrap;

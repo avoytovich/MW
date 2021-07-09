@@ -6,14 +6,13 @@ import {
   SET_TABLE_SEARCH,
   RESET_TABLE_SEARCH,
   SET_TABLE_ROWS_PER_PAGE,
-  RESET_TABLE_ROWS_PER_PAGE,
 } from '../constants/actionTypes';
 
 const initialState = {
   scope: null,
   filters: [],
   search: '',
-  rowsForPage: 20,
+  rowsPerPage: '30',
 };
 
 const TableData = (state = initialState, { type, payload }) => {
@@ -25,7 +24,6 @@ const TableData = (state = initialState, { type, payload }) => {
     case SET_TABLE_SEARCH:
     case RESET_TABLE_SEARCH:
     case SET_TABLE_ROWS_PER_PAGE:
-    case RESET_TABLE_ROWS_PER_PAGE:
       return { ...state, ...payload };
 
     default:
