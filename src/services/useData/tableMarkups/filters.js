@@ -112,6 +112,66 @@ const filters = {
       ],
     },
   ],
+  'notification-definition': [
+    { id: 'id', label: localization.t('labels.id'), type: 'text' },
+    { id: 'name', label: localization.t('labels.name'), type: 'text' },
+    {
+      id: 'updateDate',
+      label: localization.t('labels.lastUpdate'),
+      type: 'date',
+    },
+    {
+      id: 'eventMatcher.subject',
+      label: localization.t('labels.subject'),
+      type: 'text',
+    },
+    {
+      id: 'eventMatcher.fact',
+      label: localization.t('labels.fact'),
+      type: 'text',
+    },
+  ],
+  notifications: [
+    {
+      id: 'notificationsId',
+      label: 'notificationsId',
+      type: 'text'
+    },
+    {
+      id: 'customer',
+      label: 'customer',
+      type: 'text'
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.notificationName'),
+      type: 'text',
+    },
+    {
+      id: 'url',
+      label: localization.t('labels.notificationUrl'),
+      type: 'text'
+    },
+    {
+      id: 'emails',
+      label: localization.t('labels.notificationEmails'),
+      type: 'text',
+    },
+    {
+      id: 'events',
+      label: localization.t('labels.notificationEvents'),
+      type: 'text',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.notificationStatus'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+      ],
+    },
+  ],
 };
 
 export default filters;

@@ -3,6 +3,7 @@ import useDetailsData from './useDetailsData';
 import usePrivilegesData from './usePrivilegesData';
 import useRolesData from './useRolesData';
 import useMetaRolesData from './useMetaRolesData';
+import useNotificationDetail from './useNotificationDetail';
 
 export {
   useTableData,
@@ -10,4 +11,5 @@ export {
   usePrivilegesData,
   useRolesData,
   useMetaRolesData,
+  useNotificationDetail,
 };
