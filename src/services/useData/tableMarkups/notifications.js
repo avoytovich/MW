@@ -1,7 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
-  notificationsId: true,
+  id: true,
   customer: true,
   name: true,
   url: true,
@@ -12,7 +12,7 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.notificationNotificationsId'), id: 'notificationsId', sortParam: 'notificationsId' },
+    { value: localization.t('labels.notificationid'), id: 'id', sortParam: 'id' },
     { value: localization.t('labels.notificationCustomer'), id: 'customer', sortParam: 'customer' },
     {
       value: localization.t('labels.notificationName'),
@@ -47,7 +47,7 @@ const generateData = (data) => {
       status = localization.t('general.notificationDisabled');
     }
     return {
-      notificationsId: val.id,
+      id: val.id,
       customer: val.customerId,
       name: val.name,
       url: val.url,

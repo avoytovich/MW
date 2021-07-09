@@ -2,6 +2,9 @@ const labels = {
   creationDate: 'Creation Date',
   anniversaryDate: 'Anniversary date',
   lastUpdate: 'Last Update',
+  updateDate: 'Last Update',
+  subject: 'Event Subject',
+  fact: 'Event Fact',
   name: 'Name',
   publisherRefID: 'Publisher Ref ID',
   type: 'Type',
@@ -378,6 +381,7 @@ const labels = {
   clientCertificates: 'Client Certificates',
   privateKey: 'Private Key',
   cACertificate: 'CA Certificate',
+  notificationid: 'Notifications ID',
 };
 
 export default labels;

@@ -47,11 +47,18 @@ const NotificationDetailScreen = () => {
     if (id === 'add') {
       api.addNotification(formattedNotification).then((res) => {
         const location = res.headers.location.split('/');
-        const identityId = location[location.length - 1];
+        const newId = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/resource/notificationReceivers/${identityId}`);
+        history.push(`/settings/notifications/${newId}`);
+        setUpdate((u) => u + 1);
+      });
+    } else {
+      api.updateNotificationById(id, formattedNotification).then(() => {
+        dispatch(
+          showNotification(localization.t('general.updatesHaveBeenSaved')),
+        );
         setUpdate((u) => u + 1);
       });
     }
@@ -68,7 +75,7 @@ const NotificationDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/resource/notificationReceivers'
+            url='/settings/notifications'
             section={localization.t('general.notification')}
             id={notification.id}
           />
@@ -111,10 +118,10 @@ const NotificationDetailScreen = () => {
           indicatorColor='primary'
           textColor='primary'
         >
-          <Tab label='General' />
-          <Tab label='HTTP Headers' disabled={curNotification.receiverType === 'email'} />
-          <Tab label='OAuth 2.0 configuration' disabled={curNotification.receiverType === 'email'} />
-          <Tab label='TLS configuration' disabled={curNotification.receiverType === 'email'} />
+          <Tab label={localization.t('labels.general')} />
+          <Tab label={localization.t('labels.httpHeaders')} disabled={curNotification.receiverType === 'email'} />
+          <Tab label={localization.t('labels.oAuthConfiguration')} disabled={curNotification.receiverType === 'email'} />
+          <Tab label={localization.t('labels.tlsConfiguration')} disabled={curNotification.receiverType === 'email'} />
         </Tabs>
       </Box>
       {

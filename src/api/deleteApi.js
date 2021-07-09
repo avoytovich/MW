@@ -99,6 +99,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteNotificationDefinitionById(id) {
+    const url = `/customer-notifier/notification-definitions/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;

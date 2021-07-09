@@ -11,7 +11,7 @@ import {
   PeopleOutline,
   Dashboard,
 } from '@material-ui/icons';
-
+import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
 import defPath from '../../services/helpers/routingHelper';
 import localization from '../../localization';
 
@@ -124,6 +124,12 @@ const navConfig = [
         title: localization.t('sideBar.titles.identities'),
         href: `${defPath}/settings/identities`,
         icon: PeopleOutline,
+      },
+      {
+        id: 'notifications',
+        title: localization.t('sideBar.titles.notification'),
+        href: `${defPath}/settings/notifications`,
+        icon: NotificationsActiveOutlinedIcon,
       },
     ],
   },
