@@ -42,6 +42,7 @@ const useIdentityDetails = (id, nxState) => {
           api.getMetaRoles(0, `&customerId=${data.customerId}`),
           api.getCustomers(),
         ]).then(([rolesOptions, metaRolesOptions, customersOptions]) => {
+          console.log('customersOptions', customersOptions)
           setSelectOptions({
             ...selectOptions,
             roles: structureSelectOptions(rolesOptions.value?.data.items, 'name') || [],

@@ -73,8 +73,7 @@ const StoresScreen = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems='center' pb={3}>
-        <TableTopBar />
+      <TableTopBar>
         <Box>
           <Button
             id="add-product"
@@ -87,7 +86,7 @@ const StoresScreen = () => {
             {`${localization.t('general.add')} ${localization.t('labels.store')}`}
           </Button>
         </Box>
-      </Box>
+      </TableTopBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

@@ -1,9 +1,11 @@
 import { axiosInstance } from '../axios';
 
+const defaultSize = 50;
+
 const getAllApi = {
   getOrders({
-    page, size = 30, filters, sortParams,
-  }) {
+    page, size = defaultSize, filters, sortParams,
+  } = {}) {
     let url = `/orders?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
@@ -17,8 +19,8 @@ const getAllApi = {
     });
   },
   getStores({
-    page, size = 30, filters, sortParams,
-  }) {
+    page, size = defaultSize, filters, sortParams,
+  } = {}) {
     let url = `/stores?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
@@ -31,8 +33,8 @@ const getAllApi = {
       url,
     });
   },
-  getSubscriptions(page, filters) {
-    let url = `/subscription-manager/subscriptions?format=short&size=50&page=${page}`;
+  getSubscriptions({ page = 0, size = defaultSize, filters } = {}) {
+    let url = `/subscription-manager/subscriptions?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -42,8 +44,10 @@ const getAllApi = {
     });
   },
 
-  getProducts(page = 0, filters, sortParams) {
-    let url = `/products?format=full&size=50&page=${page}`;
+  getProducts({
+    page = 0, size = defaultSize, filters, sortParams,
+  } = {}) {
+    let url = `/products?format=full&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -56,8 +60,10 @@ const getAllApi = {
     });
   },
 
-  getIdentities(page, filters, sortParams) {
-    let url = `/iam/identities?format=short&size=50&page=${page}`;
+  getIdentities(
+    { page, size = defaultSize, filters, sortParams,
+    } = {}) {
+    let url = `/iam/identities?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -69,8 +75,10 @@ const getAllApi = {
       url,
     });
   },
-  getPrivileges(page = 0, filters, sortParams) {
-    let url = `/iam/privileges?format=short&size=150&page=${page}`;
+  getPrivileges({
+    page = 0, size = defaultSize, filters, sortParams,
+  } = {}) {
+    let url = `/iam/privileges?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -82,8 +90,10 @@ const getAllApi = {
       url,
     });
   },
-  getRoles(page = 0, filters, sortParams) {
-    let url = `iam/roles?format=short&size=150&page=${page}`;
+  getRoles({
+    page = 0, filters, size = defaultSize, sortParams,
+  } = {}) {
+    let url = `iam/roles?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -95,8 +105,10 @@ const getAllApi = {
       url,
     });
   },
-  getMetaRoles(page = 0, filters, sortParams) {
-    let url = `iam/meta-roles?format=short&page=${page}`;
+  getMetaRoles({
+    page = 0, size = defaultSize, filters, sortParams,
+  } = {}) {
+    let url = `iam/meta-roles?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -108,8 +120,10 @@ const getAllApi = {
       url,
     });
   },
-  getCustomers(page = 0, filters, sortParams) {
-    let url = `/customers?format=short&size=50&page=${page}`;
+  getCustomers({
+    page = 0, filters, size = defaultSize, sortParams,
+  } = {}) {
+    let url = `/customers?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -136,8 +150,8 @@ const getAllApi = {
     });
   },
 
-  getCampaigns(page, filters) {
-    let url = `/marketing-campaign/campaigns?format=short&sort=updateDate,desc&size=50&page=${page}`;
+  getCampaigns({ page, size = defaultSize, filters } = {}) {
+    let url = `/marketing-campaign/campaigns?format=short&sort=updateDate,desc&size=${size}&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -148,8 +162,8 @@ const getAllApi = {
       url,
     });
   },
-  getRecommendations(page, filters) {
-    let url = `/product-recommendations?format=short&sort=name,asc&size=50&page=${page}`;
+  getRecommendations({ page, size = defaultSize, filters } = {}) {
+    let url = `/product-recommendations?format=short&sort=name,asc&size=${size}&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -160,8 +174,8 @@ const getAllApi = {
       url,
     });
   },
-  getDiscounts(page, filters) {
-    let url = `/discounts?format=short&sort=name,asc&size=50&page=${page}`;
+  getDiscounts({ page, size = defaultSize, filters } = {}) {
+    let url = `/discounts?format=short&sort=name,asc&size=${size}&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -208,7 +222,7 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsTranslations({ page = 0, size, sortParams }) {
+  getDesignsTranslations({ page = 0, size = defaultSize, sortParams } = {}) {
     let url = `/designs/i18ns?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -218,7 +232,7 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsFonts({ page = 0, size, sortParams }) {
+  getDesignsFonts({ page = 0, size = defaultSize, sortParams } = {}) {
     let url = `/designs/fonts?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -228,7 +242,7 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsThemes({ page = 0, size, sortParams }) {
+  getDesignsThemes({ page = 0, size = defaultSize, sortParams } = {}) {
     let url = `/designs/themes?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -238,7 +252,7 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsLayouts({ page = 0, size, sortParams }) {
+  getDesignsLayouts({ page = 0, size = defaultSize, sortParams } = {}) {
     let url = `/designs/layouts?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -269,8 +283,10 @@ const getAllApi = {
       url,
     });
   },
-  getNotificationDefinition(page = 0, filters, sortParams) {
-    let url = `/customer-notifier/notification-definitions?format=short&size=10&page=${page}`;
+  getNotificationDefinition({
+    page = 0, size = defaultSize, filters, sortParams,
+  } = {}) {
+    let url = `/customer-notifier/notification-definitions?format=short&size=${size}&page=${page}`;
 
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
@@ -287,6 +303,18 @@ const getAllApi = {
 
   getEventsOptions() {
     const url = '/customer-notifier/notification-definitions?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getMarketingPrices({
+    page = 0, size = defaultSize, filters,
+  } = {}) {
+    let url = `/prices?format=short&size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,

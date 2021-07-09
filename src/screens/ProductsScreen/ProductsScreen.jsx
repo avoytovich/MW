@@ -12,6 +12,7 @@ import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import TableTopBar from '../../components/TableTopBar';
 import {
   getSortParams,
   saveSortParams,
@@ -27,8 +28,10 @@ const ProductsScreen = () => {
     getSortParams(sortKeys.products),
   );
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getProducts(currentPage - 1, filtersUrl, sortParams);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getProducts({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     return generateData(res.data);
   };
 
@@ -60,18 +63,20 @@ const ProductsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" p="15px">
-        <Button
-          id="add-product"
-          color="primary"
-          size="large"
-          variant="contained"
-          component={Link}
-          to="/products/add"
-        >
-          {localization.t('general.addProduct')}
-        </Button>
-      </Box>
+      <TableTopBar>
+        <Box>
+          <Button
+            id="add-product"
+            color="primary"
+            size="large"
+            variant="contained"
+            component={Link}
+            to="/products/add"
+          >
+            {localization.t('general.addProduct')}
+          </Button>
+        </Box>
+      </TableTopBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
