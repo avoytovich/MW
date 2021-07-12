@@ -4,7 +4,7 @@ import { Box, Typography, Grid } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ClearIcon from '@material-ui/icons/Clear';
 import { paymentDefaults } from '../../../services/selectOptions/selectOptions';
-import { SelectWithChip } from '../../../components/Inputs';
+import { SelectWithChip, SelectWithChipImages } from '../../../components/Inputs';
 import { filterOptions } from '../utils';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import localization from '../../../localization';
@@ -81,7 +81,7 @@ const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
   return (
     <Box display="flex" flexDirection="column" width={1}>
       <Box p={2}>
-        <SelectWithChip
+        <SelectWithChipImages
           label="paymentMethodsByDefault"
           value={
             currentStoreData.designs.paymentComponent
@@ -123,8 +123,8 @@ const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
           label="additionalPaymentTypes"
           value={[]}
           selectOptions={[]}
-          onChangeSelect={() => {}}
-          onClickDelIcon={() => {}}
+          onChangeSelect={() => { }}
+          onClickDelIcon={() => { }}
         />
       </Box>
       <Box p={2}>
