@@ -248,5 +248,17 @@ const getOneByIdApi = {
       url,
     });
   },
+  getInvoicePdfById(id) {
+    const url = `/invoices/invoices/${id}/pdf`;
+    return axiosInstance({
+      headers: {
+        'Content-Type': 'application/pdf',
+        accept: 'application/pdf',
+      },
+      responseType: 'blob',
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;
