@@ -12,7 +12,7 @@ import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import TableTopBar from '../../components/TableTopBar';
+import TableActionsBar from '../../components/TableActionsBar';
 import {
   getSortParams,
   saveSortParams,
@@ -63,7 +63,7 @@ const ProductsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableTopBar>
+      <TableActionsBar>
         <Box>
           <Button
             id="add-product"
@@ -76,7 +76,7 @@ const ProductsScreen = () => {
             {localization.t('general.addProduct')}
           </Button>
         </Box>
-      </TableTopBar>
+      </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

@@ -7,7 +7,7 @@ import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import TableTopBar from '../../components/TableTopBar';
+import TableActionsBar from '../../components/TableActionsBar';
 
 import api from '../../api';
 import {
@@ -73,7 +73,7 @@ const StoresScreen = () => {
 
   return (
     <>
-      <TableTopBar>
+      <TableActionsBar>
         <Box>
           <Button
             id="add-product"
@@ -86,7 +86,7 @@ const StoresScreen = () => {
             {`${localization.t('general.add')} ${localization.t('labels.store')}`}
           </Button>
         </Box>
-      </TableTopBar>
+      </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

@@ -11,7 +11,7 @@ import TranslationsTab from './TranslationsTab';
 import FontsTab from './FontsTab';
 import ThemesTab from './ThemesTab';
 import LayoutsTab from './LayoutsTab';
-import TableTopBar from '../../components/TableTopBar';
+import TableActionsBar from '../../components/TableActionsBar';
 
 import './CheckoutExperienceScreen.scss';
 
@@ -65,12 +65,9 @@ const CheckoutExperienceScreen = ({ location }) => {
   };
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems='center'>
-        <TableTopBar />
-        <Box>
-          {drawAddButton()}
-        </Box>
-      </Box>
+      <TableActionsBar>
+        {drawAddButton()}
+      </TableActionsBar>
       <Box display="flex" flexDirection="column">
 
         <Tabs

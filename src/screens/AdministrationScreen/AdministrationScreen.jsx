@@ -11,7 +11,7 @@ import { generateData as generateCustomers } from '../../services/useData/tableM
 import { generateData as generateRoles } from '../../services/useData/tableMarkups/adminRoles';
 import { generateData as generatePrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
 import MetaRoles from './MetaRoles';
-import TableTopBar from '../../components/TableTopBar';
+import TableActionsBar from '../../components/TableActionsBar';
 
 const tabsData = [
   {
@@ -103,9 +103,9 @@ const AdministrationScreen = () => {
   const changeTab = (tab) => history.push(`/settings/administration/${tabsData[tab].scope}`);
   return (
     <Box display='flex' flexDirection='column'>
-      <TableTopBar>
+      <TableActionsBar>
         {drawAddButton()}
-      </TableTopBar>
+      </TableActionsBar>
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}

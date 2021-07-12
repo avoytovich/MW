@@ -14,7 +14,6 @@ const setTableScope = (scope) => ({
     scope,
     filters: [],
     search: '',
-    rowsPerPage: '30',
   },
 });
 
@@ -31,9 +30,11 @@ const setSearch = (search) => ({ type: SET_TABLE_SEARCH, payload: { search } });
 
 const resetSearch = () => ({ type: RESET_TABLE_SEARCH, payload: { search: '' } });
 
-const setRowsPerPage = (rowsPerPage) => (
-  { type: SET_TABLE_ROWS_PER_PAGE, payload: { rowsPerPage } }
-);
+const setRowsPerPage = (rowsPerPage) => {
+  localStorage.setItem('rowsPerPage', JSON.stringify(rowsPerPage));
+  return ({ type: SET_TABLE_ROWS_PER_PAGE, payload: { rowsPerPage } }
+  );
+};
 
 export {
   setTableScope,

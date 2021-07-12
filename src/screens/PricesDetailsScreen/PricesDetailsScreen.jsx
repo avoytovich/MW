@@ -102,10 +102,9 @@ const PricesDetailsScreen = () => {
     if (id === 'add') {
       if (selectedCustomer?.id) {
         api
-          .getProducts(0, `&customerId=${selectedCustomer?.id}&status=ENABLED`)
+          .getProducts({ filters: `&customerId=${selectedCustomer?.id}&status=ENABLED` })
           .then(({ data: { items } }) => {
             const products = items.map((it) => ({ id: it.id, value: it.genericName }));
-
             setAvailProducts(products);
           });
       }
@@ -206,16 +205,16 @@ const PricesDetailsScreen = () => {
               />
             </Box>
           ) : (
-            <Box width='50%' pr={4}>
-              <SelectCustom
-                label="productID"
-                value={curPrice?.productId}
-                isRequired
-                selectOptions={availProducts}
-                onChangeSelect={(e) => setCurPrice((c) => ({ ...c, productId: e.target.value }))}
-              />
-            </Box>
-          )
+              <Box width='50%' pr={4}>
+                <SelectCustom
+                  label="productID"
+                  value={curPrice?.productId}
+                  isRequired
+                  selectOptions={availProducts}
+                  onChangeSelect={(e) => setCurPrice((c) => ({ ...c, productId: e.target.value }))}
+                />
+              </Box>
+            )
         }
 
         <Box display="flex" mb={4}>
@@ -337,19 +336,19 @@ const PricesDetailsScreen = () => {
                       />
                     </Box>
                   ) : (
-                    <form noValidate>
-                      <TextField
-                        fullWidth
-                        name="startDate"
-                        value={curPrice.startDate ? moment(curPrice.startDate).format('YYYY-MM-DD') : ''}
-                        label={localization.t('labels.startDate')}
-                        type="date"
-                        variant="outlined"
-                        InputLabelProps={{ shrink: true }}
-                        onChange={handleChange}
-                      />
-                    </form>
-                  )}
+                      <form noValidate>
+                        <TextField
+                          fullWidth
+                          name="startDate"
+                          value={curPrice.startDate ? moment(curPrice.startDate).format('YYYY-MM-DD') : ''}
+                          label={localization.t('labels.startDate')}
+                          type="date"
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                          onChange={handleChange}
+                        />
+                      </form>
+                    )}
                 </Box>
               </Box>
             </Box>

@@ -8,11 +8,13 @@ import {
   SET_TABLE_ROWS_PER_PAGE,
 } from '../constants/actionTypes';
 
+const rowsPerPage = JSON.parse(localStorage.getItem('rowsPerPage')) || '50';
+
 const initialState = {
   scope: null,
   filters: [],
   search: '',
-  rowsPerPage: '30',
+  rowsPerPage,
 };
 
 const TableData = (state = initialState, { type, payload }) => {

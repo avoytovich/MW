@@ -13,7 +13,7 @@ import {
 import TableRowComponent from './TableRowComponent';
 import TableItemsActions from './TableItemsActions';
 import PaginationComponent from '../PaginationComponent';
-
+import TableActionsBar from '../TableActionsBar';
 import localization from '../../localization';
 
 import './TableComponent.scss';
@@ -152,12 +152,16 @@ const TableComponent = ({
           ))}
         </Box>
       </Paper>
-      <PaginationComponent
-        location="flex-end"
-        currentPage={currentPage}
-        updatePage={updatePage}
-        totalPages={tableData.meta?.totalPages}
-      />
+      <Box pt={2}>
+        <TableActionsBar positionBottom>
+          <PaginationComponent
+            location="flex-end"
+            currentPage={currentPage}
+            updatePage={updatePage}
+            totalPages={tableData.meta?.totalPages}
+          />
+        </TableActionsBar>
+      </Box>
     </>
   ) : (
     <Typography>{localization.t('general.noResults')}</Typography>

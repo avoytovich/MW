@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
-import TableTopBar from '../../components/TableTopBar';
+import TableActionsBar from '../../components/TableActionsBar';
 import api from '../../api';
 import {
   generateData,
@@ -33,7 +33,7 @@ const SubscriptionsScreen = () => {
 
   return (
     <>
-      <TableTopBar />
+      <TableActionsBar />
       <TableComponent
         showColumn={defaultShow}
         currentPage={currentPage}

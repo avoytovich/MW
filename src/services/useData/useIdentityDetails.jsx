@@ -39,10 +39,9 @@ const useIdentityDetails = (id, nxState) => {
       if (id !== 'add') {
         Promise.allSettled([
           api.getRoleById(`usableForIdentity/${id}`),
-          api.getMetaRoles(0, `&customerId=${data.customerId}`),
+          api.getMetaRoles({ filters: `&customerId=${data.customerId}` }),
           api.getCustomers(),
         ]).then(([rolesOptions, metaRolesOptions, customersOptions]) => {
-          console.log('customersOptions', customersOptions)
           setSelectOptions({
             ...selectOptions,
             roles: structureSelectOptions(rolesOptions.value?.data.items, 'name') || [],

@@ -11,7 +11,7 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import TableTopBar from '../../components/TableTopBar';
+import TableActionsBar from '../../components/TableActionsBar';
 import {
   getSortParams,
   saveSortParams,
@@ -68,7 +68,7 @@ const IdentitiesScreen = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <TableTopBar>
+      <TableActionsBar>
         <Box alignSelf='flex-end' py={2}>
           <Button
             id='add-identity-button'
@@ -83,7 +83,7 @@ const IdentitiesScreen = () => {
             )}`}
           </Button>
         </Box>
-      </TableTopBar>
+      </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

@@ -3,6 +3,7 @@
 .tableRowGrid {
   display: flex;
   padding: 5px 0;
+  padding-left: 20px;
   min-height: 64px;
 
   &:nth-of-type(odd) {
@@ -54,6 +55,7 @@
 }
 .tableHeaderGrid {
   padding: 15px 0;
+  padding-left: 20px;
   overflow-x: hidden;
   .tableHeader {
     display: inherit;

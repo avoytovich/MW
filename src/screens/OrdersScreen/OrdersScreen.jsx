@@ -16,7 +16,7 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
-import TableTopBar from '../../components/TableTopBar';
+import TableActionsBar from '../../components/TableActionsBar';
 
 const OrdersScreen = () => {
   const dispatch = useDispatch();
@@ -77,7 +77,7 @@ const OrdersScreen = () => {
 
   return (
     <Box pb={3}>
-      <TableTopBar />
+      <TableActionsBar />
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

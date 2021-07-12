@@ -84,7 +84,7 @@ const MyAccountScreen = () => {
         setCurIdentity(data);
 
         api
-          .getStores(0, `&customerId=${data?.customerId}`)
+          .getStores({ filters: `&customerId=${data?.customerId}` })
           .then(({ data: { items: stores } }) => {
             const storesObj = stores.map((store) => ({
               id: store.id,
@@ -95,7 +95,7 @@ const MyAccountScreen = () => {
           .catch(() => setStores(null));
 
         api
-          .getProducts(0, `&customerId=${data?.customerId}`)
+          .getProducts({ filters: `&customerId=${data?.customerId}` })
           .then(({ data: { items: products } }) => {
             const productsObj = products.map((product) => ({
               id: product.id,
@@ -192,60 +192,60 @@ const MyAccountScreen = () => {
               <CircularProgress />
             </Box>
           ) : (
-            <Box px={1} width=" 100%">
-              <TextField
-                fullWidth
-                label="Stores"
-                name="stores"
-                type="text"
-                placeholder="Stores list"
-                value={curStores.map((store) => store.name)}
-                contentEditable={false}
-                onClick={() => setStoresModalOpen(true)}
-                variant="outlined"
-                disabled
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <EditIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                helperText="Please specify the stores you manage"
-              />
-            </Box>
-          )}
+              <Box px={1} width=" 100%">
+                <TextField
+                  fullWidth
+                  label="Stores"
+                  name="stores"
+                  type="text"
+                  placeholder="Stores list"
+                  value={curStores.map((store) => store.name)}
+                  contentEditable={false}
+                  onClick={() => setStoresModalOpen(true)}
+                  variant="outlined"
+                  disabled
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <EditIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  helperText="Please specify the stores you manage"
+                />
+              </Box>
+            )}
 
           {curProducts === null ? (
             <Box width={1} m="10px" pt="8px">
               <CircularProgress />
             </Box>
           ) : (
-            <Box px={1} width=" 100%">
-              <TextField
-                fullWidth
-                label="Catalogs & products"
-                name="catalogs"
-                type="text"
-                placeholder="Catalogs and/or products"
-                value={curProducts.map((product) => product.name)}
-                contentEditable={false}
-                onClick={() => setProductsModalOpen(true)}
-                variant="outlined"
-                disabled
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <EditIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                helperText="Please specify the catalogs you manage"
-              />
-            </Box>
-          )}
+              <Box px={1} width=" 100%">
+                <TextField
+                  fullWidth
+                  label="Catalogs & products"
+                  name="catalogs"
+                  type="text"
+                  placeholder="Catalogs and/or products"
+                  value={curProducts.map((product) => product.name)}
+                  contentEditable={false}
+                  onClick={() => setProductsModalOpen(true)}
+                  variant="outlined"
+                  disabled
+                  InputLabelProps={{ shrink: true }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <EditIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  helperText="Please specify the catalogs you manage"
+                />
+              </Box>
+            )}
         </Box>
       </CustomCard>
 
