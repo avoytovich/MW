@@ -15,19 +15,28 @@ import './orderDetailsScreen.scss';
 const OrderRow = ({ rowData, customerId, creationDate }) => {
   const dispatch = useDispatch();
 
-  const handleGetFile = () => {
+  const downloadPdf = (data, label) => {
+    const url = window.URL.createObjectURL(new Blob([data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `${label}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+  };
+
+  const dowloadTermsAndConditions = (data) => {
     if (customerId) {
       const date = moment(creationDate).format('YYYY-MM-DD');
-      api.getTermsAndConditions(customerId, date).then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'termsAndConditions.pdf');
-        document.body.appendChild(link);
-        link.click();
-      });
+      api.getTermsAndConditions(customerId, date)
+        .then((response) => downloadPdf(response.data, data.label));
     }
   };
+
+  const downloadInvoice = (data) => (
+    api.getInvoicePdfById(data.value)
+      .then((response) => downloadPdf(response.data, data.label))
+  );
+
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value).then(() => {
       dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
@@ -43,13 +52,19 @@ const OrderRow = ({ rowData, customerId, creationDate }) => {
       <Grid item md={6} xs={6}>
         <Box display="flex">
           {!shouldDownload(item.key) && (
-            <Box p={2} className="rowValue">
-              {item.value || '-'}
-            </Box>
+            item.key === 'invoiceID' ? (
+              <Box p={2} className="rowValue download" onClick={() => downloadInvoice(item)}>
+                {item.value || '-'}
+              </Box>
+            ) : (
+              <Box p={2} className="rowValue">
+                {item.value || '-'}
+              </Box>
+            )
           )}
           <Box p={2}>
             {shouldDownload(item.key) && (
-              <GetAppIcon onClick={handleGetFile} color="secondary" />
+              <GetAppIcon onClick={() => dowloadTermsAndConditions(item)} color="secondary" />
             )}
             {item.value && shouldCopy(item.key) && (
               <FileCopyIcon
