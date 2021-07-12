@@ -66,7 +66,7 @@ const TableRowComponent = ({
 
       if (item.id === 'createDate' || item.id === 'updateDate') {
         valueToShow = moment(rowItem[item.id]).format('D MMM YYYY');
-      } if (item.id === 'value') {
+      } else if (item.id === 'value') {
         valueToShow = <PriceNumberFormat number={rowItem[item.id]} currency={rowItem.currency} />;
       } else {
         valueToShow = rowItem[item.id];
