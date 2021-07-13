@@ -29,8 +29,10 @@ const NotificationDefinitionScreen = () => {
 
   const updatePage = (page) => setCurrentPage(page);
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getNotificationDefinition(currentPage - 1, filtersUrl, sortParams);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getNotificationDefinition({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     return generateData(res.data);
   };
 

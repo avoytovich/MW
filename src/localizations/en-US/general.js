@@ -78,6 +78,7 @@ const general = {
   notificationEnabled: 'Enabled',
   notificationDisabled: 'Disabled',
   notification: 'Notification',
+  rowsPerPage: 'Rows per page',
 };
 
 export default general;

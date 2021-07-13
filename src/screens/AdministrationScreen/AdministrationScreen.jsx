@@ -16,6 +16,7 @@ import { generateData as generateCustomers } from '../../services/useData/tableM
 import { generateData as generateRoles } from '../../services/useData/tableMarkups/adminRoles';
 import { generateData as generatePrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
 import MetaRoles from './MetaRoles';
+import TableActionsBar from '../../components/TableActionsBar';
 
 const tabsData = [
   {
@@ -90,7 +91,9 @@ const AdministrationScreen = ({ location }) => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      {drawAddButton()}
+      <TableActionsBar>
+        {drawAddButton()}
+      </TableActionsBar>
       <Tabs
         value={location.pathname === '/settings/administration' ? tabsData[0].path
           : location.pathname}

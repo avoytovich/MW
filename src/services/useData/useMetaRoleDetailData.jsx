@@ -30,7 +30,7 @@ const useMetaRoleDetailData = (id, nxState) => {
       setMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
       setCurMetaRole(JSON.parse(JSON.stringify(checkedMetaRole)));
     });
-    api.getRoles().then(({ data }) => setSelectOptions({
+    api.getRoles({ size: 500 }).then(({ data }) => setSelectOptions({
       ...selectOptions,
       roles: structureSelectOptions(data.items) || [],
     }));
