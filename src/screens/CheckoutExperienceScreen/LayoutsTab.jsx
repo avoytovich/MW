@@ -25,9 +25,11 @@ const LayoutsTab = () => {
     saveSortParams(sortKeys.layoutsTab, params);
   };
 
-  const requests = async () => {
+  const requests = async (rowsPerPage) => {
     const costumersIds = [];
-    const res = await api.getDesignsLayouts(currentPage - 1, sortParams);
+    const res = await api.getDesignsLayouts({
+      page: currentPage - 1, size: rowsPerPage, sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {

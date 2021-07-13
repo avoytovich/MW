@@ -5,11 +5,16 @@ import {
   RESET_TABLE_FILTERS,
   SET_TABLE_SEARCH,
   RESET_TABLE_SEARCH,
+  SET_TABLE_ROWS_PER_PAGE,
 } from '../constants/actionTypes';
 
 const setTableScope = (scope) => ({
   type: SET_TABLE_SCOPE,
-  payload: { scope, filters: [], search: '' },
+  payload: {
+    scope,
+    filters: [],
+    search: '',
+  },
 });
 
 const refreshTable = (scope) => async (dispatch) => {
@@ -25,6 +30,12 @@ const setSearch = (search) => ({ type: SET_TABLE_SEARCH, payload: { search } });
 
 const resetSearch = () => ({ type: RESET_TABLE_SEARCH, payload: { search: '' } });
 
+const setRowsPerPage = (rowsPerPage) => {
+  localStorage.setItem('rowsPerPage', JSON.stringify(rowsPerPage));
+  return ({ type: SET_TABLE_ROWS_PER_PAGE, payload: { rowsPerPage } }
+  );
+};
+
 export {
   setTableScope,
   refreshTable,
@@ -32,4 +43,5 @@ export {
   resetFilters,
   setSearch,
   resetSearch,
+  setRowsPerPage,
 };

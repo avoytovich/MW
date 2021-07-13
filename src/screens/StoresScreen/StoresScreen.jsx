@@ -7,6 +7,7 @@ import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import TableActionsBar from '../../components/TableActionsBar';
 
 import api from '../../api';
 import {
@@ -31,9 +32,14 @@ const StoresScreen = () => {
     saveSortParams(sortKeys.stores, params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowPerPage, filtersUrl) => {
     const costumersIds = [];
-    const res = await api.getStores(currentPage - 1, filtersUrl, sortParams);
+    const res = await api.getStores({
+      page: currentPage - 1,
+      size: rowPerPage,
+      filters: filtersUrl,
+      sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -67,18 +73,20 @@ const StoresScreen = () => {
 
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" p="15px">
-        <Button
-          id="add-product"
-          color="primary"
-          size="large"
-          variant="contained"
-          component={Link}
-          to="/overview/stores/add"
-        >
-          {`${localization.t('general.add')} ${localization.t('labels.store')}`}
-        </Button>
-      </Box>
+      <TableActionsBar>
+        <Box>
+          <Button
+            id="add-product"
+            color="primary"
+            size="large"
+            variant="contained"
+            component={Link}
+            to="/overview/stores/add"
+          >
+            {`${localization.t('general.add')} ${localization.t('labels.store')}`}
+          </Button>
+        </Box>
+      </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

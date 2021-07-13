@@ -26,7 +26,7 @@ const CustomerHandling = () => {
   useEffect(() => {
     if (search) {
       api
-        .getCustomers(0, `&name=${search}*`, 'name')
+        .getCustomers({ page: 0, filters: `&name=${search}*`, sortParams: 'name' })
         .then(({ data: { items } }) => {
           setCustomers([...items]);
         });
