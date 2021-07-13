@@ -11,6 +11,7 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import TableActionsBar from '../../components/TableActionsBar';
 import {
   getSortParams,
   saveSortParams,
@@ -31,11 +32,14 @@ const IdentitiesScreen = () => {
     saveSortParams(sortKeys.identities, params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowsPerPage, filtersUrl) => {
     const res = await api.getIdentities(
-      currentPage - 1,
-      filtersUrl,
-      sortParams,
+      {
+        page: currentPage - 1,
+        size: rowsPerPage,
+        filters: filtersUrl,
+        sortParams,
+      },
     );
     return generateData(res.data);
   };
@@ -64,20 +68,22 @@ const IdentitiesScreen = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Box alignSelf='flex-end' py={2}>
-        <Button
-          id='add-identity-button'
-          color='primary'
-          size='large'
-          variant='contained'
-          component={Link}
-          to='/settings/identities/add'
-        >
-          {`${localization.t('general.add')} ${localization.t(
-            'general.identity',
-          )}`}
-        </Button>
-      </Box>
+      <TableActionsBar>
+        <Box alignSelf='flex-end' py={2}>
+          <Button
+            id='add-identity-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to='/settings/identities/add'
+          >
+            {`${localization.t('general.add')} ${localization.t(
+              'general.identity',
+            )}`}
+          </Button>
+        </Box>
+      </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

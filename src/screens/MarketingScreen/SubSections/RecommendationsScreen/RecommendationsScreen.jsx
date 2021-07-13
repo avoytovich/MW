@@ -18,8 +18,10 @@ const RecommendationsScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getRecommendations(currentPage - 1, filtersUrl);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getRecommendations({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+    });
     return generateData(res.data);
   };
 
