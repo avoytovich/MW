@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Box } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
 
+import FindByCC from './FindByCC';
 import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -23,6 +24,7 @@ const OrdersScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [findCCOpen, setFindCC] = useState(false);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.orders));
 
   const handleSetSortParams = (params) => {
@@ -77,7 +79,8 @@ const OrdersScreen = () => {
 
   return (
     <Box pb={3}>
-      <TableActionsBar />
+      <TableActionsBar findByCC={() => setFindCC(true)} />
+
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
@@ -88,6 +91,8 @@ const OrdersScreen = () => {
         tableData={orders}
         isLoading={isLoading}
       />
+
+      <FindByCC onClose={() => setFindCC(false)} open={findCCOpen} />
     </Box>
   );
 };

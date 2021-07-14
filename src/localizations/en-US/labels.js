@@ -101,6 +101,7 @@ const labels = {
   blockedPayments: 'Blocked payments',
   maxPaymentsPart: 'Max payments part',
   oneClickPayment: 'One Click Payment',
+  date: 'Date',
   startDate: 'Start Date',
   endDate: 'End Date',
   ruleName: 'Rule Name',
@@ -392,6 +393,7 @@ const labels = {
     receiverURL: 'Receiver URL (webhook)',
     webhookSuccessResponse: 'Webhook Success Response',
   },
+  last4Digits: 'Last four digits',
 };
 
 export default labels;
