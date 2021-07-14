@@ -101,6 +101,7 @@ const labels = {
   blockedPayments: 'Blocked payments',
   maxPaymentsPart: 'Max payments part',
   oneClickPayment: 'One Click Payment',
+  date: 'Date',
   startDate: 'Start Date',
   endDate: 'End Date',
   ruleName: 'Rule Name',
@@ -382,6 +383,7 @@ const labels = {
   privateKey: 'Private Key',
   cACertificate: 'CA Certificate',
   notificationid: 'Notifications ID',
+  last4Digits: 'Last four digits',
 };
 
 export default labels;
