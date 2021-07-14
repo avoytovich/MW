@@ -382,6 +382,16 @@ const labels = {
   privateKey: 'Private Key',
   cACertificate: 'CA Certificate',
   notificationid: 'Notifications ID',
+  notificationsHistory: {
+    customer: 'Customer',
+    processingDate: 'ProcessingDate',
+    notificationHistoryId: 'Notification History ID',
+    status: 'Status',
+    event: 'Event',
+    receiverEmail: 'Receiver(s) email(s)',
+    receiverURL: 'Receiver URL (webhook)',
+    webhookSuccessResponse: 'Webhook Success Response',
+  },
 };
 
 export default labels;
