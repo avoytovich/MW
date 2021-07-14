@@ -139,14 +139,8 @@ const getAllApi = {
     });
   },
 
-  getNotifications(page = defaultRequestedPage, filters, sortParams) {
+  getNotifications(page = defaultRequestedPage) {
     let url = `/customer-notifier/receivers?format=short&status=Active&sort=status%2Casc&size=500&page=${page}`;
-    if (sortParams) {
-      url += `&sort=${sortParams.value},${sortParams.type}`;
-    }
-    if (filters) {
-      url += filters;
-    }
     return axiosInstance({
       method: 'get',
       url,
@@ -336,6 +330,15 @@ const getAllApi = {
       url,
     });
   },
+  getNotificationsHistory(page = defaultRequestedPage, accountId) {
+    let url = `customer-notifier/notifications?format=short&${accountId.customerId}&sort=processingDate%2Casc&size=30&page=${page}`;
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
 };
 
 export default getAllApi;

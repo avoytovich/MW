@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';
+import api from '../../../api';
 
 import { useTableData } from '../../../services/useData';
 import {
@@ -24,6 +25,7 @@ const TabTable = ({ tabObject }) => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys[sortKey]),
   );
+  const accountId = useSelector(({ account: { user } }) => user);
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -46,8 +48,18 @@ const TabTable = ({ tabObject }) => {
     }
   };
   const requests = async (filtersUrl) => {
-    const res = await request(currentPage - 1, filtersUrl, sortParams);
-    return generateData(res.data);
+    const costumersIds = [];
+
+    const res = await request(currentPage - 1, filtersUrl, sortParams, accountId);
+    res.data.items.forEach((item) => {
+      const costumer = `id=${item.customerId}`;
+      if (!costumersIds.includes(costumer)) {
+        costumersIds.push(costumer);
+      }
+    });
+    const customers = await api.getCustomersByIds(costumersIds.join('&'));
+
+    return generateData(res.data, customers.data.items);
   };
   const data = useTableData(
     currentPage - 1,
@@ -60,7 +72,6 @@ const TabTable = ({ tabObject }) => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
-      noActions={tabObject.noActions}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}

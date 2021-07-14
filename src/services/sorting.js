@@ -11,6 +11,9 @@ export const sortKeys = {
   roleAdmin: 'roleAdminSortParams',
   metaRoleAdmin: 'metaRoleAdminSortParams',
   privilegesAdmin: 'privilegesAdminSortParams',
+  notification: 'notificationsSortParams',
+  notificationDefinition: 'notificationDefinirionsSortParams',
+  notificationHistory: 'notificationsHistorySortParams',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));
