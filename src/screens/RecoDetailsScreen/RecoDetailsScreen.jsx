@@ -100,10 +100,10 @@ const RecoDetailsScreen = () => {
       setReco(JSON.parse(JSON.stringify(checkedReco)));
       setCurReco(JSON.parse(JSON.stringify(checkedReco)));
       Promise.allSettled([
-        api.getStores(0, `&customerId=${data.customerId}`),
-        api.getProducts(0, `&customerId=${data.customerId}`),
-        api.getProducts(0, `&customerId=${data.customerId}&parentId=${null}`),
-        api.getProducts(0, `&customerId=${data.customerId}&status=ENABLED`),
+        api.getStores({ filters: `&customerId=${data.customerId}` }),
+        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}` }),
+        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}&parentId=${null}` }),
+        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}&status=ENABLED` }),
         api.getProducts(
           0,
           `&customerId=${data.customerId}&parentId=${null}&status=ENABLED`,
@@ -118,21 +118,21 @@ const RecoDetailsScreen = () => {
         ]) => setSelectOptions({
           ...selectOptions,
           stores:
-              structureSelectOptions(
-                storeOptions.value?.data.items,
-                'displayName',
-              ) || [],
+            structureSelectOptions(
+              storeOptions.value?.data.items,
+              'displayName',
+            ) || [],
           products:
-              formateProductOptions(productOptions.value?.data?.items) || [],
+            formateProductOptions(productOptions.value?.data?.items) || [],
           productsByParent:
-              formateProductOptions(parentProductOptions.value?.data?.items)
-              || [],
+            formateProductOptions(parentProductOptions.value?.data?.items)
+            || [],
           recoByProduct:
-              formateProductOptions(recoByProductOptions.value?.data?.items)
-              || [],
+            formateProductOptions(recoByProductOptions.value?.data?.items)
+            || [],
           recoByParent:
-              formateProductOptions(recoByParentOptions.value?.data?.items)
-              || [],
+            formateProductOptions(recoByParentOptions.value?.data?.items)
+            || [],
         }),
       );
     });

@@ -8,7 +8,6 @@ import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
 import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
-
 import {
   getSortParams,
   saveSortParams,
@@ -29,9 +28,11 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     saveSortParams(sortKeys[sortKey], params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowsPerPage, filtersUrl) => {
     const costumersIds = [];
-    const res = await api.getMetaRoles(currentPage - 1, filtersUrl, sortParams);
+    const res = await api.getMetaRoles({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -78,7 +79,7 @@ const MetaRoles = ({ sortKey, scope, label }) => {
 };
 
 MetaRoles.propTypes = {
-  tabObject: PropTypes.object,
+  sortKey: PropTypes.string,
   label: PropTypes.string,
   scope: PropTypes.string,
 };

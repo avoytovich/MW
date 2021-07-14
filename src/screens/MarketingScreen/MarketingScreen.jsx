@@ -10,6 +10,7 @@ import RecommendationsScreen from './SubSections/RecommendationsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
 import PricesScreen from './SubSections/PricesScreen';
 import localization from '../../localization';
+import TableActionsBar from '../../components/TableActionsBar';
 
 import './marketingScreen.scss';
 
@@ -80,8 +81,9 @@ const MarketingScreen = () => {
   const changeTab = (tab) => history.push(`/marketing/${availTabs[tab].label}`);
   return (
     <Box display='flex' flexDirection='column'>
-      {drawAddButton()}
-
+      <TableActionsBar>
+        {drawAddButton()}
+      </TableActionsBar>
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}
