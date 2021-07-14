@@ -7,6 +7,7 @@ import {
   GetApp as GetAppIcon,
   Delete as DeleteIcon,
   Refresh as RefreshIcon,
+  FindInPage as FindIcon,
 } from '@material-ui/icons';
 import {
   IconButton,
@@ -20,9 +21,11 @@ import { setRowsPerPage } from '../../redux/actions/TableData';
 
 const selectOptions = ['20', '50', '100', '200'];
 
-const TableActionsBar = ({ children, positionBottom }) => {
+const TableActionsBar = ({ children, positionBottom, findByCC }) => {
   const dispatch = useDispatch();
+
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
+
   return (
     <Box display="flex" className='test' alignItems='center' justifyContent='space-between' pb={3}>
       <Box display='flex' alignItems='center' py={2}>
@@ -51,6 +54,9 @@ const TableActionsBar = ({ children, positionBottom }) => {
             <IconButton edge='start' aria-label='refresh' color='secondary'><FilterListIcon /></IconButton>
             <IconButton edge='start' aria-label='refresh' color='secondary'><GetAppIcon /></IconButton>
             <IconButton edge='start' aria-label='refresh' color='secondary'><DeleteIcon /></IconButton>
+
+            {findByCC && <IconButton edge='start' aria-label='refresh' color='secondary' onClick={findByCC}><FindIcon /></IconButton>}
+
             <IconButton edge='start' aria-label='refresh' color='secondary'><RefreshIcon /></IconButton>
           </>
           )}
@@ -68,4 +74,5 @@ export default TableActionsBar;
 TableActionsBar.propTypes = {
   children: PropTypes.node,
   positionBottom: PropTypes.bool,
+  findByCC: PropTypes.func,
 };

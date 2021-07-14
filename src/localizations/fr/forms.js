@@ -4,6 +4,9 @@ const Forms = {
     tableFilters: 'Table Filters',
     noFilters: 'No Filters Available',
     welcome: 'Welcome',
+    findByCC: 'Find orders with card digits',
+    findByCCDesc: 'From there you can find an order with the card bin and/or the last four digits, the date, the amout and the currency.',
+    findByCCNote: 'Note that only the cardBin or the last four digits are mandatory.',
   },
   subHeaders: {
     loginWelcomSubHeader: 'Through nexway’s Nexway Center interface, you will be able to get a 360-degree view of your e-store’s performance, and to access all orders in real time.',
@@ -103,6 +106,8 @@ const Forms = {
     resyncPaymentsConfirmed: 'Yes, confirmed',
     confirmationEmailCancel: 'Cancel',
     confirmationEmailSend: 'Send',
+    close: 'Close',
+    search: 'Search',
   },
   links: {
     signUp: 'Sign Up',
