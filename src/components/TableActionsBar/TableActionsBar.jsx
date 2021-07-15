@@ -29,7 +29,7 @@ const TableActionsBar = ({ children, positionBottom, findByCC }) => {
   return (
     <Box display="flex" className='test' alignItems='center' justifyContent='space-between' pb={3}>
       <Box display='flex' alignItems='center' py={2}>
-        <Typography variant="subtitle2">{localization.t('general.rowsPerPage')}</Typography>
+        <Typography data-test='rowsPerPageLabel' variant="subtitle2">{localization.t('general.rowsPerPage')}</Typography>
         <Box px={2}>
           <TextField
             select
@@ -48,15 +48,13 @@ const TableActionsBar = ({ children, positionBottom, findByCC }) => {
         {!positionBottom
           && (
           <>
-            <IconButton edge='start' aria-label='refresh' color='secondary'>
+            <IconButton edge='start' aria-label='columns' color='secondary'>
               <ViewColumnIcon />
             </IconButton>
-            <IconButton edge='start' aria-label='refresh' color='secondary'><FilterListIcon /></IconButton>
-            <IconButton edge='start' aria-label='refresh' color='secondary'><GetAppIcon /></IconButton>
-            <IconButton edge='start' aria-label='refresh' color='secondary'><DeleteIcon /></IconButton>
-
-            {findByCC && <IconButton edge='start' aria-label='refresh' color='secondary' onClick={findByCC}><FindIcon /></IconButton>}
-
+            <IconButton edge='start' aria-label='filter' color='secondary'><FilterListIcon /></IconButton>
+            <IconButton edge='start' aria-label='get' color='secondary'><GetAppIcon /></IconButton>
+            <IconButton edge='start' aria-label='delete' color='secondary'><DeleteIcon /></IconButton>
+            {findByCC && <IconButton edge='start' aria-label='find' color='secondary' onClick={findByCC}><FindIcon /></IconButton>}
             <IconButton edge='start' aria-label='refresh' color='secondary'><RefreshIcon /></IconButton>
           </>
           )}
