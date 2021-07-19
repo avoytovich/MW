@@ -5,6 +5,7 @@ const postApi = {
   signIn(data) {
     let realm = data?.realm;
     let url = '/iam/tokens';
+    const grantType = data?.grantType || 'password';
 
     const reason = 'Nexway-Center';
 
@@ -22,6 +23,7 @@ const postApi = {
       data: {
         ...data,
         realm,
+        grantType,
       },
     });
   },

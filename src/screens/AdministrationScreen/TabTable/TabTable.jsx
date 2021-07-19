@@ -45,8 +45,10 @@ const TabTable = ({ tabObject }) => {
       });
     }
   };
-  const requests = async (filtersUrl) => {
-    const res = await request(currentPage - 1, filtersUrl, sortParams);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await request({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     return generateData(res.data);
   };
   const data = useTableData(

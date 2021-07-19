@@ -102,10 +102,9 @@ const PricesDetailsScreen = () => {
     if (id === 'add') {
       if (selectedCustomer?.id) {
         api
-          .getProducts(0, `&customerId=${selectedCustomer?.id}&status=ENABLED`)
+          .getProducts({ filters: `&customerId=${selectedCustomer?.id}&status=ENABLED` })
           .then(({ data: { items } }) => {
             const products = items.map((it) => ({ id: it.id, value: it.genericName }));
-
             setAvailProducts(products);
           });
       }

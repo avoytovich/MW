@@ -15,14 +15,14 @@ function Auth({ children }) {
       auth.handleAuthentication();
 
       if (auth.isSignedIn()) {
+        auth.setAxiosInterceptors();
+
         // eslint-disable-next-line camelcase
         const access_token = auth.getAccessToken();
         dispatch(setUserData(access_token));
 
         const localNxState = JSON.parse(localStorage.getItem('nexwayState'));
         dispatch(setNexwayState(localNxState));
-
-        auth.setAxiosInterceptors();
       }
 
       setLoading(false);

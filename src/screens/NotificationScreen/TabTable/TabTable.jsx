@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';
+import api from '../../../api';
 
 import { useTableData } from '../../../services/useData';
 import {
@@ -24,7 +25,6 @@ const TabTable = ({ tabObject }) => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys[sortKey]),
   );
-
   const handleSetSortParams = (params) => {
     setSortParams(params);
     saveSortParams(sortKeys[sortKey], params);
@@ -45,9 +45,15 @@ const TabTable = ({ tabObject }) => {
       });
     }
   };
-  const requests = async (filtersUrl) => {
-    const res = await request(currentPage - 1, filtersUrl, sortParams);
-    return generateData(res.data);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const costumersIds = [];
+
+    const customers = await api.getCustomersByIds(costumersIds.join('&'));
+
+    const res = await request({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
+    return generateData(res.data, customers.data.items);
   };
   const data = useTableData(
     currentPage - 1,
@@ -60,7 +66,6 @@ const TabTable = ({ tabObject }) => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
-      noActions={tabObject.noActions}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}

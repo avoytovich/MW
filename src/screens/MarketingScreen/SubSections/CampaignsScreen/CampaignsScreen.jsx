@@ -13,8 +13,10 @@ const CampaignsScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getCampaigns(currentPage - 1, filtersUrl);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getCampaigns({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+    });
     return generateData(res.data);
   };
 
