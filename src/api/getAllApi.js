@@ -138,15 +138,6 @@ const getAllApi = {
       url,
     });
   },
-
-  getNotifications(page = defaultRequestedPage) {
-    let url = `/customer-notifier/receivers?format=short&status=Active&sort=status%2Casc&size=500&page=${page}`;
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-
   getCampaigns({
     page = defaultRequestedPage, size = defaultRequestedSize, filters,
   } = defaultRequestedObject) {
@@ -293,23 +284,6 @@ const getAllApi = {
       url,
     });
   },
-  getNotificationDefinition({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
-  } = defaultRequestedObject) {
-    let url = `/customer-notifier/notification-definitions?format=short&size=${size}&page=${page}`;
-
-    if (sortParams) {
-      url += `&sort=${sortParams.value},${sortParams.type}`;
-    }
-
-    if (filters) {
-      url += filters;
-    }
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
 
   getEventsOptions() {
     const url = '/customer-notifier/notification-definitions?format=short&size=30&page=0';
@@ -330,9 +304,53 @@ const getAllApi = {
       url,
     });
   },
-  getNotificationsHistory(page = defaultRequestedPage, accountId) {
-    let url = `customer-notifier/notifications?format=short&${accountId.customerId}&sort=processingDate%2Casc&size=30&page=${page}`;
 
+  getNotifications({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/customer-notifier/receivers?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getNotificationDefinition({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/customer-notifier/notification-definitions?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getNotificationsHistory({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/customer-notifier/notifications?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,

@@ -1,6 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
+  notificationsId: true,
   id: true,
   customer: true,
   name: true,
@@ -13,7 +14,7 @@ const defaultShow = {
 const markUp = {
   headers: [
     { value: localization.t('labels.notificationNotificationsId'), id: 'notificationsId' },
-    { value: localization.t('labels.notificationCustomer'), id: 'customer', sortParam: 'customer' },
+    { value: localization.t('labels.notificationCustomer'), id: 'customer' },
     {
       value: localization.t('labels.notificationName'),
       id: 'name',
@@ -45,6 +46,7 @@ const generateData = (data, customers) => {
       : customers.find((item) => item.id === val.customerId)?.name;
 
     return {
+      notificationsId: val.id,
       id: val.id,
       customer: customer || '',
       name: val.name,
