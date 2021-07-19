@@ -6,6 +6,12 @@ import { discountObj } from '../../../../__mocks__/fileMock';
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
+jest.mock('../../../components/utils/OptionsFetcher/OptionsFetcher',
+  () => ({
+    getCountriesOptions: jest.fn(() => ([])),
+  })
+);
+
 describe('DiscountDetailsScreen <Eligibility/>', () => {
   let wrapper;
 
