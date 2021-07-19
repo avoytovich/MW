@@ -1,0 +1,9 @@
+---
+persistent_vars:
+  techno: js
+  use_gcs: true
+  debug_mode: false
+  cypress: 
+    run_unit_tests: false
+  ingress_entrypoint: "/"
+  ingress_host: "mynexway.staging.nexway.build"
