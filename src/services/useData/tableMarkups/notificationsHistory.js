@@ -1,3 +1,4 @@
+import moment from 'moment';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -52,16 +53,16 @@ const markUp = {
 };
 
 const generateData = (data, customers) => {
-  let test;
+  let customer;
   const values = data.items.map((val) => {
-    test = val.customerId === 'Nexway'
+    customer = val.customerId === 'Nexway'
       ? val.customerId
       : customers.find((item) => item.id === val.customerId)?.name;
 
     return {
       id: val.id,
-      customer: test || 'GNR Management',
-      processingDate: val.processingDate || '',
+      customer: customer || 'GNR Management',
+      processingDate: moment(val.processingDate).format('D MMM YYYY') || '',
       notificationHistoryId: '',
       notHisStatus: val.status || '',
       event: val.eventFact || '',
