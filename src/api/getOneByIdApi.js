@@ -248,6 +248,14 @@ const getOneByIdApi = {
       url,
     });
   },
+  getNotificationDefinitionById(id) {
+    const url = `/customer-notifier/notification-definitions/${id}`;
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getInvoicePdfById(id) {
     const url = `/invoices/invoices/${id}/pdf`;
     return axiosInstance({

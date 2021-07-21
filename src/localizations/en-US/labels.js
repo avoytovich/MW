@@ -394,6 +394,16 @@ const labels = {
     webhookSuccessResponse: 'Webhook Success Response',
   },
   last4Digits: 'Last four digits',
+  eventMatching: 'Event Matching',
+  templating: 'Templating',
+  mainIdJsonPath: 'JSON path to main ID',
+  filters: 'Filters',
+  jsonPath: 'JSON Path',
+  matchingRegex: 'Matching regexp',
+  addFilter: 'Add filter',
+  mailSubjectTemplate: 'Mail subject',
+  mailBodyTemplate: 'Mail body',
+  webHookPayloadTemplate: 'Webhook payload',
 };
 
 export default labels;

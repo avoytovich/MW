@@ -383,7 +383,27 @@ const labels = {
   privateKey: 'Private Key',
   cACertificate: 'CA Certificate',
   notificationid: 'Notifications ID',
+  notificationsHistory: {
+    customer: 'Customer',
+    processingDate: 'ProcessingDate',
+    notificationHistoryId: 'Notification History ID',
+    status: 'Status',
+    event: 'Event',
+    receiverEmail: 'Receiver(s) email(s)',
+    receiverURL: 'Receiver URL (webhook)',
+    webhookSuccessResponse: 'Webhook Success Response',
+  },
   last4Digits: 'Last four digits',
+  eventMatching: 'Event Matching',
+  templating: 'Templating',
+  mainIdJsonPath: 'JSON path to main ID',
+  filters: 'Filters',
+  jsonPath: 'JSON Path',
+  matchingRegex: 'Matching regexp',
+  addFilter: 'Add filter',
+  mailSubjectTemplate: 'Mail subject',
+  mailBodyTemplate: 'Mail body',
+  webHookPayloadTemplate: 'Webhook payload',
 };
 
 export default labels;
