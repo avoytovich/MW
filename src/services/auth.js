@@ -85,6 +85,9 @@ class Auth {
       }
 
       return data.error;
+    }).catch(() => {
+      this.logout();
+      return window.location.reload();
     });
   }
 
