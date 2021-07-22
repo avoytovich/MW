@@ -11,8 +11,6 @@ import { useTableData } from '../../services/useData';
 import api from '../../api';
 import TableComponent from '../../components/TableComponent';
 
-import './notificationDefinitionScreen.scss';
-
 const NotificationDefinitionScreen = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
