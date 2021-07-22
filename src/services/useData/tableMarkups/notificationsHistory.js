@@ -25,6 +25,7 @@ const markUp = {
       id: 'notificationHistoryId',
     },
     {
+      value: localization.t('labels.notificationsHistory.status'),
       value: localization.t('labels.status'),
       id: 'status',
       sortParam: 'status',

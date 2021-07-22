@@ -371,6 +371,24 @@ const getAllApi = {
     });
   },
 
+  getCarts({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    // let url = `/customer-notifier/notifications?format=short&size=${size}&page=${page}`;
+    let url = `/carts?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
 };
 
 export default getAllApi;

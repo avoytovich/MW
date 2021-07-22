@@ -83,6 +83,8 @@ const general = {
     notification: 'notification',
     notificationDefinition: 'notification definition',
   },
+  cart: 'Cart',
+  addCart: 'Add Cart',
   findColumn: 'Find column',
   hideAll: 'Hide All',
   showAll: 'Show All',
