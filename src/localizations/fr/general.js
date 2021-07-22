@@ -78,7 +78,10 @@ const general = {
   notificationEnabled: 'Enabled',
   notificationDisabled: 'Disabled',
   notification: 'Notification',
-  rowsPerPage:'Rows per page',
+  rowsPerPage: 'Rows per page',
+  findColumn: 'Find column',
+  hideAll: 'Hide All',
+  showAll: 'Show All',
 };
 
 export default general;

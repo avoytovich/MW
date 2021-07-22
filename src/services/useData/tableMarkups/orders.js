@@ -16,6 +16,7 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.customer'), id: 'customer' },
     {
       value: localization.t('labels.email'),
@@ -34,7 +35,7 @@ const markUp = {
     },
     { value: localization.t('labels.orderID'), id: 'id' },
     {
-      value: localization.t('labels.invoiceID'),
+      value: localization.t('labels.invoiceId'),
       id: 'invoiceId',
       sortParam: 'invoice.id',
     },

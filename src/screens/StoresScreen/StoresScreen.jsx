@@ -21,6 +21,8 @@ import {
 } from '../../services/useData/tableMarkups/stores';
 
 const StoresScreen = () => {
+  const scope = 'stores';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -65,7 +67,7 @@ const StoresScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'stores',
+    scope,
     requests,
     sortParams,
   );
@@ -73,7 +75,9 @@ const StoresScreen = () => {
 
   return (
     <>
-      <TableActionsBar>
+      <TableActionsBar
+        scope={scope}
+      >
         <Box>
           <Button
             id="add-product"
@@ -88,10 +92,11 @@ const StoresScreen = () => {
         </Box>
       </TableActionsBar>
       <TableComponent
+        scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteStore}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={stores}

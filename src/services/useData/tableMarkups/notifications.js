@@ -2,7 +2,6 @@ import localization from '../../../localization';
 
 const defaultShow = {
   notificationsId: true,
-  id: true,
   customer: true,
   name: true,
   url: true,
@@ -13,7 +12,7 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.notificationNotificationsId'), id: 'notificationsId' },
+    { value: localization.t('labels.notificationsId'), id: 'notificationsId' },
     { value: localization.t('labels.notificationCustomer'), id: 'customer' },
     {
       value: localization.t('labels.notificationName'),
