@@ -194,7 +194,7 @@ const PricesDetailsScreen = () => {
           price?.productId ? (
             <Box mt={4} display="flex">
               <Typography gutterBottom variant="h5" style={{ marginRight: '10px' }}>
-                {localization.t('labels.productID')}
+                {localization.t('labels.productId')}
               </Typography>
 
               <Typography variant="h6">{price?.productId}</Typography>
@@ -207,7 +207,7 @@ const PricesDetailsScreen = () => {
           ) : (
             <Box width='50%' pr={4}>
               <SelectCustom
-                label="productID"
+                label="productId"
                 value={curPrice?.productId}
                 isRequired
                 selectOptions={availProducts}

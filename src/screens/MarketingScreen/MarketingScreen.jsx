@@ -17,6 +17,7 @@ import './marketingScreen.scss';
 const availTabs = [
   {
     label: 'campaigns',
+    scope: 'campaigns',
     path: '/marketing/campaigns',
     button: `${localization.t('general.add')} ${localization.t(
       'general.campaign',
@@ -24,6 +25,7 @@ const availTabs = [
   },
   {
     label: 'recommendations',
+    scope: 'recommendations',
     path: '/marketing/recommendations',
     button: `${localization.t('general.add')} ${localization.t(
       'general.recommendation',
@@ -31,6 +33,7 @@ const availTabs = [
   },
   {
     label: 'discounts',
+    scope: 'discounts',
     path: '/marketing/discounts',
     button: `${localization.t('general.add')} ${localization.t(
       'general.discount',
@@ -38,6 +41,7 @@ const availTabs = [
   },
   {
     label: 'prices',
+    scope: 'prices',
     path: '/marketing/prices',
     button: `${localization.t('general.add')} ${localization.t(
       'general.price',
@@ -66,24 +70,28 @@ const MarketingScreen = () => {
   const drawAddButton = () => {
     const currentTad = availTabs.find((item) => item.path === pathname) || availTabs[0];
     return (
-      <Button
-        id='add-marketing-button'
-        color='primary'
-        size='large'
-        variant='contained'
-        component={Link}
-        to={`${currentTad.path}/add`}
+      <TableActionsBar
+        scope={currentTad.scope}
       >
-        {currentTad.button}
-      </Button>
+        <Button
+          id='add-marketing-button'
+          color='primary'
+          size='large'
+          variant='contained'
+          component={Link}
+          to={`${currentTad.path}/add`}
+        >
+          {currentTad.button}
+        </Button>
+      </TableActionsBar>
+
     );
   };
   const changeTab = (tab) => history.push(`/marketing/${availTabs[tab].label}`);
   return (
     <Box display='flex' flexDirection='column'>
-      <TableActionsBar>
-        {drawAddButton()}
-      </TableActionsBar>
+
+      {drawAddButton()}
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}

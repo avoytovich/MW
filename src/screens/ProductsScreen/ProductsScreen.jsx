@@ -20,6 +20,8 @@ import {
 } from '../../services/sorting';
 
 const ProductsScreen = () => {
+  const scope = 'products';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -44,7 +46,7 @@ const ProductsScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'products',
+    scope,
     requests,
     sortParams,
   );
@@ -63,7 +65,9 @@ const ProductsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableActionsBar>
+      <TableActionsBar
+        scope={scope}
+      >
         <Box>
           <Button
             id="add-product"
@@ -81,7 +85,8 @@ const ProductsScreen = () => {
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteProduct}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
+        scope={scope}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={products}

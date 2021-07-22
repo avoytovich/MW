@@ -16,7 +16,7 @@ const TabTable = ({ tabObject }) => {
   const dispatch = useDispatch();
 
   const {
-    sortKey, generateData, request, deleteFunc, label, scope,
+    sortKey, generateData, request, deleteFunc, label, scope, defaultShow,
   } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -66,11 +66,12 @@ const TabTable = ({ tabObject }) => {
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}
-      showColumn={data?.defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={data}
       isLoading={isLoading}
+      scope={scope}
     />
   );
 };

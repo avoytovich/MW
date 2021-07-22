@@ -12,6 +12,7 @@ import localization from '../../localization';
 import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
 
 const LayoutsTab = () => {
+  const scope = 'layouts';
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -44,7 +45,7 @@ const LayoutsTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'layouts',
+    scope,
     requests,
     sortParams,
   );
@@ -64,10 +65,11 @@ const LayoutsTab = () => {
 
   return (
     <TableComponent
+      scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteLayout}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={layout}

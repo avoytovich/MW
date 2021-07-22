@@ -10,6 +10,7 @@ import {
 } from '../../services/useData/tableMarkups/subscriptions';
 
 const SubscriptionsScreen = () => {
+  const scope = 'subscriptions';
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
 
@@ -25,7 +26,7 @@ const SubscriptionsScreen = () => {
     currentPage - 1,
     setLoading,
     false,
-    'subscriptions',
+    scope,
     requests,
   );
 
@@ -33,9 +34,12 @@ const SubscriptionsScreen = () => {
 
   return (
     <>
-      <TableActionsBar />
+      <TableActionsBar
+        scope={scope}
+      />
       <TableComponent
-        showColumn={defaultShow}
+        scope={scope}
+        defaultShowColumn={defaultShow}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={subscriptions}

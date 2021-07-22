@@ -12,9 +12,9 @@ import {
 import localization from '../../localization';
 import TabTable from './TabTable';
 import api from '../../api';
-import { generateData as generateCustomers } from '../../services/useData/tableMarkups/adminCustomers';
-import { generateData as generateRoles } from '../../services/useData/tableMarkups/adminRoles';
-import { generateData as generatePrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
+import { generateData as generateCustomers, defaultShow as defaultShowCustomers } from '../../services/useData/tableMarkups/adminCustomers';
+import { generateData as generateRoles, defaultShow as defaultShowRoles } from '../../services/useData/tableMarkups/adminRoles';
+import { generateData as generatePrivileges, defaultShow as defaultShowPrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
 import MetaRoles from './MetaRoles';
 import TableActionsBar from '../../components/TableActionsBar';
 
@@ -25,6 +25,7 @@ const tabsData = [
     request: api.getCustomers,
     sortKey: 'customerAdmin',
     generateData: generateCustomers,
+    defaultShow: defaultShowCustomers,
     noActions: true,
     scope: 'customers',
     button: `${localization.t('general.add')} ${localization.t(
@@ -38,6 +39,7 @@ const tabsData = [
       'general.role',
     )}`,
     request: api.getRoles,
+    defaultShow: defaultShowRoles,
     secondaryRequests: [],
     sortKey: 'roleAdmin',
     generateData: generateRoles,
@@ -64,6 +66,7 @@ const tabsData = [
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,
+    defaultShow: defaultShowPrivileges,
     noActions: true,
     scope: 'privileges',
 
@@ -74,26 +77,29 @@ const AdministrationScreen = ({ location }) => {
   const drawAddButton = () => {
     const currentTad = tabsData.find((item) => item.path === location.pathname) || tabsData[0];
     return (
-      <Box alignSelf='flex-end'>
-        <Button
-          id='add-administration-button'
-          color='primary'
-          size='large'
-          variant='contained'
-          component={Link}
-          to={`${currentTad.path}/add`}
-        >
-          {currentTad.button}
-        </Button>
-      </Box>
+      <TableActionsBar
+        scope={currentTad.scope}
+      >
+        <Box alignSelf='flex-end'>
+          <Button
+            id='add-administration-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to={`${currentTad.path}/add`}
+          >
+            {currentTad.button}
+          </Button>
+        </Box>
+      </TableActionsBar>
+
     );
   };
 
   return (
     <Box display='flex' flexDirection='column'>
-      <TableActionsBar>
-        {drawAddButton()}
-      </TableActionsBar>
+      {drawAddButton()}
       <Tabs
         value={location.pathname === '/settings/administration' ? tabsData[0].path
           : location.pathname}

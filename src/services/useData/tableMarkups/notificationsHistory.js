@@ -2,11 +2,10 @@ import moment from 'moment';
 import localization from '../../../localization';
 
 const defaultShow = {
-  id: true,
   customer: true,
   processingDate: true,
   notificationHistoryId: true,
-  notHisStatus: true,
+  status: true,
   event: true,
   receiverEmail: true,
   receiverUrl: true,
@@ -15,37 +14,37 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.notificationsHistory.customer'), id: 'customer' },
+    { value: localization.t('labels.customer'), id: 'customer' },
     {
-      value: localization.t('labels.notificationsHistory.processingDate'),
+      value: localization.t('labels.processingDate'),
       id: 'processingDate',
       sortParam: 'processingDate',
     },
     {
-      value: localization.t('labels.notificationsHistory.notificationHistoryId'),
+      value: localization.t('labels.notificationHistoryId'),
       id: 'notificationHistoryId',
     },
     {
-      value: localization.t('labels.notificationsHistory.status'),
-      id: 'notHisStatus',
+      value: localization.t('labels.status'),
+      id: 'status',
       sortParam: 'status',
     },
     {
-      value: localization.t('labels.notificationsHistory.event'),
+      value: localization.t('labels.event'),
       id: 'event',
     },
     {
-      value: localization.t('labels.notificationsHistory.receiverEmail'),
+      value: localization.t('labels.receiverEmail'),
       id: 'receiverEmail',
       sortParam: 'emails',
     },
     {
-      value: localization.t('labels.notificationsHistory.receiverURL'),
+      value: localization.t('labels.receiverUrl'),
       id: 'receiverUrl',
       sortParam: 'url',
     },
     {
-      value: localization.t('labels.notificationsHistory.webhookSuccessResponse'),
+      value: localization.t('labels.webhookSuccessResponse'),
       id: 'webhookSuccessResponse',
       sortParam: 'webHookResponse',
     },
@@ -63,8 +62,8 @@ const generateData = (data, customers) => {
       id: val.id,
       customer: customer || 'GNR Management',
       processingDate: moment(val.processingDate).format('D MMM YYYY') || '',
-      notificationHistoryId: '',
-      notHisStatus: val.status || '',
+      notificationHistoryId: val.id,
+      status: val.status || '',
       event: val.eventFact || '',
       receiverEmail: val.emails || '',
       receiverUrl: val.url || '',

@@ -19,6 +19,8 @@ import {
 } from '../../services/sorting';
 
 const IdentitiesScreen = () => {
+  const scope = 'identities';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -48,7 +50,7 @@ const IdentitiesScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'identities',
+    scope,
     requests,
     sortParams,
   );
@@ -68,7 +70,9 @@ const IdentitiesScreen = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <TableActionsBar>
+      <TableActionsBar
+        scope={scope}
+      >
         <Box alignSelf='flex-end' py={2}>
           <Button
             id='add-identity-button'
@@ -85,10 +89,11 @@ const IdentitiesScreen = () => {
         </Box>
       </TableActionsBar>
       <TableComponent
+        scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteIdentity}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={identities}

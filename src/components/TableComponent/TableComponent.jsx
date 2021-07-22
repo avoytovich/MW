@@ -9,7 +9,8 @@ import {
   LinearProgress,
   Paper,
 } from '@material-ui/core';
-
+import { useSelector, useDispatch } from 'react-redux';
+import setShowColumns from '../../redux/actions/ShowColumns';
 import TableRowComponent from './TableRowComponent';
 import TableItemsActions from './TableItemsActions';
 import PaginationComponent from '../PaginationComponent';
@@ -23,16 +24,21 @@ const TableComponent = ({
   updatePage,
   currentPage,
   isLoading,
-  showColumn,
   handleDeleteItem,
   noActions,
   setSortParams,
   sortParams,
   customPath,
   errorHighlight,
+  defaultShowColumn,
+  scope,
 }) => {
   const [checked, setChecked] = useState([]);
-
+  const dispatch = useDispatch();
+  const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
+  if (!showColumn) {
+    dispatch(setShowColumns({ [scope]: defaultShowColumn }));
+  }
   const handleCheck = (item) => {
     let newChecked = [];
 
@@ -57,7 +63,7 @@ const TableComponent = ({
     setChecked(newChecked);
   };
 
-  if (isLoading) return <LinearProgress />;
+  if (isLoading || !showColumn) return <LinearProgress />;
   return tableData?.values?.length ? (
     <>
       {!noActions && (
@@ -174,12 +180,13 @@ TableComponent.propTypes = {
   updatePage: PropTypes.func,
   currentPage: PropTypes.number,
   isLoading: PropTypes.bool,
-  showColumn: PropTypes.object,
+  defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,
   customPath: PropTypes.string,
   errorHighlight: PropTypes.string,
+  scope: PropTypes.string,
 };
 
 export default TableComponent;

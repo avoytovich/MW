@@ -22,6 +22,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.theme',
     )}`,
+    scope: 'themes',
   },
   {
     label: localization.t('labels.layouts'),
@@ -29,6 +30,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.layout',
     )}`,
+    scope: 'layouts',
   },
   {
     label: localization.t('labels.translations'),
@@ -36,6 +38,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.translation',
     )}`,
+    scope: 'translations',
   },
   {
     label: localization.t('labels.fonts'),
@@ -43,6 +46,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.font',
     )}`,
+    scope: 'fonts',
   },
 ];
 
@@ -50,26 +54,26 @@ const CheckoutExperienceScreen = ({ location }) => {
   const drawAddButton = () => {
     const currentTad = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
     return (
-
-      <Button
-        id="add-checkout-design-button"
-        color="primary"
-        size="large"
-        variant="contained"
-        component={Link}
-        to={`${currentTad.path}/add`}
+      <TableActionsBar
+        scope={currentTad.scope}
       >
-        {currentTad.button}
-      </Button>
+        <Button
+          id="add-checkout-design-button"
+          color="primary"
+          size="large"
+          variant="contained"
+          component={Link}
+          to={`${currentTad.path}/add`}
+        >
+          {currentTad.button}
+        </Button>
+      </TableActionsBar>
     );
   };
   return (
     <>
-      <TableActionsBar>
-        {drawAddButton()}
-      </TableActionsBar>
+      {drawAddButton()}
       <Box display="flex" flexDirection="column">
-
         <Tabs
           value={
             location.pathname === '/checkout-experience'

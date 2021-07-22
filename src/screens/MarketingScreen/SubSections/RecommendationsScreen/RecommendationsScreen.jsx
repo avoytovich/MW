@@ -13,6 +13,8 @@ import localization from '../../../../localization';
 import api from '../../../../api';
 
 const RecommendationsScreen = () => {
+  const scope = 'recommendations';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -29,7 +31,7 @@ const RecommendationsScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'recommendations',
+    scope,
     requests,
   );
 
@@ -48,8 +50,9 @@ const RecommendationsScreen = () => {
 
   return (
     <TableComponent
+      scope={scope}
       handleDeleteItem={handleDeleteRecommendation}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={campaigns}

@@ -13,6 +13,8 @@ import localization from '../../../../localization';
 import api from '../../../../api';
 
 const PricesScreen = () => {
+  const scope = 'prices';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -29,7 +31,7 @@ const PricesScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'prices',
+    scope,
     requests,
   );
 
@@ -48,8 +50,9 @@ const PricesScreen = () => {
 
   return (
     <TableComponent
+      scope={scope}
       handleDeleteItem={handleDeletePrice}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={prices}

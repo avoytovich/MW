@@ -83,6 +83,9 @@ const general = {
     notification: 'notification',
     notificationDefinition: 'notification definition',
   },
+  findColumn: 'Find column',
+  hideAll: 'Hide All',
+  showAll: 'Show All',
 };
 
 export default general;

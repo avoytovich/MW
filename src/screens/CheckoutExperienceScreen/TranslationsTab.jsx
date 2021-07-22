@@ -12,6 +12,7 @@ import localization from '../../localization';
 import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
 
 const TranslationsTab = () => {
+  const scope = 'translations';
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -44,7 +45,7 @@ const TranslationsTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'translations',
+    scope,
     requests,
     sortParams,
   );
@@ -64,10 +65,11 @@ const TranslationsTab = () => {
 
   return (
     <TableComponent
+      scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteTranslation}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={translations}

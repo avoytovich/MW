@@ -12,6 +12,7 @@ const useTableData = (
 ) => {
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const [fetchedData, setFetchedData] = useState();
+
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
   const searchTerm = useSelector(({ tableData: { search } }) => search);

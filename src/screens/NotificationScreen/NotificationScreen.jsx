@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import {
-  Tabs, Tab, Box, Button, Zoom,
+  Tabs, Tab, Box, Button,
 } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
 import localization from '../../localization';
@@ -9,9 +9,9 @@ import TableActionsBar from '../../components/TableActionsBar';
 import TabTable from './TabTable';
 import api from '../../api';
 
-import { generateData as generateNotifications } from '../../services/useData/tableMarkups/notifications';
-import { generateData as notificationsDefinition } from '../../services/useData/tableMarkups/notificationsDefinition';
-import { generateData as generateNotificationsHistory } from '../../services/useData/tableMarkups/notificationsHistory';
+import { generateData as generateNotifications, defaultShow as defaultShowNotifications } from '../../services/useData/tableMarkups/notifications';
+import { generateData as notificationsDefinition, defaultShow as defaultShowNotificationsDefinition } from '../../services/useData/tableMarkups/notificationsDefinition';
+import { generateData as generateNotificationsHistory, defaultShow as defaultShowNotificationsHistory } from '../../services/useData/tableMarkups/notificationsHistory';
 
 const tabsData = [
   {
@@ -24,6 +24,7 @@ const tabsData = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.notifications.notification',
     )}`,
+    defaultShow: defaultShowNotifications,
   },
   {
     label: 'notificationDefinitions',
@@ -35,6 +36,7 @@ const tabsData = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.notifications.notificationDefinition',
     )}`,
+    defaultShow: defaultShowNotificationsDefinition,
   },
   {
     label: 'notificationHistory',
@@ -43,6 +45,7 @@ const tabsData = [
     sortKey: 'notificationHistory',
     generateData: generateNotificationsHistory,
     scope: 'notification-history',
+    defaultShow: defaultShowNotificationsHistory,
   },
 ];
 
@@ -65,35 +68,32 @@ const NotficationScreen = () => {
     const currentTad = tabsData.find((item) => item.path === pathname) || tabsData[0];
 
     return (
-      <Box display="flex" alignItems='baseline' justifyContent='space-between'>
-        <TableActionsBar/>
-
+      <TableActionsBar
+        scope={currentTad.scope}
+      >
         {currentTad.label !== 'notificationHistory' && (
-          <Zoom in={!!currentTad.button}>
-            <Box>
-              <Button
-                id='add-administration-button'
-                color='primary'
-                size='large'
-                variant='contained'
-                component={Link}
-                to={`${currentTad.path}/add`}
-              >
-                {currentTad.button}
-              </Button>
-            </Box>
-          </Zoom>
+          <Box alignSelf='flex-end'>
+            <Button
+              id='add-administration-button'
+              color='primary'
+              size='large'
+              variant='contained'
+              component={Link}
+              to={`${currentTad.path}/add`}
+            >
+              {currentTad.button}
+            </Button>
+          </Box>
+
         )}
-      </Box>
+      </TableActionsBar>
     );
   };
   const changeTab = (tab) => history.push(`/settings/${tabsData[tab].scope}`);
 
   return (
-    <Box display='flex' flexDirection='column'>
-
+    <>
       {drawAddButton()}
-
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}
@@ -113,7 +113,7 @@ const NotficationScreen = () => {
           </Fragment>
         ))}
       </Box>
-    </Box>
+    </>
   );
 };
 

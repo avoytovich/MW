@@ -15,7 +15,7 @@ const filters = {
     { id: 'genericName', label: localization.t('labels.name'), type: 'text' },
     {
       id: 'publisherRefId',
-      label: localization.t('labels.publisherRefID'),
+      label: localization.t('labels.publisherRefId'),
       type: 'text',
     },
     {
@@ -71,7 +71,7 @@ const filters = {
     },
     {
       id: 'invoiceId',
-      label: localization.t('labels.invoiceID'),
+      label: localization.t('labels.invoiceId'),
       type: 'text',
     },
     {
@@ -91,7 +91,7 @@ const filters = {
   ],
   stores: [
     { id: 'name', label: localization.t('labels.name'), type: 'text' },
-    { id: 'id', label: localization.t('labels.storeID'), type: 'text' },
+    { id: 'id', label: localization.t('labels.storeId'), type: 'text' },
     {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
