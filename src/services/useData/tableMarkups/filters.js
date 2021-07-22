@@ -143,7 +143,7 @@ const filters = {
       type: 'text'
     },
     {
-      id: 'name',
+      id: 'date',
       label: localization.t('labels.notificationName'),
       type: 'text',
     },
@@ -170,6 +170,43 @@ const filters = {
         { label: localization.t('labels.enabled'), value: 'ENABLED' },
         { label: localization.t('labels.disabled'), value: 'DISABLED' },
       ],
+    },
+  ],
+
+  carts: [
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updateDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date'
+    },
+    {
+      id: 'source',
+      label: localization.t('labels.source'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.acquisition'), value: 'ENABLED' },
+        { label: localization.t('labels.manualRenewal'), value: 'DISABLED' },
+      ],
+    },
+    {
+      id: 'emailAddress',
+      label: localization.t('labels.emailAddress'),
+      type: 'text',
+    },
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
     },
   ],
 };
