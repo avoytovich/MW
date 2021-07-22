@@ -134,7 +134,7 @@ const navConfig = [
       },
       {
         id: 'carts',
-        title: 'carts',
+        title: localization.t('sideBar.titles.carts'),
         href: `${defPath}/settings/carts`,
         icon: ShoppingCartIcon,
       },

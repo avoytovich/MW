@@ -100,7 +100,7 @@ const NotificationHistoryScreen = () => {
     <TableComponent
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={notificationHistory}
