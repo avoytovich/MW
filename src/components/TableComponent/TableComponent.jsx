@@ -64,6 +64,7 @@ const TableComponent = ({
   };
 
   if (isLoading || !showColumn) return <LinearProgress />;
+
   return tableData?.values?.length ? (
     <>
       {!noActions && (

@@ -45,7 +45,6 @@ const tabsData = [
     generateData: generateRoles,
     deleteFunc: api.deleteRoleById,
     scope: 'roles',
-
   },
   {
     label: 'metaRole',

@@ -82,7 +82,7 @@ const CartsScreen = () => {
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteCart}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={carts}
