@@ -58,7 +58,6 @@ const Templating = ({ setCurNotification, curNotification }) => (
       <Box px={2} width={1}>
         <Grid item md={12} sm={12} px={2}>
           <AceEditor
-            placeholder="Placeholder Text"
             mode='json'
             theme='tomorrow'
             name='webHookPayloadTemplate'

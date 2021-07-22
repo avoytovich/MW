@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import {
@@ -27,6 +27,7 @@ import api from '../../api';
 const NotificationDefinitionDetailScreen = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const history = useHistory();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const [curTab, setCurTab] = useState(0);
@@ -72,11 +73,23 @@ const NotificationDefinitionDetailScreen = () => {
   }, [curNotification]);
 
   const doSave = () => {
-    api.updateNotificationDefinitionById(id, curNotification).then(() => {
-      dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+    if (id === 'add') {
+      api.addNotificationDefinition(curNotification).then((res) => {
+        const location = res.headers.location.split('/');
+        const newId = location[location.length - 1];
+        dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
 
-      setUpdate((u) => u + 1);
-    });
+        history.push(`/settings/notification-definition/${newId}`);
+
+        setUpdate((u) => u + 1);
+      });
+    } else {
+      api.updateNotificationDefinitionById(id, curNotification).then(() => {
+        dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+
+        setUpdate((u) => u + 1);
+      });
+    }
   };
 
   const isValid = () => {
