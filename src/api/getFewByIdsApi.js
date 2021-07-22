@@ -44,7 +44,13 @@ const getFewByIdsApi = {
       url,
     });
   },
-
+  getNotificationDefinitionByIds(ids) {
+    const url = `/customer-notifier/notification-definitions?format=short&size=10&page=0&${ids}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getOrdersByCard({
     size = 10, page = 1, bin, l4, customer, currency, amount, date,
   }) {
