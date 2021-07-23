@@ -402,7 +402,6 @@ const labels = {
   orderId: 'Order ID',
   orderLineId: 'Order Line ID',
   locale: 'Locale',
-  productId: 'Product ID',
   licenseProviderDefinition: 'License provider definition',
   publisherProductId: 'Publisher product ID',
   creationInProgress: 'Creation In Progress',
@@ -413,10 +412,7 @@ const labels = {
   expired: 'Expired',
   notificationHistoryId: 'Notification History ID',
   event: 'Event',
-  receiverEmail: 'Receiver(s) email(s)',
-  receiverUrl: 'Receiver URL (webhook)',
   webhookSuccessResponse: 'Webhook Success Response',
-  last4Digits: 'Last four digits',
   cartId: 'Cart ID',
   cartsUpdateDate: 'Update date',
   scheduledRemoval: 'Scheduled Removal',
@@ -433,6 +429,11 @@ const labels = {
   mailSubjectTemplate: 'Mail subject',
   mailBodyTemplate: 'Mail body',
   webHookPayloadTemplate: 'Webhook payload',
+  quantity: 'Quantity',
+  activationCodeKey: 'Activation Code/Key',
+  vat: 'VAT',
+  net: 'Net',
+  gross: 'Gross',
 };
 
 export default labels;

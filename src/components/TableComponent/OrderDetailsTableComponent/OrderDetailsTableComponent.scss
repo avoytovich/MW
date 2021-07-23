@@ -21,6 +21,7 @@
 
   .tableCellItemGrid {
     overflow-x: hidden;
+
     .tableCellItem {
       display: inherit;
       white-space: nowrap;
@@ -28,6 +29,7 @@
       width: 100%;
       align-items: center;
       justify-content: center;
+      font-size: 12px;
       border: 1px solid $tableCellBorder;
     }
   }
