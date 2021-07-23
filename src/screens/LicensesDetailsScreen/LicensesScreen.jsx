@@ -7,7 +7,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
-} from '../../services/useData/tableMarkups/carts';
+} from '../../services/useData/tableMarkups/licenses';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -20,7 +20,7 @@ import {
 } from '../../services/sorting';
 
 const CartsScreen = () => {
-  const scope = 'carts';
+  const scope = 'lcenses';
 
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,7 +31,7 @@ const CartsScreen = () => {
   );
 
   const requests = async (rowsPerPage, filtersUrl) => {
-    const res = await api.getCarts({
+    const res = await api.getLicenses({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
@@ -43,11 +43,11 @@ const CartsScreen = () => {
     saveSortParams(sortKeys.carts, params);
   };
 
-  const carts = useTableData(
+  const licenses = useTableData(
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'carts',
+    'licenses',
     requests,
     sortParams,
   );
@@ -56,7 +56,7 @@ const CartsScreen = () => {
     setMakeUpdate((v) => v + 1);
     dispatch(
       showNotification(
-        `${localization.t('general.cart')} ${id} ${localization.t(
+        `${localization.t('general.licenses')} ${id} ${localization.t(
           'general.hasBeenSuccessfullyDeleted',
         )}`,
       ),
@@ -66,20 +66,7 @@ const CartsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableActionsBar>
-        <Box>
-          <Button
-            id="add-cart"
-            color="primary"
-            size="large"
-            variant="contained"
-            component={Link}
-            to="/carts/add"
-          >
-            {localization.t('general.addCart')}
-          </Button>
-        </Box>
-      </TableActionsBar>
+      <TableActionsBar />
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
@@ -88,7 +75,7 @@ const CartsScreen = () => {
         scope={scope}
         currentPage={currentPage}
         updatePage={updatePage}
-        tableData={carts}
+        tableData={licenses}
         isLoading={isLoading}
       />
     </>

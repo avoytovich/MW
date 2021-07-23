@@ -173,7 +173,78 @@ const filters = {
     },
   ],
 
+  licenses: [
+    {
+      id: 'id',
+      label: localization.t('labels.licenseId'),
+      type: 'text',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.creationInProgress'), value: 'CREATIONINPROGRESS' },
+        { label: localization.t('labels.creationFailed'), value: 'CREATIONFAILED' },
+        { label: localization.t('labels.running'), value: 'RUNNING' },
+        { label: localization.t('labels.canceled'), value: 'CANCELED' },
+        { label: localization.t('labels.paused'), value: 'PAUSED' },
+        { label: localization.t('labels.expired'), value: 'EXPIRED' },
+      ],
+    },
+    {
+      id: 'orderId',
+      label: localization.t('labels.orderId'),
+      type: 'date',
+    },
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
+    },
+    {
+      id: 'email',
+      label: localization.t('labels.email'),
+      type: 'text',
+    },
+    {
+      id: 'city',
+      label: localization.t('labels.city'),
+      type: 'text',
+    },
+    {
+      id: 'productId',
+      label: localization.t('labels.productId'),
+      type: 'text',
+    },
+    {
+      id: 'licenseProviderDefinition',
+      label: localization.t('labels.licenseProviderDefinition'),
+      type: 'text',
+    },
+    {
+      id: 'publisherProductId',
+      label: localization.t('labels.publisherProductId'),
+      type: 'text',
+    },
+    {
+      id: 'productName',
+      label: localization.t('labels.productName'),
+      type: 'text',
+    },
+  ],
+
   carts: [
+    {
+      id: 'cartId',
+      label: localization.t('labels.cartId'),
+      type: 'text',
+    },
     {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
@@ -208,6 +279,7 @@ const filters = {
       label: localization.t('labels.lastName'),
       type: 'text',
     },
+
   ],
 };
 

@@ -21,6 +21,7 @@ const sideBar = {
     administration: 'Administration',
     identities: 'Identities',
     notification: 'Notifications',
+    licenses: 'Licenses',
     carts: 'Carts',
   },
 };

@@ -12,6 +12,7 @@ import {
   Dashboard,
 } from '@material-ui/icons';
 import NotificationsActiveOutlinedIcon from '@material-ui/icons/NotificationsActiveOutlined';
+import NoteIcon from '@material-ui/icons/Note';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import defPath from '../../services/helpers/routingHelper';
 import localization from '../../localization';
@@ -95,6 +96,12 @@ const navConfig = [
         title: localization.t('sideBar.titles.myAccount'),
         href: `${defPath}/my-account`,
         icon: FormatQuote,
+      },
+      {
+        id: 'licenses',
+        title: localization.t('sideBar.titles.licenses'),
+        href: `${defPath}/licenses`,
+        icon: NoteIcon,
       },
     ],
   },
