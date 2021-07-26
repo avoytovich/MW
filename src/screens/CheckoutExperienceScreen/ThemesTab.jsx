@@ -16,6 +16,8 @@ import {
 } from '../../services/sorting';
 
 const ThemesTab = () => {
+  const scope = 'themes';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -48,7 +50,7 @@ const ThemesTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'themes',
+    scope,
     requests,
     sortParams,
   );
@@ -68,10 +70,11 @@ const ThemesTab = () => {
 
   return (
     <TableComponent
+      scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteTheme}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={themes}

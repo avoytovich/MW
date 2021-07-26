@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showNotification } from '../../../redux/actions/HttpNotifications';
 import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';
@@ -16,8 +16,10 @@ import {
 const TabTable = ({ tabObject }) => {
   const dispatch = useDispatch();
 
+  const { selectedCustomer } = useSelector(({ account: { nexwayState } }) => nexwayState);
+
   const {
-    sortKey, generateData, request, deleteFunc, label, scope,
+    sortKey, generateData, request, deleteFunc, label, scope, defaultShow,
   } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -53,7 +55,7 @@ const TabTable = ({ tabObject }) => {
     const res = await request({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
-    return generateData(res.data, customers.data.items);
+    return generateData(res.data, customers.data.items, selectedCustomer);
   };
   const data = useTableData(
     currentPage - 1,
@@ -66,10 +68,11 @@ const TabTable = ({ tabObject }) => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
+      scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}
-      showColumn={data?.defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={data}

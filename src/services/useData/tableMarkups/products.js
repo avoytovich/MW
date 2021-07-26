@@ -14,7 +14,7 @@ const defaultShow = {
 };
 const markUp = {
   headers: [
-    { value: localization.t('labels.productID'), id: 'id' },
+    { value: localization.t('labels.productId'), id: 'id' },
     {
       value: localization.t('labels.creationDate'),
       id: 'createDate',
@@ -32,7 +32,7 @@ const markUp = {
       sortParam: 'genericName',
     },
     {
-      value: localization.t('labels.publisherRefID'),
+      value: localization.t('labels.publisherRefId'),
       id: 'publisherRefId',
       sortParam: 'publisherRefId',
     },

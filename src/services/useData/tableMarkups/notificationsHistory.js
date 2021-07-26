@@ -1,83 +1,103 @@
 import moment from 'moment';
+import api from '../../../api';
 import localization from '../../../localization';
 
 const defaultShow = {
-  id: true,
   customer: true,
   processingDate: true,
-  notificationHistoryId: true,
-  notHisStatus: true,
-  event: true,
+  status: true,
+  processedEvent: true,
   receiverEmail: true,
   receiverUrl: true,
-  webhookSuccessResponse: true,
+  webHook: true,
 };
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.notificationsHistory.customer'), id: 'customer' },
+    { value: localization.t('labels.customer'), id: 'customer', sortParam: null },
     {
-      value: localization.t('labels.notificationsHistory.processingDate'),
+      value: localization.t('labels.processingDate'),
       id: 'processingDate',
       sortParam: 'processingDate',
     },
+    { value: localization.t('labels.status'), id: 'status', sortParam: 'status' },
     {
-      value: localization.t('labels.notificationsHistory.notificationHistoryId'),
-      id: 'notificationHistoryId',
+      value: localization.t('labels.processedEvent'),
+      id: 'processedEvent',
+      sortParam: null,
     },
     {
-      value: localization.t('labels.notificationsHistory.status'),
-      id: 'notHisStatus',
-      sortParam: 'status',
-    },
-    {
-      value: localization.t('labels.notificationsHistory.event'),
-      id: 'event',
-    },
-    {
-      value: localization.t('labels.notificationsHistory.receiverEmail'),
+      value: localization.t('labels.receiverEmail'),
       id: 'receiverEmail',
       sortParam: 'emails',
     },
-    {
-      value: localization.t('labels.notificationsHistory.receiverURL'),
-      id: 'receiverUrl',
-      sortParam: 'url',
-    },
-    {
-      value: localization.t('labels.notificationsHistory.webhookSuccessResponse'),
-      id: 'webhookSuccessResponse',
-      sortParam: 'webHookResponse',
-    },
+    { value: localization.t('labels.receiverUrl'), id: 'receiverUrl', sortParam: 'url' },
+    { value: localization.t('labels.webHook'), id: 'webHook', sortParam: null },
   ],
 };
 
-const generateData = (data, customers) => {
-  let customer;
-  const values = data.items.map((val) => {
-    customer = val.customerId === 'Nexway'
-      ? val.customerId
-      : customers.find((item) => item.id === val.customerId)?.name;
+const generateData = async (data, customers, selectedCustomer) => {
+  if (selectedCustomer.name) {
+    const arrNotificationHistoryDefinitionIds = data.items.map(
+      (item) => (item.notificationDefinitionId),
+    );
+    const strNotificationHistoryDefinitionIds = arrNotificationHistoryDefinitionIds.map((item) => `id=${item}`).join('&');
+    const resNotificationDefinitionByIds = await api.getNotificationDefinitionByIds(
+      strNotificationHistoryDefinitionIds,
+    );
+    data.items.map(
+      (item) => resNotificationDefinitionByIds.data.items.map(
+        (each) => {
+          if (each.id === item.notificationDefinitionId) {
+            Object.assign(item, { customerName: selectedCustomer.name, eventName: each.name });
+          }
+        },
+      ),
+    );
+  } else {
+    const arrNotificationHistoryDefinitionIds = data.items.map(
+      (item) => (item.notificationDefinitionId),
+    );
+    const strNotificationHistoryDefinitionIds = arrNotificationHistoryDefinitionIds.map((item) => `id=${item}`).join('&');
+    const resNotificationDefinitionByIds = await api.getNotificationDefinitionByIds(
+      strNotificationHistoryDefinitionIds,
+    );
+    data.items.map(
+      (item) => resNotificationDefinitionByIds.data.items.map(
+        (each) => {
+          if (each.id === item.notificationDefinitionId) {
+            Object.assign(item, { eventName: each.name });
+          }
+        },
+      ),
+    );
+    const arrNotificationHistoryСustomerIds = data.items.map(
+      (item) => (item.customerId),
+    );
+    const strNotificationHistoryСustomerIds = arrNotificationHistoryСustomerIds.map((item) => `id=${item}`).join('&');
+    const resCustomersByIds = await api.getCustomersByIds(strNotificationHistoryСustomerIds);
+    data.items.map((item) => resCustomersByIds.data.items.map((each) => {
+      if (each.id === item.customerId) {
+        Object.assign(item, { customerName: each.name });
+      }
+    }));
+  }
 
-    return {
-      id: val.id,
-      customer: customer || 'GNR Management',
-      processingDate: moment(val.processingDate).format('D MMM YYYY') || '',
-      notificationHistoryId: '',
-      notHisStatus: val.status || '',
-      event: val.eventFact || '',
-      receiverEmail: val.emails || '',
-      receiverUrl: val.url || '',
-      webhookSuccessResponse: val.webHookResponse || '',
-    };
-  });
+  const values = data.items.map((val) => ({
+    customer: val.customerName,
+    processingDate: moment(val.processingDate).format('D MMM YYYY'),
+    status: val.status,
+    processedEvent: val.eventName,
+    receiverEmail: val.emails,
+    receiverUrl: val.url,
+    webHook: val.webHookResponse,
+  }));
 
   const meta = {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta, defaultShow });
-
+  Object.assign(markUp, { values, meta });
   return markUp;
 };
 

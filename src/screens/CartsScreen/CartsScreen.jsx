@@ -7,7 +7,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
-} from '../../services/useData/tableMarkups/products';
+} from '../../services/useData/tableMarkups/carts';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -19,43 +19,44 @@ import {
   sortKeys,
 } from '../../services/sorting';
 
-const ProductsScreen = () => {
-  const scope = 'products';
+const CartsScreen = () => {
+  const scope = 'carts';
 
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
-    getSortParams(sortKeys.products),
+    getSortParams(sortKeys.carts),
   );
 
   const requests = async (rowsPerPage, filtersUrl) => {
-    const res = await api.getProducts({
+    const res = await api.getCarts({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
+
     return generateData(res.data);
   };
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
-    saveSortParams(sortKeys.products, params);
+    saveSortParams(sortKeys.carts, params);
   };
 
-  const products = useTableData(
+  const carts = useTableData(
     currentPage - 1,
     setLoading,
     makeUpdate,
-    scope,
+    'carts',
     requests,
     sortParams,
   );
 
-  const handleDeleteProduct = (id) => api.deleteProductById(id).then(() => {
+  const handleDeleteCart = (id) => api.deleteCartById(id).then(() => {
     setMakeUpdate((v) => v + 1);
     dispatch(
       showNotification(
-        `${localization.t('general.product')} ${id} ${localization.t(
+        `${localization.t('general.cart')} ${id} ${localization.t(
           'general.hasBeenSuccessfullyDeleted',
         )}`,
       ),
@@ -65,35 +66,33 @@ const ProductsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableActionsBar
-        scope={scope}
-      >
+      <TableActionsBar>
         <Box>
           <Button
-            id="add-product"
+            id="add-cart"
             color="primary"
             size="large"
             variant="contained"
             component={Link}
-            to="/products/add"
+            to="/carts/add"
           >
-            {localization.t('general.addProduct')}
+            {localization.t('general.addCart')}
           </Button>
         </Box>
       </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
-        handleDeleteItem={handleDeleteProduct}
+        handleDeleteItem={handleDeleteCart}
         defaultShowColumn={defaultShow}
         scope={scope}
         currentPage={currentPage}
         updatePage={updatePage}
-        tableData={products}
+        tableData={carts}
         isLoading={isLoading}
       />
     </>
   );
 };
 
-export default ProductsScreen;
+export default CartsScreen;

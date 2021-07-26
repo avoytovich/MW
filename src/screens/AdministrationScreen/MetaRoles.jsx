@@ -7,7 +7,7 @@ import localization from '../../localization';
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
-import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
+import { generateData, defaultShow } from '../../services/useData/tableMarkups/adminMetaRole';
 import {
   getSortParams,
   saveSortParams,
@@ -42,7 +42,7 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
     return generateData(res.data, customers.data.items);
   };
-  const data = useTableData(
+  const tableData = useTableData(
     currentPage - 1,
     setLoading,
     makeUpdate,
@@ -63,16 +63,18 @@ const MetaRoles = ({ sortKey, scope, label }) => {
       );
     });
   };
+
   const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}
-      showColumn={data?.defaultShow}
+      defaultShowColumn={defaultShow}
+      scope={scope}
       currentPage={currentPage}
       updatePage={updatePage}
-      tableData={data}
+      tableData={tableData}
       isLoading={isLoading}
     />
   );

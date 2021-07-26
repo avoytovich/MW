@@ -304,7 +304,21 @@ const getAllApi = {
       url,
     });
   },
+  getNotificationHistory(page = 0, filters, sortParams) {
+    let url = `/customer-notifier/notifications?format=short&size=10&page=${page}`;
 
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getNotifications({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
@@ -357,6 +371,39 @@ const getAllApi = {
     });
   },
 
+  getLicenses({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/license-manager/licenses?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getCarts({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/carts?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default getAllApi;

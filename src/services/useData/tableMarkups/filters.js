@@ -15,7 +15,7 @@ const filters = {
     { id: 'genericName', label: localization.t('labels.name'), type: 'text' },
     {
       id: 'publisherRefId',
-      label: localization.t('labels.publisherRefID'),
+      label: localization.t('labels.publisherRefId'),
       type: 'text',
     },
     {
@@ -71,7 +71,7 @@ const filters = {
     },
     {
       id: 'invoiceId',
-      label: localization.t('labels.invoiceID'),
+      label: localization.t('labels.invoiceId'),
       type: 'text',
     },
     {
@@ -91,7 +91,7 @@ const filters = {
   ],
   stores: [
     { id: 'name', label: localization.t('labels.name'), type: 'text' },
-    { id: 'id', label: localization.t('labels.storeID'), type: 'text' },
+    { id: 'id', label: localization.t('labels.storeId'), type: 'text' },
     {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
@@ -143,7 +143,7 @@ const filters = {
       type: 'text'
     },
     {
-      id: 'name',
+      id: 'date',
       label: localization.t('labels.notificationName'),
       type: 'text',
     },
@@ -171,6 +171,115 @@ const filters = {
         { label: localization.t('labels.disabled'), value: 'DISABLED' },
       ],
     },
+  ],
+
+  licenses: [
+    {
+      id: 'id',
+      label: localization.t('labels.licenseId'),
+      type: 'text',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.creationInProgress'), value: 'CREATIONINPROGRESS' },
+        { label: localization.t('labels.creationFailed'), value: 'CREATIONFAILED' },
+        { label: localization.t('labels.running'), value: 'RUNNING' },
+        { label: localization.t('labels.canceled'), value: 'CANCELED' },
+        { label: localization.t('labels.paused'), value: 'PAUSED' },
+        { label: localization.t('labels.expired'), value: 'EXPIRED' },
+      ],
+    },
+    {
+      id: 'orderId',
+      label: localization.t('labels.orderId'),
+      type: 'date',
+    },
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
+    },
+    {
+      id: 'email',
+      label: localization.t('labels.email'),
+      type: 'text',
+    },
+    {
+      id: 'city',
+      label: localization.t('labels.city'),
+      type: 'text',
+    },
+    {
+      id: 'productId',
+      label: localization.t('labels.productId'),
+      type: 'text',
+    },
+    {
+      id: 'licenseProviderDefinition',
+      label: localization.t('labels.licenseProviderDefinition'),
+      type: 'text',
+    },
+    {
+      id: 'publisherProductId',
+      label: localization.t('labels.publisherProductId'),
+      type: 'text',
+    },
+    {
+      id: 'productName',
+      label: localization.t('labels.productName'),
+      type: 'text',
+    },
+  ],
+
+  carts: [
+    {
+      id: 'cartId',
+      label: localization.t('labels.cartId'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updateDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date'
+    },
+    {
+      id: 'source',
+      label: localization.t('labels.source'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.acquisition'), value: 'ENABLED' },
+        { label: localization.t('labels.manualRenewal'), value: 'DISABLED' },
+      ],
+    },
+    {
+      id: 'emailAddress',
+      label: localization.t('labels.emailAddress'),
+      type: 'text',
+    },
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
+    },
+
   ],
 };
 
