@@ -17,6 +17,10 @@ export const SET_TABLE_FILTERS = 'table/setFilters';
 export const RESET_TABLE_FILTERS = 'table/resetFilters';
 export const SET_TABLE_SEARCH = 'table/setSearch';
 export const RESET_TABLE_SEARCH = 'table/resetSearch';
+export const SET_TABLE_ROWS_PER_PAGE = 'table/setRowsPerPage';
+
+// Show Columns
+export const SET_TABLE_SHOW_COLUMNS = 'showColumns/setShowColumns';
 
 // SessionData
 export const UPDATE_SESSION_STATE = 'session/updateSessionState';

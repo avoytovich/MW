@@ -1,7 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
-  id: true,
+  notificationsId: true,
   customer: true,
   name: true,
   url: true,
@@ -12,8 +12,8 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.notificationid'), id: 'id', sortParam: 'id' },
-    { value: localization.t('labels.notificationCustomer'), id: 'customer', sortParam: 'customer' },
+    { value: localization.t('labels.notificationsId'), id: 'notificationsId' },
+    { value: localization.t('labels.notificationCustomer'), id: 'customer' },
     {
       value: localization.t('labels.notificationName'),
       id: 'name',
@@ -28,7 +28,6 @@ const markUp = {
     {
       value: localization.t('labels.notificationEvents'),
       id: 'events',
-      sortParam: 'events',
     },
     {
       value: localization.t('labels.notificationStatus'),
@@ -38,21 +37,20 @@ const markUp = {
   ],
 };
 
-const generateData = (data) => {
+const generateData = (data, customers) => {
+  let customer;
   const values = data.items.map((val) => {
-    let status = '';
-    if (val.status === 'Active') {
-      status = localization.t('general.notificationEnabled');
-    } else if (val.status !== 'Active') {
-      status = localization.t('general.notificationDisabled');
-    }
+    customer = val.customerId === 'Nexway'
+      ? val.customerId
+      : customers.find((item) => item.id === val.customerId)?.name;
+
     return {
+      notificationsId: val.id,
       id: val.id,
-      customer: val.customerId,
+      customer: customer || '',
       name: val.name,
       url: val.url,
       emails: val.emails,
-      // events: ,
       status: val.status,
     };
   });

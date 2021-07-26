@@ -7,8 +7,7 @@ import localization from '../../localization';
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
-import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
-
+import { generateData, defaultShow } from '../../services/useData/tableMarkups/adminMetaRole';
 import {
   getSortParams,
   saveSortParams,
@@ -29,9 +28,11 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     saveSortParams(sortKeys[sortKey], params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowsPerPage, filtersUrl) => {
     const costumersIds = [];
-    const res = await api.getMetaRoles(currentPage - 1, filtersUrl, sortParams);
+    const res = await api.getMetaRoles({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -41,7 +42,7 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
     return generateData(res.data, customers.data.items);
   };
-  const data = useTableData(
+  const tableData = useTableData(
     currentPage - 1,
     setLoading,
     makeUpdate,
@@ -62,23 +63,25 @@ const MetaRoles = ({ sortKey, scope, label }) => {
       );
     });
   };
+
   const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}
-      showColumn={data?.defaultShow}
+      defaultShowColumn={defaultShow}
+      scope={scope}
       currentPage={currentPage}
       updatePage={updatePage}
-      tableData={data}
+      tableData={tableData}
       isLoading={isLoading}
     />
   );
 };
 
 MetaRoles.propTypes = {
-  tabObject: PropTypes.object,
+  sortKey: PropTypes.string,
   label: PropTypes.string,
   scope: PropTypes.string,
 };

@@ -11,6 +11,7 @@ import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import TableActionsBar from '../../components/TableActionsBar';
 import {
   getSortParams,
   saveSortParams,
@@ -18,6 +19,8 @@ import {
 } from '../../services/sorting';
 
 const IdentitiesScreen = () => {
+  const scope = 'identities';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -31,11 +34,14 @@ const IdentitiesScreen = () => {
     saveSortParams(sortKeys.identities, params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowsPerPage, filtersUrl) => {
     const res = await api.getIdentities(
-      currentPage - 1,
-      filtersUrl,
-      sortParams,
+      {
+        page: currentPage - 1,
+        size: rowsPerPage,
+        filters: filtersUrl,
+        sortParams,
+      },
     );
     return generateData(res.data);
   };
@@ -44,7 +50,7 @@ const IdentitiesScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'identities',
+    scope,
     requests,
     sortParams,
   );
@@ -64,25 +70,30 @@ const IdentitiesScreen = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Box alignSelf='flex-end' py={2}>
-        <Button
-          id='add-identity-button'
-          color='primary'
-          size='large'
-          variant='contained'
-          component={Link}
-          to='/settings/identities/add'
-        >
-          {`${localization.t('general.add')} ${localization.t(
-            'general.identity',
-          )}`}
-        </Button>
-      </Box>
+      <TableActionsBar
+        scope={scope}
+      >
+        <Box alignSelf='flex-end' py={2}>
+          <Button
+            id='add-identity-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to='/settings/identities/add'
+          >
+            {`${localization.t('general.add')} ${localization.t(
+              'general.identity',
+            )}`}
+          </Button>
+        </Box>
+      </TableActionsBar>
       <TableComponent
+        scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteIdentity}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={identities}

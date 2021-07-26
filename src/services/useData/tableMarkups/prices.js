@@ -18,9 +18,10 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.startDate'), id: 'startDate' },
     { value: localization.t('labels.endDate'), id: 'endDate' },
-    // { value: localization.t('labels.productID'), id: 'productId' },
+    { value: localization.t('labels.productId'), id: 'productId' },
     { value: localization.t('labels.marketingId'), id: 'marketingId' },
     { value: localization.t('labels.priceCountry'), id: 'country' },
     { value: localization.t('labels.currency'), id: 'currency' },
@@ -37,7 +38,7 @@ const generateData = (data) => {
     id: val.id,
     startDate: moment(val.startDate).format('D MMM YYYY'),
     endDate: val.endDate ? moment(val.endDate).format('D MMM YYYY') : '-',
-    // productId: val.productId,
+    productId: val.productId,
     marketingId: val.marketingId || '-',
     country: val.country,
     currency: val.currency,

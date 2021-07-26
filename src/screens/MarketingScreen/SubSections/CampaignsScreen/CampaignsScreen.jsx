@@ -10,11 +10,15 @@ import { useTableData } from '../../../../services/useData';
 import api from '../../../../api';
 
 const CampaignsScreen = () => {
+  const scope = 'campaigns';
+
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getCampaigns(currentPage - 1, filtersUrl);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getCampaigns({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+    });
     return generateData(res.data);
   };
 
@@ -22,7 +26,7 @@ const CampaignsScreen = () => {
     currentPage - 1,
     setLoading,
     false,
-    'campaigns',
+    scope,
     requests,
   );
 
@@ -30,7 +34,8 @@ const CampaignsScreen = () => {
 
   return (
     <TableComponent
-      showColumn={defaultShow}
+      scope={scope}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={campaigns}

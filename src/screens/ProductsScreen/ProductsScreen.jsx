@@ -12,6 +12,7 @@ import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import TableActionsBar from '../../components/TableActionsBar';
 import {
   getSortParams,
   saveSortParams,
@@ -19,6 +20,8 @@ import {
 } from '../../services/sorting';
 
 const ProductsScreen = () => {
+  const scope = 'products';
+
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -27,8 +30,10 @@ const ProductsScreen = () => {
     getSortParams(sortKeys.products),
   );
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getProducts(currentPage - 1, filtersUrl, sortParams);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getProducts({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     return generateData(res.data);
   };
 
@@ -41,7 +46,7 @@ const ProductsScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'products',
+    scope,
     requests,
     sortParams,
   );
@@ -60,23 +65,28 @@ const ProductsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" p="15px">
-        <Button
-          id="add-product"
-          color="primary"
-          size="large"
-          variant="contained"
-          component={Link}
-          to="/products/add"
-        >
-          {localization.t('general.addProduct')}
-        </Button>
-      </Box>
+      <TableActionsBar
+        scope={scope}
+      >
+        <Box>
+          <Button
+            id="add-product"
+            color="primary"
+            size="large"
+            variant="contained"
+            component={Link}
+            to="/products/add"
+          >
+            {localization.t('general.addProduct')}
+          </Button>
+        </Box>
+      </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteProduct}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
+        scope={scope}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={products}

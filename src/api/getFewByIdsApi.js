@@ -44,6 +44,39 @@ const getFewByIdsApi = {
       url,
     });
   },
+  getNotificationDefinitionByIds(ids) {
+    const url = `/customer-notifier/notification-definitions?format=short&size=10&page=0&${ids}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getOrdersByCard({
+    size = 10, page = 1, bin, l4, customer, currency, amount, date,
+  }) {
+    let url = `/payment-proxy/orders-by-card-digits?format=short&size=${size}&page=${page - 1}&bin=${bin}&l4=${l4}`;
+
+    if (customer) {
+      url += `&origin=${customer}`;
+    }
+
+    if (currency) {
+      url += `&currency=${currency}`;
+    }
+
+    if (amount) {
+      url += `&amount=${Math.round(amount * 100)}`;
+    }
+
+    if (date) {
+      url += `&date=${date}`;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default getFewByIdsApi;

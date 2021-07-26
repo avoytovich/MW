@@ -19,6 +19,7 @@ const defaultProduct = {
   productFamily: '',
   priceFunction: '',
   nextGenerationOf: [],
+  resources: [],
   prices: {
     defaultCurrency: 'AED',
     priceByCountryByCurrency: {
@@ -98,7 +99,7 @@ const productRequiredFields = (product) => {
       index,
     }));
   }
-  return { ...defaultProduct, ...product, resources: resourcesKeys };
+  return { ...defaultProduct, ...product, resources: resourcesKeys || [] };
 };
 
 const structureSelectOptions = (options, optionValue, ...otherOptions) => {
@@ -215,6 +216,7 @@ const backToFront = (
     'nextGenerationOf',
     'id',
     'parentId',
+    'resources'
   ],
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable

@@ -102,10 +102,9 @@ const PricesDetailsScreen = () => {
     if (id === 'add') {
       if (selectedCustomer?.id) {
         api
-          .getProducts(0, `&customerId=${selectedCustomer?.id}&status=ENABLED`)
+          .getProducts({ filters: `&customerId=${selectedCustomer?.id}&status=ENABLED` })
           .then(({ data: { items } }) => {
             const products = items.map((it) => ({ id: it.id, value: it.genericName }));
-
             setAvailProducts(products);
           });
       }
@@ -195,7 +194,7 @@ const PricesDetailsScreen = () => {
           price?.productId ? (
             <Box mt={4} display="flex">
               <Typography gutterBottom variant="h5" style={{ marginRight: '10px' }}>
-                {localization.t('labels.productID')}
+                {localization.t('labels.productId')}
               </Typography>
 
               <Typography variant="h6">{price?.productId}</Typography>
@@ -208,7 +207,7 @@ const PricesDetailsScreen = () => {
           ) : (
             <Box width='50%' pr={4}>
               <SelectCustom
-                label="productID"
+                label="productId"
                 value={curPrice?.productId}
                 isRequired
                 selectOptions={availProducts}

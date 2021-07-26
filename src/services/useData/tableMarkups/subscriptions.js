@@ -13,13 +13,14 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.lifecycleId'), id: 'lifecycle' },
     { value: localization.t('labels.customer'), id: 'customer' },
     { value: localization.t('labels.creationDate'), id: 'createDate' },
     { value: localization.t('labels.lastUpdate'), id: 'lastUpdate' },
     { value: localization.t('labels.enduserId'), id: 'enduserId' },
     { value: localization.t('labels.subscriptionName'), id: 'name' },
-    { value: localization.t('labels.storeID'), id: 'storeId' },
+    { value: localization.t('labels.storeId'), id: 'storeId' },
   ],
 };
 

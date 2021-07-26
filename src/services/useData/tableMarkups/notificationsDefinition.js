@@ -14,8 +14,8 @@ const markUp = {
     { value: localization.t('labels.id'), id: 'id', sortParam: 'id' },
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     { value: localization.t('labels.updateDate'), id: 'updateDate', sortParam: 'updateDate' },
-    { value: localization.t('labels.subject'), id: 'subject', sortParam: 'subject' },
-    { value: localization.t('labels.fact'), id: 'fact', sortParam: 'fact' },
+    { value: localization.t('labels.subject'), id: 'subject', sortParam: 'eventMatcher.subject' },
+    { value: localization.t('labels.fact'), id: 'fact', sortParam: 'eventMatcher.fact' },
   ],
 };
 
@@ -32,7 +32,8 @@ const generateData = (data) => {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta });
+  Object.assign(markUp, { values, meta, defaultShow });
+
   return markUp;
 };
 

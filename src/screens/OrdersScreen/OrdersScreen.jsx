@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import Box from '@material-ui/core/Box';
 
+import FindByCC from './FindByCC';
 import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
 import { showNotification } from '../../redux/actions/HttpNotifications';
@@ -15,23 +17,30 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import TableActionsBar from '../../components/TableActionsBar';
 
 const OrdersScreen = () => {
+  const scope = 'orders';
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
+  const [findCCOpen, setFindCC] = useState(false);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.orders));
-
   const handleSetSortParams = (params) => {
     setSortParams(params);
     saveSortParams(sortKeys.orders, params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowPerPage, filtersUrl) => {
     const costumersIds = [];
     const storeIds = [];
-    const res = await api.getOrders(currentPage - 1, filtersUrl, sortParams);
+    const res = await api.getOrders({
+      page: currentPage - 1,
+      size: rowPerPage,
+      filters: filtersUrl,
+      sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customer.id}`;
       const store = `id=${item.endUser?.storeId}`;
@@ -51,9 +60,10 @@ const OrdersScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'orders',
+    scope,
     requests,
     sortParams,
+    defaultShow,
   );
   const handleDeleteOrder = (id) => api.deleteOrderById(id).then(() => {
     setMakeUpdate((v) => v + 1);
@@ -69,16 +79,25 @@ const OrdersScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
 
   return (
-    <TableComponent
-      sortParams={sortParams}
-      setSortParams={handleSetSortParams}
-      handleDeleteItem={handleDeleteOrder}
-      showColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
-      tableData={orders}
-      isLoading={isLoading}
-    />
+    <Box pb={3}>
+      <TableActionsBar
+        scope={scope}
+        findByCC={() => setFindCC(true)}
+      />
+      <TableComponent
+        scope={scope}
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
+        handleDeleteItem={handleDeleteOrder}
+        defaultShowColumn={defaultShow}
+        currentPage={currentPage}
+        updatePage={updatePage}
+        tableData={orders}
+        isLoading={isLoading}
+      />
+
+      <FindByCC onClose={() => setFindCC(false)} open={findCCOpen} />
+    </Box>
   );
 };
 

@@ -45,8 +45,8 @@ const generateData = (orderData, paymentData) => {
         value: orderData.salesFlags && orderData.salesFlags.join(', '),
       },
       {
-        key: 'invoiceID',
-        label: localization.t('labels.invoiceID'),
+        key: 'invoiceId',
+        label: localization.t('labels.invoiceId'),
         value: orderData?.invoice?.id,
       },
       {

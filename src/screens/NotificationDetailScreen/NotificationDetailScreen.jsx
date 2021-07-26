@@ -66,7 +66,7 @@ const NotificationDetailScreen = () => {
 
   if (isLoading) return <LinearProgress />;
 
-  if (id === 'add' && !nxState.selectedCustomer.id) {
+  if (id === 'add' && !nxState.selectedCustomer?.id) {
     return <SelectCustomerNotification />;
   }
 

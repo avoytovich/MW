@@ -10,7 +10,9 @@ const useTableData = (
   requests,
   sortParams,
 ) => {
+  const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const [fetchedData, setFetchedData] = useState();
+
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
   const searchTerm = useSelector(({ tableData: { search } }) => search);
@@ -38,7 +40,7 @@ const useTableData = (
 
       setLoading(true);
 
-      requests(filtersUrl)
+      requests(reduxRowPerPage, filtersUrl)
         .then((payload) => {
           if (!isCancelled) {
             setFetchedData(payload);
@@ -55,7 +57,16 @@ const useTableData = (
     return () => {
       isCancelled = true;
     };
-  }, [page, makeUpdate, tableScope, activeFilters, customerScope, hasSearch, sortParams]);
+  }, [
+    page,
+    makeUpdate,
+    tableScope,
+    activeFilters,
+    customerScope,
+    hasSearch,
+    sortParams,
+    reduxRowPerPage,
+  ]);
 
   return fetchedData;
 };

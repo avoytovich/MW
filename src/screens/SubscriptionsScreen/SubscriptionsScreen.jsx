@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
-
+import TableActionsBar from '../../components/TableActionsBar';
 import api from '../../api';
 import {
   generateData,
@@ -10,11 +10,14 @@ import {
 } from '../../services/useData/tableMarkups/subscriptions';
 
 const SubscriptionsScreen = () => {
+  const scope = 'subscriptions';
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getSubscriptions(currentPage - 1, filtersUrl);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getSubscriptions({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+    });
 
     return generateData(res.data);
   };
@@ -23,21 +26,27 @@ const SubscriptionsScreen = () => {
     currentPage - 1,
     setLoading,
     false,
-    'subscriptions',
+    scope,
     requests,
   );
 
   const updatePage = (page) => setCurrentPage(page);
 
   return (
-    <TableComponent
-      showColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
-      tableData={subscriptions}
-      isLoading={isLoading}
-      noActions
-    />
+    <>
+      <TableActionsBar
+        scope={scope}
+      />
+      <TableComponent
+        scope={scope}
+        defaultShowColumn={defaultShow}
+        currentPage={currentPage}
+        updatePage={updatePage}
+        tableData={subscriptions}
+        isLoading={isLoading}
+        noActions
+      />
+    </>
   );
 };
 

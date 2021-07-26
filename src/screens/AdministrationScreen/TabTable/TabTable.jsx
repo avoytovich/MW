@@ -16,7 +16,7 @@ const TabTable = ({ tabObject }) => {
   const dispatch = useDispatch();
 
   const {
-    sortKey, generateData, request, deleteFunc, label, scope,
+    sortKey, generateData, request, deleteFunc, label, scope, defaultShow,
   } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -45,8 +45,10 @@ const TabTable = ({ tabObject }) => {
       });
     }
   };
-  const requests = async (filtersUrl) => {
-    const res = await request(currentPage - 1, filtersUrl, sortParams);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await request({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     return generateData(res.data);
   };
   const data = useTableData(
@@ -64,11 +66,12 @@ const TabTable = ({ tabObject }) => {
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}
-      showColumn={data?.defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={data}
       isLoading={isLoading}
+      scope={scope}
     />
   );
 };

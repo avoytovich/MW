@@ -48,7 +48,7 @@ const SubscriptionDetailsScreen = () => {
       { label: localization.t('labels.creationDate'), value: moment(subscription.createDate).format('YYYY-MM-DD') },
       { label: localization.t('labels.lastUpdate'), value: moment(subscription.updateDate).format('YYYY-MM-DD') },
       { label: localization.t('labels.subscriptionName'), value: subscription.name },
-      { label: localization.t('labels.storeID'), value: subscription.storeId, copy: true },
+      { label: localization.t('labels.storeId'), value: subscription.storeId, copy: true },
       { label: localization.t('labels.productID'), value: subscription?.products[0]?.lineItemId },
     ],
     lifecycle: [

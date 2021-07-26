@@ -5,6 +5,7 @@ const postApi = {
   signIn(data) {
     let realm = data?.realm;
     let url = '/iam/tokens';
+    const grantType = data?.grantType || 'password';
 
     const reason = 'Nexway-Center';
 
@@ -22,6 +23,7 @@ const postApi = {
       data: {
         ...data,
         realm,
+        grantType,
       },
     });
   },
@@ -217,6 +219,15 @@ const postApi = {
   },
   addNotification(data) {
     const url = '/customer-notifier/receivers?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addNotificationDefinition(data) {
+    const url = '/customer-notifier/notification-definitions/?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
 
     return axiosInstance({
       method: 'post',

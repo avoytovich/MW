@@ -69,6 +69,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/MyAccountScreen'))}
       />
       <Route
+        path={`${defPath}/licenses`}
+        component={lazy(() => import('../../screens/LicensesDetailsScreen/LicensesScreen'))}
+      />
+      <Route
         path={`${defPath}/settings/identities/:id`}
         component={lazy(() => import('../../screens/IdentityDetailsScreen'))}
       />
@@ -80,18 +84,22 @@ const SignedRoutes = () => {
         path={`${defPath}/settings/notification-definition/:id`}
         component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
       />
-      <Route
+      {/* <Route
         path={`${defPath}/settings/notification-definition`}
         component={lazy(() => import('../../screens/NotificationDefinitionScreen'))}
-      />
+      /> */}
       <Route
         path={`${defPath}/settings/notifications/:id`}
         component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />
-      <Route
+      {/* <Route
         path={`${defPath}/settings/notifications`}
         component={lazy(() => import('../../screens/NotificationScreen'))}
-      />
+      /> */}
+      {/* <Route
+        path={`${defPath}/settings/notification-history`}
+        component={lazy(() => import('../../screens/NotificationHistoryScreen'))}
+      /> */}
       <Route
         path={`${defPath}/settings/administration/customers/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
@@ -111,6 +119,14 @@ const SignedRoutes = () => {
       <Route
         path={`${defPath}/settings/administration`}
         component={lazy(() => import('../../screens/AdministrationScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/carts`}
+        component={lazy(() => import('../../screens/CartsScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings`}
+        component={lazy(() => import('../../screens/NotificationScreen'))}
       />
       <Route
         path={`${defPath}/marketing/discounts/:id`}

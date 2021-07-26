@@ -1,16 +1,22 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React from 'react';
 import {
-  Tabs, Tab, Box, Button, Zoom,
+  Tabs, Tab, Box, Button,
 } from '@material-ui/core';
-import { useHistory, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import {
+  Link,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom';
 import localization from '../../localization';
-
 import TabTable from './TabTable';
 import api from '../../api';
-import { generateData as generateCustomers } from '../../services/useData/tableMarkups/adminCustomers';
-import { generateData as generateRoles } from '../../services/useData/tableMarkups/adminRoles';
-import { generateData as generatePrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
+import { generateData as generateCustomers, defaultShow as defaultShowCustomers } from '../../services/useData/tableMarkups/adminCustomers';
+import { generateData as generateRoles, defaultShow as defaultShowRoles } from '../../services/useData/tableMarkups/adminRoles';
+import { generateData as generatePrivileges, defaultShow as defaultShowPrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
 import MetaRoles from './MetaRoles';
+import TableActionsBar from '../../components/TableActionsBar';
 
 const tabsData = [
   {
@@ -19,6 +25,7 @@ const tabsData = [
     request: api.getCustomers,
     sortKey: 'customerAdmin',
     generateData: generateCustomers,
+    defaultShow: defaultShowCustomers,
     noActions: true,
     scope: 'customers',
     button: `${localization.t('general.add')} ${localization.t(
@@ -32,12 +39,12 @@ const tabsData = [
       'general.role',
     )}`,
     request: api.getRoles,
+    defaultShow: defaultShowRoles,
     secondaryRequests: [],
     sortKey: 'roleAdmin',
     generateData: generateRoles,
     deleteFunc: api.deleteRoleById,
     scope: 'roles',
-
   },
   {
     label: 'metaRole',
@@ -58,32 +65,20 @@ const tabsData = [
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,
+    defaultShow: defaultShowPrivileges,
     noActions: true,
     scope: 'privileges',
 
   },
 ];
 
-const AdministrationScreen = () => {
-  const history = useHistory();
-  const [curTab, setCurTab] = useState(0);
-
-  const pathname = history?.location?.pathname || 'customers';
-
-  useEffect(() => {
-    const section = pathname.split('/').pop();
-    const index = tabsData.findIndex((i) => i.scope === section);
-    if (index < 0) {
-      return history.push('/settings/administration/customers');
-    }
-    setCurTab(index);
-    return () => setCurTab(0);
-  }, [pathname]);
-
+const AdministrationScreen = ({ location }) => {
   const drawAddButton = () => {
-    const currentTad = tabsData.find((item) => item.path === pathname) || tabsData[0];
+    const currentTad = tabsData.find((item) => item.path === location.pathname) || tabsData[0];
     return (
-      <Zoom in={!!currentTad.button}>
+      <TableActionsBar
+        scope={currentTad.scope}
+      >
         <Box alignSelf='flex-end'>
           <Button
             id='add-administration-button'
@@ -96,38 +91,51 @@ const AdministrationScreen = () => {
             {currentTad.button}
           </Button>
         </Box>
-      </Zoom>
+      </TableActionsBar>
+
     );
   };
-  const changeTab = (tab) => history.push(`/settings/administration/${tabsData[tab].scope}`);
+
   return (
     <Box display='flex' flexDirection='column'>
       {drawAddButton()}
-
       <Tabs
-        value={curTab}
-        onChange={(e, newTab) => changeTab(newTab)}
+        value={location.pathname === '/settings/administration' ? tabsData[0].path
+          : location.pathname}
         indicatorColor='primary'
         textColor='primary'
+        data-test='tabs'
       >
         {tabsData.map((tab) => (
-          <Tab key={tab.path} label={localization.t(`labels.${tab.label}`)} />
+          <Tab
+            key={tab.path}
+            label={localization.t(`labels.${tab.label}`)}
+            to={tab.path}
+            value={tab.path}
+            component={Link}
+          />
         ))}
       </Tabs>
       <Box mt={4} mb={2}>
-        {tabsData.map((tab, index) => (
-          <Fragment key={tab.label}>
-            {curTab === index
-              && (tab.label === 'metaRole' ? (
-                <MetaRoles sortKey={tab.sortKey} scope={tab.scope} label={tab.label} />
-              ) : (
-                <TabTable tabObject={tab} />
-              ))}
-          </Fragment>
-        ))}
+        <Switch>
+          <Route exact path={tabsData[0].path}><TabTable tabObject={tabsData[0]} /></Route>
+          <Route exact path={tabsData[1].path}><TabTable tabObject={tabsData[1]} /></Route>
+          <Route exact path={tabsData[2].path}>
+            <MetaRoles
+              sortKey={tabsData[2].sortKey}
+              scope={tabsData[2].scope}
+              label={tabsData[2].label}
+            />
+          </Route>
+          <Route exact path={tabsData[3].path}><TabTable tabObject={tabsData[3]} /></Route>
+          <Redirect exact from="/settings/administration" to={tabsData[0].path} />
+        </Switch>
       </Box>
     </Box>
   );
 };
 
+AdministrationScreen.propTypes = {
+  location: PropTypes.object,
+};
 export default AdministrationScreen;

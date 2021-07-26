@@ -1,3 +1,3 @@
-import NotificationDefinitionDetailsScreen from './NotificationDefinitionDetailsScreen';
+import NotificationDefinitionDetailScreen from './NotificationDefinitionDetailScreen';
 
-export default NotificationDefinitionDetailsScreen;
+export default NotificationDefinitionDetailScreen;

@@ -78,6 +78,16 @@ const general = {
   notificationEnabled: 'Enabled',
   notificationDisabled: 'Disabled',
   notification: 'Notification',
+  rowsPerPage: 'Rows per page',
+  notifications: {
+    notification: 'notification',
+    notificationDefinition: 'notification definition',
+  },
+  cart: 'Cart',
+  addCart: 'Add Cart',
+  findColumn: 'Find column',
+  hideAll: 'Hide All',
+  showAll: 'Show All',
 };
 
 export default general;

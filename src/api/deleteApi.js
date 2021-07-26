@@ -106,6 +106,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteCartById(id) {
+    const url = `/carts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;
