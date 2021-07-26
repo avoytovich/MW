@@ -89,8 +89,8 @@ const ShowColumnPopper = ({ scope, anchorEl, setAnchorEl }) => {
           }
         </Box>
         <Box display='flex' justifyContent='space-between'>
-          <Button onClick={() => handleSwitchAll('hide')} color="primary">{localization.t('general.hideAll')}</Button>
-          <Button onClick={() => handleSwitchAll('show')} color="primary">{localization.t('general.showAll')}</Button>
+          <Button data-test='hideAllButton' onClick={() => handleSwitchAll('hide')} color="primary">{localization.t('general.hideAll')}</Button>
+          <Button data-test='showAllButton' onClick={() => handleSwitchAll('show')} color="primary">{localization.t('general.showAll')}</Button>
         </Box>
       </Box>
     </Popover>
