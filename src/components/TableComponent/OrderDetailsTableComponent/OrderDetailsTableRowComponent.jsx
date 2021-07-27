@@ -94,7 +94,7 @@ const TableRowComponent = ({
                   : 'secondary'
               }
               noWrap
-              className="tableCellItem"
+              className={`tableCellItem ${rowItem[errorHighlight] ? 'error-row-color' : ''}`}
             >
               { // eslint-disable-next-line no-nested-ternary
                 valueToShow === 'ENABLED' || valueToShow === true ? <CheckIcon className="statusEnabled" />
@@ -109,7 +109,7 @@ const TableRowComponent = ({
   };
 
   return (
-    <Box className={`orderDetailsTableRowGrid ${rowItem[errorHighlight] ? 'error-row' : ''}`} data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
+    <Box className="orderDetailsTableRowGrid" data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
       <Grid
         onClick={() => customPath !== 'disabled' && history.push(customPath ? parsePath(customPath) : `${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}
