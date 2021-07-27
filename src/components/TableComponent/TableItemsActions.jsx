@@ -19,7 +19,9 @@ const TableItemsActions = ({
 
   const deleteItems = () => {
     const itemsIds = [...items].map((i) => i.id);
-    onDelete(itemsIds.join(','));
+
+    itemsIds.forEach((it) => onDelete(it));
+    // onDelete(itemsIds.join(','));
     setItems([]);
   };
 
