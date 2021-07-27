@@ -250,7 +250,13 @@ const getOneByIdApi = {
   },
   getNotificationDefinitionById(id) {
     const url = `/customer-notifier/notification-definitions/${id}`;
-
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getNotificationHistoryById(id) {
+    const url = `/customer-notifier/notifications/${id}`;
     return axiosInstance({
       method: 'get',
       url,

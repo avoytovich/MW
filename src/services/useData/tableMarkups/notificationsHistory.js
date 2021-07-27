@@ -84,6 +84,7 @@ const generateData = async (data, customers, selectedCustomer) => {
   }
 
   const values = data.items.map((val) => ({
+    id: val.id,
     customer: val.customerName,
     processingDate: moment(val.processingDate).format('D MMM YYYY'),
     status: val.status,

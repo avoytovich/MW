@@ -81,6 +81,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
       <Route
+        path={`${defPath}/settings/notification-history/:id`}
+        component={lazy(() => import('../../screens/NotificationHistoryDetailsScreen'))}
+      />
+      <Route
         path={`${defPath}/settings/notification-definition/:id`}
         component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
       />
