@@ -6,15 +6,18 @@ import {
   Box,
   Drawer,
   List,
-  ListSubheader,
   Typography,
 } from '@material-ui/core';
 
 import NavItem from './NavItem';
+import CollapsableNav from './CollapsableNav';
 import navConfig from './config';
 
 import CustomerHandling from '../CustomerHandling';
+
 import './SideBar.scss';
+
+const NavItems = ({ config }) => config.items.map((item) => <NavItem key={item.id} {...item} />);
 
 const SideBar = ({ open }) => (
   <Drawer
@@ -39,11 +42,13 @@ const SideBar = ({ open }) => (
           <Typography variant='h5'>{moment(process.env.BUILT_AT).format('lll')}</Typography>
         </Box>
       )}
+
       <Box
         height="inherit"
         display="flex"
         flexDirection="column"
         justifyContent="space-between"
+        className='side-nav'
       >
         <Box
           display="flex"
@@ -53,22 +58,17 @@ const SideBar = ({ open }) => (
         >
           <Box p={2}>
             {navConfig.map((config) => (
-              <List
-                key={config.subheader || config?.items[0]?.id}
-                subheader={(
-                  <ListSubheader
-                    disableGutters
-                    disableSticky
-                  >
-                    {config.subheader}
-                  </ListSubheader>
-                )}
-              >
-                {config.items.map((item) => <NavItem key={item.id} {...item} />)}
+              <List key={config.subheader || config?.items[0]?.id}>
+                {config.subheader ? (
+                  <CollapsableNav header={config.subheader} icon={config.subheaderIcon}>
+                    <NavItems config={config} />
+                  </CollapsableNav>
+                ) : <NavItems config={config} />}
               </List>
             ))}
           </Box>
         </Box>
+
         <Box m="0 2px">
           <CustomerHandling />
         </Box>
