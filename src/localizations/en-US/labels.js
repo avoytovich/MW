@@ -433,11 +433,18 @@ const labels = {
   mailSubjectTemplate: 'Mail subject',
   mailBodyTemplate: 'Mail body',
   webHookPayloadTemplate: 'Webhook payload',
+  licenseProviderDefinitionId: 'License Provider Definition ID',
+  executionId: 'Execution ID',
+  timeOfTheRequest: 'Time Of The request',
+  requestOperation: 'Request operation',
+  requestUserEmail: 'Request user email',
+  processingDataLicenseId: 'Processing data license ID',
   quantity: 'Quantity',
   activationCodeKey: 'Activation Code/Key',
   vat: 'VAT',
   net: 'Net',
   gross: 'Gross',
+  operationExecutions: 'Operation Executions',
 };
 
 export default labels;
