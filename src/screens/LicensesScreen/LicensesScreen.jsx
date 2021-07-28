@@ -19,7 +19,7 @@ import {
   sortKeys,
 } from '../../services/sorting';
 
-const CartsScreen = () => {
+const LicenseScreen = () => {
   const scope = 'lcenses';
 
   const dispatch = useDispatch();
@@ -66,7 +66,7 @@ const CartsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableActionsBar />
+      <TableActionsBar scope={scope} />
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
@@ -82,4 +82,4 @@ const CartsScreen = () => {
   );
 };
 
-export default CartsScreen;
+export default LicenseScreen;
