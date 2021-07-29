@@ -2,26 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Grid, Typography, CardMedia,
+  Grid, Typography,
 } from '@material-ui/core';
-import Logo from '../../assets/NexwayWhiteLogo.png';
+import LogoHome from '../../components/utils/LogoHome/LogoHome';
+
 import localization from '../../localization';
 
 import './AuthorizationLayout.scss';
 
 const AuthorizationLayout = ({ children }) => (
   <Grid className='authWrapperContainer' container direction="column">
-    <Grid className='authWrapperLogoContainer'>
-      <Grid className='authWrapperLogo'>
-        <a href="/">
-          <CardMedia
-            image={Logo}
-            className='nexWayLogo'
-          />
-        </a>
-      </Grid>
+    <LogoHome>
       <Typography variant="h4" xs={1}>{localization.t('general.logoCenter')}</Typography>
-    </Grid>
+    </LogoHome>
+
     <Grid container direction="row">
       <Grid md={4} xs={4} item>
         <Grid

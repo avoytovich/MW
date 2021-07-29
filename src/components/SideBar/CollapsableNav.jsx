@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Collapse, Box, ListItem } from '@material-ui/core';
+import {
+  Collapse, Box, List, Button,
+} from '@material-ui/core';
 
-import './NavItem.scss';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 const CollapsableNav = ({ header, icon: Icon, children }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
-      <Box display='flex'>
+    <Box display='flex' flexDirection='column' className='collapsable-nav'>
+      <Button onClick={() => setIsOpen((c) => !c)}>
         {Icon && <Icon size='20' />}
 
-        <ListItem
-          onClick={() => setIsOpen((c) => !c)}
-          className='linkTitle'
-        >
-          <span className='linkTitle'>{header}</span>
-        </ListItem>
-      </Box>
+        <span className='subheaderItem'>{header}</span>
+
+        <Box className={isOpen ? 'icon-collapsed' : 'icon-not-collapsed'}>
+          <KeyboardArrowDownIcon className='chevron-icon' />
+        </Box>
+      </Button>
 
       <Collapse in={isOpen}>
-        {children}
+        <List>
+          {children}
+        </List>
       </Collapse>
-    </>
+    </Box>
   );
 };
 
