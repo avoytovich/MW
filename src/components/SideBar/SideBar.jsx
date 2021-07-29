@@ -6,15 +6,16 @@ import {
   Box,
   Drawer,
   List,
+  ListItem,
   Typography,
 } from '@material-ui/core';
 
 import NavItem from './NavItem';
 import CollapsableNav from './CollapsableNav';
-import navConfig from './config';
 
 import CustomerHandling from '../CustomerHandling';
-
+import LogoHome from '../utils/LogoHome';
+import navConfig from './config';
 import './SideBar.scss';
 
 const NavItems = ({ config }) => config.items.map((item) => <NavItem key={item.id} {...item} />);
@@ -36,7 +37,6 @@ const SideBar = ({ open }) => (
           p={2}
           className={`bar-style-${process?.env?.ENV_MODE}`}
           height={64}
-          mb={-3}
         >
           <Typography variant='h6'>Built at:</Typography>
           <Typography variant='h5'>{moment(process.env.BUILT_AT).format('lll')}</Typography>
@@ -47,30 +47,37 @@ const SideBar = ({ open }) => (
         height="inherit"
         display="flex"
         flexDirection="column"
-        justifyContent="space-between"
         className='side-nav'
+        px={2}
       >
+        <LogoHome wrapperHeight={64} height={32} width={107} />
+
         <Box
           display="flex"
           flexDirection="column"
-          p={3}
-          width={260}
+          height={1}
+          justifyContent="space-between"
         >
-          <Box p={2}>
-            {navConfig.map((config) => (
-              <List key={config.subheader || config?.items[0]?.id}>
-                {config.subheader ? (
-                  <CollapsableNav header={config.subheader} icon={config.subheaderIcon}>
-                    <NavItems config={config} />
-                  </CollapsableNav>
-                ) : <NavItems config={config} />}
-              </List>
-            ))}
+          <Box
+            display="flex"
+            flexDirection="column"
+            width={236}
+            className='side-nav-block'
+          >
+            <List>
+              {navConfig.map((config) => (
+                <ListItem key={config.subheader || config?.items[0]?.id} disableGutters>
+                  {config.subheader ? (
+                    <CollapsableNav header={config.subheader} icon={config.subheaderIcon}>
+                      <NavItems config={config} />
+                    </CollapsableNav>
+                  ) : <NavItems config={config} />}
+                </ListItem>
+              ))}
+            </List>
           </Box>
-        </Box>
 
-        <Box m="0 2px">
-          <CustomerHandling />
+          <Box mx='-5px' mt='50px'><CustomerHandling /></Box>
         </Box>
       </Box>
     </Box>

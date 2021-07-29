@@ -2,9 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import ListItem from '@material-ui/core/ListItem';
-
-import './NavItem.scss';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
 
 const NavItem = ({
   title,
@@ -12,41 +11,37 @@ const NavItem = ({
   exact,
   icon: Icon,
   external,
+  isMain,
 }) => (
-  <ListItem
-    disableGutters
-    className='listItem'
+  <Box
+    component={isMain ? 'div' : 'li'}
+    className={isMain ? 'subheaderItem' : 'listItem'}
   >
     {external
       ? (
-        <a
+        <Button
           href={href}
-          target="_blank"
-          rel="noreferrer"
-          className='listItemButton'
+          target='_blank'
+          rel='noreferrer'
         >
-          {Icon && <Icon size="20" className='apiLink' />}
-          {title}
-        </a>
-      )
-      : (
-        <NavLink
-          className='listItemButton'
+          {Icon && <Icon size='20' />}
+
+          <span className={isMain ? '' : 'linkTitle'}>{title}</span>
+        </Button>
+      ) : (
+        <Button
+          component={NavLink}
           color='secondary'
           activeClassName='active'
           exact={exact}
           to={href}
         >
-          {Icon && <Icon size="20" />}
+          {Icon && <Icon size='20' />}
 
-          <span
-            className='linkTitle'
-          >
-            {title}
-          </span>
-        </NavLink>
+          <span className={isMain ? '' : 'linkTitle'}>{title}</span>
+        </Button>
       )}
-  </ListItem>
+  </Box>
 );
 
 NavItem.propTypes = {
@@ -55,6 +50,7 @@ NavItem.propTypes = {
   title: PropTypes.string.isRequired,
   exact: PropTypes.bool,
   external: PropTypes.bool,
+  isMain: PropTypes.string,
 };
 
 export default NavItem;

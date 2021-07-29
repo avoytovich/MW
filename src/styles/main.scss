@@ -11,11 +11,14 @@ html, body {
     height: 100%;
   }
 
-  .customers-handling{
-    max-height: 300px;
-    
-    .MuiFilledInput-root {
-      background: transparent;
+  .MuiPaper-root{
+    .customers-handling{
+      max-height: 300px;
+      
+      .MuiFilledInput-root {
+        background: transparent;
+        color: #f3f3f3;
+      }
     }
   }
 }
