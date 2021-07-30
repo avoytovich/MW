@@ -84,7 +84,8 @@ class Auth {
         return window.location.reload();
       }
 
-      return data.error;
+      this.logout();
+      return window.location.reload();
     }).catch(() => {
       this.logout();
       return window.location.reload();
