@@ -70,7 +70,7 @@ const LicenseProviderDefinitionDetails = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/settings/licenseProviderDefinitions'
+            url='/overview/fulfillment-packages/licenseProviderDefinitions'
             section={localization.t('general.licenseProviderDefinition')}
             id={licenseProvider.id}
           />

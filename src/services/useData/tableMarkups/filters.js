@@ -281,6 +281,37 @@ const filters = {
     },
 
   ],
+  autoFulfillments: [
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+  ],
+  manualFulfillments: [
+    {
+      id: 'id',
+      label: localization.t('labels.packageId'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+  ],
+  licenseProviderDefinitions: [
+    {
+      id: 'id',
+      label: localization.t('labels.providerDefinitionId'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.definitionName'),
+      type: 'text',
+    },
+  ],
 };
 
 export default filters;

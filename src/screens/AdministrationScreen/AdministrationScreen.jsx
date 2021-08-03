@@ -10,7 +10,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 import localization from '../../localization';
-import TabTable from './TabTable';
+import TabTable from '../../components/TabTable';
 import api from '../../api';
 import { generateData as generateCustomers, defaultShow as defaultShowCustomers } from '../../services/useData/tableMarkups/adminCustomers';
 import { generateData as generateRoles, defaultShow as defaultShowRoles } from '../../services/useData/tableMarkups/adminRoles';

@@ -41,6 +41,15 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/ProductsScreen'))}
       />
       <Route
+        path={`${defPath}/overview/fulfillment-packages/licenseProviderDefinitions/:id`}
+        component={lazy(() => import('../../screens/LicenseProviderDefinitionDetails'))}
+      />
+      <Route
+        path={`${defPath}/overview/fulfillment-packages`}
+        component={lazy(() => import('../../screens/FulfillmentPackagesScreen'))}
+      />
+
+      <Route
         path={`${defPath}/overview/stores/:id`}
         component={lazy(() => import('../../screens/StoreDetailsScreen'))}
       />
@@ -63,10 +72,6 @@ const SignedRoutes = () => {
       <Route
         path={`${defPath}/overview/subscriptions`}
         component={lazy(() => import('../../screens/SubscriptionsScreen'))}
-      />
-      <Route
-        path={`${defPath}/overview/fulfillment-packages/licenseProviderDefinitions/:id`}
-        component={lazy(() => import('../../screens/LicenseProviderDefinitionDetails'))}
       />
       <Route
         path={`${defPath}/my-account`}
