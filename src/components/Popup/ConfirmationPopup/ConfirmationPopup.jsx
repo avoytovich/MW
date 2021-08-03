@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 
@@ -12,11 +13,9 @@ const ConfirmationPopup = ({ id, currentOrderData }) => {
   const [confirmation, setConfirmation] = useState({ to: currentOrderData.endUser.email, template: 'ORDERCONFIRMATION' });
 
   const sendConfirmationMailAgain = () => {
-    api.sendConfirmationMail(id, confirmation).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-    });
+    api
+      .sendConfirmationMail(id, confirmation)
+      .then(() => toast(localization.t('general.updatesHaveBeenSaved')));
   };
 
   const handleClickOpen = () => {

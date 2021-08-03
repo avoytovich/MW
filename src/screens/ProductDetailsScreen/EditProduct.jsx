@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import * as R from 'ramda';
 
 import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import { handleGetOptions, handleGetProductDetails } from './utils';
 import {
@@ -18,8 +17,6 @@ import {
 
 const EditProduct = () => {
   const { id } = useParams();
-
-  const dispatch = useDispatch();
 
   const [isLoading, setLoading] = useState(true);
   const [productHasChanges, setProductChanges] = useState(false);
@@ -49,7 +46,7 @@ const EditProduct = () => {
       }
 
       api.updateProductById(currentProductData.id, sendObj).then(() => {
-        dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+        toast(localization.t('general.updatesHaveBeenSaved'));
         window.location.reload();
       });
     }
@@ -90,7 +87,7 @@ const EditProduct = () => {
           dataToSave,
         )
         .then(() => {
-          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+          toast(localization.t('general.updatesHaveBeenSaved'));
           window.location.reload();
         });
     }

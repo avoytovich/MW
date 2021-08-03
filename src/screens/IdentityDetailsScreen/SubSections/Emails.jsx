@@ -12,19 +12,16 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import PropTypes from 'prop-types';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
 import localization from '../../../localization';
 import '../identityDetailsScreen.scss';
 
 const Emails = ({ curIdentity }) => {
-  const dispatch = useDispatch();
   const makeCopy = (value) => {
-    navigator.clipboard.writeText(value).then(() => {
-      dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
   if (curIdentity === null) return <LinearProgress />;
 

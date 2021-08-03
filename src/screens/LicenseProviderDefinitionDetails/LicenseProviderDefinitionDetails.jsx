@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   LinearProgress,
@@ -11,6 +11,8 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
+
 import General from './SubSections/General';
 import HTTPConfiguration from './SubSections/HTTPConfiguration';
 import TestModeHTTPConfiguration from './SubSections/TestModeHTTPConfiguration';
@@ -19,13 +21,12 @@ import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import localization from '../../localization';
 import useLicenseProviderDefinitionDetail from './useLicenseProviderDefinitionDetail';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import api from '../../api';
 import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
 import SectionLayout from '../../components/SectionLayout';
 
 const LicenseProviderDefinitionDetails = () => {
-  const dispatch = useDispatch();
   const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
   const history = useHistory();
@@ -46,17 +47,13 @@ const LicenseProviderDefinitionDetails = () => {
       api.addLicenseProviderDefinition(formattedData).then((res) => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         history.push(`/overview/fulfillment-packages/licenseProviderDefinitions/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
       api.updateLicenseProviderDefinition(id, formattedData).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         setUpdate((u) => u + 1);
       });
     }

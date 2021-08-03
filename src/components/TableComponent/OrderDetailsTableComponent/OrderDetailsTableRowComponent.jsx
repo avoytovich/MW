@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -19,8 +18,9 @@ import {
   Close as CloseIcon,
 } from '@material-ui/icons';
 
+import { toast } from 'react-toastify';
+
 import FullNameAvatar from '../../utils/FullNameAvatar';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
 import localization from '../../../localization';
 import './OrderDetailsTableComponent.scss';
 
@@ -37,11 +37,10 @@ const TableRowComponent = ({
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
-  const dispatch = useDispatch();
+
   const copyUrl = () => {
-    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
-      dispatch(showNotification(localization.t('general.itemURLHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`)
+      .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
   };
 
   const parsePath = (path) => {

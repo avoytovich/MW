@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import FontLayout from './FontLayout';
 import localization from '../../localization';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 
 const newFont = {
@@ -13,7 +12,6 @@ const newFont = {
 };
 const FontAddScreen = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [currentFont, setCurrentFont] = useState(newFont);
   const disabled = currentFont.data.font === ''
     || currentFont.data.fontFamily === ''
@@ -23,9 +21,7 @@ const FontAddScreen = () => {
     api.addNewFont(currentFont).then((res) => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       history.push(`/checkout-experience/fonts/${id}`);
     });
   };

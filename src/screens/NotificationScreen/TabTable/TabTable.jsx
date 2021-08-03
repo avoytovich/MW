@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';
 import api from '../../../api';
@@ -14,8 +14,6 @@ import {
 } from '../../../services/sorting';
 
 const TabTable = ({ tabObject }) => {
-  const dispatch = useDispatch();
-
   const { selectedCustomer } = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -37,12 +35,10 @@ const TabTable = ({ tabObject }) => {
       deleteFunc(id).then(() => {
         const localizedLabel = `labels.${label}`;
         setMakeUpdate((v) => v + 1);
-        dispatch(
-          showNotification(
-            `${localization.t(localizedLabel)} ${id} ${localization.t(
-              'general.hasBeenSuccessfullyDeleted',
-            )}`,
-          ),
+        toast(
+          `${localization.t(localizedLabel)} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
         );
       });
     }

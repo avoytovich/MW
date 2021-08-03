@@ -135,12 +135,12 @@ const filters = {
     {
       id: 'notificationsId',
       label: 'notificationsId',
-      type: 'text'
+      type: 'text',
     },
     {
       id: 'customer',
       label: 'customer',
-      type: 'text'
+      type: 'text',
     },
     {
       id: 'date',
@@ -150,7 +150,7 @@ const filters = {
     {
       id: 'url',
       label: localization.t('labels.notificationUrl'),
-      type: 'text'
+      type: 'text',
     },
     {
       id: 'emails',
@@ -253,7 +253,7 @@ const filters = {
     {
       id: 'updateDate',
       label: localization.t('labels.updateDate'),
-      type: 'date'
+      type: 'date',
     },
     {
       id: 'source',

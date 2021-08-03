@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, forwardRef } from 'react';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
   Box, Tabs, Tab, LinearProgress,
 } from '@material-ui/core';
 
+import { toast } from 'react-toastify';
+
 import ClearIcon from '@material-ui/icons/Clear';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
-import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
 
 import LocalizationInputs from './LocalizationInputs';
@@ -20,7 +20,6 @@ import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/Op
 import { backToFront, localizedValues } from '../../../services/helpers/dataStructuring';
 
 const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
-  const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [availLocales, setAvailLocales] = useState([]);
   const [curData, setCurData] = useState(null);
@@ -83,7 +82,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
         setNewLangValue('');
         setAvailLocales((c) => [...c, newLangValue]);
       } else {
-        dispatch(showNotification('Locale already exists!', true));
+        toast.error('Locale already exists!');
       }
     }
   };

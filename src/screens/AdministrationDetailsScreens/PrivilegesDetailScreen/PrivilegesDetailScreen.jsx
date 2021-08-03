@@ -32,7 +32,7 @@ const PrivilegesDetailScreen = () => {
       setPrivilege(true);
     } else {
       (async () => {
-        let getPrivilegeById = await api.getPrivilegeById(id);
+        const getPrivilegeById = await api.getPrivilegeById(id);
         setPrivilege(getPrivilegeById.data);
       })();
     }
