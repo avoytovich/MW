@@ -444,7 +444,6 @@ const labels = {
   vat: 'VAT',
   net: 'Net',
   gross: 'Gross',
-<<<<<<< HEAD
   netPrice: 'Net price',
   grossPrice: 'Gross price',
   vatAmount: 'Vat amount',
@@ -504,7 +503,6 @@ const labels = {
   wrongProductChoice: 'Wrong Product Choice',
   yes: 'Yes',
   no: 'No',
-=======
   operationDetails: 'Operation Details',
   httpConfiguration: 'HTTP Configuration',
   enable: 'Enable',
@@ -528,7 +526,6 @@ const labels = {
   caCertificate: 'CA Certificate',
   testModeHTTPConfiguration: 'Test mode HTTP configuration',
   baseUrlTest: 'Base URL (Test)',
->>>>>>> master
   operationExecutions: 'Operation Executions',
 };
 
