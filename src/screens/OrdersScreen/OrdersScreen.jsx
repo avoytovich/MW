@@ -94,6 +94,7 @@ const OrdersScreen = () => {
         updatePage={updatePage}
         tableData={orders}
         isLoading={isLoading}
+        noEditDeleteActions
       />
 
       <FindByCC onClose={() => setFindCC(false)} open={findCCOpen} />
