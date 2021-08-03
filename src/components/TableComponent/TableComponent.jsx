@@ -26,6 +26,7 @@ const TableComponent = ({
   isLoading,
   handleDeleteItem,
   noActions,
+  noEditDeleteActions,
   setSortParams,
   sortParams,
   customPath,
@@ -153,6 +154,7 @@ const TableComponent = ({
               key={rowItem.id}
               rowItem={rowItem}
               noActions={noActions}
+              noEditDeleteActions={noEditDeleteActions}
               customPath={customPath}
               errorHighlight={errorHighlight}
             />
@@ -183,6 +185,7 @@ TableComponent.propTypes = {
   isLoading: PropTypes.bool,
   defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
+  noEditDeleteActions: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,
   customPath: PropTypes.string,
