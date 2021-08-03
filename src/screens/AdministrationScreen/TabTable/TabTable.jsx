@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
 import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';
 
@@ -13,8 +12,6 @@ import {
 } from '../../../services/sorting';
 
 const TabTable = ({ tabObject }) => {
-  const dispatch = useDispatch();
-
   const {
     sortKey, generateData, request, deleteFunc, label, scope, defaultShow,
   } = tabObject;
@@ -35,22 +32,22 @@ const TabTable = ({ tabObject }) => {
       deleteFunc(id).then(() => {
         const localizedLabel = `labels.${label}`;
         setMakeUpdate((v) => v + 1);
-        dispatch(
-          showNotification(
-            `${localization.t(localizedLabel)} ${id} ${localization.t(
-              'general.hasBeenSuccessfullyDeleted',
-            )}`,
-          ),
+        toast(
+          `${localization.t(localizedLabel)} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
         );
       });
     }
   };
+
   const requests = async (rowsPerPage, filtersUrl) => {
     const res = await request({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
   };
+
   const data = useTableData(
     currentPage - 1,
     setLoading,

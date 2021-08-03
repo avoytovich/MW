@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/notificationsDefinition';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import localization from '../../localization';
 import { useTableData } from '../../services/useData';
 import api from '../../api';
@@ -18,8 +18,6 @@ const NotificationDefinitionScreen = () => {
     { value: 'name', type: 'asc' },
   );
   const [makeUpdate, setMakeUpdate] = useState(false);
-
-  const dispatch = useDispatch();
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -48,21 +46,17 @@ const NotificationDefinitionScreen = () => {
     ids.forEach((item) => api.deleteNotificationDefinitionById(item)
       .then(() => {
         setMakeUpdate(true);
-        dispatch(
-          showNotification(
-            `${localization.t('general.notificationDefinition')} ${item} ${localization.t(
-              'general.hasBeenSuccessfullyDeleted',
-            )}`,
-          ),
+        toast(
+          `${localization.t('general.notificationDefinition')} ${item} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
         );
       })
       .catch((e) => {
-        dispatch(
-          showNotification(
-            `${localization.t('general.notificationDefinition')} ${item} ${localization.t(
-              'general.error',
-            )} ${e}`,
-          ),
+        toast.error(
+          `${localization.t('general.notificationDefinition')} ${item} ${localization.t(
+            'general.error',
+          )} ${e}`,
         );
       })
       .finally(() => setMakeUpdate(false)));

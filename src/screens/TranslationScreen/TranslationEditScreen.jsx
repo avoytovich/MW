@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { LinearProgress } from '@material-ui/core';
 
 import JsonEditorLayout from '../../layouts/JsonEditorLayout';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
 const TranslationEditScreen = () => {
-  const dispatch = useDispatch();
-
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [hasChanges, setChanges] = useState(false);
@@ -24,9 +21,7 @@ const TranslationEditScreen = () => {
 
   const saveTranslation = () => {
     api.updateTranslationById(id, currentTranslation).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       setTranslationData(currentTranslation);
       window.location.reload();
     });

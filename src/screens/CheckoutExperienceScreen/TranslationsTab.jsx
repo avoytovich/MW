@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import api from '../../api';
 import {
   generateData,
@@ -7,13 +7,11 @@ import {
 } from '../../services/useData/tableMarkups/checkoutExperience';
 import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
 
 const TranslationsTab = () => {
   const scope = 'translations';
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -52,12 +50,10 @@ const TranslationsTab = () => {
 
   const handleDeleteTranslation = (id) => api.deleteTranslationById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.translation')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.translation')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 

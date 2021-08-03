@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import TableComponent from '../../../../components/TableComponent';
 
@@ -8,14 +8,12 @@ import {
   defaultShow,
 } from '../../../../services/useData/tableMarkups/discounts';
 import { useTableData } from '../../../../services/useData';
-import { showNotification } from '../../../../redux/actions/HttpNotifications';
 import localization from '../../../../localization';
 import api from '../../../../api';
 
 const DiscountsScreen = () => {
   const scope = 'discounts';
 
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
@@ -37,12 +35,10 @@ const DiscountsScreen = () => {
 
   const handleDeleteDiscount = (id) => api.deleteDiscountById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.discount')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.discount')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 

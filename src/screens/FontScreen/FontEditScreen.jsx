@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { LinearProgress } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import FontLayout from './FontLayout';
 import localization from '../../localization';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 
 const FontEditScreen = () => {
-  const dispatch = useDispatch();
-
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [hasChanges, setChanges] = useState(false);
@@ -21,9 +18,7 @@ const FontEditScreen = () => {
 
   const saveFont = () => {
     api.updateFontById(currentFont.id, currentFont).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       window.location.reload();
     });
   };

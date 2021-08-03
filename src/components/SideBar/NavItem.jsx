@@ -50,7 +50,7 @@ NavItem.propTypes = {
   title: PropTypes.string.isRequired,
   exact: PropTypes.bool,
   external: PropTypes.bool,
-  isMain: PropTypes.string,
+  isMain: PropTypes.bool,
 };
 
 export default NavItem;
