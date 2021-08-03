@@ -65,6 +65,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/SubscriptionsScreen'))}
       />
       <Route
+        path={`${defPath}/overview/fulfillment-packages/licenseProviderDefinitions/:id`}
+        component={lazy(() => import('../../screens/LicenseProviderDefinitionDetails'))}
+      />
+      <Route
         path={`${defPath}/my-account`}
         component={lazy(() => import('../../screens/MyAccountScreen'))}
       />
@@ -92,22 +96,10 @@ const SignedRoutes = () => {
         path={`${defPath}/settings/notification-definition/:id`}
         component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
       />
-      {/* <Route
-        path={`${defPath}/settings/notification-definition`}
-        component={lazy(() => import('../../screens/NotificationDefinitionScreen'))}
-      /> */}
       <Route
         path={`${defPath}/settings/notifications/:id`}
         component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />
-      {/* <Route
-        path={`${defPath}/settings/notifications`}
-        component={lazy(() => import('../../screens/NotificationScreen'))}
-      /> */}
-      {/* <Route
-        path={`${defPath}/settings/notification-history`}
-        component={lazy(() => import('../../screens/NotificationHistoryScreen'))}
-      /> */}
       <Route
         path={`${defPath}/settings/administration/customers/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
