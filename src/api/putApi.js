@@ -129,6 +129,31 @@ const putApi = {
       data,
     });
   },
+  updateNotificationById(id, data) {
+    const url = `/customer-notifier/receivers/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateNotificationDefinitionById(id, data) {
+    const url = `/customer-notifier/notification-definitions/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateLicenseProviderDefinition(id, data) {
+    const url = `/license-manager/license-provider-definitions/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+
 };
 
 export default putApi;

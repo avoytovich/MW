@@ -272,12 +272,42 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
               </Table>
             </TableContainer>
           </Box>
+
+          <Box p={2} mt={2} width='50%'>
+            <InheritanceField
+              field='priceFunction'
+              onChange={setProductData}
+              value={currentProductData.priceFunction}
+              selectOptions={selectOptions.priceFunctions || []}
+              parentId={parentId}
+              currentProductData={currentProductData}
+            >
+              <SelectWithDeleteIcon
+                label='priceFunction'
+                value={currentProductData.priceFunction}
+                selectOptions={selectOptions.priceFunctions || []}
+                onChangeSelect={(e) => {
+                  setProductData({
+                    ...currentProductData,
+                    priceFunction: e.target.value,
+                  });
+                }}
+                onClickDelIcon={() => {
+                  setProductData({
+                    ...currentProductData,
+                    priceFunction: '',
+                  });
+                }}
+              />
+            </InheritanceField>
+          </Box>
         </>
       )}
     </>
   );
 };
 Prices.propTypes = {
+  selectOptions: PropTypes.object,
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,

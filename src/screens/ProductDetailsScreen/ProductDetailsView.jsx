@@ -72,10 +72,12 @@ const ProductDetailsView = ({
   }, [currentProductData]);
   const disabledTab = !productId && !parentId;
 
+  const handleChangeTab = (tab) => (parentId && tab === 7 ? history.push(`/overview/products/${parentId}`) : setCurTab(tab));
+
   return (
     <>
       {productId && (
-        <Box mx={2}>
+        <Box mx={2} data-test='breadcrumbs'>
           <CustomBreadcrumbs
             url='/overview/products'
             section={localization.t('general.product')}
@@ -115,7 +117,7 @@ const ProductDetailsView = ({
           </Zoom>
 
           {productId && (
-            <Box>
+            <Box data-test='checkoutMenu'>
               {selectOptions.sellingStores && (
                 <CheckoutMenu
                   checkOutStores={checkOutStores}
@@ -130,13 +132,10 @@ const ProductDetailsView = ({
       <Box my={2} bgcolor='#fff' display='flex'>
         <Tabs
           value={curTab}
+          data-test='productTabs'
           indicatorColor='primary'
           textColor='primary'
-          onChange={(event, newValue) => {
-            parentId && newValue === 7
-              ? history.push(`/overview/products/${parentId}`)
-              : setCurTab(newValue);
-          }}
+          onChange={(e, tab) => handleChangeTab(tab)}
           aria-label='disabled tabs example'
         >
           {parentId && (
@@ -177,7 +176,7 @@ const ProductDetailsView = ({
       </Box>
       <Box display='flex'>
         {curTab === 0 && (
-          <SectionLayout label={allTabs[0]}>
+          <SectionLayout dataTest={allTabs[0]} label={allTabs[0]}>
             <General
               selectOptions={selectOptions}
               setProductData={setProductData}
@@ -187,7 +186,7 @@ const ProductDetailsView = ({
           </SectionLayout>
         )}
         {curTab === 1 && (
-          <SectionLayout label={allTabs[1]}>
+          <SectionLayout dataTest={allTabs[1]} label={allTabs[1]}>
             <FulfillmentAndSubscription
               selectOptions={selectOptions}
               setProductData={setProductData}
@@ -196,7 +195,7 @@ const ProductDetailsView = ({
           </SectionLayout>
         )}
         {curTab === 2 && (
-          <SectionLayout label={allTabs[2]}>
+          <SectionLayout dataTest={allTabs[2]} label={allTabs[2]}>
             <LocalizedContent
               setProductData={setProductData}
               currentProductData={currentProductData}
@@ -207,8 +206,9 @@ const ProductDetailsView = ({
           </SectionLayout>
         )}
         {curTab === 3 && (
-          <SectionLayout label={allTabs[3]}>
+          <SectionLayout dataTest={allTabs[3]} label={allTabs[3]}>
             <Prices
+              selectOptions={selectOptions}
               setProductData={setProductData}
               currentProductData={currentProductData}
               productData={productData}
@@ -242,7 +242,7 @@ const ProductDetailsView = ({
           )
         ) : null}
         {curTab === 5 && (
-          <SectionLayout label={allTabs[5]}>
+          <SectionLayout dataTest={allTabs[5]} label={allTabs[5]}>
             <ProductFiles
               productData={productData}
               currentProductData={currentProductData}

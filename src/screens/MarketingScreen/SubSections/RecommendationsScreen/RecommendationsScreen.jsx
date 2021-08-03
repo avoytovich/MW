@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
+import { toast } from 'react-toastify';
 import TableComponent from '../../../../components/TableComponent';
 
 import {
@@ -8,18 +7,20 @@ import {
   defaultShow,
 } from '../../../../services/useData/tableMarkups/recommendations';
 import { useTableData } from '../../../../services/useData';
-import { showNotification } from '../../../../redux/actions/HttpNotifications';
 import localization from '../../../../localization';
 import api from '../../../../api';
 
 const RecommendationsScreen = () => {
-  const dispatch = useDispatch();
+  const scope = 'recommendations';
+
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getRecommendations(currentPage - 1, filtersUrl);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getRecommendations({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+    });
     return generateData(res.data);
   };
 
@@ -27,18 +28,16 @@ const RecommendationsScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'recommendations',
+    scope,
     requests,
   );
 
   const handleDeleteRecommendation = (id) => api.deleteRecommendationById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.recommendation')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.recommendation')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -46,8 +45,9 @@ const RecommendationsScreen = () => {
 
   return (
     <TableComponent
+      scope={scope}
       handleDeleteItem={handleDeleteRecommendation}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={campaigns}

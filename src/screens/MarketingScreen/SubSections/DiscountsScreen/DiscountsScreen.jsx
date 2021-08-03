@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import TableComponent from '../../../../components/TableComponent';
 
@@ -8,18 +8,20 @@ import {
   defaultShow,
 } from '../../../../services/useData/tableMarkups/discounts';
 import { useTableData } from '../../../../services/useData';
-import { showNotification } from '../../../../redux/actions/HttpNotifications';
 import localization from '../../../../localization';
 import api from '../../../../api';
 
 const DiscountsScreen = () => {
-  const dispatch = useDispatch();
+  const scope = 'discounts';
+
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getDiscounts(currentPage - 1, filtersUrl);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getDiscounts({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+    });
     return generateData(res.data);
   };
 
@@ -27,18 +29,16 @@ const DiscountsScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'discounts',
+    scope,
     requests,
   );
 
   const handleDeleteDiscount = (id) => api.deleteDiscountById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.discount')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.discount')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -46,8 +46,9 @@ const DiscountsScreen = () => {
 
   return (
     <TableComponent
+      scope={scope}
       handleDeleteItem={handleDeleteDiscount}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={discounts}

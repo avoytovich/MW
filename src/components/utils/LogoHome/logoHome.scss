@@ -1,0 +1,18 @@
+.wrapperLogoContainer {
+  width: 100%;
+  background-color: #0f0f0f;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  color: white;
+
+  .wrapperLogo {
+    background-size: cover;
+    margin-right: 15px;
+
+    .nexWayLogo {
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Box, Button } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import api from '../../api';
 import {
   generateData,
@@ -9,8 +9,8 @@ import {
 } from '../../services/useData/tableMarkups/identities';
 import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
+import TableActionsBar from '../../components/TableActionsBar';
 import {
   getSortParams,
   saveSortParams,
@@ -18,7 +18,7 @@ import {
 } from '../../services/sorting';
 
 const IdentitiesScreen = () => {
-  const dispatch = useDispatch();
+  const scope = 'identities';
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -31,11 +31,14 @@ const IdentitiesScreen = () => {
     saveSortParams(sortKeys.identities, params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowsPerPage, filtersUrl) => {
     const res = await api.getIdentities(
-      currentPage - 1,
-      filtersUrl,
-      sortParams,
+      {
+        page: currentPage - 1,
+        size: rowsPerPage,
+        filters: filtersUrl,
+        sortParams,
+      },
     );
     return generateData(res.data);
   };
@@ -44,19 +47,17 @@ const IdentitiesScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'identities',
+    scope,
     requests,
     sortParams,
   );
 
   const handleDeleteIdentity = (id) => api.deleteIdentityById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.identity')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.identity')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -64,25 +65,30 @@ const IdentitiesScreen = () => {
 
   return (
     <Box display='flex' flexDirection='column'>
-      <Box alignSelf='flex-end' py={2}>
-        <Button
-          id='add-identity-button'
-          color='primary'
-          size='large'
-          variant='contained'
-          component={Link}
-          to='/settings/identities/add'
-        >
-          {`${localization.t('general.add')} ${localization.t(
-            'general.identity',
-          )}`}
-        </Button>
-      </Box>
+      <TableActionsBar
+        scope={scope}
+      >
+        <Box alignSelf='flex-end' py={2}>
+          <Button
+            id='add-identity-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to='/settings/identities/add'
+          >
+            {`${localization.t('general.add')} ${localization.t(
+              'general.identity',
+            )}`}
+          </Button>
+        </Box>
+      </TableActionsBar>
       <TableComponent
+        scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteIdentity}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={identities}

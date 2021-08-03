@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
 import api from '../../api';
+
 import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/checkoutExperience';
 import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import localization from '../../localization';
 import {
   getSortParams,
@@ -16,7 +18,7 @@ import {
 } from '../../services/sorting';
 
 const FontsTab = () => {
-  const dispatch = useDispatch();
+  const scope = 'fonts';
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -29,9 +31,11 @@ const FontsTab = () => {
     saveSortParams(sortKeys.fontsTab, params);
   };
 
-  const requests = async () => {
+  const requests = async (rowsPerPage) => {
     const costumersIds = [];
-    const res = await api.getDesignsFonts(currentPage - 1, sortParams);
+    const res = await api.getDesignsFonts({
+      page: currentPage - 1, size: rowsPerPage, sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -46,19 +50,17 @@ const FontsTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'fonts',
+    scope,
     requests,
     sortParams,
   );
 
   const handleDeleteFont = (id) => api.deleteFontById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.font')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.font')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -66,10 +68,11 @@ const FontsTab = () => {
 
   return (
     <TableComponent
+      scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteFont}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={fonts}

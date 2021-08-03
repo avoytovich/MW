@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   LinearProgress,
   Zoom,
@@ -11,6 +11,8 @@ import {
   Tab,
   Breadcrumbs,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
+
 import Payment from './SubSections/Payment';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import General from './SubSections/General';
@@ -22,7 +24,7 @@ import {
   structureSelectOptions,
 } from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import {
   formDesignOptions,
   structureResources,
@@ -35,7 +37,6 @@ import {
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const [curTab, setCurTab] = useState(0);
@@ -89,17 +90,13 @@ const StoreDetailsScreen = () => {
       api.addNewStore(updatedData).then((res) => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         history.push(`/overview/stores/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
       api.updateStoreById(currentStoreData.id, updatedData).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         setUpdate((u) => u + 1);
       });
     }

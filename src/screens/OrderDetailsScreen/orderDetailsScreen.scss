@@ -13,3 +13,8 @@
 .orderDetailsRow:nth-child(even) {
   background-color: $tablesOddRow;
 }
+
+.download {
+  cursor: pointer;
+  color: $clickable;
+}

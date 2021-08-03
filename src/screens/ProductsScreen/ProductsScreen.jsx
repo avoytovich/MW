@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import api from '../../api';
 import {
@@ -10,8 +10,9 @@ import {
 } from '../../services/useData/tableMarkups/products';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import localization from '../../localization';
+import TableActionsBar from '../../components/TableActionsBar';
 import {
   getSortParams,
   saveSortParams,
@@ -19,7 +20,8 @@ import {
 } from '../../services/sorting';
 
 const ProductsScreen = () => {
-  const dispatch = useDispatch();
+  const scope = 'products';
+
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -27,8 +29,10 @@ const ProductsScreen = () => {
     getSortParams(sortKeys.products),
   );
 
-  const requests = async (filtersUrl) => {
-    const res = await api.getProducts(currentPage - 1, filtersUrl, sortParams);
+  const requests = async (rowsPerPage, filtersUrl) => {
+    const res = await api.getProducts({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     return generateData(res.data);
   };
 
@@ -41,42 +45,45 @@ const ProductsScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'products',
+    scope,
     requests,
     sortParams,
   );
 
   const handleDeleteProduct = (id) => api.deleteProductById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.product')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.product')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <Box display="flex" justifyContent="flex-end" p="15px">
-        <Button
-          id="add-product"
-          color="primary"
-          size="large"
-          variant="contained"
-          component={Link}
-          to="/products/add"
-        >
-          {localization.t('general.addProduct')}
-        </Button>
-      </Box>
+      <TableActionsBar
+        scope={scope}
+      >
+        <Box>
+          <Button
+            id="add-product"
+            color="primary"
+            size="large"
+            variant="contained"
+            component={Link}
+            to="/products/add"
+          >
+            {localization.t('general.addProduct')}
+          </Button>
+        </Box>
+      </TableActionsBar>
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteProduct}
-        showColumn={defaultShow}
+        defaultShowColumn={defaultShow}
+        scope={scope}
         currentPage={currentPage}
         updatePage={updatePage}
         tableData={products}

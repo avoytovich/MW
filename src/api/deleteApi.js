@@ -99,6 +99,27 @@ const deleteApi = {
       url,
     });
   },
+  deleteNotificationDefinitionById(id) {
+    const url = `/customer-notifier/notification-definitions/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteCartById(id) {
+    const url = `/carts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteLicenseProviderDefinitionById(id) {
+    const url = `/license-manager/license-provider-definitions/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;

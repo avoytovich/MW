@@ -1,8 +1,13 @@
 import { axiosInstance } from '../axios';
 
+const defaultRequestedSize = 30;
+const defaultRequestedPage = 0;
+const defaultRequestedObject = { page: defaultRequestedPage, size: defaultRequestedSize };
 const getAllApi = {
-  getOrders(page, filters, sortParams) {
-    let url = `/orders?format=short&size=50&page=${page}`;
+  getOrders({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/orders?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -14,8 +19,10 @@ const getAllApi = {
       url,
     });
   },
-  getStores(page, filters, sortParams) {
-    let url = `/stores?format=short&size=50&page=${page}`;
+  getStores({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/stores?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -27,8 +34,10 @@ const getAllApi = {
       url,
     });
   },
-  getSubscriptions(page, filters) {
-    let url = `/subscription-manager/subscriptions?format=short&size=50&page=${page}`;
+  getSubscriptions({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+  } = defaultRequestedObject) {
+    let url = `/subscription-manager/subscriptions?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -38,8 +47,10 @@ const getAllApi = {
     });
   },
 
-  getProducts(page = 0, filters, sortParams) {
-    let url = `/products?format=full&size=50&page=${page}`;
+  getProducts({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/products?format=full&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -52,8 +63,10 @@ const getAllApi = {
     });
   },
 
-  getIdentities(page, filters, sortParams) {
-    let url = `/iam/identities?format=short&size=50&page=${page}`;
+  getIdentities({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/iam/identities?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
     }
@@ -65,8 +78,10 @@ const getAllApi = {
       url,
     });
   },
-  getPrivileges(page = 0, filters, sortParams) {
-    let url = `/iam/privileges?format=short&size=150&page=${page}`;
+  getPrivileges({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/iam/privileges?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -78,8 +93,10 @@ const getAllApi = {
       url,
     });
   },
-  getRoles(page = 0, filters, sortParams) {
-    let url = `iam/roles?format=short&size=150&page=${page}`;
+  getRoles({
+    page = defaultRequestedPage, filters, size = defaultRequestedSize, sortParams,
+  } = defaultRequestedObject) {
+    let url = `iam/roles?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -91,8 +108,10 @@ const getAllApi = {
       url,
     });
   },
-  getMetaRoles(page = 0, filters, sortParams) {
-    let url = `iam/meta-roles?format=short&page=${page}`;
+  getMetaRoles({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `iam/meta-roles?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -104,8 +123,10 @@ const getAllApi = {
       url,
     });
   },
-  getCustomers(page = 0, filters, sortParams) {
-    let url = `https://api.staging.nexway.build/customers?format=short&size=50&page=${page}`;
+  getCustomers({
+    page = 0, filters, size = defaultRequestedSize, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/customers?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -117,9 +138,23 @@ const getAllApi = {
       url,
     });
   },
+  getCampaigns({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+  } = defaultRequestedObject) {
+    let url = `/marketing-campaign/campaigns?format=short&sort=updateDate,desc&size=${size}&page=${page}`;
 
-  getCampaigns(page, filters) {
-    let url = `/marketing-campaign/campaigns?format=short&sort=updateDate,desc&size=50&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getRecommendations({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+  } = defaultRequestedObject) {
+    let url = `/product-recommendations?format=short&sort=name,asc&size=${size}&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -130,20 +165,10 @@ const getAllApi = {
       url,
     });
   },
-  getRecommendations(page, filters) {
-    let url = `/product-recommendations?format=short&sort=name,asc&size=50&page=${page}`;
-
-    if (filters) {
-      url += filters;
-    }
-
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
-  getDiscounts(page, filters) {
-    let url = `/discounts?format=short&sort=name,asc&size=50&page=${page}`;
+  getDiscounts({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+  } = defaultRequestedObject) {
+    let url = `/discounts?format=short&sort=name,asc&size=${size}&page=${page}`;
 
     if (filters) {
       url += filters;
@@ -190,8 +215,10 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsTranslations(page = 0, sortParams) {
-    let url = `/designs/i18ns?format=short&size=50&page=${page}`;
+  getDesignsTranslations({
+    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/designs/i18ns?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -200,8 +227,10 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsFonts(page = 0, sortParams) {
-    let url = `/designs/fonts?format=short&size=50&page=${page}`;
+  getDesignsFonts({
+    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/designs/fonts?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -210,8 +239,10 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsThemes(page = 0, sortParams) {
-    let url = `/designs/themes?format=short&size=50&page=${page}`;
+  getDesignsThemes({
+    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/designs/themes?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -220,8 +251,10 @@ const getAllApi = {
       url,
     });
   },
-  getDesignsLayouts(page = 0, sortParams) {
-    let url = `/designs/layouts?format=short&size=50&page=${page}`;
+  getDesignsLayouts({
+    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/designs/layouts?format=short&size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -246,6 +279,171 @@ const getAllApi = {
   },
   getLocaleOptions() {
     const url = '/referential-manager/locale?size=400&sort=code,asc';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getEventsOptions() {
+    const url = '/customer-notifier/notification-definitions?format=short&size=30&page=0';
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getMarketingPrices({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+  } = defaultRequestedObject) {
+    let url = `/prices?format=short&size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getNotificationHistory(page = 0, filters, sortParams) {
+    let url = `/customer-notifier/notifications?format=short&size=10&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getNotifications({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/customer-notifier/receivers?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getNotificationDefinition({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/customer-notifier/notification-definitions?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getNotificationsHistory({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/customer-notifier/notifications?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getLicenses({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/license-manager/licenses?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
+  getCarts({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/carts?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getAutoFulfillments({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/fulfillments/partners?size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getManualFulfillments({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/license-keys-provider/packages?size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getLicenseProviderDefinitions({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/license-manager/license-provider-definitions?size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
     return axiosInstance({
       method: 'get',
       url,

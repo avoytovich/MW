@@ -38,24 +38,27 @@ class Auth {
 
   handleAuthentication() {
     const accessToken = this.getAccessToken();
+    const refreshToken = this.getRefreshToken();
 
     if (!accessToken) {
       return;
     }
 
     if (this.isValidToken(accessToken)) {
-      this.setSession(accessToken);
+      this.setSession(accessToken, refreshToken);
     } else {
       this.setSession(null);
     }
   }
 
   loginWithEmailAndPassword(username, password, realm = 'nexway') {
+    localStorage.setItem('realm', realm);
+
     return api
       .signIn({ username, password, realm })
       .then(({ data }) => {
         if (data.access_token) {
-          this.setSession(data.access_token);
+          this.setSession(data.access_token, data.refresh_token);
           this.setAxiosInterceptors();
           return data;
         }
@@ -64,17 +67,48 @@ class Auth {
       });
   }
 
+  refreshToken() {
+    const refresh = this.getRefreshToken();
+    const realm = this.getRealm();
+
+    console.log('TOKEN REFRESHED');
+
+    return api.signIn({
+      refresh_token: refresh,
+      grantType: 'refresh_token',
+      realm,
+    }).then(({ data }) => {
+      if (data.access_token) {
+        this.setSession(data.access_token, data.refresh_token);
+        this.setAxiosInterceptors();
+        return window.location.reload();
+      }
+
+      this.logout();
+      return window.location.reload();
+    }).catch(() => {
+      this.logout();
+      return window.location.reload();
+    });
+  }
+
   logout() { this.setSession(null); }
 
-  setSession(accessToken) {
+  setSession(accessToken, refreshToken) {
     if (accessToken) {
+      localStorage.setItem('refreshToken', refreshToken);
       return localStorage.setItem('accessToken', accessToken);
     }
 
+    localStorage.removeItem('refreshToken');
     return localStorage.removeItem('accessToken');
   }
 
   getAccessToken() { return localStorage.getItem('accessToken'); }
+
+  getRefreshToken() { return localStorage.getItem('refreshToken'); }
+
+  getRealm() { return localStorage.getItem('realm'); }
 
   decodeToken(accessToken) { return jwtDecode(accessToken); }
 
@@ -85,6 +119,10 @@ class Auth {
 
     const decoded = this.decodeToken(accessToken);
     const currentTime = Date.now() / 1000;
+
+    if (decoded.exp < currentTime) {
+      return this.refreshToken();
+    }
 
     return decoded.exp > currentTime;
   }

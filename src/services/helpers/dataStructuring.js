@@ -19,6 +19,7 @@ const defaultProduct = {
   productFamily: '',
   priceFunction: '',
   nextGenerationOf: [],
+  resources: [],
   prices: {
     defaultCurrency: 'AED',
     priceByCountryByCurrency: {
@@ -98,7 +99,7 @@ const productRequiredFields = (product) => {
       index,
     }));
   }
-  return { ...defaultProduct, ...product, resources: resourcesKeys };
+  return { ...defaultProduct, ...product, resources: resourcesKeys || [] };
 };
 
 const structureSelectOptions = (options, optionValue, ...otherOptions) => {
@@ -215,6 +216,7 @@ const backToFront = (
     'nextGenerationOf',
     'id',
     'parentId',
+    'resources',
   ],
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable
@@ -293,6 +295,63 @@ const languagesOptionsFormatting = (array) => array.map((item) => {
     { id: item.code, value: languageNames.of(item.code) });
 });
 
+const notificationRequiredFields = (obj) => {
+  const receiverType = obj.emails ? 'email' : 'webhook';
+  const defaultObj = {
+    name: '',
+    status: 'Active',
+    notificationDefinitionIds: [],
+    targetedCustomerIds: [],
+    emails: [],
+    url: '',
+    httpClientConfiguration: {
+      httpHeaders: { 'Content-Type': [], Version: [] },
+      clientCredentialOauth2Config: {
+        clientId: '',
+        clientSecret: '',
+        tokenUrl: '',
+        scopes: [],
+      },
+      tlsConfiguration: { tlsAuthMode: '' },
+    },
+  };
+
+  const httpHeaders = {
+    ...defaultObj.httpClientConfiguration.httpHeaders,
+    ...obj.httpClientConfiguration?.httpHeaders,
+  };
+  const clientCredentialOauth2Config = {
+    ...defaultObj.httpClientConfiguration.clientCredentialOauth2Config,
+    ...obj.httpClientConfiguration?.clientCredentialOauth2Config,
+  };
+  const tlsConfiguration = {
+    ...defaultObj.httpClientConfiguration.tlsConfiguration,
+    ...obj.httpClientConfiguration?.tlsConfiguration,
+  };
+
+  return {
+    ...defaultObj,
+    ...obj,
+    receiverType,
+    httpClientConfiguration: { httpHeaders, clientCredentialOauth2Config, tlsConfiguration },
+  };
+};
+
+const removeEmptyPropsInObject = (data) => {
+  const res = { ...data };
+  return Object.keys(res).reduce((accumulator, key) => {
+    const isObject = typeof res[key] === 'object';
+    const isNotEmptyArray = Array.isArray(res[key]) && res[key].length > 0;
+    const value = isObject && !isNotEmptyArray ? removeEmptyPropsInObject(res[key]) : res[key];
+    const isEmptyObject = isObject && !Object.keys(value).length;
+    if (value === '' || isEmptyObject) {
+      return accumulator;
+    }
+
+    return Object.assign(accumulator, { [key]: value });
+  }, {});
+};
+
 export {
   storeRequiredFields,
   productRequiredFields,
@@ -307,4 +366,6 @@ export {
   localizedValues,
   countriesOptionsFormatting,
   languagesOptionsFormatting,
+  notificationRequiredFields,
+  removeEmptyPropsInObject,
 };

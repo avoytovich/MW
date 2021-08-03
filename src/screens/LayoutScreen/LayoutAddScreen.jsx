@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import JsonEditorLayout from '../../layouts/JsonEditorLayout';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
 const LayoutAddScreen = () => {
-  const dispatch = useDispatch();
-
   const { customerId } = useSelector(({ account: { user } }) => user);
   const initData = {
     name: '',
@@ -26,9 +24,7 @@ const LayoutAddScreen = () => {
 
   const saveLayout = () => {
     api.addNewLayout(currentLayout).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       setCurrentLayout({ ...initData });
     });
   };

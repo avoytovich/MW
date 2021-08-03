@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -19,8 +18,9 @@ import {
   Close as CloseIcon,
 } from '@material-ui/icons';
 
+import { toast } from 'react-toastify';
+
 import FullNameAvatar from '../../utils/FullNameAvatar';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
 import localization from '../../../localization';
 import './OrderDetailsTableComponent.scss';
 
@@ -37,11 +37,10 @@ const TableRowComponent = ({
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
-  const dispatch = useDispatch();
+
   const copyUrl = () => {
-    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
-      dispatch(showNotification(localization.t('general.itemURLHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`)
+      .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
   };
 
   const parsePath = (path) => {
@@ -65,6 +64,15 @@ const TableRowComponent = ({
 
       if (item.id === 'createDate' || item.id === 'updateDate') {
         valueToShow = moment(rowItem[item.id]).format('D MMM YYYY');
+      } else if (item.id === 'name') {
+        valueToShow = (
+          <Typography
+            className="name-value"
+            onClick={() => history.push(`/overview/products/${rowItem.productId}`)}
+          >
+            {rowItem[item.id]}
+          </Typography>
+        );
       } else {
         valueToShow = rowItem[item.id];
       }
@@ -94,7 +102,7 @@ const TableRowComponent = ({
                   : 'secondary'
               }
               noWrap
-              className="tableCellItem"
+              className={`tableCellItem ${rowItem[errorHighlight] ? 'error-row-color' : ''}`}
             >
               { // eslint-disable-next-line no-nested-ternary
                 valueToShow === 'ENABLED' || valueToShow === true ? <CheckIcon className="statusEnabled" />
@@ -109,7 +117,7 @@ const TableRowComponent = ({
   };
 
   return (
-    <Box className={`orderDetailsTableRowGrid ${rowItem[errorHighlight] ? 'error-row' : ''}`} data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
+    <Box className="orderDetailsTableRowGrid" data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
       <Grid
         onClick={() => customPath !== 'disabled' && history.push(customPath ? parsePath(customPath) : `${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}

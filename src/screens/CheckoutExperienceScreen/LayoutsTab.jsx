@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import api from '../../api';
 import {
   generateData,
@@ -7,12 +7,11 @@ import {
 } from '../../services/useData/tableMarkups/checkoutExperience';
 import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
 
 const LayoutsTab = () => {
-  const dispatch = useDispatch();
+  const scope = 'layouts';
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -25,9 +24,11 @@ const LayoutsTab = () => {
     saveSortParams(sortKeys.layoutsTab, params);
   };
 
-  const requests = async () => {
+  const requests = async (rowsPerPage) => {
     const costumersIds = [];
-    const res = await api.getDesignsLayouts(currentPage - 1, sortParams);
+    const res = await api.getDesignsLayouts({
+      page: currentPage - 1, size: rowsPerPage, sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -42,19 +43,17 @@ const LayoutsTab = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'layouts',
+    scope,
     requests,
     sortParams,
   );
 
   const handleDeleteLayout = (id) => api.deleteLayoutById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.layout')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.layout')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -62,10 +61,11 @@ const LayoutsTab = () => {
 
   return (
     <TableComponent
+      scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteLayout}
-      showColumn={defaultShow}
+      defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={layout}

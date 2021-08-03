@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 import i18n from 'i18n-js';
 import getBrowserLocale from 'browser-locale';
-import { en, fr } from './localizations';
+import { en } from './localizations';
 
 const DEFAULT_LOCALE = {
   name: 'en',
@@ -14,12 +14,6 @@ const LOCALES = {
     key: 'en-US',
     isAvailable: true,
     messages: en,
-  },
-  fr: {
-    name: 'FR',
-    key: 'fr',
-    isAvailable: true,
-    messages: fr,
   },
 };
 
@@ -53,13 +47,13 @@ const getLocaleName = (localeKey) => {
 };
 
 const loadLocalization = async () => {
-  Object.values(LOCALES).forEach((item) => {
+  /* Object.values(LOCALES).forEach((item) => {
     if (item.isAvailable) {
       i18n.translations[item.key] = item.messages;
     }
   });
 
-  i18n.locale = await getCurrentLocale();
+  i18n.locale = await getCurrentLocale(); */
 };
 
 export default {

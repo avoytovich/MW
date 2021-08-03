@@ -34,7 +34,7 @@ const useRoleDetailsData = (id, nxState) => {
     });
     Promise.allSettled([
       api.getConditionsOfAvailability(),
-      api.getPrivileges(),
+      api.getPrivileges({ size: 500 }),
     ]).then(([conditionsOfAvailabilityOptions, clearancesOptions]) => {
       const clearances = formPrivilegeOptions(
         clearancesOptions.value?.data.items,

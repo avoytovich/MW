@@ -20,6 +20,7 @@ const general = {
   sessionEnded: 'Session ended!',
   identity: 'Identity',
   order: 'Order',
+  notificationDefinition: 'Notification-definition',
   product: 'Product',
   store: 'Store',
   recommendation: 'Recommendation',
@@ -74,6 +75,20 @@ const general = {
   selectFiles: 'Select files from your computer or click to enter custom URL',
   uploadFiles: ' upload files',
   privilege: 'privilege',
+  notificationEnabled: 'Enabled',
+  notificationDisabled: 'Disabled',
+  notification: 'Notification',
+  rowsPerPage: 'Rows per page',
+  notifications: {
+    notification: 'notification',
+    notificationDefinition: 'notification definition',
+  },
+  cart: 'Cart',
+  addCart: 'Add Cart',
+  findColumn: 'Find column',
+  hideAll: 'Hide All',
+  showAll: 'Show All',
+  licenseProviderDefinition: 'License Provider Definition',
 };
 
 export default general;

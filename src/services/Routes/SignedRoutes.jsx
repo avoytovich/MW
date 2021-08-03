@@ -41,6 +41,15 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/ProductsScreen'))}
       />
       <Route
+        path={`${defPath}/overview/fulfillment-packages/licenseProviderDefinitions/:id`}
+        component={lazy(() => import('../../screens/LicenseProviderDefinitionDetails'))}
+      />
+      <Route
+        path={`${defPath}/overview/fulfillment-packages`}
+        component={lazy(() => import('../../screens/FulfillmentPackagesScreen'))}
+      />
+
+      <Route
         path={`${defPath}/overview/stores/:id`}
         component={lazy(() => import('../../screens/StoreDetailsScreen'))}
       />
@@ -69,12 +78,32 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/MyAccountScreen'))}
       />
       <Route
+        path={`${defPath}/licenses/:id`}
+        component={lazy(() => import('../../screens/LicenseDetailsScreen'))}
+      />
+      <Route
+        path={`${defPath}/licenses`}
+        component={lazy(() => import('../../screens/LicensesScreen/LicensesScreen'))}
+      />
+      <Route
         path={`${defPath}/settings/identities/:id`}
         component={lazy(() => import('../../screens/IdentityDetailsScreen'))}
       />
       <Route
         path={`${defPath}/settings/identities`}
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/notification-history/:id`}
+        component={lazy(() => import('../../screens/NotificationHistoryDetailsScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/notification-definition/:id`}
+        component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/notifications/:id`}
+        component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />
       <Route
         path={`${defPath}/settings/administration/customers/:id`}
@@ -95,6 +124,14 @@ const SignedRoutes = () => {
       <Route
         path={`${defPath}/settings/administration`}
         component={lazy(() => import('../../screens/AdministrationScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings/carts`}
+        component={lazy(() => import('../../screens/CartsScreen'))}
+      />
+      <Route
+        path={`${defPath}/settings`}
+        component={lazy(() => import('../../screens/NotificationScreen'))}
       />
       <Route
         path={`${defPath}/marketing/discounts/:id`}
@@ -160,7 +197,6 @@ const SignedRoutes = () => {
         path={`${defPath}/overview/invoices-credit-notes`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
-
       <Redirect to={`${defPath}/`} />
     </Switch>
   );

@@ -1,0 +1,22 @@
+@import '../../styles/variables.scss';
+
+.wrapper-notification-history {
+  .customer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .customer-value {
+      margin-right: 5px;
+      cursor: pointer;
+      color: $clickable;
+    }
+  }
+  .notification-history-id {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    .history-id-value {
+      margin-right: 5px;
+    }
+  }
+}

@@ -1,9 +1,10 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import {
   Box,
@@ -28,8 +29,6 @@ import {
   priceCurrency,
 } from '../../services/selectOptions/selectOptions';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
-
 import api from '../../api';
 import localization from '../../localization';
 
@@ -37,7 +36,6 @@ import './pricesDetailsScreen.scss';
 
 const PricesDetailsScreen = () => {
   const countriesOptions = getCountriesOptions();
-  const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
   const [price, setPrice] = useState(null);
@@ -58,14 +56,14 @@ const PricesDetailsScreen = () => {
       api
         .addNewPrice(curPrice)
         .then(() => {
-          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+          toast(localization.t('general.updatesHaveBeenSaved'));
           history.push('/marketing/prices');
         });
     } else {
       api
         .updatePriceById(id, curPrice)
         .then(() => {
-          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+          toast(localization.t('general.updatesHaveBeenSaved'));
           setPrice(curPrice);
         });
     }
@@ -102,10 +100,9 @@ const PricesDetailsScreen = () => {
     if (id === 'add') {
       if (selectedCustomer?.id) {
         api
-          .getProducts(0, `&customerId=${selectedCustomer?.id}&status=ENABLED`)
+          .getProducts({ filters: `&customerId=${selectedCustomer?.id}&status=ENABLED` })
           .then(({ data: { items } }) => {
             const products = items.map((it) => ({ id: it.id, value: it.genericName }));
-
             setAvailProducts(products);
           });
       }
@@ -195,7 +192,7 @@ const PricesDetailsScreen = () => {
           price?.productId ? (
             <Box mt={4} display="flex">
               <Typography gutterBottom variant="h5" style={{ marginRight: '10px' }}>
-                {localization.t('labels.productID')}
+                {localization.t('labels.productId')}
               </Typography>
 
               <Typography variant="h6">{price?.productId}</Typography>
@@ -208,7 +205,7 @@ const PricesDetailsScreen = () => {
           ) : (
             <Box width='50%' pr={4}>
               <SelectCustom
-                label="productID"
+                label="productId"
                 value={curPrice?.productId}
                 isRequired
                 selectOptions={availProducts}

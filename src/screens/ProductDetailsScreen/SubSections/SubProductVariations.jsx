@@ -32,10 +32,9 @@ const SubProductVariations = ({
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
 
   const counts = {};
-  const subProductsList =
-    currentProductData?.subProducts?.state === 'inherits'
-      ? currentProductData?.subProducts.parentValue
-      : currentProductData?.subProducts.value;
+  const subProductsList = currentProductData?.subProducts?.state === 'inherits'
+    ? currentProductData?.subProducts?.parentValue
+    : currentProductData?.subProducts?.value;
 
   subProductsList?.forEach((x) => {
     counts[x] = (counts[x] || 0) + 1;
@@ -71,8 +70,7 @@ const SubProductVariations = ({
     <Box display='flex' width='100%'>
       <SectionLayout label='bundledProducts' contentWidth='100%'>
         {Object.entries(counts).map(([key, value]) => {
-          const selectValue =
-            selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+          const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
           return (
             <Box
@@ -177,7 +175,7 @@ const SubProductVariations = ({
                     ...currentProductData,
                     subProducts: {
                       ...currentProductData.subProducts,
-                      value: [...currentProductData.subProducts.value, selectedBundledProduct],
+                      value: [...currentProductData.subProducts?.value, selectedBundledProduct],
                     },
                   });
                   setSelectedBundledProduct(null);

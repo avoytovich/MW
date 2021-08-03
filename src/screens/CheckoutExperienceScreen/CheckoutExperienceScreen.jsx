@@ -11,6 +11,8 @@ import TranslationsTab from './TranslationsTab';
 import FontsTab from './FontsTab';
 import ThemesTab from './ThemesTab';
 import LayoutsTab from './LayoutsTab';
+import TableActionsBar from '../../components/TableActionsBar';
+
 import './CheckoutExperienceScreen.scss';
 
 const allTabs = [
@@ -20,6 +22,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.theme',
     )}`,
+    scope: 'themes',
   },
   {
     label: localization.t('labels.layouts'),
@@ -27,6 +30,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.layout',
     )}`,
+    scope: 'layouts',
   },
   {
     label: localization.t('labels.translations'),
@@ -34,6 +38,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.translation',
     )}`,
+    scope: 'translations',
   },
   {
     label: localization.t('labels.fonts'),
@@ -41,6 +46,7 @@ const allTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.font',
     )}`,
+    scope: 'fonts',
   },
 ];
 
@@ -48,50 +54,56 @@ const CheckoutExperienceScreen = ({ location }) => {
   const drawAddButton = () => {
     const currentTad = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
     return (
-      <Button
-        id="add-checkout-design-button"
-        color="primary"
-        size="large"
-        variant="contained"
-        component={Link}
-        to={`${currentTad.path}/add`}
+      <TableActionsBar
+        scope={currentTad.scope}
       >
-        {currentTad.button}
-      </Button>
+        <Button
+          id="add-checkout-design-button"
+          color="primary"
+          size="large"
+          variant="contained"
+          component={Link}
+          to={`${currentTad.path}/add`}
+        >
+          {currentTad.button}
+        </Button>
+      </TableActionsBar>
     );
   };
   return (
-    <Box display="flex" flexDirection="column">
+    <>
       {drawAddButton()}
-      <Tabs
-        value={
-          location.pathname === '/checkout-experience'
-            ? allTabs[0].path
-            : location.pathname
-        }
-        indicatorColor="primary"
-        textColor="primary"
-      >
-        {allTabs.map((item) => (
-          <Tab
-            key={item.label}
-            label={item.label}
-            value={item.path}
-            to={item.path}
-            component={Link}
-          />
-        ))}
-      </Tabs>
-      <Box mt={3}>
-        <Switch>
-          <Route exact path={allTabs[0].path} component={ThemesTab} />
-          <Route exact path={allTabs[1].path} component={LayoutsTab} />
-          <Route exact path={allTabs[2].path} component={TranslationsTab} />
-          <Route exact path={allTabs[3].path} component={FontsTab} />
-          <Redirect exact from="/checkout-experience" to={allTabs[0].path} />
-        </Switch>
+      <Box display="flex" flexDirection="column">
+        <Tabs
+          value={
+            location.pathname === '/checkout-experience'
+              ? allTabs[0].path
+              : location.pathname
+          }
+          indicatorColor="primary"
+          textColor="primary"
+        >
+          {allTabs.map((item) => (
+            <Tab
+              key={item.label}
+              label={item.label}
+              value={item.path}
+              to={item.path}
+              component={Link}
+            />
+          ))}
+        </Tabs>
+        <Box mt={3}>
+          <Switch>
+            <Route exact path={allTabs[0].path} component={ThemesTab} />
+            <Route exact path={allTabs[1].path} component={LayoutsTab} />
+            <Route exact path={allTabs[2].path} component={TranslationsTab} />
+            <Route exact path={allTabs[3].path} component={FontsTab} />
+            <Redirect exact from="/checkout-experience" to={allTabs[0].path} />
+          </Switch>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 CheckoutExperienceScreen.propTypes = {

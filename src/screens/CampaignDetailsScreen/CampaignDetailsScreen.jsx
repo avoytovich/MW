@@ -1,6 +1,6 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
 import {
@@ -15,6 +15,7 @@ import {
 } from '@material-ui/core';
 
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import {
   generateData,
@@ -22,7 +23,6 @@ import {
 } from '../../services/useData/tableMarkups/campaignPrices';
 
 import api from '../../api';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import CustomCard from '../../components/utils/CustomCard';
 import TableComponent from '../../components/TableComponent';
 import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
@@ -33,7 +33,6 @@ import localization from '../../localization';
 import './campaignDetailsScreen.scss';
 
 const CampaignDetailsScreen = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
   const { id } = useParams();
   const [campaign, setCampaign] = useState(null);
@@ -51,16 +50,12 @@ const CampaignDetailsScreen = () => {
   const saveIdentity = () => {
     if (id === 'add') {
       api.addNewCampaign(curCampaign).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         history.goBack();
       });
     } else {
       api.updateCampaignById(id, curCampaign).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         setCampaign(curCampaign);
       });
     }

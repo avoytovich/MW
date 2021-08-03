@@ -128,7 +128,6 @@ const installmentOptions = [
   { id: 7, value: 7 },
   { id: 8, value: 8 },
   { id: 9, value: 9 },
-
 ];
 
 const paymentDefaults = [
@@ -146,6 +145,21 @@ const paymentDefaults = [
   { id: 'trustly', value: 'Trustly' },
 ];
 
+const paymentImages = {
+  bank_transfer: '1VsLXXzQfUpHHAMGv774Y9QnIUDDh3lOq',
+  cheque: '1k7ULP3GlkpV9KIZOCxMSRl-TZ-GktV_P',
+  credit_card: '17wyp3j5qEhm9ELiNw1tmBPT2suUXMWN8',
+  directebanking: '1fid0t5hghVbpzAs0lYBHn75YsiAjoqt3',
+  mistercash: '1cc9BtGYBCg9-jIsV1s0ksvsjQokEkqr9',
+  bacs: '1rg-dHgXWzHeFvNag-tMKAfoXU238Iaqc',
+  boleto: '1NViBmvLxrPHlPKMTlVEvhf1MKiUr5d5T',
+  giropay: '1FfIf8XNpxjNJnTBgvWRf5AHOOSvqibrq',
+  payPal: '1MiJDC4ZEFIwGdlnQmhUcDjcP689XQSYt',
+  sepa: '1XvlfrZ-ZjK2inoZw97M-vrMotm2Gx5A1',
+  sofort: '1WEG1ncM1Q68x1x_QhIVKyjIqzIJ39AlF',
+  trustly: '1eiROm7Sjb-SO3-Ce1Vuhc1dUP3_7wcbI',
+};
+
 export {
   validityPeriod,
   status,
@@ -159,4 +173,5 @@ export {
   orderCancelAction,
   installmentOptions,
   paymentDefaults,
+  paymentImages,
 };

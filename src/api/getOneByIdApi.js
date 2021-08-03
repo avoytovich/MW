@@ -141,13 +141,6 @@ const getOneByIdApi = {
       url,
     });
   },
-  getMarketingPrices(page = 0, customerId) {
-    const url = `/prices?format=short&size=50&customerId=${customerId}&page=${page}`;
-    return axiosInstance({
-      method: 'get',
-      url,
-    });
-  },
   getSubscriptionModelById(id) {
     const url = `/subscription-manager/models?format=short&id=${id}&size=30&page=0`;
     return axiosInstance({
@@ -244,6 +237,53 @@ const getOneByIdApi = {
         accept: 'application/pdf',
       },
       responseType: 'blob',
+      method: 'get',
+      url,
+    });
+  },
+  getNotificationById(id) {
+    const url = `/customer-notifier/receivers/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getNotificationDefinitionById(id) {
+    const url = `/customer-notifier/notification-definitions/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getNotificationHistoryById(id) {
+    const url = `/customer-notifier/notifications/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getInvoicePdfById(id) {
+    const url = `/invoices/invoices/${id}/pdf`;
+    return axiosInstance({
+      headers: {
+        'Content-Type': 'application/pdf',
+        accept: 'application/pdf',
+      },
+      responseType: 'blob',
+      method: 'get',
+      url,
+    });
+  },
+  getLicenseProviderDefinitionById(id) {
+    const url = `/license-manager/license-provider-definitions/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getLicenseById(id) {
+    const url = `/license-manager/licenses/${id}`;
+    return axiosInstance({
       method: 'get',
       url,
     });

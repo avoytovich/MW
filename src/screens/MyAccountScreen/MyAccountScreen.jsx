@@ -1,6 +1,7 @@
 // ToDo: consider making a common layout for such type of settings screens
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
   Box,
@@ -20,7 +21,6 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 
 import api from '../../api';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import { setNexwayState } from '../../redux/actions/Account';
 import CustomCard from '../../components/utils/CustomCard';
 import TableItems from '../../components/utils/Modals/TableItems';
@@ -55,9 +55,7 @@ const MyAccountScreen = () => {
 
   const saveIdentity = () => {
     api.updateIdentityById(account.sub, curIdentity).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       setIdentity(curIdentity);
     });
   };
@@ -84,7 +82,7 @@ const MyAccountScreen = () => {
         setCurIdentity(data);
 
         api
-          .getStores(0, `&customerId=${data?.customerId}`)
+          .getStores({ filters: `&customerId=${data?.customerId}` })
           .then(({ data: { items: stores } }) => {
             const storesObj = stores.map((store) => ({
               id: store.id,
@@ -95,7 +93,7 @@ const MyAccountScreen = () => {
           .catch(() => setStores(null));
 
         api
-          .getProducts(0, `&customerId=${data?.customerId}`)
+          .getProducts({ filters: `&customerId=${data?.customerId}` })
           .then(({ data: { items: products } }) => {
             const productsObj = products.map((product) => ({
               id: product.id,

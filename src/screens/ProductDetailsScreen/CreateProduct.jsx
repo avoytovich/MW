@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import api from '../../api';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import { handleGetOptions, handleGetProductDetails } from './utils';
 import {
   defaultProduct,
@@ -15,7 +14,6 @@ import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
 
 const CreateProduct = () => {
-  const dispatch = useDispatch();
   const customerId = useSelector(
     ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.id,
   );
@@ -45,37 +43,37 @@ const CreateProduct = () => {
     let isCancelled = false;
     parentId
       ? api.getProductById(parentId).then(({ data: product }) => {
-          if (!isCancelled) {
-            const checkedProduct = productRequiredFields(product);
-            handleGetProductDetails(
-              checkedProduct?.descriptionId,
-              setVariablesDescriptions,
-              setProductDetails,
-            );
-            setCurrentProductData(backToFront(checkedProduct));
-          }
-          const { customerId: _customerId, id, descriptionId } = product;
-          handleGetOptions(
-            _customerId,
-            id,
-            descriptionId,
-            isCancelled,
-            setSelectOptions,
-            selectOptions,
-            setSubProductVariations,
+        if (!isCancelled) {
+          const checkedProduct = productRequiredFields(product);
+          handleGetProductDetails(
+            checkedProduct?.descriptionId,
+            setVariablesDescriptions,
             setProductDetails,
           );
-        })
-      : handleGetOptions(
-          customerId,
-          null,
-          null,
+          setCurrentProductData(backToFront(checkedProduct));
+        }
+        const { customerId: _customerId, id, descriptionId } = product;
+        handleGetOptions(
+          _customerId,
+          id,
+          descriptionId,
           isCancelled,
           setSelectOptions,
           selectOptions,
           setSubProductVariations,
-          () => {},
+          setProductDetails,
         );
+      })
+      : handleGetOptions(
+        customerId,
+        null,
+        null,
+        isCancelled,
+        setSelectOptions,
+        selectOptions,
+        setSubProductVariations,
+        () => {},
+      );
     return () => {
       isCancelled = true;
     };
@@ -99,7 +97,7 @@ const CreateProduct = () => {
     api.addNewProduct(dataToSave).then((res) => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
-      dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+      toast(localization.t('general.updatesHaveBeenSaved'));
       history.push(`/overview/products/${id}`);
     });
   };

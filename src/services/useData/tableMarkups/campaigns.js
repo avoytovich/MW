@@ -14,6 +14,7 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.customer'), id: 'customer' },
     { value: localization.t('labels.creationDate'), id: 'creationDate' },
     { value: localization.t('labels.lastUpdate'), id: 'lastUpdate' },

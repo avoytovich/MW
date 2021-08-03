@@ -99,8 +99,8 @@ const ChartBlock = ({ chartType }) => {
         <Line
           data={data}
           options={options}
-          height='100%'
-          width='100%'
+          height={100}
+          width={100}
         />
       )}
 
@@ -108,8 +108,8 @@ const ChartBlock = ({ chartType }) => {
         <Bar
           data={data}
           options={options}
-          height='100%'
-          width='100%'
+          height={100}
+          width={100}
         />
       )}
     </Box>

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
 import localization from '../../localization';
 
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
 import { useTableData } from '../../services/useData';
-import { generateData } from '../../services/useData/tableMarkups/adminMetaRole';
-
+import { generateData, defaultShow } from '../../services/useData/tableMarkups/adminMetaRole';
 import {
   getSortParams,
   saveSortParams,
@@ -16,7 +14,6 @@ import {
 } from '../../services/sorting';
 
 const MetaRoles = ({ sortKey, scope, label }) => {
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
@@ -29,9 +26,11 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     saveSortParams(sortKeys[sortKey], params);
   };
 
-  const requests = async (filtersUrl) => {
+  const requests = async (rowsPerPage, filtersUrl) => {
     const costumersIds = [];
-    const res = await api.getMetaRoles(currentPage - 1, filtersUrl, sortParams);
+    const res = await api.getMetaRoles({
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+    });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
@@ -41,7 +40,7 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
     return generateData(res.data, customers.data.items);
   };
-  const data = useTableData(
+  const tableData = useTableData(
     currentPage - 1,
     setLoading,
     makeUpdate,
@@ -53,32 +52,32 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     api.deleteMetaRoleById(id).then(() => {
       const localizedLabel = `labels.${label}`;
       setMakeUpdate((v) => v + 1);
-      dispatch(
-        showNotification(
-          `${localization.t(localizedLabel)} ${id} ${localization.t(
-            'general.hasBeenSuccessfullyDeleted',
-          )}`,
-        ),
+      toast(
+        `${localization.t(localizedLabel)} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`,
       );
     });
   };
+
   const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}
-      showColumn={data?.defaultShow}
+      defaultShowColumn={defaultShow}
+      scope={scope}
       currentPage={currentPage}
       updatePage={updatePage}
-      tableData={data}
+      tableData={tableData}
       isLoading={isLoading}
     />
   );
 };
 
 MetaRoles.propTypes = {
-  tabObject: PropTypes.object,
+  sortKey: PropTypes.string,
   label: PropTypes.string,
   scope: PropTypes.string,
 };
