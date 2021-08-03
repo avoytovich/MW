@@ -88,6 +88,7 @@ const general = {
   findColumn: 'Find column',
   hideAll: 'Hide All',
   showAll: 'Show All',
+  licenseProviderDefinition: 'License Provider Definition',
 };
 
 export default general;

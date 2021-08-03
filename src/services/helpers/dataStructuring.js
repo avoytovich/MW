@@ -339,15 +339,6 @@ const notificationRequiredFields = (obj) => {
 
 const removeEmptyPropsInObject = (data) => {
   const res = { ...data };
-  if (res.receiverType === 'email') {
-    delete res.url;
-  } else {
-    delete res.emails;
-  }
-  delete res.receiverType;
-  if (typeof res !== 'object') {
-    return res;
-  }
   return Object.keys(res).reduce((accumulator, key) => {
     const isObject = typeof res[key] === 'object';
     const isNotEmptyArray = Array.isArray(res[key]) && res[key].length > 0;

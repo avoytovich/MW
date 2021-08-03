@@ -12,20 +12,19 @@ import {
   Typography,
 } from '@material-ui/core';
 import General from './SubSections/General';
-import HttpHeaders from './SubSections/HttpHeaders';
-import OAuthConfiguration from './SubSections/OAuthConfiguration';
-import TLSconfiguration from './SubSections/TLSconfiguration';
+import HTTPConfiguration from './SubSections/HTTPConfiguration';
+import TestModeHTTPConfiguration from './SubSections/TestModeHTTPConfiguration';
+import OperationDetails from './SubSections/OperationDetails';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import localization from '../../localization';
-import { useNotificationDetail } from '../../services/useData';
-import { urlIsValid } from '../../services/helpers/inputValidators';
-import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
+import useLicenseProviderDefinitionDetail from './useLicenseProviderDefinitionDetail';
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
+import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
 import SectionLayout from '../../components/SectionLayout';
 
-const NotificationDetailScreen = () => {
+const LicenseProviderDefinitionDetails = () => {
   const dispatch = useDispatch();
   const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
@@ -34,38 +33,27 @@ const NotificationDetailScreen = () => {
 
   const {
     setUpdate,
-    curNotification,
-    setCurNotification,
+    curLicenseProvider,
+    setCurLicenseProvider,
     isLoading,
-    selectOptions,
     hasChanges,
-    notification,
-  } = useNotificationDetail(id, nxState);
+    licenseProvider,
+  } = useLicenseProviderDefinitionDetail(id, nxState);
 
   const handleSave = () => {
-    const sendObj = { ...curNotification };
-    if (sendObj.receiverType === 'email') {
-      delete sendObj.url;
-    } else {
-      delete sendObj.emails;
-    }
-    delete sendObj.receiverType;
-    if (typeof sendObj !== 'object') {
-      return sendObj;
-    }
-    const formattedNotification = removeEmptyPropsInObject(sendObj);
+    const formattedData = removeEmptyPropsInObject(curLicenseProvider);
     if (id === 'add') {
-      api.addNotification(formattedNotification).then((res) => {
+      api.addLicenseProviderDefinition(formattedData).then((res) => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
-        history.push(`/settings/notifications/${newId}`);
+        history.push(`/overview/fulfillment-packages/licenseProviderDefinitions/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
-      api.updateNotificationById(id, formattedNotification).then(() => {
+      api.updateLicenseProviderDefinition(id, formattedData).then(() => {
         dispatch(
           showNotification(localization.t('general.updatesHaveBeenSaved')),
         );
@@ -85,9 +73,9 @@ const NotificationDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/settings/notifications'
-            section={localization.t('general.notification')}
-            id={notification.id}
+            url='/settings/licenseProviderDefinitions'
+            section={localization.t('general.licenseProviderDefinition')}
+            id={licenseProvider.id}
           />
         </Box>
       )}
@@ -100,15 +88,15 @@ const NotificationDetailScreen = () => {
         <Box alignSelf='center'>
           <Typography data-test='notificationName' gutterBottom variant='h3'>
             {id !== 'add'
-              ? notification.name
+              ? licenseProvider.name
               : `${localization.t('general.new')} ${localization.t(
-                'general.notification',
+                'general.licenseProviderDefinition',
               )}`}
           </Typography>
         </Box>
         <Zoom in={hasChanges}>
           <Button
-            disabled={!curNotification.name || (curNotification.receiverType === 'email' && curNotification.emails.length < 1) || (curNotification.receiverType === 'webhook' && !urlIsValid(curNotification.url))}
+            disabled={curLicenseProvider.name === ''}
             id='save-notification-button'
             color='primary'
             size='large'
@@ -129,55 +117,53 @@ const NotificationDetailScreen = () => {
           textColor='primary'
         >
           <Tab label={localization.t('labels.general')} />
-          <Tab label={localization.t('labels.httpHeaders')} disabled={curNotification.receiverType === 'email'} />
-          <Tab label={localization.t('labels.oAuthConfiguration')} disabled={curNotification.receiverType === 'email'} />
-          <Tab label={localization.t('labels.tlsConfiguration')} disabled={curNotification.receiverType === 'email'} />
+          <Tab label={localization.t('labels.operationDetails')} />
+          <Tab label={localization.t('labels.httpConfiguration')} />
+          <Tab label={localization.t('labels.testModeHTTPConfiguration')} disabled={curLicenseProvider.status !== 'TestMode'} />
         </Tabs>
       </Box>
       {
-        curTab === 0 && curNotification && (
+        curTab === 0 && curLicenseProvider && (
           <SectionLayout label='general'>
             <General
-              selectOptions={selectOptions}
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
+              curLicenseProvider={curLicenseProvider}
+              setCurLicenseProvider={setCurLicenseProvider}
             />
           </SectionLayout>
         )
       }
       {
-        curTab === 1 && curNotification && (
-          <SectionLayout label='httpHeaders'>
-            <HttpHeaders
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
+        curTab === 1 && curLicenseProvider && (
+          <SectionLayout label='operationDetails'>
+            <OperationDetails
+              curLicenseProvider={curLicenseProvider}
+              setCurLicenseProvider={setCurLicenseProvider}
             />
           </SectionLayout>
         )
       }
       {
-        curTab === 2 && curNotification && (
-          <SectionLayout label='oAuthConfiguration'>
-            <OAuthConfiguration
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
+        curTab === 2 && curLicenseProvider && (
+          <SectionLayout label='httpConfiguration'>
+            <HTTPConfiguration
+              curLicenseProvider={curLicenseProvider}
+              setCurLicenseProvider={setCurLicenseProvider}
             />
           </SectionLayout>
         )
       }
       {
-        curTab === 3 && curNotification && (
-          <SectionLayout label='tlsConfiguration'>
-            <TLSconfiguration
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
+        curTab === 3 && curLicenseProvider && (
+          <SectionLayout label='testModeHTTPConfiguration'>
+            <TestModeHTTPConfiguration
+              curLicenseProvider={curLicenseProvider}
+              setCurLicenseProvider={setCurLicenseProvider}
             />
           </SectionLayout>
         )
       }
-
     </>
   );
 };
 
-export default NotificationDetailScreen;
+export default LicenseProviderDefinitionDetails;
