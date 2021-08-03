@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import JsonEditorLayout from '../../layouts/JsonEditorLayout';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
 const TranslationAddScreen = () => {
-  const dispatch = useDispatch();
-
   const { customerId } = useSelector(({ account: { user } }) => user);
   const initData = { name: '', data: {}, customerId };
 
@@ -18,9 +16,7 @@ const TranslationAddScreen = () => {
 
   const saveTranslation = () => {
     api.addNewTranslation(currentTranslation).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       setCurrentTranslation({ ...initData });
     });
   };

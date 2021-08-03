@@ -113,6 +113,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteLicenseProviderDefinitionById(id) {
+    const url = `/license-manager/license-provider-definitions/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;

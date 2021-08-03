@@ -1,9 +1,10 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import {
   Box,
@@ -28,8 +29,6 @@ import {
   priceCurrency,
 } from '../../services/selectOptions/selectOptions';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
-
 import api from '../../api';
 import localization from '../../localization';
 
@@ -37,7 +36,6 @@ import './pricesDetailsScreen.scss';
 
 const PricesDetailsScreen = () => {
   const countriesOptions = getCountriesOptions();
-  const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
   const [price, setPrice] = useState(null);
@@ -58,14 +56,14 @@ const PricesDetailsScreen = () => {
       api
         .addNewPrice(curPrice)
         .then(() => {
-          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+          toast(localization.t('general.updatesHaveBeenSaved'));
           history.push('/marketing/prices');
         });
     } else {
       api
         .updatePriceById(id, curPrice)
         .then(() => {
-          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+          toast(localization.t('general.updatesHaveBeenSaved'));
           setPrice(curPrice);
         });
     }

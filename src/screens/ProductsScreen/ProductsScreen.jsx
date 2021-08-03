@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import api from '../../api';
 import {
@@ -10,7 +10,7 @@ import {
 } from '../../services/useData/tableMarkups/products';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import {
@@ -22,7 +22,6 @@ import {
 const ProductsScreen = () => {
   const scope = 'products';
 
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -53,12 +52,10 @@ const ProductsScreen = () => {
 
   const handleDeleteProduct = (id) => api.deleteProductById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.product')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.product')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 

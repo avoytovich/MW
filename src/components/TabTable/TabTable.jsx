@@ -1,26 +1,22 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
-import localization from '../../../localization';
-import TableComponent from '../../../components/TableComponent';
-
-import { useTableData } from '../../../services/useData';
+import { toast } from 'react-toastify';
+import localization from '../../localization';
+import TableComponent from '../TableComponent';
+import { useTableData } from '../../services/useData';
 import {
   getSortParams,
   saveSortParams,
   sortKeys,
-} from '../../../services/sorting';
+} from '../../services/sorting';
 
 const TabTable = ({ tabObject }) => {
-  const dispatch = useDispatch();
-
   const {
-    sortKey, generateData, request, deleteFunc, label, scope, defaultShow,
+    sortKey, generateData, request, deleteFunc, label, scope, defaultShow, secondaryRequest,
   } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys[sortKey]),
   );
@@ -35,22 +31,27 @@ const TabTable = ({ tabObject }) => {
       deleteFunc(id).then(() => {
         const localizedLabel = `labels.${label}`;
         setMakeUpdate((v) => v + 1);
-        dispatch(
-          showNotification(
-            `${localization.t(localizedLabel)} ${id} ${localization.t(
-              'general.hasBeenSuccessfullyDeleted',
-            )}`,
-          ),
+        toast(
+          `${localization.t(localizedLabel)} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
         );
       });
     }
   };
+
   const requests = async (rowsPerPage, filtersUrl) => {
+    let secondaryData;
     const res = await request({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
-    return generateData(res.data);
+    if (secondaryRequest) {
+      secondaryData = await secondaryRequest(res.data);
+    }
+    return secondaryRequest
+      ? generateData(res.data, secondaryData.data) : generateData(res.data);
   };
+
   const data = useTableData(
     currentPage - 1,
     setLoading,

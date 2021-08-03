@@ -1,7 +1,6 @@
 // ToDo: make a common solutions for table items actions (delete, edit, copy-url)
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {
@@ -21,10 +20,11 @@ import {
   FileCopy as FileCopyIcon,
 } from '@material-ui/icons';
 
+import { toast } from 'react-toastify';
+
 import localization from '../../../../localization';
 
 import api from '../../../../api';
-import { showNotification } from '../../../../redux/actions/HttpNotifications';
 
 import './tableItems.scss';
 
@@ -36,7 +36,6 @@ const TableItems = ({
   addItem,
   noDelete,
 }) => {
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const getItemUrl = (id) => {
@@ -47,9 +46,7 @@ const TableItems = ({
   const deleteItem = (item) => {
     const onSuccess = () => {
       removeItem(item.id, type);
-      dispatch(
-        showNotification(localization.t('general.hasBeenSuccessfullyDeleted')),
-      );
+      toast(localization.t('general.hasBeenSuccessfullyDeleted'));
     };
 
     if (noDelete) {
@@ -69,11 +66,8 @@ const TableItems = ({
   const copyUrl = (id) => {
     const url = window.location.origin + getItemUrl(id);
 
-    navigator.clipboard.writeText(url).then(() => {
-      dispatch(
-        showNotification(localization.t('general.itemURLHasBeenCopied')),
-      );
-    });
+    navigator.clipboard.writeText(url)
+      .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
   };
 
   return (

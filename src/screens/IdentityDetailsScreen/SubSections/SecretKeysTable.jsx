@@ -12,20 +12,17 @@ import {
   Typography,
   IconButton,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import ClearIcon from '@material-ui/icons/Clear';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
 import '../identityDetailsScreen.scss';
 
 const SecretKeysTable = ({ curIdentity, removeSecretKey }) => {
-  const dispatch = useDispatch();
   const makeCopy = (value) => {
-    navigator.clipboard.writeText(value).then(() => {
-      dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
   return (
     <Box p={2}>

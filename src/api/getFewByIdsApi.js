@@ -2,7 +2,7 @@ import { axiosInstance } from '../axios';
 
 const getFewByIdsApi = {
   getCustomersByIds(ids) {
-    const url = `/customers/public?format=short/${ids}`;
+    const url = `/customers/public?format=short&${ids}`;
     return axiosInstance({
       method: 'get',
       url,

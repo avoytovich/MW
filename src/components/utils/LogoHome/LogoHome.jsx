@@ -34,10 +34,10 @@ const LogoHome = ({
 );
 
 LogoHome.propTypes = {
-  wrapperHeight: PropTypes.string,
-  width: PropTypes.string,
-  height: PropTypes.string,
-  children: PropTypes.func,
+  wrapperHeight: PropTypes.number,
+  width: PropTypes.number,
+  height: PropTypes.number,
+  children: PropTypes.any,
 };
 
 export default LogoHome;

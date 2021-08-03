@@ -125,7 +125,7 @@ const navConfig = [
         href: `${defPath}/overview/discount-rules`,
       },
       {
-        id: 'discount-rules',
+        id: 'marketing-campaigns',
         title: localization.t('sideBar.titles.campaigns'),
         href: `${defPath}/marketing`,
       },

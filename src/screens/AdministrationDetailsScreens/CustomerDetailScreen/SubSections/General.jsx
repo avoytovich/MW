@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 import {
   Box, Typography, Grid, Link,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
 import { FileCopy } from '@material-ui/icons';
-import { showNotification } from '../../../../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
 
 import localization from '../../../../localization';
 import {
@@ -16,11 +15,9 @@ import {
 } from '../../../../components/Inputs';
 
 const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
-  const dispatch = useDispatch();
   const makeCopy = (value) => {
-    navigator.clipboard.writeText(value).then(() => {
-      dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
   return (
     <Grid container>

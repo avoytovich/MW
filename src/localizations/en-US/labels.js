@@ -527,6 +527,18 @@ const labels = {
   testModeHTTPConfiguration: 'Test mode HTTP configuration',
   baseUrlTest: 'Base URL (Test)',
   operationExecutions: 'Operation Executions',
+  format: 'Format',
+  autoFulfillments: 'Auto Fulfillments',
+  manualFulfillments: 'Manual Fulfillments',
+  licenseProviderDefinitions: 'License Provider Definitions',
+  packageId: 'Package ID',
+  available: 'Available',
+  blacklisted: 'Blacklisted',
+  occupied: 'Occupied',
+  renewed: 'Renewed',
+  threshold: 'Threshold',
+  providerDefinitionId: 'Provider Definition ID',
+  definitionName: 'Definition Name',
 };
 
 export default labels;

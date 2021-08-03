@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
 import localization from '../../localization';
 
 import TableComponent from '../../components/TableComponent';
@@ -15,7 +14,6 @@ import {
 } from '../../services/sorting';
 
 const MetaRoles = ({ sortKey, scope, label }) => {
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
@@ -54,12 +52,10 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     api.deleteMetaRoleById(id).then(() => {
       const localizedLabel = `labels.${label}`;
       setMakeUpdate((v) => v + 1);
-      dispatch(
-        showNotification(
-          `${localization.t(localizedLabel)} ${id} ${localization.t(
-            'general.hasBeenSuccessfullyDeleted',
-          )}`,
-        ),
+      toast(
+        `${localization.t(localizedLabel)} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`,
       );
     });
   };
