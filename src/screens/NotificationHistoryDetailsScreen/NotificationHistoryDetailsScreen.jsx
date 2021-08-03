@@ -5,6 +5,7 @@ import {
   Grid, Box, LinearProgress, Typography,
 } from '@material-ui/core';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
+import moment from 'moment';
 
 import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
@@ -39,7 +40,7 @@ const NotificationHistoryDetailsScreen = () => {
     },
     {
       label: 'processingDate',
-      field: notificationHistory?.processingDate || '-',
+      field: moment(notificationHistory?.processingDate).format('D MMM YYYY') || '-',
     },
     {
       label: 'status',
@@ -47,7 +48,7 @@ const NotificationHistoryDetailsScreen = () => {
     },
     {
       label: 'processedEvent',
-      field: notificationHistory?.processedEvent || '-',
+      field: notificationHistory?.notificationDefinitionId || '-',
     },
     {
       label: 'receiverEmail',
@@ -55,7 +56,7 @@ const NotificationHistoryDetailsScreen = () => {
     },
     {
       label: 'email_body',
-      field: notificationHistory?.emails || '-',
+      field: notificationHistory?.mailBody || '-',
     },
     {
       label: 'receiverUrl',
@@ -135,27 +136,25 @@ const NotificationHistoryDetailsScreen = () => {
     </>
   );
 
-  const renderDefault = (each) => {
-    return (
-      <>
-        <Grid item md={3} xs={12}>
-          <Typography variant='h6'>
-            {localization.t(`labels.${each.label}`)}
+  const renderDefault = (each) => (
+    <>
+      <Grid item md={3} xs={12}>
+        <Typography variant='h6'>
+          {localization.t(`labels.${each.label}`)}
+        </Typography>
+      </Grid>
+      <Grid item md={9} xs={12}>
+        <Box>
+          <Typography variant='subtitle1'>
+            {each.field}
           </Typography>
-        </Grid>
-        <Grid item md={9} xs={12}>
-          <Box>
-            <Typography variant='subtitle1'>
-              {each.field}
-            </Typography>
-          </Box>
-        </Grid>
-      </>
-    );
-  };
+        </Box>
+      </Grid>
+    </>
+  );
 
   const renderFields = (each) => {
-    switch(each.label) {
+    switch (each.label) {
       case 'customer':
         return renderCustomer(each);
       case 'notification_history_id':
@@ -164,7 +163,7 @@ const NotificationHistoryDetailsScreen = () => {
         return renderDefault(each);
         break;
     }
-  }
+  };
 
   if (loading) return <LinearProgress />;
   return (

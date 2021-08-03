@@ -274,5 +274,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getLicenseById(id) {
+    const url = `/license-manager/licenses/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;

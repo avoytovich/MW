@@ -47,13 +47,13 @@ const getLocaleName = (localeKey) => {
 };
 
 const loadLocalization = async () => {
-  Object.values(LOCALES).forEach((item) => {
+  /* Object.values(LOCALES).forEach((item) => {
     if (item.isAvailable) {
       i18n.translations[item.key] = item.messages;
     }
   });
 
-  i18n.locale = await getCurrentLocale();
+  i18n.locale = await getCurrentLocale(); */
 };
 
 export default {

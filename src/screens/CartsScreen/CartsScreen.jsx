@@ -47,7 +47,7 @@ const CartsScreen = () => {
     currentPage - 1,
     setLoading,
     makeUpdate,
-    'carts',
+    scope,
     requests,
     sortParams,
   );
@@ -66,7 +66,7 @@ const CartsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableActionsBar>
+      <TableActionsBar scope={scope}>
         <Box>
           <Button
             id="add-cart"

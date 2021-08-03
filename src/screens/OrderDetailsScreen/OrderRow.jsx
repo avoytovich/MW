@@ -42,6 +42,7 @@ const OrderRow = ({ rowData, customerId, creationDate }) => {
       dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
     });
   };
+
   return rowData.map((item) => (
     <Grid container className="orderDetailsRow" key={item.key}>
       <Grid item md={6} xs={6}>
@@ -52,7 +53,7 @@ const OrderRow = ({ rowData, customerId, creationDate }) => {
       <Grid item md={6} xs={6}>
         <Box display="flex">
           {!shouldDownload(item.key) && (
-            item.key === 'invoiceID' ? (
+            item.key === 'invoiceId' ? (
               <Box p={2} className="rowValue download" onClick={() => downloadInvoice(item)}>
                 {item.value || '-'}
               </Box>
