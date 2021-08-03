@@ -235,6 +235,15 @@ const postApi = {
       data,
     });
   },
+  addLicenseProviderDefinition(data) {
+    const url = '/license-manager/license-provider-definitions?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+
 };
 
 export default postApi;

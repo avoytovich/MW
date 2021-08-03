@@ -274,6 +274,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getLicenseProviderDefinitionById(id) {
+    const url = `/license-manager/license-provider-definitions/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getLicenseById(id) {
     const url = `/license-manager/licenses/${id}`;
     return axiosInstance({
