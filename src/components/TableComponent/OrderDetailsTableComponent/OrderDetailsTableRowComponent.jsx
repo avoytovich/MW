@@ -65,6 +65,15 @@ const TableRowComponent = ({
 
       if (item.id === 'createDate' || item.id === 'updateDate') {
         valueToShow = moment(rowItem[item.id]).format('D MMM YYYY');
+      } else if (item.id === 'name') {
+        valueToShow = (
+          <Typography
+            className="name-value"
+            onClick={() => history.push(`/overview/products/${rowItem.productId}`)}
+          >
+            {rowItem[item.id]}
+          </Typography>
+        );
       } else {
         valueToShow = rowItem[item.id];
       }

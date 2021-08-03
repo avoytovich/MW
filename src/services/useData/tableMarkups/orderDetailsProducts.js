@@ -44,6 +44,7 @@ const generateData = (data) => {
     discountedGross: '-',
     discountedVat: '-',
     processingError: val.processingStatus === 'FAILURE',
+    productId: val.productId,
   }));
 
   const meta = {
