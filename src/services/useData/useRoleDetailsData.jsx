@@ -39,7 +39,6 @@ const useRoleDetailsData = (id, nxState) => {
       const clearances = formPrivilegeOptions(
         clearancesOptions.value?.data.items,
       );
-
       setSelectOptions({
         ...selectOptions,
         conditionsOfAvailability:

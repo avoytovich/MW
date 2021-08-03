@@ -16,6 +16,9 @@ export const sortKeys = {
   notificationHistory: 'notificationsHistorySortParams',
   carts: 'cartsSortParams',
   licenses: 'licensesSortParams',
+  autoFulfillments: 'autoFulfillmentsSortParams',
+  manualFulfillments: 'manualFulfillmentsSortParams',
+  licenseProviderDefinitions: 'licenseProviderDefinitionsSortParams',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));
