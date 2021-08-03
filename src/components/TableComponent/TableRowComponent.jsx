@@ -33,6 +33,7 @@ const TableRowComponent = ({
   checked,
   handleDeleteItem,
   noActions,
+  noEditDeleteActions,
   customPath,
   errorHighlight,
 }) => {
@@ -138,13 +139,15 @@ const TableRowComponent = ({
           {rowHover && !customPath && (
             <Grid>
               <Box my={2} textAlign='center'>
-                {!noActions && (
+                {!noActions && !noEditDeleteActions && (
                   <DeleteIcon
                     onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
                     className="deleteIcon icons"
                   />
                 )}
-                <EditIcon className="editIcon icons" />
+                {!noEditDeleteActions && (
+                  <EditIcon className="editIcon icons" />
+                )}
                 <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
               </Box>
             </Grid>
@@ -168,6 +171,7 @@ TableRowComponent.propTypes = {
     }),
   ),
   noActions: PropTypes.bool,
+  noEditDeleteActions: PropTypes.bool,
   customPath: PropTypes.string,
   errorHighlight: PropTypes.string,
 };
