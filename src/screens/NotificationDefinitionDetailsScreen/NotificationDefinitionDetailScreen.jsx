@@ -160,33 +160,31 @@ const NotificationDefinitionDetailScreen = () => {
           textColor='primary'
         >
           <Tab label={localization.t('labels.general')} />
-          <Tab label={localization.t('labels.eventMatching')} />
           <Tab label={localization.t('labels.templating')} />
         </Tabs>
       </Box>
       {
         curTab === 0 && curNotification && (
-          <SectionLayout label='general'>
-            <General
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
-            />
-          </SectionLayout>
+          <>
+            <SectionLayout label='general'>
+              <General
+                curNotification={curNotification}
+                setCurNotification={setCurNotification}
+              />
+            </SectionLayout>
+
+            <SectionLayout label='eventMatching'>
+              <EventMatching
+                data={curNotification?.eventMatcher}
+                curNotification={curNotification}
+                setCurNotification={setCurNotification}
+              />
+            </SectionLayout>
+          </>
         )
       }
       {
         curTab === 1 && curNotification && (
-          <SectionLayout label='eventMatching'>
-            <EventMatching
-              data={curNotification?.eventMatcher}
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
-            />
-          </SectionLayout>
-        )
-      }
-      {
-        curTab === 2 && curNotification && (
           <SectionLayout label='templating'>
             <Templating
               curNotification={curNotification}
