@@ -287,17 +287,12 @@ const filters = {
   ],
   notifications: [
     {
-      id: 'notificationsId',
-      label: 'notificationsId',
+      id: 'id',
+      label: localization.t('labels.notificationsId'),
       type: 'text',
     },
     {
-      id: 'customer',
-      label: 'customer',
-      type: 'text',
-    },
-    {
-      id: 'date',
+      id: 'name',
       label: localization.t('labels.notificationName'),
       type: 'text',
     },
@@ -312,18 +307,41 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'events',
-      label: localization.t('labels.notificationEvents'),
-      type: 'text',
+      id: 'status',
+      label: localization.t('labels.notificationStatus'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'Active' },
+        { label: localization.t('labels.disabled'), value: 'Inactive' },
+      ],
     },
+  ],
+  'notification-history': [
+    {
+      id: 'processingDate',
+      label: localization.t('labels.processingDate'),
+      type: 'date',
+    },
+
     {
       id: 'status',
       label: localization.t('labels.notificationStatus'),
       type: 'select',
       values: [
-        { label: localization.t('labels.enabled'), value: 'ENABLED' },
-        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+        { label: localization.t('labels.done'), value: 'Done' },
+        { label: localization.t('labels.error'), value: 'Error' },
+        { label: localization.t('labels.inProgress'), value: 'InProgress' },
       ],
+    },
+    {
+      id: 'emails',
+      label: localization.t('labels.receiverEmail'),
+      type: 'text',
+    },
+    {
+      id: 'url',
+      label: localization.t('labels.webHook'),
+      type: 'text',
     },
   ],
 
@@ -338,56 +356,56 @@ const filters = {
       label: localization.t('labels.status'),
       type: 'select',
       values: [
-        { label: localization.t('labels.creationInProgress'), value: 'CREATIONINPROGRESS' },
-        { label: localization.t('labels.creationFailed'), value: 'CREATIONFAILED' },
-        { label: localization.t('labels.running'), value: 'RUNNING' },
-        { label: localization.t('labels.canceled'), value: 'CANCELED' },
-        { label: localization.t('labels.paused'), value: 'PAUSED' },
-        { label: localization.t('labels.expired'), value: 'EXPIRED' },
+        { label: localization.t('labels.creationInProgress'), value: 'CreationInProgress' },
+        { label: localization.t('labels.creationFailed'), value: 'CreationFailed' },
+        { label: localization.t('labels.running'), value: 'Running' },
+        { label: localization.t('labels.canceled'), value: 'Canceled' },
+        { label: localization.t('labels.paused'), value: 'Paused' },
+        { label: localization.t('labels.expired'), value: 'Expired' },
       ],
     },
     {
-      id: 'orderId',
+      id: 'checkout.orderId',
       label: localization.t('labels.orderId'),
-      type: 'date',
+      type: 'text',
     },
     {
-      id: 'firstName',
+      id: 'user.firstName',
       label: localization.t('labels.firstName'),
       type: 'text',
     },
     {
-      id: 'lastName',
+      id: 'user.lastName',
       label: localization.t('labels.lastName'),
       type: 'text',
     },
     {
-      id: 'email',
+      id: 'user.email',
       label: localization.t('labels.email'),
       type: 'text',
     },
     {
-      id: 'city',
+      id: 'user.city',
       label: localization.t('labels.city'),
       type: 'text',
     },
     {
-      id: 'productId',
+      id: 'product.id',
       label: localization.t('labels.productId'),
       type: 'text',
     },
     {
-      id: 'licenseProviderDefinition',
+      id: 'product.licenseProviderDefinitionId',
       label: localization.t('labels.licenseProviderDefinition'),
       type: 'text',
     },
     {
-      id: 'publisherProductId',
+      id: 'product.publisherProductId',
       label: localization.t('labels.publisherProductId'),
       type: 'text',
     },
     {
-      id: 'productName',
+      id: 'product.name',
       label: localization.t('labels.productName'),
       type: 'text',
     },
@@ -395,7 +413,7 @@ const filters = {
 
   carts: [
     {
-      id: 'cartId',
+      id: 'id',
       label: localization.t('labels.cartId'),
       type: 'text',
     },
@@ -405,7 +423,7 @@ const filters = {
       type: 'date',
     },
     {
-      id: 'updateDate',
+      id: 'updatingDate',
       label: localization.t('labels.updateDate'),
       type: 'date',
     },
@@ -414,26 +432,25 @@ const filters = {
       label: localization.t('labels.source'),
       type: 'select',
       values: [
-        { label: localization.t('labels.acquisition'), value: 'ENABLED' },
-        { label: localization.t('labels.manualRenewal'), value: 'DISABLED' },
+        { label: localization.t('labels.acquisition'), value: 'PURCHASE' },
+        { label: localization.t('labels.manualRenewal'), value: 'MANUAL_RENEWAL' },
       ],
     },
     {
-      id: 'emailAddress',
+      id: 'endUser.email',
       label: localization.t('labels.emailAddress'),
       type: 'text',
     },
     {
-      id: 'firstName',
+      id: 'endUser.firstName',
       label: localization.t('labels.firstName'),
       type: 'text',
     },
     {
-      id: 'lastName',
+      id: 'endUser.lastName',
       label: localization.t('labels.lastName'),
       type: 'text',
     },
-
   ],
   autoFulfillments: [
     {

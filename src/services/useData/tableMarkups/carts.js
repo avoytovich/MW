@@ -62,7 +62,7 @@ const generateData = (data) => {
     updateDate: val.updateDate,
     scheduledRemoval: val.scheduledSuppressionDate,
     store: val.storeId,
-    source: val.source,
+    source: val.source === 'PURCHASE' ? localization.t('labels.acquisition') : localization.t('labels.manualRenewal'),
     emailAddress: val.endUser.email,
     firstName: val.endUser.firstName,
     lastName: val.endUser.lastName,
