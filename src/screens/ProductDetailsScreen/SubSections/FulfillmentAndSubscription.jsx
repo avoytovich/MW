@@ -181,7 +181,7 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
             data-test='renewingProducts'
             id="products-select"
             options={autoOptions}
-            value={resolveValue()}
+            value={resolveValue() || ''}
             onChange={changeProducts}
             filterOptions={(opts) => opts}
             getOptionLabel={(option) => option.name || ''}
