@@ -11,8 +11,10 @@ const tabLabels = [
   'general',
   'design',
   'payment',
+  'localizedContent',
   'assetsResource',
 ];
+
 const formDesignOptions = (options, customers) => (options
   ? options.map((option) => {
     const curCustomer = customers.find(

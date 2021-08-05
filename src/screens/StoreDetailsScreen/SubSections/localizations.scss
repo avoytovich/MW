@@ -1,0 +1,84 @@
+@import '../../../styles/variables.scss';
+
+.localization-input-holder{
+  .localization-text-block{
+    width: 100%;
+    min-height: 62px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    padding: 15px;
+    padding-right: 30px;
+  
+    & > * {
+      margin: 5px 0;
+    }
+  
+    ul{
+      margin-left: 30px;
+    }
+  
+  
+  }
+  
+  .localization-text-legend{
+    display: inline-block;
+    padding: 0 10px;
+    position: absolute;
+    top: -10px;
+    left: -12px;
+    background: #fff;
+    transform: scale(0.75);
+  
+    &.empty {
+      top: 22px;
+      left: 5px;
+      transform: scale(1);
+    }
+  }
+  
+  .edit-loc-field{
+    opacity: 0;
+  }
+
+  &:hover{
+    .edit-loc-field{
+      opacity: 1;
+    }
+  }
+}
+
+.quill {
+  min-height: 62px;
+  border: 1px solid rgba(0, 0, 0, 0.23);
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  border-radius: 4px;
+  padding-right: 30px;
+}
+
+.ql-tooltip {
+  z-index: 9;
+}
+
+.edit-loc-field{
+  position: absolute;
+  top: 19px;
+  right: 15px;
+  transition: all .3s;
+
+  &:hover{
+    color: $navItemButtonHover;
+    cursor: pointer;
+  }
+}
+
+.error-message{
+  font-size: 12px;
+  position: absolute;
+  color: #ff0202;
+  font-style: italic;
+}
