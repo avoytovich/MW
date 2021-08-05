@@ -43,6 +43,7 @@ const defaultStore = {
   routes: [{ hostname: '' }],
   defaultLocale: '',
   saleLocales: [],
+  thankYouDesc: [],
   storeWebsite: '',
   displayName: '',
   blackListedPaymentTypes: [],

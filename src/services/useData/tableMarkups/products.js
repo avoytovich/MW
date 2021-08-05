@@ -11,6 +11,7 @@ const defaultShow = {
   lifeTime: true,
   status: true,
   family: false,
+  subscriptionModel: true,
 };
 const markUp = {
   headers: [
@@ -49,6 +50,7 @@ const markUp = {
     },
     { value: localization.t('labels.family'), id: 'family' },
     { value: localization.t('labels.priceFunction'), id: 'priseFunction' },
+    { value: localization.t('labels.subscriptionModel'), id: 'subscriptionModel' },
   ],
 };
 
@@ -64,6 +66,7 @@ const generateData = (data) => {
     lifeTime: val.lifeTime,
     status: val.status,
     family: val.family,
+    subscriptionModel: val?.subscriptionTemplate,
   }));
 
   const meta = {
