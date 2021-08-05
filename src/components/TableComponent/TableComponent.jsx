@@ -9,6 +9,10 @@ import {
   LinearProgress,
   Paper,
 } from '@material-ui/core';
+
+import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
+import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
+
 import { useSelector, useDispatch } from 'react-redux';
 import setShowColumns from '../../redux/actions/ShowColumns';
 import TableRowComponent from './TableRowComponent';
@@ -98,12 +102,7 @@ const TableComponent = ({
               && (header.sortParam ? (
                 <Grid item xs zeroMinWidth key={header.value}>
                   <Box
-                    className={`sortableHeader ${
-                      sortParams?.value === header.sortParam
-                      && (sortParams.type === 'desc'
-                        ? 'sortActiveDesc'
-                        : 'sortActiveAsc')
-                    }`}
+                    className='sortableHeader'
                     my={1}
                     onClick={() => {
                       let type;
@@ -122,6 +121,7 @@ const TableComponent = ({
                       align="center"
                     >
                       {header.value}
+                      {sortParams?.value === header.sortParam && (sortParams.type === 'desc' ? <VerticalAlignTopIcon /> : <VerticalAlignBottomIcon />)}
                     </Typography>
                   </Box>
                 </Grid>
