@@ -539,6 +539,8 @@ const labels = {
   threshold: 'Threshold',
   providerDefinitionId: 'Provider Definition ID',
   definitionName: 'Definition Name',
+  inProgress: 'In Progress',
+  done: 'Done',
 };
 
 export default labels;
