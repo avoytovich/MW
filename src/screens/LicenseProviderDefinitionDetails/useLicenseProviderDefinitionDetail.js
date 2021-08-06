@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import checkRequiredFields from './utils';
+import { checkRequiredFields } from './utils';
 
 import api from '../../api';
 
