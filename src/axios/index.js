@@ -1,10 +1,6 @@
 import axios from 'axios';
-
-import store from '../redux/store';
-import { showNotification } from '../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
 import localization from '../localization';
-
-const { dispatch } = store;
 
 const errorHandler = (error) => {
   const { response } = error;
@@ -32,7 +28,7 @@ const errorHandler = (error) => {
     }
   }
 
-  dispatch(showNotification(message, true));
+  toast.error(message);
 
   return Promise.reject(error);
 };

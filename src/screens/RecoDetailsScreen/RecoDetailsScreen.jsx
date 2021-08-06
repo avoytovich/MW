@@ -1,7 +1,8 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import {
   LinearProgress,
@@ -20,7 +21,6 @@ import {
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import api from '../../api';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 
 import Basic from './SubSections/Basic';
 import Eligibility from './SubSections/Eligibility';
@@ -36,7 +36,6 @@ const RecoDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const history = useHistory();
 
-  const dispatch = useDispatch();
   const { id } = useParams();
   const [reco, setReco] = useState(null);
   const [curReco, setCurReco] = useState(null);
@@ -66,16 +65,12 @@ const RecoDetailsScreen = () => {
     }
     if (id === 'add') {
       api.addNewRecommendation(objToSend).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         history.push('/marketing/recommendations');
       });
     } else {
       api.updateRecoById(id, objToSend).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         window.location.reload();
       });
     }

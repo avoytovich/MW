@@ -11,10 +11,10 @@
     background-color: $tablesOddRow;
   }
 
-  &.error-row{
+  &.error-row {
     background-color: $deleteIcon;
 
-    .MuiTypography-colorSecondary{
+    .MuiTypography-colorSecondary {
       color: #fff;
     }
   }
@@ -31,6 +31,10 @@
       justify-content: center;
       font-size: 12px;
       border: 1px solid $tableCellBorder;
+    }
+    .name-value {
+      cursor: pointer;
+      color: $clickable;
     }
   }
   .icons {
@@ -95,10 +99,12 @@
 }
 .sortableHeader {
   cursor: pointer;
-}
-.sortActiveDesc {
-  border-bottom: 2px solid $navItemButtonActive;
-}
-.sortActiveAsc {
-  border-top: 2px solid $navItemButtonActive;
+
+  svg{
+    position: absolute;
+    font-size: 18px;
+    color: $navItemButtonActive;
+    margin-left: 5px;
+    margin-top: 2px;
+  }
 }

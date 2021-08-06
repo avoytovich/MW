@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -19,11 +18,12 @@ import {
   Close as CloseIcon,
 } from '@material-ui/icons';
 
+import { toast } from 'react-toastify';
+
 import FullNameAvatar from '../utils/FullNameAvatar';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
-import './TableComponent.scss';
 import PriceNumberFormat from '../PriceNumberFormat';
+import './TableComponent.scss';
 
 const TableRowComponent = ({
   rowItem,
@@ -33,16 +33,16 @@ const TableRowComponent = ({
   checked,
   handleDeleteItem,
   noActions,
+  noEditDeleteActions,
   customPath,
   errorHighlight,
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
-  const dispatch = useDispatch();
+
   const copyUrl = () => {
-    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`).then(() => {
-      dispatch(showNotification(localization.t('general.itemURLHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`)
+      .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
   };
 
   const parsePath = (path) => {
@@ -139,13 +139,15 @@ const TableRowComponent = ({
           {rowHover && !customPath && (
             <Grid>
               <Box my={2} textAlign='center'>
-                {!noActions && (
+                {!noActions && !noEditDeleteActions && (
                   <DeleteIcon
                     onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
                     className="deleteIcon icons"
                   />
                 )}
-                <EditIcon className="editIcon icons" />
+                {!noEditDeleteActions && (
+                  <EditIcon className="editIcon icons" />
+                )}
                 <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
               </Box>
             </Grid>
@@ -169,6 +171,7 @@ TableRowComponent.propTypes = {
     }),
   ),
   noActions: PropTypes.bool,
+  noEditDeleteActions: PropTypes.bool,
   customPath: PropTypes.string,
   errorHighlight: PropTypes.string,
 };

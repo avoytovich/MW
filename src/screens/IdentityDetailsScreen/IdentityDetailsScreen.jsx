@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   LinearProgress,
@@ -11,19 +11,18 @@ import {
   Box,
   Typography,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import General from './SubSections/General';
 import Identification from './SubSections/Identification';
 import Permissions from './SubSections/Permissions';
 import Emails from './SubSections/Emails';
 import localization from '../../localization';
 import useIdentityDetails from '../../services/useData/useIdentityDetails';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 import SectionLayout from '../../components/SectionLayout';
 import './identityDetailsScreen.scss';
 
 const IdentityDetailsScreen = () => {
-  const dispatch = useDispatch();
   const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
   const history = useHistory();
@@ -42,16 +41,12 @@ const IdentityDetailsScreen = () => {
 
   const addSecretKey = () => {
     api.addNewSecretKeyToIdentity(id).then(() => {
-      dispatch(
-        showNotification(localization.t('general.keyHasBeenAdded')),
-      );
+      toast(localization.t('general.keyHasBeenAdded'));
       setUpdate((u) => u + 1);
     });
   };
   const removeSecretKey = (secret) => api.deleteIdentitySecretKeyById(id, secret).then(() => {
-    dispatch(
-      showNotification(localization.t('general.keyHasBeenRemoved')),
-    );
+    toast(localization.t('general.keyHasBeenRemoved'));
     setUpdate((u) => u + 1);
   });
   const saveIdentity = () => {
@@ -65,17 +60,13 @@ const IdentityDetailsScreen = () => {
       api.addNewIdentity(filterBlankKeys).then((res) => {
         const location = res.headers.location.split('/');
         const identityId = location[location.length - 1];
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         history.push(`/settings/identities/${identityId}`);
         setUpdate((u) => u + 1);
       });
     } else {
       api.updateIdentityById(id, filterBlankKeys).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         setUpdate((u) => u + 1);
       });
     }

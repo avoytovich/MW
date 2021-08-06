@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { LinearProgress } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import ThemeLayout from './ThemeLayout';
-
-import { showNotification } from '../../redux/actions/HttpNotifications';
 
 import localization from '../../localization';
 import api from '../../api';
 
 const ThemeEditScreen = () => {
-  const dispatch = useDispatch();
-
   const [isLoading, setLoading] = useState(true);
 
   const { id } = useParams();
@@ -23,9 +19,7 @@ const ThemeEditScreen = () => {
 
   const saveTheme = () => {
     api.updateThemeById(id, currentTheme).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       window.location.reload();
     });
   };

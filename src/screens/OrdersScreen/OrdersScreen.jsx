@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Box from '@material-ui/core/Box';
-
+import { toast } from 'react-toastify';
 import FindByCC from './FindByCC';
 import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 import {
@@ -21,7 +19,6 @@ import TableActionsBar from '../../components/TableActionsBar';
 
 const OrdersScreen = () => {
   const scope = 'orders';
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -67,12 +64,10 @@ const OrdersScreen = () => {
   );
   const handleDeleteOrder = (id) => api.deleteOrderById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.order')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.order')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -94,6 +89,7 @@ const OrdersScreen = () => {
         updatePage={updatePage}
         tableData={orders}
         isLoading={isLoading}
+        noEditDeleteActions
       />
 
       <FindByCC onClose={() => setFindCC(false)} open={findCCOpen} />

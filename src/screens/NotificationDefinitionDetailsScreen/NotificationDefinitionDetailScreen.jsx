@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import {
   LinearProgress,
@@ -12,6 +12,8 @@ import {
   Typography,
 } from '@material-ui/core';
 
+import { toast } from 'react-toastify';
+
 import General from './SubSections/General';
 import EventMatching from './SubSections/EventMatching';
 import Templating from './SubSections/Templating';
@@ -21,11 +23,9 @@ import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 
 import localization from '../../localization';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
 
 const NotificationDefinitionDetailScreen = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
@@ -77,7 +77,7 @@ const NotificationDefinitionDetailScreen = () => {
       api.addNotificationDefinition(curNotification).then((res) => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
-        dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+        toast(localization.t('general.updatesHaveBeenSaved'));
 
         history.push(`/settings/notification-definition/${newId}`);
 
@@ -85,7 +85,7 @@ const NotificationDefinitionDetailScreen = () => {
       });
     } else {
       api.updateNotificationDefinitionById(id, curNotification).then(() => {
-        dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+        toast(localization.t('general.updatesHaveBeenSaved'));
 
         setUpdate((u) => u + 1);
       });
@@ -160,33 +160,31 @@ const NotificationDefinitionDetailScreen = () => {
           textColor='primary'
         >
           <Tab label={localization.t('labels.general')} />
-          <Tab label={localization.t('labels.eventMatching')} />
           <Tab label={localization.t('labels.templating')} />
         </Tabs>
       </Box>
       {
         curTab === 0 && curNotification && (
-          <SectionLayout label='general'>
-            <General
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
-            />
-          </SectionLayout>
+          <>
+            <SectionLayout label='general'>
+              <General
+                curNotification={curNotification}
+                setCurNotification={setCurNotification}
+              />
+            </SectionLayout>
+
+            <SectionLayout label='eventMatching'>
+              <EventMatching
+                data={curNotification?.eventMatcher}
+                curNotification={curNotification}
+                setCurNotification={setCurNotification}
+              />
+            </SectionLayout>
+          </>
         )
       }
       {
         curTab === 1 && curNotification && (
-          <SectionLayout label='eventMatching'>
-            <EventMatching
-              data={curNotification?.eventMatcher}
-              curNotification={curNotification}
-              setCurNotification={setCurNotification}
-            />
-          </SectionLayout>
-        )
-      }
-      {
-        curTab === 2 && curNotification && (
           <SectionLayout label='templating'>
             <Templating
               curNotification={curNotification}

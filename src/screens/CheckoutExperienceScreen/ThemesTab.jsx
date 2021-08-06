@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import api from '../../api';
 import {
   generateData,
@@ -7,7 +7,7 @@ import {
 } from '../../services/useData/tableMarkups/checkoutExperience';
 import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import localization from '../../localization';
 import {
   getSortParams,
@@ -18,7 +18,6 @@ import {
 const ThemesTab = () => {
   const scope = 'themes';
 
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -57,12 +56,10 @@ const ThemesTab = () => {
 
   const handleDeleteTheme = (id) => api.deleteThemeById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.theme')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.theme')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 

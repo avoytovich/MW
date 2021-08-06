@@ -6,7 +6,7 @@ import {
   AddParameterFirstStep,
   AddParameterSecondStepList,
   AddParameterSecondStepRange,
-} from '../../../ProductDetails/Variations';
+} from '../Variations';
 
 import './addVariationModal.scss';
 

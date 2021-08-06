@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 
 import {
   LinearProgress, Tabs, Tab, Zoom, Button, Box, Typography,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
+
 import api from '../../../api';
 import localization from '../../../localization';
 import useCustomerDetailData from '../../../services/useData/useCustomerDetailData';
@@ -13,7 +14,7 @@ import {
   assetsLabels,
   checkLabelDuplicate,
 } from './utils';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
+
 import TabSection from '../../../components/utils/TabSection';
 import General from './SubSections/General';
 import Features from './SubSections/Features';
@@ -26,7 +27,6 @@ import './CustomerDetailScreen.scss';
 const CustomerDetailScreen = () => {
   const history = useHistory();
   const { id } = useParams();
-  const dispatch = useDispatch();
   const [curTab, setCurTab] = useState(0);
 
   const {
@@ -43,17 +43,13 @@ const CustomerDetailScreen = () => {
       api.addCustomerById(currentCustomer).then((res) => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         history.push(`/settings/administration/customers/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
       api.updateCustomerById(id, formatBeforeSanding(currentCustomer)).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         setUpdate((u) => u + 1);
       });
     }
