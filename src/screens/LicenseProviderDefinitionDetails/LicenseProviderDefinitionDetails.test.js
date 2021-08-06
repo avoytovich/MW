@@ -69,6 +69,21 @@ describe('<LicenseProviderDefinitionDetails/> ', () => {
     expect(wrapper.find(CustomBreadcrumbs)).toHaveLength(0);
 
   });
+
+  it('testModeHTTPConfiguration should not be disabled if status is equal TestMode', () => {
+    useSelector.mockImplementation(() => ({ selectedCustomer: { id: 1 } }))
+    useParams.mockImplementation(() => ({ id: 1 }))
+    useLicenseProviderDefinitionDetail.mockImplementation(() => ({
+      curLicenseProvider: { status: 'TestMode' },
+      licenseProvider: {},
+    })
+    )
+    wrapper = shallow(
+      <LicenseProviderDefinitionDetails />,
+    );
+    expect(wrapper.find({ label: "Test mode HTTP configuration" }).props().disabled).toEqual(false);
+  });
+
   describe('LicenseProviderDefinitionDetails with data ', () => {
 
     beforeEach(() => {
@@ -90,12 +105,15 @@ describe('<LicenseProviderDefinitionDetails/> ', () => {
 
     it('should return CustomBreadcrumbs if  id not equal to  add', () => {
       expect(wrapper.find(CustomBreadcrumbs)).toHaveLength(1);
-
     });
 
     it('should contains 4 tabs', () => {
       const tabs = wrapper.find(Tab);
       expect(tabs.length).toEqual(4)
+    });
+
+    it('testModeHTTPConfiguration should be disabled if status not equal  TestMode', () => {
+      expect(wrapper.find({ label: "Test mode HTTP configuration" }).props().disabled).toEqual(true);
     });
 
     it('should return General component on first tab', () => {
