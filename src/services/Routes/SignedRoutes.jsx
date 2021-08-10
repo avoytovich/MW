@@ -166,10 +166,6 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
       />
       <Route
-        path={`${defPath}/checkout-experience/translations/add`}
-        component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
-      />
-      <Route
         path={`${defPath}/checkout-experience/themes/:id`}
         component={lazy(() => import('../../screens/ThemeScreen/ThemeEditScreen'))}
       />
@@ -178,16 +174,24 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
       />
       <Route
-        path={`${defPath}/checkout-experience/translations/:id`}
-        component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
-      />
-      <Route
         path={`${defPath}/checkout-experience/fonts/:id`}
         component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
       />
       <Route
         path={`${defPath}/checkout-experience`}
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}
+      />
+      <Route
+        path={`${defPath}/localization/translations/add`}
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
+      />
+      <Route
+        path={`${defPath}/localization/translations/:id`}
+        component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
+      />
+      <Route
+        path={`${defPath}/localization`}
+        component={lazy(() => import('../../screens/LocalizationScreen'))}
       />
       <Route
         path={`${defPath}/products/add`}

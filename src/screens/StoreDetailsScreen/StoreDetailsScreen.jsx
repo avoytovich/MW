@@ -18,7 +18,6 @@ import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import General from './SubSections/General';
 import Design from './SubSections/Design';
 import LocalizedContent from './SubSections/LocalizedContent';
-import AssetsResource from '../../components/AssetsResoursesWithSelectLabel';
 import StoreSection from './StoreSection';
 import {
   storeRequiredFields,
@@ -290,6 +289,9 @@ const StoreDetailsScreen = () => {
         )}
         {curTab === 1 && (
           <Design
+            resourceLabel={resourceLabel}
+            currentStoreResources={currentStoreResources}
+            setCurrentStoreResources={setCurrentStoreResources}
             selectOptions={selectOptions}
             currentStoreData={currentStoreData}
             setCurrentStoreData={setCurrentStoreData}
@@ -307,18 +309,6 @@ const StoreDetailsScreen = () => {
         {curTab === 3 && (
           <StoreSection label={tabLabels[3]}>
             <LocalizedContent
-              currentStoreData={currentStoreData}
-              setCurrentStoreData={setCurrentStoreData}
-            />
-          </StoreSection>
-        )}
-        {curTab === 4 && (
-          <StoreSection label={tabLabels[4]}>
-            <AssetsResource
-              labelOptions={resourceLabel}
-              maxPayloadFiles={4}
-              resources={currentStoreResources}
-              setResources={setCurrentStoreResources}
               currentStoreData={currentStoreData}
               setCurrentStoreData={setCurrentStoreData}
             />
