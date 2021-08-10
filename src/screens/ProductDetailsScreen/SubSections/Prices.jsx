@@ -24,14 +24,20 @@ import PriceNumberFormat from '../../../components/PriceNumberFormat';
 import ProductPriceRow from '../ProductPriceRow';
 
 import InheritanceField from '../InheritanceField';
-import { SelectCustom } from '../../../components/Inputs';
+import { SelectCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
 
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 
 import api from '../../../api';
 
-const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId }) => {
+const Prices = ({
+  selectOptions,
+  currentProductData,
+  setProductData,
+  setSaveDisabled,
+  parentId,
+}) => {
   const [prices, setPrices] = useState([]);
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const [needDefault, setNeedDefault] = useState(null);
@@ -95,12 +101,12 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
       ...c,
       prices: c.prices?.state
         ? {
-            ...c.prices,
-            value: {
-              ...c.prices.value,
-              priceByCountryByCurrency: pricesData,
-            },
-          }
+          ...c.prices,
+          value: {
+            ...c.prices.value,
+            priceByCountryByCurrency: pricesData,
+          },
+        }
         : { ...c.prices, priceByCountryByCurrency: pricesData },
     }));
   };
@@ -170,14 +176,14 @@ const Prices = ({ currentProductData, setProductData, setSaveDisabled, parentId 
                   <TableCell align='center'>{pr.crossSell || '-'}</TableCell>
                   <TableCell align='center' style={{ minWidth: '120px', padding: 0 }}>
                     <FormControlLabel
-                      control={
+                      control={(
                         <Checkbox
                           disabled
                           checked={pr.vatIncluded}
                           name='checkedB'
                           color='primary'
                         />
-                      }
+                      )}
                       style={{ margin: 0 }}
                     />
                   </TableCell>
