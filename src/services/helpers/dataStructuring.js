@@ -43,6 +43,7 @@ const defaultStore = {
   routes: [{ hostname: '' }],
   defaultLocale: '',
   saleLocales: [],
+  thankYouDesc: [],
   storeWebsite: '',
   displayName: '',
   blackListedPaymentTypes: [],
@@ -216,7 +217,7 @@ const backToFront = (
     'nextGenerationOf',
     'id',
     'parentId',
-    'resources'
+    'resources',
   ],
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable

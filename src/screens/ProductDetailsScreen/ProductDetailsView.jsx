@@ -208,6 +208,7 @@ const ProductDetailsView = ({
         {curTab === 3 && (
           <SectionLayout dataTest={allTabs[3]} label={allTabs[3]}>
             <Prices
+              selectOptions={selectOptions}
               setProductData={setProductData}
               currentProductData={currentProductData}
               productData={productData}

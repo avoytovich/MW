@@ -7,7 +7,6 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import localization from '../../localization';
-import TranslationsTab from './TranslationsTab';
 import FontsTab from './FontsTab';
 import ThemesTab from './ThemesTab';
 import LayoutsTab from './LayoutsTab';
@@ -31,14 +30,6 @@ const allTabs = [
       'general.layout',
     )}`,
     scope: 'layouts',
-  },
-  {
-    label: localization.t('labels.translations'),
-    path: '/checkout-experience/translations',
-    button: `${localization.t('general.add')} ${localization.t(
-      'general.translation',
-    )}`,
-    scope: 'translations',
   },
   {
     label: localization.t('labels.fonts'),
@@ -97,8 +88,7 @@ const CheckoutExperienceScreen = ({ location }) => {
           <Switch>
             <Route exact path={allTabs[0].path} component={ThemesTab} />
             <Route exact path={allTabs[1].path} component={LayoutsTab} />
-            <Route exact path={allTabs[2].path} component={TranslationsTab} />
-            <Route exact path={allTabs[3].path} component={FontsTab} />
+            <Route exact path={allTabs[2].path} component={FontsTab} />
             <Redirect exact from="/checkout-experience" to={allTabs[0].path} />
           </Switch>
         </Box>

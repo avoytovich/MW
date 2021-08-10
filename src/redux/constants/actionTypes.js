@@ -6,10 +6,6 @@ export const SILENT_LOGIN = 'account/silentLogin';
 export const LOGOUT = 'account/logout';
 export const UPDATE_NEXWAY_STATE = 'account/updateNexwayState';
 
-// Http Notifications
-export const HTTP_SHOW_NOTIFICATION = 'http/showNotification';
-export const HTTP_HIDE_NOTIFICATION = 'http/hideNotification';
-
 // Table Data
 export const SET_TABLE_SCOPE = 'table/setScope';
 export const REFRESH_TABLE = 'table/refresh';

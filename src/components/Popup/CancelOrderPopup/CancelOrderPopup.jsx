@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogContentText,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
 
 import SelectCustom from '../../Inputs/SelectCustom';
 import { orderCancelAction } from '../../../services/selectOptions/selectOptions';
@@ -18,9 +19,9 @@ const CancelOrderPopup = ({ currentOrderData }) => {
   const [cancelOrderReason, setCancelOrderReason] = useState('');
 
   const cancelOrder = () => {
-    api.cancelOrder(currentOrderData.id, cancelOrderReason).then(() => {
-      dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
-    });
+    api
+      .cancelOrder(currentOrderData.id, cancelOrderReason)
+      .then(() => toast(localization.t('general.updatesHaveBeenSaved')));
   };
 
   const handleClickOpen = () => {

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {
   Grid, Box, LinearProgress, Typography,
 } from '@material-ui/core';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import moment from 'moment';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
@@ -19,14 +18,12 @@ const NotificationHistoryDetailsScreen = () => {
   const [customer, setCustomer] = useState(null);
   const [error, setError] = useState(false);
 
-  const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
 
   const makeCopy = (value) => {
-    navigator.clipboard.writeText(value).then(() => {
-      dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
 
   const mapStructure = [

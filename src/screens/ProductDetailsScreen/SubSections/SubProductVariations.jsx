@@ -16,7 +16,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 import { SelectCustom } from '../../../components/Inputs';
 import SectionLayout from '../../../components/SectionLayout';
-import InheritanceField from '../../../components/ProductDetails/InheritanceField';
+import InheritanceField from '../InheritanceField';
 import Popup from '../../../components/Popup';
 
 const SubProductVariations = ({

@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { Grid, Box } from '@material-ui/core';
 import moment from 'moment';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
@@ -13,8 +12,6 @@ import { shouldDownload, shouldCopy } from './utils';
 import './orderDetailsScreen.scss';
 
 const OrderRow = ({ rowData, customerId, creationDate }) => {
-  const dispatch = useDispatch();
-
   const downloadPdf = (data, label) => {
     const url = window.URL.createObjectURL(new Blob([data]));
     const link = document.createElement('a');
@@ -38,9 +35,8 @@ const OrderRow = ({ rowData, customerId, creationDate }) => {
   );
 
   const makeCopy = (value) => {
-    navigator.clipboard.writeText(value).then(() => {
-      dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
 
   return rowData.map((item) => (

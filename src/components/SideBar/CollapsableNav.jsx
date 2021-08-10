@@ -33,7 +33,7 @@ const CollapsableNav = ({ header, icon: Icon, children }) => {
 
 CollapsableNav.propTypes = {
   header: PropTypes.string,
-  children: PropTypes.func,
+  children: PropTypes.any,
   icon: PropTypes.any,
 };
 

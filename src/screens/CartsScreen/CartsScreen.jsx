@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import api from '../../api';
+
 import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/carts';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import {
@@ -21,8 +22,6 @@ import {
 
 const CartsScreen = () => {
   const scope = 'carts';
-
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -54,12 +53,10 @@ const CartsScreen = () => {
 
   const handleDeleteCart = (id) => api.deleteCartById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.cart')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.cart')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 

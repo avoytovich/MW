@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
+
 import api from '../../api';
+
 import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/checkoutExperience';
 import { useTableData } from '../../services/useData';
-import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
-import localization from '../../localization';
 import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting';
+
+import TableComponent from '../../components/TableComponent';
+
+import localization from '../../localization';
 
 const TranslationsTab = () => {
   const scope = 'translations';
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [sortParams, setSortParams] = useState(
-    getSortParams(sortKeys.translationsTab),
-  );
+  const [sortParams, setSortParams] = useState(getSortParams(sortKeys.translationsTab));
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -28,16 +28,20 @@ const TranslationsTab = () => {
 
   const requests = async (rowsPerPage) => {
     const costumersIds = [];
+
     const res = await api.getDesignsTranslations({
       page: currentPage - 1, size: rowsPerPage, sortParams,
     });
+
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
       if (!costumersIds.includes(costumer)) {
         costumersIds.push(costumer);
       }
     });
+
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
+
     return generateData(res.data, customers.data.items);
   };
 
@@ -52,12 +56,10 @@ const TranslationsTab = () => {
 
   const handleDeleteTranslation = (id) => api.deleteTranslationById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.translation')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.translation')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 

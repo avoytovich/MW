@@ -35,11 +35,9 @@ const useTableData = (
         : '';
 
       if (customerScope) {
-        filtersUrl += `&customerId=${customerScope}`;
+        filtersUrl += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
       }
-
       setLoading(true);
-
       requests(reduxRowPerPage, filtersUrl)
         .then((payload) => {
           if (!isCancelled) {

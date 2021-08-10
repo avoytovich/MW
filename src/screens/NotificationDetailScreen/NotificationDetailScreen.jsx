@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import {
   LinearProgress,
@@ -21,12 +22,11 @@ import localization from '../../localization';
 import { useNotificationDetail } from '../../services/useData';
 import { urlIsValid } from '../../services/helpers/inputValidators';
 import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import api from '../../api';
 import SectionLayout from '../../components/SectionLayout';
 
 const NotificationDetailScreen = () => {
-  const dispatch = useDispatch();
   const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
   const history = useHistory();
@@ -58,17 +58,13 @@ const NotificationDetailScreen = () => {
       api.addNotification(formattedNotification).then((res) => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         history.push(`/settings/notifications/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
       api.updateNotificationById(id, formattedNotification).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         setUpdate((u) => u + 1);
       });
     }

@@ -51,7 +51,7 @@ const generateData = (data, customers) => {
       name: val.name,
       url: val.url,
       emails: val.emails,
-      status: val.status,
+      status: val.status === 'Active' ? 'Enabled' : 'Disabled',
     };
   });
 

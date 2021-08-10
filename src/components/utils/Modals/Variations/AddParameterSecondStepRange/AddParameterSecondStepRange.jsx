@@ -1,30 +1,27 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box, Typography, TextField, IconButton, Button, Tooltip,
-} from '@material-ui/core';
+import { Box, Typography, TextField, IconButton, Button, Tooltip } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 
-import { NumberInput } from '../../../Inputs';
+import { NumberInput } from '../../../../Inputs';
 
 import '../variations.scss';
 
 const defauldRange = { from: 1, to: 2, label: '' };
 
-const AddParameterSecondStepRange = ({
-  onClose, onSubmit, modalState, setModalState,
-}) => {
+const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState, setModalState }) => {
   const [range, setRange] = useState(defauldRange);
   const [parametersList, setParametersList] = useState([]);
   const [max, setMax] = useState(0);
 
   const minParametersCount = parametersList.length < 2;
   // eslint-disable-next-line
-  const findMax = (list) => Math.max.apply(
-    Math,
-    list.map(({ to }) => to),
-  );
+  const findMax = (list) =>
+    Math.max.apply(
+      Math,
+      list.map(({ to }) => to),
+    );
 
   const handleRemoveParamether = (index) => {
     const newParametersList = parametersList.slice(0, index);
@@ -43,13 +40,13 @@ const AddParameterSecondStepRange = ({
     if (val <= max) return;
     val >= range.to
       ? setRange({
-        from: val,
-        to: val + 1,
-      })
+          from: val,
+          to: val + 1,
+        })
       : setRange({
-        from: val,
-        to: range.to,
-      });
+          from: val,
+          to: range.to,
+        });
   };
 
   const handleRangeTo = (value) => {
@@ -161,11 +158,13 @@ const AddParameterSecondStepRange = ({
             name=''
             value={range.label}
             type='text'
-            onChange={(e) => setRange({
-              from: range.from,
-              to: range.to,
-              label: e.target.value,
-            })}
+            onChange={(e) =>
+              setRange({
+                from: range.from,
+                to: range.to,
+                label: e.target.value,
+              })
+            }
             fullWidth
             variant='outlined'
           />
