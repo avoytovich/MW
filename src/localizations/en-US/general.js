@@ -89,6 +89,7 @@ const general = {
   hideAll: 'Hide All',
   showAll: 'Show All',
   licenseProviderDefinition: 'License Provider Definition',
+  disableStore: 'Are you sure you want to disable the store?',
 };
 
 export default general;
