@@ -78,6 +78,7 @@ const TableComponent = ({
           setItems={setChecked}
           headers={tableData.headers}
           onDelete={handleDeleteItem}
+          noEditDeleteActions={noEditDeleteActions}
         />
       )}
       <Paper elevation={1}>
