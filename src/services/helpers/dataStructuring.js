@@ -121,8 +121,7 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
 
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName
-    ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}
-          ${item.subscriptionTemplate || ''})`
+    ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}${item.subscriptionTemplate || ''})`
     : item?.id;
 
   return { id: item.id, value };
