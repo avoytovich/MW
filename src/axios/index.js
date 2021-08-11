@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import localization from '../localization';
 
-const errorHandler = (error) => {
+const errorHandler = (error, customToast) => {
   const { response } = error;
   const { errorDetails } = JSON.parse(localStorage.getItem('nexwayState')) || {};
 
@@ -28,6 +28,10 @@ const errorHandler = (error) => {
     }
   }
 
+  if (customToast) {
+    return Promise.reject(message);
+  }
+
   toast.error(message);
 
   return Promise.reject(error);
@@ -45,5 +49,12 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => errorHandler(error),
+  (error) => {
+    const isStoreDelete = error?.response?.config?.method === 'delete'
+      && error?.response?.config?.url?.indexOf('/store') >= 0;
+
+    const customToast = isStoreDelete;
+
+    return errorHandler(error, customToast);
+  },
 );
