@@ -86,6 +86,12 @@ const StoreDetailsScreen = () => {
       currentStoreResources,
       resourcesHasChanges,
     );
+
+    if (!updatedData?.saleLocales?.length) {
+      delete updatedData.saleLocales;
+      delete updatedData.thankYouDesc;
+    }
+
     if (id === 'add') {
       api.addNewStore(updatedData).then((res) => {
         const location = res.headers.location.split('/');

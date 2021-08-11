@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import {
   Box, Typography, Grid, Button,
 } from '@material-ui/core';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
 import { getCountriesOptions, getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
 import localization from '../../../localization';
@@ -14,6 +17,8 @@ import {
   CheckboxInput,
 } from '../../../components/Inputs';
 
+import '../storeDetailsScreen.scss';
+
 const checkBoxObj = [
   { name: 'RESELLER_AUTHENTICATION_REQUIRED', label: 'resellerAuthentication' },
   { name: 'BUYER_AUTHENTICATION_REQUIRED', label: 'buyerAuthentication' },
@@ -22,18 +27,59 @@ const checkBoxObj = [
 const General = ({ currentStoreData, setCurrentStoreData }) => {
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
+  const [open, setOpen] = React.useState(false);
+  const [saveModalChecked, setSaveModalChecked] = React.useState(null);
+
+  const handleOpenModal = (e) => {
+    setSaveModalChecked(e.target.value);
+    setOpen(true);
+  };
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+  const confirmModal = () => {
+    setCurrentStoreData({
+      ...currentStoreData,
+      status: saveModalChecked ? 'ENABLED' : 'DISABLED',
+    });
+    handleCloseModal();
+  };
 
   return (
     <>
       <Grid item md={12} sm={12}>
         <Box p={2}>
+          <Modal
+            className='modal'
+            open={open}
+            onClose={handleCloseModal}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <Box className='paper'>
+                <Typography variant="h4" color="textPrimary">
+                  {localization.t('general.disableStore')}
+                </Typography>
+                <Box display='flex' justifyContent='space-around' pt={4}>
+                  <Button variant="outlined" color='suka' onClick={handleCloseModal}>Cancel</Button>
+                  <Button variant="contained" color="primary" onClick={confirmModal}>Confirm</Button>
+                </Box>
+              </Box>
+            </Fade>
+          </Modal>
           <SwitchInput
             label='status'
             handleChange={(e) => {
-              setCurrentStoreData({
-                ...currentStoreData,
-                status: e.target.checked ? 'ENABLED' : 'DISABLED',
-              });
+              !e.target.checked
+                ? handleOpenModal(e)
+                : setCurrentStoreData({
+                  ...currentStoreData,
+                  status: e.target.checked ? 'ENABLED' : 'DISABLED',
+                });
             }}
             isChecked={currentStoreData.status === 'ENABLED'}
             switchLabel={localization.t(

@@ -15,8 +15,13 @@ const deleteApi = {
       url,
     });
   },
-  deleteStoreById(id) {
-    const url = `/stores/${id}`;
+  deleteStoreById(id, force) {
+    let url = `/stores/${id}`;
+
+    if (force) {
+      url += '?force=true';
+    }
+
     return axiosInstance({
       method: 'delete',
       url,

@@ -4,9 +4,8 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 import TableComponent from '../../components/TableComponent';
-import useTableData from '../../services/useData/useTableData';
-import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
+import ToastWithAction from '../../components/utils/ToastWithAction/ToastWithAction';
 
 import api from '../../api';
 import {
@@ -14,10 +13,15 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+
 import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/stores';
+
+import useTableData from '../../services/useData/useTableData';
+
+import localization from '../../localization';
 
 const StoresScreen = () => {
   const scope = 'stores';
@@ -49,14 +53,26 @@ const StoresScreen = () => {
     return generateData(res.data, customers.data);
   };
 
-  const handleDeleteStore = (id) => api.deleteStoreById(id).then(() => {
-    setMakeUpdate((v) => v + 1);
-    toast(
-      `${localization.t('general.store')} ${id} ${localization.t(
-        'general.hasBeenSuccessfullyDeleted',
-      )}`,
-    );
-  });
+  const handleDeleteStore = (id, force) => api.deleteStoreById(id, force)
+    .then(() => {
+      setMakeUpdate((v) => v + 1);
+      toast(
+        `${localization.t('general.store')} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`,
+      );
+    })
+    .catch((msg) => {
+      if (force) {
+        toast.error(msg);
+      } else {
+        toast.error(<ToastWithAction
+          text={msg}
+          buttonText={localization.t('general.force')}
+          actionFn={() => handleDeleteStore(id, true)}
+        />);
+      }
+    });
 
   const stores = useTableData(
     currentPage - 1,

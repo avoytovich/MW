@@ -29,10 +29,19 @@ const LocalizedContent = ({ currentStoreData, setCurrentStoreData }) => {
       setValue(0);
     }
 
-    setCurrentStoreData((cur) => ({
-      ...cur,
-      saleLocales: [...cur.saleLocales.filter((l) => l !== locale)],
-    }));
+    setCurrentStoreData((cur) => {
+      const newDesc = cur.thankYouDesc;
+
+      if (newDesc) {
+        delete newDesc[locale];
+      }
+
+      return {
+        ...cur,
+        saleLocales: [...cur.saleLocales.filter((l) => l !== locale)],
+        thankYouDesc: newDesc,
+      };
+    });
   };
 
   const addLocale = () => {
@@ -101,13 +110,15 @@ const LocalizedContent = ({ currentStoreData, setCurrentStoreData }) => {
         </Tabs>
       </Box>
 
-      <Box display='flex' flexDirection='row' alignItems='baseline' width='80%'>
-        <LocalizationInputs
-          handleChange={setCurrentStoreData}
-          lang={value}
-          data={value && currentStoreData?.thankYouDesc[value]}
-        />
-      </Box>
+      {!!value && (
+        <Box display='flex' flexDirection='row' alignItems='baseline' width='80%'>
+          <LocalizationInputs
+            handleChange={setCurrentStoreData}
+            lang={value}
+            data={value && currentStoreData?.thankYouDesc[value]}
+          />
+        </Box>
+      )}
     </Box>
   );
 };
