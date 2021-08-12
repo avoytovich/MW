@@ -47,7 +47,7 @@ const Prices = ({
     currentProductData?.prices?.state,
   )?.priceByCountryByCurrency;
 
-  const pricesList = Object.keys(priceByCountryByCurrency);
+  const pricesList = Object.keys(priceByCountryByCurrency || {});
 
   useEffect(() => {
     const pricesData = priceByCountryByCurrency;
