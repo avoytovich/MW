@@ -9,54 +9,11 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
-import api from '../../api';
 import localization from '../../localization';
-import { generateData as generateAutoFulfillments, defaultShow as defaultShowAutoFulfillments } from '../../services/useData/tableMarkups/autoFulfillments';
-import { generateData as generateManualFulfillments, defaultShow as defaultShowManualFulfillments } from '../../services/useData/tableMarkups/manualFulfillments';
-import { generateData as generateLicenseProviderDefinitions, defaultShow as defaultShowLicenseProviderDefinitions } from '../../services/useData/tableMarkups/licenseProviderDefinitions';
-import getCustomers from './utils';
+
+import tabsData from './utils';
 import TableActionsBar from '../../components/TableActionsBar';
 import TabTable from '../../components/TabTable';
-
-const tabsData = [
-  {
-    label: 'autoFulfillments',
-    path: '/overview/fulfillment-packages/autoFulfillments',
-    request: api.getAutoFulfillments,
-    sortKey: 'autoFulfillments',
-    secondaryRequest: (data) => getCustomers(data, 'customerId'),
-    generateData: generateAutoFulfillments,
-    defaultShow: defaultShowAutoFulfillments,
-    noActions: true,
-    scope: 'autoFulfillments',
-  },
-  {
-    label: 'manualFulfillments',
-    noActions: true,
-    path: '/overview/fulfillment-packages/manualFulfillments',
-    request: api.getManualFulfillments,
-    generateData: generateManualFulfillments,
-    defaultShow: defaultShowManualFulfillments,
-    secondaryRequest: (data) => getCustomers(data, 'publisherId'),
-
-    sortKey: 'manualFulfillments',
-    scope: 'manualFulfillments',
-  },
-  {
-    label: 'licenseProviderDefinitions',
-    path: '/overview/fulfillment-packages/licenseProviderDefinitions',
-    button: `${localization.t('general.add')} ${localization.t(
-      'labels.licenseProviderDefinition',
-    )}`,
-    request: api.getLicenseProviderDefinitions,
-    secondaryRequest: (data) => getCustomers(data, 'customerId'),
-    sortKey: 'licenseProviderDefinitions',
-    generateData: generateLicenseProviderDefinitions,
-    defaultShow: defaultShowLicenseProviderDefinitions,
-    scope: 'licenseProviderDefinitions',
-    deleteFunc: api.deleteLicenseProviderDefinitionById,
-  },
-];
 
 const FulfillmentPackagesScreen = ({ location }) => {
   const [curBab, setCurTab] = useState(location.pathname === '/overview/fulfillment-packages' ? tabsData[0].path
@@ -66,6 +23,8 @@ const FulfillmentPackagesScreen = ({ location }) => {
     return (
       <TableActionsBar
         scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
         {currentTab.button && (
           <Box alignSelf='flex-end'>

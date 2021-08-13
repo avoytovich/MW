@@ -9,9 +9,9 @@ import TableActionsBar from '../../components/TableActionsBar';
 import TabTable from './TabTable';
 import api from '../../api';
 
-import { generateData as generateNotifications, defaultShow as defaultShowNotifications } from '../../services/useData/tableMarkups/notifications';
-import { generateData as notificationsDefinition, defaultShow as defaultShowNotificationsDefinition } from '../../services/useData/tableMarkups/notificationsDefinition';
-import { generateData as generateNotificationsHistory, defaultShow as defaultShowNotificationsHistory } from '../../services/useData/tableMarkups/notificationsHistory';
+import { generateData as generateNotifications, defaultShow as defaultShowNotifications, markUp as markUpNotifications } from '../../services/useData/tableMarkups/notifications';
+import { generateData as notificationsDefinition, defaultShow as defaultShowNotificationsDefinition, markUp as markUpNotificationsDefinition } from '../../services/useData/tableMarkups/notificationsDefinition';
+import { generateData as generateNotificationsHistory, defaultShow as defaultShowNotificationsHistory, markUp as markUpNotificationsHistory } from '../../services/useData/tableMarkups/notificationsHistory';
 
 const tabsData = [
   {
@@ -25,6 +25,8 @@ const tabsData = [
       'general.notifications.notification',
     )}`,
     defaultShow: defaultShowNotifications,
+    deleteFunc: api.deleteNotificationById,
+    headers: markUpNotifications.headers,
   },
   {
     label: 'notificationDefinitions',
@@ -37,6 +39,8 @@ const tabsData = [
       'general.notifications.notificationDefinition',
     )}`,
     defaultShow: defaultShowNotificationsDefinition,
+    deleteFunc: api.deleteNotificationDefinitionsById,
+    headers: markUpNotificationsDefinition.headers,
   },
   {
     label: 'notificationHistory',
@@ -46,6 +50,8 @@ const tabsData = [
     generateData: generateNotificationsHistory,
     scope: 'notification-history',
     defaultShow: defaultShowNotificationsHistory,
+    deleteFunc: null,
+    headers: markUpNotificationsHistory.headers,
   },
 ];
 
@@ -65,13 +71,15 @@ const NotficationScreen = () => {
   }, [pathname]);
 
   const drawAddButton = () => {
-    const currentTad = tabsData.find((item) => item.path === pathname) || tabsData[0];
+    const currentTab = tabsData.find((item) => item.path === pathname) || tabsData[0];
 
     return (
       <TableActionsBar
-        scope={currentTad.scope}
+        scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
-        {currentTad.label !== 'notificationHistory' && (
+        {currentTab.label !== 'notificationHistory' && (
           <Box alignSelf='flex-end'>
             <Button
               id='add-administration-button'
@@ -79,9 +87,9 @@ const NotficationScreen = () => {
               size='large'
               variant='contained'
               component={Link}
-              to={`${currentTad.path}/add`}
+              to={`${currentTab.path}/add`}
             >
-              {currentTad.button}
+              {currentTab.button}
             </Button>
           </Box>
 

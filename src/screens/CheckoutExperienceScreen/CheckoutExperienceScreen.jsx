@@ -11,7 +11,8 @@ import FontsTab from './FontsTab';
 import ThemesTab from './ThemesTab';
 import LayoutsTab from './LayoutsTab';
 import TableActionsBar from '../../components/TableActionsBar';
-
+import api from '../../api';
+import { markUp } from '../../services/useData/tableMarkups/checkoutExperience';
 import './CheckoutExperienceScreen.scss';
 
 const allTabs = [
@@ -22,6 +23,8 @@ const allTabs = [
       'general.theme',
     )}`,
     scope: 'themes',
+    deleteFunc: api.deleteThemeById,
+    headers: markUp.headers,
   },
   {
     label: localization.t('labels.layouts'),
@@ -30,6 +33,8 @@ const allTabs = [
       'general.layout',
     )}`,
     scope: 'layouts',
+    deleteFunc: api.deleteLayoutById,
+    headers: markUp.headers,
   },
   {
     label: localization.t('labels.fonts'),
@@ -38,15 +43,19 @@ const allTabs = [
       'general.font',
     )}`,
     scope: 'fonts',
+    deleteFunc: api.deleteFontById,
+    headers: markUp.headers,
   },
 ];
 
 const CheckoutExperienceScreen = ({ location }) => {
   const drawAddButton = () => {
-    const currentTad = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
+    const currentTab = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
     return (
       <TableActionsBar
-        scope={currentTad.scope}
+        scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
         <Button
           id="add-checkout-design-button"
@@ -54,9 +63,9 @@ const CheckoutExperienceScreen = ({ location }) => {
           size="large"
           variant="contained"
           component={Link}
-          to={`${currentTad.path}/add`}
+          to={`${currentTab.path}/add`}
         >
-          {currentTad.button}
+          {currentTab.button}
         </Button>
       </TableActionsBar>
     );

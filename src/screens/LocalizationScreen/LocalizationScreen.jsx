@@ -8,11 +8,11 @@ import {
 import {
   Tabs, Tab, Box, Button,
 } from '@material-ui/core';
-
+import api from '../../api';
+import { markUp } from '../../services/useData/tableMarkups/checkoutExperience';
 import TranslationsTab from './TranslationsTab';
 import InvoiceTranslationsTab from './InvoiceTranslationsTab';
 import TableActionsBar from '../../components/TableActionsBar';
-
 import localization from '../../localization';
 
 import './LocalizationScreen.scss';
@@ -25,6 +25,8 @@ const allTabs = [
       'general.translation',
     )}`,
     scope: 'translations',
+    deleteFunc: api.deleteTranslationById,
+    headers: markUp.headers,
   },
   {
     label: localization.t('labels.invoiceTranslations'),
@@ -35,10 +37,12 @@ const allTabs = [
 
 const LocalizationScreen = ({ location }) => {
   const drawAddButton = () => {
-    const currentTad = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
-    return currentTad.button && (
+    const currentTab = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
+    return currentTab.button && (
       <TableActionsBar
-        scope={currentTad.scope}
+        scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
         <Button
           id="add-localization-button"
@@ -46,9 +50,9 @@ const LocalizationScreen = ({ location }) => {
           size="large"
           variant="contained"
           component={Link}
-          to={`${currentTad.path}/add`}
+          to={`${currentTab.path}/add`}
         >
-          {currentTad.button}
+          {currentTab.button}
         </Button>
       </TableActionsBar>
     );

@@ -4,13 +4,16 @@ import { useHistory, Link } from 'react-router-dom';
 import {
   Tabs, Tab, Box, Button,
 } from '@material-ui/core';
-
+import api from '../../api';
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
 import PricesScreen from './SubSections/PricesScreen';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
+import { markUp as markUpRecommendations } from '../../services/useData/tableMarkups/recommendations';
+import { markUp as markUpDiscounts } from '../../services/useData/tableMarkups/discounts';
+import { markUp as markUpPrices } from '../../services/useData/tableMarkups/prices';
 
 import './marketingScreen.scss';
 
@@ -22,6 +25,8 @@ const availTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.campaign',
     )}`,
+    deleteFunc: null,
+    headers: null,
   },
   {
     label: 'recommendations',
@@ -30,6 +35,8 @@ const availTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.recommendation',
     )}`,
+    deleteFunc: api.deleteRecommendationById,
+    headers: markUpRecommendations.headers,
   },
   {
     label: 'discounts',
@@ -38,6 +45,8 @@ const availTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.discount',
     )}`,
+    deleteFunc: api.deleteDiscountById,
+    headers: markUpDiscounts.headers
   },
   {
     label: 'prices',
@@ -46,6 +55,8 @@ const availTabs = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.price',
     )}`,
+    deleteFunc: api.deletePriceById,
+    headers: markUpPrices.headers,
   },
 ];
 
@@ -68,10 +79,12 @@ const MarketingScreen = () => {
   }, [pathname]);
 
   const drawAddButton = () => {
-    const currentTad = availTabs.find((item) => item.path === pathname) || availTabs[0];
+    const currentTab = availTabs.find((item) => item.path === pathname) || availTabs[0];
     return (
       <TableActionsBar
-        scope={currentTad.scope}
+        scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
         <Button
           id='add-marketing-button'
@@ -79,9 +92,9 @@ const MarketingScreen = () => {
           size='large'
           variant='contained'
           component={Link}
-          to={`${currentTad.path}/add`}
+          to={`${currentTab.path}/add`}
         >
-          {currentTad.button}
+          {currentTab.button}
         </Button>
       </TableActionsBar>
 

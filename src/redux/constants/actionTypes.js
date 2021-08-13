@@ -14,7 +14,8 @@ export const RESET_TABLE_FILTERS = 'table/resetFilters';
 export const SET_TABLE_SEARCH = 'table/setSearch';
 export const RESET_TABLE_SEARCH = 'table/resetSearch';
 export const SET_TABLE_ROWS_PER_PAGE = 'table/setRowsPerPage';
-
+export const SET_TABLE_CHECKED_ITEMS = 'table/setCheckedItems';
+export const SET_WAS_UPDATED = 'table/setWasUpdated';
 // Show Columns
 export const SET_TABLE_SHOW_COLUMNS = 'showColumns/setShowColumns';
 
