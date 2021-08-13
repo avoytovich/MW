@@ -17,6 +17,7 @@ import {
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/stores';
 
 import useTableData from '../../services/useData/useTableData';
@@ -88,6 +89,8 @@ const StoresScreen = () => {
     <>
       <TableActionsBar
         scope={scope}
+        deleteFunc={api.deleteStoreById}
+        headers={markUp.headers}
       >
         <Box>
           <Button

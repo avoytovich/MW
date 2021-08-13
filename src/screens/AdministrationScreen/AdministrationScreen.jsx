@@ -13,7 +13,9 @@ import localization from '../../localization';
 import TabTable from '../../components/TabTable';
 import api from '../../api';
 import { generateData as generateCustomers, defaultShow as defaultShowCustomers } from '../../services/useData/tableMarkups/adminCustomers';
-import { generateData as generateRoles, defaultShow as defaultShowRoles } from '../../services/useData/tableMarkups/adminRoles';
+import { generateData as generateRoles, defaultShow as defaultShowRoles, markUp as markUpRoles } from '../../services/useData/tableMarkups/adminRoles';
+import { markUp as markUpMetaRole } from '../../services/useData/tableMarkups/adminMetaRole';
+
 import { generateData as generatePrivileges, defaultShow as defaultShowPrivileges } from '../../services/useData/tableMarkups/adminPrivileges';
 import MetaRoles from './MetaRoles';
 import TableActionsBar from '../../components/TableActionsBar';
@@ -31,6 +33,7 @@ const tabsData = [
     button: `${localization.t('general.add')} ${localization.t(
       'general.customer',
     )}`,
+    headers: null,
   },
   {
     label: 'role',
@@ -45,6 +48,7 @@ const tabsData = [
     generateData: generateRoles,
     deleteFunc: api.deleteRoleById,
     scope: 'roles',
+    headers: markUpRoles.headers,
   },
   {
     label: 'metaRole',
@@ -54,7 +58,8 @@ const tabsData = [
     )}`,
     sortKey: 'metaRoleAdmin',
     scope: 'metaRoles',
-
+    deleteFunc: api.deleteMetaRoleById,
+    headers: markUpMetaRole.headers,
   },
   {
     label: 'privilege',
@@ -68,16 +73,18 @@ const tabsData = [
     defaultShow: defaultShowPrivileges,
     noActions: true,
     scope: 'privileges',
-
+    headers: null,
   },
 ];
 
 const AdministrationScreen = ({ location }) => {
   const drawAddButton = () => {
-    const currentTad = tabsData.find((item) => item.path === location.pathname) || tabsData[0];
+    const currentTab = tabsData.find((item) => item.path === location.pathname) || tabsData[0];
     return (
       <TableActionsBar
-        scope={currentTad.scope}
+        scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
         <Box alignSelf='flex-end'>
           <Button
@@ -86,9 +93,9 @@ const AdministrationScreen = ({ location }) => {
             size='large'
             variant='contained'
             component={Link}
-            to={`${currentTad.path}/add`}
+            to={`${currentTab.path}/add`}
           >
-            {currentTad.button}
+            {currentTab.button}
           </Button>
         </Box>
       </TableActionsBar>

@@ -125,6 +125,20 @@ const deleteApi = {
       url,
     });
   },
+  deleteNotificationById(id) {
+    const url = `/customer-notifier/receivers/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteNotificationDefinitionsById(id) {
+    const url = `/customer-notifier/notification-definitions/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;

@@ -8,6 +8,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/carts';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
@@ -63,7 +64,11 @@ const CartsScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableActionsBar scope={scope}>
+      <TableActionsBar
+        scope={scope}
+        deleteFunc={api.deleteCartById}
+        headers={markUp.headers}
+      >
         <Box>
           <Button
             id="add-cart"

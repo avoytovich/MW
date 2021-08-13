@@ -9,6 +9,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/orders';
 import {
   getSortParams,
@@ -78,6 +79,7 @@ const OrdersScreen = () => {
       <TableActionsBar
         scope={scope}
         findByCC={() => setFindCC(true)}
+        headers={markUp.headers}
       />
       <TableComponent
         scope={scope}
