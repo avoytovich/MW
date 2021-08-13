@@ -372,15 +372,13 @@ const getAllApi = {
   },
 
   getLicenses({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
   } = defaultRequestedObject) {
     let url = `/license-manager/licenses?format=short&size=${size}&page=${page}`;
 
-    if (sortParams) {
-      url += `&sort=${sortParams.value},${sortParams.type}`;
-    }
     if (filters) {
-      url += filters;
+      const adjustFilters = filters.replace(',', '&status=');
+      url += adjustFilters;
     }
     return axiosInstance({
       method: 'get',
