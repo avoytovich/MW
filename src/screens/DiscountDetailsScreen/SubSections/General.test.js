@@ -1,20 +1,21 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import General from './General';
-import { discountObj, selectOptions } from '../../../../__mocks__/fileMock';
+import { discountObj } from '../../../../__mocks__/fileMock';
 
-let discountData = { ...discountObj };
-const curAmountCurrency = { key: "AED", value: "1" };
 let amountType = 'byPercentage'
 
-const curDiscountCodes = [{
-  key: "default",
-  value: ""
-}]
+jest.mock('../../../components/utils/OptionsFetcher/OptionsFetcher',
+  () => ({
+    getLanguagesOptions: jest.fn(() => ([])),
+  })
+);
+
 describe('DiscountDetailsScreen <General/>', () => {
   let wrapper;
 
   beforeEach(() => {
+
     wrapper = shallow(
       <General
         curDiscount={discountObj}

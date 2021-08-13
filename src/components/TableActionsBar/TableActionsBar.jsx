@@ -79,7 +79,7 @@ const TableActionsBar = ({
   return (
     <Box display="flex" className='test' alignItems='center' justifyContent='space-between' pb={3}>
       <Box display='flex' alignItems='center' py={2}>
-        <Typography variant="subtitle2">{localization.t('general.rowsPerPage')}</Typography>
+        <Typography data-test='rowsPerPageLabel' variant="subtitle2">{localization.t('general.rowsPerPage')}</Typography>
         <Box px={2}>
           <TextField
             select
