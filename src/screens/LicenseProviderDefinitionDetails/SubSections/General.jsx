@@ -16,6 +16,7 @@ const General = ({ curLicenseProvider, setCurLicenseProvider }) => (
     <Grid item md={6} sm={12}>
       <Box p={2}>
         <InputCustom
+          data-test='name'
           label='name'
           value={curLicenseProvider.name}
           onChangeInput={(e) => setCurLicenseProvider(
@@ -59,6 +60,7 @@ const General = ({ curLicenseProvider, setCurLicenseProvider }) => (
     <Grid item md={6} sm={12}>
       <Box p={2}>
         <InputCustom
+          data-test='baseUrl'
           label='baseUrl'
           value={curLicenseProvider.baseUrl}
           onChangeInput={(e) => {

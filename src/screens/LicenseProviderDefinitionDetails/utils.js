@@ -70,4 +70,4 @@ const combineObjects = (def, fetched) => {
 
 const checkRequiredFields = (data) => combineObjects(defaultObject, data);
 
-export default checkRequiredFields;
+export { checkRequiredFields, defaultObject };

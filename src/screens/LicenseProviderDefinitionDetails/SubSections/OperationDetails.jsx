@@ -81,7 +81,7 @@ const OperationDetails = ({ curLicenseProvider, setCurLicenseProvider }) => (
       </Box>
       <Box p={2}>
         <InputCustom
-          data-test='errorMessage'
+          data-test='errorStatusCodesOnePerLine'
           isMultiline
           label='errorStatusCodesOnePerLine'
           value={curLicenseProvider.permanentErrorsDefinition.httpStatusCodes.join('\r\n')}
@@ -110,7 +110,7 @@ const OperationDetails = ({ curLicenseProvider, setCurLicenseProvider }) => (
         <Grid item md={6} sm={12}>
           <Box p={2}>
             <InputCustom
-              data-test='bodyTemplate'
+              data-test='activationCode'
               label='activationCode'
               value={curLicenseProvider.operationDefinitions.fallback.responsePaths.activationCode.path}
               onChangeInput={(e) => {
@@ -135,7 +135,7 @@ const OperationDetails = ({ curLicenseProvider, setCurLicenseProvider }) => (
           </Box>
           <Box p={2}>
             <InputCustom
-              data-test='bodyTemplate'
+              data-test='conversionTemplate'
               label='conversionTemplate'
               value={curLicenseProvider.operationDefinitions.fallback.responsePaths.activationCode.conversionTemplate}
               onChangeInput={(e) => {
