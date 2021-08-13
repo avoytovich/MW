@@ -12,7 +12,7 @@ const useTableData = (
 ) => {
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const [fetchedData, setFetchedData] = useState();
-
+  const reduxWasUpdated = useSelector(({ tableData: { wasUpdated } }) => wasUpdated);
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
   const searchTerm = useSelector(({ tableData: { search } }) => search);
@@ -64,6 +64,7 @@ const useTableData = (
     hasSearch,
     sortParams,
     reduxRowPerPage,
+    reduxWasUpdated,
   ]);
 
   return fetchedData;

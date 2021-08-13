@@ -6,6 +6,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/licenses';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
@@ -61,7 +62,11 @@ const LicenseScreen = () => {
   const updatePage = (page) => setCurrentPage(page);
   return (
     <>
-      <TableActionsBar scope={scope} />
+      <TableActionsBar
+        scope={scope}
+        deleteFunc={api.deleteCartById}
+        headers={markUp.headers}
+      />
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

@@ -6,6 +6,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/identities';
 import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
@@ -67,6 +68,8 @@ const IdentitiesScreen = () => {
     <Box display='flex' flexDirection='column'>
       <TableActionsBar
         scope={scope}
+        deleteFunc={api.deleteIdentityById}
+        headers={markUp.headers}
       >
         <Box alignSelf='flex-end' py={2}>
           <Button

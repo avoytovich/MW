@@ -12,7 +12,6 @@ const tabLabels = [
   'design',
   'payment',
   'localizedContent',
-  'assetsResource',
 ];
 
 const formDesignOptions = (options, customers) => (options

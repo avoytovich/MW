@@ -1,3 +1,14 @@
 .iconWrapper {
   text-align: center;
 }
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.paper {
+  background-color: #fff;
+  border: 2px solid #ddd;
+  border-radius: 2%;
+  padding: 30px;
+}

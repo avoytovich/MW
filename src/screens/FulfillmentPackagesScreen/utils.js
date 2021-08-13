@@ -1,4 +1,8 @@
 import api from '../../api';
+import { generateData as generateAutoFulfillments, defaultShow as defaultShowAutoFulfillments } from '../../services/useData/tableMarkups/autoFulfillments';
+import { generateData as generateManualFulfillments, defaultShow as defaultShowManualFulfillments } from '../../services/useData/tableMarkups/manualFulfillments';
+import { generateData as generateLicenseProviderDefinitions, defaultShow as defaultShowLicenseProviderDefinitions, markUp as markUpLicenseProviderDefinitions } from '../../services/useData/tableMarkups/licenseProviderDefinitions';
+import localization from '../../localization';
 
 const getCustomers = async (data, key) => {
   const costumersIds = [];
@@ -14,4 +18,46 @@ const getCustomers = async (data, key) => {
   return result;
 };
 
-export default getCustomers;
+const tabsData = [
+  {
+    label: 'autoFulfillments',
+    path: '/overview/fulfillment-packages/autoFulfillments',
+    request: api.getAutoFulfillments,
+    sortKey: 'autoFulfillments',
+    secondaryRequest: (data) => getCustomers(data, 'customerId'),
+    generateData: generateAutoFulfillments,
+    defaultShow: defaultShowAutoFulfillments,
+    noActions: true,
+    scope: 'autoFulfillments',
+    headers: null,
+  },
+  {
+    label: 'manualFulfillments',
+    noActions: true,
+    path: '/overview/fulfillment-packages/manualFulfillments',
+    request: api.getManualFulfillments,
+    generateData: generateManualFulfillments,
+    defaultShow: defaultShowManualFulfillments,
+    secondaryRequest: (data) => getCustomers(data, 'publisherId'),
+    sortKey: 'manualFulfillments',
+    scope: 'manualFulfillments',
+    headers: null,
+  },
+  {
+    label: 'licenseProviderDefinitions',
+    path: '/overview/fulfillment-packages/licenseProviderDefinitions',
+    button: `${localization.t('general.add')} ${localization.t(
+      'labels.licenseProviderDefinition',
+    )}`,
+    request: api.getLicenseProviderDefinitions,
+    secondaryRequest: (data) => getCustomers(data, 'customerId'),
+    sortKey: 'licenseProviderDefinitions',
+    generateData: generateLicenseProviderDefinitions,
+    defaultShow: defaultShowLicenseProviderDefinitions,
+    scope: 'licenseProviderDefinitions',
+    deleteFunc: api.deleteLicenseProviderDefinitionById,
+    headers: markUpLicenseProviderDefinitions.headers,
+  },
+];
+
+export default tabsData;

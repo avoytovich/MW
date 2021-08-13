@@ -7,6 +7,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/products';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
@@ -64,6 +65,8 @@ const ProductsScreen = () => {
     <>
       <TableActionsBar
         scope={scope}
+        deleteFunc={api.deleteProductById}
+        headers={markUp.headers}
       >
         <Box>
           <Button
