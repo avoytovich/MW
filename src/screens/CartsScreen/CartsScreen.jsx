@@ -12,7 +12,7 @@ import {
 } from '../../services/useData/tableMarkups/carts';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
-
+import parentPaths from '../../services/paths';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import {
@@ -76,7 +76,7 @@ const CartsScreen = () => {
             size="large"
             variant="contained"
             component={Link}
-            to="/carts/add"
+            to={`${parentPaths.carts}/add`}
           >
             {localization.t('general.addCart')}
           </Button>

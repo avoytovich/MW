@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 
 import { toast } from 'react-toastify';
-
+import parentPaths from '../../services/paths';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import localization from '../../localization';
 import api from '../../api';
@@ -110,7 +110,7 @@ const OrderDetailsScreen = () => {
         <Box display='flex' flexDirection='column'>
           <Box mx={2}>
             <CustomBreadcrumbs
-              url='/overview/orders'
+              url={`${parentPaths.orderlist}`}
               section={localization.t('general.order')}
               id={id}
             />

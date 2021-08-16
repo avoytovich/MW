@@ -1,14 +1,16 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Tabs, Tab, Box, Button,
 } from '@material-ui/core';
-import { useHistory, Link } from 'react-router-dom';
+import {
+  useHistory, Link, Switch, Redirect, Route,
+} from 'react-router-dom';
 import localization from '../../localization';
 
 import TableActionsBar from '../../components/TableActionsBar';
 import TabTable from './TabTable';
 import api from '../../api';
-
+import parentPaths from '../../services/paths';
 import { generateData as generateNotifications, defaultShow as defaultShowNotifications, markUp as markUpNotifications } from '../../services/useData/tableMarkups/notifications';
 import { generateData as notificationsDefinition, defaultShow as defaultShowNotificationsDefinition, markUp as markUpNotificationsDefinition } from '../../services/useData/tableMarkups/notificationsDefinition';
 import { generateData as generateNotificationsHistory, defaultShow as defaultShowNotificationsHistory, markUp as markUpNotificationsHistory } from '../../services/useData/tableMarkups/notificationsHistory';
@@ -16,7 +18,7 @@ import { generateData as generateNotificationsHistory, defaultShow as defaultSho
 const tabsData = [
   {
     label: 'notification',
-    path: '/settings/notifications',
+    path: `${parentPaths.notifications}/notifications`,
     request: api.getNotifications,
     sortKey: 'notification',
     generateData: generateNotifications,
@@ -30,7 +32,7 @@ const tabsData = [
   },
   {
     label: 'notificationDefinitions',
-    path: '/settings/notification-definition',
+    path: `${parentPaths.notifications}/notification-definition`,
     request: api.getNotificationDefinition,
     sortKey: 'notificationDefinition',
     generateData: notificationsDefinition,
@@ -44,7 +46,7 @@ const tabsData = [
   },
   {
     label: 'notificationHistory',
-    path: '/settings/notification-history',
+    path: `${parentPaths.notifications}/notification-history`,
     request: api.getNotificationsHistory,
     sortKey: 'notificationHistory',
     generateData: generateNotificationsHistory,
@@ -97,7 +99,7 @@ const NotficationScreen = () => {
       </TableActionsBar>
     );
   };
-  const changeTab = (tab) => history.push(`/settings/${tabsData[tab].scope}`);
+  const changeTab = (tab) => history.push(`${parentPaths.notifications}/${tabsData[tab].scope}`);
 
   return (
     <>
@@ -113,13 +115,24 @@ const NotficationScreen = () => {
         ))}
       </Tabs>
       <Box mt={4} mb={2}>
-        {tabsData.map((tab, index) => (
-          <Fragment key={tab.label}>
-            {curTab === index && (
-              <TabTable tabObject={tab} />
-            )}
-          </Fragment>
-        ))}
+        <Switch>
+          <Route
+            exact
+            path={tabsData[0].path}
+            component={() => <TabTable tabObject={tabsData[0]} />}
+          />
+          <Route
+            exact
+            path={tabsData[1].path}
+            component={() => <TabTable tabObject={tabsData[1]} />}
+          />
+          <Route
+            exact
+            path={tabsData[2].path}
+            component={() => <TabTable tabObject={tabsData[2]} />}
+          />
+          <Redirect exact from={`${parentPaths.notifications}`} to={tabsData[0].path} />
+        </Switch>
       </Box>
     </>
   );

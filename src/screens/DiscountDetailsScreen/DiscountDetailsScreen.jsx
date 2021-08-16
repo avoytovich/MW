@@ -23,6 +23,7 @@ import api from '../../api';
 import DiscountSection from './DiscountSection';
 import localization from '../../localization';
 import useDiscountDetails from '../../services/useData/useDiscountDetails';
+import parentPaths from '../../services/paths';
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsScreen = () => {
@@ -59,7 +60,7 @@ const DiscountDetailsScreen = () => {
     if (id === 'add') {
       api.addNewDiscount(res).then(() => {
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push('/marketing/discounts');
+        history.push(`${parentPaths.marketing}/discounts`);
       });
     } else {
       api.updateDiscountById(id, res).then(() => {
@@ -99,7 +100,7 @@ const DiscountDetailsScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/marketing/discounts'
+            url={`${parentPaths.marketing}/discounts`}
             section={localization.t('general.discount')}
             id={discount.id}
           />

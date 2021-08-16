@@ -14,11 +14,12 @@ import TableActionsBar from '../../components/TableActionsBar';
 import api from '../../api';
 import { markUp } from '../../services/useData/tableMarkups/checkoutExperience';
 import './CheckoutExperienceScreen.scss';
+import parentPaths from '../../services/paths';
 
 const allTabs = [
   {
     label: localization.t('labels.themes'),
-    path: '/checkout-experience/themes',
+    path: `${parentPaths.checkoutpagebuilder}/themes`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.theme',
     )}`,
@@ -28,7 +29,7 @@ const allTabs = [
   },
   {
     label: localization.t('labels.layouts'),
-    path: '/checkout-experience/layouts',
+    path: `${parentPaths.checkoutpagebuilder}/layouts`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.layout',
     )}`,
@@ -38,7 +39,7 @@ const allTabs = [
   },
   {
     label: localization.t('labels.fonts'),
-    path: '/checkout-experience/fonts',
+    path: `${parentPaths.checkoutpagebuilder}/fonts`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.font',
     )}`,
@@ -76,7 +77,7 @@ const CheckoutExperienceScreen = ({ location }) => {
       <Box display="flex" flexDirection="column">
         <Tabs
           value={
-            location.pathname === '/checkout-experience'
+            location.pathname === `${parentPaths.checkoutpagebuilder}`
               ? allTabs[0].path
               : location.pathname
           }
@@ -98,7 +99,7 @@ const CheckoutExperienceScreen = ({ location }) => {
             <Route exact path={allTabs[0].path} component={ThemesTab} />
             <Route exact path={allTabs[1].path} component={LayoutsTab} />
             <Route exact path={allTabs[2].path} component={FontsTab} />
-            <Redirect exact from="/checkout-experience" to={allTabs[0].path} />
+            <Redirect exact from={`${parentPaths.checkoutpagebuilder}`} to={allTabs[0].path} />
           </Switch>
         </Box>
       </Box>

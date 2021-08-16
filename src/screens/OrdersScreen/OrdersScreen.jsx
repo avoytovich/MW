@@ -19,7 +19,7 @@ import {
 import TableActionsBar from '../../components/TableActionsBar';
 
 const OrdersScreen = () => {
-  const scope = 'orders';
+  const scope = 'orderlist';
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);

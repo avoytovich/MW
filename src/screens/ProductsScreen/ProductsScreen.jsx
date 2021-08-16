@@ -19,9 +19,10 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import parentPaths from '../../services/paths';
 
 const ProductsScreen = () => {
-  const scope = 'products';
+  const scope = 'productlist';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -75,7 +76,7 @@ const ProductsScreen = () => {
             size="large"
             variant="contained"
             component={Link}
-            to="/products/add"
+            to={`${parentPaths.productlist}/add`}
           >
             {localization.t('general.addProduct')}
           </Button>

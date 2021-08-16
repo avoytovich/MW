@@ -3,6 +3,7 @@ import { generateData as generateAutoFulfillments, defaultShow as defaultShowAut
 import { generateData as generateManualFulfillments, defaultShow as defaultShowManualFulfillments } from '../../services/useData/tableMarkups/manualFulfillments';
 import { generateData as generateLicenseProviderDefinitions, defaultShow as defaultShowLicenseProviderDefinitions, markUp as markUpLicenseProviderDefinitions } from '../../services/useData/tableMarkups/licenseProviderDefinitions';
 import localization from '../../localization';
+import parentPaths from '../../services/paths';
 
 const getCustomers = async (data, key) => {
   const costumersIds = [];
@@ -21,7 +22,7 @@ const getCustomers = async (data, key) => {
 const tabsData = [
   {
     label: 'autoFulfillments',
-    path: '/overview/fulfillment-packages/autoFulfillments',
+    path: `${parentPaths.fulfillment}/autoFulfillments`,
     request: api.getAutoFulfillments,
     sortKey: 'autoFulfillments',
     secondaryRequest: (data) => getCustomers(data, 'customerId'),
@@ -34,7 +35,7 @@ const tabsData = [
   {
     label: 'manualFulfillments',
     noActions: true,
-    path: '/overview/fulfillment-packages/manualFulfillments',
+    path: `${parentPaths.fulfillment}/manualFulfillments`,
     request: api.getManualFulfillments,
     generateData: generateManualFulfillments,
     defaultShow: defaultShowManualFulfillments,
@@ -45,7 +46,7 @@ const tabsData = [
   },
   {
     label: 'licenseProviderDefinitions',
-    path: '/overview/fulfillment-packages/licenseProviderDefinitions',
+    path: `${parentPaths.fulfillment}/licenseProviderDefinitions`,
     button: `${localization.t('general.add')} ${localization.t(
       'labels.licenseProviderDefinition',
     )}`,

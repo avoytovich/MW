@@ -18,7 +18,7 @@ import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
 import SubProductVariations from './SubSections/SubProductVariations';
-
+import parentPaths from '../../services/paths';
 const allTabs = [
   'general',
   'fulfillmentAndSubscription',
@@ -72,14 +72,14 @@ const ProductDetailsView = ({
   }, [currentProductData]);
   const disabledTab = !productId && !parentId;
 
-  const handleChangeTab = (tab) => (parentId && tab === 7 ? history.push(`/overview/products/${parentId}`) : setCurTab(tab));
+  const handleChangeTab = (tab) => (parentId && tab === 7 ? history.push(`${parentPaths.productlist}/${parentId}`) : setCurTab(tab));
 
   return (
     <>
       {productId && (
         <Box mx={2} data-test='breadcrumbs'>
           <CustomBreadcrumbs
-            url='/overview/products'
+            url={`${parentPaths.productlist}`}
             section={localization.t('general.product')}
             id={productId}
           />

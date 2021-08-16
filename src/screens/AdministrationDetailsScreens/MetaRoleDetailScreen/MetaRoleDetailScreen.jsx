@@ -16,6 +16,7 @@ import { toast } from 'react-toastify';
 import useMetaRoleDetailData from '../../../services/useData/useMetaRoleDetailData';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 import SectionLayout from '../../../components/SectionLayout';
+import parentPaths from '../../../services/paths';
 
 import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
 import localization from '../../../localization';
@@ -45,7 +46,7 @@ const MetaRoleDetailScreen = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`/settings/administration/metaRoles/${newId}`);
+        history.push(`${parentPaths.administration}/metaRoles/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -66,7 +67,7 @@ const MetaRoleDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/settings/administration/metaRoles'
+            url={`${parentPaths.administration}/metaRoles`}
             section={localization.t('labels.metaRoles')}
             id={curMetaRole?.id}
           />

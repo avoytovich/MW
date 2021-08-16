@@ -24,7 +24,7 @@ import {
   structureSelectOptions,
 } from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
-
+import parentPaths from '../../services/paths';
 import {
   formDesignOptions,
   structureResources,
@@ -38,7 +38,7 @@ import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const history = useHistory();
-
+  console.log('StoreDetailsScreen')
   const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -97,7 +97,7 @@ const StoreDetailsScreen = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`/overview/stores/${newId}`);
+        history.push(`${parentPaths.stores}/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -220,7 +220,7 @@ const StoreDetailsScreen = () => {
         {id !== 'add' && (
           <Box mx={2}>
             <CustomBreadcrumbs
-              url='/overview/stores'
+              url={`${parentPaths.stores}`}
               section={localization.t('general.store')}
               id={storeData.id}
             />

@@ -19,6 +19,7 @@ import Emails from './SubSections/Emails';
 import localization from '../../localization';
 import useIdentityDetails from '../../services/useData/useIdentityDetails';
 import api from '../../api';
+import parentPaths from '../../services/paths';
 import SectionLayout from '../../components/SectionLayout';
 import './identityDetailsScreen.scss';
 
@@ -61,7 +62,7 @@ const IdentityDetailsScreen = () => {
         const location = res.headers.location.split('/');
         const identityId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`/settings/identities/${identityId}`);
+        history.push(`${parentPaths.users}/${identityId}`);
         setUpdate((u) => u + 1);
       });
     } else {

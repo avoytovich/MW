@@ -24,7 +24,7 @@ import { SelectCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
-
+import parentPaths from '../../services/paths';
 import {
   priceCurrency,
 } from '../../services/selectOptions/selectOptions';
@@ -57,7 +57,7 @@ const PricesDetailsScreen = () => {
         .addNewPrice(curPrice)
         .then(() => {
           toast(localization.t('general.updatesHaveBeenSaved'));
-          history.push('/marketing/prices');
+          history.push(`${parentPaths.marketing}/prices`);
         });
     } else {
       api
@@ -165,7 +165,7 @@ const PricesDetailsScreen = () => {
   return (
     <div className="price-details-screen">
       <CustomBreadcrumbs
-        url='/marketing/prices'
+        url={`${parentPaths.marketing}/prices`}
         section={localization.t('general.price')}
         id={price?.id ? price.id : localization.t('general.addPrice')}
       />
@@ -199,7 +199,7 @@ const PricesDetailsScreen = () => {
 
               <FileCopyOutlinedIcon
                 style={{ opacity: 0.25, marginLeft: 10, cursor: 'pointer' }}
-                onClick={() => history.push(`/overview/products/${price?.productId}`)}
+                onClick={() => history.push(`${parentPaths.productlist}/${price?.productId}`)}
               />
             </Box>
           ) : (

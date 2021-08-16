@@ -18,6 +18,7 @@ import {
   formateProductOptions,
   fromArrayToObj,
 } from './utils';
+import parentPaths from '../../services/paths';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import api from '../../api';
@@ -66,7 +67,7 @@ const RecoDetailsScreen = () => {
     if (id === 'add') {
       api.addNewRecommendation(objToSend).then(() => {
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push('/marketing/recommendations');
+        history.push(`${parentPaths.marketing}/recommendations`);
       });
     } else {
       api.updateRecoById(id, objToSend).then(() => {
@@ -163,7 +164,7 @@ const RecoDetailsScreen = () => {
     <div className='reco-details-screen'>
       {id !== 'add' && (
         <CustomBreadcrumbs
-          url='/marketing/recommendations'
+          url={`${parentPaths.marketing}/recommendations`}
           section={localization.t('general.recommendation')}
           id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
         />

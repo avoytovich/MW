@@ -15,6 +15,7 @@ import SelectCustomerNotification from '../../../components/utils/SelectCustomer
 import {
   formattingForSending,
 } from './utils';
+import parentPaths from '../../../services/paths';
 import useRoleDetailsData from '../../../services/useData/useRoleDetailsData';
 import SectionLayout from '../../../components/SectionLayout';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
@@ -44,7 +45,7 @@ const RoleDetailScreen = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`/settings/administration/roles/${newId}`);
+        history.push(`${parentPaths.administration}/roles/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -65,7 +66,7 @@ const RoleDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/settings/administration/roles'
+            url={`${parentPaths.administration}/roles`}
             section={localization.t('labels.roles')}
             id={curRole?.id}
           />

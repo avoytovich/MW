@@ -11,6 +11,7 @@ import DiscountsScreen from './SubSections/DiscountsScreen';
 import PricesScreen from './SubSections/PricesScreen';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
+import parentPaths from '../../services/paths';
 import { markUp as markUpRecommendations } from '../../services/useData/tableMarkups/recommendations';
 import { markUp as markUpDiscounts } from '../../services/useData/tableMarkups/discounts';
 import { markUp as markUpPrices } from '../../services/useData/tableMarkups/prices';
@@ -21,7 +22,7 @@ const availTabs = [
   {
     label: 'campaigns',
     scope: 'campaigns',
-    path: '/marketing/campaigns',
+    path: `${parentPaths.marketing}/campaigns`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.campaign',
     )}`,
@@ -31,7 +32,7 @@ const availTabs = [
   {
     label: 'recommendations',
     scope: 'recommendations',
-    path: '/marketing/recommendations',
+    path: `${parentPaths.marketing}/recommendations`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.recommendation',
     )}`,
@@ -41,17 +42,17 @@ const availTabs = [
   {
     label: 'discounts',
     scope: 'discounts',
-    path: '/marketing/discounts',
+    path: `${parentPaths.marketing}/discounts`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.discount',
     )}`,
     deleteFunc: api.deleteDiscountById,
-    headers: markUpDiscounts.headers
+    headers: markUpDiscounts.headers,
   },
   {
     label: 'prices',
     scope: 'prices',
-    path: '/marketing/prices',
+    path: `${parentPaths.marketing}/prices`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.price',
     )}`,
@@ -70,7 +71,7 @@ const MarketingScreen = () => {
     const section = pathname.split('/').pop();
     const index = availTabs.findIndex((i) => i.label === section);
     if (index < 0) {
-      return history.push('/marketing/campaigns');
+      return history.push(`${parentPaths.marketing}/campaigns`);
     }
 
     setCurTab(index);
@@ -100,7 +101,7 @@ const MarketingScreen = () => {
 
     );
   };
-  const changeTab = (tab) => history.push(`/marketing/${availTabs[tab].label}`);
+  const changeTab = (tab) => history.push(`${parentPaths.marketing}/${availTabs[tab].label}`);
   return (
     <Box display='flex' flexDirection='column'>
 
