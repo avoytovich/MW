@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
@@ -33,8 +32,6 @@ import api from '../../api';
 const selectOptions = ['10', '50', '100', '200'];
 
 const FindByCC = ({ open, onClose }) => {
-  const history = useHistory();
-
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -120,7 +117,7 @@ const FindByCC = ({ open, onClose }) => {
   );
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth={800}>
+    <Dialog open={open} onClose={onClose} style={{ maxWidth: 800 }}>
       <DialogTitle id='filters-dialog-title' disableTypography>
         <Typography variant='h5'>{localization.t('forms.headers.findByCC')}</Typography>
       </DialogTitle>
@@ -234,6 +231,7 @@ const FindByCC = ({ open, onClose }) => {
         </Button>
 
         <Button
+          aria-label='by-card-search-button'
           onClick={findOrders}
           color='primary'
         >
