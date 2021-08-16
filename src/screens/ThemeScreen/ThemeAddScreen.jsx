@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import ThemeLayout from './ThemeLayout';
 import localization from '../../localization';
 import api from '../../api';
+import parentPaths from '../../services/paths';
 
 const newTheme = {
   customerId: 'Nexway',
@@ -21,7 +22,7 @@ const ThemeAddScreen = () => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
       toast(localization.t('general.updatesHaveBeenSaved'));
-      history.push(`/checkout-experience/themes/${id}`);
+      history.push(`${parentPaths.checkoutpagebuilder}/themes/${id}`);
     });
   };
   return (

@@ -14,6 +14,7 @@ import {
   assetsLabels,
   checkLabelDuplicate,
 } from './utils';
+import parentPaths from '../../../services/paths';
 
 import TabSection from '../../../components/utils/TabSection';
 import General from './SubSections/General';
@@ -44,7 +45,7 @@ const CustomerDetailScreen = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`/settings/administration/customers/${newId}`);
+        history.push(`${parentPaths.administration}/customers/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -61,7 +62,7 @@ const CustomerDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/settings/administration/customers'
+            url={`${parentPaths.administration}/customers`}
             section={localization.t('general.customer')}
             id={customerData.id}
           />

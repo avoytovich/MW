@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
-
+import parentPaths from '../../../services/paths';
 import SectionLayout from '../../../components/SectionLayout';
 import { SelectCustom } from '../../../components/Inputs';
 
@@ -114,7 +114,7 @@ const Variations = ({
                       key={id}
                       style={{ cursor: 'pointer' }}
                       onClick={() => {
-                        history.push(`/overview/products/${id}`, {
+                        history.push(`${parentPaths.productlist}/${id}`, {
                           parentId: productId,
                         });
                       }}

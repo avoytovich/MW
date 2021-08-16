@@ -21,6 +21,7 @@ import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/campaignPrices';
+import parentPaths from '../../services/paths';
 
 import api from '../../api';
 import CustomCard from '../../components/utils/CustomCard';
@@ -117,7 +118,7 @@ const CampaignDetailsScreen = () => {
     <div className="campaign-details-screen">
       {id !== 'add' && (
         <CustomBreadcrumbs
-          url='/marketing/campaigns'
+          url={`${parentPaths.marketing}/campaigns`}
           section={localization.t('general.campaign')}
           id={campaign?.id ? campaign.id : localization.t('general.addCampaign')}
         />
@@ -211,7 +212,7 @@ const CampaignDetailsScreen = () => {
               showColumn={defaultShow}
               tableData={pricesData}
               isLoading={pricesData === null}
-              customPath="/overview/products/:productId"
+              customPath={`${parentPaths.productlist}/:productId`}
               noActions
             />
           </Box>

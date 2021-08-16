@@ -19,7 +19,7 @@ import {
   defaultShow,
   markUp,
 } from '../../services/useData/tableMarkups/stores';
-
+import parentPaths from '../../services/paths';
 import useTableData from '../../services/useData/useTableData';
 
 import localization from '../../localization';
@@ -99,7 +99,7 @@ const StoresScreen = () => {
             size="large"
             variant="contained"
             component={Link}
-            to="/overview/stores/add"
+            to={`${parentPaths.stores}/add`}
           >
             {`${localization.t('general.add')} ${localization.t('labels.store')}`}
           </Button>

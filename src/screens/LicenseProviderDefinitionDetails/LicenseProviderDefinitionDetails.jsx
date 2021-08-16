@@ -21,6 +21,7 @@ import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import localization from '../../localization';
 import useLicenseProviderDefinitionDetail from './useLicenseProviderDefinitionDetail';
+import parentPaths from '../../services/paths';
 
 import api from '../../api';
 import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
@@ -48,7 +49,7 @@ const LicenseProviderDefinitionDetails = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`/overview/fulfillment-packages/licenseProviderDefinitions/${newId}`);
+        history.push(`${parentPaths.fulfillment}/licenseProviderDefinitions/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -70,7 +71,7 @@ const LicenseProviderDefinitionDetails = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/overview/fulfillment-packages/licenseProviderDefinitions'
+            url={`${parentPaths.fulfillment}/licenseProviderDefinitions`}
             section={localization.t('general.licenseProviderDefinition')}
             id={licenseProvider.id}
           />

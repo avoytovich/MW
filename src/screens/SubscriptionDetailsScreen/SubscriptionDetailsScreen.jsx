@@ -13,7 +13,7 @@ import {
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import api from '../../api';
-
+import parentPaths from '../../services/paths';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import localization from '../../localization';
 
@@ -79,7 +79,7 @@ const SubscriptionDetailsScreen = () => {
     <div className="subscription-details-screen">
       {id !== 'add' && (
         <CustomBreadcrumbs
-          url='/overview/subscriptions'
+          url={`${parentPaths.subscriptions}`}
           section={localization.t('general.subscription')}
           id={subscription?.id ? subscription.id : localization.t('general.addSubscription')}
         />

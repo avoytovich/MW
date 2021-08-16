@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import FontLayout from './FontLayout';
 import localization from '../../localization';
 import api from '../../api';
+import parentPaths from '../../services/paths';
 
 const newFont = {
   customerId: 'Nexway',
@@ -22,7 +23,7 @@ const FontAddScreen = () => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
       toast(localization.t('general.updatesHaveBeenSaved'));
-      history.push(`/checkout-experience/fonts/${id}`);
+      history.push(`${parentPaths.checkoutpagebuilder}/fonts/${id}`);
     });
   };
 

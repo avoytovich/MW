@@ -13,6 +13,7 @@ import { markUp } from '../../services/useData/tableMarkups/checkoutExperience';
 import TranslationsTab from './TranslationsTab';
 import InvoiceTranslationsTab from './InvoiceTranslationsTab';
 import TableActionsBar from '../../components/TableActionsBar';
+import parentPaths from '../../services/paths';
 import localization from '../../localization';
 
 import './LocalizationScreen.scss';
@@ -20,7 +21,7 @@ import './LocalizationScreen.scss';
 const allTabs = [
   {
     label: localization.t('labels.translations'),
-    path: '/localization/translations',
+    path: `${parentPaths.localization}/translations`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.translation',
     )}`,
@@ -30,7 +31,7 @@ const allTabs = [
   },
   {
     label: localization.t('labels.invoiceTranslations'),
-    path: '/localization/invoice-translations',
+    path: `${parentPaths.localization}/invoice-translations`,
     scope: 'invoice-translations',
   },
 ];
@@ -64,7 +65,7 @@ const LocalizationScreen = ({ location }) => {
       <Box display="flex" flexDirection="column">
         <Tabs
           value={
-            location.pathname === '/lozalization'
+            location.pathname === `${parentPaths.localization}`
               ? allTabs[0].path
               : location.pathname
           }
@@ -85,7 +86,7 @@ const LocalizationScreen = ({ location }) => {
           <Switch>
             <Route exact path={allTabs[0].path} component={TranslationsTab} />
             <Route exact path={allTabs[1].path} component={InvoiceTranslationsTab} />
-            <Redirect exact from='/localization' to={allTabs[0].path} />
+            <Redirect exact from={`${parentPaths.localization}`} to={allTabs[0].path} />
           </Switch>
         </Box>
       </Box>

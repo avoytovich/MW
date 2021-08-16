@@ -21,6 +21,7 @@ import Templating from './SubSections/Templating';
 import SectionLayout from '../../components/SectionLayout';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
+import parentPaths from '../../services/paths';
 
 import localization from '../../localization';
 import api from '../../api';
@@ -79,7 +80,7 @@ const NotificationDefinitionDetailScreen = () => {
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
 
-        history.push(`/settings/notification-definition/${newId}`);
+        history.push(`${parentPaths.notifications}/${newId}`);
 
         setUpdate((u) => u + 1);
       });
@@ -115,7 +116,7 @@ const NotificationDefinitionDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/settings/notifications'
+            url={`${parentPaths.notifications}`}
             section={localization.t('general.notification')}
             id={id}
           />

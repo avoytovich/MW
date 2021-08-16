@@ -12,6 +12,7 @@ import {
 } from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
+import parentPaths from '../../services/paths';
 
 const CreateProduct = () => {
   const customerId = useSelector(
@@ -72,7 +73,7 @@ const CreateProduct = () => {
         setSelectOptions,
         selectOptions,
         setSubProductVariations,
-        () => {},
+        () => { },
       );
     return () => {
       isCancelled = true;
@@ -98,7 +99,7 @@ const CreateProduct = () => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
       toast(localization.t('general.updatesHaveBeenSaved'));
-      history.push(`/overview/products/${id}`);
+      history.push(`${parentPaths.productlist}/${id}`);
     });
   };
 

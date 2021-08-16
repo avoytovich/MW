@@ -17,9 +17,10 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import parentPaths from '../../services/paths';
 
 const IdentitiesScreen = () => {
-  const scope = 'identities';
+  const scope = 'users';
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -78,7 +79,7 @@ const IdentitiesScreen = () => {
             size='large'
             variant='contained'
             component={Link}
-            to='/settings/identities/add'
+            to={`${parentPaths.users}/add`}
           >
             {`${localization.t('general.add')} ${localization.t(
               'general.identity',

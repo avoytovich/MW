@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-
 import {
   Typography,
   Grid,
@@ -19,6 +18,7 @@ import {
 } from '@material-ui/icons';
 
 import { toast } from 'react-toastify';
+import parentPaths from '../../../services/paths';
 
 import FullNameAvatar from '../../utils/FullNameAvatar';
 import localization from '../../../localization';
@@ -68,7 +68,7 @@ const TableRowComponent = ({
         valueToShow = (
           <Typography
             className="name-value"
-            onClick={() => history.push(`/overview/products/${rowItem.productId}`)}
+            onClick={() => history.push(`${parentPaths.productlist}${rowItem.productId}`)}
           >
             {rowItem[item.id]}
           </Typography>
