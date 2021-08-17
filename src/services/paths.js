@@ -17,6 +17,7 @@ const parentPaths = {
   fulfillment: '/products/fulfillment',
   discountrules: '/marketing/discountrules',
   campaigns: '/marketing/campaigns',
+  marketing: '/marketing',
 
   customers: '/customers/customerlist',
   customergroup: '/customers/customergroup',

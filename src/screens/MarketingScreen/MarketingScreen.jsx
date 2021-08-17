@@ -8,13 +8,11 @@ import api from '../../api';
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
-import PricesScreen from './SubSections/PricesScreen';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import parentPaths from '../../services/paths';
 import { markUp as markUpRecommendations } from '../../services/useData/tableMarkups/recommendations';
 import { markUp as markUpDiscounts } from '../../services/useData/tableMarkups/discounts';
-import { markUp as markUpPrices } from '../../services/useData/tableMarkups/prices';
 
 import './marketingScreen.scss';
 
@@ -48,16 +46,6 @@ const availTabs = [
     )}`,
     deleteFunc: api.deleteDiscountById,
     headers: markUpDiscounts.headers,
-  },
-  {
-    label: 'prices',
-    scope: 'prices',
-    path: `${parentPaths.marketing}/prices`,
-    button: `${localization.t('general.add')} ${localization.t(
-      'general.price',
-    )}`,
-    deleteFunc: api.deletePriceById,
-    headers: markUpPrices.headers,
   },
 ];
 
@@ -115,7 +103,6 @@ const MarketingScreen = () => {
         <Tab label='Campaigns' />
         <Tab label='Recommendations' />
         <Tab label='Discounts' />
-        <Tab label='Prices' />
       </Tabs>
 
       <Box mt={4} mb={2}>
@@ -124,8 +111,6 @@ const MarketingScreen = () => {
         {curTab === 1 && <RecommendationsScreen />}
 
         {curTab === 2 && <DiscountsScreen />}
-
-        {curTab === 3 && <PricesScreen />}
       </Box>
     </Box>
   );
