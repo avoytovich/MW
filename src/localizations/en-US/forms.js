@@ -108,6 +108,9 @@ const Forms = {
     confirmationEmailSend: 'Send',
     close: 'Close',
     search: 'Search',
+    sendByEmail: 'Send by email',
+    generateQuote: 'Generate quote',
+    checkout: 'Checkout',
   },
   links: {
     signUp: 'Sign Up',

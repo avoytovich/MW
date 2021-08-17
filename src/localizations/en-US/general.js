@@ -28,6 +28,8 @@ const general = {
   price: 'Price',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
+  sendByEmailByCartIdSuccessed: 'Cart sent by email',
+  sendByEmailByCartIdFailure: 'Can\'t send cart by email',
   selectImage: ' Select image',
   features: ' Features',
   live: 'Live',

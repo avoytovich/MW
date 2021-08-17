@@ -43,6 +43,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getCartById(id) {
+    const url = `/carts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getPaymentById(id) {
     const url = `/payment-proxy/payments/${id}`;
     return axiosInstance({
