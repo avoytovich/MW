@@ -7,6 +7,7 @@ import {
   defaultShow,
 } from '../../../../services/useData/tableMarkups/prices';
 import { useTableData } from '../../../../services/useData';
+
 import localization from '../../../../localization';
 import api from '../../../../api';
 
