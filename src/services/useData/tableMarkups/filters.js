@@ -1,7 +1,7 @@
 import localization from '../../../localization';
 
 const filters = {
-  products: [
+  productlist: [
     {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
@@ -41,9 +41,9 @@ const filters = {
       ],
     },
   ],
-  orders: [
+  orderlist: [
     {
-      id: 'customerStatus',
+      id: 'customer.status',
       label: localization.t('labels.customerStatus'),
       type: 'select',
       values: [
@@ -156,7 +156,7 @@ const filters = {
     },
     {
       id: 'payment.informativeDPStatus',
-      label: localization.t('labels.estimatedPaymentStatus'),
+      label: localization.t('labels.informativeDPStatus'),
       type: 'select',
       values: [
         { label: localization.t('labels.init'), value: 'INIT' },

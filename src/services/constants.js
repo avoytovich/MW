@@ -1,8 +1,8 @@
-const VALID_REFRESH_SCOPES = ['products', 'stores', 'orders', 'notifications', 'notification-history', 'carts', 'licenses'];
+const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-history', 'carts', 'licenses'];
 const VALID_FILTER_SCOPES = [
-  'products',
+  'productlist',
   'stores',
-  'orders',
+  'orderlist',
   'notifications',
   'notification-definition',
   'notification-history',
