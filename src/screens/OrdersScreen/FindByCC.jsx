@@ -21,10 +21,13 @@ import {
   TableCell,
   TableBody,
   Paper,
+  LinearProgress,
 } from '@material-ui/core';
 
 import PaginationComponent from '../../components/PaginationComponent';
 import PriceNumberFormat from '../../components/PriceNumberFormat';
+
+import parentPaths from '../../services/paths';
 
 import localization from '../../localization';
 import api from '../../api';
@@ -42,26 +45,40 @@ const FindByCC = ({ open, onClose }) => {
   const [results, setResults] = useState(null);
   const [date, setDate] = useState(null);
   const [hasError, setError] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const findOrders = () => {
-    if (bin && l4) {
+    if (bin || l4) {
+      setLoading(true);
       setError(false);
 
+      const dataToSend = {
+        size: rowsPerPage,
+        page: curPage,
+        date: date ? moment(date).format('YYYY-MM-DD') : null,
+        customer: nxState?.selectedCustomer?.name,
+        currency,
+        amount,
+      };
+
+      if (bin) {
+        dataToSend.bin = bin;
+      }
+
+      if (l4) {
+        dataToSend.l4 = l4;
+      }
+
       api
-        .getOrdersByCard({
-          size: rowsPerPage,
-          page: curPage,
-          bin,
-          l4,
-          date: date ? moment(date).format('YYYY-MM-DD') : null,
-          customer: nxState?.selectedCustomer?.name,
-          currency,
-          amount,
-        }).then(({ data: { items, totalPages: total } }) => {
+        .getOrdersByCard(dataToSend)
+        .then(({ data: { items, totalPages: total } }) => {
           setResults(items);
           setTotalPages(total);
+        })
+        .finally(() => {
+          setTimeout(() => setLoading(false), 300);
         });
     } else {
       setError(true);
@@ -72,52 +89,56 @@ const FindByCC = ({ open, onClose }) => {
     bin && l4 && findOrders();
   }, [curPage, rowsPerPage]);
 
-  const TableComponent = () => (
-    <Box my={4}>
-      <TableContainer component={Paper}>
-        <Table className='table' aria-label='simple table'>
-          <TableHead>
-            <TableRow style={{ background: '#eee' }}>
-              <TableCell align='center'>Customer</TableCell>
-              <TableCell align='center'>Create date</TableCell>
-              <TableCell align='center'>Order ID</TableCell>
-              <TableCell align='center'>End user</TableCell>
-              <TableCell align='center'>Product</TableCell>
-              <TableCell align='center'>Amount</TableCell>
-              <TableCell align='center'>Currency</TableCell>
-              <TableCell align='center'>Email</TableCell>
-            </TableRow>
-          </TableHead>
+  const TableComponent = () => {
+    if (isLoading) return <LinearProgress style={{ margin: '20px' }} />;
 
-          <TableBody>
-            {results.map((order) => (
-              <TableRow
-                key={order.orderNumber}
-                onClick={() => window.open(`/overview/orders/${order.orderNumber.slice(0, -1)}`, '_blank')}
-                style={{ cursor: 'pointer' }}
-              >
-                <TableCell>{order.seller || '-'}</TableCell>
-                <TableCell align='center'>{order.Transaction_Date || '-'}</TableCell>
-                <TableCell align='center'>{order.orderNumber.slice(0, -1) || '-'}</TableCell>
-                <TableCell align='center'>
-                  {`${order.customerFirstName} ${order.customerLastName}`}
-                </TableCell>
-                <TableCell>{order.products[0]?.name || '-'}</TableCell>
-                <TableCell align='center'>
-                  {<PriceNumberFormat number={order.products[0]?.amount} currency={order.Transaction_Currency} /> || '-'}
-                </TableCell>
-                <TableCell align='center'>{order.Transaction_Currency || '-'}</TableCell>
-                <TableCell>{order.customerEmail || '-'}</TableCell>
+    return (
+      <Box my={4}>
+        <TableContainer component={Paper}>
+          <Table className='table' aria-label='simple table'>
+            <TableHead>
+              <TableRow style={{ background: '#eee' }}>
+                <TableCell align='center'>Customer</TableCell>
+                <TableCell align='center'>Create date</TableCell>
+                <TableCell align='center'>Order ID</TableCell>
+                <TableCell align='center'>End user</TableCell>
+                <TableCell align='center'>Product</TableCell>
+                <TableCell align='center'>Amount</TableCell>
+                <TableCell align='center'>Currency</TableCell>
+                <TableCell align='center'>Email</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
-  );
+            </TableHead>
+
+            <TableBody>
+              {results.map((order) => (
+                <TableRow
+                  key={order.orderNumber}
+                  onClick={() => window.open(`${parentPaths.orderlist}/${order.orderNumber.slice(0, -1)}`, '_blank')}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <TableCell>{order.seller || '-'}</TableCell>
+                  <TableCell align='center'>{order.Transaction_Date || '-'}</TableCell>
+                  <TableCell align='center'>{order.orderNumber.slice(0, -1) || '-'}</TableCell>
+                  <TableCell align='center'>
+                    {`${order.customerFirstName} ${order.customerLastName}`}
+                  </TableCell>
+                  <TableCell>{order.products[0]?.name || '-'}</TableCell>
+                  <TableCell align='center'>
+                    {<PriceNumberFormat number={order.products[0]?.amount} currency={order.Transaction_Currency} /> || '-'}
+                  </TableCell>
+                  <TableCell align='center'>{order.Transaction_Currency || '-'}</TableCell>
+                  <TableCell>{order.customerEmail || '-'}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    );
+  };
 
   return (
-    <Dialog open={open} onClose={onClose} style={{ maxWidth: 800 }}>
+    <Dialog open={open} onClose={onClose} maxWidth='lg'>
       <DialogTitle id='filters-dialog-title' disableTypography>
         <Typography variant='h5'>{localization.t('forms.headers.findByCC')}</Typography>
       </DialogTitle>
@@ -222,7 +243,7 @@ const FindByCC = ({ open, onClose }) => {
           />
         </Box>
 
-        {results?.length > 0 && <TableComponent />}
+        {(results?.length > 0 || isLoading) && <TableComponent />}
       </DialogContent>
 
       <DialogActions>
