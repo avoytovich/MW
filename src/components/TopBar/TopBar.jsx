@@ -15,19 +15,18 @@ import {
 import {
   Menu as MenuIcon,
   Search as SearchIcon,
-  Refresh as RefreshIcon,
   ExitToApp as LogoutIcon,
   // NotificationsNone as NotificationsIcon,
   FilterList as FilterListIcon,
 } from '@material-ui/icons';
 
 import { logout } from '../../redux/actions/Account';
-import { refreshTable, setTableScope, setSearch } from '../../redux/actions/TableData';
+import { setTableScope, setSearch } from '../../redux/actions/TableData';
 
 import Filters from '../utils/Modals/Filters';
 import FiltersChips from '../utils/FiltersChips';
 
-import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
+import { VALID_FILTER_SCOPES } from '../../services/constants';
 
 const TopBar = ({ toggleDrawer }) => {
   const dispatch = useDispatch();
@@ -38,8 +37,6 @@ const TopBar = ({ toggleDrawer }) => {
   const scope = location.pathname.split('/').pop();
 
   const doLogout = () => dispatch(logout());
-
-  const doRefresh = () => dispatch(refreshTable(scope));
 
   const doSearch = () => dispatch(setSearch(searchVal));
 
@@ -93,14 +90,6 @@ const TopBar = ({ toggleDrawer }) => {
             )
           }
         </Box>
-
-        {
-          VALID_REFRESH_SCOPES.indexOf(scope) >= 0 && (
-            <IconButton edge='start' aria-label='refresh' color='secondary' onClick={doRefresh}>
-              <RefreshIcon />
-            </IconButton>
-          )
-        }
 
         {/* <IconButton edge='start' aria-label='notifications' color='secondary'>
           <NotificationsIcon />

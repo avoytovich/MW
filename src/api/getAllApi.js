@@ -372,15 +372,13 @@ const getAllApi = {
   },
 
   getLicenses({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
   } = defaultRequestedObject) {
     let url = `/license-manager/licenses?format=short&size=${size}&page=${page}`;
 
-    if (sortParams) {
-      url += `&sort=${sortParams.value},${sortParams.type}`;
-    }
     if (filters) {
-      url += filters;
+      const adjustFilters = filters.replace(',', '&status=');
+      url += adjustFilters;
     }
     return axiosInstance({
       method: 'get',
@@ -393,6 +391,51 @@ const getAllApi = {
   } = defaultRequestedObject) {
     let url = `/carts?format=short&size=${size}&page=${page}`;
 
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getAutoFulfillments({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/fulfillments/partners?size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getManualFulfillments({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/license-keys-provider/packages?size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getLicenseProviderDefinitions({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/license-manager/license-provider-definitions?size=${size}&page=${page}`;
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }

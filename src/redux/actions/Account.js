@@ -1,8 +1,8 @@
+import { toast } from 'react-toastify';
 import auth from '../../services/auth';
 import {
   LOGIN_SUCCESS, SILENT_LOGIN, UPDATE_NEXWAY_STATE, LOGOUT,
 } from '../constants/actionTypes';
-import { showNotification } from './HttpNotifications';
 import localization from '../../localization';
 
 const login = (username, password, realm) => async (dispatch) => {
@@ -18,12 +18,10 @@ const login = (username, password, realm) => async (dispatch) => {
     },
   });
 
-  dispatch(
-    showNotification(
-      `${localization.t('general.welcomeBack')} ${
-        user.given_name ? `, ${user.given_name}` : ''
-      }!`,
-    ),
+  toast(
+    `${localization.t('general.welcomeBack')} ${
+      user.given_name ? `, ${user.given_name}` : ''
+    }!`,
   );
 };
 
@@ -56,7 +54,7 @@ const logout = () => async (dispatch) => {
     type: LOGOUT,
   });
 
-  dispatch(showNotification(localization.t('general.sessionEnded')));
+  toast(localization.t('general.sessionEnded'));
 };
 
 export {

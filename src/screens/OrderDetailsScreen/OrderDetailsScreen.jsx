@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -15,7 +14,8 @@ import {
   Tab,
 } from '@material-ui/core';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
+import parentPaths from '../../services/paths';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import localization from '../../localization';
 import api from '../../api';
@@ -29,7 +29,6 @@ import CancelOrderPopup from '../../components/Popup/CancelOrderPopup/index';
 import './orderDetailsScreen.scss';
 
 const OrderDetailsScreen = () => {
-  const dispatch = useDispatch();
   const [curTab, setCurTab] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
@@ -56,11 +55,9 @@ const OrderDetailsScreen = () => {
   }; */
 
   const resyncPayment = () => {
-    api.resyncPayments(currentOrderData.id).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-    });
+    api
+      .resyncPayments(currentOrderData.id)
+      .then(() => toast(localization.t('general.updatesHaveBeenSaved')));
   };
 
   useEffect(() => {
@@ -113,7 +110,7 @@ const OrderDetailsScreen = () => {
         <Box display='flex' flexDirection='column'>
           <Box mx={2}>
             <CustomBreadcrumbs
-              url='/overview/orders'
+              url={`${parentPaths.orderlist}`}
               section={localization.t('general.order')}
               id={id}
             />

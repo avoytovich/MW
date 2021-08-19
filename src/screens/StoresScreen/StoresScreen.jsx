@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Button, Box } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 import TableComponent from '../../components/TableComponent';
-import useTableData from '../../services/useData/useTableData';
-import { showNotification } from '../../redux/actions/HttpNotifications';
-import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
+import ToastWithAction from '../../components/utils/ToastWithAction/ToastWithAction';
 
 import api from '../../api';
 import {
@@ -15,15 +13,19 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/stores';
+import parentPaths from '../../services/paths';
+import useTableData from '../../services/useData/useTableData';
+
+import localization from '../../localization';
 
 const StoresScreen = () => {
   const scope = 'stores';
-
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -52,16 +54,26 @@ const StoresScreen = () => {
     return generateData(res.data, customers.data);
   };
 
-  const handleDeleteStore = (id) => api.deleteStoreById(id).then(() => {
-    setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
+  const handleDeleteStore = (id, force) => api.deleteStoreById(id, force)
+    .then(() => {
+      setMakeUpdate((v) => v + 1);
+      toast(
         `${localization.t('general.store')} ${id} ${localization.t(
           'general.hasBeenSuccessfullyDeleted',
         )}`,
-      ),
-    );
-  });
+      );
+    })
+    .catch((msg) => {
+      if (force) {
+        toast.error(msg);
+      } else {
+        toast.error(<ToastWithAction
+          text={msg}
+          buttonText={localization.t('general.force')}
+          actionFn={() => handleDeleteStore(id, true)}
+        />);
+      }
+    });
 
   const stores = useTableData(
     currentPage - 1,
@@ -77,6 +89,8 @@ const StoresScreen = () => {
     <>
       <TableActionsBar
         scope={scope}
+        deleteFunc={api.deleteStoreById}
+        headers={markUp.headers}
       >
         <Box>
           <Button
@@ -85,7 +99,7 @@ const StoresScreen = () => {
             size="large"
             variant="contained"
             component={Link}
-            to="/overview/stores/add"
+            to={`${parentPaths.stores}/add`}
           >
             {`${localization.t('general.add')} ${localization.t('labels.store')}`}
           </Button>

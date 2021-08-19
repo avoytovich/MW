@@ -4,10 +4,19 @@ import {
   Box, Typography, Tabs, Tab,
 } from '@material-ui/core';
 
+import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
+
 import localization from '../../../localization';
 import { SelectWithDeleteIcon } from '../../../components/Inputs';
 
-const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
+const Design = ({
+  currentStoreData,
+  setCurrentStoreData,
+  selectOptions,
+  resourceLabel,
+  currentStoreResources,
+  setCurrentStoreResources,
+}) => {
   const [curTab, setCurTab] = useState(0);
   const handleUpdateDesign = (parent, updateParam, value) => {
     let resObj = {};
@@ -46,9 +55,8 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
           >
             <Tab label={localization.t('labels.enduserPortal')} />
             <Tab label={localization.t('labels.checkout')} />
-            <Tab
-              label={localization.t('labels.resellerPortalEmbeddedCheckout')}
-            />
+            <Tab label={localization.t('labels.resellerPortalEmbeddedCheckout')} />
+            <Tab label={localization.t('labels.assetsResource')} />
           </Tabs>
         </Box>
         <Box display="flex" flexDirection="column" width={1} px={4}>
@@ -269,6 +277,18 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
               </Box>
             </>
           )}
+          {curTab === 3 && (
+            <Box py={4}>
+              <AssetsResource
+                labelOptions={resourceLabel}
+                maxPayloadFiles={4}
+                resources={currentStoreResources}
+                setResources={setCurrentStoreResources}
+                currentStoreData={currentStoreData}
+                setCurrentStoreData={setCurrentStoreData}
+              />
+            </Box>
+          )}
         </Box>
       </Box>
     </>
@@ -276,6 +296,9 @@ const Design = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
 };
 
 Design.propTypes = {
+  resourceLabel: PropTypes.array,
+  setCurrentStoreResources: PropTypes.func,
+  currentStoreResources: PropTypes.array,
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
   selectOptions: PropTypes.object,

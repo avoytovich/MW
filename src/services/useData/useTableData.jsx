@@ -12,7 +12,7 @@ const useTableData = (
 ) => {
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const [fetchedData, setFetchedData] = useState();
-
+  const reduxWasUpdated = useSelector(({ tableData: { wasUpdated } }) => wasUpdated);
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
   const searchTerm = useSelector(({ tableData: { search } }) => search);
@@ -35,11 +35,9 @@ const useTableData = (
         : '';
 
       if (customerScope) {
-        filtersUrl += `&customerId=${customerScope}`;
+        filtersUrl += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
       }
-
       setLoading(true);
-
       requests(reduxRowPerPage, filtersUrl)
         .then((payload) => {
           if (!isCancelled) {
@@ -66,6 +64,7 @@ const useTableData = (
     hasSearch,
     sortParams,
     reduxRowPerPage,
+    reduxWasUpdated,
   ]);
 
   return fetchedData;

@@ -26,7 +26,7 @@ describe('NotificationDetailScreen <General/>', () => {
   it('If curNotification.receiverType equal "email" emailInput should be on the page', () => {
     wrapper = shallow(
       <General
-        curNotification={{receiverType:'email'}}
+        curNotification={{ receiverType: 'email' }}
         setCurNotification={jest.fn()}
         selectOptions={{}}
       />,
@@ -34,14 +34,16 @@ describe('NotificationDetailScreen <General/>', () => {
     expect(wrapper.find({ 'data-test': "emailInput" }).length).toEqual(1)
   });
 
-  it('If curNotification.receiverType not equal "email" emailInput should not be on the page', () => {
+  it('If curNotification.receiverType not equal "email" urlInput should be on the page', () => {
     wrapper = shallow(
       <General
-        curNotification={{receiverType:''}}
+        curNotification={{ receiverType: 'webhook' }}
         setCurNotification={jest.fn()}
         selectOptions={{}}
       />,
     );
     expect(wrapper.find({ 'data-test': "emailInput" }).length).toEqual(0)
+    expect(wrapper.find({ 'data-test': "urlInput" }).length).toEqual(1)
+
   });
 });

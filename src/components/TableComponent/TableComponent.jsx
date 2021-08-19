@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -9,7 +9,11 @@ import {
   LinearProgress,
   Paper,
 } from '@material-ui/core';
+
+import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
+import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
 import { useSelector, useDispatch } from 'react-redux';
+import { setCheckedItems } from '../../redux/actions/TableData';
 import setShowColumns from '../../redux/actions/ShowColumns';
 import TableRowComponent from './TableRowComponent';
 import TableItemsActions from './TableItemsActions';
@@ -26,55 +30,58 @@ const TableComponent = ({
   isLoading,
   handleDeleteItem,
   noActions,
+  noEditDeleteActions,
   setSortParams,
   sortParams,
   customPath,
   errorHighlight,
   defaultShowColumn,
   scope,
+
 }) => {
-  const [checked, setChecked] = useState([]);
   const dispatch = useDispatch();
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
+  const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
+
   if (!showColumn) {
     dispatch(setShowColumns({ [scope]: defaultShowColumn }));
   }
   const handleCheck = (item) => {
     let newChecked = [];
 
-    const [isChecked] = checked.filter((v) => v.id === item.id);
+    const [isChecked] = tableCheckedItems.filter((v) => v.id === item.id);
 
     if (isChecked) {
-      newChecked = [...checked].filter((v) => v.id !== item.id);
+      newChecked = [...tableCheckedItems].filter((v) => v.id !== item.id);
     } else {
-      newChecked = [...checked, item];
+      newChecked = [...tableCheckedItems, item];
     }
-
-    setChecked(newChecked);
+    dispatch(setCheckedItems(newChecked));
   };
 
   const handleCheckAll = () => {
     let newChecked = [];
 
-    if (!checked.length) {
+    if (!tableCheckedItems.length) {
       newChecked = tableData?.values;
     }
 
-    setChecked(newChecked);
+    dispatch(setCheckedItems(newChecked))
   };
 
   if (isLoading || !showColumn) return <LinearProgress />;
 
   return tableData?.values?.length ? (
     <>
-      {!noActions && (
+      {/* {!noActions && (
         <TableItemsActions
-          items={checked}
+          items={checkedItems}
           setItems={setChecked}
           headers={tableData.headers}
           onDelete={handleDeleteItem}
+          noEditDeleteActions={noEditDeleteActions}
         />
-      )}
+      )} */}
       <Paper elevation={1}>
         <Grid
           spacing={1}
@@ -86,7 +93,7 @@ const TableComponent = ({
           {!noActions && (
             <Grid>
               <Checkbox
-                checked={tableData?.values.length === checked.length}
+                checked={tableData?.values.length === tableCheckedItems.length}
                 name="checkAll"
                 onChange={handleCheckAll}
               />
@@ -97,12 +104,7 @@ const TableComponent = ({
               && (header.sortParam ? (
                 <Grid item xs zeroMinWidth key={header.value}>
                   <Box
-                    className={`sortableHeader ${
-                      sortParams?.value === header.sortParam
-                      && (sortParams.type === 'desc'
-                        ? 'sortActiveDesc'
-                        : 'sortActiveAsc')
-                    }`}
+                    className='sortableHeader'
                     my={1}
                     onClick={() => {
                       let type;
@@ -121,6 +123,7 @@ const TableComponent = ({
                       align="center"
                     >
                       {header.value}
+                      {sortParams?.value === header.sortParam && (sortParams.type === 'desc' ? <VerticalAlignTopIcon /> : <VerticalAlignBottomIcon />)}
                     </Typography>
                   </Box>
                 </Grid>
@@ -146,13 +149,14 @@ const TableComponent = ({
           {tableData.values.map((rowItem) => (
             <TableRowComponent
               handleDeleteItem={handleDeleteItem}
-              checked={checked.filter((v) => v.id === rowItem.id).length > 0}
+              checked={tableCheckedItems.filter((v) => v.id === rowItem.id).length > 0}
               handleCheck={handleCheck}
               markupSequence={tableData.headers}
               showColumn={showColumn}
               key={rowItem.id}
               rowItem={rowItem}
               noActions={noActions}
+              noEditDeleteActions={noEditDeleteActions}
               customPath={customPath}
               errorHighlight={errorHighlight}
             />
@@ -183,6 +187,7 @@ TableComponent.propTypes = {
   isLoading: PropTypes.bool,
   defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
+  noEditDeleteActions: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,
   customPath: PropTypes.string,

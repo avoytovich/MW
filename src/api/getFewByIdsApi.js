@@ -2,7 +2,7 @@ import { axiosInstance } from '../axios';
 
 const getFewByIdsApi = {
   getCustomersByIds(ids) {
-    const url = `/customers/public?format=short/${ids}`;
+    const url = `/customers/public?format=short&${ids}`;
     return axiosInstance({
       method: 'get',
       url,
@@ -54,7 +54,15 @@ const getFewByIdsApi = {
   getOrdersByCard({
     size = 10, page = 1, bin, l4, customer, currency, amount, date,
   }) {
-    let url = `/payment-proxy/orders-by-card-digits?format=short&size=${size}&page=${page - 1}&bin=${bin}&l4=${l4}`;
+    let url = `/payment-proxy/orders-by-card-digits?format=short&size=${size}&page=${page - 1}`;
+
+    if (bin) {
+      url += `&bin=${bin}`;
+    }
+
+    if (l4) {
+      url += `&l4=${l4}`;
+    }
 
     if (customer) {
       url += `&origin=${customer}`;

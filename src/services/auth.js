@@ -27,8 +27,7 @@ class Auth {
       (response) => response,
       (error) => {
         if (token && error.response && error.response.status === 401) {
-          // this.logout();
-          // window.location.reload();
+          !!this.isSignedIn() && this.refreshToken();
         }
 
         return Promise.reject(error);
@@ -84,7 +83,8 @@ class Auth {
         return window.location.reload();
       }
 
-      return data.error;
+      this.logout();
+      return window.location.reload();
     }).catch(() => {
       this.logout();
       return window.location.reload();

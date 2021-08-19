@@ -1,12 +1,8 @@
 import axios from 'axios';
-
-import store from '../redux/store';
-import { showNotification } from '../redux/actions/HttpNotifications';
+import { toast } from 'react-toastify';
 import localization from '../localization';
 
-const { dispatch } = store;
-
-const errorHandler = (error) => {
+const errorHandler = (error, customToast) => {
   const { response } = error;
   const { errorDetails } = JSON.parse(localStorage.getItem('nexwayState')) || {};
 
@@ -32,7 +28,11 @@ const errorHandler = (error) => {
     }
   }
 
-  dispatch(showNotification(message, true));
+  if (customToast) {
+    return Promise.reject(message);
+  }
+
+  toast.error(message);
 
   return Promise.reject(error);
 };
@@ -49,5 +49,12 @@ export const axiosInstance = axios.create({
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => errorHandler(error),
+  (error) => {
+    const isStoreDelete = error?.response?.config?.method === 'delete'
+      && error?.response?.config?.url?.indexOf('/store') >= 0;
+
+    const customToast = isStoreDelete;
+
+    return errorHandler(error, customToast);
+  },
 );

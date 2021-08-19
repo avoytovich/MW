@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Box, Button } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/identities';
 import { useTableData } from '../../services/useData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import {
@@ -17,11 +17,10 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import parentPaths from '../../services/paths';
 
 const IdentitiesScreen = () => {
-  const scope = 'identities';
-
-  const dispatch = useDispatch();
+  const scope = 'users';
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -57,12 +56,10 @@ const IdentitiesScreen = () => {
 
   const handleDeleteIdentity = (id) => api.deleteIdentityById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.identity')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.identity')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -72,6 +69,8 @@ const IdentitiesScreen = () => {
     <Box display='flex' flexDirection='column'>
       <TableActionsBar
         scope={scope}
+        deleteFunc={api.deleteIdentityById}
+        headers={markUp.headers}
       >
         <Box alignSelf='flex-end' py={2}>
           <Button
@@ -80,7 +79,7 @@ const IdentitiesScreen = () => {
             size='large'
             variant='contained'
             component={Link}
-            to='/settings/identities/add'
+            to={`${parentPaths.users}/add`}
           >
             {`${localization.t('general.add')} ${localization.t(
               'general.identity',

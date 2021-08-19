@@ -43,6 +43,7 @@ const defaultStore = {
   routes: [{ hostname: '' }],
   defaultLocale: '',
   saleLocales: [],
+  thankYouDesc: [],
   storeWebsite: '',
   displayName: '',
   blackListedPaymentTypes: [],
@@ -120,8 +121,7 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
 
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName
-    ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}
-          ${item.subscriptionTemplate || ''})`
+    ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}${item.subscriptionTemplate || ''})`
     : item?.id;
 
   return { id: item.id, value };
@@ -216,7 +216,7 @@ const backToFront = (
     'nextGenerationOf',
     'id',
     'parentId',
-    'resources'
+    'resources',
   ],
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable
@@ -339,15 +339,6 @@ const notificationRequiredFields = (obj) => {
 
 const removeEmptyPropsInObject = (data) => {
   const res = { ...data };
-  if (res.receiverType === 'email') {
-    delete res.url;
-  } else {
-    delete res.emails;
-  }
-  delete res.receiverType;
-  if (typeof res !== 'object') {
-    return res;
-  }
   return Object.keys(res).reduce((accumulator, key) => {
     const isObject = typeof res[key] === 'object';
     const isNotEmptyArray = Array.isArray(res[key]) && res[key].length > 0;

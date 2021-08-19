@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Typography,
   Box,
@@ -10,19 +10,21 @@ import {
   Tab,
   Breadcrumbs,
 } from '@material-ui/core';
+
+import { toast } from 'react-toastify';
+
 import useMetaRoleDetailData from '../../../services/useData/useMetaRoleDetailData';
 import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
 import SectionLayout from '../../../components/SectionLayout';
+import parentPaths from '../../../services/paths';
 
 import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
 import localization from '../../../localization';
-import { showNotification } from '../../../redux/actions/HttpNotifications';
 import api from '../../../api';
 import General from './SubSections/General';
 import Clearances from './SubSections/Clearances';
 
 const MetaRoleDetailScreen = () => {
-  const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
   const [curTab, setCurTab] = useState(0);
@@ -43,19 +45,17 @@ const MetaRoleDetailScreen = () => {
       api.addNewMetaRole(curMetaRole).then((res) => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
-        history.push(`/settings/administration/metaRoles/${newId}`);
+        toast(localization.t('general.updatesHaveBeenSaved'));
+        history.push(`${parentPaths.administration}/metaRoles/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
-      api.updateMetaRoleById(id, curMetaRole).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
-        setUpdate((u) => u + 1);
-      });
+      api
+        .updateMetaRoleById(id, curMetaRole)
+        .then(() => {
+          toast(localization.t('general.updatesHaveBeenSaved'));
+          setUpdate((u) => u + 1);
+        });
     }
   };
 
@@ -67,7 +67,7 @@ const MetaRoleDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/settings/administration/metaRoles'
+            url={`${parentPaths.administration}/metaRoles`}
             section={localization.t('labels.metaRoles')}
             id={curMetaRole?.id}
           />

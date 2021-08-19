@@ -137,6 +137,7 @@ const CustomerHandling = () => {
                 e.persist();
                 setSearch(e.target.value);
               }}
+              name='customer-search'
               placeholder="Search..."
               variant="filled"
             />

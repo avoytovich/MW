@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { Box, Typography, Grid } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ClearIcon from '@material-ui/icons/Clear';
-import { paymentDefaults } from '../../../services/selectOptions/selectOptions';
-import { SelectWithChip, SelectWithChipImages } from '../../../components/Inputs';
+import { paymentDefaults, installmentOptions } from '../../../services/selectOptions/selectOptions';
+import { SelectWithChip, SelectWithChipImages, SwitchInput } from '../../../components/Inputs';
 import { filterOptions } from '../utils';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import localization from '../../../localization';
@@ -125,6 +125,53 @@ const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
           selectOptions={[]}
           onChangeSelect={() => { }}
           onClickDelIcon={() => { }}
+        />
+      </Box>
+      <Box p={2}>
+        <Box>
+          <SwitchInput
+            label='allowInstallments'
+            handleChange={(e) => {
+              setCurrentStoreData({
+                ...currentStoreData,
+                allowInstallments: e.target.checked,
+              });
+            }}
+            isChecked={currentStoreData.allowInstallments}
+          />
+        </Box>
+        <Box>
+          <SelectWithChip
+            isDisabled={!currentStoreData.allowInstallments}
+            label='installmentOptions'
+            value={currentStoreData.installmentOptions}
+            selectOptions={installmentOptions}
+            onChangeSelect={(e) => setCurrentStoreData({
+              ...currentStoreData,
+              installmentOptions: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [...currentStoreData.installmentOptions].filter(
+                (val) => val !== chip,
+              );
+              setCurrentStoreData({
+                ...currentStoreData,
+                installmentOptions: newValue,
+              });
+            }}
+          />
+        </Box>
+      </Box>
+      <Box p={2}>
+        <SwitchInput
+          label='promoteOneClickPayment'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              promoteOneClickPayment: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.promoteOneClickPayment}
         />
       </Box>
       <Box p={2}>

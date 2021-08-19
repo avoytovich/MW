@@ -4,13 +4,15 @@ import { useHistory, Link } from 'react-router-dom';
 import {
   Tabs, Tab, Box, Button,
 } from '@material-ui/core';
-
+import api from '../../api';
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import RecommendationsScreen from './SubSections/RecommendationsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
-import PricesScreen from './SubSections/PricesScreen';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
+import parentPaths from '../../services/paths';
+import { markUp as markUpRecommendations } from '../../services/useData/tableMarkups/recommendations';
+import { markUp as markUpDiscounts } from '../../services/useData/tableMarkups/discounts';
 
 import './marketingScreen.scss';
 
@@ -18,34 +20,32 @@ const availTabs = [
   {
     label: 'campaigns',
     scope: 'campaigns',
-    path: '/marketing/campaigns',
+    path: `${parentPaths.marketing}/campaigns`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.campaign',
     )}`,
+    deleteFunc: null,
+    headers: null,
   },
   {
     label: 'recommendations',
     scope: 'recommendations',
-    path: '/marketing/recommendations',
+    path: `${parentPaths.marketing}/recommendations`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.recommendation',
     )}`,
+    deleteFunc: api.deleteRecommendationById,
+    headers: markUpRecommendations.headers,
   },
   {
     label: 'discounts',
     scope: 'discounts',
-    path: '/marketing/discounts',
+    path: `${parentPaths.marketing}/discounts`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.discount',
     )}`,
-  },
-  {
-    label: 'prices',
-    scope: 'prices',
-    path: '/marketing/prices',
-    button: `${localization.t('general.add')} ${localization.t(
-      'general.price',
-    )}`,
+    deleteFunc: api.deleteDiscountById,
+    headers: markUpDiscounts.headers,
   },
 ];
 
@@ -59,7 +59,7 @@ const MarketingScreen = () => {
     const section = pathname.split('/').pop();
     const index = availTabs.findIndex((i) => i.label === section);
     if (index < 0) {
-      return history.push('/marketing/campaigns');
+      return history.push(`${parentPaths.marketing}/campaigns`);
     }
 
     setCurTab(index);
@@ -68,10 +68,12 @@ const MarketingScreen = () => {
   }, [pathname]);
 
   const drawAddButton = () => {
-    const currentTad = availTabs.find((item) => item.path === pathname) || availTabs[0];
+    const currentTab = availTabs.find((item) => item.path === pathname) || availTabs[0];
     return (
       <TableActionsBar
-        scope={currentTad.scope}
+        scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
         <Button
           id='add-marketing-button'
@@ -79,15 +81,15 @@ const MarketingScreen = () => {
           size='large'
           variant='contained'
           component={Link}
-          to={`${currentTad.path}/add`}
+          to={`${currentTab.path}/add`}
         >
-          {currentTad.button}
+          {currentTab.button}
         </Button>
       </TableActionsBar>
 
     );
   };
-  const changeTab = (tab) => history.push(`/marketing/${availTabs[tab].label}`);
+  const changeTab = (tab) => history.push(`${parentPaths.marketing}/${availTabs[tab].label}`);
   return (
     <Box display='flex' flexDirection='column'>
 
@@ -101,7 +103,6 @@ const MarketingScreen = () => {
         <Tab label='Campaigns' />
         <Tab label='Recommendations' />
         <Tab label='Discounts' />
-        <Tab label='Prices' />
       </Tabs>
 
       <Box mt={4} mb={2}>
@@ -110,8 +111,6 @@ const MarketingScreen = () => {
         {curTab === 1 && <RecommendationsScreen />}
 
         {curTab === 2 && <DiscountsScreen />}
-
-        {curTab === 3 && <PricesScreen />}
       </Box>
     </Box>
   );

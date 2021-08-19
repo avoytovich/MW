@@ -32,7 +32,7 @@ const markUp = {
       sortParam: 'emails',
     },
     { value: localization.t('labels.receiverUrl'), id: 'receiverUrl', sortParam: 'url' },
-    { value: localization.t('labels.webHook'), id: 'webHook', sortParam: null },
+    { value: localization.t('labels.webHook'), id: 'webHook', sortParam: 'webHookResponse' },
   ],
 };
 
@@ -84,9 +84,10 @@ const generateData = async (data, customers, selectedCustomer) => {
   }
 
   const values = data.items.map((val) => ({
+    id: val.id,
     customer: val.customerName,
     processingDate: moment(val.processingDate).format('D MMM YYYY'),
-    status: val.status,
+    status: val.status === 'InProgress' ? localization.t('labels.inProgress') : val.status,
     processedEvent: val.eventName,
     receiverEmail: val.emails,
     receiverUrl: val.url,

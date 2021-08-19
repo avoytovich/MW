@@ -1,9 +1,10 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import {
   Box,
@@ -23,12 +24,10 @@ import { SelectCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
-
+import parentPaths from '../../services/paths';
 import {
   priceCurrency,
 } from '../../services/selectOptions/selectOptions';
-
-import { showNotification } from '../../redux/actions/HttpNotifications';
 
 import api from '../../api';
 import localization from '../../localization';
@@ -37,7 +36,6 @@ import './pricesDetailsScreen.scss';
 
 const PricesDetailsScreen = () => {
   const countriesOptions = getCountriesOptions();
-  const dispatch = useDispatch();
   const { id } = useParams();
   const history = useHistory();
   const [price, setPrice] = useState(null);
@@ -58,14 +56,14 @@ const PricesDetailsScreen = () => {
       api
         .addNewPrice(curPrice)
         .then(() => {
-          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
-          history.push('/marketing/prices');
+          toast(localization.t('general.updatesHaveBeenSaved'));
+          history.push(`${parentPaths.marketing}/prices`);
         });
     } else {
       api
         .updatePriceById(id, curPrice)
         .then(() => {
-          dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
+          toast(localization.t('general.updatesHaveBeenSaved'));
           setPrice(curPrice);
         });
     }
@@ -167,7 +165,7 @@ const PricesDetailsScreen = () => {
   return (
     <div className="price-details-screen">
       <CustomBreadcrumbs
-        url='/marketing/prices'
+        url={`${parentPaths.marketing}/prices`}
         section={localization.t('general.price')}
         id={price?.id ? price.id : localization.t('general.addPrice')}
       />
@@ -201,7 +199,7 @@ const PricesDetailsScreen = () => {
 
               <FileCopyOutlinedIcon
                 style={{ opacity: 0.25, marginLeft: 10, cursor: 'pointer' }}
-                onClick={() => history.push(`/overview/products/${price?.productId}`)}
+                onClick={() => history.push(`${parentPaths.productlist}/${price?.productId}`)}
               />
             </Box>
           ) : (

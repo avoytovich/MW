@@ -43,6 +43,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getCartById(id) {
+    const url = `/carts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getPaymentById(id) {
     const url = `/payment-proxy/payments/${id}`;
     return axiosInstance({
@@ -250,7 +257,13 @@ const getOneByIdApi = {
   },
   getNotificationDefinitionById(id) {
     const url = `/customer-notifier/notification-definitions/${id}`;
-
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getNotificationHistoryById(id) {
+    const url = `/customer-notifier/notifications/${id}`;
     return axiosInstance({
       method: 'get',
       url,
@@ -264,6 +277,20 @@ const getOneByIdApi = {
         accept: 'application/pdf',
       },
       responseType: 'blob',
+      method: 'get',
+      url,
+    });
+  },
+  getLicenseProviderDefinitionById(id) {
+    const url = `/license-manager/license-provider-definitions/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getLicenseById(id) {
+    const url = `/license-manager/licenses/${id}`;
+    return axiosInstance({
       method: 'get',
       url,
     });

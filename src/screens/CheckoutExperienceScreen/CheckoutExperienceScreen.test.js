@@ -30,8 +30,7 @@ describe('<CheckoutExperienceScreen/>', () => {
     expect(wrapper.find(Tab)).toHaveLength(4);
     expect(wrapper.find(Tab).at(0).text()).toEqual('Themes');
     expect(wrapper.find(Tab).at(1).text()).toEqual('Layouts');
-    expect(wrapper.find(Tab).at(2).text()).toEqual('Translations');
-    expect(wrapper.find(Tab).at(3).text()).toEqual('Fonts');
+    expect(wrapper.find(Tab).at(2).text()).toEqual('Fonts');
   });
 
   it('should show Themes tab be active if path is /checkout-experience/themes', () => {

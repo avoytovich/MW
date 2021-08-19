@@ -15,7 +15,6 @@ describe('NotificationDetailScreen <HttpHeaders/>', () => {
   it('should return all inputs', () => {
     expect(wrapper.find({ 'data-test': "versionOneByLine" }).length).toEqual(1)
     expect(wrapper.find({ 'data-test': "contentTypeOneByLine" }).length).toEqual(1)
-    expect(wrapper.find({ 'data-test': "url" }).length).toEqual(1)
     jest.clearAllMocks();
   });
 });

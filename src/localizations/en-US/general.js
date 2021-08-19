@@ -28,6 +28,8 @@ const general = {
   price: 'Price',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
+  sendByEmailByCartIdSuccessed: 'Cart sent by email',
+  sendByEmailByCartIdFailure: 'Can\'t send cart by email',
   selectImage: ' Select image',
   features: ' Features',
   live: 'Live',
@@ -88,6 +90,9 @@ const general = {
   findColumn: 'Find column',
   hideAll: 'Hide All',
   showAll: 'Show All',
+  licenseProviderDefinition: 'License Provider Definition',
+  disableStore: 'Are you sure you want to disable the store?',
+  force: 'Force',
 };
 
 export default general;

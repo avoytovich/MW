@@ -53,6 +53,9 @@
     color:#4791dc;
   }
 }
+.error-row-color {
+  color: $deleteIcon;
+}
 .tableHeaderGrid {
   padding: 15px 0;
   padding-left: 20px;
@@ -100,10 +103,12 @@
 }
 .sortableHeader {
   cursor: pointer;
-}
-.sortActiveDesc {
-  border-bottom: 2px solid $navItemButtonActive;
-}
-.sortActiveAsc {
-  border-top: 2px solid $navItemButtonActive;
+
+  svg{
+    position: absolute;
+    font-size: 18px;
+    color: $navItemButtonActive;
+    margin-left: 5px;
+    margin-top: 2px;
+  }
 }

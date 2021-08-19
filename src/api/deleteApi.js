@@ -15,8 +15,13 @@ const deleteApi = {
       url,
     });
   },
-  deleteStoreById(id) {
-    const url = `/stores/${id}`;
+  deleteStoreById(id, force) {
+    let url = `/stores/${id}`;
+
+    if (force) {
+      url += '?force=true';
+    }
+
     return axiosInstance({
       method: 'delete',
       url,
@@ -108,6 +113,27 @@ const deleteApi = {
   },
   deleteCartById(id) {
     const url = `/carts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteLicenseProviderDefinitionById(id) {
+    const url = `/license-manager/license-provider-definitions/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteNotificationById(id) {
+    const url = `/customer-notifier/receivers/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteNotificationDefinitionsById(id) {
+    const url = `/customer-notifier/notification-definitions/${id}`;
     return axiosInstance({
       method: 'delete',
       url,

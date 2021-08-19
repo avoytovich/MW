@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import ThemeLayout from './ThemeLayout';
 import localization from '../../localization';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import api from '../../api';
+import parentPaths from '../../services/paths';
 
 const newTheme = {
   customerId: 'Nexway',
@@ -13,7 +13,6 @@ const newTheme = {
 };
 const ThemeAddScreen = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [currentTheme, setCurrentTheme] = useState(newTheme);
   const disabled = currentTheme.data === ''
   || currentTheme.name === '';
@@ -22,10 +21,8 @@ const ThemeAddScreen = () => {
     api.addNewTheme(currentTheme).then((res) => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
-      history.push(`/checkout-experience/themes/${id}`);
+      toast(localization.t('general.updatesHaveBeenSaved'));
+      history.push(`${parentPaths.checkoutpagebuilder}/themes/${id}`);
     });
   };
   return (

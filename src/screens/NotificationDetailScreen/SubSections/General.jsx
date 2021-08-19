@@ -12,12 +12,12 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import { email } from '../../../services/helpers/inputValidators';
+import { email, urlIsValid } from '../../../services/helpers/inputValidators';
 import localization from '../../../localization';
 import { InputCustom, SelectWithChip } from '../../../components/Inputs';
 
 const General = ({ setCurNotification, curNotification, selectOptions }) => {
-  const [errorMessages, setErrorMessages] = useState({ email: null });
+  const [errorMessages, setErrorMessages] = useState({ email: null, url: null });
 
   return (
     <Grid container>
@@ -147,9 +147,10 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
           </div>
         </Box>
       </Grid>
-      {curNotification.receiverType === 'email'
-        && (
-          <Grid item md={6} sm={12}>
+
+      <Grid item md={6} sm={12}>
+        {curNotification.receiverType === 'email'
+          ? (
             <Box p={2}>
               <Autocomplete
                 data-test='emailInput'
@@ -199,11 +200,32 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
                 )}
               />
             </Box>
-          </Grid>
-        )}
+          ) : (
+            <Box p={2}>
+              <InputCustom
+                hasError={!!errorMessages.url}
+                label='url'
+                data-test='urlInput'
+                value={curNotification.url}
+                onChangeInput={(e) => {
+                  const validUrl = urlIsValid(e.target.value);
+                  if (!validUrl) {
+                    setErrorMessages(({ ...errorMessages, url: localization.t('errorNotifications.invalidUrl') }));
+                  } else {
+                    setErrorMessages(({ ...errorMessages, url: null }));
+                  }
+                  setCurNotification({ ...curNotification, url: e.target.value });
+                }}
+                isRequired
+                helperText={errorMessages.url}
+              />
+            </Box>
+          )}
+      </Grid>
     </Grid>
   );
 };
+
 General.propTypes = {
   curNotification: PropTypes.object,
   setCurNotification: PropTypes.func,

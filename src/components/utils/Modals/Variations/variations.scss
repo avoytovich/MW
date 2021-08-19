@@ -1,0 +1,41 @@
+@import '../../../../styles/variables.scss';
+
+.container {
+  .header {
+    margin-bottom: 4px;
+  }
+  .title {
+    margin-top: 40px;
+    margin-bottom: 30px;
+  }
+  .label {
+    margin-bottom: 10px;
+    font-style: italic;
+    font-size: 15px;
+  }
+  .MuiFormControlLabel-label {
+    font-weight: bold;
+  }
+  .radioLabel {
+    font-size: 15px;
+    padding-left: 30px;
+    color: initial;
+  }
+  .radio {
+    color: black;
+  }
+  .closeModal {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+
+    :hover {
+      cursor: pointer;
+    }
+  }
+  .infoLabel {
+    color: $validationRed;
+    font-size: 15px;
+    margin-top: 18px;
+  }
+}

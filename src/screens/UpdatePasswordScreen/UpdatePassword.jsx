@@ -1,5 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 
 import {
@@ -10,17 +9,17 @@ import {
   Typography,
   CircularProgress,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
+
 import { Formik } from 'formik';
 
 import * as validators from '../../services/helpers/inputValidators';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
 const initialUpdateValues = { newPassword: '', confirmedPassword: '' };
 
 const UpdatePassword = () => {
-  const dispatch = useDispatch();
   const { token } = useParams();
   const history = useHistory();
 
@@ -29,7 +28,7 @@ const UpdatePassword = () => {
     api
       .setNewPassword(token, { password: values.newPassword })
       .then(() => {
-        dispatch(showNotification(localization.t('general.passwordUpdated')));
+        toast(localization.t('general.passwordUpdated'));
         history.push('/');
       })
       .catch((error) => {

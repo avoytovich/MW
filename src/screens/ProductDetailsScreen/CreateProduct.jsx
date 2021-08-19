@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import api from '../../api';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import { handleGetOptions, handleGetProductDetails } from './utils';
 import {
   defaultProduct,
@@ -13,9 +12,9 @@ import {
 } from '../../services/helpers/dataStructuring';
 import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
+import parentPaths from '../../services/paths';
 
 const CreateProduct = () => {
-  const dispatch = useDispatch();
   const customerId = useSelector(
     ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.id,
   );
@@ -74,7 +73,7 @@ const CreateProduct = () => {
         setSelectOptions,
         selectOptions,
         setSubProductVariations,
-        () => {},
+        () => { },
       );
     return () => {
       isCancelled = true;
@@ -99,8 +98,8 @@ const CreateProduct = () => {
     api.addNewProduct(dataToSave).then((res) => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
-      dispatch(showNotification(localization.t('general.updatesHaveBeenSaved')));
-      history.push(`/overview/products/${id}`);
+      toast(localization.t('general.updatesHaveBeenSaved'));
+      history.push(`${parentPaths.productlist}/${id}`);
     });
   };
 

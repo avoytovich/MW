@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import { LinearProgress } from '@material-ui/core';
+import { toast } from 'react-toastify';
 
 import JsonEditorLayout from '../../layouts/JsonEditorLayout';
 
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import api from '../../api';
 
 const LayoutEditScreen = () => {
-  const dispatch = useDispatch();
-
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [hasChanges, setChanges] = useState(false);
@@ -24,9 +21,7 @@ const LayoutEditScreen = () => {
 
   const saveLayout = () => {
     api.updateLayoutById(id, currentLayout).then(() => {
-      dispatch(
-        showNotification(localization.t('general.updatesHaveBeenSaved')),
-      );
+      toast(localization.t('general.updatesHaveBeenSaved'));
       setLayoutData(currentLayout);
       window.location.reload();
     });

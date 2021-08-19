@@ -7,55 +7,56 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import localization from '../../localization';
-import TranslationsTab from './TranslationsTab';
 import FontsTab from './FontsTab';
 import ThemesTab from './ThemesTab';
 import LayoutsTab from './LayoutsTab';
 import TableActionsBar from '../../components/TableActionsBar';
-
+import api from '../../api';
+import { markUp } from '../../services/useData/tableMarkups/checkoutExperience';
 import './CheckoutExperienceScreen.scss';
+import parentPaths from '../../services/paths';
 
 const allTabs = [
   {
     label: localization.t('labels.themes'),
-    path: '/checkout-experience/themes',
+    path: `${parentPaths.checkoutpagebuilder}/themes`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.theme',
     )}`,
     scope: 'themes',
+    deleteFunc: api.deleteThemeById,
+    headers: markUp.headers,
   },
   {
     label: localization.t('labels.layouts'),
-    path: '/checkout-experience/layouts',
+    path: `${parentPaths.checkoutpagebuilder}/layouts`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.layout',
     )}`,
     scope: 'layouts',
-  },
-  {
-    label: localization.t('labels.translations'),
-    path: '/checkout-experience/translations',
-    button: `${localization.t('general.add')} ${localization.t(
-      'general.translation',
-    )}`,
-    scope: 'translations',
+    deleteFunc: api.deleteLayoutById,
+    headers: markUp.headers,
   },
   {
     label: localization.t('labels.fonts'),
-    path: '/checkout-experience/fonts',
+    path: `${parentPaths.checkoutpagebuilder}/fonts`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.font',
     )}`,
     scope: 'fonts',
+    deleteFunc: api.deleteFontById,
+    headers: markUp.headers,
   },
 ];
 
 const CheckoutExperienceScreen = ({ location }) => {
   const drawAddButton = () => {
-    const currentTad = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
+    const currentTab = allTabs.find((item) => item.path === location.pathname) || allTabs[0];
     return (
       <TableActionsBar
-        scope={currentTad.scope}
+        scope={currentTab.scope}
+        deleteFunc={currentTab.deleteFunc}
+        headers={currentTab.headers}
       >
         <Button
           id="add-checkout-design-button"
@@ -63,9 +64,9 @@ const CheckoutExperienceScreen = ({ location }) => {
           size="large"
           variant="contained"
           component={Link}
-          to={`${currentTad.path}/add`}
+          to={`${currentTab.path}/add`}
         >
-          {currentTad.button}
+          {currentTab.button}
         </Button>
       </TableActionsBar>
     );
@@ -76,7 +77,7 @@ const CheckoutExperienceScreen = ({ location }) => {
       <Box display="flex" flexDirection="column">
         <Tabs
           value={
-            location.pathname === '/checkout-experience'
+            location.pathname === `${parentPaths.checkoutpagebuilder}`
               ? allTabs[0].path
               : location.pathname
           }
@@ -97,9 +98,8 @@ const CheckoutExperienceScreen = ({ location }) => {
           <Switch>
             <Route exact path={allTabs[0].path} component={ThemesTab} />
             <Route exact path={allTabs[1].path} component={LayoutsTab} />
-            <Route exact path={allTabs[2].path} component={TranslationsTab} />
-            <Route exact path={allTabs[3].path} component={FontsTab} />
-            <Redirect exact from="/checkout-experience" to={allTabs[0].path} />
+            <Route exact path={allTabs[2].path} component={FontsTab} />
+            <Redirect exact from={`${parentPaths.checkoutpagebuilder}`} to={allTabs[0].path} />
           </Switch>
         </Box>
       </Box>

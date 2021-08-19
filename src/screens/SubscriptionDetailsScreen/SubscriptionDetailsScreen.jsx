@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import moment from 'moment';
+import { toast } from 'react-toastify';
 
 import {
   Box,
@@ -13,16 +13,14 @@ import {
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import api from '../../api';
-
+import parentPaths from '../../services/paths';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 
 import './subscriptionDetailsScreen.scss';
 
 const SubscriptionDetailsScreen = () => {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const [subscription, setSubscription] = useState(null);
 
   useEffect(() => {
@@ -34,9 +32,8 @@ const SubscriptionDetailsScreen = () => {
   }, []);
 
   const makeCopy = (value) => {
-    navigator.clipboard.writeText(value).then(() => {
-      dispatch(showNotification(localization.t('general.itemHasBeenCopied')));
-    });
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
 
   if (subscription === null) return <LinearProgress />;
@@ -82,7 +79,7 @@ const SubscriptionDetailsScreen = () => {
     <div className="subscription-details-screen">
       {id !== 'add' && (
         <CustomBreadcrumbs
-          url='/overview/subscriptions'
+          url={`${parentPaths.subscriptions}`}
           section={localization.t('general.subscription')}
           id={subscription?.id ? subscription.id : localization.t('general.addSubscription')}
         />

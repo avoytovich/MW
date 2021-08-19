@@ -1,6 +1,6 @@
 // ToDo: consider making a common layout for such type of settings screens
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import {
   LinearProgress,
@@ -11,6 +11,7 @@ import {
   Tabs,
   Tab,
 } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import { fromArrayToObject, tabsLabels } from './utils';
 
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
@@ -20,16 +21,15 @@ import Eligibility from './SubSections/Eligibility';
 import CappingAndLimits from './SubSections/CappingAndLimits';
 import api from '../../api';
 import DiscountSection from './DiscountSection';
-import { showNotification } from '../../redux/actions/HttpNotifications';
 import localization from '../../localization';
 import useDiscountDetails from '../../services/useData/useDiscountDetails';
+import parentPaths from '../../services/paths';
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const history = useHistory();
   const [curTab, setCurTab] = useState(0);
-  const dispatch = useDispatch();
   const { id } = useParams();
   const {
     discount,
@@ -59,16 +59,12 @@ const DiscountDetailsScreen = () => {
     }
     if (id === 'add') {
       api.addNewDiscount(res).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
-        history.push('/marketing/discounts');
+        toast(localization.t('general.updatesHaveBeenSaved'));
+        history.push(`${parentPaths.marketing}/discounts`);
       });
     } else {
       api.updateDiscountById(id, res).then(() => {
-        dispatch(
-          showNotification(localization.t('general.updatesHaveBeenSaved')),
-        );
+        toast(localization.t('general.updatesHaveBeenSaved'));
         window.location.reload();
       });
     }
@@ -104,7 +100,7 @@ const DiscountDetailsScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url='/marketing/discounts'
+            url={`${parentPaths.marketing}/discounts`}
             section={localization.t('general.discount')}
             id={discount.id}
           />

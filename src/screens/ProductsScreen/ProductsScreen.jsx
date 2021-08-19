@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/products';
 import useTableData from '../../services/useData/useTableData';
 import TableComponent from '../../components/TableComponent';
-import { showNotification } from '../../redux/actions/HttpNotifications';
+
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import {
@@ -18,11 +19,11 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import parentPaths from '../../services/paths';
 
 const ProductsScreen = () => {
-  const scope = 'products';
+  const scope = 'productlist';
 
-  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -53,12 +54,10 @@ const ProductsScreen = () => {
 
   const handleDeleteProduct = (id) => api.deleteProductById(id).then(() => {
     setMakeUpdate((v) => v + 1);
-    dispatch(
-      showNotification(
-        `${localization.t('general.product')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      ),
+    toast(
+      `${localization.t('general.product')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
     );
   });
 
@@ -67,6 +66,8 @@ const ProductsScreen = () => {
     <>
       <TableActionsBar
         scope={scope}
+        deleteFunc={api.deleteProductById}
+        headers={markUp.headers}
       >
         <Box>
           <Button
@@ -75,7 +76,7 @@ const ProductsScreen = () => {
             size="large"
             variant="contained"
             component={Link}
-            to="/products/add"
+            to={`${parentPaths.productlist}/add`}
           >
             {localization.t('general.addProduct')}
           </Button>

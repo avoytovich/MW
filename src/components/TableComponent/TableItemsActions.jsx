@@ -10,7 +10,7 @@ import ImportExportIcon from '@material-ui/icons/ImportExport';
 import './TableComponent.scss';
 
 const TableItemsActions = ({
-  items, headers, onDelete, setItems,
+  items, headers, onDelete, setItems, noEditDeleteActions,
 }) => {
   const csvHeaders = [...headers].map((header) => ({
     label: header.value,
@@ -19,7 +19,9 @@ const TableItemsActions = ({
 
   const deleteItems = () => {
     const itemsIds = [...items].map((i) => i.id);
-    onDelete(itemsIds.join(','));
+
+    itemsIds.forEach((it) => onDelete(it));
+    // onDelete(itemsIds.join(','));
     setItems([]);
   };
 
@@ -43,7 +45,8 @@ const TableItemsActions = ({
           Export
         </Fab>
       </CSVLink>
-
+      {!noEditDeleteActions
+      && (
       <Fab
         variant="extended"
         size="small"
@@ -55,6 +58,7 @@ const TableItemsActions = ({
         <DeleteIcon className="deleteIcon" />
         Delete
       </Fab>
+      )}
     </Collapse>
   );
 };
@@ -64,6 +68,7 @@ TableItemsActions.propTypes = {
   headers: PropTypes.array,
   onDelete: PropTypes.func,
   setItems: PropTypes.func,
+  noEditDeleteActions: PropTypes.bool,
 };
 
 export default TableItemsActions;
