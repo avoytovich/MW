@@ -4,7 +4,7 @@ import {
   Box, Typography, FormControlLabel, Checkbox,
 } from '@material-ui/core';
 
-import localization from '../../localization';
+import localization from '../../../localization';
 
 const CheckboxInput = ({
   currentStoreData,
@@ -14,7 +14,6 @@ const CheckboxInput = ({
 }) => {
   const handleUpdateCheckbox = (isChecked, name) => {
     const newValue = [...currentStoreData.eligibleEndUserTypes];
-
     if (isChecked) {
       newValue.push(name);
     } else {
