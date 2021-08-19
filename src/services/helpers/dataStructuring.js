@@ -55,7 +55,7 @@ const defaultStore = {
   blackListedCountries: [],
   restrictedCountries: [],
   installmentOptions: [],
-  // fallbackCartCountry: '',
+  eligibleEndUserTypes: ['RESELLER_AUTHENTICATION_REQUIRED', 'BUYER_AUTHENTICATION_REQUIRED', 'AUTHENTICATION_NOT_REQUIRED'],
   externalContextGenerationParams: [],
   designs: {
     endUserPortal: {

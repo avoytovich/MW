@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, Grid, Button,
@@ -7,6 +7,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import { getCountriesOptions, getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
+import { urlIsValid } from '../../../services/helpers/inputValidators';
 
 import localization from '../../../localization';
 import {
@@ -14,8 +15,8 @@ import {
   SelectCustom,
   SelectWithChip,
   SwitchInput,
-  CheckboxInput,
 } from '../../../components/Inputs';
+import CheckboxInput from './CheckboxInput';
 
 import '../storeDetailsScreen.scss';
 
@@ -29,6 +30,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
   const availableLocales = getLanguagesOptions();
   const [open, setOpen] = React.useState(false);
   const [saveModalChecked, setSaveModalChecked] = React.useState(null);
+  const [errorMessages, setErrorMessages] = useState(null);
 
   const handleOpenModal = (e) => {
     setSaveModalChecked(e.target.value);
@@ -83,8 +85,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
             }}
             isChecked={currentStoreData.status === 'ENABLED'}
             switchLabel={localization.t(
-              `labels.${
-                currentStoreData.status === 'ENABLED' ? 'enabled' : 'disabled'
+              `labels.${currentStoreData.status === 'ENABLED' ? 'enabled' : 'disabled'
               }`,
             )}
           />
@@ -236,11 +237,21 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
         <Box p={2}>
           <InputCustom
             label='storeWebsite'
+            hasError={!!errorMessages}
+            helperText={errorMessages}
             value={currentStoreData.storeWebsite}
-            onChangeInput={(e) => setCurrentStoreData({
-              ...currentStoreData,
-              storeWebsite: e.target.value,
-            })}
+            onChangeInput={(e) => {
+              const validUrl = urlIsValid(e.target.value);
+              if (!validUrl && e.target.value) {
+                setErrorMessages(localization.t('errorNotifications.invalidUrl'));
+              } else {
+                setErrorMessages(null);
+              }
+              setCurrentStoreData({
+                ...currentStoreData,
+                storeWebsite: e.target.value,
+              });
+            }}
           />
         </Box>
         <Box p={2}>
@@ -316,8 +327,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
             }}
             isChecked={currentStoreData.forceGeoipLocalization}
             switchLabel={localization.t(
-              `labels.${
-                currentStoreData.forceGeoipLocalization ? 'enabled' : 'disabled'
+              `labels.${currentStoreData.forceGeoipLocalization ? 'enabled' : 'disabled'
               }`,
             )}
           />

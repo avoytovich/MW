@@ -19,6 +19,7 @@ import General from './SubSections/General';
 import Design from './SubSections/Design';
 import LocalizedContent from './SubSections/LocalizedContent';
 import StoreSection from './StoreSection';
+import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import {
   storeRequiredFields,
   structureSelectOptions,
@@ -38,7 +39,6 @@ import api from '../../api';
 
 const StoreDetailsScreen = () => {
   const history = useHistory();
-  console.log('StoreDetailsScreen')
   const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -110,86 +110,91 @@ const StoreDetailsScreen = () => {
 
   useEffect(() => {
     let isCancelled = false;
-    let roleRequest;
-    if (id === 'add') {
-      roleRequest = Promise.resolve({
-        data: { customerId: nxState.selectedCustomer.id },
+
+    if (nxState.selectedCustomer?.id) {
+      let roleRequest;
+      if (id === 'add') {
+        roleRequest = Promise.resolve({
+          data: { customerId: nxState.selectedCustomer?.id },
+        });
+      } else {
+        roleRequest = api.getStoreById(id);
+      }
+
+      roleRequest.then(({ data: store }) => {
+        if (!isCancelled) {
+          const checkedStore = storeRequiredFields(store);
+          const resourcesArray = structureResources(store);
+          setStoreResources(JSON.parse(JSON.stringify(resourcesArray)));
+          setCurrentStoreResources(
+            JSON.parse(JSON.stringify(resourcesArray)),
+          );
+          setStoreData(checkedStore);
+          setCurrentStoreData(checkedStore);
+          api
+            .getCustomerById(store?.customerId)
+            .then(({ data: customer }) => {
+              setCurrentCustomerData(customer);
+            });
+          setLoading(false);
+
+          Promise.allSettled([
+            api.getDesignsThemes(),
+            api.getDesignsFonts(),
+            api.getDesignsLayouts(),
+            api.getDesignsTranslations(),
+            api.getPaymentMethodsOptions(),
+          ]).then(
+            ([
+              themeOptions,
+              fontOptions,
+              layoutOptions,
+              translationOptions,
+              paymentMethodsOptions,
+            ]) => {
+              const customersIds = getCustomersIdsArray(
+                ...fontOptions.value.data.items,
+                ...themeOptions.value.data.items,
+                ...layoutOptions.value.data.items,
+                ...translationOptions.value.data.items,
+              );
+
+              api
+                .getCustomersByIds(customersIds.join('&'))
+                .then(({ data: customers }) => {
+                  setSelectOptions({
+                    ...selectOptions,
+                    customers: customers.items,
+                    font: formDesignOptions(
+                      fontOptions.value?.data.items,
+                      customers.items,
+                    ),
+                    theme: formDesignOptions(
+                      themeOptions.value?.data.items,
+                      customers.items,
+                    ),
+                    paymentMethods: structureSelectOptions(
+                      paymentMethodsOptions.value?.data,
+                      'id',
+                    ),
+                    layout: formDesignOptions(
+                      layoutOptions.value?.data.items,
+                      customers.items,
+                    ),
+                    translation: formDesignOptions(
+                      translationOptions.value?.data.items,
+                      customers.items,
+                    ),
+                  });
+                });
+            },
+          );
+        }
       });
     } else {
-      roleRequest = api.getStoreById(id);
+      setLoading(false);
+      isCancelled = true;
     }
-
-    roleRequest.then(({ data: store }) => {
-      if (!isCancelled) {
-        const checkedStore = storeRequiredFields(store);
-        const resourcesArray = structureResources(store);
-        setStoreResources(JSON.parse(JSON.stringify(resourcesArray)));
-        setCurrentStoreResources(
-          JSON.parse(JSON.stringify(resourcesArray)),
-        );
-        setStoreData(checkedStore);
-        setCurrentStoreData(checkedStore);
-        api
-          .getCustomerById(store?.customerId)
-          .then(({ data: customer }) => {
-            setCurrentCustomerData(customer);
-          });
-        setLoading(false);
-
-        Promise.allSettled([
-          api.getDesignsThemes(),
-          api.getDesignsFonts(),
-          api.getDesignsLayouts(),
-          api.getDesignsTranslations(),
-          api.getPaymentMethodsOptions(),
-        ]).then(
-          ([
-            themeOptions,
-            fontOptions,
-            layoutOptions,
-            translationOptions,
-            paymentMethodsOptions,
-          ]) => {
-            const customersIds = getCustomersIdsArray(
-              ...fontOptions.value.data.items,
-              ...themeOptions.value.data.items,
-              ...layoutOptions.value.data.items,
-              ...translationOptions.value.data.items,
-            );
-
-            api
-              .getCustomersByIds(customersIds.join('&'))
-              .then(({ data: customers }) => {
-                setSelectOptions({
-                  ...selectOptions,
-                  customers: customers.items,
-                  font: formDesignOptions(
-                    fontOptions.value?.data.items,
-                    customers.items,
-                  ),
-                  theme: formDesignOptions(
-                    themeOptions.value?.data.items,
-                    customers.items,
-                  ),
-                  paymentMethods: structureSelectOptions(
-                    paymentMethodsOptions.value?.data,
-                    'id',
-                  ),
-                  layout: formDesignOptions(
-                    layoutOptions.value?.data.items,
-                    customers.items,
-                  ),
-                  translation: formDesignOptions(
-                    translationOptions.value?.data.items,
-                    customers.items,
-                  ),
-                });
-              });
-          },
-        );
-      }
-    });
-
     return () => {
       isCancelled = true;
     };
@@ -213,6 +218,8 @@ const StoreDetailsScreen = () => {
   }, [currentStoreData, storeData]);
 
   if (isLoading) return <LinearProgress />;
+
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
 
   return (
     storeData && (
