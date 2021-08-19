@@ -12,6 +12,7 @@ const HttpHeaders = ({ setCurNotification, curNotification }) => (
     <Grid item md={6}>
       <Box p={2}>
         <InputCustom
+          data-test='contentTypeOneByLine'
           label='contentTypeOneByLine'
           value={curNotification.httpClientConfiguration.httpHeaders['Content-Type'].join('\r\n')}
           onChangeInput={(e) => {
@@ -34,6 +35,7 @@ const HttpHeaders = ({ setCurNotification, curNotification }) => (
     <Grid item md={6}>
       <Box p={2}>
         <InputCustom
+          data-test='versionOneByLine'
           label='versionOneByLine'
           value={curNotification.httpClientConfiguration.httpHeaders.Version.join('\r\n')}
           onChangeInput={(e) => {
