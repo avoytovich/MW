@@ -546,6 +546,9 @@ const labels = {
   definitionName: 'Definition Name',
   inProgress: 'In Progress',
   done: 'Done',
+  delayMn: 'Delay (mn)',
+  abandonedCart: 'Abandoned Cart',
+  abandonedCarts: 'Abandoned Carts',
 };
 
 export default labels;

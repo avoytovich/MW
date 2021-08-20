@@ -153,7 +153,14 @@ const putApi = {
       data,
     });
   },
-
+  updateAbandonedCart(id, data) {
+    const url = `/campaigns/abandonedcarts/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
 };
 
 export default putApi;

@@ -295,5 +295,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getAbandonedCartById(id) {
+    const url = `/campaigns/abandonedcarts/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;
