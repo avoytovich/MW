@@ -150,6 +150,7 @@ const AbandonedCartDetailScreen = () => {
           </Box>
           <Box p={2} width='60%'>
             <InputCustom
+              data-test='name'
               label='name'
               value={curAbandonedCart.name}
               onChangeInput={(e) => setCurAbandonedCart(
@@ -162,6 +163,7 @@ const AbandonedCartDetailScreen = () => {
             <Grid item md={3} sm={6}>
               <Box p={2}>
                 <SelectCustom
+                  data-test='date'
                   label='date'
                   value={curAbandonedCart.validPeriod}
                   selectOptions={validPeriodOptions}
@@ -189,6 +191,7 @@ const AbandonedCartDetailScreen = () => {
                       <Box p={2}>
                         <form noValidate>
                           <TextField
+                            data-test={curAbandonedCart.validPeriod === 'after' ? 'startDate' : 'endDate'}
                             fullWidth
                             name={curAbandonedCart.validPeriod === 'after' ? 'startDate' : 'endDate'}
                             value={moment(curAbandonedCart.validPeriod === 'after' ? curAbandonedCart.startDate : curAbandonedCart.endDate).format('YYYY-MM-DDTHH:mm')}
@@ -212,6 +215,7 @@ const AbandonedCartDetailScreen = () => {
           </Grid>
           <Box p={2} width='60%'>
             <NumberInput
+              data-test='delayMn'
               hasError={hasError}
               helperText='Delay must be a positive number of minutes less of equal to 10,080 s after the enduser email is captured.'
               minMAx={{ min: 1, max: 10080 }}
