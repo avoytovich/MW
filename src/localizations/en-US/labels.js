@@ -464,7 +464,7 @@ const labels = {
   custoemrStatus: 'Custoemr Status',
   splitPayment: 'Split Payment',
   customerStatus: 'Customer Status',
-  estimatedPaymentStatus: 'Estimated Payment status',
+  informativeDPStatus: 'Estimated Payment status',
   billingPlan: 'Billing plan',
   init: 'Init',
   pendingReview: 'Pending Review',

@@ -190,7 +190,7 @@ const markUp = {
       sortParam: 'paymentStatus',
     },
     {
-      value: localization.t('labels.estimatedPaymentStatus'),
+      value: localization.t('labels.informativeDPStatus'),
       id: 'informativeDPStatus',
       sortParam: 'informativeDPStatus',
     },
@@ -243,7 +243,7 @@ const generateData = (data, customers, stores) => {
       updateDate: val.updateDate,
       email: val.endUser?.email,
       status: val.status,
-      source: val.source,
+      source: val.source === 'PURCHASE' ? 'ACQUISITION' : val.source,
       orderId: val.id,
       phone: val.endUser.phone,
       companyName: val.endUser?.company?.companyName,

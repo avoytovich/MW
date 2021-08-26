@@ -9,7 +9,37 @@ const getAllApi = {
   } = defaultRequestedObject) {
     let url = `/orders?format=short&size=${size}&page=${page}`;
     if (filters) {
-      url += filters;
+      const regexpFilters = /&([=,.\w-]+)/g;
+      const regexpSingleFilter = /&([.\w-]+)/g;
+
+      const test = filters.match(regexpFilters);
+
+      let status = '';
+      let source = '';
+      let customerStatus = '';
+      let paymentStatus = '';
+      let subscriptionStatus = '';
+      let cancellationReason = '';
+      let preorder = '';
+      test.forEach((e) => {
+        if (e.match(regexpSingleFilter) == '&status') {
+          status = e.replace(',', '&status=');
+        } if (e.match(regexpSingleFilter) == '&source') {
+          source = e.replace(',', '&status=');
+        } if (e.match(regexpSingleFilter) == '&customer') {
+          customerStatus = e.replace(',', '&customer.status=');
+        } if (e.match(regexpSingleFilter) == '&payment.informativeDPStatus') {
+          paymentStatus = e.replace(',', '&payment.informativeDPStatus=');
+        } if (e.match(regexpSingleFilter) == '&subscriptionStatus') {
+          subscriptionStatus = e.replace(',', '&subscriptionStatus=');
+        } if (e.match(regexpSingleFilter) == '&creditNotes.cancellationReason') {
+          cancellationReason = e.replace(',', '&creditNotes.cancellationReason=');
+        } if (e.match(regexpSingleFilter) == '&preorder') {
+          preorder = e.replace(',', '&preorder=');
+        }
+      });
+      url = url + status + source + customerStatus
+      + paymentStatus + subscriptionStatus + cancellationReason + preorder;
     }
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
