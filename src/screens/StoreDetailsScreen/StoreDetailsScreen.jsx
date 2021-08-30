@@ -115,7 +115,13 @@ const StoreDetailsScreen = () => {
       let roleRequest;
       if (id === 'add') {
         roleRequest = Promise.resolve({
-          data: { customerId: nxState.selectedCustomer?.id },
+          data: {
+            customerId: nxState.selectedCustomer?.id,
+            logoFavicon: '',
+            bannerInvoice: '',
+            bannerOrderConfEmail: '',
+            logoStore: '',
+          },
         });
       } else {
         roleRequest = api.getStoreById(id);
