@@ -93,6 +93,7 @@ const general = {
   licenseProviderDefinition: 'License Provider Definition',
   disableStore: 'Are you sure you want to disable the store?',
   force: 'Force',
+  clearFilters: 'Clear filters',
 };
 
 export default general;

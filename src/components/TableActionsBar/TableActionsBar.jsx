@@ -14,6 +14,7 @@ import {
   Refresh as RefreshIcon,
   FindInPage as FindIcon,
 } from '@material-ui/icons';
+
 import {
   IconButton,
   Typography,
@@ -21,19 +22,21 @@ import {
   TextField,
   MenuItem,
   Tooltip,
-  Dialog,
+  Popover,
 } from '@material-ui/core';
-import localization from '../../localization';
+
 import {
   setRowsPerPage,
   setCheckedItems,
   refreshTable,
   setWasUpdated,
 } from '../../redux/actions/TableData';
+
+import localization from '../../localization';
 import ShowColumnPopper from './ShowColumnPopper';
 import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
 
-import Filters from '../utils/Modals/Filters';
+import TableFilters from '../utils/TableFilters';
 
 const useStyles = makeStyles({
   button: {
@@ -53,7 +56,7 @@ const TableActionsBar = ({
   children, positionBottom, findByCC, scope, deleteFunc, headers,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, setShowFilters] = useState(null);
   const classes = useStyles();
 
   const dispatch = useDispatch();
@@ -65,6 +68,7 @@ const TableActionsBar = ({
     label: header.value,
     key: header.id,
   })) : [];
+
   const handleDeleteItems = () => {
     const promiseArray = tableCheckedItems.map((item) => deleteFunc(item.id));
     Promise.allSettled(promiseArray).then((res) => {
@@ -75,6 +79,9 @@ const TableActionsBar = ({
       dispatch(setWasUpdated());
     });
   };
+
+  const filtersConfig = useSelector(({ tableData: { filters } }) => filters[scope]);
+  const filtersCount = filtersConfig && Object.keys(filtersConfig).length;
 
   return (
     <Box display="flex" className='test' alignItems='center' justifyContent='space-between' pb={3}>
@@ -103,22 +110,50 @@ const TableActionsBar = ({
                   <ViewColumnIcon />
                 </IconButton>
               </Tooltip>
+
               <Tooltip arrow title="Filter" placement="top">
                 <span>
-                  <IconButton className={classes.button} disabled={VALID_FILTER_SCOPES.indexOf(scope) < 0} onClick={() => setShowFilters(true)} edge='start' aria-label='refresh' color='secondary'>
-                    <FilterListIcon />
+                  <IconButton
+                    className={classes.button}
+                    disabled={VALID_FILTER_SCOPES.indexOf(scope) < 0}
+                    onClick={(e) => setShowFilters(e.currentTarget)}
+                    edge='start'
+                    aria-label='refresh'
+                  >
+                    <FilterListIcon color={showFilters ? 'primary' : 'secondary'} />
+                    {filtersCount > 0 && (
+                      <Box
+                        position='absolute'
+                        width='18px'
+                        height='18px'
+                        bgcolor='#4791db'
+                        fontSize='12px'
+                        color='#fff'
+                        top='3px'
+                        right='4px'
+                        lineHeight='18px'
+                        borderRadius='50%'
+                      >
+                        {filtersCount}
+                      </Box>
+                    )}
                   </IconButton>
                 </span>
               </Tooltip>
-              <Dialog
-                open={showFilters}
-                onClose={() => setShowFilters(false)}
-                aria-labelledby='filters-dialog-title'
-                fullWidth
-                maxWidth='sm'
+
+              <Popover
+                open={!!showFilters}
+                anchorEl={showFilters}
+                onClose={() => setShowFilters(null)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                style={{ marginLeft: '-15px' }}
               >
-                <Filters scope={scope} hide={() => setShowFilters(false)} />
-              </Dialog>
+                <TableFilters scope={scope} onClose={() => setShowFilters(null)} />
+              </Popover>
+
               <Tooltip arrow title="Export" placement="top">
                 <span>
                   <CSVLink

@@ -15,28 +15,21 @@ const useTableData = (
   const reduxWasUpdated = useSelector(({ tableData: { wasUpdated } }) => wasUpdated);
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
-  const searchTerm = useSelector(({ tableData: { search } }) => search);
   const customerScope = useSelector(({
     account: { nexwayState },
   }) => nexwayState?.selectedCustomer?.id);
-
-  const hasSearch = activeFilters.filter(
-    (v) => Object.values(v)[0].type === 'text',
-  ).length
-    ? searchTerm
-    : null;
 
   useEffect(() => {
     let isCancelled = false;
 
     if (tableScope === dataScope) {
-      let filtersUrl = activeFilters.length
-        ? generateFilterUrl(activeFilters, searchTerm)
-        : '';
+      let filtersUrl = activeFilters && activeFilters[dataScope]
+        && Object.values(activeFilters[dataScope]).length ? generateFilterUrl(activeFilters[dataScope]) : '';
 
       if (customerScope) {
         filtersUrl += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
       }
+
       setLoading(true);
       requests(reduxRowPerPage, filtersUrl)
         .then((payload) => {
@@ -61,7 +54,6 @@ const useTableData = (
     tableScope,
     activeFilters,
     customerScope,
-    hasSearch,
     sortParams,
     reduxRowPerPage,
     reduxWasUpdated,

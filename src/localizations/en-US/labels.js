@@ -560,6 +560,8 @@ const labels = {
   delayMn: 'Delay (mn)',
   abandonedCart: 'Abandoned Cart',
   abandonedCarts: 'Abandoned Carts',
+  from: 'From',
+  to: 'To',
 };
 
 export default labels;

@@ -11,7 +11,6 @@ export const SET_TABLE_SCOPE = 'table/setScope';
 export const REFRESH_TABLE = 'table/refresh';
 export const SET_TABLE_FILTERS = 'table/setFilters';
 export const RESET_TABLE_FILTERS = 'table/resetFilters';
-export const SET_TABLE_SEARCH = 'table/setSearch';
 export const RESET_TABLE_SEARCH = 'table/resetSearch';
 export const SET_TABLE_ROWS_PER_PAGE = 'table/setRowsPerPage';
 export const SET_TABLE_CHECKED_ITEMS = 'table/setCheckedItems';
