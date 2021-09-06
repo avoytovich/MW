@@ -22,7 +22,7 @@ const getCustomers = async (data, key) => {
 const tabsData = [
   {
     label: 'autoFulfillments',
-    path: `${parentPaths.fulfillment}/autoFulfillments`,
+    path: parentPaths.fulfillment.autoFulfillmentsTab,
     request: api.getAutoFulfillments,
     sortKey: 'autoFulfillments',
     secondaryRequest: (data) => getCustomers(data, 'customerId'),
@@ -35,7 +35,7 @@ const tabsData = [
   {
     label: 'manualFulfillments',
     noActions: true,
-    path: `${parentPaths.fulfillment}/manualFulfillments`,
+    path: parentPaths.fulfillment.manualFulfillmentsTab,
     request: api.getManualFulfillments,
     generateData: generateManualFulfillments,
     defaultShow: defaultShowManualFulfillments,
@@ -46,7 +46,7 @@ const tabsData = [
   },
   {
     label: 'licenseProviderDefinitions',
-    path: `${parentPaths.fulfillment}/licenseProviderDefinitions`,
+    path: parentPaths.fulfillment.licenseProviderDefinitionsTab,
     button: `${localization.t('general.add')} ${localization.t(
       'labels.licenseProviderDefinition',
     )}`,

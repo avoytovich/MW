@@ -7,14 +7,28 @@ const parentPaths = {
   archivedOrders: '/orders/archivedorders',
 
   stores: '/storesetup/stores',
-  checkoutpagebuilder: '/storesetup/checkoutpagebuilder',
-  localization: '/storesetup/localization',
+  checkoutpagebuilder: {
+    main: '/storesetup/checkoutpagebuilder',
+    themesTab: '/storesetup/checkoutpagebuilder/themes',
+    layoutsTab: '/storesetup/checkoutpagebuilder/layouts',
+    fontsTab: '/storesetup/checkoutpagebuilder/fonts',
+  },
+  localization: {
+    main: '/storesetup/localization',
+    translationsTab: '/storesetup/localization/translations',
+    invoiceTranslationsTab: '/storesetup/localization/invoice-translations',
+  },
   emailbuilder: '/storesetup/emailbuilder',
 
   productlist: '/products/productlist',
   pricemodels: '/products/pricemodels',
   recommendations: '/products/recommendations',
-  fulfillment: '/products/fulfillment',
+  fulfillment: {
+    main: '/products/fulfillment',
+    autoFulfillmentsTab: '/products/fulfillment/autoFulfillments',
+    manualFulfillmentsTab: '/products/fulfillment/manualFulfillments',
+    licenseProviderDefinitionsTab: '/products/fulfillment/licenseProviderDefinitions',
+  },
   discountrules: '/marketing/discountrules',
   campaigns: '/marketing/campaigns',
   marketing: '/marketing',
@@ -28,7 +42,12 @@ const parentPaths = {
   users: '/settings/users',
   userprivileges: '/settings/userprivileges',
   userroles: '/settings/userroles',
-  notifications: '/settings/notifications',
+  notifications: {
+    main: '/settings/notifications',
+    notificationTab: '/settings/notifications/notifications',
+    notificationDefinitionTab: '/settings/notifications/notification-definition',
+    notificationHistoryTab: '/settings/notifications/notification-history',
+  },
   myaccount: '/settings/myaccount',
 
   clientlist: '/client/clientlist',

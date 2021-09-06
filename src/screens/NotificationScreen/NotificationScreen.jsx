@@ -18,7 +18,7 @@ import { generateData as generateNotificationsHistory, defaultShow as defaultSho
 const tabsData = [
   {
     label: 'notification',
-    path: `${parentPaths.notifications}/notifications`,
+    path: parentPaths.notifications.notificationTab,
     request: api.getNotifications,
     sortKey: 'notification',
     generateData: generateNotifications,
@@ -32,7 +32,7 @@ const tabsData = [
   },
   {
     label: 'notificationDefinitions',
-    path: `${parentPaths.notifications}/notification-definition`,
+    path: parentPaths.notifications.notificationDefinitionTab,
     request: api.getNotificationDefinition,
     sortKey: 'notificationDefinition',
     generateData: notificationsDefinition,
@@ -46,7 +46,7 @@ const tabsData = [
   },
   {
     label: 'notificationHistory',
-    path: `${parentPaths.notifications}/notification-history`,
+    path: parentPaths.notifications.notificationHistoryTab,
     request: api.getNotificationsHistory,
     sortKey: 'notificationHistory',
     generateData: generateNotificationsHistory,
@@ -99,7 +99,7 @@ const NotficationScreen = () => {
       </TableActionsBar>
     );
   };
-  const changeTab = (tab) => history.push(`${parentPaths.notifications}/${tabsData[tab].scope}`);
+  const changeTab = (tab) => history.push(`${parentPaths.notifications.main}/${tabsData[tab].scope}`);
 
   return (
     <>
@@ -131,7 +131,7 @@ const NotficationScreen = () => {
             path={tabsData[2].path}
             component={() => <TabTable tabObject={tabsData[2]} />}
           />
-          <Redirect exact from={`${parentPaths.notifications}`} to={tabsData[0].path} />
+          <Redirect exact from={`${parentPaths.notifications.main}`} to={tabsData[0].path} />
         </Switch>
       </Box>
     </>

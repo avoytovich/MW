@@ -15,14 +15,14 @@ const ThemeAddScreen = () => {
   const history = useHistory();
   const [currentTheme, setCurrentTheme] = useState(newTheme);
   const disabled = currentTheme.data === ''
-  || currentTheme.name === '';
+    || currentTheme.name === '';
 
   const saveTheme = () => {
     api.addNewTheme(currentTheme).then((res) => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
       toast(localization.t('general.updatesHaveBeenSaved'));
-      history.push(`${parentPaths.checkoutpagebuilder}/themes/${id}`);
+      history.push(`${parentPaths.checkoutpagebuilder.themesTab}/${id}`);
     });
   };
   return (
