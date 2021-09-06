@@ -80,7 +80,7 @@ const NotificationDefinitionDetailScreen = () => {
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
 
-        history.push(`${parentPaths.notifications}/${newId}`);
+        history.push(`${parentPaths.notifications.notificationDefinitionTab}/${newId}`);
 
         setUpdate((u) => u + 1);
       });
@@ -116,8 +116,8 @@ const NotificationDefinitionDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url={`${parentPaths.notifications}`}
-            section={localization.t('general.notification')}
+            url={parentPaths.notifications.notificationDefinitionTab}
+            section={localization.t('general.notificationDefinition')}
             id={id}
           />
         </Box>

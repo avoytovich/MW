@@ -21,7 +21,7 @@ import './LocalizationScreen.scss';
 const allTabs = [
   {
     label: localization.t('labels.translations'),
-    path: `${parentPaths.localization}/translations`,
+    path: parentPaths.localization.translationsTab,
     button: `${localization.t('general.add')} ${localization.t(
       'general.translation',
     )}`,
@@ -31,7 +31,7 @@ const allTabs = [
   },
   {
     label: localization.t('labels.invoiceTranslations'),
-    path: `${parentPaths.localization}/invoice-translations`,
+    path: parentPaths.localization.invoiceTranslationsTab,
     scope: 'invoice-translations',
   },
 ];
@@ -65,7 +65,7 @@ const LocalizationScreen = ({ location }) => {
       <Box display="flex" flexDirection="column">
         <Tabs
           value={
-            location.pathname === `${parentPaths.localization}`
+            location.pathname === parentPaths.localization.main
               ? allTabs[0].path
               : location.pathname
           }
@@ -86,7 +86,7 @@ const LocalizationScreen = ({ location }) => {
           <Switch>
             <Route exact path={allTabs[0].path} component={TranslationsTab} />
             <Route exact path={allTabs[1].path} component={InvoiceTranslationsTab} />
-            <Redirect exact from={`${parentPaths.localization}`} to={allTabs[0].path} />
+            <Redirect exact from={`${parentPaths.localization.main}`} to={allTabs[0].path} />
           </Switch>
         </Box>
       </Box>

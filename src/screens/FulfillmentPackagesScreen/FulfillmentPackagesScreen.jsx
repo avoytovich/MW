@@ -17,7 +17,8 @@ import TabTable from '../../components/TabTable';
 import parentPaths from '../../services/paths';
 
 const FulfillmentPackagesScreen = ({ location }) => {
-  const [curBab, setCurTab] = useState(location.pathname === `${parentPaths.fulfillment}` ? tabsData[0].path
+  const [curBab, setCurTab] = useState(location.pathname === parentPaths.fulfillment.main
+    ? tabsData[0].path
     : location.pathname);
   const drawAddButton = () => {
     const currentTab = tabsData.find((item) => item.path === location.pathname) || tabsData[0];
@@ -82,7 +83,7 @@ const FulfillmentPackagesScreen = ({ location }) => {
             path={tabsData[2].path}
             component={() => <TabTable tabObject={tabsData[2]} />}
           />
-          <Redirect exact from={`${parentPaths.fulfillment}`} to={tabsData[0].path} />
+          <Redirect exact from={`${parentPaths.fulfillment.main}`} to={tabsData[0].path} />
         </Switch>
       </Box>
     </Box>

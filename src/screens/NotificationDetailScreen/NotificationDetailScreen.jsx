@@ -22,6 +22,7 @@ import localization from '../../localization';
 import { useNotificationDetail } from '../../services/useData';
 import { urlIsValid } from '../../services/helpers/inputValidators';
 import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
+import parentPaths from '../../services/paths';
 
 import api from '../../api';
 import SectionLayout from '../../components/SectionLayout';
@@ -59,7 +60,7 @@ const NotificationDetailScreen = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`/settings/notifications/${newId}`);
+        history.push(`${parentPaths.notifications.notificationTab}/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -72,7 +73,7 @@ const NotificationDetailScreen = () => {
 
   if (isLoading) return <LinearProgress />;
 
-  if (id === 'add' && !nxState.selectedCustomer?.id) {
+  if (id === 'add' && !nxState?.selectedCustomer?.id) {
     return <SelectCustomerNotification />;
   }
 

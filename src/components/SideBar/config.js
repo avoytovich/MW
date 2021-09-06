@@ -75,12 +75,12 @@ const navConfig = [
       {
         id: 'checkout-experience',
         title: localization.t('sideBar.titles.checkoutExperience'),
-        href: `${defPath}${parentPaths.checkoutpagebuilder}`,
+        href: `${defPath}${parentPaths.checkoutpagebuilder.main}`,
       },
       {
         id: 'localization',
         title: localization.t('sideBar.titles.localization'),
-        href: `${defPath}${parentPaths.localization}`,
+        href: `${defPath}${parentPaths.localization.main}`,
       },
       {
         id: 'email-builder',
@@ -111,7 +111,7 @@ const navConfig = [
       {
         id: 'fulfillment-packages',
         title: localization.t('sideBar.titles.fulfillmentPackages'),
-        href: `${defPath}${parentPaths.fulfillment}`,
+        href: `${defPath}${parentPaths.fulfillment.main}`,
       },
     ],
   },
@@ -127,7 +127,7 @@ const navConfig = [
       {
         id: 'marketing-campaigns',
         title: localization.t('sideBar.titles.campaigns'),
-        href: `${defPath}${parentPaths.campaigns}`,
+        href: `${defPath}${parentPaths.campaigns.main}`,
       },
     ],
   },
@@ -185,7 +185,7 @@ const navConfig = [
       {
         id: 'event-notifications',
         title: localization.t('sideBar.titles.eventNotifications'),
-        href: `${defPath}${parentPaths.notifications}`,
+        href: `${defPath}${parentPaths.notifications.main}`,
       },
       {
         id: 'my-account',
