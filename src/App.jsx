@@ -17,8 +17,6 @@ const App = () => {
     await localization.loadLocalization();
   };
 
-  console.log('ENV______________:', process?.env);
-
   useEffect(() => {
     loadResourcesAsync()
       .then(() => {
