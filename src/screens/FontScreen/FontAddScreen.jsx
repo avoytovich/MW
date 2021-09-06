@@ -23,7 +23,7 @@ const FontAddScreen = () => {
       const location = res.headers.location.split('/');
       const id = location[location.length - 1];
       toast(localization.t('general.updatesHaveBeenSaved'));
-      history.push(`${parentPaths.checkoutpagebuilder}/fonts/${id}`);
+      history.push(`${parentPaths.checkoutpagebuilder.fontsTab}/${id}`);
     });
   };
 

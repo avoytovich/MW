@@ -49,7 +49,7 @@ const LicenseProviderDefinitionDetails = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.fulfillment}/licenseProviderDefinitions/${newId}`);
+        history.push(`${parentPaths.fulfillment.licenseProviderDefinitionsTab}/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -71,7 +71,7 @@ const LicenseProviderDefinitionDetails = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url={`${parentPaths.fulfillment}/licenseProviderDefinitions`}
+            url={parentPaths.fulfillment.licenseProviderDefinitionsTab}
             section={localization.t('general.licenseProviderDefinition')}
             id={licenseProvider.id}
           />
