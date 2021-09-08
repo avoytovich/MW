@@ -323,12 +323,18 @@ const getAllApi = {
     });
   },
   getMarketingPrices({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
     let url = `/prices?format=short&size=${size}&page=${page}`;
+
     if (filters) {
       url += filters;
     }
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
     return axiosInstance({
       method: 'get',
       url,
