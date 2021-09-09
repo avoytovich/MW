@@ -33,9 +33,9 @@ const parentPaths = {
   campaigns: '/marketing/campaigns',
   marketing: '/marketing',
 
-  customers: '/customers/customerlist',
-  customergroup: '/customers/customergroup',
-  resellers: '/customers/resellers',
+  endusers: '/endusers/enduserlist',
+  endusergroups: '/endusers/endusergroups',
+  resellers: '/endusers/resellers',
 
   reports: '/reports',
 
@@ -50,10 +50,11 @@ const parentPaths = {
   },
   myaccount: '/settings/myaccount',
 
-  clientlist: '/client/clientlist',
-  onboarding: '/client/onboarding',
-  remittables: '/client/remittables',
-  audits: '/client/audits',
+  customers: '/customers/customerslist',
+  onboarding: '/customers/onboarding',
+  remittables: '/customers/remittables',
+  audits: '/customers/audits',
+
   productdocumentation: '/product-documentation',
 };
 

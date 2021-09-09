@@ -132,18 +132,18 @@ const navConfig = [
     ],
   },
   {
-    subheader: localization.t('sideBar.subheaders.customers'),
+    subheader: localization.t('sideBar.subheaders.endUsers'),
     subheaderIcon: BusinessCenter,
     items: [
       {
-        id: 'customers',
-        title: localization.t('sideBar.titles.customers'),
-        href: `${defPath}${parentPaths.customers}`,
+        id: 'end-users',
+        title: localization.t('sideBar.titles.endUsers'),
+        href: `${defPath}${parentPaths.endusers}`,
       },
       {
-        id: 'customer-groups',
-        title: localization.t('sideBar.titles.customerGroups'),
-        href: `${defPath}${parentPaths.customergroup}`,
+        id: 'end-user-groups',
+        title: localization.t('sideBar.titles.endUserGroups'),
+        href: `${defPath}${parentPaths.endusergroups}`,
       },
       {
         id: 'resellers',
@@ -195,13 +195,13 @@ const navConfig = [
     ],
   },
   {
-    subheader: localization.t('sideBar.subheaders.clientManagement'),
+    subheader: localization.t('sideBar.subheaders.customers'),
     subheaderIcon: Person,
     items: [
       {
-        id: 'clients',
-        title: localization.t('sideBar.titles.clients'),
-        href: `${defPath}${parentPaths.clientlist}`,
+        id: 'customer',
+        title: localization.t('sideBar.titles.customers'),
+        href: `${defPath}${parentPaths.customers}`,
       },
       {
         id: 'onboarding',

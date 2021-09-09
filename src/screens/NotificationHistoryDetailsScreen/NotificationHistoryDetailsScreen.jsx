@@ -98,7 +98,7 @@ const NotificationHistoryDetailsScreen = () => {
             {`${data.field}, `}
             <span
               className="customer-value"
-              onClick={() => history.push(`/settings/administration/customers/${notificationHistory.customerId}`)}
+              onClick={() => history.push(`/settings/administration/customers/${notificationHistory.customerId}`)} // ToDo: should be replaced with new customer route
             >
               {notificationHistory.customerId}
             </span>
