@@ -109,6 +109,8 @@ const SignedRoutes = () => {
         path={`${defPath}${parentPaths.notifications.notificationTab}/:id`}
         component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />
+      {/* ToDo: remove when moved to another sections
+
       <Route
         path={`${defPath}${parentPaths.administration}/customers/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
@@ -128,7 +130,7 @@ const SignedRoutes = () => {
       <Route
         path={`${defPath}${parentPaths.administration}`}
         component={lazy(() => import('../../screens/AdministrationScreen'))}
-      />
+      /> */}
       <Route
         path={`${defPath}${parentPaths.carts}/:id`}
         component={lazy(() => import('../../screens/CartDetailsScreen'))}
@@ -142,19 +144,19 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/NotificationScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.campaigns}/discounts/:id`}
+        path={`${defPath}${parentPaths.marketing}/discounts/:id`}
         component={lazy(() => import('../../screens/DiscountDetailsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths}/recommendations/:id`}
+        path={`${defPath}${parentPaths.marketing}/recommendations/:id`}
         component={lazy(() => import('../../screens/RecoDetailsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.campaigns}/abandonedcarts/:id`}
+        path={`${defPath}${parentPaths.marketing}/abandonedcarts/:id`}
         component={lazy(() => import('../../screens/AbandonedCartDetailScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths}/campaigns/:id`}
+        path={`${defPath}${parentPaths.marketing}/campaigns/:id`}
         component={lazy(() => import('../../screens/CampaignDetailsScreen'))}
       />
       <Route
