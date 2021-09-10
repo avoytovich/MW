@@ -5,7 +5,7 @@ import TableComponent from '../../../../components/TableComponent';
 import {
   generateData,
   defaultShow,
-} from '../../../../services/useData/tableMarkups/prices';
+} from '../../../../services/useData/tableMarkups/priceFunctions';
 import { useTableData } from '../../../../services/useData';
 
 import {
@@ -17,22 +17,23 @@ import {
 import localization from '../../../../localization';
 import api from '../../../../api';
 
-const PricesScreen = () => {
-  const scope = 'prices';
+const PriceFunctionsScreen = () => {
+  const scope = 'price-functions';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
-  const [sortParams, setSortParams] = useState(getSortParams(sortKeys.prices));
+  const [sortParams, setSortParams] = useState(getSortParams(sortKeys.priceFunctions));
 
   const requests = async (rowsPerPage, filtersUrl) => {
-    const res = await api.getMarketingPrices({
+    const res = await api.getPriceFunctions({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
+
     return generateData(res.data);
   };
 
-  const prices = useTableData(
+  const priceFunctions = useTableData(
     currentPage - 1,
     setLoading,
     makeUpdate,
@@ -41,10 +42,10 @@ const PricesScreen = () => {
     sortParams,
   );
 
-  const handleDeletePrice = (id) => api.deletePriceById(id).then(() => {
+  const handleDeletePrice = (id) => api.deletePriceFunctionById(id).then(() => {
     setMakeUpdate((v) => v + 1);
     toast(
-      `${localization.t('general.price')} ${id} ${localization.t(
+      `${localization.t('general.priceFunction')} ${id} ${localization.t(
         'general.hasBeenSuccessfullyDeleted',
       )}`,
     );
@@ -52,7 +53,7 @@ const PricesScreen = () => {
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
-    saveSortParams(sortKeys.prices, params);
+    saveSortParams(sortKeys.priceFunctions, params);
   };
 
   const updatePage = (page) => setCurrentPage(page);
@@ -66,10 +67,10 @@ const PricesScreen = () => {
       defaultShowColumn={defaultShow}
       currentPage={currentPage}
       updatePage={updatePage}
-      tableData={prices}
+      tableData={priceFunctions}
       isLoading={isLoading}
     />
   );
 };
 
-export default PricesScreen;
+export default PriceFunctionsScreen;

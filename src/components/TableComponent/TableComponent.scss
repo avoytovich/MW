@@ -103,12 +103,13 @@
 }
 .sortableHeader {
   cursor: pointer;
+  position: relative;
 
   svg{
     position: absolute;
     font-size: 18px;
     color: $navItemButtonActive;
-    margin-left: 5px;
     margin-top: 2px;
+    right: -10px;
   }
 }

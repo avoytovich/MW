@@ -10,7 +10,7 @@ module.exports = (env) => ({
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
-    publicPath: env.branch && env.branch !== 'master' ? `/${env.branch.toLowerCase()}/` : '/',
+    publicPath: env.branch && env.branch !== 'master' ? `/${env.branch}/` : '/',
   },
   devServer: {
     historyApiFallback: true,

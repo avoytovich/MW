@@ -55,6 +55,13 @@ const deleteApi = {
       url,
     });
   },
+  deletePriceFunctionById(id) {
+    const url = `/products/price-functions/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
   deleteTranslationById(id) {
     const url = `/designs/i18ns/${id}`;
     return axiosInstance({

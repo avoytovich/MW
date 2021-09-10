@@ -75,12 +75,12 @@ const navConfig = [
       {
         id: 'checkout-experience',
         title: localization.t('sideBar.titles.checkoutExperience'),
-        href: `${defPath}${parentPaths.checkoutpagebuilder}`,
+        href: `${defPath}${parentPaths.checkoutpagebuilder.main}`,
       },
       {
         id: 'localization',
         title: localization.t('sideBar.titles.localization'),
-        href: `${defPath}${parentPaths.localization}`,
+        href: `${defPath}${parentPaths.localization.main}`,
       },
       {
         id: 'email-builder',
@@ -111,7 +111,7 @@ const navConfig = [
       {
         id: 'fulfillment-packages',
         title: localization.t('sideBar.titles.fulfillmentPackages'),
-        href: `${defPath}${parentPaths.fulfillment}`,
+        href: `${defPath}${parentPaths.fulfillment.main}`,
       },
     ],
   },
@@ -127,23 +127,23 @@ const navConfig = [
       {
         id: 'marketing-campaigns',
         title: localization.t('sideBar.titles.campaigns'),
-        href: `${defPath}${parentPaths.campaigns}`,
+        href: `${defPath}${parentPaths.campaigns.main}`,
       },
     ],
   },
   {
-    subheader: localization.t('sideBar.subheaders.customers'),
+    subheader: localization.t('sideBar.subheaders.endUsers'),
     subheaderIcon: BusinessCenter,
     items: [
       {
-        id: 'customers',
-        title: localization.t('sideBar.titles.customers'),
-        href: `${defPath}${parentPaths.customers}`,
+        id: 'end-users',
+        title: localization.t('sideBar.titles.endUsers'),
+        href: `${defPath}${parentPaths.endusers}`,
       },
       {
-        id: 'customer-groups',
-        title: localization.t('sideBar.titles.customerGroups'),
-        href: `${defPath}${parentPaths.customergroup}`,
+        id: 'end-user-groups',
+        title: localization.t('sideBar.titles.endUserGroups'),
+        href: `${defPath}${parentPaths.endusergroups}`,
       },
       {
         id: 'resellers',
@@ -185,7 +185,7 @@ const navConfig = [
       {
         id: 'event-notifications',
         title: localization.t('sideBar.titles.eventNotifications'),
-        href: `${defPath}${parentPaths.notifications}`,
+        href: `${defPath}${parentPaths.notifications.main}`,
       },
       {
         id: 'my-account',
@@ -195,13 +195,13 @@ const navConfig = [
     ],
   },
   {
-    subheader: localization.t('sideBar.subheaders.clientManagement'),
+    subheader: localization.t('sideBar.subheaders.customers'),
     subheaderIcon: Person,
     items: [
       {
-        id: 'clients',
-        title: localization.t('sideBar.titles.clients'),
-        href: `${defPath}${parentPaths.clientlist}`,
+        id: 'customer',
+        title: localization.t('sideBar.titles.customers'),
+        href: `${defPath}${parentPaths.customers}`,
       },
       {
         id: 'onboarding',

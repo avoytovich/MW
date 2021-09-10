@@ -22,7 +22,7 @@ const useNotificationDetail = (id, nxState) => {
       ? api.getNotificationById(id)
       : Promise.resolve({
         data: {
-          customerId: nxState.selectedCustomer.id,
+          customerId: nxState?.selectedCustomer?.id,
         },
       });
     notificationData.then(({ data }) => {

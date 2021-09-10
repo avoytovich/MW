@@ -26,6 +26,7 @@ const general = {
   recommendation: 'Recommendation',
   discount: 'Discount',
   price: 'Price',
+  priceFunction: 'Price Function',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
   sendByEmailByCartIdSuccessed: 'Cart sent by email',
@@ -93,6 +94,7 @@ const general = {
   licenseProviderDefinition: 'License Provider Definition',
   disableStore: 'Are you sure you want to disable the store?',
   force: 'Force',
+  clearFilters: 'Clear filters',
 };
 
 export default general;

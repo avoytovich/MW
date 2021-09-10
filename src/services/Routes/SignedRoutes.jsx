@@ -45,11 +45,11 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/ProductsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.fulfillment}/licenseProviderDefinitions/:id`}
+        path={`${defPath}${parentPaths.fulfillment.licenseProviderDefinitionsTab}/:id`}
         component={lazy(() => import('../../screens/LicenseProviderDefinitionDetails'))}
       />
       <Route
-        path={`${defPath}${parentPaths.fulfillment}`}
+        path={`${defPath}${parentPaths.fulfillment.main}`}
         component={lazy(() => import('../../screens/FulfillmentPackagesScreen'))}
       />
 
@@ -98,17 +98,19 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/IdentitiesScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.notifications}/notification-history/:id`}
+        path={`${defPath}${parentPaths.notifications.notificationHistoryTab}/:id`}
         component={lazy(() => import('../../screens/NotificationHistoryDetailsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.notifications}/notification-definition/:id`}
+        path={`${defPath}${parentPaths.notifications.notificationDefinitionTab}/:id`}
         component={lazy(() => import('../../screens/NotificationDefinitionDetailsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.notifications}/notifications/:id`}
+        path={`${defPath}${parentPaths.notifications.notificationTab}/:id`}
         component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />
+      {/* ToDo: remove when moved to another sections
+
       <Route
         path={`${defPath}${parentPaths.administration}/customers/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
@@ -128,6 +130,10 @@ const SignedRoutes = () => {
       <Route
         path={`${defPath}${parentPaths.administration}`}
         component={lazy(() => import('../../screens/AdministrationScreen'))}
+      /> */}
+      <Route
+        path={`${defPath}${parentPaths.carts}/add`}
+        component={lazy(() => import('../../screens/CartsScreen/containers/AddCart'))}
       />
       <Route
         path={`${defPath}${parentPaths.carts}/:id`}
@@ -138,23 +144,23 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/CartsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.notifications}`}
+        path={`${defPath}${parentPaths.notifications.main}`}
         component={lazy(() => import('../../screens/NotificationScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.campaigns}/discounts/:id`}
+        path={`${defPath}${parentPaths.marketing}/discounts/:id`}
         component={lazy(() => import('../../screens/DiscountDetailsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths}/recommendations/:id`}
+        path={`${defPath}${parentPaths.marketing}/recommendations/:id`}
         component={lazy(() => import('../../screens/RecoDetailsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.campaigns}/abandonedcarts/:id`}
+        path={`${defPath}${parentPaths.marketing}/abandonedcarts/:id`}
         component={lazy(() => import('../../screens/AbandonedCartDetailScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths}/campaigns/:id`}
+        path={`${defPath}${parentPaths.marketing}/campaigns/:id`}
         component={lazy(() => import('../../screens/CampaignDetailsScreen'))}
       />
       <Route
@@ -171,43 +177,43 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/PriceModelsScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.checkoutpagebuilder}/fonts/add`}
+        path={`${defPath}${parentPaths.checkoutpagebuilder.fontsTab}/add`}
         component={lazy(() => import('../../screens/FontScreen/FontAddScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.checkoutpagebuilder}/themes/add`}
+        path={`${defPath}${parentPaths.checkoutpagebuilder.themesTab}/add`}
         component={lazy(() => import('../../screens/ThemeScreen/ThemeAddScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.checkoutpagebuilder}/layouts/add`}
+        path={`${defPath}${parentPaths.checkoutpagebuilder.layoutsTab}/add`}
         component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.checkoutpagebuilder}/themes/:id`}
+        path={`${defPath}${parentPaths.checkoutpagebuilder.themesTab}/:id`}
         component={lazy(() => import('../../screens/ThemeScreen/ThemeEditScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.checkoutpagebuilder}/layouts/:id`}
+        path={`${defPath}${parentPaths.checkoutpagebuilder.layoutsTab}/:id`}
         component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.checkoutpagebuilder}/fonts/:id`}
+        path={`${defPath}${parentPaths.checkoutpagebuilder.fontsTab}/:id`}
         component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.checkoutpagebuilder}`}
+        path={`${defPath}${parentPaths.checkoutpagebuilder.main}`}
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.localization}/translations/add`}
+        path={`${defPath}${parentPaths.localization.translationsTab}/add`}
         component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.localization}/translations/:id`}
+        path={`${defPath}${parentPaths.localization.translationsTab}/:id`}
         component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
       />
       <Route
-        path={`${defPath}${parentPaths.localization}`}
+        path={`${defPath}${parentPaths.localization.main}`}
         component={lazy(() => import('../../screens/LocalizationScreen'))}
       />
 

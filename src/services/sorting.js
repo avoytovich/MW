@@ -14,6 +14,8 @@ export const sortKeys = {
   notification: 'notificationsSortParams',
   notificationDefinition: 'notificationDefinirionsSortParams',
   notificationHistory: 'notificationsHistorySortParams',
+  prices: 'pricesSortParams',
+  priceFunctions: 'priceFunctionsSortParams',
   carts: 'cartsSortParams',
   licenses: 'licensesSortParams',
   autoFulfillments: 'autoFulfillmentsSortParams',
