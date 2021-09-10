@@ -1,46 +1,30 @@
 import moment from 'moment';
 // eslint-disable-next-line
-export const generateFilterUrl = (filters, search) => {
+export const generateFilterUrl = (filters) => {
   let url = '';
 
-  filters.forEach((filter) => {
-    let subFilter = `&${Object.keys(filter)[0]}=`;
-    const [params] = Object.values(filter);
+  Object.entries(filters).forEach(([key, val]) => {
+    const subFilter = `&${key}=`;
 
-    switch (params.type) {
-      case 'text': {
-        if (search) {
-          subFilter += params.exact ? search : `*${search}*`;
-        } else {
-          subFilter = '';
-        }
+    if (typeof val !== 'object') {
+      url += subFilter + val;
+    } else if (Array.isArray(val)) {
+      val.forEach((v) => { url += subFilter + v; });
+    } else {
+      let dateStr;
 
-        break;
+      if (val.to && val.from) {
+        dateStr = `${moment(val.from).valueOf()}<<${moment(val.to).valueOf()}`;
+      } else if (val.to) {
+        dateStr = `<${moment(val.to).valueOf()}`;
+      } else {
+        dateStr = `${moment(val.from).valueOf()}<`;
       }
 
-      case 'select': subFilter += params.values.join(','); break;
-
-      case 'date': {
-        switch (params.variant) {
-          case 'unlimited':
-          default: subFilter = ''; break;
-
-          case 'after': subFilter += `${moment(params.date).valueOf()}<`; break;
-
-          case 'before': subFilter += `<${moment(params.date).valueOf()}`; break;
-
-          case 'between':
-            subFilter += `${moment(params.date).valueOf()}<<${moment(params.dateEnd).valueOf()}`;
-            break;
-        }
-
-        break;
+      if (dateStr) {
+        url += subFilter + dateStr;
       }
-
-      default: subFilter = '';
     }
-
-    url += subFilter;
   });
 
   return url;
