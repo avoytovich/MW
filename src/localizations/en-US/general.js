@@ -26,6 +26,7 @@ const general = {
   recommendation: 'Recommendation',
   discount: 'Discount',
   price: 'Price',
+  priceFunction: 'Price Function',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',
   updatesHaveBeenSaved: 'Updates have been saved!',
   sendByEmailByCartIdSuccessed: 'Cart sent by email',

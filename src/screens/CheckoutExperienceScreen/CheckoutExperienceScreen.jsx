@@ -75,7 +75,6 @@ const CheckoutExperienceScreen = ({ location }) => {
     <>
       {drawAddButton()}
       <Box display="flex" flexDirection="column">
-        {console.log( location.pathname === parentPaths.checkoutpagebuilder.main)}
         <Tabs
           value={
             location.pathname === parentPaths.checkoutpagebuilder.main
