@@ -30,6 +30,13 @@ const getFewByIdsApi = {
       url,
     });
   },
+  getProductsByStore(customerId, storeId) {
+    const url = `/products?format=full&customerId=${customerId}&sellingStores=${storeId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getParentProductsByIds(customerId, parentIds) {
     const url = `/products?format=full&customerId=${customerId}&parentId=${parentIds}&size=30&page=0`;
     return axiosInstance({
