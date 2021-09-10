@@ -258,6 +258,14 @@ const postApi = {
       url,
     });
   },
+  addCart(data) {
+    const url = 'carts?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
 
 };
 
