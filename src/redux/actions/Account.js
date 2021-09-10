@@ -19,7 +19,7 @@ const login = (username, password, realm) => async (dispatch) => {
   });
 
   toast(
-    `${localization.t('general.welcomeBack')} ${
+    `${localization.t('general.welcomeBack')}${
       user.given_name ? `, ${user.given_name}` : ''
     }!`,
   );
