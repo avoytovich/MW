@@ -560,6 +560,8 @@ const labels = {
   delayMn: 'Delay (mn)',
   abandonedCart: 'Abandoned Cart',
   abandonedCarts: 'Abandoned Carts',
+  priceFunctionId: 'Price Function ID',
+  priceFunctionName: 'Price Function Name',
   from: 'From',
   to: 'To',
 };

@@ -6,10 +6,12 @@ import {
 } from '@material-ui/core';
 
 import PricesScreen from './SubSections/PricesScreen';
+import PriceFunctionsScreen from './SubSections/PriceFunctionsScreen';
 import TableActionsBar from '../../components/TableActionsBar';
 
 import parentPaths from '../../services/paths';
 import { markUp as markUpPrices } from '../../services/useData/tableMarkups/prices';
+import { markUp as markUpPriceFunctions } from '../../services/useData/tableMarkups/priceFunctions';
 
 import localization from '../../localization';
 import api from '../../api';
@@ -26,6 +28,13 @@ const availTabs = [
     )}`,
     deleteFunc: api.deletePriceById,
     headers: markUpPrices.headers,
+  },
+  {
+    label: 'price-functions',
+    scope: 'price-functions',
+    path: `${parentPaths.pricemodels}/price-functions`,
+    deleteFunc: api.deletePriceFunctionById,
+    headers: markUpPriceFunctions.headers,
   },
 ];
 
@@ -55,16 +64,18 @@ const PriceModelsScreen = () => {
         deleteFunc={currentTab.deleteFunc}
         headers={currentTab.headers}
       >
-        <Button
-          id='add-price-button'
-          color='primary'
-          size='large'
-          variant='contained'
-          component={Link}
-          to={`${currentTab.path}/add`}
-        >
-          {currentTab.button}
-        </Button>
+        {currentTab.button && (
+          <Button
+            id='add-price-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to={`${currentTab.path}/add`}
+          >
+            {currentTab.button}
+          </Button>
+        )}
       </TableActionsBar>
 
     );
@@ -82,10 +93,14 @@ const PriceModelsScreen = () => {
         textColor='primary'
       >
         <Tab label='Prices' />
+
+        <Tab label='Price Functions' />
       </Tabs>
 
       <Box mt={4} mb={2}>
         {curTab === 0 && <PricesScreen />}
+
+        {curTab === 1 && <PriceFunctionsScreen />}
       </Box>
     </Box>
   );
