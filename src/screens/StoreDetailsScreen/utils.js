@@ -58,7 +58,7 @@ const resourceLabel = [
 const structureResources = (data) => {
   const resultArray = [];
   resourcesKeys.forEach((key, index) => {
-    if (data[key]) {
+    if (data[key] || data[key] === '') {
       resultArray.push({ label: `${key}`, url: data[key], key: index });
     }
   });
