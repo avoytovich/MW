@@ -9,6 +9,7 @@ const useTableData = (
   dataScope,
   requests,
   sortParams,
+  refresh = false,
 ) => {
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const [fetchedData, setFetchedData] = useState();
@@ -22,7 +23,7 @@ const useTableData = (
   useEffect(() => {
     let isCancelled = false;
 
-    if (tableScope === dataScope) {
+    if (tableScope === dataScope || dataScope === 'generateCodes') {
       let filtersUrl = activeFilters && activeFilters[dataScope]
         && Object.values(activeFilters[dataScope]).length ? generateFilterUrl(activeFilters[dataScope]) : '';
 
@@ -57,6 +58,7 @@ const useTableData = (
     sortParams,
     reduxRowPerPage,
     reduxWasUpdated,
+    refresh,
   ]);
 
   return fetchedData;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -20,13 +20,18 @@ import {
   InputCustom,
   SelectWithDeleteIcon,
 } from '../../../components/Inputs';
+import api from '../../../api';
 
 const General = ({
+  id,
   curDiscount,
   setCurDiscount,
   selectOptions,
   setAmountType,
   amountType,
+  setCheckedSingleUseCode,
+  setPrevSaveSingleUseCode,
+  setUsedDiscounts,
 }) => {
   const handleUpdateAmount = (e) => {
     if (e.target.value === 'byPercentage' && !curDiscount.discountRate) {
@@ -35,6 +40,22 @@ const General = ({
     setAmountType(e.target.value);
   };
   const availableLocales = getLanguagesOptions();
+
+  useEffect(() => {
+    if (curDiscount.model === 'SINGLE_USE_CODE') {
+      if (id) {
+        api.getDiscountsUsagesById(id).then((data) => {
+          setUsedDiscounts(data.data.items.length);
+          setPrevSaveSingleUseCode(data.data.last);
+        });
+      } else {
+        api.getDiscountsUsages().then((data) => {
+          setPrevSaveSingleUseCode(data.data.last);
+        });
+      }
+    }
+    setCheckedSingleUseCode(curDiscount.model === 'SINGLE_USE_CODE');
+  }, [curDiscount.model]);
 
   return (
     <>
@@ -229,11 +250,15 @@ const General = ({
 };
 
 General.propTypes = {
+  id: PropTypes.string,
   curDiscount: PropTypes.object,
   setCurDiscount: PropTypes.func,
   selectOptions: PropTypes.object,
   setAmountType: PropTypes.func,
   amountType: PropTypes.string,
+  setCheckedSingleUseCode: PropTypes.func,
+  setPrevSaveSingleUseCode: PropTypes.func,
+  setUsedDiscounts: PropTypes.func,
 };
 
 export default General;

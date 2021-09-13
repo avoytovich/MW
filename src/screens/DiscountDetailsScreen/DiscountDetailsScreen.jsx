@@ -19,6 +19,7 @@ import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import General from './SubSections/General';
 import Eligibility from './SubSections/Eligibility';
 import CappingAndLimits from './SubSections/CappingAndLimits';
+import CodeGeneration from './SubSections/CodeGeneration';
 import api from '../../api';
 import DiscountSection from './DiscountSection';
 import localization from '../../localization';
@@ -29,7 +30,6 @@ import './discountDetailsScreen.scss';
 const DiscountDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const history = useHistory();
-  const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
   const {
     discount,
@@ -40,6 +40,10 @@ const DiscountDetailsScreen = () => {
     setAmountType,
     selectOptions,
   } = useDiscountDetails(id, nxState);
+  const [curTab, setCurTab] = useState(0);
+  const [checkedSingleUseCode, setCheckedSingleUseCode] = useState(false);
+  const [prevSaveSingleUseCode, setPrevSaveSingleUseCode] = useState(false);
+  const [usedDiscounts, setUsedDiscounts] = useState(0);
 
   const saveDiscount = () => {
     const res = { ...curDiscount };
@@ -150,16 +154,21 @@ const DiscountDetailsScreen = () => {
           <Tab label={localization.t(`labels.${tabsLabels[0]}`)} />
           <Tab label={localization.t(`labels.${tabsLabels[1]}`)} />
           <Tab label={localization.t(`labels.${tabsLabels[2]}`)} />
+          {checkedSingleUseCode && <Tab label={localization.t(`labels.${tabsLabels[3]}`)} />}
         </Tabs>
       </Box>
       {curTab === 0 && (
         <DiscountSection label='general'>
           <General
+            id={discount.id}
             amountType={amountType}
             setAmountType={setAmountType}
             curDiscount={curDiscount}
             setCurDiscount={setCurDiscount}
             selectOptions={selectOptions}
+            setCheckedSingleUseCode={setCheckedSingleUseCode}
+            setPrevSaveSingleUseCode={setPrevSaveSingleUseCode}
+            setUsedDiscounts={setUsedDiscounts}
           />
         </DiscountSection>
       )}
@@ -178,6 +187,15 @@ const DiscountDetailsScreen = () => {
             curDiscount={curDiscount}
             updateDiscount={updateDiscount}
             setCurDiscount={setCurDiscount}
+          />
+        </DiscountSection>
+      )}
+      {curTab === 3 && (
+        <DiscountSection label='singleUseCodesGenerations'>
+          <CodeGeneration
+            discount={discount}
+            usedDiscounts={usedDiscounts}
+            prevSaveSingleUseCode={prevSaveSingleUseCode}
           />
         </DiscountSection>
       )}
