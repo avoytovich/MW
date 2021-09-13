@@ -32,6 +32,7 @@ const general = {
   sendByEmailByCartIdSuccessed: 'Cart sent by email',
   sendByEmailByCartIdFailure: 'Can\'t send cart by email',
   selectImage: ' Select image',
+  generateCodes: 'Generate codes',
   features: ' Features',
   live: 'Live',
   test: ' Test',

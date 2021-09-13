@@ -302,5 +302,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getDiscountsUsagesById(id) {
+    const url = `/discounts/usages?format=short&discountId=${id}&page=0&size=500`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;

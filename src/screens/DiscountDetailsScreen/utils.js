@@ -38,7 +38,7 @@ const fromArrayToObject = (array, keyValue) => {
   return res;
 };
 
-const tabsLabels = ['general', 'cappingAndLimits', 'eligibility'];
+const tabsLabels = ['general', 'cappingAndLimits', 'eligibility', 'singleUseCodesGenerations'];
 
 const discountRequiredFields = (discount) => {
   const defDiscount = {
