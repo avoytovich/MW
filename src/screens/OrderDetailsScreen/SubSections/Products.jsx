@@ -2,18 +2,16 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Box } from '@material-ui/core';
+import TableComponent from '../../../components/TableComponent';
 
 import {
   generateData,
   defaultShow,
 } from '../../../services/useData/tableMarkups/orderDetailsProducts';
 
-import OrderDetailsTableComponent from '../../../components/TableComponent/OrderDetailsTableComponent';
-
-import CustomCard from '../../../components/utils/CustomCard';
-
 const Products = ({ orderData }) => {
   const [products, setProducts] = useState(null);
+  const scope = 'orderProducts';
 
   useEffect(() => {
     const productsTableData = generateData(orderData?.lineItems || []);
@@ -21,24 +19,18 @@ const Products = ({ orderData }) => {
 
     return () => setProducts(null);
   }, []);
-
   return (
-    <CustomCard title="Products" noDivider>
-      <Box
-        border={1}
-        borderRadius="borderRadius"
-        borderColor="#c7c7c7"
-      >
-        <OrderDetailsTableComponent
-          showColumn={defaultShow}
-          tableData={products}
-          isLoading={products === null}
-          customPath='disabled'
-          errorHighlight='processingError'
-          noActions
-        />
-      </Box>
-    </CustomCard>
+    <Box>
+      <TableComponent
+        defaultShowColumn={defaultShow}
+        tableData={products}
+        scope={scope}
+        noActions
+        noTableActionsBar
+        noEditDeleteActions
+        customPath
+      />
+    </Box>
   );
 };
 
