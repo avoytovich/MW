@@ -1,4 +1,4 @@
-const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-history', 'carts', 'licenses'];
+const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-history', 'carts', 'licenses', 'recommendations'];
 const VALID_FILTER_SCOPES = [
   'productlist',
   'stores',
@@ -11,6 +11,7 @@ const VALID_FILTER_SCOPES = [
   'autoFulfillments',
   'manualFulfillments',
   'licenseProviderDefinitions',
+  'recommendations',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];

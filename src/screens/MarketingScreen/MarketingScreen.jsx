@@ -6,12 +6,10 @@ import {
 } from '@material-ui/core';
 import api from '../../api';
 import CampaignsScreen from './SubSections/CampaignsScreen';
-import RecommendationsScreen from './SubSections/RecommendationsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import parentPaths from '../../services/paths';
-import { markUp as markUpRecommendations } from '../../services/useData/tableMarkups/recommendations';
 import { markUp as markUpDiscounts } from '../../services/useData/tableMarkups/discounts';
 
 import './marketingScreen.scss';
@@ -26,16 +24,6 @@ const availTabs = [
     )}`,
     deleteFunc: null,
     headers: null,
-  },
-  {
-    label: 'recommendations',
-    scope: 'recommendations',
-    path: `${parentPaths.marketing}/recommendations`,
-    button: `${localization.t('general.add')} ${localization.t(
-      'general.recommendation',
-    )}`,
-    deleteFunc: api.deleteRecommendationById,
-    headers: markUpRecommendations.headers,
   },
   {
     label: 'discounts',
@@ -101,16 +89,13 @@ const MarketingScreen = () => {
         textColor='primary'
       >
         <Tab label='Campaigns' />
-        <Tab label='Recommendations' />
         <Tab label='Discounts' />
       </Tabs>
 
       <Box mt={4} mb={2}>
         {curTab === 0 && <CampaignsScreen />}
 
-        {curTab === 1 && <RecommendationsScreen />}
-
-        {curTab === 2 && <DiscountsScreen />}
+        {curTab === 1 && <DiscountsScreen />}
       </Box>
     </Box>
   );
