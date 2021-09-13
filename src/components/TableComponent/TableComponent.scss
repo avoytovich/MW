@@ -2,9 +2,9 @@
 
 .tableRowGrid {
   display: flex;
-  padding: 5px 0;
+  padding: 2px 5px;
   padding-left: 20px;
-  min-height: 64px;
+  min-height: 58px;
 
   &:nth-of-type(odd) {
     background-color: $tablesOddRow;
@@ -23,10 +23,14 @@
 
   .tableCellItemGrid {
     overflow-x: hidden;
+    width: 175px;
+    min-width: 175px;
     .tableCellItem {
       display: inherit;
       white-space: nowrap;
       text-align: center;
+      font: 15px 'Roboto Regular';
+      color: #959595;
     }
   }
   .icons {
@@ -57,14 +61,24 @@
   color: $deleteIcon;
 }
 .tableHeaderGrid {
+  min-width: fit-content;
   padding: 15px 0;
   padding-left: 20px;
   overflow-x: hidden;
   .tableHeader {
     display: inherit;
     white-space: nowrap;
-    // text-align: left;
+    text-align: left;
+    font: 16px 'Roboto', sans-serif;
+    font-weight: bold;
+    color: #303030;
   }
+  .headers {
+    min-width: 175px;
+  }
+}
+.tableBodyGrid {
+  min-width: fit-content;
 }
 
 .table-items-actions {
@@ -103,6 +117,7 @@
 }
 .sortableHeader {
   cursor: pointer;
+  min-width: 175px;
   position: relative;
 
   svg{

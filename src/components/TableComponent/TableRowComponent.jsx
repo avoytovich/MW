@@ -71,7 +71,6 @@ const TableRowComponent = ({
       } else {
         valueToShow = rowItem[item.id];
       }
-
       return (
         <Grid
           className="tableCellItemGrid"
@@ -85,7 +84,7 @@ const TableRowComponent = ({
             display='flex'
             height={1}
             alignItems='center'
-            justifyContent={item.id === 'fullName' ? 'flex-start' : 'center'}
+            justifyContent={item.id === 'fullName' ? 'flex-start' : 'left'}
             flexDirection='row'
           >
             {item.id === 'fullName' && <FullNameAvatar name={valueToShow} />}
@@ -135,24 +134,24 @@ const TableRowComponent = ({
         )}
 
         {markupSequence.map((item) => drawTableCell(item))}
-        <Grid item xs>
-          {rowHover && !customPath && (
-            <Grid>
-              <Box my={2} textAlign='center'>
-                {!noActions && !noEditDeleteActions && (
-                  <DeleteIcon
-                    onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-                    className="deleteIcon icons"
-                  />
-                )}
-                {!noEditDeleteActions && (
-                  <EditIcon className="editIcon icons" />
-                )}
-                <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
-              </Box>
-            </Grid>
-          )}
-        </Grid>
+          <Grid item xs style={{ minWidth: '200px' }}>
+            {rowHover && !customPath && (
+              <Grid>
+                <Box mt={2} textAlign='center'>
+                  {!noActions && !noEditDeleteActions && (
+                    <DeleteIcon
+                      onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                      className="deleteIcon icons"
+                    />
+                  )}
+                  {!noEditDeleteActions && (
+                    <EditIcon className="editIcon icons" />
+                  )}
+                  <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+                </Box>
+              </Grid>
+            )}
+          </Grid>
       </Grid>
     </Box>
   );

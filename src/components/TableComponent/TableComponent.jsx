@@ -30,6 +30,7 @@ const TableComponent = ({
   isLoading,
   handleDeleteItem,
   noActions,
+  noTableActionsBar,
   noEditDeleteActions,
   setSortParams,
   sortParams,
@@ -42,7 +43,6 @@ const TableComponent = ({
   const dispatch = useDispatch();
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
-
   if (!showColumn) {
     dispatch(setShowColumns({ [scope]: defaultShowColumn }));
   }
@@ -66,7 +66,7 @@ const TableComponent = ({
       newChecked = tableData?.values;
     }
 
-    dispatch(setCheckedItems(newChecked))
+    dispatch(setCheckedItems(newChecked));
   };
 
   if (isLoading || !showColumn) return <LinearProgress />;
@@ -82,9 +82,17 @@ const TableComponent = ({
           noEditDeleteActions={noEditDeleteActions}
         />
       )} */}
-      <Paper elevation={1}>
+      <Box display="flex" mb={3}>
+        <PaginationComponent
+          location="flex-end"
+          currentPage={currentPage}
+          updatePage={updatePage}
+          totalPages={tableData.meta?.totalPages}
+        />
+      </Box>
+      <Paper elevation={1} style={{ maxHeight: 'auto', overflow: 'auto' }}>
         <Grid
-          spacing={1}
+          spacing={2}
           container
           wrap="nowrap"
           justify="center"
@@ -102,7 +110,7 @@ const TableComponent = ({
           {tableData.headers.map(
             (header) => showColumn[header.id]
               && (header.sortParam ? (
-                <Grid item xs zeroMinWidth key={header.value}>
+                <Grid item xs zeroMinWidth key={header.value} className='headers'>
                   <Box
                     className='sortableHeader'
                     my={1}
@@ -128,7 +136,7 @@ const TableComponent = ({
                   </Box>
                 </Grid>
               ) : (
-                <Grid item xs zeroMinWidth key={header.value}>
+                <Grid item xs zeroMinWidth key={header.value} className='headers'>
                   <Box my={1}>
                     <Typography
                       variant="h6"
@@ -163,16 +171,18 @@ const TableComponent = ({
           ))}
         </Box>
       </Paper>
-      <Box pt={2}>
-        <TableActionsBar positionBottom>
-          <PaginationComponent
-            location="flex-end"
-            currentPage={currentPage}
-            updatePage={updatePage}
-            totalPages={tableData.meta?.totalPages}
-          />
-        </TableActionsBar>
-      </Box>
+      {!noTableActionsBar && (
+        <Box pt={2}>
+          <TableActionsBar positionBottom>
+            <PaginationComponent
+              location="flex-end"
+              currentPage={currentPage}
+              updatePage={updatePage}
+              totalPages={tableData.meta?.totalPages}
+            />
+          </TableActionsBar>
+        </Box>
+      )}
     </>
   ) : (
     <Typography>{localization.t('general.noResults')}</Typography>
@@ -187,6 +197,7 @@ TableComponent.propTypes = {
   isLoading: PropTypes.bool,
   defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
+  noTableActionsBar: PropTypes.bool,
   noEditDeleteActions: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,

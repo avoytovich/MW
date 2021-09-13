@@ -23,10 +23,12 @@ const PriceFunctionsScreen = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
+
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.priceFunctions));
 
   const requests = async (rowsPerPage, filtersUrl) => {
     const res = await api.getPriceFunctions({
+
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
@@ -53,6 +55,7 @@ const PriceFunctionsScreen = () => {
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
+
     saveSortParams(sortKeys.priceFunctions, params);
   };
 

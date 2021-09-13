@@ -1,5 +1,5 @@
-// ToDo - add localization
 import moment from 'moment';
+import localization from '../../../localization';
 
 const defaultShow = {
   occuredAt: true,
@@ -9,9 +9,9 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: 'Occured at', id: 'occuredAt' },
-    { value: 'Event', id: 'event' },
-    { value: 'Status', id: 'status' },
+    { value: localization.t('labels.occuredAt'), id: 'occuredAt' },
+    { value: localization.t('labels.event'), id: 'event' },
+    { value: localization.t('labels.status'), id: 'status' },
   ],
 };
 
