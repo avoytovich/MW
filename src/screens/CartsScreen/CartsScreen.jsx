@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import api from '../../api';
+import defPath from '../../services/helpers/routingHelper';
 
 import {
   generateData,
@@ -76,7 +77,7 @@ const CartsScreen = () => {
             size="large"
             variant="contained"
             component={Link}
-            to={`${parentPaths.carts}/add`}
+            to={`${defPath}${parentPaths.carts}/add`}
           >
             {localization.t('general.addCart')}
           </Button>
