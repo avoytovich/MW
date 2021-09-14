@@ -95,6 +95,8 @@ const general = {
   licenseProviderDefinition: 'License Provider Definition',
   disableStore: 'Are you sure you want to disable the store?',
   force: 'Force',
+  noOrdersYet: 'No orders yet',
+  noEmails: 'No emails',
   clearFilters: 'Clear filters',
 };
 

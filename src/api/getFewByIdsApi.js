@@ -92,6 +92,13 @@ const getFewByIdsApi = {
       url,
     });
   },
+  getOrdersByEndUserId(id) {
+    const url = `/orders?format=short&endUser.id=${id}&size=500&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default getFewByIdsApi;

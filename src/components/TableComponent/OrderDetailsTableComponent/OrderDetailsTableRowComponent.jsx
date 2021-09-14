@@ -37,7 +37,6 @@ const TableRowComponent = ({
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
-
   const copyUrl = () => {
     navigator.clipboard.writeText(`${window.location.href}/${rowItem.id}`)
       .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
@@ -73,10 +72,19 @@ const TableRowComponent = ({
             {rowItem[item.id]}
           </Typography>
         );
+      } else if (item.clickable) {
+        valueToShow = (
+          <Typography
+            onClick={() => history.push(item.path)}
+
+            className='clickable-value'>
+            {rowItem[item.id]}
+
+          </Typography>
+        );
       } else {
         valueToShow = rowItem[item.id];
       }
-
       return (
         <Grid
           className="tableCellItemGrid"

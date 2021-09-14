@@ -1,0 +1,88 @@
+import { useState, useEffect } from 'react';
+
+import { checkRequiredFields, generateOrders, generateEmails } from './utils';
+import { structureSelectOptions } from '../../services/helpers/dataStructuring';
+import localization from '../../localization';
+
+import api from '../../api';
+
+const useEndUserDetailScreen = (id) => {
+  const [isLoading, setLoading] = useState(true);
+  const [curEndUser, setCurEndUser] = useState(null);
+  const [endUser, setEndUser] = useState(null);
+  const [update, setUpdate] = useState(0);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [selectOptions, setSelectOptions] = useState({ groups: null });
+  const [orders, setOrders] = useState(null);
+  const [emails, setEmails] = useState(null);
+  const [invalidVatNumber, setInvalidVatNumber] = useState('');
+
+  useEffect(() => {
+    let isCancelled = false;
+    setLoading(true);
+    const requestedData = api.getEnduserById(id);
+
+    requestedData.then(({ data }) => {
+      const promiseArray = [];
+      if (!isCancelled) {
+        const checkedData = checkRequiredFields(data);
+        setEndUser({ ...checkedData });
+        setCurEndUser({ ...checkedData });
+        if (data.emails?.length) {
+          const emailsTableData = generateEmails(data.emails);
+          setEmails(emailsTableData);
+        }
+        promiseArray.push(
+          api.getGroupsOptionsByCustomerId(data.customerId),
+          api.getOrdersByEndUserId(data.enduserId),
+        );
+        if (data.company.companyName !== '' && data.company.vatNumber) {
+          promiseArray.push(api.vatNumberCheck(data.company.vatNumber, data.country))
+        }
+        Promise.allSettled(promiseArray).then(([groupsOptions, ordersData, vatNumber]) => {
+          setSelectOptions({
+            ...selectOptions,
+            groups: structureSelectOptions(groupsOptions.value?.data.items, 'name') || [],
+          });
+          if (ordersData.value?.data.items.length) {
+            const orderTableData = generateOrders(ordersData.value?.data.items);
+            setOrders(orderTableData);
+          }
+          if (vatNumber && vatNumber.status === 'rejected') {
+            setInvalidVatNumber(localization.t('errorNotifications.invalidVatNumber'));
+          }
+          setLoading(false);
+        });
+      }
+    })
+      .catch(() => {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      });
+
+    return () => { isCancelled = true; };
+  }, [update]);
+
+  useEffect(() => {
+    setHasChanges(JSON.stringify(curEndUser) !== JSON.stringify(endUser));
+
+    return () => setHasChanges(false);
+  }, [curEndUser]);
+
+  return {
+    setUpdate,
+    curEndUser,
+    setCurEndUser,
+    isLoading,
+    hasChanges,
+    endUser,
+    selectOptions,
+    orders,
+    emails,
+    invalidVatNumber,
+    setInvalidVatNumber,
+  };
+};
+
+export default useEndUserDetailScreen;
