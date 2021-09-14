@@ -488,6 +488,13 @@ const getAllApi = {
       url,
     });
   },
+  getGroupsOptionsByCustomerId(customerId) {
+    const url = `/endusers/groups?customerId=${customerId}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default getAllApi;

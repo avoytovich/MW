@@ -21,6 +21,7 @@ const errorNotifications = {
   sourceProductIsAmongstItsOwnRecommendations:
     'Source product is amongst its own recommendations',
   invalidUrl: 'Must be a valid https:// scheme URL',
+  invalidVatNumber: 'Invalid vat number',
 };
 
 export default errorNotifications;

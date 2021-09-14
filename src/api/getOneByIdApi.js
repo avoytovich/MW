@@ -309,5 +309,19 @@ const getOneByIdApi = {
       url,
     });
   },
+  getEnduserById(id) {
+    const url = `endusers/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  vatNumberCheck(number, countryCode) {
+    const url = `/vatcheck/${number}?countryCode=${countryCode}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;
