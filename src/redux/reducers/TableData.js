@@ -7,6 +7,7 @@ import {
   SET_TABLE_ROWS_PER_PAGE,
   SET_TABLE_CHECKED_ITEMS,
   SET_WAS_UPDATED,
+  SET_TABLE_FILTER_VIEWS,
 } from '../constants/actionTypes';
 
 const rowsPerPage = JSON.parse(localStorage.getItem('rowsPerPage')) || '50';
@@ -14,6 +15,7 @@ const rowsPerPage = JSON.parse(localStorage.getItem('rowsPerPage')) || '50';
 const initialState = {
   scope: null,
   filters: {},
+  filterViews: {},
   search: '',
   rowsPerPage,
   checkedItems: [],
@@ -29,6 +31,7 @@ const TableData = (state = initialState, { type, payload }) => {
     case SET_TABLE_CHECKED_ITEMS:
     case SET_TABLE_ROWS_PER_PAGE:
     case SET_TABLE_FILTERS:
+    case SET_TABLE_FILTER_VIEWS:
       return { ...state, ...payload };
     case SET_WAS_UPDATED:
       return { ...state, wasUpdated: !state.wasUpdated };

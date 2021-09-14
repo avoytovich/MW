@@ -27,7 +27,9 @@ const TopBar = ({ toggleDrawer }) => {
   const doLogout = () => dispatch(logout());
 
   useEffect(() => {
-    dispatch(setTableScope(scope));
+    if (scope) {
+      dispatch(setTableScope(scope));
+    }
   }, [scope]);
 
   return (
