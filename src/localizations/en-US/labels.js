@@ -122,6 +122,7 @@ const labels = {
   sources: 'Source(s)',
   weight: 'Weight',
   discount: 'Discount',
+  discountRuleId: 'Discount Rule ID',
   discountRuleName: 'Discount Rule Name',
   model: 'Model',
   discountAmount: 'Discount Amount',
@@ -570,6 +571,11 @@ const labels = {
   priceFunctionName: 'Price Function Name',
   from: 'From',
   to: 'To',
+  roleId: 'Role ID',
+  campaignId: 'Campaign ID',
+  coupon: 'Coupon',
+  campaign: 'Campaign',
+  singleUseCode: 'Single use code',
 };
 
 export default labels;

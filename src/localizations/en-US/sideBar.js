@@ -4,7 +4,7 @@ const sideBar = {
     storeSetup: 'Store Setup',
     products: 'Products',
     marketing: 'Marketing',
-    customers: 'Customers',
+    customers: 'Customer Management',
     endUsers: 'End-Users',
     settings: 'Settings',
     help: 'Help',
