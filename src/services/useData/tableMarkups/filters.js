@@ -3,6 +3,11 @@ import localization from '../../../localization';
 const filters = {
   productlist: [
     {
+      id: 'id',
+      label: localization.t('labels.productId'),
+      type: 'text',
+    },
+    {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
       type: 'date',
@@ -39,6 +44,11 @@ const filters = {
         { label: localization.t('labels.enabled'), value: 'ENABLED' },
         { label: localization.t('labels.disabled'), value: 'DISABLED' },
       ],
+    },
+    {
+      id: 'productFamily',
+      label: localization.t('labels.family'),
+      type: 'text',
     },
   ],
   orderlist: [
@@ -481,6 +491,348 @@ const filters = {
       id: 'name',
       label: localization.t('labels.definitionName'),
       type: 'text',
+    },
+  ],
+  subscriptions: [
+    {
+      id: 'id',
+      label: localization.t('labels.subscriptionId'),
+      type: 'text',
+    },
+    {
+      id: 'lifecycle.id',
+      label: localization.t('labels.lifecycleId'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.subscriptionName'),
+      type: 'text',
+    },
+    {
+      id: 'storeId',
+      label: localization.t('labels.storeId'),
+      type: 'text',
+    },
+  ],
+  themes: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
+  layouts: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
+  fonts: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
+  translations: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
+  prices: [
+    {
+      id: 'startingDate',
+      label: localization.t('labels.startDate'),
+      type: 'date',
+    },
+    {
+      id: 'endingDate',
+      label: localization.t('labels.endDate'),
+      type: 'date',
+    },
+    {
+      id: 'productId',
+      label: localization.t('labels.productId'),
+      type: 'text',
+    },
+    {
+      id: 'marketingCampaignId',
+      label: localization.t('labels.marketingId'),
+      type: 'text',
+    },
+    {
+      id: 'country',
+      label: localization.t('labels.country'),
+      type: 'text',
+    },
+    {
+      id: 'currency',
+      label: localization.t('labels.currency'),
+      type: 'text',
+    },
+    {
+      id: 'value',
+      label: localization.t('labels.value'),
+      type: 'text',
+    },
+    {
+      id: 'msrp',
+      label: localization.t('labels.msrp'),
+      type: 'text',
+    },
+    {
+      id: 'upSell',
+      label: localization.t('labels.upSell'),
+      type: 'text',
+    },
+    {
+      id: 'crossSell',
+      label: localization.t('labels.crossSell'),
+      type: 'text',
+    },
+    {
+      id: 'vatIncluded',
+      label: localization.t('labels.vatIncluded'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.yes'), value: 'YES' },
+        { label: localization.t('labels.no'), value: 'NO' },
+      ],
+    },
+  ],
+  'price-functions': [
+    {
+      id: 'id',
+      label: localization.t('labels.priceFunctionId'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.priceFunctionName'),
+      type: 'text',
+    },
+  ],
+  recommendations: [
+    {
+      id: 'id',
+      label: localization.t('labels.roleId'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.ruleName'),
+      type: 'text',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+      ],
+    },
+    {
+      id: 'type',
+      label: localization.t('labels.type'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.crossSell'), value: 'CROSS_SELL' },
+        { label: localization.t('labels.upSell'), value: 'UP_SELL' },
+        { label: localization.t('labels.upgrade'), value: 'UPGRADE' },
+      ],
+    },
+    {
+      id: 'levels',
+      label: localization.t('labels.levels'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.cart'), value: 'CART' },
+        { label: localization.t('labels.product'), value: 'PRODUCT' },
+        { label: localization.t('labels.interstitial'), value: 'INTERSTITIAL' },
+        { label: localization.t('labels.purchase'), value: 'PURCHASE' },
+      ],
+    },
+    {
+      id: 'sources',
+      label: localization.t('labels.sources'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.purchase'), value: 'PURCHASE' },
+        { label: localization.t('labels.manualRenewal'), value: 'MANUAL_RENEWAL' },
+      ],
+    },
+  ],
+  campaigns: [
+    {
+      id: 'id',
+      label: localization.t('labels.campaignId'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+      ],
+    },
+  ],
+  discounts: [
+    {
+      id: 'name',
+      label: localization.t('labels.discountRuleName'),
+      type: 'text',
+    },
+    {
+      id: 'id',
+      label: localization.t('labels.discountRuleId'),
+      type: 'text',
+    },
+    {
+      id: 'model',
+      label: localization.t('labels.model'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.coupon'), value: 'COUPON' },
+        { label: localization.t('labels.campaign'), value: 'CAMPAIGN' },
+        { label: localization.t('labels.singleUseCode'), value: 'SINGLE_USE_CODE' },
+      ],
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+      ],
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'source',
+      label: localization.t('labels.sources'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.purchase'), value: 'PURCHASE' },
+        { label: localization.t('labels.manualRenewal'), value: 'MANUAL_RENEWAL' },
+        { label: localization.t('labels.subscription'), value: 'SUBSCRIPTION' },
+        { label: localization.t('labels.billingPlan'), value: 'BILLING_PLAN' },
+      ],
     },
   ],
 };

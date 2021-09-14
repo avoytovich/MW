@@ -19,7 +19,7 @@ import {
 } from '../../services/sorting';
 
 const LicenseScreen = () => {
-  const scope = 'lcenses';
+  const scope = 'licenses';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
