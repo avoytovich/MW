@@ -98,6 +98,9 @@ const general = {
   noOrdersYet: 'No orders yet',
   noEmails: 'No emails',
   clearFilters: 'Clear filters',
+  saveView: 'Save View',
+  addFilterView: 'Add Filter View',
+  applyChangesTo: 'Apply changes to',
 };
 
 export default general;

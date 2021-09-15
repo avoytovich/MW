@@ -10,6 +10,8 @@ export const UPDATE_NEXWAY_STATE = 'account/updateNexwayState';
 export const SET_TABLE_SCOPE = 'table/setScope';
 export const REFRESH_TABLE = 'table/refresh';
 export const SET_TABLE_FILTERS = 'table/setFilters';
+export const SET_TABLE_FILTER_VIEWS = 'table/setFilterViews';
+
 export const RESET_TABLE_FILTERS = 'table/resetFilters';
 export const RESET_TABLE_SEARCH = 'table/resetSearch';
 export const SET_TABLE_ROWS_PER_PAGE = 'table/setRowsPerPage';

@@ -67,7 +67,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
                   {localization.t('general.disableStore')}
                 </Typography>
                 <Box display='flex' justifyContent='space-around' pt={4}>
-                  <Button variant="outlined" color='suka' onClick={handleCloseModal}>Cancel</Button>
+                  <Button variant="outlined" onClick={handleCloseModal}>Cancel</Button>
                   <Button variant="contained" color="primary" onClick={confirmModal}>Confirm</Button>
                 </Box>
               </Box>
