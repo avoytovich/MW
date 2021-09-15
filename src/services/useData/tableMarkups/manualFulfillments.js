@@ -19,7 +19,7 @@ const markUp = {
     { value: localization.t('labels.packageId'), id: 'packageId' },
     { value: localization.t('labels.customer'), id: 'customer' },
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
-    { value: localization.t('labels.status'), id: 'status' },
+    { value: localization.t('labels.status'), id: 'status', sortParam: 'status' },
     { value: localization.t('labels.products'), id: 'products' },
     { value: localization.t('labels.available'), id: 'available' },
     { value: localization.t('labels.blacklisted'), id: 'blacklisted' },
