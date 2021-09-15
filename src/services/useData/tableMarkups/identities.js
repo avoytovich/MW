@@ -1,6 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
+  customer: true,
   fullName: true,
   userName: true,
   email: true,
@@ -9,6 +10,11 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    {
+      value: localization.t('labels.customer'),
+      id: 'customer',
+      sortParam: 'customer',
+    },
     {
       value: localization.t('labels.fullName'),
       id: 'fullName',
@@ -28,14 +34,20 @@ const markUp = {
   ],
 };
 
-const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val.id,
-    fullName: `${val.firstName} ${val.lastName}`,
-    userName: val.userName,
-    email: val.email,
-    createDate: val.createDate,
-  }));
+const generateData = (data, customers) => {
+  const values = data.items.map((val) => {
+    const customer = customers.items.filter(
+      (item) => item.id === val?.customerId,
+    )[0]?.name;
+    return {
+      id: val.id,
+      customer,
+      fullName: `${val.firstName} ${val.lastName}`,
+      userName: val.userName,
+      email: val.email,
+      createDate: val.createDate,
+    };
+  });
 
   const meta = {
     totalPages: data.totalPages,
