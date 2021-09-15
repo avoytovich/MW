@@ -3,7 +3,7 @@ import localization from '../../../localization';
 
 const defaultShow = {
   customer: true,
-  custoemrStatus: true,
+  customerStatus: true,
   email: true,
   createDate: true,
   updateDate: true,
@@ -48,7 +48,7 @@ const markUp = {
   headers: [
     { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.customer'), id: 'customer' },
-    { value: localization.t('labels.custoemrStatus'), id: 'custoemrStatus' },
+    { value: localization.t('labels.customerStatus'), id: 'customerStatus' },
     {
       value: localization.t('labels.createDate'),
       id: 'createDate',
@@ -238,7 +238,7 @@ const generateData = (data, customers, stores) => {
 
     return {
       customer,
-      custoemrStatus: val.customer.status === 'RUNNING' ? 'Live' : 'Test',
+      customerStatus: val.customer.status === 'RUNNING' ? 'Live' : 'Test',
       createDate: val.createDate,
       updateDate: val.updateDate,
       email: val.endUser?.email,
