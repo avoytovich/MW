@@ -478,7 +478,6 @@ const labels = {
   creditNoteId: 'Credit Note ID',
   cancelationReasons: 'Cancelation Reasons',
   preorder: 'Preorder',
-  custoemrStatus: 'Custoemr Status',
   splitPayment: 'Split Payment',
   customerStatus: 'Customer Status',
   informativeDPStatus: 'Estimated Payment status',
