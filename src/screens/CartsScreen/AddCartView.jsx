@@ -346,7 +346,7 @@ const AddCartView = ({
                     onChange={handleChange}
                   >
                     {storeOpt.items.map((option) => (
-                      option.saleLocales.map((locale) => (
+                      option.saleLocales?.map((locale) => (
                         <MenuItem key={locale} value={locale}>
                           {locale}
                         </MenuItem>
@@ -590,7 +590,7 @@ const AddCartView = ({
                       onChange={handleChange}
                     >
                       {storeOpt.items.map((option) => (
-                        option.saleLocales.map((locale) => (
+                        option.saleLocales?.map((locale) => (
                           <MenuItem key={locale} value={locale}>
                             {locale}
                           </MenuItem>
