@@ -19,11 +19,11 @@ const ShowColumnPopper = ({ scope, anchorEl, setAnchorEl }) => {
 
   const [inputValue, setInputValue] = useState('');
   const currentShowColumns = useSelector(({ showColumns }) => showColumns[scope]);
-  const regex = new RegExp(`^${inputValue.toLowerCase()}`, 'g');
+  const regex = new RegExp(`${inputValue.toLowerCase()}`, 'g');
   const filterObject = () => {
     const result = {};
     Object.keys(currentShowColumns).forEach((key) => {
-      if (key.match(regex)) {
+      if (key.toLowerCase().match(regex)) {
         result[key] = currentShowColumns[key];
       }
     });
