@@ -101,6 +101,7 @@ const general = {
   saveView: 'Save View',
   addFilterView: 'Add Filter View',
   applyChangesTo: 'Apply changes to',
+  abandoned: 'Abandoned',
 };
 
 export default general;

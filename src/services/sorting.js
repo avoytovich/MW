@@ -21,6 +21,7 @@ export const sortKeys = {
   autoFulfillments: 'autoFulfillmentsSortParams',
   manualFulfillments: 'manualFulfillmentsSortParams',
   licenseProviderDefinitions: 'licenseProviderDefinitionsSortParams',
+  abandoned: 'abandonedSortParams',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));

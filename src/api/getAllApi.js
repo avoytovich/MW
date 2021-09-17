@@ -495,6 +495,22 @@ const getAllApi = {
       url,
     });
   },
+  getAbandoned({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `campaigns/abandonedcarts?format=short&size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
+
 
 export default getAllApi;
