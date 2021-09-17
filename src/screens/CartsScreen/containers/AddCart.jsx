@@ -7,6 +7,7 @@ import api from '../../../api';
 import localization from '../../../localization';
 import AddCartView from '../AddCartView';
 import parentPaths from '../../../services/paths';
+import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
 
 const AddCart = () => {
   const customerId = useSelector(
@@ -108,7 +109,7 @@ const AddCart = () => {
   }, [customerId, selectedStore]);
 
   if (!customerId) {
-    return <div data-test='emptyProductDetailsView'>Select customer</div>;
+    return <SelectCustomerNotification />;
   }
 
   if (!storeOpt) return null;
