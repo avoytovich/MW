@@ -7,6 +7,7 @@ import {
 import api from '../../api';
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import DiscountsScreen from './SubSections/DiscountsScreen';
+import AbandonedScreen from './SubSections/AbandonedScreen';
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
 import parentPaths from '../../services/paths';
@@ -24,6 +25,16 @@ const availTabs = [
     )}`,
     deleteFunc: null,
     headers: null,
+  },
+  {
+    label: 'abandoned',
+    scope: 'abandoned',
+    path: `${parentPaths.marketing}/abandoned`,
+    button: `${localization.t('general.add')} ${localization.t(
+      'general.abandoned',
+    )}`,
+    // deleteFunc: api.deleteDiscountById,
+    // headers: markUpDiscounts.headers,
   },
   {
     label: 'discounts',
@@ -89,13 +100,16 @@ const MarketingScreen = () => {
         textColor='primary'
       >
         <Tab label='Campaigns' />
+        <Tab label='Abandoned' />
         <Tab label='Discounts' />
       </Tabs>
 
       <Box mt={4} mb={2}>
         {curTab === 0 && <CampaignsScreen />}
 
-        {curTab === 1 && <DiscountsScreen />}
+        {curTab === 1 && <AbandonedScreen />}
+
+        {curTab === 2 && <DiscountsScreen />}
       </Box>
     </Box>
   );

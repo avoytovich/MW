@@ -835,6 +835,32 @@ const filters = {
       ],
     },
   ],
+  abandoned: [
+    {
+      id: 'id',
+      label: localization.t('labels.campaignId'),
+      type: 'id',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'Active' },
+        { label: localization.t('labels.disabled'), value: 'Inactive' },
+      ],
+    },
+  ],
 };
 
 export default filters;
