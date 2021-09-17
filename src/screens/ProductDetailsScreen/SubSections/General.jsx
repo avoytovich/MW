@@ -204,7 +204,7 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
           >
             <InputCustom
               isRequired
-              label='publisherRefID'
+              label='publisherRefId'
               value={currentProductData.publisherRefId}
               onChangeInput={(e) =>
                 setProductData({

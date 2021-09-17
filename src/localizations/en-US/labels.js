@@ -149,7 +149,7 @@ const labels = {
   msrp: 'MSRP',
   vatIncluded: 'VAT included',
   subscriptionModel: 'Subscription Model',
-  trialDuration: 'Trial Duration',
+  trialDuration: 'Trial Duration in Days',
   fulfillmentTemplate: 'Fulfillment Template',
   licenseKeyPackages: 'License Key Packages',
   renewingProducts: 'Renewing Products',
