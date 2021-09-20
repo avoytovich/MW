@@ -6,6 +6,8 @@ import {
   Route,
   useHistory,
 } from 'react-router-dom';
+
+import defPath from '../helpers/routingHelper';
 import parentPaths from '../paths';
 import Session from '../session';
 import { KNOWN_REALMS } from '../constants';
@@ -241,7 +243,8 @@ const SignedRoutes = () => {
         path={`${parentPaths.invoices}`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
-      <Redirect to={`/`} />
+
+      <Redirect to='/' />
     </Switch>
   );
 };

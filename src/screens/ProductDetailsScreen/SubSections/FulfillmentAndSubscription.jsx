@@ -40,7 +40,9 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
     );
   };
 
-  const filteredArr = toFilter(selectOptions.renewingProducts);
+  const filteredArr = toFilter(selectOptions.renewingProducts)
+    .filter((i) => i.id !== currentProductData?.id);
+
   const autoOptions = filteredArr.length
     ? [...filteredArr]
     : [{ id: 'none', name: 'No Results' }];

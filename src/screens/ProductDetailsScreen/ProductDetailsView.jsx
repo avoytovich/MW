@@ -19,6 +19,7 @@ import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
 import SubProductVariations from './SubSections/SubProductVariations';
 import parentPaths from '../../services/paths';
+
 const allTabs = [
   'general',
   'fulfillmentAndSubscription',

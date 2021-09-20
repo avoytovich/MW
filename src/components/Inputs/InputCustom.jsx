@@ -14,7 +14,7 @@ const InputCustom = ({
   hasError,
   rowsMax,
 }) => (
-  <form autoComplete='off'>
+  <form autoComplete='off' style={{ width: '100%' }}>
     <TextField
       rowsMax={rowsMax}
       error={hasError}
