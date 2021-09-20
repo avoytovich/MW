@@ -20,7 +20,7 @@ import localization from '../../../localization';
 import { InputCustom, SelectCustom } from '../../../components/Inputs';
 
 const General = ({
-  curEndUser, setCurEndUser, selectOptions, invalidVatNumber, setInvalidVatNumber,
+  curEndUser, setCurEndUser, selectOptions, invalidVatNumber, setInvalidVatNumber, scope,
 }) => {
   const handleCheckVatNumber = (value) => {
     if (value !== '') {
@@ -136,24 +136,24 @@ const General = ({
               >
                 <FormControlLabel
                   value='BUYER'
-                  disabled
+                  disabled={scope === 'resellers'}
                   control={<Radio color='primary' />}
                   label={localization.t('labels.bayer')}
                 />
                 <FormControlLabel
-                  disabled
+                  disabled={scope !== 'resellers'}
                   value='RESELLER_NOT_APPROVED'
                   control={<Radio color='primary' />}
                   label={localization.t('labels.applyingReseller')}
                 />
                 <FormControlLabel
                   value='RESELLER'
-                  disabled
+                  disabled={scope !== 'resellers'}
                   control={<Radio color='primary' />}
                   label={localization.t('labels.approvedReseller')}
                 />
                 <FormControlLabel
-                  disabled
+                  disabled={scope !== 'resellers'}
                   value='RESELLER_DECLINED'
                   control={<Radio color='primary' />}
                   label={localization.t('labels.declinedReseller')}
@@ -317,6 +317,7 @@ General.propTypes = {
   setCurEndUser: PropTypes.func,
   selectOptions: PropTypes.object,
   setInvalidVatNumber: PropTypes.func,
+  scope: PropTypes.string,
 };
 
 export default General;

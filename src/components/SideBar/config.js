@@ -11,7 +11,6 @@ import {
   Dashboard,
 } from '@material-ui/icons';
 import parentPaths from '../../services/paths';
-import defPath from '../../services/helpers/routingHelper';
 import localization from '../../localization';
 
 const navConfig = [
@@ -20,7 +19,7 @@ const navConfig = [
       {
         id: 'dashboard',
         title: localization.t('sideBar.titles.dashboard'),
-        href: `${defPath}/`,
+        href: parentPaths.default,
         exact: true,
         isMain: true,
         icon: Dashboard,
@@ -34,32 +33,32 @@ const navConfig = [
       {
         id: 'orders',
         title: localization.t('sideBar.titles.orders'),
-        href: `${defPath}${parentPaths.orderlist}`,
+        href: parentPaths.orderlist,
       },
       {
         id: 'subscriptions',
         title: localization.t('sideBar.titles.subscriptions'),
-        href: `${defPath}${parentPaths.subscriptions}`,
+        href: parentPaths.subscriptions,
       },
       {
         id: 'invoices-credit-notes',
         title: localization.t('sideBar.titles.invoicesCreditNotes'),
-        href: `${defPath}${parentPaths.invoices}`,
+        href: parentPaths.invoices,
       },
       {
         id: 'licenses',
         title: localization.t('sideBar.titles.licenses'),
-        href: `${defPath}${parentPaths.licenses}`,
+        href: parentPaths.licenses,
       },
       {
         id: 'carts',
         title: localization.t('sideBar.titles.carts'),
-        href: `${defPath}${parentPaths.carts}`,
+        href: parentPaths.carts,
       },
       {
         id: 'archived-orders',
         title: localization.t('sideBar.titles.archivedOrders'),
-        href: `${defPath}${parentPaths.archivedOrders}`,
+        href: parentPaths.archivedOrders,
       },
     ],
   },
@@ -70,22 +69,22 @@ const navConfig = [
       {
         id: 'stores',
         title: localization.t('sideBar.titles.stores'),
-        href: `${defPath}${parentPaths.stores}`,
+        href: parentPaths.stores,
       },
       {
         id: 'checkout-experience',
         title: localization.t('sideBar.titles.checkoutExperience'),
-        href: `${defPath}${parentPaths.checkoutpagebuilder.main}`,
+        href: parentPaths.checkoutpagebuilder.main,
       },
       {
         id: 'localization',
         title: localization.t('sideBar.titles.localization'),
-        href: `${defPath}${parentPaths.localization.main}`,
+        href: parentPaths.localization.main,
       },
       {
         id: 'email-builder',
         title: localization.t('sideBar.titles.emailBuilder'),
-        href: `${defPath}${parentPaths.emailbuilder}`,
+        href: parentPaths.emailbuilder,
       },
     ],
   },
@@ -96,22 +95,22 @@ const navConfig = [
       {
         id: 'products',
         title: localization.t('sideBar.titles.products'),
-        href: `${defPath}${parentPaths.productlist}`,
+        href: parentPaths.productlist,
       },
       {
         id: 'price-models',
         title: localization.t('sideBar.titles.priceModels'),
-        href: `${defPath}${parentPaths.pricemodels}`,
+        href: parentPaths.pricemodels,
       },
       {
         id: 'cros-sell-up-sell-reco',
         title: localization.t('sideBar.titles.crosSellUpSellReco'),
-        href: `${defPath}${parentPaths.recommendations}`,
+        href: parentPaths.recommendations,
       },
       {
         id: 'fulfillment-packages',
         title: localization.t('sideBar.titles.fulfillmentPackages'),
-        href: `${defPath}${parentPaths.fulfillment.main}`,
+        href: parentPaths.fulfillment.main,
       },
     ],
   },
@@ -122,12 +121,12 @@ const navConfig = [
       {
         id: 'discount-rules',
         title: localization.t('sideBar.titles.discountRules'),
-        href: `${defPath}${parentPaths.discountrules}`,
+        href: parentPaths.discountrules,
       },
       {
         id: 'marketing-campaigns',
         title: localization.t('sideBar.titles.campaigns'),
-        href: `${defPath}${parentPaths.campaigns}`,
+        href: parentPaths.campaigns,
       },
     ],
   },
@@ -138,17 +137,17 @@ const navConfig = [
       {
         id: 'end-users',
         title: localization.t('sideBar.titles.endUsers'),
-        href: `${defPath}${parentPaths.endusers}`,
+        href: parentPaths.endusers,
       },
       {
         id: 'end-user-groups',
         title: localization.t('sideBar.titles.endUserGroups'),
-        href: `${defPath}${parentPaths.endusergroups}`,
+        href: parentPaths.endusergroups,
       },
       {
         id: 'resellers',
         title: localization.t('sideBar.titles.resellers'),
-        href: `${defPath}${parentPaths.resellers}`,
+        href: parentPaths.resellers,
       },
     ],
   },
@@ -157,7 +156,7 @@ const navConfig = [
       {
         id: 'reports',
         title: localization.t('sideBar.titles.reports'),
-        href: `${defPath}${parentPaths.reports}`,
+        href: parentPaths.reports,
         isMain: true,
         icon: Report,
       },
@@ -170,27 +169,27 @@ const navConfig = [
       {
         id: 'users',
         title: localization.t('sideBar.titles.users'),
-        href: `${defPath}${parentPaths.users}`,
+        href: parentPaths.users,
       },
       {
         id: 'user-privileges',
         title: localization.t('sideBar.titles.userPrivileges'),
-        href: `${defPath}${parentPaths.userprivileges}`,
+        href: parentPaths.userprivileges,
       },
       {
         id: 'user-roles-profiles',
         title: localization.t('sideBar.titles.userRolesProfiles'),
-        href: `${defPath}${parentPaths.userroles}`,
+        href: parentPaths.userroles,
       },
       {
         id: 'event-notifications',
         title: localization.t('sideBar.titles.eventNotifications'),
-        href: `${defPath}${parentPaths.notifications.main}`,
+        href: parentPaths.notifications.main,
       },
       {
         id: 'my-account',
         title: localization.t('sideBar.titles.myAccount'),
-        href: `${defPath}${parentPaths.myaccount}`,
+        href: parentPaths.myaccount,
       },
     ],
   },
@@ -201,22 +200,22 @@ const navConfig = [
       {
         id: 'customer',
         title: localization.t('sideBar.titles.customers'),
-        href: `${defPath}${parentPaths.customers}`,
+        href: parentPaths.customers,
       },
       {
         id: 'onboarding',
         title: localization.t('sideBar.titles.onboarding'),
-        href: `${defPath}${parentPaths.onboarding}`,
+        href: parentPaths.onboarding,
       },
       {
         id: 'remittables',
         title: localization.t('sideBar.titles.remittables'),
-        href: `${defPath}${parentPaths.remittables}`,
+        href: parentPaths.remittables,
       },
       {
         id: 'audits',
         title: localization.t('sideBar.titles.audits'),
-        href: `${defPath}${parentPaths.audits}`,
+        href: parentPaths.audits,
       },
     ],
   },
@@ -233,7 +232,7 @@ const navConfig = [
       {
         id: 'product-documentation',
         title: localization.t('sideBar.titles.productDocumentation'),
-        href: `${defPath}${parentPaths.productdocumentation}`,
+        href: parentPaths.productdocumentation,
       },
     ],
   },

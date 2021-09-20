@@ -191,8 +191,8 @@ const getOneByIdApi = {
       url,
     });
   },
-  getTermsAndConditions(id, date) {
-    const url = `/tandcs/public/tandcs/IAP/${id}/en-US/pdf?date=${date}`;
+  getTermsAndConditions(id, language, date) {
+    const url = `/tandcs/public/tandcs/IAP/${id}/${language}/pdf?date=${date}`;
     return axiosInstance({
       headers: {
         'Content-Type': 'application/pdf',

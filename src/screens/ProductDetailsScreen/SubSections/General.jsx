@@ -57,27 +57,27 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
     currentProductData?.lifeTime?.state // eslint-disable-line
       ? currentProductData?.lifeTime?.state === 'inherits'
         ? setProductData({
-            ...currentProductData,
-            lifeTime: {
-              ...currentProductData.lifeTime,
-              parentValue: newLifeTime,
-            },
-          })
+          ...currentProductData,
+          lifeTime: {
+            ...currentProductData.lifeTime,
+            parentValue: newLifeTime,
+          },
+        })
         : setProductData({
-            ...currentProductData,
-            lifeTime: {
-              ...currentProductData.lifeTime,
-              value: newLifeTime,
-            },
-          })
+          ...currentProductData,
+          lifeTime: {
+            ...currentProductData.lifeTime,
+            value: newLifeTime,
+          },
+        })
       : setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
 
   const stylesForVariations = parentId
     ? {
-        display: 'grid',
-        gridTemplateColumns: '1fr 60px',
-      }
+      display: 'grid',
+      gridTemplateColumns: '1fr 60px',
+    }
     : {};
 
   // const stylesForVariationsLifeTime = parentId

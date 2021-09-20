@@ -11,7 +11,9 @@ import api from '../../api';
 import { shouldDownload, shouldCopy } from './utils';
 import './orderDetailsScreen.scss';
 
-const OrderRow = ({ rowData, customerId, creationDate }) => {
+const OrderRow = ({
+  rowData, customerId, creationDate, curLanguage,
+}) => {
   const downloadPdf = (data, label) => {
     const url = window.URL.createObjectURL(new Blob([data]));
     const link = document.createElement('a');
@@ -24,8 +26,10 @@ const OrderRow = ({ rowData, customerId, creationDate }) => {
   const dowloadTermsAndConditions = (data) => {
     if (customerId) {
       const date = moment(creationDate).format('YYYY-MM-DD');
-      api.getTermsAndConditions(customerId, date)
-        .then((response) => downloadPdf(response.data, data.label));
+      api.getTermsAndConditions(customerId, curLanguage, date)
+        .then((response) => {
+          console.log(response)
+          downloadPdf(response.data, data.label)});
     }
   };
 
@@ -79,6 +83,7 @@ OrderRow.propTypes = {
   rowData: PropTypes.array,
   customerId: PropTypes.string,
   creationDate: PropTypes.number,
+  curLanguage: PropTypes.string,
 };
 
 export default OrderRow;
