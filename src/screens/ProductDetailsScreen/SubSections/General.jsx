@@ -18,7 +18,9 @@ import {
 } from '../../../components/Inputs';
 import InheritanceField from '../InheritanceField';
 
-const General = ({ setProductData, currentProductData, selectOptions, parentId }) => {
+const General = ({
+  setProductData, currentProductData, selectOptions, parentId,
+}) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
     number: 1,
     value: '',
@@ -91,41 +93,8 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
 
   return (
     <>
-      <Box display='flex' flexDirection='row' alignItems='baseline'>
-        <Box p={2}>
-          <Typography color='secondary'>{localization.t('labels.status')}</Typography>
-        </Box>
-        <Box p={2}>
-          <InheritanceField
-            field='status'
-            onChange={setProductData}
-            value={currentProductData?.status}
-            parentId={parentId}
-            currentProductData={currentProductData}
-          >
-            {/* <FormControlLabel
-              control={ */}
-            <Switch
-              name='status'
-              onChange={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  status: e.target.checked ? 'ENABLED' : 'DISABLED',
-                });
-              }}
-              color='primary'
-              checked={currentProductData?.status === 'ENABLED'}
-            />
-            {/* }
-              label={localization.t(
-                `labels.${currentProductData.status === 'ENABLED' ? 'enabled' : 'disabled'}`,
-              )}
-            /> */}
-          </InheritanceField>
-        </Box>
-      </Box>
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box p={2} width='50%' display='flex'>
+        {/* <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field='catalogId'
             onChange={setProductData}
@@ -147,7 +116,8 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
               }}
             />
           </InheritanceField>
-        </Box>
+        </Box> */}
+
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field='genericName'
@@ -169,7 +139,43 @@ const General = ({ setProductData, currentProductData, selectOptions, parentId }
             />
           </InheritanceField>
         </Box>
+
+        <Box display='flex' flexDirection='row' alignItems='baseline' width='50%'>
+          <Box p={2}>
+            <Typography color='secondary'>{localization.t('labels.status')}</Typography>
+          </Box>
+
+          <Box p={2}>
+            <InheritanceField
+              field='status'
+              onChange={setProductData}
+              value={currentProductData?.status}
+              parentId={parentId}
+              currentProductData={currentProductData}
+            >
+              {/* <FormControlLabel
+                control={ */}
+              <Switch
+                name='status'
+                onChange={(e) => {
+                  setProductData({
+                    ...currentProductData,
+                    status: e.target.checked ? 'ENABLED' : 'DISABLED',
+                  });
+                }}
+                color='primary'
+                checked={currentProductData?.status === 'ENABLED'}
+              />
+              {/* }
+                label={localization.t(
+                  `labels.${currentProductData.status === 'ENABLED' ? 'enabled' : 'disabled'}`,
+                )}
+              /> */}
+            </InheritanceField>
+          </Box>
+        </Box>
       </Box>
+
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField

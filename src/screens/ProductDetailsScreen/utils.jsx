@@ -15,7 +15,7 @@ const handleGetOptions = (
   setSelectOptions,
   selectOptions,
   setSubProductVariations,
-  // setProductDetails,
+  setCatalog,
 ) => {
   let subscriptionOptions = null;
 
@@ -72,6 +72,10 @@ const handleGetOptions = (
               structureSelectOptions(priceFunctionsOptions.data?.items, 'name') || [],
             subscriptionModels: subscriptionOptions || [],
           });
+
+          if (catalogs.data?.items?.length) {
+            setCatalog(catalogs.data?.items[0].id);
+          }
         }
       },
     );

@@ -43,28 +43,29 @@ const CreateProduct = () => {
   useEffect(() => {
     let isCancelled = false;
     parentId
-      ? api.getProductById(parentId).then(({ data: product }) => {
-        if (!isCancelled) {
-          const checkedProduct = productRequiredFields(product);
-          handleGetProductDetails(
-            checkedProduct?.descriptionId,
-            setVariablesDescriptions,
+      ? api.getProductById(parentId)
+        .then(({ data: product }) => {
+          if (!isCancelled) {
+            const checkedProduct = productRequiredFields(product);
+            handleGetProductDetails(
+              checkedProduct?.descriptionId,
+              setVariablesDescriptions,
+              setProductDetails,
+            );
+            setCurrentProductData(backToFront(checkedProduct));
+          }
+          const { customerId: _customerId, id, descriptionId } = product;
+          handleGetOptions(
+            _customerId,
+            id,
+            descriptionId,
+            isCancelled,
+            setSelectOptions,
+            selectOptions,
+            setSubProductVariations,
             setProductDetails,
           );
-          setCurrentProductData(backToFront(checkedProduct));
-        }
-        const { customerId: _customerId, id, descriptionId } = product;
-        handleGetOptions(
-          _customerId,
-          id,
-          descriptionId,
-          isCancelled,
-          setSelectOptions,
-          selectOptions,
-          setSubProductVariations,
-          setProductDetails,
-        );
-      })
+        })
       : handleGetOptions(
         customerId,
         null,
@@ -73,8 +74,11 @@ const CreateProduct = () => {
         setSelectOptions,
         selectOptions,
         setSubProductVariations,
-        () => { },
+        (catalogId) => {
+          setCurrentProductData((c) => ({ ...c, catalogId }));
+        },
       );
+
     return () => {
       isCancelled = true;
     };
