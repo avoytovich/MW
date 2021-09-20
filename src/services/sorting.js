@@ -17,6 +17,7 @@ export const sortKeys = {
   prices: 'pricesSortParams',
   priceFunctions: 'priceFunctionsSortParams',
   carts: 'cartsSortParams',
+  endUsersGroups: 'endUsersGroupsSortParams',
   licenses: 'licensesSortParams',
   autoFulfillments: 'autoFulfillmentsSortParams',
   manualFulfillments: 'manualFulfillmentsSortParams',

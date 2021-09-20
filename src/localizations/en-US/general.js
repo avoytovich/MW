@@ -89,6 +89,8 @@ const general = {
   },
   cart: 'Cart',
   addCart: 'Add Cart',
+  endUsersGroups: 'End-users Groups',
+  addEndUsersGroups: 'Add End-users Groups',
   findColumn: 'Find column',
   hideAll: 'Hide All',
   showAll: 'Show All',

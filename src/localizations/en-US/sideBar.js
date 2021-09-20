@@ -15,6 +15,7 @@ const sideBar = {
     stores: 'Stores',
     orders: 'Orders',
     archivedOrders: 'Archived Orders',
+    endUsersGroups: 'End-users Groups',
     invoicesCreditNotes: 'Invoices / Credit Notes',
     subscriptions: 'Subscriptions',
     salesCustomers: 'Sales & customers',

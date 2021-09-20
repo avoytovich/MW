@@ -146,6 +146,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteEndUsersGroups(id) {
+    const url = `/endusers/groups//${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;

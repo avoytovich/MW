@@ -428,6 +428,24 @@ const getAllApi = {
       url,
     });
   },
+
+  getEndUsersGroups({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/endusers/groups?format=short&size=${size}&page=${page}`;
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   getAutoFulfillments({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {

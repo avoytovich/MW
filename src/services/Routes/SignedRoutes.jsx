@@ -148,6 +148,14 @@ const SignedRoutes = () => {
         path={`${defPath}${parentPaths.carts}`}
         component={lazy(() => import('../../screens/CartsScreen'))}
       />
+      {/* <Route
+        path={`${defPath}${parentPaths.endUsersGroups}/:id`}
+        component={lazy(() => import('../../screens/EndUsersGroupsDetailsScreen'))}
+      /> */}
+      <Route
+        path={`${defPath}${parentPaths.endusergroups}`}
+        component={lazy(() => import('../../screens/EndUsersGroupsScreen'))}
+      />
       <Route
         path={`${defPath}${parentPaths.notifications.main}`}
         component={lazy(() => import('../../screens/NotificationScreen'))}
