@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import {
   LinearProgress,
@@ -11,7 +12,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import { toast } from 'react-toastify';
-
 import General from './SubSections/General';
 import Emails from './SubSections/Emails';
 import Orders from './SubSections/Orders';
@@ -24,7 +24,9 @@ import api from '../../api';
 import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
 import SectionLayout from '../../components/SectionLayout';
 
-const EndUserDetailScreen = () => {
+const EndUserDetailScreen = ({ location }) => {
+  const scope = location.pathname.split('/')[2];
+  const curParentPath = scope === 'enduserlist' ? parentPaths.endusers : parentPaths.resellers;
   const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
   const {
@@ -53,8 +55,8 @@ const EndUserDetailScreen = () => {
     <>
       <Box mx={2}>
         <CustomBreadcrumbs
-          url={parentPaths.endusers}
-          section={localization.t('labels.endUsers')}
+          url={curParentPath}
+          section={scope === 'enduserlist' ? localization.t('labels.endUsers') : localization.t('labels.resellers')}
           id={endUser.id}
         />
       </Box>
@@ -100,6 +102,7 @@ const EndUserDetailScreen = () => {
         curTab === 0 && curEndUser && (
           <SectionLayout label='general'>
             <General
+              scope={scope}
               setInvalidVatNumber={setInvalidVatNumber}
               invalidVatNumber={invalidVatNumber}
               curEndUser={curEndUser}
@@ -130,6 +133,10 @@ const EndUserDetailScreen = () => {
 
     </>
   );
+};
+
+EndUserDetailScreen.propTypes = {
+  location: PropTypes.object,
 };
 
 export default EndUserDetailScreen;

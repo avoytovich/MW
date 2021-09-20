@@ -30,7 +30,7 @@ import './orderDetailsScreen.scss';
 
 const OrderDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
-
+  const [curLanguage, setCurLanguage] = useState('');
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   // const [orderHasChanges, setOrderChanges] = useState(false);
@@ -68,6 +68,7 @@ const OrderDetailsScreen = () => {
         if (!isCancelled) {
           setOrderData(order);
           setCurrentOrderData(order);
+          setCurLanguage(order.endUser.locale);
         }
         Promise.allSettled([
           api.getCustomerById(order.customer?.id),
@@ -199,6 +200,7 @@ const OrderDetailsScreen = () => {
                 </Typography>
               </Box>
               <OrderRow
+                curLanguage={curLanguage}
                 customerId={currentOrderData.customer?.id}
                 creationDate={currentOrderData.createDate}
                 rowData={orderRows.general}

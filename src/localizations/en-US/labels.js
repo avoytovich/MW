@@ -588,6 +588,7 @@ const labels = {
   coupon: 'Coupon',
   campaign: 'Campaign',
   singleUseCode: 'Single use code',
+  resellers: 'Resellers',
 };
 
 export default labels;
