@@ -34,7 +34,7 @@ const parentPaths = {
   marketing: '/marketing',
 
   endusers: '/endusers/enduserlist',
-  endusergroups: '/endusers/endusergroups',
+  endusergroups: '/endusers/end-user-groups',
   resellers: '/endusers/resellers',
 
   reports: '/reports',
