@@ -27,7 +27,6 @@ const AbandonedScreen = () => {
     const res = await api.getAbandoned({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
-    console.log('res', res);
     return generateData(res.data);
   };
 

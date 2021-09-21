@@ -56,7 +56,6 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  console.log('data in generateData', data);
   const values = data.items.map((val) => ({
     campaignId: val?.id,
     createDate: moment(val?.createDate).format('D MMM YYYY'),
@@ -64,7 +63,7 @@ const generateData = (data) => {
     customer: val?.customerId,
     name: val?.name,
     type: val?.type,
-    status: val?.status === 'Active' ? true : false,
+    status: val?.status === 'Active',
     startDate: moment(val?.startDate).format('D MMM YYYY'),
     endDate: moment(val?.endDate).format('D MMM YYYY'),
   }));

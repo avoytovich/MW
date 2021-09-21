@@ -28,8 +28,8 @@ const OrderRow = ({
       const date = moment(creationDate).format('YYYY-MM-DD');
       api.getTermsAndConditions(customerId, curLanguage, date)
         .then((response) => {
-          console.log(response)
-          downloadPdf(response.data, data.label)});
+          downloadPdf(response.data, data.label);
+        });
     }
   };
 

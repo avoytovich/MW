@@ -24,7 +24,7 @@ const CustomBreadcrumbs = ({ section, url, id }) => {
 
       <Typography component='div' color='secondary'>
         <Box fontWeight={500}>
-          {' '}
+          <>&nbsp;</>
           {id}
         </Box>
       </Typography>

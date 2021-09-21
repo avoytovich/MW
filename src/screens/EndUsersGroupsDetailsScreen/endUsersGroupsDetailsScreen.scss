@@ -1,0 +1,6 @@
+.MuiSvgIcon-root{
+  &.disabled{
+    opacity: .15;
+    pointer-events: none;
+  }
+}
