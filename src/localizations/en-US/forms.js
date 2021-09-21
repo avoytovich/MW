@@ -50,6 +50,10 @@ const Forms = {
       remark: 'Product delivery remark',
       defaultLanguage: 'Default language',
       deliveryRemark: 'Delivery remark',
+      localizedShortDesc: 'Short Description',
+      localizedLongDesc: 'Long Description',
+      localizedBanner: 'Banner Image URL',
+      localizedLogo: 'Logo URL',
     },
     allowOrderDetailsOnCheckoutConfirmation:
       'Display product delivery on checkout confirmation',

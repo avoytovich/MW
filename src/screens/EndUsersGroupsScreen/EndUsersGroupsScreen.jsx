@@ -23,7 +23,7 @@ import {
 } from '../../services/sorting';
 
 const EndUsersGroupsScreen = () => {
-  const scope = 'end-user-groups';
+  const scope = 'endusergroups';
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -82,7 +82,7 @@ const EndUsersGroupsScreen = () => {
             size="large"
             variant="contained"
             component={Link}
-            to={`${parentPaths.endUsersGroups}/add`}
+            to={`${parentPaths.endusergroups}/add`}
           >
             {localization.t('general.addEndUsersGroups')}
           </Button>

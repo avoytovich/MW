@@ -161,6 +161,8 @@ const labels = {
   productsByParent: 'Products By Parent',
   productsByReference: 'Products By Reference',
   endUserGroups: 'End-User Groups',
+  endUserGroup: 'End-User Group',
+  endUserGroupId: 'End-User Group ID',
   countries: 'Countries',
   endUserMails: 'End-User Mails',
   maximumUsesPerStore: 'Maximum Uses Per Store',

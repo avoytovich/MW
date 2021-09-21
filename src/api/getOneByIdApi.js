@@ -169,6 +169,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getEndUsersGroupsById(id) {
+    const url = `/endusers/groups/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getEndUsersGroupsByCustomerId(id) {
     const url = `/endusers/groups?customerId=${id}&size=30&page=0`;
     return axiosInstance({
