@@ -100,7 +100,7 @@ const NotificationHistoryDetailsScreen = () => {
               className="customer-value"
               onClick={() => history.push(`/settings/administration/customers/${notificationHistory.customerId}`)} // ToDo: should be replaced with new customer route
             >
-              {notificationHistory.customerId}
+              {notificationHistory?.customerId}
             </span>
           </Typography>
           <FileCopyIcon
@@ -158,21 +158,18 @@ const NotificationHistoryDetailsScreen = () => {
         return renderNotificationHistoryId(each);
       default:
         return renderDefault(each);
-        break;
     }
   };
 
   if (loading) return <LinearProgress />;
   return (
-    notificationHistory && customer && (
-      <Grid container spacing={2} className="wrapper-notification-history">
-        {mapStructure.map((each) => (
-          <Grid container spacing={2} key={each.label}>
-            {renderFields(each)}
-          </Grid>
-        ))}
-      </Grid>
-    )
+    <Grid container spacing={2} className="wrapper-notification-history">
+      {mapStructure.map((each) => (
+        <Grid container spacing={2} key={each.label}>
+          {renderFields(each)}
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
