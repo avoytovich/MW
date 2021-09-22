@@ -7,6 +7,7 @@ const shouldCopy = (key) => (
   || key === 'paymentID'
   || key === 'transactionID'
   || key === 'cardBin'
+  || key === 'customerId'
 );
 
 const tabLabels = ['general', 'products', 'events'];
