@@ -45,6 +45,17 @@ const TableRowComponent = ({
       .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
   };
 
+  const makeCopy = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
+  };
+
+  const shouldCopy = (key) => (
+    key === 'id'
+    || key === 'executionId'
+    || key === 'processingDataLicenseId'
+  );
+
   const parsePath = (path) => {
     let newPath = path;
 
@@ -102,6 +113,13 @@ const TableRowComponent = ({
                   : valueToShow === 'DISABLED' || valueToShow === false ? <CloseIcon className="statusDisable" /> : valueToShow
               }
             </Typography>
+            {item.value && shouldCopy(item.id) && (
+              <FileCopyIcon
+                onClick={() => makeCopy(valueToShow)}
+                color="secondary"
+                className="copyIcon"
+              />
+            )}
           </Box>
         </Grid>
       );

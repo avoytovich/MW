@@ -71,6 +71,7 @@ const OrderRow = ({
               <FileCopyIcon
                 onClick={() => makeCopy(item.value)}
                 color="secondary"
+                className="copyIcon"
               />
             )}
           </Box>

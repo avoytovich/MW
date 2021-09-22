@@ -105,6 +105,7 @@ const general = {
   addFilterView: 'Add Filter View',
   applyChangesTo: 'Apply changes to',
   abandoned: 'Abandoned',
+  licenses: 'Licenses',
 };
 
 export default general;

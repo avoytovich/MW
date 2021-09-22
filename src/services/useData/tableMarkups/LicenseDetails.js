@@ -13,7 +13,11 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.executionId'), id: 'executionId' },
+    {
+      value: localization.t('labels.executionId'),
+      id: 'executionId',
+      key: 'executionId',
+    },
     {
       value: localization.t('labels.timeOfTheRequest'),
       id: 'requestTime',
@@ -29,17 +33,18 @@ const markUp = {
     {
       value: localization.t('labels.processingDataLicenseId'),
       id: 'processingDataLicenseId',
+      key: 'processingDataLicenseId',
     },
   ],
 };
 
 const generateData = (data) => {
   const values = data.operationExecutions.map((val) => ({
-    executionId: val.id,
-    requestTime: moment(val.requestTimestamp).format('D MMM YYYY, h:mm:ss'),
-    requestOperation: val.request.operation,
-    requestUserEmail: val.request.user ? val.request.user.email : '-',
-    processingDataLicenseId: val.processingData.licenseId,
+    executionId: val?.id,
+    requestTime: moment(val?.requestTimestamp).format('D MMM YYYY, h:mm:ss'),
+    requestOperation: val?.request?.operation,
+    requestUserEmail: val?.request?.user ? val?.request?.user?.email : '-',
+    processingDataLicenseId: val?.processingData?.licenseId,
 
   }));
 

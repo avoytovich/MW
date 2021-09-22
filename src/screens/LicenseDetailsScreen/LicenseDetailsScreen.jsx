@@ -1,23 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
-  Box, Typography, LinearProgress,
+  Box, Typography, LinearProgress, Tabs, Tab, Grid,
 } from '@material-ui/core';
+import parentPaths from '../../services/paths';
 
 import api from '../../api';
 import { generateData, defaultShow } from '../../services/useData/tableMarkups/LicenseDetails';
 
-import OrderDetailsTableComponent from '../../components/TableComponent/OrderDetailsTableComponent';
-import SelectCustom from '../../components/Inputs/SelectCustom';
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
+import TableComponent from '../../components/TableComponent';
+import OrderRow from '../OrderDetailsScreen/OrderRow';
 
 import localization from '../../localization';
 
-const LicenseScreen = () => {
+const LicenseDetailsScreen = () => {
   const { id } = useParams();
+  const scope = 'licensesDetails';
 
+  const tabLabels = ['general', 'operationExecutions'];
+
+  const [curTab, setCurTab] = useState(0);
   const [license, setLicense] = useState(null);
   const [tableData, settableData] = useState(null);
-  const [newStatus, setStatus] = useState('');
 
   useEffect(() => {
     api
@@ -26,20 +31,18 @@ const LicenseScreen = () => {
         setLicense(data);
         const eventsTableData = generateData(data);
         settableData(eventsTableData);
-        setStatus(data.status);
       });
   }, []);
 
   if (license === null) return <LinearProgress />;
 
-  const markup = [
-    { label: localization.t('labels.general'), header: true },
-    { label: localization.t('labels.licenseId'), value: license.id },
-    { label: localization.t('labels.status'), dropdown: true, dropDownValue: [{ id: license.status, value: license.status }] },
-    { label: localization.t('labels.customer'), value: license.customerId },
+  const general = [
+    { label: localization.t('labels.status'), value: license.status },
+    { label: localization.t('labels.customer'), value: license.customerId, key: 'customerId' },
     { label: localization.t('labels.orderId'), value: license.checkout.orderId },
     { label: localization.t('labels.orderLineId'), value: license.checkout.orderLineId },
-    { label: localization.t('labels.user'), header: true },
+  ];
+  const user = [
     { label: localization.t('labels.firstName'), value: license.user.firstName },
     { label: localization.t('labels.lastName'), value: license.user.lastName },
     { label: localization.t('labels.email'), value: license.user.email },
@@ -47,68 +50,101 @@ const LicenseScreen = () => {
     { label: localization.t('labels.zipCode'), value: license.user.zipCode },
     { label: localization.t('labels.country'), value: license.user.country },
     { label: localization.t('labels.locale'), value: license.user.locale },
-    { label: localization.t('labels.product'), header: true },
+  ];
+  const product = [
     { label: localization.t('labels.productId'), value: license.product.id },
     { label: localization.t('labels.licenseProviderDefinitionId'), value: license.product.licenseProviderDefinitionId },
     { label: localization.t('labels.publisherProductId'), value: license.product.publisherProductId },
     { label: localization.t('labels.name'), value: license.product.name },
-    { label: localization.t('labels.operationExecutions'), header: true },
   ];
 
   return (
     <>
+      <Box mx={2}>
+        <CustomBreadcrumbs
+          url={`${parentPaths.licenses}`}
+          section={localization.t('general.licenses')}
+          id={id}
+        />
+      </Box>
+      <Box py={2} mt={3}>
+        <Typography gutterBottom variant='h3'>
+          {localization.t('labels.licenseId')}
+        </Typography>
+      </Box>
+      <Box my={2} bgcolor='#fff'>
+        <Tabs
+          value={curTab}
+          indicatorColor='primary'
+          textColor='primary'
+          onChange={(event, newValue) => {
+            setCurTab(newValue);
+          }}
+          aria-label='disabled tabs example'
+        >
+          {tabLabels.map((tab) => (
+            <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+          ))}
+        </Tabs>
+      </Box>
 
-      {markup.map((val) => (
-        <Box key={val.label}>
-
-          {val.dropdown && (
-            <Box my={2} width='100%'>
-              <SelectCustom
-                isDisabled
-                value={newStatus}
-                selectOptions={val.dropDownValue}
-                onChangeSelect={(e) => setStatus(e.target.value)}
-                label='status'
-              />
+      {curTab === 0 && (
+        <Grid container spacing={2}>
+          <Grid item md={4} xs={12}>
+            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
+              <Box py={3} pl={2}>
+                <Typography gutterBottom variant='h4'>
+                  {localization.t('labels.general')}
+                </Typography>
+              </Box>
+              <OrderRow rowData={general} />
             </Box>
-          )}
-
-          {val.header && (
-            <Box my={2} width='100%'>
-              <Typography variant='h2'>
-                {val.label}
-              </Typography>
-            </Box>
-          )}
-          {val.value && (
-            <Box display='flex' flexDirection='row'>
-              <Box my={2} width='30%'>
-                <Typography variant='h5'>
-                  {val.label}
+          </Grid>
+          <Grid item md={4} xs={12}>
+            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
+              <Box py={3} pl={2}>
+                <Typography gutterBottom variant='h4'>
+                  {localization.t('labels.user')}
                 </Typography>
               </Box>
 
-              <Box my={2} width='70%'>
-                <Typography>
-                  {val.value}
+              <OrderRow rowData={user} />
+            </Box>
+          </Grid>
+          <Grid item md={4} xs={12}>
+            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
+              <Box py={3} pl={2}>
+                <Typography gutterBottom variant='h4'>
+                  {localization.t('labels.product')}
                 </Typography>
               </Box>
+              <OrderRow rowData={product} />
             </Box>
-          )}
+          </Grid>
+        </Grid>
+      )}
+
+      {curTab === 1 && (
+      <>
+        <Box my={2} pt={2} pb={2} width='100%'>
+          <Typography variant='h2'>
+            {localization.t('labels.operationExecutions')}
+          </Typography>
         </Box>
-      ))}
-
-      <OrderDetailsTableComponent
-        showColumn={defaultShow}
-        tableData={tableData}
-        isLoading={tableData === null}
-        customPath='disabled'
-        errorHighlight='processingError'
-        noActions
-      />
+        <TableComponent
+          defaultShowColumn={defaultShow}
+          tableData={tableData}
+          scope={scope}
+          noActions
+          noTableActionsBar
+          noEditDeleteActions
+          customPath
+        />
+      </>
+      )}
 
     </>
   );
 };
 
-export default LicenseScreen;
+export default LicenseDetailsScreen;
