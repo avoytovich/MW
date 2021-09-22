@@ -1,4 +1,5 @@
 import React from 'react';
+import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
 import FulfillmentAndSubscription from './FulfillmentAndSubscription';
@@ -44,7 +45,7 @@ const selectOptions = {
     { id: 1, displayName: 'test_1' },
     { id: 2, displayName: 'test_2' },
   ],
-  renewingProducts: ['test'],
+  renewingProducts: [{id: 'test', value: 'test'}],
   subscriptionModels: ['template'],
 };
 
@@ -124,5 +125,12 @@ describe('Product <FulfillmentAndSubscription/>', () => {
     const wrap = wrapper.find('div[data-test="renewingProducts"]');
     expect(wrap.exists()).toBeTruthy();
     expect(wrap.find('input').instance().value).toEqual(nextGenerationOf[0]);
+  });
+
+  it('renders correctly', () => {
+    const tree = renderer
+      .create(wrapper)
+      .toJSON();
+    expect(tree).toMatchSnapshot();
   });
 });
