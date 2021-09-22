@@ -1,9 +1,10 @@
 import React from 'react';
 import { Tab } from '@material-ui/core';
 import { mount } from 'enzyme';
-import { act } from 'react-dom/test-utils';
 
 import MyAccountScreen from './MyAccountScreen';
+
+import { waitForComponentToPaint } from '../../components/utils/Tests/helpers';
 import CustomCard from '../../components/utils/CustomCard';
 
 import api from '../../api';
@@ -40,19 +41,16 @@ jest.mock('../../api', () => ({
 }));
 
 jest.mock('react-redux', () => ({
-  useDispatch: jest.fn(),
+  useDispatch: () => jest.fn(),
   useSelector: jest.fn(),
 }));
 
 describe('<MyAccountScreen />', () => {
   let wrapper;      
 
-  beforeEach(async () => {
-    await act(async() => {
-      wrapper = mount(<MyAccountScreen />);
-    });
-
-    wrapper.update();
+  beforeEach(async() => {
+    wrapper = mount(<MyAccountScreen />);
+    await waitForComponentToPaint(wrapper);
   });
 
   afterAll(() => {
@@ -62,9 +60,9 @@ describe('<MyAccountScreen />', () => {
   it('should fetch identity data', () => {
     expect(api.getIdentityById).toHaveBeenCalledTimes(1);
     expect(api.getStores).toHaveBeenCalledTimes(1);
-    expect(api.getStores).toHaveBeenCalledWith(0, '&customerId=test-customer-id');
+    expect(api.getStores).toHaveBeenCalledWith({ filters: '&customerId=test-customer-id' });
     expect(api.getProducts).toHaveBeenCalledTimes(1);
-    expect(api.getProducts).toHaveBeenCalledWith(0, '&customerId=test-customer-id');
+    expect(api.getProducts).toHaveBeenCalledWith({ filters: '&customerId=test-customer-id' });
   });
 
   it('should have My Account tab', () => {
@@ -72,8 +70,8 @@ describe('<MyAccountScreen />', () => {
     expect(wrapper.find(Tab).first().text()).toEqual('My Account');
   });
 
-  it('should have two <CustomCard />', () => {
-    expect(wrapper.find(CustomCard)).toHaveLength(2);
+  it('should have three <CustomCard />', () => {
+    expect(wrapper.find(CustomCard)).toHaveLength(3);
   });
 
   it('should have identity details populated to form elements', () => {
@@ -91,5 +89,10 @@ describe('<MyAccountScreen />', () => {
 
   it('should have correct products data populated', async() => {
     expect(api.getProducts()).resolves.toEqual(mockProductsData);
+  });
+
+  it('should have short error details by default', async() => {
+    const errorSwitch = wrapper.find('input[name="errorDetails"]');
+    expect(errorSwitch.instance().checked).toEqual(false);
   });
 });
