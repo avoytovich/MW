@@ -571,7 +571,6 @@ const labels = {
   orders: 'Orders',
   endUsers: 'End-users',
   сustomer: 'Customer',
-  bayer: 'Bayer',
   applyingReseller: 'Applying reseller',
   approvedReseller: 'Approved reseller',
   declinedReseller: 'Declined reseller',

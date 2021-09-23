@@ -22,6 +22,7 @@ const errorNotifications = {
     'Source product is amongst its own recommendations',
   invalidUrl: 'Must be a valid https:// scheme URL',
   invalidVatNumber: 'Invalid vat number',
+  hasNotGivenConsent: ' Has not given consent (refused or not asked yet)',
 };
 
 export default errorNotifications;

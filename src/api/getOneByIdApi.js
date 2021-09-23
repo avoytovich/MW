@@ -330,5 +330,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getConsents({ storeId, email }) {
+    const url = `/consent-manager/consents?format=short&storeIds=${storeId}&userEmail=${email}&page=0&size=500`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;
