@@ -266,7 +266,7 @@ const AddCartView = ({
                   setSelectedStore(val.target.value);
                 }}
               >
-                {storeOpt.items.map((option) => (
+                {storeOpt?.items.map((option) => (
                   <MenuItem key={option.id} value={option.id}>
                     {option.name}
                   </MenuItem>
