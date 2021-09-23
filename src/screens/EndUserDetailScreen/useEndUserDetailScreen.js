@@ -40,7 +40,7 @@ const useEndUserDetailScreen = (id) => {
           api.getOrdersByEndUserId(data.enduserId),
           api.getConsents({ storeId: data.storeId, email: emailVale }),
         );
-        if (data.company.companyName !== '' && data.company.vatNumber) {
+        if (data.company?.companyName !== '' && data.company?.vatNumber) {
           promiseArray.push(api.vatNumberCheck(data.company.vatNumber, data.country));
         }
         Promise.allSettled(promiseArray).then((

@@ -99,6 +99,13 @@ const getFewByIdsApi = {
       url,
     });
   },
+  getEnduserGroupsByIds(ids) {
+    const url = `/endusers/groups?${ids}&size=30&page=0`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 
 export default getFewByIdsApi;

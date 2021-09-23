@@ -528,6 +528,23 @@ const getAllApi = {
       url,
     });
   },
+  getResellers(
+    {
+      page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams, type,
+    },
+  ) {
+    let url = `/endusers?format=short&type=${type}&size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getAbandoned({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
@@ -544,6 +561,4 @@ const getAllApi = {
     });
   },
 };
-
-
 export default getAllApi;

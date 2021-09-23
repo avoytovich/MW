@@ -902,6 +902,52 @@ const filters = {
       type: 'text',
     },
   ],
+  resellers: [
+    {
+      id: 'id',
+      label: localization.t('labels.endUserId'),
+      type: 'text',
+    },
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
+    },
+    {
+      id: 'company.companyName',
+      label: localization.t('labels.companyName'),
+      type: 'text',
+    },
+    {
+      id: 'email',
+      label: localization.t('labels.emailAddress'),
+      type: 'text',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+      ],
+    },
+    {
+      id: 'city',
+      label: localization.t('labels.city'),
+      type: 'text',
+    },
+    {
+      id: 'streetAddress',
+      label: localization.t('labels.streetAddress'),
+      type: 'text',
+    },
+  ],
 };
 
 export default filters;

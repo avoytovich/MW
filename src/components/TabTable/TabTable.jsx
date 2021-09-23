@@ -12,7 +12,15 @@ import {
 
 const TabTable = ({ tabObject }) => {
   const {
-    sortKey, generateData, request, deleteFunc, label, scope, defaultShow, secondaryRequest,
+    sortKey,
+    generateData,
+    request,
+    deleteFunc,
+    label,
+    scope,
+    defaultShow,
+    secondaryRequest,
+    additionalParams,
   } = tabObject;
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -43,7 +51,11 @@ const TabTable = ({ tabObject }) => {
   const requests = async (rowsPerPage, filtersUrl) => {
     let secondaryData;
     const res = await request({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      ...additionalParams,
+      page: currentPage - 1,
+      size: rowsPerPage,
+      filters: filtersUrl,
+      sortParams,
     });
     if (secondaryRequest) {
       secondaryData = await secondaryRequest(res.data);

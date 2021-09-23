@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -58,7 +58,7 @@ const TableActionsBar = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [showFilters, setShowFilters] = useState(null);
   const classes = useStyles();
-
+  const csvLink = useRef();
   const dispatch = useDispatch();
   const doRefresh = () => dispatch(refreshTable(scope));
 
@@ -110,37 +110,33 @@ const TableActionsBar = ({
                   <ViewColumnIcon />
                 </IconButton>
               </Tooltip>
-
               <Tooltip arrow title="Filter" placement="top">
-                <span>
-                  <IconButton
-                    className={classes.button}
-                    disabled={VALID_FILTER_SCOPES.indexOf(scope) < 0}
-                    onClick={(e) => setShowFilters(e.currentTarget)}
-                    edge='start'
-                    aria-label='refresh'
-                  >
-                    <FilterListIcon color={showFilters ? 'primary' : 'secondary'} />
-                    {filtersCount > 0 && (
-                      <Box
-                        position='absolute'
-                        width='18px'
-                        height='18px'
-                        bgcolor='#4791db'
-                        fontSize='12px'
-                        color='#fff'
-                        top='3px'
-                        right='4px'
-                        lineHeight='18px'
-                        borderRadius='50%'
-                      >
-                        {filtersCount}
-                      </Box>
-                    )}
-                  </IconButton>
-                </span>
+                <IconButton
+                  className={classes.button}
+                  disabled={VALID_FILTER_SCOPES.indexOf(scope) < 0}
+                  onClick={(e) => setShowFilters(e.currentTarget)}
+                  edge='start'
+                  aria-label='refresh'
+                >
+                  <FilterListIcon color={showFilters ? 'primary' : 'secondary'} />
+                  {filtersCount > 0 && (
+                    <Box
+                      position='absolute'
+                      width='18px'
+                      height='18px'
+                      bgcolor='#4791db'
+                      fontSize='12px'
+                      color='#fff'
+                      top='3px'
+                      right='4px'
+                      lineHeight='18px'
+                      borderRadius='50%'
+                    >
+                      {filtersCount}
+                    </Box>
+                  )}
+                </IconButton>
               </Tooltip>
-
               <Popover
                 open={!!showFilters}
                 anchorEl={showFilters}
@@ -153,26 +149,21 @@ const TableActionsBar = ({
               >
                 <TableFilters scope={scope} onClose={() => setShowFilters(null)} />
               </Popover>
-
+              <CSVLink
+                onClick={(!headers || tableCheckedItems.length === 0)
+                  ? (e) => e.preventDefault() : () => { }}
+                className="CSVLinkBlock"
+                data={tableCheckedItems}
+                headers={csvHeaders}
+                ref={csvLink}
+                filename="table-export.csv"
+                target="_blank"
+              />
               <Tooltip arrow title="Export" placement="top">
-                <span>
-                  <CSVLink
-                    onClick={(!headers || tableCheckedItems.length === 0)
-                      ? (e) => e.preventDefault() : () => { }}
-                    className="CSVLinkBlock"
-                    data={tableCheckedItems}
-                    headers={csvHeaders}
-                    filename="table-export.csv"
-                    target="_blank"
-                  >
-                    <IconButton disabled={!headers || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><GetAppIcon /></IconButton>
-                  </CSVLink>
-                </span>
+                <IconButton onClick={() => csvLink.current.link.click()} disabled={!headers || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><GetAppIcon /></IconButton>
               </Tooltip>
               <Tooltip arrow title="Delete" placement="top">
-                <span>
-                  <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
-                </span>
+                <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
               </Tooltip>
               {findByCC
                 && (
@@ -181,9 +172,7 @@ const TableActionsBar = ({
                   </Tooltip>
                 )}
               <Tooltip arrow title="Refresh" placement="top">
-                <span>
-                  <IconButton className={classes.button} disabled={VALID_REFRESH_SCOPES.indexOf(scope) < 0} edge='start' color='secondary' onClick={doRefresh}><RefreshIcon /></IconButton>
-                </span>
+                <IconButton className={classes.button} disabled={VALID_REFRESH_SCOPES.indexOf(scope) < 0} edge='start' color='secondary' onClick={doRefresh}><RefreshIcon /></IconButton>
               </Tooltip>
               <ShowColumnPopper
                 anchorEl={anchorEl}
