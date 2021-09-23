@@ -1,4 +1,4 @@
-const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-history', 'carts', 'licenses', 'recommendations', 'abandoned'];
+const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-history', 'carts', 'licenses', 'recommendations', 'abandoned', 'resellers'];
 const VALID_FILTER_SCOPES = [
   'productlist',
   'stores',
@@ -23,6 +23,7 @@ const VALID_FILTER_SCOPES = [
   'licenseProviderDefinitions',
   'recommendations',
   'abandoned',
+  'resellers',
   'enduserlist',
 ];
 

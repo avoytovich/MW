@@ -590,6 +590,9 @@ const labels = {
   campaign: 'Campaign',
   singleUseCode: 'Single use code',
   resellers: 'Resellers',
+  pendingApprovals: 'Pending approvals',
+  approved: 'Approved',
+  declined: 'Declined',
 };
 
 export default labels;
