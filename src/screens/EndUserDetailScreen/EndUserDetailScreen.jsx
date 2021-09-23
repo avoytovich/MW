@@ -25,7 +25,7 @@ import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring
 import SectionLayout from '../../components/SectionLayout';
 
 const EndUserDetailScreen = ({ location }) => {
-  const scope = location.pathname.split('/')[2];
+  const scope = location.pathname.split('/endusers/')[1].split('/')[0];
   const curParentPath = scope === 'enduserlist' ? parentPaths.endusers : parentPaths.resellers;
   const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
@@ -41,6 +41,7 @@ const EndUserDetailScreen = ({ location }) => {
     emails,
     invalidVatNumber,
     setInvalidVatNumber,
+    consent,
   } = useEndUserDetailScreen(id);
   const handleSave = () => {
     const formattedData = removeEmptyPropsInObject(curEndUser);
@@ -108,6 +109,7 @@ const EndUserDetailScreen = ({ location }) => {
               curEndUser={curEndUser}
               setCurEndUser={setCurEndUser}
               selectOptions={selectOptions}
+              consent={consent}
             />
           </SectionLayout>
         )

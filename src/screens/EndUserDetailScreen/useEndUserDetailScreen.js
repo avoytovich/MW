@@ -15,6 +15,8 @@ const useEndUserDetailScreen = (id) => {
   const [selectOptions, setSelectOptions] = useState({ groups: null });
   const [orders, setOrders] = useState(null);
   const [emails, setEmails] = useState(null);
+  const [consent, setConsent] = useState(null);
+
   const [invalidVatNumber, setInvalidVatNumber] = useState('');
 
   useEffect(() => {
@@ -32,14 +34,18 @@ const useEndUserDetailScreen = (id) => {
           const emailsTableData = generateEmails(data.emails);
           setEmails(emailsTableData);
         }
+        const emailVale = encodeURIComponent(data.email).replace(new RegExp("'", 'g'), "''");
         promiseArray.push(
           api.getGroupsOptionsByCustomerId(data.customerId),
           api.getOrdersByEndUserId(data.enduserId),
+          api.getConsents({ storeId: data.storeId, email: emailVale }),
         );
         if (data.company.companyName !== '' && data.company.vatNumber) {
-          promiseArray.push(api.vatNumberCheck(data.company.vatNumber, data.country))
+          promiseArray.push(api.vatNumberCheck(data.company.vatNumber, data.country));
         }
-        Promise.allSettled(promiseArray).then(([groupsOptions, ordersData, vatNumber]) => {
+        Promise.allSettled(promiseArray).then((
+          [groupsOptions, ordersData, vatNumber, consentData],
+        ) => {
           setSelectOptions({
             ...selectOptions,
             groups: structureSelectOptions(groupsOptions.value?.data.items, 'name') || [],
@@ -47,6 +53,9 @@ const useEndUserDetailScreen = (id) => {
           if (ordersData.value?.data.items.length) {
             const orderTableData = generateOrders(ordersData.value?.data.items);
             setOrders(orderTableData);
+          }
+          if (consentData?.value?.data.items.length) {
+            setConsent(consentData);
           }
           if (vatNumber && vatNumber.status === 'rejected') {
             setInvalidVatNumber(localization.t('errorNotifications.invalidVatNumber'));
@@ -82,6 +91,7 @@ const useEndUserDetailScreen = (id) => {
     emails,
     invalidVatNumber,
     setInvalidVatNumber,
+    consent,
   };
 };
 

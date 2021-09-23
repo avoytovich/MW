@@ -20,7 +20,7 @@ import localization from '../../../localization';
 import { InputCustom, SelectCustom } from '../../../components/Inputs';
 
 const General = ({
-  curEndUser, setCurEndUser, selectOptions, invalidVatNumber, setInvalidVatNumber, scope,
+  curEndUser, setCurEndUser, selectOptions, invalidVatNumber, setInvalidVatNumber, scope, consent,
 }) => {
   const handleCheckVatNumber = (value) => {
     if (value !== '') {
@@ -65,7 +65,6 @@ const General = ({
             />
           </Box>
         </Box>
-
         <Box display="flex" p={2} flexDirection="row" alignItems="baseline">
           <Box width='30%'>
             <Typography variant='h5'>{localization.t('labels.сustomer')}</Typography>
@@ -103,7 +102,7 @@ const General = ({
             <Typography variant='h5'>{localization.t('labels.consentStatus')}</Typography>
           </Box>
           <Box>
-            <Typography>Has not given consent (refused or not asked yet)</Typography>
+            <Typography>{consent ? '' : localization.t('errorNotifications.hasNotGivenConsent')}</Typography>
           </Box>
         </Box>
         <Box display="flex" p={2} flexDirection="row" alignItems="baseline">
@@ -138,7 +137,7 @@ const General = ({
                   value='BUYER'
                   disabled={scope === 'resellers'}
                   control={<Radio color='primary' />}
-                  label={localization.t('labels.bayer')}
+                  label={localization.t('labels.buyer')}
                 />
                 <FormControlLabel
                   disabled={scope !== 'resellers'}
@@ -318,6 +317,7 @@ General.propTypes = {
   selectOptions: PropTypes.object,
   setInvalidVatNumber: PropTypes.func,
   scope: PropTypes.string,
+  consent: PropTypes.array,
 };
 
 export default General;
