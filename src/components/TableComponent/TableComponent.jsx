@@ -185,7 +185,7 @@ const TableComponent = ({
       )}
     </>
   ) : (
-    <Typography>{localization.t('general.noResults')}</Typography>
+    <Typography data-test='noResultsNotification'>{localization.t('general.noResults')}</Typography>
   );
 };
 
