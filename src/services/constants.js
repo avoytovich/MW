@@ -23,6 +23,7 @@ const VALID_FILTER_SCOPES = [
   'licenseProviderDefinitions',
   'recommendations',
   'abandoned',
+  'enduserlist',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];
