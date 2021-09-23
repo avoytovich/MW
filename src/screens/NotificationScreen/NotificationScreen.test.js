@@ -11,7 +11,6 @@ jest.mock('react-redux', () => ({
 jest.mock('../../services/useData');
 describe('<NotificationScreen/>', () => {
   let wrapper;
-
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -30,7 +29,23 @@ describe('<NotificationScreen/>', () => {
     expect(wrapper.find(Tab).at(2).text()).toEqual('Notifications History');
   });
 
-  it('should show Notification Definition tab if path is /settings/notification-definition', () => {
+  it('should show Notifications tab be active if path is /settings/notifications', () => {
+    wrapper = mount(
+      <Router>
+        <NotificationScreen
+          location={{ pathname: '/settings/notifications' }}
+        />
+      </Router>,
+    );
+    expect(
+      wrapper
+        .find(Tab)
+        .first()
+        .getDOMNode()
+        .attributes.getNamedItem('aria-selected').value,
+    ).toEqual('true');
+  });
+  it('should Notification Definition tab be active if path is /settings/notification-definition', () => {
     wrapper = mount(
       <Router>
         <NotificationScreen
@@ -45,15 +60,6 @@ describe('<NotificationScreen/>', () => {
         .getDOMNode()
         .attributes.getNamedItem('aria-selected').value,
     ).toEqual('true');
-  });
-  it('should Notifications tab be active if path is /settings/notifications', () => {
-    wrapper = mount(
-      <Router>
-        <NotificationScreen
-          location={{ pathname: '/settings/notifications' }}
-        />
-      </Router>,
-    );
     expect(
       wrapper
         .find(Tab)
@@ -61,12 +67,5 @@ describe('<NotificationScreen/>', () => {
         .getDOMNode()
         .attributes.getNamedItem('aria-selected').value,
     ).toEqual('false');
-    expect(
-      wrapper
-        .find(Tab)
-        .first()
-        .getDOMNode()
-        .attributes.getNamedItem('aria-selected').value,
-    ).toEqual('true');
   });
 });
