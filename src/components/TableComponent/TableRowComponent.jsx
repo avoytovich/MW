@@ -84,6 +84,7 @@ const TableRowComponent = ({
       }
       return (
         <Grid
+          data-test='tableCellItem'
           className="tableCellItemGrid"
           item
           xs
@@ -130,6 +131,7 @@ const TableRowComponent = ({
   return (
     <Box className={`tableRowGrid ${rowItem[errorHighlight] ? 'error-row' : ''}`} data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
       <Grid
+        data-test='tableRow'
         spacing={1}
         onClick={() => customPath !== 'disabled' && history.push(customPath ? parsePath(customPath) : `${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}
