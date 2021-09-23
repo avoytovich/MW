@@ -16,7 +16,12 @@ import LocalizationInputs from './LocalizationInputs';
 
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
-const LocalizedContent = ({ currentStoreData, setCurrentStoreData }) => {
+const LocalizedContent = ({
+  currentStoreData,
+  setCurrentStoreData,
+  selectedLang,
+  setSelectedLang,
+}) => {
   const [value, setValue] = useState(0);
   const [availLocales, setAvailLocales] = useState([]);
   const [newLangValue, setNewLangValue] = useState('');
@@ -26,6 +31,7 @@ const LocalizedContent = ({ currentStoreData, setCurrentStoreData }) => {
     e.stopPropagation();
 
     if (value === locale) {
+      setSelectedLang(0);
       setValue(0);
     }
 
@@ -48,6 +54,7 @@ const LocalizedContent = ({ currentStoreData, setCurrentStoreData }) => {
     if (newLangValue) {
       if (availLocales.indexOf(newLangValue) < 0) {
         setCurrentStoreData((cur) => ({ ...cur, saleLocales: [...cur.saleLocales, newLangValue] }));
+        setSelectedLang(newLangValue);
         setNewLangValue('');
       } else {
         toast.error('Locale already exists!');
@@ -58,6 +65,8 @@ const LocalizedContent = ({ currentStoreData, setCurrentStoreData }) => {
   useEffect(() => {
     setAvailLocales(currentStoreData?.saleLocales || []);
   }, [currentStoreData]);
+
+  useEffect(() => setValue(selectedLang), [selectedLang]);
 
   return (
     <Box display='flex' width='100%'>
@@ -126,6 +135,8 @@ const LocalizedContent = ({ currentStoreData, setCurrentStoreData }) => {
 LocalizedContent.propTypes = {
   setCurrentStoreData: PropTypes.func,
   currentStoreData: PropTypes.object,
+  selectedLang: PropTypes.any,
+  setSelectedLang: PropTypes.func,
 };
 
 export default LocalizedContent;
