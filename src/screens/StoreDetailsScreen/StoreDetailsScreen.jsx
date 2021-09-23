@@ -46,6 +46,7 @@ const StoreDetailsScreen = () => {
   const [storeResources, setStoreResources] = useState([]);
   const [resourcesHasChanges, setResourcesHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
+  const [selectedLang, setSelectedLang] = useState(0);
 
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
@@ -329,6 +330,8 @@ const StoreDetailsScreen = () => {
         {curTab === 3 && (
           <StoreSection label={tabLabels[3]}>
             <LocalizedContent
+              selectedLang={selectedLang}
+              setSelectedLang={setSelectedLang}
               currentStoreData={currentStoreData}
               setCurrentStoreData={setCurrentStoreData}
             />
