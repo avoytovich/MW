@@ -24,6 +24,8 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 
+import Refresh from '@material-ui/icons/Refresh';
+
 import PaginationComponent from '../../components/PaginationComponent';
 import PriceNumberFormat from '../../components/PriceNumberFormat';
 
@@ -165,7 +167,7 @@ const FindByCC = ({ open, onClose }) => {
               name='cardBin'
               value={bin}
               inputProps={{ maxLength: 6 }}
-              onChange={(e) => setBin(e.target.value)}
+              onChange={(e) => setBin(e.target.value.replace(/[^0-9]/g, ''))}
               label={localization.t('labels.cardBin')}
               variant='outlined'
             />
@@ -177,14 +179,14 @@ const FindByCC = ({ open, onClose }) => {
               value={l4}
               inputProps={{ maxLength: 4 }}
               error={hasError && !l4}
-              onChange={(e) => setL4(e.target.value)}
+              onChange={(e) => setL4(e.target.value.replace(/[^0-9]/g, ''))}
               name='lastDigits'
               label={localization.t('labels.last4Digits')}
               variant='outlined'
             />
           </Box>
 
-          <Box mr={2} minWidth='180px'>
+          <Box minWidth='180px' display='flex' alignItems='center'>
             <TextField
               name='date'
               value={date ? moment(date).format('YYYY-MM-DD') : ''}
@@ -194,6 +196,13 @@ const FindByCC = ({ open, onClose }) => {
               InputLabelProps={{ shrink: true }}
               onChange={(e) => setDate(moment(e.target.value).valueOf())}
             />
+
+            <Button
+              style={{ minWidth: '36px', height: '36px', margin: '0 5px' }}
+              onClick={() => setDate(null)}
+            >
+              <Refresh color='secondary' />
+            </Button>
           </Box>
 
           <Box mr={2} minWidth='180px'>
