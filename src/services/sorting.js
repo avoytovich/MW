@@ -22,6 +22,7 @@ export const sortKeys = {
   autoFulfillments: 'autoFulfillmentsSortParams',
   manualFulfillments: 'manualFulfillmentsSortParams',
   licenseProviderDefinitions: 'licenseProviderDefinitionsSortParams',
+  enduserlist: 'enduserSortParams',
   abandoned: 'abandonedSortParams',
 };
 

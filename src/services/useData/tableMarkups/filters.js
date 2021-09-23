@@ -8,11 +8,6 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'id',
-      label: localization.t('labels.id'),
-      type: 'text',
-    },
-    {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
       type: 'date',
@@ -864,6 +859,47 @@ const filters = {
         { label: localization.t('labels.enabled'), value: 'Active' },
         { label: localization.t('labels.disabled'), value: 'Inactive' },
       ],
+    },
+  ],
+  enduserlist: [
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
+    },
+    {
+      id: 'companyName',
+      label: localization.t('labels.companyName'),
+      type: 'text',
+    },
+    {
+      id: 'email',
+      label: localization.t('labels.emailAddress'),
+      type: 'text',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+      ],
+    },
+    {
+      id: 'city',
+      label: localization.t('labels.city'),
+      type: 'text',
+    },
+    {
+      id: 'streetAddress',
+      label: localization.t('labels.streetAddress'),
+      type: 'text',
     },
   ],
 };

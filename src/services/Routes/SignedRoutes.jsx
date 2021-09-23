@@ -238,6 +238,10 @@ const SignedRoutes = () => {
         path={`${parentPaths.localization.main}`}
         component={lazy(() => import('../../screens/LocalizationScreen'))}
       />
+      <Route
+        path={`${defPath}${parentPaths.endusers}`}
+        component={lazy(() => import('../../screens/EndUsersScreen'))}
+      />
 
       <Route
         path={`${parentPaths.invoices}`}
