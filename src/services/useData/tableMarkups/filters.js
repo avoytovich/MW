@@ -8,6 +8,11 @@ const filters = {
       type: 'text',
     },
     {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
       type: 'date',
