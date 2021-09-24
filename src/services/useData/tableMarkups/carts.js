@@ -1,3 +1,4 @@
+import moment from 'moment';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -60,7 +61,7 @@ const generateData = (data) => {
     customer: val.customerId,
     createDate: val.createDate,
     updateDate: val.updateDate,
-    scheduledRemoval: val.scheduledSuppressionDate,
+    scheduledRemoval: moment(val.scheduledSuppressionDate).format('D MMM YYYY'),
     store: val.storeId,
     source: val.source === 'PURCHASE' ? localization.t('labels.acquisition') : localization.t('labels.manualRenewal'),
     emailAddress: val.endUser.email,
