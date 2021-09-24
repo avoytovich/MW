@@ -304,7 +304,7 @@ const CartDetailsScreen = () => {
         <Box display='flex' flexDirection='column'>
           <Box mx={2}>
             <CustomBreadcrumbs
-              url='/settings/carts'
+              url='/orders/carts'
               section={localization.t('general.cart')}
               id={id}
             />
