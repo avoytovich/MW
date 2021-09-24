@@ -182,7 +182,7 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/RecommendationScreen'))}
       />
       <Route
-        path={`${parentPaths.marketing}/abandonedcarts/:id`}
+        path={`${parentPaths.marketing}/abandoned/:id`}
         component={lazy(() => import('../../screens/AbandonedCartDetailScreen'))}
       />
       <Route
