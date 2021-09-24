@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import moment from 'moment';
 import localization from '../../localization';
 import parentPaths from '../../services/paths';
 
@@ -67,7 +68,7 @@ const generateOrders = (data) => {
     };
     return {
       id: val.id,
-      orderDate: val.createDate,
+      orderDate: moment(val.createDate).format('D MMM YYYY'),
       orderId: val.id,
       product: val.lineItems[0].name,
       status: val.status,
@@ -100,12 +101,15 @@ const generateEmails = (data) => {
         {
           value: localization.t('labels.status'),
           id: 'status',
+          clickable: true,
+          external: true,
+          path: `http://mailstorage.prepmailstorage.telechargement.fr/ui/mails/${val.emailId}`,
         },
       ],
     };
     return {
       id: val.id,
-      sentAt: val.createDate,
+      sentAt: moment(val.createDate).format('D MMM YYYY'),
       type: val.type,
       status: 'Sent',
     };
