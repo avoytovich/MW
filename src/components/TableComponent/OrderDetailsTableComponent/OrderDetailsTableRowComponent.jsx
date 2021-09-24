@@ -72,14 +72,22 @@ const TableRowComponent = ({
             {rowItem[item.id]}
           </Typography>
         );
-      } else if (item.clickable) {
+      } else if (item.clickable && !item.external) {
         valueToShow = (
           <Typography
             onClick={() => history.push(item.path)}
-
-            className='clickable-value'>
+            className='clickable-value'
+          >
             {rowItem[item.id]}
-
+          </Typography>
+        );
+      } else if (item.clickable && item.external) {
+        valueToShow = (
+          <Typography
+            onClick={() => window.open(item.path, '_blank')}
+            className='clickable-value'
+          >
+            {rowItem[item.id]}
           </Typography>
         );
       } else {
