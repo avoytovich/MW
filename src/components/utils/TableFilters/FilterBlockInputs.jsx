@@ -44,7 +44,7 @@ const FilterBlockInputs = ({
         InputLabelProps={{ shrink: true }}
         inputProps={{
           style: {
-            fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '10px',
+            fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '8px',
           },
         }}
         onChange={(e) => {
@@ -70,7 +70,7 @@ const FilterBlockInputs = ({
         InputLabelProps={{ shrink: true }}
         inputProps={{
           style: {
-            fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '10px',
+            fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '8px',
           },
         }}
         onChange={(e) => {
@@ -101,7 +101,17 @@ const FilterBlockInputs = ({
           return <Typography color='secondary' variant='h6'>{`Select ${data.label}`}</Typography>;
         }
 
-        return selected.join(', ');
+        const selectedItems = [];
+
+        for (let i = 0; i < data.values.length; i += 1) {
+          const curItem = data.values[i];
+
+          if (selected.indexOf(curItem.value) >= 0) {
+            selectedItems.push(curItem.label);
+          }
+        }
+
+        return selectedItems.join(', ');
       }}
     >
       {data.values.map((v) => (
