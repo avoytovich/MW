@@ -88,7 +88,7 @@ const FindByCC = ({ open, onClose }) => {
   };
 
   useEffect(() => {
-    bin && l4 && findOrders();
+    (bin || l4) && findOrders();
   }, [curPage, rowsPerPage]);
 
   const TableComponent = () => {
