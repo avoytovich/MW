@@ -58,7 +58,7 @@ const EndUserDetailScreen = ({ location }) => {
         <CustomBreadcrumbs
           url={curParentPath}
           section={scope === 'enduserlist' ? localization.t('labels.endUsers') : localization.t('labels.resellers')}
-          id={endUser.id}
+          id={endUser?.id}
         />
       </Box>
       <Box
@@ -69,12 +69,12 @@ const EndUserDetailScreen = ({ location }) => {
       >
         <Box alignSelf='center'>
           <Typography data-test='notificationName' gutterBottom variant='h3'>
-            {endUser.fullName}
+            {endUser?.fullName}
           </Typography>
         </Box>
         <Zoom in={hasChanges}>
           <Button
-            disabled={curEndUser.firstName === '' || curEndUser.lastName === ''}
+            disabled={curEndUser?.firstName === '' || curEndUser?.lastName === ''}
             id='save-notification-button'
             color='primary'
             size='large'
