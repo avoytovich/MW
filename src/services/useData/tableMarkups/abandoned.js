@@ -57,6 +57,7 @@ const markUp = {
 
 const generateData = (data) => {
   const values = data.items.map((val) => ({
+    id: val.id,
     campaignId: val?.id,
     createDate: moment(val?.createDate).format('D MMM YYYY'),
     lastUpdate: moment(val?.updateDate).format('D MMM YYYY'),
