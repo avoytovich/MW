@@ -91,6 +91,20 @@ const FindByCC = ({ open, onClose }) => {
     (bin || l4) && findOrders();
   }, [curPage, rowsPerPage]);
 
+  useEffect(() => {
+    if (open) {
+      setResults(null);
+      setBin('');
+      setL4('');
+      setCurPage(1);
+      setTotalPages(1);
+      setRowsPerPage(10);
+      setAmount('');
+      setCurrency('');
+      setDate(null);
+    }
+  }, [open]);
+
   const TableComponent = () => {
     if (isLoading) return <LinearProgress style={{ margin: '20px' }} />;
 
