@@ -72,6 +72,7 @@ const markUp = {
 
 const generateData = (data) => {
   const values = data.items.map((val) => ({
+    id: val?.id,
     customer: val?.customerId,
     group: '',
     firstName: val?.firstName,
