@@ -103,6 +103,7 @@ const general = {
   clearFilters: 'Clear filters',
   saveView: 'Save View',
   addFilterView: 'Add Filter View',
+  editFilterView: 'Edit Filter View',
   applyChangesTo: 'Apply changes to',
   abandoned: 'Abandoned',
   licenses: 'Licenses',

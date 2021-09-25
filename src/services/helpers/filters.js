@@ -7,7 +7,7 @@ export const generateFilterUrl = (filters) => {
     const subFilter = `&${key}=`;
 
     if (typeof val !== 'object') {
-      url += subFilter + val;
+      url += `${subFilter}*${val}*`;
     } else if (Array.isArray(val)) {
       val.forEach((v) => { url += subFilter + v; });
     } else {

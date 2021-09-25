@@ -20,6 +20,7 @@ import {
 
 import {
   Close as CloseIcon,
+  Edit as EditIcon,
 } from '@material-ui/icons';
 
 import FilterBlock from './FilterBlock';
@@ -35,6 +36,7 @@ const Filters = ({ scope, onClose }) => {
   const dispatch = useDispatch();
   const [newFiltersConfig, setNewConfig] = useState({});
   const [isAddingNew, setAddingNew] = useState(false);
+  const [isEditingView, setEditingView] = useState(false);
   const [isChanging, setIsChanging] = useState(false);
   const [newFilterName, setNewFilterName] = useState('');
   const [selectedView, setSelectedView] = useState('');
@@ -127,6 +129,34 @@ const Filters = ({ scope, onClose }) => {
     dispatch(setFilterViews({
       [scope]: filterViewsConfig.filter((i) => i.name !== name),
     }));
+
+    setSelectedView('');
+  };
+
+  const editView = (e, name) => {
+    e.stopPropagation();
+
+    setEditingView(name);
+    setNewFilterName(name);
+  };
+
+  const editFilterName = () => {
+    if (selectedView === isEditingView) {
+      setSelectedView(newFilterName);
+    }
+
+    dispatch(setFilterViews({
+      [scope]: filterViewsConfig.map((i) => {
+        if (i.name === isEditingView) {
+          return { ...i, name: newFilterName };
+        }
+
+        return i;
+      }),
+    }));
+
+    setNewFilterName('');
+    setEditingView(false);
   };
 
   return (
@@ -166,9 +196,12 @@ const Filters = ({ scope, onClose }) => {
             {
               filterViewsConfig?.length > 0 && filterViewsConfig.map((view) => (
                 <MenuItem value={view.name} key={view.name}>
-                  <Box display='flex' justifyContent='space-between' width='100%'>
+                  <Box display='flex' justifyContent='space-between' alignItems='center' width='100%'>
                     <Typography variant='h6'>{view.name}</Typography>
-                    <CloseIcon style={{ color: '#b9b1b1' }} onClick={(e) => removeView(e, view.name)} />
+                    <Box alignItems='center' display='flex'>
+                      <EditIcon style={{ color: '#b9b1b1', fontSize: '20px' }} onClick={(e) => editView(e, view.name)} />
+                      <CloseIcon style={{ color: '#b9b1b1' }} onClick={(e) => removeView(e, view.name)} />
+                    </Box>
                   </Box>
                 </MenuItem>
               ))
@@ -204,11 +237,7 @@ const Filters = ({ scope, onClose }) => {
         fullWidth
         className='filters-add-modal'
         open={isAddingNew}
-        PaperProps={{
-          style: {
-            maxWidth: '485px',
-          },
-        }}
+        PaperProps={{ style: { maxWidth: '485px' } }}
         onClose={() => setAddingNew(false)}
         closeAfterTransition
       >
@@ -234,12 +263,36 @@ const Filters = ({ scope, onClose }) => {
 
       <Dialog
         fullWidth
+        className='filters-edit-modal'
+        open={isEditingView}
+        PaperProps={{ style: { maxWidth: '485px' } }}
+        onClose={() => { setEditingView(false); setNewFilterName(''); }}
+        closeAfterTransition
+      >
+        <DialogContent>
+          <Typography variant='h5' color='textPrimary' style={{ marginBottom: '10px' }}>
+            {localization.t('general.editFilterView')}
+          </Typography>
+
+          <TextField
+            value={newFilterName}
+            fullWidth
+            variant='outlined'
+            placeholder='Enter the name'
+            onChange={(e) => setNewFilterName(e.target.value)}
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button variant="outlined" color="primary" onClick={() => { setEditingView(false); setNewFilterName(''); }}>Cancel</Button>
+          <Button variant="contained" color="primary" onClick={editFilterName}>Save</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        fullWidth
         open={isChanging}
-        PaperProps={{
-          style: {
-            maxWidth: '485px',
-          },
-        }}
+        PaperProps={{ style: { maxWidth: '485px' } }}
         onClose={() => setIsChanging(false)}
         closeAfterTransition
       >
