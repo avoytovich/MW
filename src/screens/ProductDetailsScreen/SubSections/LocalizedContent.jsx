@@ -1,13 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, forwardRef } from 'react';
 import PropTypes from 'prop-types';
-
 import {
   Box, Tabs, Tab, LinearProgress,
 } from '@material-ui/core';
-
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-
 import ClearIcon from '@material-ui/icons/Clear';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 
@@ -28,7 +26,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
   const [newTabValues, setNewTabValues] = useState({});
   const [newLangValue, setNewLangValue] = useState('');
   const availableLocales = getLanguagesOptions();
-
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const makeNewData = (locale) => {
     const dataToSave = { ...curData };
     dataToSave.i18nFields[value || locale] = { ...newTabValues };
@@ -135,7 +133,14 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
       });
       return;
     }
-    api.getProductDescriptionById(currentProductData.descriptionId).then(({ data }) => {
+    const productDescriptionRequest = !currentProductData.descriptionId
+      ? Promise.resolve({
+        data: {
+          customerId: nxState?.selectedCustomer?.id,
+        },
+      }) : api.getProductDescriptionById(currentProductData.descriptionId);
+
+    productDescriptionRequest.then(({ data }) => {
       const avail = [];
       localizedValues.forEach((it) => {
         if (data[it]) {
@@ -180,7 +185,6 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
       setNewData(false);
     }
   }, [newTabValues]);
-
   if (!curData) return <LinearProgress />;
 
   return (
@@ -197,10 +201,9 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
         >
           {availLocales.map((locale) => (
             <Tab
-              label={`${locale}${
-                locale === curData?.fallbackLocale || locale === curData?.fallbackLocale?.value
-                  ? ' (default)'
-                  : ''
+              label={`${locale}${locale === curData?.fallbackLocale || locale === curData?.fallbackLocale?.value
+                ? ' (default)'
+                : ''
               }`}
               key={locale}
               value={locale}

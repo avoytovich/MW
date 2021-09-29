@@ -153,12 +153,10 @@ const ProductDetailsView = ({
           )}
           <Tab label={localization.t(`labels.${allTabs[0]}`)} value={0} />
           <Tab
-            disabled={disabledTab}
             label={localization.t(`labels.${allTabs[1]}`)}
             value={1}
           />
           <Tab
-            disabled={disabledTab}
             label={localization.t(`labels.${allTabs[2]}`)}
             value={2}
           />
@@ -169,7 +167,6 @@ const ProductDetailsView = ({
             value={4}
           />
           <Tab
-            disabled={disabledTab}
             label={localization.t(`labels.${allTabs[5]}`)}
             value={5}
           />
