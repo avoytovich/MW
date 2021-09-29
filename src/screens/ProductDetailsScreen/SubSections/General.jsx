@@ -210,6 +210,7 @@ const General = ({
           >
             <InputCustom
               isRequired
+              tooltip={localization.t('tooltips.publisherRefId')}
               label='publisherRefId'
               value={currentProductData.publisherRefId}
               onChangeInput={(e) =>
@@ -339,6 +340,7 @@ const General = ({
           >
             <InputCustom
               isMultiline
+              tooltip={localization.t('tooltips.externalContext')}
               label='externalContext'
               value={currentProductData.externalContext}
               onChangeInput={(e) =>
@@ -393,6 +395,7 @@ const General = ({
           >
             <InputCustom
               label='family'
+              tooltip={localization.t('tooltips.family')}
               value={currentProductData.productFamily}
               onChangeInput={(e) =>
                 setProductData({
