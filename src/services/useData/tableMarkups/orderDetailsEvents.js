@@ -21,7 +21,7 @@ const generateData = (data) => {
     occuredAt: moment(val.createDate).format('D MMM YYYY'),
     event: val.name,
     status: val.status,
-    statusError: val.status === 'Failed',
+    processingError: val.status === 'Failed',
   }));
 
   const meta = {
