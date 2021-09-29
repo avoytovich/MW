@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField } from '@material-ui/core';
+import { TextField, Tooltip } from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 import localization from '../../localization';
 
 const InputCustom = ({
@@ -13,8 +14,9 @@ const InputCustom = ({
   helperText,
   hasError,
   rowsMax,
+  tooltip,
 }) => (
-  <form autoComplete='off' style={{ width: '100%' }}>
+  <form autoComplete='off' style={{ width: '100%', position: 'relative' }}>
     <TextField
       rowsMax={rowsMax}
       error={hasError}
@@ -34,6 +36,18 @@ const InputCustom = ({
       onChange={onChangeInput}
       variant='outlined'
     />
+
+    {
+      tooltip && (
+        <Tooltip
+          placement='right'
+          title={tooltip}
+          style={{ position: 'absolute', right: 10, top: 16 }}
+        >
+          <HelpIcon />
+        </Tooltip>
+      )
+    }
   </form>
 );
 
@@ -47,6 +61,7 @@ InputCustom.propTypes = {
   onChangeInput: PropTypes.func,
   helperText: PropTypes.string,
   rowsMax: PropTypes.number,
+  tooltip: PropTypes.string,
 };
 
 export default InputCustom;

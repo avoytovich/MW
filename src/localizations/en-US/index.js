@@ -4,6 +4,7 @@ import dataLists from './dataLists';
 import sideBar from './sideBar';
 import errorNotifications from './errorNotifications';
 import labels from './labels';
+import tooltips from './tooltips';
 
 export default {
   general,
@@ -12,4 +13,5 @@ export default {
   sideBar,
   errorNotifications,
   labels,
+  tooltips,
 };
