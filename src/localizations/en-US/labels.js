@@ -61,6 +61,7 @@ const labels = {
   orderID: 'Order ID',
   invoiceId: 'InvoiceID',
   currency: 'Currency',
+  percentage: '%',
   applicableUntil: 'Applicable until',
   products: 'Products',
   country: 'Country',

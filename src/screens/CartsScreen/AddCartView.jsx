@@ -59,7 +59,7 @@ const AddCartView = ({
       value: 'ACQUISITION',
     },
     {
-      label: 'ManualRenewal',
+      label: 'Manual Renewal',
       value: 'MANUAL_RENEWAL',
     },
   ];
@@ -145,6 +145,7 @@ const AddCartView = ({
                     validate={validate}
                     key={opt.value}
                     value={opt.value}
+                    disabled={values.source.length && !values.source.includes(opt.value)}
                     Label={{ label: opt.label }}
                   />
                 ))}
@@ -190,7 +191,7 @@ const AddCartView = ({
                 </FormControl>
               </Box>
               <Box p={2}>
-                <FormControl className="spread-80">
+                <FormControl className="spread-85">
                   <Field
                     component={TextField}
                     label={localization.t('labels.rebate')}
@@ -198,8 +199,8 @@ const AddCartView = ({
                     variant="outlined"
                   />
                 </FormControl>
-                <FormControl className="spread-20">
-                  <InputLabel htmlFor="select-currency" className="select-label">{localization.t('labels.currency')}</InputLabel>
+                <FormControl className="spread-15">
+                  <InputLabel htmlFor="select-currency" className="select-label">{localization.t('labels.percentage')}</InputLabel>
                   <Field
                     component={Select}
                     type="text"
@@ -411,6 +412,7 @@ const AddCartView = ({
                   name="buyerDetails"
                   key={opt.value}
                   value={opt.value}
+                  disabled={values.buyerDetails.length && !values.buyerDetails.includes(opt.value)}
                   Label={{ label: opt.label }}
                 />
               ))}
@@ -429,7 +431,13 @@ const AddCartView = ({
             <Grid item xs={6} sm={6}>
               <Box p={2}>
                 <FormControl className="spread">
-                  <InputLabel htmlFor="select-prefill" className="select-label">{localization.t('labels.prefillWith')}</InputLabel>
+                  <InputLabel
+                    htmlFor="select-prefill"
+                    className="select-label"
+                    shrink={false}
+                  >
+                    {values.prefillWith.id ? '' : localization.t('labels.prefillWith')}
+                  </InputLabel>
                   <Field
                     component={Select}
                     type="text"
@@ -479,6 +487,8 @@ const AddCartView = ({
                         name="salutation"
                         key={opt.value}
                         value={opt.value}
+                        disabled={values.salutation.length
+                          && !values.salutation.includes(opt.value)}
                         Label={{ label: opt.label }}
                       />
                     ))}
@@ -511,6 +521,7 @@ const AddCartView = ({
                 <FormControl className="spread">
                   <Field
                     component={TextField}
+                    validate={values.buyerDetails.includes('Fill-in_details_directly') ? validate : undefined}
                     label={localization.t('labels.phone')}
                     name="phone"
                     variant="outlined"
@@ -709,7 +720,7 @@ const AddCartView = ({
                     color="primary"
                     size="large"
                     variant="contained"
-                    disabled={!!curTab}
+                    disabled={values.buyerDetails.includes('Fill-in_details_directly') ? !values.phone : false}
                   >
                     {localization.t('general.save')}
                   </Button>
