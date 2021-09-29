@@ -67,7 +67,7 @@ const TableRowComponent = ({
         valueToShow = (
           <Typography
             className="name-value"
-            onClick={() => history.push(`${parentPaths.productlist}/${rowItem.productId}`)}
+            onClick={() => history.push(`${parentPaths.productlist}/${rowItem.id}`)}
           >
             {rowItem[item.id]}
           </Typography>
