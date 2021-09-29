@@ -126,7 +126,7 @@ const navConfig = [
       {
         id: 'marketing-campaigns',
         title: localization.t('sideBar.titles.campaigns'),
-        href: parentPaths.campaigns,
+        href: parentPaths.marketing.main,
       },
     ],
   },

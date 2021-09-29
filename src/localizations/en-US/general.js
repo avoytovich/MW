@@ -54,7 +54,6 @@ const general = {
   marketingNameMandatory: 'Marketing name is mandatory for the default language.',
   noCustomer: 'No customer selected',
   selectCustomer: 'Please select a customer which will own the created resource.',
-  itemHasBeenCopied: 'Item Has Been Copied',
   campaign: 'Campaign',
   new: 'New',
   selectNoSourceMeans: 'Select no source means the same as "all sources are selected"',
@@ -107,6 +106,7 @@ const general = {
   applyChangesTo: 'Apply changes to',
   abandoned: 'Abandoned',
   licenses: 'Licenses',
+  and: 'and',
 };
 
 export default general;
