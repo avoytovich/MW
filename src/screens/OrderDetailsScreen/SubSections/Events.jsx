@@ -29,6 +29,7 @@ const Events = ({ orderData }) => {
         noTableActionsBar
         noEditDeleteActions
         customPath
+        errorHighlight='processingError'
       />
     </Box>
   );

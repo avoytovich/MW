@@ -14,7 +14,6 @@
   }
 
   &.error-row{
-    background-color: $deleteIcon;
 
     .MuiTypography-colorSecondary{
       color: #fff;
@@ -33,6 +32,9 @@
       display: block;
       -webkit-box-orient: vertical;
       overflow: hidden;
+    }
+    .error-row-color {
+      color: $deleteIcon;
     }
   }
   .icons {

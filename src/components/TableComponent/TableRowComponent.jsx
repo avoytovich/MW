@@ -107,7 +107,7 @@ const TableRowComponent = ({
                   : 'secondary'
               }
               noWrap
-              className="tableCellItem"
+              className={`tableCellItem ${rowItem[errorHighlight] ? 'error-row-color' : ''}`}
             >
               { // eslint-disable-next-line no-nested-ternary
                 valueToShow === 'ENABLED' || valueToShow === true ? <CheckIcon className="statusEnabled" />
