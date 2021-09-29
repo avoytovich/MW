@@ -13,7 +13,6 @@ const VALID_FILTER_SCOPES = [
   'notification-definition',
   'notification-history',
   'carts',
-  'licenses',
   'prices',
   'price-functions',
   'autoFulfillments',
