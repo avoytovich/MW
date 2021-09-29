@@ -42,6 +42,11 @@ const TableRowComponent = ({
       .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
   };
 
+  const makeCopy = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
+  };
+
   const parsePath = (path) => {
     let newPath = path;
 
@@ -89,6 +94,28 @@ const TableRowComponent = ({
           >
             {rowItem[item.id]}
           </Typography>
+        );
+      } else if (item.id === 'publisherRefId') {
+        valueToShow = (
+          <>
+            {rowItem[item.id]}
+            <FileCopyIcon
+              className='publisher-copy'
+              onClick={() => makeCopy(rowItem[item.id])}
+              color="secondary"
+            />
+          </>
+        );
+      } else if (item.id === 'id') {
+        valueToShow = (
+          <>
+            {rowItem[item.id]}
+            <FileCopyIcon
+              className='id-copy'
+              onClick={() => makeCopy(rowItem[item.id])}
+              color="secondary"
+            />
+          </>
         );
       } else {
         valueToShow = rowItem[item.id];

@@ -1,3 +1,55 @@
+@import '../../styles/variables.scss';
+
 .wrapper-cart-details {
   padding: 15px;
+}
+
+.wrapper-cart-details .cart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.wrapper-cart-details .cart .cart-value {
+  margin-right: 5px;
+}
+
+.wrapper-cart-details .checkout-url {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.wrapper-cart-details .cart .checkout-url-value {
+  margin-right: 5px;
+}
+
+.wrapper-cart-details .customer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .customer-value-id {
+    margin-right: 5px;
+    cursor: pointer;
+    color: $clickable;
+  }
+}
+
+.wrapper-cart-details .customer .customer-value-name {
+  margin-right: 5px;
+}
+
+.wrapper-cart-details .store {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .store-value-id {
+    margin-right: 5px;
+    cursor: pointer;
+    color: $clickable;
+  }
+}
+
+.wrapper-cart-details .store .store-value-name {
+  // margin-right: 5px;
 }

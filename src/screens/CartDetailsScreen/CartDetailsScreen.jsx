@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import moment from 'moment';
+import 'moment-timezone';
 
 import {
   LinearProgress,
@@ -13,6 +14,7 @@ import {
   Tabs,
   Tab,
 } from '@material-ui/core';
+import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import { toast } from 'react-toastify';
 
@@ -35,6 +37,7 @@ import './cartDetailsScreeen.scss';
 
 const CartDetailsScreen = () => {
   const { id } = useParams();
+  const history = useHistory();
 
   const [curTab, setCurTab] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -56,15 +59,15 @@ const CartDetailsScreen = () => {
     },
     {
       label: 'createDate',
-      field: moment(cartData?.createDate).format('D MMM YYYY') || '-',
+      field: moment.tz(cartData?.createDate, Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm:ss Z z') || '-',
     },
     {
       label: 'cartsUpdateDate',
-      field: cartData?.updateDate || '-',
+      field: moment.tz(cartData?.updateDate, Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm:ss Z z') || '-',
     },
     {
       label: 'scheduledRemoval',
-      field: `${moment(cartData?.scheduledSuppressionDate).format('D MMM YYYY')} => in 12 hours` || '-',
+      field: `${moment.tz(cartData?.scheduledSuppressionDate, Intl.DateTimeFormat().resolvedOptions().timeZone).format('YYYY-MM-DD HH:mm:ss Z z')} => in 3 days` || '-',
     },
     {
       label: 'source',
@@ -76,7 +79,7 @@ const CartDetailsScreen = () => {
     },
     {
       label: 'store',
-      field: cartData?.storeId || '-',
+      field: customer?.name || '-',
     },
     {
       label: 'amount',
@@ -92,7 +95,7 @@ const CartDetailsScreen = () => {
     },
     {
       label: 'salesFlags',
-      field: cartData?.salesFlags || '-',
+      field: (cartData?.salesFlags?.length && cartData?.salesFlags) || '-',
     },
     {
       label: 'externalContext',
@@ -159,6 +162,11 @@ const CartDetailsScreen = () => {
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
+  const makeCopy = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
+  };
+
   const renderDefault = (each) => (
     <>
       <Grid item md={3} xs={12}>
@@ -176,9 +184,115 @@ const CartDetailsScreen = () => {
     </>
   );
 
+  const renderCartId = (each) => (
+    <>
+      <Grid item md={3} xs={12}>
+        <Typography variant='h6'>
+          {localization.t(`labels.${each.label}`)}
+        </Typography>
+      </Grid>
+      <Grid item md={9} xs={12}>
+        <Box className='cart'>
+          <Typography variant='subtitle1' className='cart-value'>
+            {each.field}
+          </Typography>
+          <FileCopyIcon
+            onClick={() => makeCopy(cartData?.id)}
+            color="secondary"
+          />
+        </Box>
+      </Grid>
+    </>
+  );
+
+  const renderCheckoutUrl = (each) => (
+    <>
+      <Grid item md={3} xs={12}>
+        <Typography variant='h6'>
+          {localization.t(`labels.${each.label}`)}
+        </Typography>
+      </Grid>
+      <Grid item md={9} xs={12}>
+        <Box className='checkout-url'>
+          <Typography variant='subtitle1' className='checkout-url-value'>
+            {each.field}
+          </Typography>
+          <FileCopyIcon
+            onClick={() => makeCopy(cartData?.checkoutUrl)}
+            color="secondary"
+          />
+        </Box>
+      </Grid>
+    </>
+  );
+
+  const renderCustomer = (each) => (
+    <>
+      <Grid item md={3} xs={12}>
+        <Typography variant='h6'>
+          {localization.t(`labels.${each.label}`)}
+        </Typography>
+      </Grid>
+      <Grid item md={9} xs={12}>
+        <Box className='customer'>
+          <Typography variant='subtitle1' className='customer-value-name'>
+            {`${each.field}, `}
+          </Typography>
+          <span
+            className="customer-value-id"
+            onClick={() => history.push(`/settings/administration/customers/${customer.id}`)} // ToDo: should be replaced with new customer route
+          >
+            {customer.id}
+          </span>
+          <FileCopyIcon
+            onClick={() => makeCopy(customer.id)}
+            color="secondary"
+          />
+        </Box>
+      </Grid>
+    </>
+  );
+
+  const renderStore = (each) => (
+    <>
+      <Grid item md={3} xs={12}>
+        <Typography variant='h6'>
+          {localization.t(`labels.${each.label}`)}
+        </Typography>
+      </Grid>
+      <Grid item md={9} xs={12}>
+        <Box className='store'>
+          <Typography variant='subtitle1' className='store-value-name'>
+            {`${each.field} store, (`}
+          </Typography>
+          <span
+            className="store-value-id"
+            onClick={() => history.push(`/storesetup/stores/${cartData?.storeId}`)} // ToDo: should be replaced with new customer route
+          >
+            {cartData?.storeId}
+          </span>
+          <FileCopyIcon
+            onClick={() => makeCopy(cartData?.storeId)}
+            color="secondary"
+          />
+          <Typography variant='subtitle1' className='store-value-name'>
+            , Allows quotes: NO)
+          </Typography>
+        </Box>
+      </Grid>
+    </>
+  );
+
   const renderGeneralFields = (each) => {
     switch (each.label) {
-      // custom behavior
+      case 'cartId':
+        return renderCartId(each);
+      case 'checkoutUrl':
+        return renderCheckoutUrl(each);
+      case 'customer':
+        return renderCustomer(each);
+      case 'store':
+        return renderStore(each);
       default:
         return renderDefault(each);
     }
@@ -231,7 +345,7 @@ const CartDetailsScreen = () => {
     >
       <CustomCard title="Emails" noDivider>
         <Box
-          border={1}
+          border={emails.values.length ? 1 : 0}
           borderRadius="borderRadius"
           borderColor="#c7c7c7"
         >
@@ -352,6 +466,7 @@ const CartDetailsScreen = () => {
                 color="inherit"
                 target='_blank'
                 href={`https://dev-kasperskyfrance-default.staging.nexway.build/checkout/add?cartid=${id}&layout=default&layoutname=default`}
+                fullWidth
               >
                 {localization.t('forms.buttons.checkout')}
               </Button>

@@ -60,6 +60,12 @@
   .statusDisable {
     color: $deleteIcon;
   }
+  .publisher-copy {
+    margin-left: 5px;
+  }
+  .id-copy {
+    margin-left: 5px;
+  }
 }
 .OrderDetailsTableHeaderGrid {
   overflow-x: hidden;
@@ -104,7 +110,7 @@
 .sortableHeader {
   cursor: pointer;
 
-  svg{
+  svg {
     position: absolute;
     font-size: 18px;
     color: $navItemButtonActive;
