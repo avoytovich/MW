@@ -16,7 +16,6 @@ import {
   TextField,
 } from '@material-ui/core';
 import parentPaths from '../../services/paths';
-import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
 import { validPeriodOptions, beforeSend } from './utils';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
@@ -39,22 +38,6 @@ const AbandonedCartDetailScreen = () => {
   } = useAbandonedCartDetailScreen(id, nxState);
   const [hasError, setHasError] = useState(false);
 
-  const selectionRange = {
-    startDate: curAbandonedCart?.startDate
-      ? new Date(curAbandonedCart?.startDate)
-      : new Date(),
-    endDate: new Date(curAbandonedCart?.endDate),
-    key: 'selection',
-  };
-
-  const handleSelect = (ranges) => {
-    const { startDate, endDate } = ranges;
-    setCurAbandonedCart({
-      ...curAbandonedCart,
-      startDate: moment(startDate).valueOf(),
-      endDate: moment(endDate).valueOf(),
-    });
-  };
   const handleSave = () => {
     const sendObj = beforeSend(curAbandonedCart);
     if (id === 'add') {
@@ -62,7 +45,7 @@ const AbandonedCartDetailScreen = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.campaigns}/abandonedcarts/${newId}`);
+        history.push(`${parentPaths.marketing.abandoned}/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -84,7 +67,7 @@ const AbandonedCartDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url={`${parentPaths.campaigns}/abandonedcarts`}
+            url={`${parentPaths.marketing.abandoned}`}
             section={localization.t('labels.abandonedCarts')}
             id={abandonedCart.id}
           />
@@ -176,14 +159,52 @@ const AbandonedCartDetailScreen = () => {
             </Grid>
             {curAbandonedCart.validPeriod !== 'unlimited'
               && (
-                <Grid item md={4} sm={6}>
+                <Grid item>
                   {curAbandonedCart.validPeriod === 'between'
                     && (
-                      <Box p={2}>
-                        <DateRangePicker
-                          values={selectionRange}
-                          handleChange={handleSelect}
-                        />
+                      <Box
+                        p={2}
+                        display='flex'
+                        alignItems='center'
+                        flexDirection='row'
+                      >
+                        <form noValidate>
+                          <TextField
+                            data-test='betweenStartDate'
+                            fullWidth
+                            name={curAbandonedCart.validPeriod === 'startDate'}
+                            value={moment(curAbandonedCart.startDate).format('YYYY-MM-DDTHH:mm')}
+                            label={localization.t('labels.startDate')}
+                            type='datetime-local'
+                            variant='outlined'
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onChange={(e) => {
+                              setCurAbandonedCart({
+                                ...curAbandonedCart, startDate: e.target.value,
+                              });
+                            }}
+                          />
+                        </form>
+                        <Box px={2}>{localization.t('general.and')}</Box>
+                        <form noValidate>
+                          <TextField
+                            data-test='betweenEndDate'
+                            fullWidth
+                            name='betweenEndDate'
+                            value={moment(curAbandonedCart.endDate).format('YYYY-MM-DDTHH:mm')}
+                            label={localization.t('labels.endDate')}
+                            type='datetime-local'
+                            variant='outlined'
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            onChange={(e) => {
+                              setCurAbandonedCart({ ...curAbandonedCart, endDate: e.target.value });
+                            }}
+                          />
+                        </form>
                       </Box>
                     )}
                   {(curAbandonedCart.validPeriod === 'after' || curAbandonedCart.validPeriod === 'before')
@@ -208,6 +229,7 @@ const AbandonedCartDetailScreen = () => {
                           />
                         </form>
                       </Box>
+
                     )}
 
                 </Grid>
@@ -217,7 +239,7 @@ const AbandonedCartDetailScreen = () => {
             <NumberInput
               data-test='delayMn'
               hasError={hasError}
-              helperText='Delay must be a positive number of minutes less of equal to 10,080 s after the enduser email is captured.'
+              helperText={hasError ? 'Delay must be a positive number of minutes less of equal to 10,080 s after the enduser email is captured.' : ''}
               minMAx={{ min: 1, max: 10080 }}
               label='delayMn'
               value={curAbandonedCart.delay}

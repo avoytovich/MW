@@ -19,7 +19,7 @@ const availTabs = [
   {
     label: 'campaigns',
     scope: 'campaigns',
-    path: `${parentPaths.marketing}/campaigns`,
+    path: `${parentPaths.marketing.campaigns}`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.campaign',
     )}`,
@@ -29,7 +29,7 @@ const availTabs = [
   {
     label: 'abandoned',
     scope: 'abandoned',
-    path: `${parentPaths.marketing}/abandoned`,
+    path: `${parentPaths.marketing.abandoned}`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.abandoned',
     )}`,
@@ -39,7 +39,7 @@ const availTabs = [
   {
     label: 'discounts',
     scope: 'discounts',
-    path: `${parentPaths.marketing}/discounts`,
+    path: `${parentPaths.marketing.discounts}`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.discount',
     )}`,
@@ -58,7 +58,7 @@ const MarketingScreen = () => {
     const section = pathname.split('/').pop();
     const index = availTabs.findIndex((i) => i.label === section);
     if (index < 0) {
-      return history.push(`${parentPaths.marketing}/campaigns`);
+      return history.push(`${parentPaths.marketing.campaigns}`);
     }
 
     setCurTab(index);
@@ -88,7 +88,7 @@ const MarketingScreen = () => {
 
     );
   };
-  const changeTab = (tab) => history.push(`${parentPaths.marketing}/${availTabs[tab].label}`);
+  const changeTab = (tab) => history.push(`${parentPaths.marketing.main}/${availTabs[tab].label}`);
   return (
     <Box display='flex' flexDirection='column'>
 
