@@ -151,7 +151,7 @@ const filters = {
     },
     {
       id: 'creationDate',
-      label: localization.t('labels.invoiceId'),
+      label: localization.t('labels.invoiceDate'),
       type: 'date',
     },
     {

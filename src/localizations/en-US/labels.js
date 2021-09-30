@@ -59,7 +59,7 @@ const labels = {
   onlineStore: 'Online Store',
   companyName: 'Company Name',
   orderID: 'Order ID',
-  invoiceId: 'InvoiceID',
+  invoiceId: 'Invoice ID',
   currency: 'Currency',
   percentage: '%',
   applicableUntil: 'Applicable until',
