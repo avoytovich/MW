@@ -86,7 +86,11 @@ const Filters = ({ scope, onClose }) => {
     dispatch(setFilters({ [scope]: newFiltersConfig }));
   };
 
-  const clearFilters = () => setNewConfig({});
+  const clearFilters = () => {
+    setNewConfig({});
+    setNewFilterName('');
+    setSelectedView('');
+  };
 
   const addNewFilter = () => {
     const [withSameName] = filterViewsConfig?.length
@@ -166,7 +170,7 @@ const Filters = ({ scope, onClose }) => {
           <Box mb='15px' display='flex' justifyContent='space-between'>
             <Typography variant='h6'>{localization.t('general.filters')}</Typography>
 
-            <Box color='primary' style={{ cursor: 'pointer' }} onClick={() => setIsChanging(true)}>
+            <Box color='primary' style={{ cursor: 'pointer' }} onClick={() => selectedView && setIsChanging(true)}>
               <Typography variant='h6' color='primary'>{localization.t('general.saveView')}</Typography>
             </Box>
           </Box>
@@ -257,7 +261,7 @@ const Filters = ({ scope, onClose }) => {
 
         <DialogActions>
           <Button variant="outlined" color="primary" onClick={() => setAddingNew(false)}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={addNewFilter}>Add</Button>
+          <Button variant="contained" color="primary" onClick={addNewFilter} disabled={!newFilterName}>Add</Button>
         </DialogActions>
       </Dialog>
 
@@ -285,7 +289,7 @@ const Filters = ({ scope, onClose }) => {
 
         <DialogActions>
           <Button variant="outlined" color="primary" onClick={() => { setEditingView(false); setNewFilterName(''); }}>Cancel</Button>
-          <Button variant="contained" color="primary" onClick={editFilterName}>Save</Button>
+          <Button variant="contained" color="primary" onClick={editFilterName} disabled={!newFilterName}>Save</Button>
         </DialogActions>
       </Dialog>
 

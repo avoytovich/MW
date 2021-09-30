@@ -20,7 +20,7 @@ const SelectCustom = ({
   isRequired,
   isDisabled,
 }) => (
-  <Box display='flex' alignItems='center'>
+  <Box display='flex' alignItems='center' flexGrow='1'>
     <TextField
       fullWidth
       select
