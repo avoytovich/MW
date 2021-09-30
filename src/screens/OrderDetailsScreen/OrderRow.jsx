@@ -59,7 +59,11 @@ const OrderRow = ({
               </Box>
             ) : (
               <Box p={2} className="rowValue">
-                {item.value || '-'}
+                {item.external ? (
+                  <a href={item.external} target='_blank' rel='noreferrer'>
+                    {item.value || '-'}
+                  </a>
+                ) : (item.value || '-')}
               </Box>
             )
           )}
