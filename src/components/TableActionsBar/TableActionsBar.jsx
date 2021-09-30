@@ -40,13 +40,13 @@ import TableFilters from '../utils/TableFilters';
 
 const useStyles = makeStyles({
   button: {
-    color: '#b9b1b1',
+    color: '#303030',
     '&:hover': {
       color: '#4791db',
     },
     '&:active': {
       color: '#4791db',
-    },
+    }
   },
 });
 
@@ -107,7 +107,7 @@ const TableActionsBar = ({
             <>
               <Tooltip arrow title="Show Columns" placement="top">
                 <IconButton className={classes.button} onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)} edge='start' aria-label='refresh'>
-                  <ViewColumnIcon />
+                  <ViewColumnIcon color={anchorEl ? 'primary' : ''} />
                 </IconButton>
               </Tooltip>
               <Tooltip arrow title="Filter" placement="top">
@@ -118,7 +118,7 @@ const TableActionsBar = ({
                   edge='start'
                   aria-label='refresh'
                 >
-                  <FilterListIcon color={showFilters ? 'primary' : 'secondary'} />
+                  <FilterListIcon color={showFilters ? 'primary' : ''} />
                   {filtersCount > 0 && (
                     <Box
                       position='absolute'
