@@ -79,6 +79,13 @@ const themeConfig = {
         },
       },
     },
+    MuiIconButton: {
+      root: {
+        '&.Mui-disabled': {
+          color: colors.buttonDisabled,
+        },
+      },
+    },
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: colors.mainBackground,
