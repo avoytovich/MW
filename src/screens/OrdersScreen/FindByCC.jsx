@@ -177,7 +177,7 @@ const FindByCC = ({ open, onClose }) => {
           <Box mr={2} minWidth='180px'>
             <TextField
               required
-              error={hasError && !bin}
+              error={hasError && !bin && !l4}
               name='cardBin'
               value={bin}
               inputProps={{ maxLength: 6 }}
@@ -192,7 +192,7 @@ const FindByCC = ({ open, onClose }) => {
               required
               value={l4}
               inputProps={{ maxLength: 4 }}
-              error={hasError && !l4}
+              error={hasError && !l4 && !bin}
               onChange={(e) => setL4(e.target.value.replace(/[^0-9]/g, ''))}
               name='lastDigits'
               label={localization.t('labels.last4Digits')}
