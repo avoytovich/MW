@@ -148,6 +148,7 @@ const generateData = (orderData, paymentData) => {
       {
         key: 'transactionID',
         label: localization.t('labels.transactionID'),
+        external: 'https://directpayment.nexway.com/bo/user/login/tf',
         value: paymentData?.transactionId,
       },
       {

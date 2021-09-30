@@ -4,6 +4,10 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  
+  a, a:visited, a:hover, a:active {
+    color: #4791dc;
+  }
 }
 
 .rowValue:hover {
