@@ -425,7 +425,7 @@ const CartDetailsScreen = () => {
           </Box>
           <Box py={2} mt={3}>
             <Typography gutterBottom variant='h3'>
-              {id}
+              {`${localization.t('labels.cart')} # ${id}`}
             </Typography>
           </Box>
         </Box>
