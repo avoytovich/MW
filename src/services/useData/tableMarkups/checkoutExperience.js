@@ -14,14 +14,14 @@ const markUp = {
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     { value: localization.t('labels.customer'), id: 'customer' },
     {
-      value: localization.t('labels.lastUpdate'),
-      id: 'updateDate',
-      sortParam: 'updateDate',
-    },
-    {
       value: localization.t('labels.creationDate'),
       id: 'createDate',
       sortParam: 'createDate',
+    },
+    {
+      value: localization.t('labels.lastUpdate'),
+      id: 'updateDate',
+      sortParam: 'updateDate',
     },
   ],
 };
@@ -37,8 +37,8 @@ const generateData = (data, customers) => {
       id: val.id,
       name: val.name,
       customer: customer || '',
-      updateDate: val.updateDate,
       createDate: val.createDate,
+      updateDate: val.updateDate,
     };
   });
 

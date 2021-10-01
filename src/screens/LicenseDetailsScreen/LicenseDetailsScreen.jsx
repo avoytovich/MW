@@ -38,7 +38,9 @@ const LicenseDetailsScreen = () => {
 
   const general = [
     { label: localization.t('labels.status'), value: license.status },
-    { label: localization.t('labels.customer'), value: <Link href={`${parentPaths.customers}/${license.customerId}`}>{license.customerId}</Link>, key: 'customerId' },
+    {
+      label: localization.t('labels.customer'), value: license.customerId, key: 'customerId', external: `${parentPaths.customers}/${license.customerId}`,
+    },
     { label: localization.t('labels.orderId'), value: license.checkout.orderId },
     { label: localization.t('labels.orderLineId'), value: license.checkout.orderLineId },
   ];
@@ -69,7 +71,9 @@ const LicenseDetailsScreen = () => {
       </Box>
       <Box py={2} mt={3}>
         <Typography gutterBottom variant='h3'>
-          {localization.t('labels.licenseId')} {id}
+          {localization.t('labels.licenseId')}
+          {' '}
+          {id}
         </Typography>
       </Box>
       <Box my={2} bgcolor='#fff'>

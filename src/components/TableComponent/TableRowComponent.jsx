@@ -116,7 +116,7 @@ const TableRowComponent = ({
             </Typography>
             {item.value && shouldCopy(item.id) && (
               <FileCopyIcon
-                onClick={() => makeCopy(valueToShow)}
+                onClick={(e) => {e.stopPropagation(); makeCopy(valueToShow)}}
                 color="secondary"
                 className="copyIcon"
               />
