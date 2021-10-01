@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Tabs, Tab, Box, Button,
+  Tabs, Tab, Box,
+  Button,
 } from '@material-ui/core';
 import {
   useHistory, Link, Switch, Redirect, Route,
 } from 'react-router-dom';
+
 import localization from '../../localization';
 
 import TableActionsBar from '../../components/TableActionsBar';
 import TabTable from './TabTable';
 import api from '../../api';
+import withActions from './withActions';
 import parentPaths from '../../services/paths';
 import { generateData as generateNotifications, defaultShow as defaultShowNotifications, markUp as markUpNotifications } from '../../services/useData/tableMarkups/notifications';
 import { generateData as notificationsDefinition, defaultShow as defaultShowNotificationsDefinition, markUp as markUpNotificationsDefinition } from '../../services/useData/tableMarkups/notificationsDefinition';
@@ -81,7 +84,7 @@ const NotficationScreen = () => {
         deleteFunc={currentTab.deleteFunc}
         headers={currentTab.headers}
       >
-        {currentTab.label !== 'notificationHistory' && (
+        {currentTab.label !== 'notificationHistory' ? (
           <Box alignSelf='flex-end'>
             <Button
               id='add-administration-button'
@@ -94,7 +97,8 @@ const NotficationScreen = () => {
               {currentTab.button}
             </Button>
           </Box>
-
+        ) : (
+          withActions(currentTab.label)
         )}
       </TableActionsBar>
     );

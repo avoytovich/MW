@@ -113,6 +113,7 @@ const Forms = {
     close: 'Close',
     search: 'Search',
     sendByEmail: 'Send by email',
+    retrySending: 'Retry sending',
     generateQuote: 'Generate quote',
     checkout: 'Checkout',
   },
