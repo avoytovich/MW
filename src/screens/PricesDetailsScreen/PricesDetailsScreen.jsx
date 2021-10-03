@@ -28,6 +28,7 @@ import parentPaths from '../../services/paths';
 import {
   priceCurrency,
 } from '../../services/selectOptions/selectOptions';
+import { getCustomerName } from '../../services/helpers/customersHelper';
 
 import api from '../../api';
 import localization from '../../localization';
@@ -38,6 +39,7 @@ const PricesDetailsScreen = () => {
   const countriesOptions = getCountriesOptions();
   const { id } = useParams();
   const history = useHistory();
+  const [customerName, setCustomerName] = useState(null);
   const [price, setPrice] = useState(null);
   const [curPrice, setCurPrice] = useState(null);
   const [availProducts, setAvailProducts] = useState([]);
@@ -68,6 +70,12 @@ const PricesDetailsScreen = () => {
         });
     }
   };
+
+  useEffect(() => {
+    if (price?.customerId) {
+      getCustomerName(price?.customerId).then((name) => setCustomerName(name));
+    }
+  }, [price?.customerId]);
 
   useEffect(() => {
     setHasChanges(JSON.stringify(curPrice) !== JSON.stringify(price));
@@ -171,7 +179,7 @@ const PricesDetailsScreen = () => {
       />
 
       <Box my={2}>
-        <Typography gutterBottom variant="h3">{price?.customerId}</Typography>
+        <Typography gutterBottom variant="h3">{customerName}</Typography>
       </Box>
 
       <Zoom in={hasChanges}>

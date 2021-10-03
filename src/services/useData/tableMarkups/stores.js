@@ -38,6 +38,7 @@ const markUp = {
 
 const generateData = (data, customers) => {
   const values = data.items.map((val) => {
+    // todo: remake using common service
     const customer = customers.items.filter(
       (item) => item.id === val.customerId,
     )[0]?.name;

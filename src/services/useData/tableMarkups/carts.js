@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -56,25 +57,39 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val.id,
-    customer: val.customerId,
-    createDate: val.createDate,
-    updateDate: val.updateDate,
-    scheduledRemoval: moment(val.scheduledSuppressionDate).format('D MMM YYYY'),
-    store: val.storeId,
-    source: val.source === 'PURCHASE' ? localization.t('labels.acquisition') : localization.t('labels.manualRenewal'),
-    emailAddress: val.endUser.email,
-    firstName: val.endUser.firstName,
-    lastName: val.endUser.lastName,
-  }));
+  const values = data.items.map(async (val) => {
+    const returnData = {
+      id: val.id,
+      customer: val.customerId,
+      createDate: val.createDate,
+      updateDate: val.updateDate,
+      scheduledRemoval: moment(val.scheduledSuppressionDate).format('D MMM YYYY'),
+      store: val.storeId,
+      source: val.source === 'PURCHASE' ? localization.t('labels.acquisition') : localization.t('labels.manualRenewal'),
+      emailAddress: val.endUser.email,
+      firstName: val.endUser.firstName,
+      lastName: val.endUser.lastName,
+    };
+
+    if (val.customerId) {
+      const name = await getCustomerName(val.customerId);
+      return { ...returnData, customer: name };
+    }
+
+    return returnData;
+  });
 
   const meta = {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta });
-  return markUp;
+  return Promise
+    .all(values)
+    .then((resp) => {
+      Object.assign(markUp, { values: resp, meta });
+
+      return markUp;
+    });
 };
 
 export { generateData, defaultShow, markUp };

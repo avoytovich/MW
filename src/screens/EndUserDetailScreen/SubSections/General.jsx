@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -19,9 +19,19 @@ import api from '../../../api';
 import localization from '../../../localization';
 import { InputCustom, SelectCustom } from '../../../components/Inputs';
 
+import { getCustomerName } from '../../../services/helpers/customersHelper';
+
 const General = ({
   curEndUser, setCurEndUser, selectOptions, invalidVatNumber, setInvalidVatNumber, scope, consent,
 }) => {
+  const [customerName, setCustomerName] = useState(null);
+
+  useEffect(() => {
+    if (curEndUser?.customerId) {
+      getCustomerName(curEndUser?.customerId).then((name) => setCustomerName(name));
+    }
+  }, []);
+
   const handleCheckVatNumber = (value) => {
     if (value !== '') {
       const VatNumberValidation = api.vatNumberCheck(value, curEndUser.country);
@@ -35,6 +45,7 @@ const General = ({
       setInvalidVatNumber('');
     }
   };
+
   return (
     <Grid container>
       <Grid item md={6}>
@@ -70,7 +81,7 @@ const General = ({
             <Typography variant='h5'>{localization.t('labels.сustomer')}</Typography>
           </Box>
           <Box>
-            <Typography>{curEndUser.customerId}</Typography>
+            <Typography>{customerName}</Typography>
           </Box>
           <Box px={2} alignSelf='center'>
             <FileCopyIcon color='secondary' onClick={() => makeCopy(curEndUser.customerId)} />

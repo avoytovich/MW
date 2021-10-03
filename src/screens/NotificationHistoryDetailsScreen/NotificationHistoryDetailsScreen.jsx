@@ -7,12 +7,14 @@ import {
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import moment from 'moment';
 
+import { getCustomerName } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 import api from '../../api';
 
 import './notificationHistoryDetailsScreen.scss';
 
 const NotificationHistoryDetailsScreen = () => {
+  const [customerName, setCustomerName] = useState(null);
   const [loading, setLoading] = useState(false);
   const [notificationHistory, setNotificationHistory] = useState(null);
   const [customer, setCustomer] = useState(null);
@@ -20,6 +22,12 @@ const NotificationHistoryDetailsScreen = () => {
 
   const { id } = useParams();
   const history = useHistory();
+
+  useEffect(() => {
+    if (notificationHistory?.customerId) {
+      getCustomerName(notificationHistory?.customerId).then((name) => setCustomerName(name));
+    }
+  }, []);
 
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
@@ -100,7 +108,7 @@ const NotificationHistoryDetailsScreen = () => {
               className="customer-value"
               onClick={() => history.push(`/settings/administration/customers/${notificationHistory.customerId}`)} // ToDo: should be replaced with new customer route
             >
-              {notificationHistory?.customerId}
+              {customerName}
             </span>
           </Typography>
           <FileCopyIcon

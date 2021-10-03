@@ -35,6 +35,7 @@ const markUp = {
 const generateData = (data, customers) => {
   let customer;
   const values = data.items.map((val) => {
+    // todo: remake using common service
     customer = val.customerId === 'Nexway' ? val.customerId : customers.find((item) => item.id === val.customerId)?.name;
 
     return {

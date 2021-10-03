@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 
@@ -12,10 +12,19 @@ import FileCopy from '@material-ui/icons/FileCopyOutlined';
 
 import { SelectCustom } from '../../../components/Inputs';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
+import { getCustomerName } from '../../../services/helpers/customersHelper';
 
 import localization from '../../../localization';
 
 const General = ({ setData, data }) => {
+  const [customerName, setCustomerName] = useState(null);
+
+  useEffect(() => {
+    if (data?.customerId) {
+      getCustomerName(data?.customerId).then((name) => setCustomerName(name));
+    }
+  }, []);
+
   const availableLocales = getLanguagesOptions();
 
   const copyData = (text) => {
@@ -54,7 +63,7 @@ const General = ({ setData, data }) => {
             <Typography variant='h5'>{localization.t('labels.customer')}</Typography>
 
             <Box display='flex'>
-              <Typography>{data.customerId}</Typography>
+              <Typography>{customerName}</Typography>
               <FileCopy
                 color='secondary'
                 style={{ cursor: 'pointer', marginLeft: '10px' }}
