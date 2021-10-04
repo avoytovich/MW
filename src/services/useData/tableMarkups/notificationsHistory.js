@@ -76,6 +76,7 @@ const generateData = async (data, customers, selectedCustomer) => {
     );
     const strNotificationHistoryСustomerIds = arrNotificationHistoryСustomerIds.map((item) => `id=${item}`).join('&');
     const resCustomersByIds = await api.getCustomersByIds(strNotificationHistoryСustomerIds);
+    // todo: remake using common service
     data.items.map((item) => resCustomersByIds.data.items.map((each) => {
       if (each.id === item.customerId) {
         Object.assign(item, { customerName: each.name });

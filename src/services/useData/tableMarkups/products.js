@@ -1,3 +1,4 @@
+import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -55,26 +56,38 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val.id,
-    createDate: val.createDate,
-    updateDate: val.updateDate,
-    customer: val.customerId,
-    genericName: val.genericName,
-    publisherRefId: val.publisherRefId,
-    type: val.type,
-    lifeTime: val.lifeTime,
-    status: val.status,
-    family: val.family,
-    subscriptionModel: val?.subscriptionTemplate,
-  }));
+  const values = data.items.map(async (val) => {
+    const returnData = {
+      id: val.id,
+      createDate: val.createDate,
+      updateDate: val.updateDate,
+      customer: val.customerId,
+      genericName: val.genericName,
+      publisherRefId: val.publisherRefId,
+      type: val.type,
+      lifeTime: val.lifeTime,
+      status: val.status,
+      family: val.family,
+      subscriptionModel: val?.subscriptionTemplate,
+    };
 
-  const meta = {
-    totalPages: data.totalPages,
-  };
+    if (val.customerId) {
+      const name = await getCustomerName(val.customerId);
+      return { ...returnData, customer: name };
+    }
 
-  Object.assign(markUp, { values, meta });
-  return markUp;
+    return returnData;
+  });
+
+  const meta = { totalPages: data.totalPages };
+
+  return Promise
+    .all(values)
+    .then((resp) => {
+      Object.assign(markUp, { values: resp, meta });
+
+      return markUp;
+    });
 };
 
 export { generateData, defaultShow, markUp };

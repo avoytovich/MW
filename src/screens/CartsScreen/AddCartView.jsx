@@ -37,7 +37,6 @@ const AddCartView = ({
   initialValues,
   storeOpt,
   prefillOpt,
-  selectedEndUser,
   setSelectedEndUser,
   selectedStore,
   setSelectedStore,
@@ -47,8 +46,8 @@ const AddCartView = ({
 }) => {
   const [curTab, setCurTab] = useState(0);
 
-  const customerId = useSelector(
-    ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.id,
+  const customerName = useSelector(
+    ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.name,
   );
 
   const tabLabels = ['general', 'endUser'];
@@ -708,7 +707,7 @@ const AddCartView = ({
                         {localization.t('labels.customerId')}
                       </Typography>
                       <Typography color='secondary'>
-                        {customerId}
+                        {customerName}
                       </Typography>
                     </Breadcrumbs>
                   </Box>

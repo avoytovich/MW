@@ -29,6 +29,7 @@ import TableComponent from '../../components/TableComponent';
 import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
+import { getCustomerName } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 
 import './campaignDetailsScreen.scss';
@@ -36,6 +37,7 @@ import './campaignDetailsScreen.scss';
 const CampaignDetailsScreen = () => {
   const history = useHistory();
   const { id } = useParams();
+  const [customerName, setCustomerName] = useState(null);
   const [campaign, setCampaign] = useState(null);
   const [curCampaign, setCurCampaign] = useState(null);
   const [pricesData, setPricesData] = useState(null);
@@ -93,6 +95,12 @@ const CampaignDetailsScreen = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (campaign?.customerId) {
+      getCustomerName(campaign?.customerId).then((name) => setCustomerName(name));
+    }
+  }, [campaign?.customerId]);
+
   const updateReco = (type, value) => setCurCampaign((c) => ({ ...c, [type]: value }));
 
   const handleSelectDate = (ranges) => {
@@ -125,7 +133,7 @@ const CampaignDetailsScreen = () => {
       )}
       <Box py={2}>
         <Typography gutterBottom variant='h3'>
-          {campaign?.customerId}
+          {customerName}
         </Typography>
       </Box>
 
@@ -151,7 +159,7 @@ const CampaignDetailsScreen = () => {
               name="customerId"
               type="text"
               disabled
-              value={curCampaign.customerId}
+              value={customerName || ''}
               variant="outlined"
             />
           </Box>

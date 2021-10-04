@@ -14,6 +14,7 @@ import FileCopyIcon from '@material-ui/icons/FileCopy';
 
 import api from '../../api';
 import parentPaths from '../../services/paths';
+import { getCustomerName } from '../../services/helpers/customersHelper';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import localization from '../../localization';
 
@@ -21,6 +22,7 @@ import './subscriptionDetailsScreen.scss';
 
 const SubscriptionDetailsScreen = () => {
   const { id } = useParams();
+  const [customerName, setCustomerName] = useState(null);
   const [subscription, setSubscription] = useState(null);
 
   useEffect(() => {
@@ -30,6 +32,12 @@ const SubscriptionDetailsScreen = () => {
         setSubscription(data);
       });
   }, []);
+
+  useEffect(() => {
+    if (subscription?.customerId) {
+      getCustomerName(subscription?.customerId).then((name) => setCustomerName(name));
+    }
+  }, [subscription?.customerId]);
 
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
@@ -41,7 +49,7 @@ const SubscriptionDetailsScreen = () => {
   const generated = {
     general: [
       { label: localization.t('labels.subscriptionId'), value: subscription.id, copy: true },
-      { label: localization.t('labels.customer'), value: subscription.customerId, copy: true },
+      { label: localization.t('labels.customer'), value: customerName, copy: true },
       { label: localization.t('labels.creationDate'), value: moment(subscription.createDate).format('YYYY-MM-DD') },
       { label: localization.t('labels.lastUpdate'), value: moment(subscription.updateDate).format('YYYY-MM-DD') },
       { label: localization.t('labels.subscriptionName'), value: subscription.name },
@@ -86,7 +94,7 @@ const SubscriptionDetailsScreen = () => {
       )}
       <Box py={2}>
         <Typography gutterBottom variant='h3'>
-          {subscription?.customerId}
+          {customerName}
         </Typography>
       </Box>
 

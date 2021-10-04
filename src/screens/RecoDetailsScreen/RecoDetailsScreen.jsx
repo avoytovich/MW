@@ -21,6 +21,7 @@ import {
 import parentPaths from '../../services/paths';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
+import { getCustomerName } from '../../services/helpers/customersHelper';
 import api from '../../api';
 
 import Basic from './SubSections/Basic';
@@ -38,6 +39,7 @@ const RecoDetailsScreen = () => {
   const history = useHistory();
 
   const { id } = useParams();
+  const [customerName, setCustomerName] = useState(null);
   const [reco, setReco] = useState(null);
   const [curReco, setCurReco] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
@@ -133,6 +135,13 @@ const RecoDetailsScreen = () => {
       );
     });
   }, []);
+
+  useEffect(() => {
+    if (reco?.customerId) {
+      getCustomerName(reco?.customerId).then((name) => setCustomerName(name));
+    }
+  }, [reco?.customerId]);
+
   const updateReco = (type, value, selections) => {
     let setValue = value;
 
@@ -171,7 +180,7 @@ const RecoDetailsScreen = () => {
       )}
       <Box py={2}>
         <Typography gutterBottom variant='h3'>
-          {reco?.customerId}
+          {customerName}
         </Typography>
       </Box>
       <Box my={1} bgcolor='#fff'>

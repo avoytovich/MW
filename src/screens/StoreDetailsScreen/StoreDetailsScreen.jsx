@@ -24,6 +24,7 @@ import {
   storeRequiredFields,
   structureSelectOptions,
 } from '../../services/helpers/dataStructuring';
+import { getCustomerName } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 import parentPaths from '../../services/paths';
 import {
@@ -40,6 +41,7 @@ import api from '../../api';
 const StoreDetailsScreen = () => {
   const history = useHistory();
   const [curTab, setCurTab] = useState(0);
+  const [customerName, setCustomerName] = useState(null);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const [currentStoreResources, setCurrentStoreResources] = useState([]);
@@ -225,6 +227,12 @@ const StoreDetailsScreen = () => {
     };
   }, [currentStoreData, storeData]);
 
+  useEffect(() => {
+    if (currentCustomerData?.id) {
+      getCustomerName(currentCustomerData?.id).then((name) => setCustomerName(name));
+    }
+  }, [currentCustomerData?.id]);
+
   if (isLoading) return <LinearProgress />;
 
   if (id === 'add' && !nxState?.selectedCustomer?.id) return <SelectCustomerNotification />;
@@ -258,7 +266,7 @@ const StoreDetailsScreen = () => {
                 </Typography>
                 {currentCustomerData && (
                   <Typography color='secondary'>
-                    {currentCustomerData.id}
+                    {customerName}
                   </Typography>
                 )}
               </Breadcrumbs>

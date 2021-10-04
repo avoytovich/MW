@@ -49,6 +49,7 @@ const generateData = async (data, customers, selectedCustomer) => {
     );
     const strEndUsersGroupsСustomerIds = arrEndUsersGroupsСustomerIds.map((item) => `id=${item}`).join('&');
     const resEndUsersGroupsByIds = await api.getCustomersByIds(strEndUsersGroupsСustomerIds);
+    // todo: remake using common service
     data.items.map((item) => resEndUsersGroupsByIds.data.items.map((each) => {
       if (each.id === item.customerId) {
         Object.assign(item, { customer: each.name });

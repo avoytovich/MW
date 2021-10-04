@@ -1,3 +1,4 @@
+import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -78,30 +79,44 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val.id,
-    customer: val.customerId,
-    status: val.status,
-    orderId: val.checkout.orderId,
-    orderLineId: val.checkout.orderLineId,
-    firstName: val.user.firstName,
-    lastName: val.user.lastName,
-    email: val.user.email,
-    city: val.user.city,
-    country: val.user.country,
-    locale: val.user.locale,
-    productId: val.product.id,
-    licenseProviderDefinition: val.product.licenseProviderDefinitionId,
-    publisherProductId: val.product.publisherProductId,
-    productName: val.product.name,
-  }));
+  const values = data.items.map(async (val) => {
+    const returnData = {
+      id: val.id,
+      customer: val.customerId,
+      status: val.status,
+      orderId: val.checkout.orderId,
+      orderLineId: val.checkout.orderLineId,
+      firstName: val.user.firstName,
+      lastName: val.user.lastName,
+      email: val.user.email,
+      city: val.user.city,
+      country: val.user.country,
+      locale: val.user.locale,
+      productId: val.product.id,
+      licenseProviderDefinition: val.product.licenseProviderDefinitionId,
+      publisherProductId: val.product.publisherProductId,
+      productName: val.product.name,
+    };
+
+    if (val.customerId) {
+      const name = await getCustomerName(val.customerId);
+      return { ...returnData, customer: name };
+    }
+
+    return returnData;
+  });
 
   const meta = {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta });
-  return markUp;
+  return Promise
+    .all(values)
+    .then((resp) => {
+      Object.assign(markUp, { values: resp, meta });
+
+      return markUp;
+    });
 };
 
 export { generateData, defaultShow, markUp };

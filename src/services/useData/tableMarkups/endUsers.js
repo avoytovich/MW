@@ -1,3 +1,4 @@
+import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -71,27 +72,42 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val?.id,
-    customer: val?.customerId,
-    group: '',
-    firstName: val?.firstName,
-    lastName: val?.lastName,
-    companyName: val?.company?.companyName,
-    email: val?.email,
-    country: val?.country,
-    zip: val?.zipCode,
-    status: val?.status,
-    city: val?.city,
-    streetAddress: val?.streetAddress,
-    account: val?.accountCreated,
-  }));
+  const values = data.items.map(async (val) => {
+    const returnData = {
+      id: val?.id,
+      customer: val?.customerId,
+      group: '',
+      firstName: val?.firstName,
+      lastName: val?.lastName,
+      companyName: val?.company?.companyName,
+      email: val?.email,
+      country: val?.country,
+      zip: val?.zipCode,
+      status: val?.status,
+      city: val?.city,
+      streetAddress: val?.streetAddress,
+      account: val?.accountCreated,
+    };
+
+    if (val.customerId) {
+      const name = await getCustomerName(val.customerId);
+      return { ...returnData, customer: name };
+    }
+
+    return returnData;
+  });
 
   const meta = {
     totalPages: data.totalPages,
   };
-  Object.assign(markUp, { values, meta });
-  return markUp;
+
+  return Promise
+    .all(values)
+    .then((resp) => {
+      Object.assign(markUp, { values: resp, meta });
+
+      return markUp;
+    });
 };
 
 export { generateData, defaultShow, markUp };

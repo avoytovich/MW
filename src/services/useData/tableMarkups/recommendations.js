@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -29,25 +30,39 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val.id,
-    creationDate: moment(val.createDate).format('D MMM YYYY'),
-    lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
-    customer: val.customerId,
-    ruleName: val.name,
-    status: val.status,
-    type: val.type.replaceAll('_', ' '),
-    levels: val.levels ? val.levels.join(', ') : null,
-    sources: val.sources ? val.sources.join(', ') : null,
-    weight: val.weight,
-  }));
+  const values = data.items.map(async (val) => {
+    const returnData = {
+      id: val.id,
+      creationDate: moment(val.createDate).format('D MMM YYYY'),
+      lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
+      customer: val.customerId,
+      ruleName: val.name,
+      status: val.status,
+      type: val.type.replaceAll('_', ' '),
+      levels: val.levels ? val.levels.join(', ') : null,
+      sources: val.sources ? val.sources.join(', ') : null,
+      weight: val.weight,
+    };
+
+    if (val.customerId) {
+      const name = await getCustomerName(val.customerId);
+      return { ...returnData, customer: name };
+    }
+
+    return returnData;
+  });
 
   const meta = {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta });
-  return markUp;
+  return Promise
+    .all(values)
+    .then((resp) => {
+      Object.assign(markUp, { values: resp, meta });
+
+      return markUp;
+    });
 };
 
 export { generateData, defaultShow, markUp };

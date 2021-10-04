@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -25,22 +26,36 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.items.map((val) => ({
-    id: val.id,
-    customer: val.customerId,
-    createDate: moment(val.createDate).format('D MMM YYYY'),
-    lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
-    enduserId: val.enduserId,
-    name: val.name,
-    storeId: val.storeId,
-  }));
+  const values = data.items.map(async (val) => {
+    const returnData = {
+      id: val.id,
+      customer: val.customerId,
+      createDate: moment(val.createDate).format('D MMM YYYY'),
+      lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
+      enduserId: val.enduserId,
+      name: val.name,
+      storeId: val.storeId,
+    };
+
+    if (val.customerId) {
+      const name = await getCustomerName(val.customerId);
+      return { ...returnData, customer: name };
+    }
+
+    return returnData;
+  });
 
   const meta = {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta });
-  return markUp;
+  return Promise
+    .all(values)
+    .then((resp) => {
+      Object.assign(markUp, { values: resp, meta });
+
+      return markUp;
+    });
 };
 
 export { generateData, defaultShow, markUp };

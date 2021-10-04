@@ -36,6 +36,7 @@ const secondaryRequest = async (data) => {
     }
   });
   return Promise.allSettled([
+    // todo: remove - reuse common service
     api.getCustomersByIds(costumersIds.join('&')),
     api.getEnduserGroupsByIds(groupsIds.join('&')),
   ]).then(([customers, groups]) => {
