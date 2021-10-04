@@ -1,4 +1,4 @@
-import localization from '../../../localization';
+import localization from '../../localization';
 
 const defCustomerObj = {
   name: '',

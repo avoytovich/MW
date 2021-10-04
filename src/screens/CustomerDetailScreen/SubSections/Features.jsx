@@ -5,7 +5,7 @@ import {
   Box, Checkbox, FormControlLabel, Typography, Grid,
 } from '@material-ui/core';
 
-import localization from '../../../../localization';
+import localization from '../../../localization';
 import { checkBoxObj } from '../utils';
 
 const Features = ({ currentCustomer, setCurrentCustomer }) => (

@@ -6,13 +6,13 @@ import {
 import { FileCopy } from '@material-ui/icons';
 import { toast } from 'react-toastify';
 
-import localization from '../../../../localization';
+import localization from '../../../localization';
 import {
   NumberInput,
   InputCustom,
   SelectWithChip,
   SwitchInput,
-} from '../../../../components/Inputs';
+} from '../../../components/Inputs';
 
 const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
   const makeCopy = (value) => {

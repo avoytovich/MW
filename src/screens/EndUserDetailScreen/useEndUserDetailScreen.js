@@ -50,11 +50,11 @@ const useEndUserDetailScreen = (id) => {
             ...selectOptions,
             groups: structureSelectOptions(groupsOptions.value?.data.items, 'name') || [],
           });
-          if (ordersData.value?.data.items.length) {
+          if (ordersData.value?.data.items?.length) {
             const orderTableData = generateOrders(ordersData.value?.data.items);
             setOrders(orderTableData);
           }
-          if (consentData?.value?.data.items.length) {
+          if (consentData?.value?.data.items?.length) {
             setConsent(consentData);
           }
           if (vatNumber && vatNumber.status === 'rejected') {

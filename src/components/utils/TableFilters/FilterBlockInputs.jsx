@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 
 import SearchIcon from '@material-ui/icons/Search';
+import { SelectWithChip } from '../../Inputs';
 
 import localization from '../../../localization';
 
@@ -19,10 +20,10 @@ const FilterBlockInputs = ({
 }) => {
   const TextSubFilter = () => (
     <TextField
+      label={data.label}
       value={curData || ''}
       fullWidth
       variant='outlined'
-      placeholder={data?.label || 'Write here...'}
       onChange={(e) => updateConfig(data.id, e.target.value)}
       InputProps={{
         endAdornment: <InputAdornment position="end"><SearchIcon color='secondary' /></InputAdornment>,
@@ -88,6 +89,7 @@ const FilterBlockInputs = ({
 
   const SelectSubFilter = () => (
     <Select
+      label={data.label}
       multiple
       variant='outlined'
       fullWidth
@@ -100,9 +102,7 @@ const FilterBlockInputs = ({
         if (!curData || selected.length === 0) {
           return <Typography color='secondary' variant='h6'>{`Select ${data.label}`}</Typography>;
         }
-
         const selectedItems = [];
-
         for (let i = 0; i < data.values.length; i += 1) {
           const curItem = data.values[i];
 
@@ -121,10 +121,24 @@ const FilterBlockInputs = ({
       ))}
     </Select>
   );
-
+  const SelectWithChipSubFilter = () => (
+    <SelectWithChip
+      label={data.id}
+      value={curData || []}
+      selectOptions={data.values}
+      onClickDelIcon={(chip) => {
+        const newValue = [...curData].filter(
+          (val) => val !== chip,
+        );
+        updateConfig(data.id, newValue);
+      }}
+      onChangeSelect={(e) => updateConfig(data.id, e.target.value)}
+    />
+  );
   switch (type) {
     case 'date': return DateSubFilter();
     case 'select': return SelectSubFilter();
+    case 'selectWithChip': return SelectWithChipSubFilter();
     default: return TextSubFilter();
   }
 };

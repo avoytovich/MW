@@ -56,10 +56,10 @@ const parentPaths = {
   },
   myaccount: `${defPath}/settings/myaccount`,
 
-  customers: `${defPath}/customers/customerslist`,
-  onboarding: `${defPath}/customers/onboarding`,
-  remittables: `${defPath}/customers/remittables`,
-  audits: `${defPath}/customers/audits`,
+  customers: `${defPath}/customermanagement/customerslist`,
+  onboarding: `${defPath}/customermanagement/onboarding`,
+  remittables: `${defPath}/customermanagement/remittables`,
+  audits: `${defPath}/customermanagement/audits`,
 
   productdocumentation: `${defPath}/product-documentation`,
 };
