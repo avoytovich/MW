@@ -1,6 +1,8 @@
 import moment from 'moment';
 // eslint-disable-next-line
-export const generateFilterUrl = (filters) => {
+const truthyValue = ['features'];
+
+const generateFilterUrl = (filters) => {
   let url = '';
 
   Object.entries(filters).forEach(([key, val]) => {
@@ -9,7 +11,11 @@ export const generateFilterUrl = (filters) => {
     if (typeof val !== 'object') {
       url += `${subFilter}*${val}*`;
     } else if (Array.isArray(val)) {
-      val.forEach((v) => { url += subFilter + v; });
+      if (truthyValue.includes(key)) {
+        val.forEach((v) => { url += `&${v}=true`; });
+      } else {
+        val.forEach((v) => { url += subFilter + v; });
+      }
     } else {
       let dateStr;
 
@@ -29,3 +35,4 @@ export const generateFilterUrl = (filters) => {
 
   return url;
 };
+export default generateFilterUrl;

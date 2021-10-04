@@ -948,6 +948,61 @@ const filters = {
       type: 'text',
     },
   ],
+  customerslist: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'email',
+      label: localization.t('labels.email'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.createDate'),
+      type: 'date',
+    },
+    {
+      id: 'features',
+      label: localization.t('labels.features'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'features.sgOrdersManagement', value: localization.t('labels.sgOrdersManagement') },
+        { id: 'features.resellerManagement', value: localization.t('labels.resellerManagement') },
+        { id: 'features.onboardingManagement', value: localization.t('labels.onboardingManagement') },
+        { id: 'features.remittanceManagement', value: localization.t('labels.remittanceManagement') },
+        { id: 'features.productManagement', value: localization.t('labels.productManagement') },
+        { id: 'features.seller', value: localization.t('labels.seller') },
+        { id: 'features.sellOnBehalf', value: localization.t('labels.sellOnBehalf') },
+        { id: 'features.createInvoice', value: localization.t('labels.createInvoice') },
+        { id: 'features.sendOrderConfirmationEmail', value: localization.t('labels.sendOrderConfirmationEmail') },
+        { id: 'features.subscriptionUpgradeAuthorized', value: localization.t('labels.subscriptionUpgradeAuthorized') },
+        { id: 'features.usingSubscriptionV1', value: localization.t('labels.usingSubscriptionV1') },
+        { id: 'features.usingFulfillmentV1', value: localization.t('labels.usingFulfillmentV1') }],
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'TRIAL', value: localization.t('labels.test') },
+        { id: 'RUNNING', value: localization.t('labels.live') },
+      ],
+    },
+
+  ],
 };
 
 export default filters;

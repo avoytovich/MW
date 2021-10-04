@@ -110,6 +110,15 @@ const SignedRoutes = () => {
         path={`${parentPaths.notifications.notificationTab}/:id`}
         component={lazy(() => import('../../screens/NotificationDetailScreen'))}
       />
+      <Route
+        path={`${parentPaths.customers}/:id`}
+        component={lazy(() => import('../../screens/CustomerDetailScreen'))}
+      />
+      <Route
+        path={`${parentPaths.customers}`}
+        component={lazy(() => import('../../screens/CustomersScreen'))}
+      />
+
       {/* ToDo: remove when moved to another sections
 
       <Route

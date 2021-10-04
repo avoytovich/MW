@@ -8,6 +8,7 @@ import {
   Grid,
   Switch,
 } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 import {
   FileCopy as FileCopyIcon,
@@ -15,7 +16,7 @@ import {
 import PropTypes from 'prop-types';
 import { makeCopy } from '../utils';
 import api from '../../../api';
-
+import parentPaths from '../../../services/paths';
 import localization from '../../../localization';
 import { InputCustom, SelectCustom } from '../../../components/Inputs';
 
@@ -24,6 +25,7 @@ import { getCustomerName } from '../../../services/helpers/customersHelper';
 const General = ({
   curEndUser, setCurEndUser, selectOptions, invalidVatNumber, setInvalidVatNumber, scope, consent,
 }) => {
+  const history = useHistory();
   const [customerName, setCustomerName] = useState(null);
 
   useEffect(() => {
@@ -81,7 +83,7 @@ const General = ({
             <Typography variant='h5'>{localization.t('labels.сustomer')}</Typography>
           </Box>
           <Box>
-            <Typography>{customerName}</Typography>
+            <Typography style={{ cursor: 'pointer' }} onClick={() => history.push(`${parentPaths.customers}/${curEndUser.customerId}`)}>{customerName}</Typography>
           </Box>
           <Box px={2} alignSelf='center'>
             <FileCopyIcon color='secondary' onClick={() => makeCopy(curEndUser.customerId)} />
@@ -131,7 +133,6 @@ const General = ({
             <Typography gutterBottom variant='h5'>
               {localization.t('labels.type')}
             </Typography>
-
             <Box>
               <RadioGroup
                 data-test='type'

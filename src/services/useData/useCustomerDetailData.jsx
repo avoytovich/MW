@@ -3,7 +3,7 @@ import { structureSelectOptions } from '../helpers/dataStructuring';
 import {
   checkRequiredFields,
   formatPaymentOptions,
-} from '../../screens/AdministrationDetailsScreens/CustomerDetailScreen/utils';
+} from '../../screens/CustomerDetailScreen/utils';
 import api from '../../api';
 
 const useCustomerDetailData = (id) => {

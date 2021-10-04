@@ -24,7 +24,9 @@ const SelectWithChip = ({
     fullWidth
     select
     data-test={label}
+    label={label ? localization.t(`labels.${label}`) : null}
     SelectProps={{
+      placeholder: 'Write here...',
       multiple: isMultiple,
       value: selectOptions ? value : [],
       onChange: onChangeSelect,
@@ -63,7 +65,6 @@ const SelectWithChip = ({
         </InputAdornment>
       ),
     }}
-    label={label ? localization.t(`labels.${label}`) : null}
   >
     {selectOptions?.length ? (
       selectOptions.map((item) => (

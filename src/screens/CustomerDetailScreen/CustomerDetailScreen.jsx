@@ -6,22 +6,22 @@ import {
 } from '@material-ui/core';
 import { toast } from 'react-toastify';
 
-import api from '../../../api';
-import localization from '../../../localization';
-import useCustomerDetailData from '../../../services/useData/useCustomerDetailData';
+import api from '../../api';
+import localization from '../../localization';
+import useCustomerDetailData from '../../services/useData/useCustomerDetailData';
 import {
   formatBeforeSanding,
   assetsLabels,
   checkLabelDuplicate,
 } from './utils';
-import parentPaths from '../../../services/paths';
+import parentPaths from '../../services/paths';
 
-import TabSection from '../../../components/utils/TabSection';
+import TabSection from '../../components/utils/TabSection';
 import General from './SubSections/General';
 import Features from './SubSections/Features';
-import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
+import AssetsResource from '../../components/AssetsResoursesWithSelectLabel';
 import PaymentServiceConfiguration from './SubSections/PaymentServiceConfiguration';
-import CustomBreadcrumbs from '../../../components/utils/CustomBreadcrumbs';
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 
 import './CustomerDetailScreen.scss';
 
@@ -45,7 +45,7 @@ const CustomerDetailScreen = () => {
         const location = res.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.administration}/customers/${newId}`);
+        history.push(`${parentPaths.customers}/${newId}`);
         setUpdate((u) => u + 1);
       });
     } else {
@@ -62,7 +62,7 @@ const CustomerDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url={`${parentPaths.administration}/customers`}
+            url={parentPaths.customers}
             section={localization.t('general.customer')}
             id={customerData.id}
           />

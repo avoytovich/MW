@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { generateFilterUrl } from '../helpers/filters';
+import generateFilterUrl from '../helpers/filters';
 
 const useTableData = (
   page,
@@ -22,7 +22,6 @@ const useTableData = (
 
   useEffect(() => {
     let isCancelled = false;
-
     if (tableScope === dataScope || dataScope === 'generateCodes') {
       let filtersUrl = activeFilters && activeFilters[dataScope]
         && Object.values(activeFilters[dataScope]).length ? generateFilterUrl(activeFilters[dataScope]) : '';

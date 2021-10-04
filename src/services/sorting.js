@@ -1,7 +1,7 @@
 export const sortKeys = {
   fontsTab: 'fontsTabSortParams',
   identities: 'identitiesSortParams',
-  customerAdmin: 'customerAdminSortParams',
+  customerslist: 'customerslist',
   layoutsTab: 'layoutsTabSortParams',
   themesTab: 'themesTabSortParams',
   translationsTab: 'translationsTabSortParams',

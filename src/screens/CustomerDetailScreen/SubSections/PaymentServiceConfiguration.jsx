@@ -5,13 +5,13 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import localization from '../../../../localization';
+import localization from '../../../localization';
 import {
   InputCustom,
   SelectWithChip,
   SwitchInput,
   PlusMinusInput,
-} from '../../../../components/Inputs';
+} from '../../../components/Inputs';
 import '../CustomerDetailScreen.scss';
 
 const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, selectOptions }) => (
