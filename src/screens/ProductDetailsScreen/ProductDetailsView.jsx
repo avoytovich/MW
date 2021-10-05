@@ -71,8 +71,6 @@ const ProductDetailsView = ({
       setTabsDisabled(true);
     }
   }, [currentProductData]);
-  const disabledTab = !productId && !parentId;
-
   const handleChangeTab = (tab) => (parentId && tab === 7 ? history.push(`${parentPaths.productlist}/${parentId}`) : setCurTab(tab));
 
   return (
@@ -162,7 +160,6 @@ const ProductDetailsView = ({
           />
           <Tab label={localization.t(`labels.${allTabs[3]}`)} value={3} />
           <Tab
-            disabled={disabledTab}
             label={localization.t(`labels.${allTabs[4]}`)}
             value={4}
           />

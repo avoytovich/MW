@@ -110,7 +110,7 @@ const AddVariationModal = ({
       ...productDetails,
       variableDescriptions: productDetails?.variableDescriptions
         ? [...productDetails.variableDescriptions, dataForProductDescriptionRequest]
-        : dataForProductDescriptionRequest,
+        : [dataForProductDescriptionRequest],
     });
     handleClose();
   };

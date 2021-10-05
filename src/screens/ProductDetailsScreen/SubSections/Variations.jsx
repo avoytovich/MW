@@ -77,6 +77,7 @@ const Variations = ({
 
   return (
     <Box display='flex' flexDirection='column' width='100%'>
+      {currentProductData.id && (
       <SectionLayout label='productVariations' wrapperWidth='initial'>
         <Box mt={3}>
           <Typography>Emphasized values override parent product's values.</Typography>
@@ -158,7 +159,9 @@ const Variations = ({
           </Box>
         </Box>
       </SectionLayout>
+      )}
       <Box display='flex'>
+        {currentProductData.id && (
         <SectionLayout label='bundledProducts' contentWidth='100%'>
           {Object.entries(counts).map(([key, value]) => {
             const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
@@ -281,6 +284,7 @@ const Variations = ({
             </Box>
           </Box>
         </SectionLayout>
+        )}
         <SectionLayout label='variationParameters' width='100%'>
           <TableContainer component={Paper}>
             <Table className='table' aria-label='simple table'>
