@@ -7,6 +7,7 @@ import {
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import moment from 'moment';
 
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import { getCustomerName } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 import api from '../../api';
@@ -172,6 +173,20 @@ const NotificationHistoryDetailsScreen = () => {
   if (loading) return <LinearProgress />;
   return (
     <Grid container spacing={2} className="wrapper-notification-history">
+      <Box display='flex' flexDirection='column'>
+        <Box mx={2}>
+          <CustomBreadcrumbs
+            url='/settings/notifications/notification-history'
+            section={localization.t('general.notification')}
+            id={id}
+          />
+        </Box>
+        <Box py={2} mt={3}>
+          <Typography gutterBottom variant='h3'>
+            {`${localization.t('labels.notification')} # ${id}`}
+          </Typography>
+        </Box>
+      </Box>
       {mapStructure.map((each) => (
         <Grid container spacing={2} key={each.label}>
           {renderFields(each)}

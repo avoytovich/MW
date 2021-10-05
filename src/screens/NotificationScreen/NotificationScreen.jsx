@@ -133,7 +133,7 @@ const NotficationScreen = () => {
           <Route
             exact
             path={tabsData[2].path}
-            component={() => <TabTable tabObject={tabsData[2]} />}
+            component={() => <TabTable tabObject={tabsData[2]} noEditDeleteActions />}
           />
           <Redirect exact from={`${parentPaths.notifications.main}`} to={tabsData[0].path} />
         </Switch>
