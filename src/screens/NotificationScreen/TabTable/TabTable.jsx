@@ -13,7 +13,7 @@ import {
   sortKeys,
 } from '../../../services/sorting';
 
-const TabTable = ({ tabObject }) => {
+const TabTable = ({ tabObject, noEditDeleteActions = false }) => {
   const { selectedCustomer } = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -67,6 +67,7 @@ const TabTable = ({ tabObject }) => {
       scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
+      noEditDeleteActions={noEditDeleteActions}
       handleDeleteItem={handleDelete}
       defaultShowColumn={defaultShow}
       currentPage={currentPage}
@@ -79,6 +80,7 @@ const TabTable = ({ tabObject }) => {
 
 TabTable.propTypes = {
   tabObject: PropTypes.object,
+  noEditDeleteActions: PropTypes.bool,
 };
 
 export default TabTable;

@@ -383,7 +383,7 @@ const labels = {
   reports: 'Reports',
   notification: 'Notifications',
   notificationDefinitions: 'Notification Definitions',
-  notificationHistory: 'Notifications History',
+  notificationHistory: 'Notification History',
   notificationsId: 'Notifications ID',
   notificationCustomer: 'Customer',
   notificationName: 'Name',
