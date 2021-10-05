@@ -164,6 +164,7 @@ const CreateProduct = () => {
 
   return (
     <ProductDetailsView
+      setProductDetails={setProductDetails}
       selectOptions={selectOptions}
       setProductData={setCurrentProductData}
       currentProductData={currentProductData}
