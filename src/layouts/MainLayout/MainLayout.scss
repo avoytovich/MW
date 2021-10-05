@@ -1,17 +1,14 @@
 @import '../../styles/variables.scss';
 
 .table {
-  height: calc(100% - 64px);
+  height: calc(100vh - 63px);
   width: 100%;
   flex-grow: 1;
-  padding: 20px 30px 20px 30px;
   background-color: $tableHeader;
-}
-.tableBorder {
-  // border: 2px solid $mainTableBorder;
-  // border-radius: 10px;
-  padding: 15px;
+  padding: 20px 20px 0 20px;
+  overflow: auto;
 }
 .mainLayout {
   height: 100%;
+  overflow: hidden;
 }

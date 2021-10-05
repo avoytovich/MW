@@ -90,7 +90,7 @@ const TableComponent = ({
           totalPages={tableData.meta?.totalPages}
         />
       </Box>
-      <Paper elevation={1} style={{ maxHeight: 'auto', overflow: 'auto' }}>
+      <Paper className='paper' elevation={1} style={{ maxHeight: 'auto' }}>
         <Grid
           spacing={2}
           container
@@ -171,7 +171,7 @@ const TableComponent = ({
           ))}
         </Box>
       </Paper>
-      {!noTableActionsBar && (
+      {/* {!noTableActionsBar && (
         <Box pt={2}>
           <TableActionsBar positionBottom>
             <PaginationComponent
@@ -182,7 +182,7 @@ const TableComponent = ({
             />
           </TableActionsBar>
         </Box>
-      )}
+      )} */}
     </>
   ) : (
     <Typography data-test='noResultsNotification'>{localization.t('general.noResults')}</Typography>
