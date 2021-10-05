@@ -32,7 +32,7 @@ const markUp = {
       sortParam: 'status',
     },
     { value: localization.t('labels.gtmId'), id: 'gtmId' },
-    { value: localization.t('labels.storeID'), id: 'id' },
+    { value: localization.t('labels.storeId'), id: 'id' },
   ],
 };
 

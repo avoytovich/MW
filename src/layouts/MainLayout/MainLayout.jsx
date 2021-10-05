@@ -19,7 +19,6 @@ const MainLayout = ({ children }) => {
         <TopBar toggleDrawer={() => setDrawer((d) => !d)} />
         <Grid className="table">
           <Grid
-            className="tableBorder"
             item
           >
             {children}

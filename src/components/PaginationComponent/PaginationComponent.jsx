@@ -50,7 +50,7 @@ const PaginationComponent = ({
       <Grid spacing={5} container justify={location} direction="row">
         {currentPage !== 1 && (
         <Grid item>
-          <Typography color="secondary" onClick={() => updatePage(1)} className="firstPaginationPage">
+          <Typography onClick={() => updatePage(1)} className="firstPaginationPage">
             {localization.t('general.first')}
           </Typography>
         </Grid>

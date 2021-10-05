@@ -69,6 +69,7 @@
   padding: 15px 0;
   padding-left: 20px;
   overflow-x: hidden;
+  min-width: fit-content;
   .tableHeader {
     display: inherit;
     white-space: nowrap;
@@ -130,4 +131,10 @@
     color: $navItemButtonActive;
     margin-top: 2px;
   }
+}
+.paper {
+  height: fit-content;
+  max-height: calc(100vh - 216px);
+  width: 100%;
+  overflow: auto;
 }

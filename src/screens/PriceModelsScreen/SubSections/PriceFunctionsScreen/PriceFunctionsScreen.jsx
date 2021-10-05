@@ -28,6 +28,7 @@ const PriceFunctionsScreen = () => {
 
   const requests = async (rowsPerPage, filtersUrl) => {
     const res = await api.getPriceFunctions({
+
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
