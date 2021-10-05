@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 import FullNameAvatar from '../utils/FullNameAvatar';
 import localization from '../../localization';
 import PriceNumberFormat from '../PriceNumberFormat';
+import parentPaths from '../../services/paths';
 import './TableComponent.scss';
 
 const TableRowComponent = ({
@@ -79,6 +80,15 @@ const TableRowComponent = ({
         valueToShow = moment(rowItem[item.id]).format('D MMM YYYY');
       } else if (item.id === 'value') {
         valueToShow = <PriceNumberFormat number={rowItem[item.id]} currency={rowItem.currency} />;
+      } else if (item.id === 'name') {
+        valueToShow = (
+          <Typography
+            className="name-value"
+            onClick={() => history.push(`${parentPaths.productlist}/${rowItem.productId}`)}
+          >
+            {rowItem[item.id]}
+          </Typography>
+        );
       } else {
         valueToShow = rowItem[item.id];
       }
@@ -116,7 +126,7 @@ const TableRowComponent = ({
             </Typography>
             {item.value && shouldCopy(item.id) && (
               <FileCopyIcon
-                onClick={(e) => {e.stopPropagation(); makeCopy(valueToShow)}}
+                onClick={(e) => { e.stopPropagation(); makeCopy(valueToShow); }}
                 color="secondary"
                 className="copyIcon"
               />
@@ -154,24 +164,24 @@ const TableRowComponent = ({
         )}
 
         {markupSequence.map((item) => drawTableCell(item))}
-          <Grid item xs style={{ minWidth: '200px' }}>
-            {rowHover && !customPath && (
-              <Grid>
-                <Box mt={2} textAlign='center'>
-                  {!noActions && !noEditDeleteActions && (
-                    <DeleteIcon
-                      onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-                      className="deleteIcon icons"
-                    />
-                  )}
-                  {!noEditDeleteActions && (
-                    <EditIcon className="editIcon icons" />
-                  )}
-                  <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
-                </Box>
-              </Grid>
-            )}
+        <Grid item xs style={{ minWidth: '200px' }}>
+          {rowHover && !customPath && (
+          <Grid>
+            <Box mt={2} textAlign='center'>
+              {!noActions && !noEditDeleteActions && (
+              <DeleteIcon
+                onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                className="deleteIcon icons"
+              />
+              )}
+              {!noEditDeleteActions && (
+              <EditIcon className="editIcon icons" />
+              )}
+              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+            </Box>
           </Grid>
+          )}
+        </Grid>
       </Grid>
     </Box>
   );

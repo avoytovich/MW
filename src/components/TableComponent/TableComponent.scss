@@ -13,9 +13,8 @@
     background-color: $tablesEvenRow;
   }
 
-  &.error-row{
-
-    .MuiTypography-colorSecondary{
+  &.error-row {
+    .MuiTypography-colorSecondary {
       color: #fff;
     }
   }
@@ -33,6 +32,10 @@
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
+    .name-value {
+      cursor: pointer;
+      color: $clickable;
+    }
     .error-row-color {
       color: $deleteIcon;
     }
@@ -48,7 +51,7 @@
     color: #959595;
   }
   .editIcon {
-    color: #959595;;
+    color: #959595;
   }
   .statusEnabled {
     color: $copyIcon;
@@ -57,8 +60,10 @@
     color: $deleteIcon;
   }
 
-  .deleteIcon:hover, .copyIcon:hover, .editIcon:hover {
-    color:#4791dc;
+  .deleteIcon:hover,
+  .copyIcon:hover,
+  .editIcon:hover {
+    color: #4791dc;
   }
 }
 .error-row-color {
@@ -96,7 +101,7 @@
       box-shadow: none;
       color: #959595;
       :hover {
-        color:#4791dc;
+        color: #4791dc;
       }
       .importExportIcon {
         left: -4px;
@@ -112,7 +117,7 @@
     box-shadow: none;
     color: #959595;
     :hover {
-      color:#4791dc;
+      color: #4791dc;
     }
     .deleteIcon {
       left: -4px;
@@ -125,7 +130,7 @@
   min-width: 175px;
   position: relative;
 
-  svg{
+  svg {
     position: absolute;
     font-size: 18px;
     color: $navItemButtonActive;
