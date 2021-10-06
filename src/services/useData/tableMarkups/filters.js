@@ -510,7 +510,7 @@ const filters = {
       type: 'date',
     },
     {
-      id: 'updatingDate',
+      id: 'updateDate',
       label: localization.t('labels.updateDate'),
       type: 'date',
     },
@@ -608,7 +608,7 @@ const filters = {
       type: 'date',
     },
     {
-      id: 'updatingDate',
+      id: 'updateDate',
       label: localization.t('labels.updateDate'),
       type: 'date',
     },
@@ -769,7 +769,7 @@ const filters = {
       type: 'date',
     },
     {
-      id: 'updatingDate',
+      id: 'updateDate',
       label: localization.t('labels.updateDate'),
       type: 'date',
     },

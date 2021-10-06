@@ -43,6 +43,8 @@ const Filters = ({ scope, onClose }) => {
 
   const filtersConfig = useSelector(({ tableData: { filters } }) => filters[scope]);
 
+  const allFilterViewsConfig = useSelector(({ tableData: { filterViews } }) => filterViews);
+
   const filterViewsConfig = useSelector(({ tableData: { filterViews } }) => filterViews[scope]);
 
   const updateFiltersConfig = (id, newData) => {
@@ -102,6 +104,7 @@ const Filters = ({ scope, onClose }) => {
       const prevViews = filterViewsConfig?.length ? filterViewsConfig : [];
 
       dispatch(setFilterViews({
+        ...allFilterViewsConfig,
         [scope]: [...prevViews, { name: newFilterName, config: newFiltersConfig }],
       }));
 
@@ -131,6 +134,7 @@ const Filters = ({ scope, onClose }) => {
     e.stopPropagation();
 
     dispatch(setFilterViews({
+      ...allFilterViewsConfig,
       [scope]: filterViewsConfig.filter((i) => i.name !== name),
     }));
 
@@ -150,6 +154,7 @@ const Filters = ({ scope, onClose }) => {
     }
 
     dispatch(setFilterViews({
+      ...allFilterViewsConfig,
       [scope]: filterViewsConfig.map((i) => {
         if (i.name === isEditingView) {
           return { ...i, name: newFilterName };

@@ -218,9 +218,14 @@ const getAllApi = {
     });
   },
   getDesignsTranslations({
-    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
     let url = `/designs/i18ns?format=short&size=${size}&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -254,9 +259,14 @@ const getAllApi = {
     });
   },
   getDesignsLayouts({
-    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
     let url = `/designs/layouts?format=short&size=${size}&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
