@@ -26,11 +26,14 @@ const TranslationsTab = () => {
     saveSortParams(sortKeys.translationsTab, params);
   };
 
-  const requests = async (rowsPerPage) => {
+  const requests = async (rowsPerPage, filtersUrl) => {
     const costumersIds = [];
 
     const res = await api.getDesignsTranslations({
-      page: currentPage - 1, size: rowsPerPage, sortParams,
+      page: currentPage - 1,
+      size: rowsPerPage,
+      filters: filtersUrl,
+      sortParams,
     });
 
     res.data.items.forEach((item) => {
