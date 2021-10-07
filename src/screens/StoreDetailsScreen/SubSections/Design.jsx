@@ -18,6 +18,7 @@ const Design = ({
   setCurrentStoreResources,
 }) => {
   const [curTab, setCurTab] = useState(0);
+
   const handleUpdateDesign = (parent, updateParam, value) => {
     let resObj = {};
     if (value) {
@@ -35,6 +36,15 @@ const Design = ({
       },
     });
   };
+
+  const defaultResources = [
+    {
+      key: 0,
+      label: '',
+      url: '',
+    },
+  ];
+
   return (
     <>
       <Box bgcolor="#fff" boxShadow={2} pb={4}>
@@ -282,7 +292,7 @@ const Design = ({
               <AssetsResource
                 labelOptions={resourceLabel}
                 maxPayloadFiles={4}
-                resources={currentStoreResources}
+                resources={currentStoreResources.length ? currentStoreResources : defaultResources}
                 setResources={setCurrentStoreResources}
                 currentStoreData={currentStoreData}
                 setCurrentStoreData={setCurrentStoreData}
