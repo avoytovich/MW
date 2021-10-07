@@ -121,7 +121,7 @@ const navConfig = [
       {
         id: 'discount-rules',
         title: localization.t('sideBar.titles.discountRules'),
-        href: parentPaths.discountrules,
+        href: parentPaths.marketing.discounts,
       },
       {
         id: 'marketing-campaigns',
