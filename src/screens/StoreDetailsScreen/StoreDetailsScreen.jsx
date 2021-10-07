@@ -31,6 +31,7 @@ import {
   formDesignOptions,
   structureResources,
   checkLabelDuplicate,
+  checkExistingLabelsUrl,
   tabLabels,
   formatBeforeSending,
   resourceLabel,
@@ -237,6 +238,15 @@ const StoreDetailsScreen = () => {
 
   if (id === 'add' && !nxState?.selectedCustomer?.id) return <SelectCustomerNotification />;
 
+  const validation = () => {
+    if (checkExistingLabelsUrl(currentStoreResources)) {
+      if (!checkLabelDuplicate(currentStoreResources)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   return (
     storeData && (
       <>
@@ -276,10 +286,7 @@ const StoreDetailsScreen = () => {
           <Zoom in={storeHasChanges || resourcesHasChanges}>
             <Box mb={1} mr={1}>
               <Button
-                disabled={
-                  checkLabelDuplicate(currentStoreResources)
-                  || handleDisabledSave
-                }
+                disabled={validation() || handleDisabledSave}
                 id='save-discount-button'
                 color='primary'
                 size='large'
