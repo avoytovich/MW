@@ -25,7 +25,7 @@ const useDiscountDetails = (id, nxState) => {
     let discountRequest;
     if (id === 'add') {
       discountRequest = Promise.resolve({
-        data: { customerId: nxState.selectedCustomer.id },
+        data: { customerId: nxState?.selectedCustomer?.id },
       });
     } else {
       discountRequest = api.getDiscountById(id);

@@ -31,6 +31,9 @@ const DiscountDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const history = useHistory();
   const { id } = useParams();
+
+  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
+
   const {
     discount,
     curDiscount,
@@ -62,9 +65,11 @@ const DiscountDetailsScreen = () => {
       delete res.codes;
     }
     if (id === 'add') {
-      api.addNewDiscount(res).then(() => {
+      api.addNewDiscount(res).then((result) => {
+        const location = result.headers.location.split('/');
+        const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.marketing}/discounts`);
+        history.push(`${parentPaths.marketing.discounts}/${newId}`);
       });
     } else {
       api.updateDiscountById(id, res).then(() => {
@@ -95,7 +100,6 @@ const DiscountDetailsScreen = () => {
     }
     setCurDiscount((c) => ({ ...c, [type]: setValue }));
   };
-  if (id === 'add' && !nxState.selectedCustomer.id) return <SelectCustomerNotification />;
 
   if (curDiscount === null) return <LinearProgress />;
 
@@ -104,7 +108,7 @@ const DiscountDetailsScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url={`${parentPaths.marketing}/discounts`}
+            url={`${parentPaths.marketing.discounts}`}
             section={localization.t('general.discount')}
             id={discount.id}
           />

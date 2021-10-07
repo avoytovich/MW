@@ -183,6 +183,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/DiscountDetailsScreen'))}
       />
       <Route
+        path={`${parentPaths.marketing.discounts}`}
+        component={lazy(() => import('../../screens/MarketingScreen/SubSections/DiscountsScreen'))}
+      />
+      <Route
         path={`${parentPaths.recommendations}/:id`}
         component={lazy(() => import('../../screens/RecoDetailsScreen'))}
       />
