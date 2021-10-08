@@ -87,8 +87,8 @@ const MarketingScreen = () => {
         indicatorColor='primary'
         textColor='primary'
       >
-        <Tab label='Campaigns' />
-        <Tab label='Abandoned' />
+        <Tab label='Marketing Campaigns' />
+        <Tab label='Abandoned Cart Campaigns' />
       </Tabs>
 
       <Box mt={4} mb={2}>
