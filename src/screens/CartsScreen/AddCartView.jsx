@@ -199,7 +199,11 @@ const AddCartView = ({
                   />
                 </FormControl>
                 <FormControl className="spread-15">
-                  <InputLabel htmlFor="select-currency" className="select-label">{localization.t('labels.percentage')}</InputLabel>
+                  {!values.currency && (
+                    <InputLabel htmlFor="select-currency" className="select-label">
+                      {localization.t('labels.percentage')}
+                    </InputLabel>
+                  )}
                   <Field
                     component={Select}
                     type="text"
@@ -258,6 +262,7 @@ const AddCartView = ({
                 validate={validate}
                 variant="outlined"
                 value={values.store}
+                label={localization.t('labels.store')}
                 inputProps={{
                   id: 'select-store',
                 }}
@@ -287,6 +292,7 @@ const AddCartView = ({
                     validate={validate}
                     variant="outlined"
                     value={values.storeHostname}
+                    label={localization.t('labels.storeHostname')}
                     inputProps={{
                       id: 'select-store-hostname',
                     }}
@@ -316,6 +322,7 @@ const AddCartView = ({
                     validate={validate}
                     variant="outlined"
                     value={values.product}
+                    label={localization.t('labels.product')}
                     inputProps={{
                       id: 'select-product',
                     }}
@@ -340,6 +347,7 @@ const AddCartView = ({
                     validate={validate}
                     variant="outlined"
                     value={values.locale}
+                    label={localization.t('labels.locale')}
                     inputProps={{
                       id: 'select-locale',
                     }}
@@ -366,6 +374,7 @@ const AddCartView = ({
                     validate={validate}
                     variant="outlined"
                     value={values.country}
+                    label={localization.t('labels.country')}
                     inputProps={{
                       id: 'select-country',
                     }}
@@ -558,6 +567,7 @@ const AddCartView = ({
                       validate={validate}
                       variant="outlined"
                       value={values.country}
+                      label={localization.t('labels.country')}
                       inputProps={{
                         id: 'select-country',
                       }}
@@ -594,6 +604,7 @@ const AddCartView = ({
                       validate={validate}
                       variant="outlined"
                       value={values.locale}
+                      label={localization.t('labels.locale')}
                       inputProps={{
                         id: 'select-locale',
                       }}
