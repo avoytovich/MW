@@ -126,7 +126,7 @@ const CampaignDetailsScreen = () => {
     <div className="campaign-details-screen">
       {id !== 'add' && (
         <CustomBreadcrumbs
-          url={`${parentPaths.marketing}/campaigns`}
+          url={`${parentPaths.marketing.campaigns}`}
           section={localization.t('general.campaign')}
           id={campaign?.id ? campaign.id : localization.t('general.addCampaign')}
         />
