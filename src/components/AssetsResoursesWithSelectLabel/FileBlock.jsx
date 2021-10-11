@@ -37,7 +37,6 @@ const FileBlock = ({
     const valueArr = data.map((each) => each.label);
     const isDublicate = valueArr.some((each, id) => valueArr.indexOf(each) !== id);
     if (isDublicate) {
-      console.log('checkDublicateLabel', valueArr.splice(valueArr.indexOf(item.label), 1));
       return valueArr.splice(valueArr.indexOf(item.label), 1);
     }
     return false;
