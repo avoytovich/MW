@@ -11,19 +11,15 @@ import {
   Button,
   Tabs,
   Tab,
-  Dialog,
   Typography,
   Switch,
-  InputAdornment,
-  CircularProgress,
 } from '@material-ui/core';
-
-import EditIcon from '@material-ui/icons/Edit';
 
 import api from '../../api';
 import { setNexwayState } from '../../redux/actions/Account';
 import CustomCard from '../../components/utils/CustomCard';
-import TableItems from '../../components/utils/Modals/TableItems';
+import ToastWithAction from '../../components/utils/ToastWithAction/ToastWithAction';
+import { SelectWithChip } from '../../components/Inputs';
 import localization from '../../localization';
 
 import './myAccountScreen.scss';
@@ -35,8 +31,6 @@ const MyAccountScreen = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [curStores, setStores] = useState(null);
   const [curProducts, setProducts] = useState(null);
-  const [productsModal, setProductsModalOpen] = useState(false);
-  const [storesModal, setStoresModalOpen] = useState(false);
   const account = useSelector(({ account: { user } }) => user);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const [errorDetails, setErrorDetails] = useState(!!nxState?.errorDetails);
@@ -58,14 +52,6 @@ const MyAccountScreen = () => {
       toast(localization.t('general.updatesHaveBeenSaved'));
       setIdentity(curIdentity);
     });
-  };
-
-  const removeItem = (id, type) => {
-    if (type === 'products') {
-      setProducts((cur) => cur.filter((product) => product.id !== id));
-    } else if (type === 'stores') {
-      setStores((cur) => cur.filter((store) => store.id !== id));
-    }
   };
 
   useEffect(() => {
@@ -108,6 +94,40 @@ const MyAccountScreen = () => {
         setCurIdentity(null);
       });
   }, []);
+
+  const handleDeleteStore = (id, force) => api.deleteStoreById(id, force)
+    .then(() => {
+      setStores((v) => v.filter((st) => st.id !== id));
+      toast(
+        `${localization.t('general.store')} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`,
+      );
+    })
+    .catch((msg) => {
+      if (force) {
+        toast.error(msg);
+      } else {
+        toast.error(<ToastWithAction
+          text={msg}
+          buttonText={localization.t('general.force')}
+          actionFn={() => handleDeleteStore(id, true)}
+        />);
+      }
+    });
+
+  const handleDeleteProduct = (id) => {
+    api
+      .deleteProductById(id)
+      .then(() => {
+        setProducts((v) => v.filter((st) => st.id !== id));
+        toast(
+          `${localization.t('general.product')} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
+        );
+      });
+  };
 
   if (curIdentity === null) return <LinearProgress />;
 
@@ -185,65 +205,33 @@ const MyAccountScreen = () => {
 
       <CustomCard title="Configuration">
         <Box display="flex" py={5} pb={2}>
-          {curStores === null ? (
-            <Box width={1} m="10px" pt="8px">
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Box px={1} width=" 100%">
-              <TextField
-                fullWidth
-                label="Stores"
-                name="stores"
-                type="text"
-                placeholder="Stores list"
-                value={curStores.map((store) => store.name)}
-                contentEditable={false}
-                onClick={() => setStoresModalOpen(true)}
-                variant="outlined"
-                disabled
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <EditIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                helperText="Please specify the stores you manage"
-              />
-            </Box>
-          )}
+          <Box px={1} width=" 100%">
+            <SelectWithChip
+              label='stores'
+              value={curStores?.map((store) => store.name)}
+              selectOptions={curStores}
+              isDisabled
+              helperText="Please specify the stores you manage"
+              onClickDelIcon={(chip) => {
+                const [store] = curStores.filter((st) => st.name === chip);
+                handleDeleteStore(store.id);
+              }}
+            />
+          </Box>
 
-          {curProducts === null ? (
-            <Box width={1} m="10px" pt="8px">
-              <CircularProgress />
-            </Box>
-          ) : (
-            <Box px={1} width=" 100%">
-              <TextField
-                fullWidth
-                label="Catalogs & products"
-                name="catalogs"
-                type="text"
-                placeholder="Catalogs and/or products"
-                value={curProducts.map((product) => product.name)}
-                contentEditable={false}
-                onClick={() => setProductsModalOpen(true)}
-                variant="outlined"
-                disabled
-                InputLabelProps={{ shrink: true }}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <EditIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                helperText="Please specify the catalogs you manage"
-              />
-            </Box>
-          )}
+          <Box px={1} width=" 100%">
+            <SelectWithChip
+              label='catalogsAndProducts'
+              value={curProducts?.map((product) => product.name)}
+              selectOptions={curProducts}
+              isDisabled
+              helperText="Please specify the catalogs you manage"
+              onClickDelIcon={(chip) => {
+                const [product] = curProducts.filter((st) => st.name === chip);
+                handleDeleteProduct(product.id);
+              }}
+            />
+          </Box>
         </Box>
       </CustomCard>
 
@@ -267,30 +255,6 @@ const MyAccountScreen = () => {
           Error Details
         </Typography>
       </CustomCard>
-
-      <Dialog
-        open={productsModal}
-        onClose={() => setProductsModalOpen(false)}
-        aria-labelledby="table-items-dialog-title"
-        fullWidth
-        maxWidth="sm"
-      >
-        <TableItems
-          values={curProducts}
-          type="products"
-          removeItem={removeItem}
-        />
-      </Dialog>
-
-      <Dialog
-        open={storesModal}
-        onClose={() => setStoresModalOpen(false)}
-        aria-labelledby="table-items-dialog-title"
-        fullWidth
-        maxWidth="sm"
-      >
-        <TableItems values={curStores} type="stores" removeItem={removeItem} />
-      </Dialog>
     </div>
   );
 };

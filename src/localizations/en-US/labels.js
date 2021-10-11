@@ -599,6 +599,7 @@ const labels = {
   pendingApprovals: 'Pending approvals',
   approved: 'Approved',
   declined: 'Declined',
+  catalogsAndProducts: 'Catalogs & products',
   managedCustomerId: 'Managed Customer ID',
   managedCustomer: 'Managed Customer',
   identityId: 'Identity ID',

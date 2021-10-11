@@ -19,6 +19,7 @@ const SelectWithChip = ({
   isDisabled,
   isRequired,
   isMultiple = true,
+  helperText,
 }) => (
   <TextField
     fullWidth
@@ -58,6 +59,7 @@ const SelectWithChip = ({
     disabled={!selectOptions || isDisabled}
     required={isRequired}
     variant='outlined'
+    helperText={helperText}
     InputProps={{
       startAdornment: !selectOptions && (
         <InputAdornment>
@@ -87,6 +89,7 @@ SelectWithChip.propTypes = {
   onClickDelIcon: PropTypes.func,
   isRequired: PropTypes.bool,
   isMultiple: PropTypes.bool,
+  helperText: PropTypes.string,
 };
 
 export default SelectWithChip;
