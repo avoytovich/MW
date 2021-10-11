@@ -173,7 +173,7 @@ const PricesDetailsScreen = () => {
   return (
     <div className="price-details-screen">
       <CustomBreadcrumbs
-        url={`${parentPaths.marketing}/prices`}
+        url={`${parentPaths.pricemodels}/prices`}
         section={localization.t('general.price')}
         id={price?.id ? price.id : localization.t('general.addPrice')}
       />

@@ -173,7 +173,7 @@ const RecoDetailsScreen = () => {
     <div className='reco-details-screen'>
       {id !== 'add' && (
         <CustomBreadcrumbs
-          url={`${parentPaths.marketing}/recommendations`}
+          url={`${parentPaths.recommendations}`}
           section={localization.t('general.recommendation')}
           id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
         />
