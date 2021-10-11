@@ -14,9 +14,9 @@ import './marketingScreen.scss';
 
 const availTabs = [
   {
-    label: 'campaigns',
-    scope: 'campaigns',
-    path: `${parentPaths.marketing.campaigns}`,
+    label: 'marketingCampaigns',
+    scope: 'marketingCampaigns',
+    path: `${parentPaths.campaigns.campaigns}`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.campaign',
     )}`,
@@ -24,14 +24,14 @@ const availTabs = [
     headers: null,
   },
   {
-    label: 'abandoned',
-    scope: 'abandoned',
-    path: `${parentPaths.marketing.abandoned}`,
+    label: 'marketingAbandoned',
+    scope: 'marketingAbandoned',
+    path: `${parentPaths.campaigns.abandoned}`,
     button: `${localization.t('general.add')} ${localization.t(
       'general.abandoned',
     )}`,
-    // deleteFunc: api.deleteDiscountById,
-    // headers: markUpDiscounts.headers,
+    deleteFunc: null,
+    headers: null,
   },
 
 ];
@@ -40,13 +40,13 @@ const MarketingScreen = () => {
   const history = useHistory();
   const [curTab, setCurTab] = useState(0);
 
-  const pathname = history?.location?.pathname || 'campaigns';
+  const pathname = history?.location?.pathname || 'marketingCampaigns';
 
   useEffect(() => {
     const section = pathname.split('/').pop();
     const index = availTabs.findIndex((i) => i.label === section);
     if (index < 0) {
-      return history.push(`${parentPaths.marketing.campaigns}`);
+      return history.push(`${parentPaths.campaigns.main}`);
     }
 
     setCurTab(index);
@@ -76,7 +76,7 @@ const MarketingScreen = () => {
 
     );
   };
-  const changeTab = (tab) => history.push(`${parentPaths.marketing.main}/${availTabs[tab].label}`);
+  const changeTab = (tab) => history.push(`${parentPaths.campaigns.main}/${availTabs[tab].label}`);
   return (
     <Box display='flex' flexDirection='column'>
 

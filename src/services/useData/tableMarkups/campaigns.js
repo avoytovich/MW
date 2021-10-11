@@ -17,12 +17,37 @@ const markUp = {
   headers: [
     { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.customer'), id: 'customer' },
-    { value: localization.t('labels.creationDate'), id: 'creationDate' },
-    { value: localization.t('labels.lastUpdate'), id: 'lastUpdate' },
-    { value: localization.t('labels.name'), id: 'name' },
-    { value: localization.t('labels.startDate'), id: 'startDate' },
-    { value: localization.t('labels.endDate'), id: 'endDate' },
-    { value: localization.t('labels.status'), id: 'status' },
+    {
+      value: localization.t('labels.creationDate'),
+      id: 'creationDate',
+      sortParam: 'createDate',
+    },
+    {
+      value: localization.t('labels.lastUpdate'),
+      id: 'lastUpdate',
+      sortParam: 'updateDate',
+    },
+    {
+      value: localization.t('labels.name'),
+      id: 'name',
+      sortParam: 'name',
+
+    },
+    {
+      value: localization.t('labels.startDate'),
+      id: 'startDate',
+      sortParam: 'startDate',
+    },
+    {
+      value: localization.t('labels.endDate'),
+      id: 'endDate',
+      sortParam: 'endDate',
+    },
+    {
+      value: localization.t('labels.status'),
+      id: 'status',
+      sortParam: 'status',
+    },
   ],
 };
 

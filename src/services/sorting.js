@@ -25,6 +25,8 @@ export const sortKeys = {
   resellers: 'resellers',
   enduserlist: 'enduserSortParams',
   abandoned: 'abandonedSortParams',
+  campaigns: 'campaignsSortParams',
+  discounts: 'discountsSortParams',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));

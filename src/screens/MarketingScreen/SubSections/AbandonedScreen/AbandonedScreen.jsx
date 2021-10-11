@@ -15,7 +15,7 @@ import {
 } from '../../../../services/sorting';
 
 const AbandonedScreen = () => {
-  const scope = 'abandoned';
+  const scope = 'marketingAbandoned';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);

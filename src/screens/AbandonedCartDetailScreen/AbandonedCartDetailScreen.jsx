@@ -67,7 +67,7 @@ const AbandonedCartDetailScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url={`${parentPaths.marketing.abandoned}`}
+            url={`${parentPaths.campaigns.abandoned}`}
             section={localization.t('labels.abandonedCarts')}
             id={abandonedCart.id}
           />

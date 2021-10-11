@@ -141,9 +141,12 @@ const getAllApi = {
     });
   },
   getCampaigns({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
-    let url = `/marketing-campaign/campaigns?format=short&sort=updateDate,desc&size=${size}&page=${page}`;
+    let url = `/marketing-campaign/campaigns?format=short&desc&size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
 
     if (filters) {
       url += filters;
@@ -168,10 +171,12 @@ const getAllApi = {
     });
   },
   getDiscounts({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
-    let url = `/discounts?format=short&sort=name,asc&size=${size}&page=${page}`;
-
+    let url = `/discounts?format=short&asc&size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     if (filters) {
       url += filters;
     }
@@ -563,6 +568,7 @@ const getAllApi = {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
     if (filters) {
+      filters = filters.replace(/\*/g, '');
       url += filters;
     }
     return axiosInstance({

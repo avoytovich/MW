@@ -59,7 +59,7 @@ const markUp = {
 const generateData = (data) => {
   const values = data.items.map(async (val) => {
     const returnData = {
-      id: val.id,
+      id: val?.id,
       campaignId: val?.id,
       createDate: moment(val?.createDate).format('D MMM YYYY'),
       lastUpdate: moment(val?.updateDate).format('D MMM YYYY'),
@@ -75,7 +75,6 @@ const generateData = (data) => {
       const name = await getCustomerName(val.customerId);
       return { ...returnData, customer: name };
     }
-
     return returnData;
   });
 

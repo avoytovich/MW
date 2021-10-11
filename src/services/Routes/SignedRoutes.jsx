@@ -195,15 +195,15 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/RecommendationScreen'))}
       />
       <Route
-        path={`${parentPaths.marketing.abandoned}/:id`}
+        path={`${parentPaths.campaigns.abandoned}/:id`}
         component={lazy(() => import('../../screens/AbandonedCartDetailScreen'))}
       />
       <Route
-        path={`${parentPaths.marketing.campaigns}/:id`}
+        path={`${parentPaths.campaigns.campaigns}/:id`}
         component={lazy(() => import('../../screens/CampaignDetailsScreen'))}
       />
       <Route
-        path={`${parentPaths.marketing.main}`}
+        path={`${parentPaths.campaigns.main}`}
         component={lazy(() => import('../../screens/MarketingScreen'))}
       />
 

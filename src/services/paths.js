@@ -33,10 +33,12 @@ const parentPaths = {
     licenseProviderDefinitionsTab: `${defPath}/products/fulfillment/licenseProviderDefinitions`,
   },
   discountrules: `${defPath}/marketing/discountrules`,
+  campaigns: {
+    main: `${defPath}/marketing/campaigns`,
+    campaigns: `${defPath}/marketing/campaigns/marketingCampaigns`,
+    abandoned: `${defPath}/marketing/campaigns/marketingAbandoned`,
+  },
   marketing: {
-    main: `${defPath}/marketing`,
-    campaigns: `${defPath}/marketing/campaigns`,
-    abandoned: `${defPath}/marketing/abandoned`,
     discounts: `${defPath}/marketing/discounts`,
   },
   endusers: `${defPath}/endusers/enduserlist`,
