@@ -18,13 +18,41 @@ const defaultShow = {
 const markUp = {
   headers: [
     { value: localization.t('labels.customer'), id: 'customer' },
-    { value: localization.t('labels.discountRuleName'), id: 'discountRuleName' },
-    { value: localization.t('labels.model'), id: 'model' },
-    { value: localization.t('labels.status'), id: 'status' },
-    { value: localization.t('labels.discountAmount'), id: 'discountAmount' },
-    { value: localization.t('labels.startDate'), id: 'startDate' },
-    { value: localization.t('labels.endDate'), id: 'endDate' },
-    { value: localization.t('labels.maximumUses'), id: 'maximumUses' },
+    {
+      value: localization.t('labels.discountRuleName'),
+      id: 'discountRuleName',
+      sortParam: 'name',
+    },
+    {
+      value: localization.t('labels.model'),
+      id: 'model',
+      sortParam: 'model',
+    },
+    {
+      value: localization.t('labels.status'),
+      id: 'status',
+      sortParam: 'status',
+    },
+    {
+      value: localization.t('labels.discountAmount'),
+      id: 'discountAmount',
+      sortParam: 'discountRate',
+    },
+    {
+      value: localization.t('labels.startDate'),
+      id: 'startDate',
+      sortParam: 'startDate',
+    },
+    {
+      value: localization.t('labels.endDate'),
+      id: 'endDate',
+      sortParam: 'endDate',
+    },
+    {
+      value: localization.t('labels.maximumUses'),
+      id: 'maximumUses',
+      sortParam: 'maxUsages',
+    },
     { value: localization.t('labels.sources'), id: 'sources' },
   ],
 };

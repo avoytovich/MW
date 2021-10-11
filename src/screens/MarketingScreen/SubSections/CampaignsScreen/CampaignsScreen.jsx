@@ -8,18 +8,31 @@ import {
 } from '../../../../services/useData/tableMarkups/campaigns';
 import { useTableData } from '../../../../services/useData';
 import api from '../../../../api';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../../../services/sorting';
 
 const CampaignsScreen = () => {
-  const scope = 'campaigns';
+  const scope = 'marketingCampaigns';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.campaigns),
+  );
 
   const requests = async (rowsPerPage, filtersUrl) => {
     const res = await api.getCampaigns({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
+  };
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.campaigns, params);
   };
 
   const campaigns = useTableData(
@@ -28,6 +41,7 @@ const CampaignsScreen = () => {
     false,
     scope,
     requests,
+    sortParams,
   );
 
   const updatePage = (page) => setCurrentPage(page);
@@ -36,6 +50,8 @@ const CampaignsScreen = () => {
     <TableComponent
       scope={scope}
       defaultShowColumn={defaultShow}
+      sortParams={sortParams}
+      setSortParams={handleSetSortParams}
       currentPage={currentPage}
       updatePage={updatePage}
       tableData={campaigns}

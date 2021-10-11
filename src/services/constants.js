@@ -1,4 +1,4 @@
-const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-definition', 'notification-history', 'carts', 'licenses', 'recommendations', 'abandoned', 'resellers', 'customerslist'];
+const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-definition', 'notification-history', 'carts', 'licenses', 'recommendations', 'marketingAbandoned', 'resellers', 'customerslist', 'marketingCampaigns', 'discounts'];
 const VALID_FILTER_SCOPES = [
   'productlist',
   'stores',
@@ -17,11 +17,11 @@ const VALID_FILTER_SCOPES = [
   'price-functions',
   'autoFulfillments',
   'manualFulfillments',
-  'campaigns',
+  'marketingCampaigns',
   'discounts',
   'licenseProviderDefinitions',
   'recommendations',
-  'abandoned',
+  'marketingAbandoned',
   'resellers',
   'enduserlist',
   'customerslist',

@@ -757,7 +757,7 @@ const filters = {
       ],
     },
   ],
-  campaigns: [
+  marketingCampaigns: [
     {
       id: 'id',
       label: localization.t('labels.campaignId'),
@@ -835,11 +835,11 @@ const filters = {
       ],
     },
   ],
-  abandoned: [
+  marketingAbandoned: [
     {
       id: 'id',
       label: localization.t('labels.campaignId'),
-      type: 'id',
+      type: 'text',
     },
     {
       id: 'creationDate',
