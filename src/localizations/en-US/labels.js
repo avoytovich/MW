@@ -137,6 +137,7 @@ const labels = {
   privileges: 'Privileges',
   roles: 'Roles',
   metaRoles: 'Meta-Roles',
+  metaRolesIds: 'Meta-Roles IDs',
   fontFamily: 'Font Family',
   importCssRule: '@import css rule',
   themes: 'Themes',
@@ -589,6 +590,7 @@ const labels = {
   from: 'From',
   to: 'To',
   roleId: 'Role ID',
+  rolesIds: 'Roles IDs',
   campaignId: 'Campaign ID',
   coupon: 'Coupon',
   campaign: 'Campaign',
@@ -597,6 +599,11 @@ const labels = {
   pendingApprovals: 'Pending approvals',
   approved: 'Approved',
   declined: 'Declined',
+  managedCustomerId: 'Managed Customer ID',
+  managedCustomer: 'Managed Customer',
+  identityId: 'Identity ID',
+  linkedCustomerId: 'Linked Customer ID',
+  linkedCustomer: 'Linked Customer',
 };
 
 export default labels;
