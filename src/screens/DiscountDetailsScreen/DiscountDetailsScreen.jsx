@@ -42,6 +42,7 @@ const DiscountDetailsScreen = () => {
     setCurDiscount,
     setAmountType,
     selectOptions,
+    setUpdate,
   } = useDiscountDetails(id, nxState);
   const [curTab, setCurTab] = useState(0);
   const [checkedSingleUseCode, setCheckedSingleUseCode] = useState(false);
@@ -69,7 +70,8 @@ const DiscountDetailsScreen = () => {
         const location = result.headers.location.split('/');
         const newId = location[location.length - 1];
         toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.marketing.discounts}/${newId}`);
+        history.push(`${parentPaths.discountrules}/${newId}`);
+        setUpdate((u) => u + 1);
       });
     } else {
       api.updateDiscountById(id, res).then(() => {
@@ -108,7 +110,7 @@ const DiscountDetailsScreen = () => {
       {id !== 'add' && (
         <Box mx={2}>
           <CustomBreadcrumbs
-            url={`${parentPaths.marketing.discounts}`}
+            url={`${parentPaths.discountrules}`}
             section={localization.t('general.discount')}
             id={discount.id}
           />

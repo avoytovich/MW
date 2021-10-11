@@ -21,7 +21,7 @@ import {
 } from '../../../../services/sorting';
 
 const DiscountsScreen = () => {
-  const scope = 'discounts';
+  const scope = 'discountrules';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
@@ -75,7 +75,7 @@ const DiscountsScreen = () => {
           size='large'
           variant='contained'
           component={Link}
-          to={`${parentPaths.marketing.discounts}/add`}
+          to={`${parentPaths.discountrules}/add`}
         >
           {`${localization.t('general.add')} ${localization.t(
             'general.discount',

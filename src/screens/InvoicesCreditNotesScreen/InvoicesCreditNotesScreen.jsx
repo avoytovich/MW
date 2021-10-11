@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { Box, Button } from '@material-ui/core';
 import { InputCustom, SelectCustom } from '../../components/Inputs';
+import SectionHeader from '../../components/SectionHeader';
 
 import api from '../../api/getOneByIdApi';
 
-const IdentitiesScreen = () => {
+const InvoicesCreditNotesScreen = () => {
   const [typeOfID, setTypeOfID] = useState('');
   const [id, setId] = useState('');
-
+  const location = useLocation();
   const selectTypeOfIDOptions = [
     { id: 'order', value: 'Order ID' },
     { id: 'invoice', value: 'Invoice ID' },
@@ -54,34 +56,36 @@ const IdentitiesScreen = () => {
   };
 
   return (
-    <Box width='250px'>
-      <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' mb='20px'>
-        <Box width='250px'>
-          <SelectCustom
-            label="invoiceCreditNotesTypeOfId"
-            value={typeOfID}
-            selectOptions={selectTypeOfIDOptions}
-            onChangeSelect={(e) => setTypeOfID(e.target.value)}
-          />
+    <>
+      <SectionHeader pathname={location.pathname} />
+      <Box width='250px' pt={2}>
+        <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' mb='20px'>
+          <Box width='250px'>
+            <SelectCustom
+              label="invoiceCreditNotesTypeOfId"
+              value={typeOfID}
+              selectOptions={selectTypeOfIDOptions}
+              onChangeSelect={(e) => setTypeOfID(e.target.value)}
+            />
+          </Box>
+        </Box>
+
+        <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center'>
+          <Box width='250px'>
+            <InputCustom
+              label="invoiceCreditNotesId"
+              value={id}
+              onChangeInput={(e) => setId(e.target.value)}
+            />
+          </Box>
+        </Box>
+
+        <Box display='flex' justifyContent='flex-end' mt={2} height='50px'>
+          <Button variant="contained" color="primary" onClick={() => downloadFile()}>Download</Button>
         </Box>
       </Box>
-
-      <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center'>
-        <Box width='250px'>
-          <InputCustom
-            label="invoiceCreditNotesId"
-            value={id}
-            onChangeInput={(e) => setId(e.target.value)}
-          />
-        </Box>
-      </Box>
-
-      <Box display='flex' justifyContent='flex-end' mt={2} height='50px'>
-        <Button variant="contained" color="primary" onClick={() => downloadFile()}>Download</Button>
-      </Box>
-    </Box>
-
+    </>
   );
 };
 
-export default IdentitiesScreen;
+export default InvoicesCreditNotesScreen;

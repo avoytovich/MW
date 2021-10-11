@@ -9,6 +9,8 @@ const useDiscountDetails = (id, nxState) => {
   const [discount, setDiscount] = useState(null);
   const [curDiscount, setCurDiscount] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const [update, setUpdate] = useState(0);
+
   const [selectOptions, setSelectOptions] = useState({
     refProducts: null,
     endUserGroups: null,
@@ -91,7 +93,7 @@ const useDiscountDetails = (id, nxState) => {
         },
       );
     });
-  }, []);
+  }, [update]);
 
   const handleUpdateAmountType = (newValue) => {
     if (newValue === 'byPercentage' && !curDiscount.discountRate) {
@@ -116,6 +118,7 @@ const useDiscountDetails = (id, nxState) => {
     setCurDiscount,
     setAmountType: handleUpdateAmountType,
     selectOptions,
+    setUpdate,
   };
 };
 

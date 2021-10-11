@@ -12,6 +12,7 @@ import {
 } from '@material-ui/icons';
 import parentPaths from '../../services/paths';
 import localization from '../../localization';
+import { sideBarTitle } from '../../services/helpers/sectionHeaders';
 
 const navConfig = [
   {
@@ -32,32 +33,32 @@ const navConfig = [
     items: [
       {
         id: 'orders',
-        title: localization.t('sideBar.titles.orders'),
+        title: sideBarTitle.orderlist,
         href: parentPaths.orderlist,
       },
       {
         id: 'subscriptions',
-        title: localization.t('sideBar.titles.subscriptions'),
+        title: sideBarTitle.subscriptions,
         href: parentPaths.subscriptions,
       },
       {
         id: 'invoices-credit-notes',
-        title: localization.t('sideBar.titles.invoicesCreditNotes'),
+        title: sideBarTitle.invoices,
         href: parentPaths.invoices,
       },
       {
         id: 'licenses',
-        title: localization.t('sideBar.titles.licenses'),
+        title: sideBarTitle.licenses,
         href: parentPaths.licenses,
       },
       {
         id: 'carts',
-        title: localization.t('sideBar.titles.carts'),
+        title: sideBarTitle.carts,
         href: parentPaths.carts,
       },
       {
         id: 'archived-orders',
-        title: localization.t('sideBar.titles.archivedOrders'),
+        title: sideBarTitle.archivedOrders,
         href: parentPaths.archivedOrders,
       },
     ],
@@ -68,22 +69,22 @@ const navConfig = [
     items: [
       {
         id: 'stores',
-        title: localization.t('sideBar.titles.stores'),
+        title: sideBarTitle.stores,
         href: parentPaths.stores,
       },
       {
         id: 'checkout-experience',
-        title: localization.t('sideBar.titles.checkoutExperience'),
+        title: sideBarTitle.checkoutpagebuilder,
         href: parentPaths.checkoutpagebuilder.main,
       },
       {
         id: 'localization',
-        title: localization.t('sideBar.titles.localization'),
+        title: sideBarTitle.localization,
         href: parentPaths.localization.main,
       },
       {
         id: 'email-builder',
-        title: localization.t('sideBar.titles.emailBuilder'),
+        title: sideBarTitle.emailbuilder,
         href: parentPaths.emailbuilder,
       },
     ],
@@ -94,22 +95,22 @@ const navConfig = [
     items: [
       {
         id: 'products',
-        title: localization.t('sideBar.titles.products'),
+        title: sideBarTitle.productlist,
         href: parentPaths.productlist,
       },
       {
         id: 'price-models',
-        title: localization.t('sideBar.titles.priceModels'),
+        title: sideBarTitle.pricemodels,
         href: parentPaths.pricemodels,
       },
       {
         id: 'cros-sell-up-sell-reco',
-        title: localization.t('sideBar.titles.crosSellUpSellReco'),
+        title: sideBarTitle.recommendations,
         href: parentPaths.recommendations,
       },
       {
         id: 'fulfillment-packages',
-        title: localization.t('sideBar.titles.fulfillmentPackages'),
+        title: sideBarTitle.fulfillment,
         href: parentPaths.fulfillment.main,
       },
     ],
@@ -120,12 +121,12 @@ const navConfig = [
     items: [
       {
         id: 'discount-rules',
-        title: localization.t('sideBar.titles.discountRules'),
-        href: parentPaths.marketing.discounts,
+        title: sideBarTitle.discountrules,
+        href: parentPaths.discountrules,
       },
       {
         id: 'marketing-campaigns',
-        title: localization.t('sideBar.titles.campaigns'),
+        title: sideBarTitle.campaigns,
         href: parentPaths.campaigns.campaigns,
       },
     ],
@@ -136,17 +137,17 @@ const navConfig = [
     items: [
       {
         id: 'end-users',
-        title: localization.t('sideBar.titles.endUsers'),
+        title: sideBarTitle.enduserlist,
         href: parentPaths.endusers,
       },
       {
         id: 'end-user-groups',
-        title: localization.t('sideBar.titles.endUserGroups'),
+        title: sideBarTitle.endusergroups,
         href: parentPaths.endusergroups,
       },
       {
         id: 'resellers',
-        title: localization.t('sideBar.titles.resellers'),
+        title: sideBarTitle.resellers,
         href: parentPaths.resellers,
       },
     ],
@@ -155,7 +156,7 @@ const navConfig = [
     items: [
       {
         id: 'reports',
-        title: localization.t('sideBar.titles.reports'),
+        title: sideBarTitle.reports,
         href: parentPaths.reports,
         isMain: true,
         icon: Report,
@@ -168,27 +169,27 @@ const navConfig = [
     items: [
       {
         id: 'users',
-        title: localization.t('sideBar.titles.users'),
+        title: sideBarTitle.users,
         href: parentPaths.users,
       },
       {
         id: 'user-privileges',
-        title: localization.t('sideBar.titles.userPrivileges'),
+        title: sideBarTitle.userprivileges,
         href: parentPaths.userprivileges,
       },
       {
         id: 'user-roles-profiles',
-        title: localization.t('sideBar.titles.userRolesProfiles'),
+        title: sideBarTitle.userroles,
         href: parentPaths.userroles,
       },
       {
         id: 'event-notifications',
-        title: localization.t('sideBar.titles.eventNotifications'),
+        title: sideBarTitle.notifications,
         href: parentPaths.notifications.main,
       },
       {
         id: 'my-account',
-        title: localization.t('sideBar.titles.myAccount'),
+        title: sideBarTitle.myaccount,
         href: parentPaths.myaccount,
       },
     ],
@@ -199,22 +200,22 @@ const navConfig = [
     items: [
       {
         id: 'customer',
-        title: localization.t('sideBar.titles.customers'),
+        title: sideBarTitle.customerslist,
         href: parentPaths.customers,
       },
       {
         id: 'onboarding',
-        title: localization.t('sideBar.titles.onboarding'),
+        title: sideBarTitle.onboarding,
         href: parentPaths.onboarding,
       },
       {
         id: 'remittables',
-        title: localization.t('sideBar.titles.remittables'),
+        title: sideBarTitle.remittables,
         href: parentPaths.remittables,
       },
       {
         id: 'audits',
-        title: localization.t('sideBar.titles.audits'),
+        title: sideBarTitle.audits,
         href: parentPaths.audits,
       },
     ],
@@ -231,7 +232,7 @@ const navConfig = [
       },
       {
         id: 'product-documentation',
-        title: localization.t('sideBar.titles.productDocumentation'),
+        title: sideBarTitle['product-documentation'],
         href: parentPaths.productdocumentation,
       },
     ],
