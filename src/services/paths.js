@@ -38,9 +38,6 @@ const parentPaths = {
     campaigns: `${defPath}/marketing/campaigns/marketingCampaigns`,
     abandoned: `${defPath}/marketing/campaigns/marketingAbandoned`,
   },
-  marketing: {
-    discounts: `${defPath}/marketing/discounts`,
-  },
   endusers: `${defPath}/endusers/enduserlist`,
   endusergroups: `${defPath}/endusers/endusergroups`,
   resellers: `${defPath}/endusers/resellers`,

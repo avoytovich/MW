@@ -24,7 +24,7 @@ const sideBar = {
     endUserGroups: 'End-User Groups',
     resellers: 'Resellers',
     marketing: 'Marketing',
-    checkoutExperience: 'Checkout Page Builder',
+    checkoutPageBuilder: 'Checkout Page Builder',
     reports: 'Reports',
     myAccount: 'My Account',
     api: 'API',
