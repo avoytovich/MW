@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Box, Typography, Grid, Button,
+  Box,
+  Typography,
+  Grid,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -28,7 +34,8 @@ const checkBoxObj = [
 const General = ({ currentStoreData, setCurrentStoreData }) => {
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [countrySelection, setCountrySelection] = useState('blocked');
   const [saveModalChecked, setSaveModalChecked] = React.useState(null);
   const [errorMessages, setErrorMessages] = useState(null);
 
@@ -36,15 +43,31 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
     setSaveModalChecked(e.target.value);
     setOpen(true);
   };
+
   const handleCloseModal = () => {
     setOpen(false);
   };
+
   const confirmModal = () => {
     setCurrentStoreData({
       ...currentStoreData,
       status: saveModalChecked ? 'ENABLED' : 'DISABLED',
     });
     handleCloseModal();
+  };
+
+  const selectAllCountries = () => {
+    setCurrentStoreData({
+      ...currentStoreData,
+      [countrySelection === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: availableLocales.map((l) => l.id),
+    });
+  };
+
+  const removeAllCountries = () => {
+    setCurrentStoreData({
+      ...currentStoreData,
+      [countrySelection === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: [],
+    });
   };
 
   return (
@@ -276,45 +299,84 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
             }}
           />
         </Box>
-        <Box p={2}>
-          <SelectWithChip
-            label='blockedCountries'
-            value={currentStoreData.blackListedCountries}
-            selectOptions={countriesOptions}
-            onChangeSelect={(e) => setCurrentStoreData({
-              ...currentStoreData,
-              blackListedCountries: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...currentStoreData.blackListedCountries].filter(
-                (val) => val !== chip,
-              );
-              setCurrentStoreData({
-                ...currentStoreData,
-                blackListedCountries: newValue,
-              });
-            }}
-          />
+        <Box p={2} height={74} alignItems='center' display='flex'>
+          <Typography variant='h4'>{localization.t('labels.allowedBlockedCountries')}</Typography>
+
+          <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={selectAllCountries}>
+            {localization.t('labels.selectAll')}
+          </Button>
+          <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={removeAllCountries}>
+            {localization.t('labels.removeAll')}
+          </Button>
         </Box>
+
         <Box p={2}>
-          <SelectWithChip
-            label='restrictedCountries'
-            value={currentStoreData.restrictedCountries}
-            selectOptions={countriesOptions}
-            onChangeSelect={(e) => setCurrentStoreData({
-              ...currentStoreData,
-              restrictedCountries: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...currentStoreData.restrictedCountries].filter(
-                (val) => val !== chip,
-              );
+          <RadioGroup
+            row
+            value={countrySelection}
+            onChange={(e) => {
+              setCountrySelection(e.target.value);
               setCurrentStoreData({
                 ...currentStoreData,
-                restrictedCountries: newValue,
+                [e.target.value === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: [],
               });
             }}
-          />
+          >
+            <FormControlLabel
+              value='blocked'
+              control={<Radio color="primary" />}
+              label={localization.t('labels.blocked')}
+            />
+            <FormControlLabel
+              value='allowed'
+              control={<Radio color="primary" />}
+              label={localization.t('labels.allowed')}
+            />
+          </RadioGroup>
+        </Box>
+
+        <Box p={2}>
+          {
+            countrySelection === 'blocked' ? (
+              <SelectWithChip
+                label='blockedCountries'
+                value={currentStoreData.blackListedCountries}
+                selectOptions={countriesOptions}
+                onChangeSelect={(e) => setCurrentStoreData({
+                  ...currentStoreData,
+                  blackListedCountries: e.target.value,
+                })}
+                onClickDelIcon={(chip) => {
+                  const newValue = [...currentStoreData.blackListedCountries].filter(
+                    (val) => val !== chip,
+                  );
+                  setCurrentStoreData({
+                    ...currentStoreData,
+                    blackListedCountries: newValue,
+                  });
+                }}
+              />
+            ) : (
+              <SelectWithChip
+                label='allowedCountries'
+                value={currentStoreData.restrictedCountries}
+                selectOptions={countriesOptions}
+                onChangeSelect={(e) => setCurrentStoreData({
+                  ...currentStoreData,
+                  restrictedCountries: e.target.value,
+                })}
+                onClickDelIcon={(chip) => {
+                  const newValue = [...currentStoreData.restrictedCountries].filter(
+                    (val) => val !== chip,
+                  );
+                  setCurrentStoreData({
+                    ...currentStoreData,
+                    restrictedCountries: newValue,
+                  });
+                }}
+              />
+            )
+          }
         </Box>
         <Box p={2}>
           <SwitchInput
