@@ -12,9 +12,9 @@ const parentPaths = {
   stores: `${defPath}/storesetup/stores`,
   checkoutpagebuilder: {
     main: `${defPath}/storesetup/checkoutpagebuilder`,
-    themesTab: `${defPath}/storesetup/checkoutpagebuilder / themes`,
-    layoutsTab: `${defPath}/storesetup/checkoutpagebuilder / layouts`,
-    fontsTab: `${defPath}/storesetup/checkoutpagebuilder / fonts`,
+    themesTab: `${defPath}/storesetup/checkoutpagebuilder/themes`,
+    layoutsTab: `${defPath}/storesetup/checkoutpagebuilder/layouts`,
+    fontsTab: `${defPath}/storesetup/checkoutpagebuilder/fonts`,
   },
   localization: {
     main: `${defPath}/storesetup/localization`,
