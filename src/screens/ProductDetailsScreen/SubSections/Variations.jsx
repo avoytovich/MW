@@ -147,10 +147,9 @@ const Variations = ({
               data-test='addVariant'
               color='primary'
               onClick={() => {
-                history.state = {
+                history.push(`${parentPaths.productlist}/add`, {
                   parentId: productId,
-                };
-                history.push('/products/add');
+                });
               }}
               disabled={!currentProductData?.availableVariables?.length}
             >
