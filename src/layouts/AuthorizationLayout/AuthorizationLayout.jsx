@@ -11,23 +11,23 @@ import localization from '../../localization';
 import './AuthorizationLayout.scss';
 
 const AuthorizationLayout = ({ children }) => (
-  <Grid className='authWrapperContainer' container direction="column">
+  <Grid
+    className='authWrapperContainer'
+    container
+    direction="column"
+    style={{
+      height: process?.env?.ENV_MODE === 'production' ? '100%' : 'calc(100% - 25px)',
+    }}
+  >
     <LogoHome>
       <Typography variant="h4" xs={1}>{localization.t('general.logoCenter')}</Typography>
     </LogoHome>
 
-    <Grid container direction="row">
+    <Grid container direction="row" style={{ flexGrow: 1 }}>
       <Grid md={4} xs={4} item>
         <Grid
           container
           className='authWrapper'
-          direction='row'
-          justify='center'
-          alignItems='center'
-        />
-        <Grid
-          container
-          className='authWrapper2'
           direction='row'
           justify='center'
           alignItems='center'

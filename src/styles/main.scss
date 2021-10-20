@@ -30,4 +30,25 @@ html, body {
       }
     }
   }
+
+  .MuiBox-root{
+    &.env-bar{
+      position: relative;
+      z-index: 99999;
+      width: 100%;
+      top: 0;
+
+      &.bar-style-development{
+        background-color: rgb(255, 113, 51);
+      }
+      
+      &.bar-style-staging{
+        background-color: rgb(245, 20, 20);
+      }
+  
+      &.bar-style-preproduction{
+        background-color: #000;
+      }
+    }
+  }
 }
