@@ -35,8 +35,8 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
   const [open, setOpen] = useState(false);
-  const [countrySelection, setCountrySelection] = useState('blocked');
-  const [saveModalChecked, setSaveModalChecked] = React.useState(null);
+  const [countrySelection, setCountrySelection] = useState(currentStoreData.restrictedCountries.length ? 'allowed' : 'blocked');
+  const [saveModalChecked, setSaveModalChecked] = useState(null);
   const [errorMessages, setErrorMessages] = useState(null);
 
   const handleOpenModal = (e) => {
@@ -59,7 +59,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
   const selectAllCountries = () => {
     setCurrentStoreData({
       ...currentStoreData,
-      [countrySelection === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: availableLocales.map((l) => l.id),
+      [countrySelection === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: countriesOptions.map((l) => l.id),
     });
   };
 
@@ -344,6 +344,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
                 selectOptions={countriesOptions}
                 onChangeSelect={(e) => setCurrentStoreData({
                   ...currentStoreData,
+                  restrictedCountries: [],
                   blackListedCountries: e.target.value,
                 })}
                 onClickDelIcon={(chip) => {
@@ -363,6 +364,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
                 selectOptions={countriesOptions}
                 onChangeSelect={(e) => setCurrentStoreData({
                   ...currentStoreData,
+                  blackListedCountries: [],
                   restrictedCountries: e.target.value,
                 })}
                 onClickDelIcon={(chip) => {

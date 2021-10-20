@@ -12,7 +12,13 @@ const MainLayout = ({ children }) => {
   const [drawerOpen, setDrawer] = useState(true);
 
   return (
-    <Grid className="mainLayout" container>
+    <Grid
+      className="mainLayout"
+      container
+      style={{
+        height: process?.env?.ENV_MODE === 'production' ? '100%' : 'calc(100% - 25px)',
+      }}
+    >
       <SideBar open={drawerOpen} />
 
       <Grid container item style={{ paddingLeft: drawerOpen ? 260 : 0 }}>
