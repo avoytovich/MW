@@ -84,7 +84,7 @@ const Variations = ({
         </Box>
         <Box mt={3}>
           <TableContainer component={Paper}>
-            <Table className='table' aria-label='simple table'>
+            <Table aria-label='simple table'>
               <TableHead>
                 <TableRow>
                   <TableCell>Id</TableCell>
@@ -286,7 +286,7 @@ const Variations = ({
         )}
         <SectionLayout label='variationParameters' width='100%'>
           <TableContainer component={Paper}>
-            <Table className='table' aria-label='simple table'>
+            <Table aria-label='simple table'>
               <TableHead>
                 <TableRow>
                   <TableCell>Parameter Name</TableCell>

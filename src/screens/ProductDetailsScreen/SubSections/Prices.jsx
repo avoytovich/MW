@@ -149,7 +149,7 @@ const Prices = ({
           >
             <></>
           </InheritanceField>
-          <Table className='table' aria-label='simple table'>
+          <Table aria-label='simple table'>
             <TableHead>
               <TableRow style={{ background: '#eee' }}>
                 <TableCell align='center'>Country</TableCell>
@@ -230,7 +230,7 @@ const Prices = ({
 
           <Box mt={3} px={2} className='product-prices'>
             <TableContainer component={Paper}>
-              <Table className='table' aria-label='simple table'>
+              <Table aria-label='simple table'>
                 <TableHead>
                   <TableRow style={{ background: '#eee' }}>
                     <TableCell>Price</TableCell>
