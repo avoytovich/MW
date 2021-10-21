@@ -166,10 +166,10 @@ const StoreDetailsScreen = () => {
             paymentMethodsOptions,
           ]) => {
             const customersIds = getCustomersIdsArray(
-              ...fontOptions.value.data.items,
-              ...themeOptions.value.data.items,
-              ...layoutOptions.value.data.items,
-              ...translationOptions.value.data.items,
+              ...fontOptions?.value?.data?.items || [],
+              ...themeOptions?.value?.data?.items || [],
+              ...layoutOptions?.value?.data?.items || [],
+              ...translationOptions?.value?.data?.items || [],
             );
 
             api
