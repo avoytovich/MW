@@ -1,14 +1,17 @@
-.filters-modal{
+.filters-modal {
   width: 484px;
   max-height: 564px;
 
-  .filters-inputs-container{
-    overflow-y: auto;
+  .filters-inputs-container {
+    overflow-y: overlay;
+    div {
+      gap: 5px;
+    }
   }
 }
 
-.MuiListItem-root:hover{
-  h6{
+.MuiListItem-root:hover {
+  h6 {
     color: #0f0f0f;
   }
 }

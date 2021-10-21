@@ -198,6 +198,7 @@ const CartDetailsScreen = () => {
           </Typography>
           <FileCopyIcon
             onClick={() => makeCopy(cartData?.id)}
+            style={{ marginLeft: '5px' }}
             color="secondary"
           />
         </Box>
@@ -219,6 +220,7 @@ const CartDetailsScreen = () => {
           </Typography>
           <FileCopyIcon
             onClick={() => makeCopy(cartData?.checkoutUrl)}
+            style={{ marginLeft: '5px' }}
             color="secondary"
           />
         </Box>
@@ -246,6 +248,7 @@ const CartDetailsScreen = () => {
           </span>
           <FileCopyIcon
             onClick={() => makeCopy(customer.id)}
+            style={{ marginLeft: '5px' }}
             color="secondary"
           />
         </Box>
@@ -273,6 +276,7 @@ const CartDetailsScreen = () => {
           </span>
           <FileCopyIcon
             onClick={() => makeCopy(cartData?.storeId)}
+            style={{ marginLeft: '5px' }}
             color="secondary"
           />
           <Typography variant='subtitle1' className='store-value-name'>

@@ -103,6 +103,7 @@ const TableComponent = ({
               <Checkbox
                 checked={tableData?.values.length === tableCheckedItems.length}
                 name="checkAll"
+                color="primary"
                 onChange={handleCheckAll}
               />
             </Grid>
@@ -130,8 +131,12 @@ const TableComponent = ({
                       noWrap
                       align="center"
                     >
-                      {header.value}
-                      {sortParams?.value === header.sortParam && (sortParams.type === 'desc' ? <VerticalAlignTopIcon /> : <VerticalAlignBottomIcon />)}
+                      <div className='header-value'>
+                        {header.value}
+                      </div>
+                      <div className='sort-icon-container'>
+                        {sortParams?.value === header.sortParam && (sortParams.type === 'desc' ? <VerticalAlignTopIcon /> : <VerticalAlignBottomIcon />)}
+                      </div>
                     </Typography>
                   </Box>
                 </Grid>

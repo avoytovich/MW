@@ -48,13 +48,6 @@ const PaginationComponent = ({
     && (
     <Grid className="paginationBlock">
       <Grid spacing={5} container justify={location} direction="row">
-        {currentPage !== 1 && (
-        <Grid item>
-          <Typography onClick={() => updatePage(1)} className="firstPaginationPage">
-            {localization.t('general.first')}
-          </Typography>
-        </Grid>
-        )}
         <Grid item>
           <Grid spacing={3} container justify="center" direction="row" className="paginationNumbers">
             {pageNumbers.map((item) => (

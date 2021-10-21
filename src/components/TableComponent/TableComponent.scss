@@ -76,12 +76,22 @@
   overflow-x: hidden;
   min-width: fit-content;
   .tableHeader {
-    display: inherit;
+    display: flex;
     white-space: nowrap;
     text-align: left;
     font: 16px 'Roboto', sans-serif;
     font-weight: bold;
     color: #303030;
+    letter-spacing: normal;
+    .header-value {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 50%;
+    }
+    .sort-icon-container > svg {
+      margin-left: 5px;
+    }
   }
   .headers {
     min-width: 175px;

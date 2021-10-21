@@ -101,6 +101,7 @@ const TableRowComponent = ({
             {rowItem[item.id]}
             <FileCopyIcon
               className='publisher-copy'
+              style={{ marginLeft: '5px' }}
               onClick={() => makeCopy(rowItem[item.id])}
               color="secondary"
             />
@@ -112,6 +113,7 @@ const TableRowComponent = ({
             {rowItem[item.id]}
             <FileCopyIcon
               className='id-copy'
+              style={{ marginLeft: '5px' }}
               onClick={() => makeCopy(rowItem[item.id])}
               color="secondary"
             />
@@ -175,6 +177,7 @@ const TableRowComponent = ({
               <Checkbox
                 checked={checked}
                 name={rowItem.id}
+                color="primary"
                 onClick={(e) => e.stopPropagation()}
                 onChange={() => handleCheck(rowItem)}
               />
@@ -194,7 +197,7 @@ const TableRowComponent = ({
                 />
               )}
               <EditIcon className="editIcon icons" />
-              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+              <FileCopyIcon className="copyIcon icons" style={{ marginLeft: '5px' }} onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
             </Box>
           </Grid>
         )}

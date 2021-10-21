@@ -1,81 +1,82 @@
 @import '../../styles/variables.scss';
 
-.side-bar{
+.side-bar {
   background: #0f0f0f;
 
-  .MuiPaper-root{
+  .MuiPaper-root {
     background: inherit;
+    overflow-y: overlay;
 
-    .side-nav-block{
+    .side-nav-block {
       .MuiButtonBase-root {
         display: flex;
         justify-content: flex-start;
       }
-  
-      .collapsable-nav{
+
+      .collapsable-nav {
         width: 100%;
       }
-  
-      .subheaderItem{
+
+      .subheaderItem {
         color: #f3f3f3;
         text-align: left;
         font-size: 12px;
         font-weight: bold;
         width: 100%;
-  
-        .MuiButtonBase-root{
+
+        .MuiButtonBase-root {
           width: 100%;
         }
       }
-    
-      .MuiButton-textSecondary{
+
+      .MuiButton-textSecondary {
         color: #f3f3f3;
         font-size: 12px;
         font-weight: bold;
       }
 
-      .linkTitle{
+      .linkTitle {
         font-size: 14px;
         font-weight: 400;
       }
-  
+
       .MuiSvgIcon-root {
         fill: #f3f3f3;
         margin-right: 20px;
       }
-  
-      .listItem{
-        .MuiButton-root{
+
+      .listItem {
+        .MuiButton-root {
           text-transform: unset;
           padding-left: 50px;
           color: #959595;
         }
       }
-  
-      .listItem, .subheaderItem{
-        .MuiButton-root.active{
+
+      .listItem,
+      .subheaderItem {
+        .MuiButton-root.active {
           color: $navItemButtonActive;
-  
+
           .MuiSvgIcon-root {
             fill: $navItemButtonActive;
           }
         }
       }
 
-      .chevron-icon{
+      .chevron-icon {
         width: 18px;
         fill: #626262;
         margin-right: 0;
         transform: rotate(0);
-        transition: transform .3s ease-in-out;
+        transition: transform 0.3s ease-in-out;
       }
 
-      .icon-collapsed{
-        .chevron-icon{
+      .icon-collapsed {
+        .chevron-icon {
           transform: rotate(-180deg);
         }
       }
     }
   }
 }
-

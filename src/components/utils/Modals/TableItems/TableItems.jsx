@@ -107,6 +107,7 @@ const TableItems = ({
                           />
                           <FileCopyIcon
                             className="copyIcon icons"
+                            style={{ marginLeft: '5px' }}
                             onClick={() => copyUrl(value.id)}
                           />
                         </>
@@ -149,6 +150,7 @@ const TableItems = ({
                         />
                         <FileCopyIcon
                           className="copyIcon icons"
+                          style={{ marginLeft: '5px' }}
                           onClick={() => copyUrl(value.id)}
                         />
                       </Box>

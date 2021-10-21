@@ -77,7 +77,7 @@ const SubscriptionDetailsScreen = () => {
       <Grid item md={6} xs={6}>
         <Box display="flex" alignItems='center'>
           <Box p={2} className="rowValue">{it.value}</Box>
-          {it.copy && <Box px={2}><FileCopyIcon onClick={() => makeCopy(it.value)} color="secondary" /></Box>}
+          {it.copy && <Box px={2}><FileCopyIcon onClick={() => makeCopy(it.value)} style={{ marginLeft: '5px' }} color="secondary" /></Box>}
         </Box>
       </Grid>
     </Grid>

@@ -82,6 +82,7 @@ const TableComponent = ({
             <Checkbox
               checked={tableData?.values.length === checked.length}
               name="checkAll"
+              color="primary"
               onChange={handleCheckAll}
             />
           </Grid>
