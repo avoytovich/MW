@@ -217,7 +217,7 @@ const CampaignDetailsScreen = () => {
         <CustomCard title="Products Price Table">
           <Box pt={4}>
             <TableComponent
-              showColumn={defaultShow}
+              defaultShowColumn={defaultShow}
               tableData={pricesData}
               isLoading={pricesData === null}
               customPath={`${parentPaths.productlist}/:productId`}
