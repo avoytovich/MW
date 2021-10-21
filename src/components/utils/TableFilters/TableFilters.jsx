@@ -195,7 +195,7 @@ const Filters = ({ scope, onClose }) => {
             displayEmpty
             renderValue={(selected) => {
               if (!selected) {
-                return <Typography color='secondary' variant='h6'>Select a view</Typography>;
+                return <Typography color='secondary' variant='h6' style={{ font: '14px Roboto Regular' }}>Select a view</Typography>;
               }
 
               return selected;

@@ -128,6 +128,7 @@ const TableRowComponent = ({
               <FileCopyIcon
                 onClick={(e) => { e.stopPropagation(); makeCopy(valueToShow); }}
                 color="secondary"
+                style={{ marginLeft: '5px' }}
                 className="copyIcon"
               />
             )}
@@ -156,6 +157,7 @@ const TableRowComponent = ({
               <Checkbox
                 checked={checked}
                 name={rowItem.id}
+                color="primary"
                 onClick={(e) => e.stopPropagation()}
                 onChange={() => handleCheck(rowItem)}
               />
@@ -177,7 +179,7 @@ const TableRowComponent = ({
               {!noEditDeleteActions && (
               <EditIcon className="editIcon icons" />
               )}
-              <FileCopyIcon className="copyIcon icons" onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+              <FileCopyIcon className="copyIcon icons" style={{ marginLeft: '5px' }} onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
             </Box>
           </Grid>
           )}

@@ -46,6 +46,7 @@ const Emails = ({ curIdentity }) => {
                     <Box pl={1}>
                       <FileCopyIcon
                         onClick={() => makeCopy(item.id)}
+                        style={{ marginLeft: '5px' }}
                         color="secondary"
                       />
                     </Box>

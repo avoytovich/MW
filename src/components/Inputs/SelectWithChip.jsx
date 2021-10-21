@@ -36,7 +36,7 @@ const SelectWithChip = ({
           {selected?.map((chip) => {
             const selectedItem = selectOptions?.filter((item) => item.id === chip)[0];
             return (
-              <Box mb='2px' mr='2px' key={chip}>
+              <Box mb='5px' mr='5px' key={chip}>
                 <Chip
                   variant='outlined'
                   onDelete={() => onClickDelIcon(chip)}

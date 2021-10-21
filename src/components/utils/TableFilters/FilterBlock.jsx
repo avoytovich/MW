@@ -28,7 +28,7 @@ const FilterBlock = ({ data, curData, updateConfig }) => {
         data={data}
       />
 
-      <Box minWidth='25px' ml='10px' textAlign='center'>
+      <Box minWidth='25px' textAlign='center'>
         {curVal && (
           <Close style={{ fill: '#d0caca', cursor: 'pointer' }} onClick={() => updateConfig(data?.id, '')} />
         )}

@@ -44,6 +44,7 @@ const SecretKeysTable = ({ curIdentity, removeSecretKey }) => {
                     <Box pl={1}>
                       <FileCopyIcon
                         onClick={() => makeCopy(item.secret)}
+                        style={{ marginLeft: '5px' }}
                         color="secondary"
                       />
                     </Box>

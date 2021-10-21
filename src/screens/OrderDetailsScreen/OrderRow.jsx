@@ -74,6 +74,7 @@ const OrderRow = ({
             {item.value && shouldCopy(item.key) && (
               <FileCopyIcon
                 onClick={() => makeCopy(item.value)}
+                style={{ marginLeft: '5px' }}
                 color="secondary"
                 className="copyIcon"
               />

@@ -41,7 +41,6 @@ const FilterBlockInputs = ({
         label={localization.t('labels.from')}
         type='date'
         variant='outlined'
-        style={{ marginRight: '5px' }}
         InputLabelProps={{ shrink: true }}
         inputProps={{
           style: {
@@ -67,7 +66,6 @@ const FilterBlockInputs = ({
         label={localization.t('labels.to')}
         type='date'
         variant='outlined'
-        style={{ marginLeft: '5px' }}
         InputLabelProps={{ shrink: true }}
         inputProps={{
           style: {

@@ -86,7 +86,7 @@ const General = ({
             <Typography style={{ cursor: 'pointer' }} onClick={() => history.push(`${parentPaths.customers}/${curEndUser.customerId}`)}>{customerName}</Typography>
           </Box>
           <Box px={2} alignSelf='center'>
-            <FileCopyIcon color='secondary' onClick={() => makeCopy(curEndUser.customerId)} />
+            <FileCopyIcon color='secondary' style={{ marginLeft: '5px' }} onClick={() => makeCopy(curEndUser.customerId)} />
           </Box>
         </Box>
         <Box display="flex" p={2} flexDirection="row" alignItems="baseline">
@@ -97,7 +97,7 @@ const General = ({
             <Typography>{curEndUser.enduserId}</Typography>
           </Box>
           <Box px={2} alignSelf='center'>
-            <FileCopyIcon color='secondary' onClick={() => makeCopy(curEndUser.enduserId)} />
+            <FileCopyIcon color='secondary' style={{ marginLeft: '5px' }} onClick={() => makeCopy(curEndUser.enduserId)} />
           </Box>
         </Box>
       </Grid>

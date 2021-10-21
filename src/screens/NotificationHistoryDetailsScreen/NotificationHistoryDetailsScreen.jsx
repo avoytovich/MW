@@ -115,6 +115,7 @@ const NotificationHistoryDetailsScreen = () => {
           <FileCopyIcon
             onClick={() => makeCopy(notificationHistory.customerId)}
             color="secondary"
+            style={{ marginLeft: '5px' }}
           />
         </Box>
       </Grid>
@@ -135,6 +136,7 @@ const NotificationHistoryDetailsScreen = () => {
           </Typography>
           <FileCopyIcon
             onClick={() => makeCopy(data.field)}
+            style={{ marginLeft: '5px' }}
             color="secondary"
           />
         </Box>
