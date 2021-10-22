@@ -72,7 +72,7 @@ const generateOrders = (data) => {
       orderId: val.id,
       product: val.lineItems[0].name,
       status: val.status,
-      amount: `${val.payment.amount} ${val.currency}`,
+      amount: val.payment?.amount ? `${val.payment.amount} ${val.currency}` : `0 ${val.currency}`,
     };
   });
 
