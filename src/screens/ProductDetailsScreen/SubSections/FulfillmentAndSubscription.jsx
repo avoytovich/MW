@@ -142,7 +142,7 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
                   : ''
               }
               label={localization.t('labels.preorderReleaseDate')}
-              type="datetime-local"
+              type="date"
               variant="outlined"
               InputProps={{
                 endAdornment: currentProductData.releaseDate && (
