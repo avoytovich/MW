@@ -3,6 +3,7 @@ import localization from '../../../localization';
 const defaultShow = {
   id: true,
   name: true,
+  features: true,
   status: true,
   email: true,
   createDate: true,
@@ -14,6 +15,7 @@ const markUp = {
     { value: localization.t('labels.id'), id: 'id' },
 
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
+    { value: localization.t('labels.features'), id: 'features', sortParam: 'features' },
     {
       value: localization.t('labels.status'),
       id: 'status',
@@ -35,16 +37,12 @@ const markUp = {
 
 const generateData = (data) => {
   const values = data.items.map((val) => {
-    let status = '';
-    if (val.status === 'RUNNING') {
-      status = localization.t('general.live');
-    } else if (val.status === 'TRIAL') {
-      status = localization.t('general.test');
-    }
+    const features = Object.entries(val.features).filter(([_, v]) => v).map(([k, _]) => k);
     return {
       id: val.id,
       name: val.name,
-      status,
+      features: features.join(', ') || '-',
+      status: val.status === 'RUNNING' ? 'ENABLED' : 'DISABLED',
       email: val.email,
       createDate: val.createDate,
       updateDate: val.updateDate,
