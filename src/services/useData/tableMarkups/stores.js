@@ -6,6 +6,7 @@ const defaultShow = {
   createDate: true,
   updateDate: false,
   defaultLocale: true,
+  salesLanguages: false,
   status: true,
   checkoutTheme: true,
   checkoutLayout: true,
@@ -28,6 +29,7 @@ const markUp = {
       sortParam: 'updateDate',
     },
     { value: localization.t('labels.defaultLanguage'), id: 'defaultLocale' },
+    { value: localization.t('labels.salesLanguages'), id: 'salesLanguages' },
     {
       value: localization.t('labels.status'),
       id: 'status',
@@ -53,6 +55,7 @@ const generateData = (data, customers) => {
       createDate: val.createDate,
       updateDate: val.updateDate,
       defaultLocale: val.defaultLocale,
+      salesLanguages: val?.saleLocales?.length ? val.saleLocales.join(', ') : '-',
       checkoutTheme: val?.designs?.checkout?.theme || '-',
       checkoutLayout: val?.designs?.checkout?.layout || '-',
       status: val.status,
