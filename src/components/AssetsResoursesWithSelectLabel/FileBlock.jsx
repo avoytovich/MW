@@ -50,7 +50,7 @@ const FileBlock = ({
         urlFetching ? 'disable-block' : ''
       } existing-item`}
     >
-      <Box minWidth="220px" width={1 / 4}>
+      <Box minWidth="250px">
         {urlLoading || initImage === ' ' ? (
           <CircularProgress />
         ) : (
@@ -70,9 +70,10 @@ const FileBlock = ({
             label="label"
             value={item.label}
             selectOptions={labelOptions}
+            usedOptions={labelOptions.filter((l) => data.filter((r) => r.label === l.id).length)}
             onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
           />
-          {!item.label && (
+          {!item.label && item.label !== null && (
             <Box width={1} pl={1}>
               <Typography variant="body2" style={{ color: 'red' }}>
                 {localization.t('labels.validationLabel')}
@@ -94,7 +95,7 @@ const FileBlock = ({
               value={item.url}
               onChangeInput={(e) => updateResources(index, 'url', e.target.value)}
             />
-            {!item.url && (
+            {!item.url && item.url !== null && (
               <Box width={1} pl={1}>
                 <Typography variant="body2" style={{ color: 'red' }}>
                   {localization.t('labels.validationUrl')}

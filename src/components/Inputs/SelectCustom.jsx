@@ -16,6 +16,7 @@ const SelectCustom = ({
   value,
   tooltip,
   selectOptions,
+  usedOptions = [],
   onChangeSelect,
   isRequired,
   isDisabled,
@@ -60,11 +61,13 @@ const SelectCustom = ({
       onChange={onChangeSelect}
     >
       {selectOptions?.length ? (
-        selectOptions.map((option) => (
-          <MenuItem key={option.id || option.value} value={option.id}>
-            {option.value}
-          </MenuItem>
-        ))
+        selectOptions
+          .filter((so) => !usedOptions.filter((uo) => uo.id === so.id).length)
+          .map((option) => (
+            <MenuItem key={option.id || option.value} value={option.id}>
+              {option.value}
+            </MenuItem>
+          ))
       ) : (
         <MenuItem disabled>{localization.t('general.noAvailableOptions')}</MenuItem>
       )}
@@ -89,6 +92,7 @@ SelectCustom.propTypes = {
   value: PropTypes.string,
   tooltip: PropTypes.string,
   selectOptions: PropTypes.array,
+  usedOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   isRequired: PropTypes.bool,
   isDisabled: PropTypes.bool,
