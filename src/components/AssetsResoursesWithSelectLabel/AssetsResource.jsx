@@ -19,16 +19,18 @@ const AssetsResource = ({
     newResources[index][key] = value;
     setResources(newResources);
   };
+
   const addItem = () => {
     const lastKey = resources[resources.length - 1]?.key;
-    const newResource = { label: '', url: '', key: lastKey ? lastKey + 1 : 1 };
+    const newResource = { label: null, url: null, key: lastKey ? lastKey + 1 : 1 };
 
     setResources([...resources, newResource]);
   };
+
   return (
     <>
       <Box width={1} p={2}>
-        <Typography variant="body2">
+        <Typography variant="h6">
           {localization.t('general.selectFiles')}
         </Typography>
       </Box>
@@ -47,18 +49,19 @@ const AssetsResource = ({
                   type="file"
                 />
               </Box>
-              <Divider light />
+              {(index !== resources.length - 1) && <Divider light />}
             </Box>
           ))}
         {(!maxPayloadFiles || resources.length < maxPayloadFiles) && (
-          <Box>
+          <Box alignSelf='flex-start' px={2} minWidth={220}>
             <Button
-              startIcon={<PublishIcon />}
+              disabled={resources.filter((i) => !i.label || !i.url).length}
+              style={{ width: '100%' }}
               onClick={addItem}
               variant="outlined"
               color="primary"
             >
-              {localization.t('general.uploadFiles')}
+              {localization.t('general.addAssets')}
             </Button>
           </Box>
         )}
