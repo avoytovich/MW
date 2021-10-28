@@ -30,6 +30,14 @@ const CustomerDetailScreen = () => {
   const { id } = useParams();
   const [curTab, setCurTab] = useState(0);
 
+  const defaultResources = [
+    {
+      key: 0,
+      label: null,
+      url: null,
+    },
+  ];
+
   const {
     customerData,
     currentCustomer,
@@ -141,7 +149,7 @@ const CustomerDetailScreen = () => {
           <AssetsResource
             labelOptions={assetsLabels}
             maxPayloadFiles={2}
-            resources={currentCustomer.assets}
+            resources={currentCustomer?.assets?.length ? currentCustomer.assets : defaultResources}
             setResources={(newValue) => {
               setCurrentCustomer({ ...currentCustomer, assets: newValue });
             }}

@@ -12,7 +12,7 @@ import localization from '../../localization';
 import './AssetsResource.scss';
 
 const FileBlock = ({
-  item, updateResources, deleteItem, index, labelOptions, data,
+  item, updateResources, deleteItem, index, labelOptions, data, withSelect,
 }) => {
   const [urlLoading, setUrlLoading] = useState(true);
 
@@ -21,8 +21,8 @@ const FileBlock = ({
 
   useEffect(() => {
     if (item) {
-      if (item.url) {
-        setInitImage(item.url);
+      if (item.url || item.file) {
+        setInitImage(item.url || item.file);
       }
     }
 
@@ -35,12 +35,12 @@ const FileBlock = ({
 
   const checkDublicateLabel = () => {
     const valueArr = data.map((each) => each.label);
-    const isDublicate = valueArr.some((each, id) => valueArr.indexOf(each) !== id);
-    if (isDublicate) {
-      return valueArr.splice(valueArr.indexOf(item.label), 1);
-    }
-    return false;
+    const [duplicateVals] = valueArr.filter((each, id) => valueArr.indexOf(each) !== id);
+
+    return duplicateVals || [];
   };
+
+  const selectedLabel = item.label && !labelOptions.filter((l) => l.id === item.label).length ? '_free' : item.label;
 
   return (
     <Box
@@ -57,7 +57,6 @@ const FileBlock = ({
           <FileUpload
             setFileUrl={setFileUrl}
             setUrlLoading={setUrlLoading}
-            s
             setUrlFetching={setUrlFetching}
             initialFiles={initImage}
             setHasSave={() => { }}
@@ -65,37 +64,63 @@ const FileBlock = ({
         )}
       </Box>
       <Box width={3 / 4}>
-        <Box maxWidth="250px" my={2}>
-          <SelectCustom
-            label="label"
-            value={item.label}
-            selectOptions={labelOptions}
-            usedOptions={labelOptions.filter((l) => data.filter((r) => r.label === l.id).length)}
-            onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
-          />
-          {!item.label && item.label !== null && (
-            <Box width={1} pl={1}>
-              <Typography variant="body2" style={{ color: 'red' }}>
-                {localization.t('labels.validationLabel')}
-              </Typography>
+        <Grid container spacing={1} alignItems="center">
+          <Grid item md={11} sm={11}>
+            <Box my={2} display='flex'>
+              {withSelect && (
+                <Box width="250px">
+                  <SelectCustom
+                    label="label"
+                    value={selectedLabel}
+                    selectOptions={labelOptions}
+                    usedOptions={
+                      labelOptions.filter((l) => data.filter((r) => r.label === l.id).length)
+                    }
+                    onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
+                  />
+
+                  {!item.label && item.label !== null && (
+                    <Box width={1} pl={1}>
+                      <Typography variant="body2" style={{ color: 'red' }}>
+                        {localization.t('labels.validationLabel')}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {checkDublicateLabel() === item.label && (
+                    <Box width={1} pl={1}>
+                      <Typography variant="body2" style={{ color: 'red' }}>
+                        {localization.t('labels.validationDublicateLabel')}
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+              )}
+
+              {
+                (!withSelect || selectedLabel === '_free') && (
+                  <Box flexGrow={1} ml={withSelect ? 2 : 0}>
+                    <InputCustom
+                      label='freeLabel'
+                      isRequired
+                      value={item.label === '_free' ? '' : item.label}
+                      onChangeInput={(e) => updateResources(index, 'label', e.target.value)}
+                    />
+                  </Box>
+                )
+              }
             </Box>
-          )}
-          {checkDublicateLabel()[0] === item.label && (
-            <Box width={1} pl={1}>
-              <Typography variant="body2" style={{ color: 'red' }}>
-                {localization.t('labels.validationDublicateLabel')}
-              </Typography>
-            </Box>
-          )}
-        </Box>
+          </Grid>
+        </Grid>
+
         <Grid container spacing={1} alignItems="center">
           <Grid item md={11} sm={11}>
             <InputCustom
               label="url"
-              value={item.url}
+              value={item.url || item.file}
               onChangeInput={(e) => updateResources(index, 'url', e.target.value)}
             />
-            {!item.url && item.url !== null && (
+            {!item.url && !item.file && item.url !== null && (
               <Box width={1} pl={1}>
                 <Typography variant="body2" style={{ color: 'red' }}>
                   {localization.t('labels.validationUrl')}
@@ -122,6 +147,7 @@ FileBlock.propTypes = {
   deleteItem: PropTypes.func,
   index: PropTypes.number,
   labelOptions: PropTypes.array,
+  withSelect: PropTypes.bool,
 };
 
 export default FileBlock;

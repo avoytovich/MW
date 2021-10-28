@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PublishIcon from '@material-ui/icons/Publish';
 import {
   Box, Divider, Button, Typography,
 } from '@material-ui/core';
@@ -8,7 +7,7 @@ import localization from '../../localization';
 import FileBlock from './FileBlock';
 
 const AssetsResource = ({
-  resources, setResources, maxPayloadFiles, labelOptions,
+  resources, setResources, maxPayloadFiles, labelOptions, label, withSelect = true,
 }) => {
   const deleteItem = (key) => {
     const newResources = resources.filter((item) => item.key !== key);
@@ -31,7 +30,7 @@ const AssetsResource = ({
     <>
       <Box width={1} p={2}>
         <Typography variant="h6">
-          {localization.t('general.selectFiles')}
+          {label || localization.t('general.selectFiles')}
         </Typography>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center" width={1}>
@@ -46,6 +45,7 @@ const AssetsResource = ({
                   item={content}
                   updateResources={updateResources}
                   index={index}
+                  withSelect={withSelect}
                   type="file"
                 />
               </Box>
@@ -75,6 +75,8 @@ AssetsResource.propTypes = {
   setResources: PropTypes.func,
   maxPayloadFiles: PropTypes.number,
   labelOptions: PropTypes.array,
+  label: PropTypes.string,
+  withSelect: PropTypes.bool,
 };
 
 export default AssetsResource;
