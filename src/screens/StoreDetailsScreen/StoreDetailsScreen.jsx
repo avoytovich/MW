@@ -124,10 +124,6 @@ const StoreDetailsScreen = () => {
       roleRequest = Promise.resolve({
         data: {
           customerId: nxState?.selectedCustomer?.id,
-          logoFavicon: '',
-          bannerInvoice: '',
-          bannerOrderConfEmail: '',
-          logoStore: '',
         },
       });
     } else {

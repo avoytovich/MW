@@ -4,33 +4,48 @@ import PropTypes from 'prop-types';
 
 import { Box, Typography, Divider } from '@material-ui/core';
 
-import ProductFileBlock from './ProductFileBlock';
+import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
 
 import localization from '../../../localization';
 
 import './productFile.scss';
 
+const resourceLabels = [
+  { id: '_free', value: localization.t('labels.freeLabel') },
+  { id: 'product_header_logo', value: localization.t('labels.headerLogo') },
+  { id: 'product_boxshot', value: localization.t('labels.boxshot') },
+  { id: 'product_icon', value: localization.t('labels.icon') },
+];
+
+const defaultFiles = [
+  {
+    key: 0,
+    label: null,
+    url: null,
+  },
+];
+
+const defaultContentsFiles = [
+  {
+    key: 0,
+    label: null,
+    url: null,
+  },
+];
+
 const ProductFiles = ({ currentProductData, setProductData }) => {
   const [contents, setContents] = useState([]);
   const [resources, setResources] = useState([]);
 
-  const isEqual = (val1, val2) => JSON.stringify(val1) === JSON.stringify(val2);
+  const updateResources = (newData) => setProductData((c) => ({ ...c, resources: [...newData] }));
 
-  const updateResources = (newData) => {
-    if (!isEqual(resources, newData)) {
-      setProductData((c) => ({ ...c, resources: [...newData] }));
-    }
-  };
-
-  const updateContents = (newData) => {
-    if (!isEqual(contents, newData)) {
-      setProductData((c) => ({ ...c, relatedContents: [...newData] }));
-    }
-  };
+  const updateContents = (newData) => setProductData((c) => ({
+    ...c, relatedContents: [...newData.map((f) => ({ ...f, file: f.url }))],
+  }));
 
   useEffect(() => {
-    currentProductData?.relatedContents
-      && setContents([...currentProductData.relatedContents]);
+    currentProductData?.relatedContents?.value
+      && setContents([...currentProductData.relatedContents.value]);
   }, [currentProductData.relatedContents]);
 
   useEffect(() => {
@@ -39,53 +54,31 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
 
   return (
     <Box p={2} pt={0}>
-      <Typography variant='h6' style={{ fontWeight: '400' }}>
+      <Typography variant='h5' style={{ marginBottom: '15px', fontWeight: '400' }}>
         {localization.t('labels.dropFileOrSelect')}
       </Typography>
 
-      <Box my={4}>
-        <Typography variant='h5'>{localization.t('labels.relatedContents')}</Typography>
+      <AssetsResource
+        label={localization.t('labels.relatedContents')}
+        labelOptions={[]}
+        resources={contents.length ? contents : defaultContentsFiles}
+        setResources={updateContents}
+        currentStoreData={currentProductData}
+        setCurrentStoreData={setProductData}
+        withSelect={false}
+      />
+
+      <Box mt={4}>
+        <Divider light />
       </Box>
 
-      {contents.map((content, index) => (
-        <Box data-test='productFileContentItem' key={content.file + content.label}>
-          <ProductFileBlock
-            data={[...contents]}
-            item={{ ...content }}
-            updateData={updateContents}
-            index={index}
-            type='file'
-          />
-          <Divider light />
-        </Box>
-      ))}
-
-      <ProductFileBlock data={[...contents]} updateData={updateContents} type='file' empty />
-
-      <Box my={4}>
-        <Typography variant='h5'>{localization.t('labels.resources')}</Typography>
-      </Box>
-
-      {resources.map((resource, index) => (
-        <Box data-test='productFileResourceItem' key={resource.url + resource.label}>
-          <ProductFileBlock
-            data={[...resources]}
-            item={{ ...resource }}
-            updateData={updateResources}
-            index={index}
-            type='url'
-            withSelect
-          />
-          <Divider light />
-        </Box>
-      ))}
-
-      <ProductFileBlock
-        data={[...resources]}
-        updateData={updateResources}
-        type='url'
-        withSelect
-        empty
+      <AssetsResource
+        label={localization.t('labels.resources')}
+        labelOptions={resourceLabels}
+        resources={resources.length ? resources : defaultFiles}
+        setResources={updateResources}
+        currentStoreData={currentProductData}
+        setCurrentStoreData={setProductData}
       />
     </Box>
   );

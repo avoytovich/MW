@@ -40,8 +40,8 @@ const Design = ({
   const defaultResources = [
     {
       key: 0,
-      label: '',
-      url: '',
+      label: null,
+      url: null,
     },
   ];
 
