@@ -19,10 +19,10 @@ const MainLayout = ({ children }) => {
         height: process?.env?.ENV_MODE === 'production' ? '100%' : 'calc(100% - 25px)',
       }}
     >
-      <SideBar open={drawerOpen} />
+      <SideBar toggleDrawer={() => setDrawer((d) => !d)} open={drawerOpen} />
 
       <Grid container item style={{ paddingLeft: drawerOpen ? 260 : 0 }}>
-        <TopBar toggleDrawer={() => setDrawer((d) => !d)} />
+        <TopBar toggleDrawer={() => setDrawer((d) => !d)} drawerOpen={drawerOpen} />
         <Grid className="table">
           <Grid
             item
