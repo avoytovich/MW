@@ -18,7 +18,6 @@ import localization from '../../../localization';
 import {
   NumberInput,
   InputCustom,
-  SelectWithDeleteIcon,
 } from '../../../components/Inputs';
 import api from '../../../api';
 
@@ -89,26 +88,6 @@ const General = ({
           </Box>
         </Box>
         <Box p={2}>
-          <SelectWithDeleteIcon
-            data-test='endUser'
-            label="endUser"
-            value={curDiscount.enduserId}
-            selectOptions={selectOptions.endUsers}
-            onChangeSelect={(e) => {
-              setCurDiscount({
-                ...curDiscount,
-                enduserId: e.target.value,
-              });
-            }}
-            onClickDelIcon={() => {
-              setCurDiscount({
-                ...curDiscount,
-                enduserId: '',
-              });
-            }}
-          />
-        </Box>
-        <Box p={2}>
           <InputCustom
             data-test='discountRuleName'
             label="discountRuleName"
@@ -120,37 +99,8 @@ const General = ({
             })}
           />
         </Box>
-      </Grid>
-      <Grid item md={6} sm={12}>
-        <Box p={2}>
-          <Typography style={{ lineHeight: '38px' }}>
-            {localization.t('labels.discountLabels')}
-          </Typography>
-        </Box>
-        <EditKeyValueInputs
-          data-test='localizedLabels'
-          curValue={curDiscount.localizedLabels}
-          setCurValue={(value) => setCurDiscount({ ...curDiscount, localizedLabels: value })}
-          selectOptions={availableLocales}
-          additionalOption={{ value: 'neutral', id: 'neutral' }}
-          labels={['language', 'discountLabel']}
-        />
-        <Box p={2}>
-          <InputCustom
-            data-test='externalContext'
-            isMultiline
-            label="externalContext"
-            value={curDiscount.externalContext}
-            onChangeInput={(e) => setCurDiscount({
-              ...curDiscount,
-              externalContext: e.target.value,
-            })}
-          />
-        </Box>
-      </Grid>
-      <Grid item md={6} sm={12}>
         <Box pt={4} pl={2}>
-          <Typography>{localization.t('labels.amount')}</Typography>
+          <Typography>{localization.t('labels.discountAmount')}</Typography>
         </Box>
         <Box p={2}>
           <RadioGroup
@@ -169,7 +119,7 @@ const General = ({
             <FormControlLabel
               value="byCurrency"
               control={<Radio color="primary" />}
-              label={localization.t('labels.byCurrency')}
+              label={localization.t('labels.byFixedPrice')}
             />
           </RadioGroup>
         </Box>
@@ -205,6 +155,31 @@ const General = ({
         </Box>
       </Grid>
       <Grid item md={6} sm={12}>
+        <Box p={2}>
+          <Typography style={{ lineHeight: '38px' }}>
+            {localization.t('labels.discountLabels')}
+          </Typography>
+        </Box>
+        <EditKeyValueInputs
+          data-test='localizedLabels'
+          curValue={curDiscount.localizedLabels}
+          setCurValue={(value) => setCurDiscount({ ...curDiscount, localizedLabels: value })}
+          selectOptions={availableLocales}
+          additionalOption={{ value: 'neutral', id: 'neutral' }}
+          labels={['language', 'discountLabel']}
+        />
+        <Box p={2}>
+          <InputCustom
+            data-test='externalContext'
+            isMultiline
+            label="externalContext"
+            value={curDiscount.externalContext}
+            onChangeInput={(e) => setCurDiscount({
+              ...curDiscount,
+              externalContext: e.target.value,
+            })}
+          />
+        </Box>
         <Box pt={4} pl={2}>
           <Typography>{localization.t('labels.model')}</Typography>
         </Box>

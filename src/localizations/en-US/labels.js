@@ -190,6 +190,8 @@ const labels = {
   discountLabel: 'Discount Label',
   byPercentage: 'By Percentage',
   byCurrency: 'By Currency',
+  byFixedPrice: 'By fixed price',
+  addAmountValueAndCurrency: 'Add amount value and currency',
   percents: 'Percents',
   code: 'Code',
   discountCode: 'Discount Code',

@@ -6,6 +6,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ClearIcon from '@material-ui/icons/Clear';
 
 import { filterOptions } from './utils';
+import localization from '../../localization';
 
 import {
   SelectCustom,
@@ -120,7 +121,7 @@ const EditKeyValueInputs = ({
             <AddCircleIcon data-test='addNewInputsIcon' color="primary" onClick={handleAdd} />
           </Box>
           <Box p={2}>
-            <Typography data-test='addNewInputsText'>Add new value</Typography>
+            <Typography data-test='addNewInputsText'>{localization.t('labels.addAmountValueAndCurrency')}</Typography>
           </Box>
         </Box>
       )}
