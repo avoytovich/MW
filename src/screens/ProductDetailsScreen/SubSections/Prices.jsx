@@ -106,8 +106,15 @@ const Prices = ({
             ...c.prices.value,
             priceByCountryByCurrency: pricesData,
           },
+          defaultCurrency:
+            c?.prices?.defaultCurrency === item.currency ? null : c.prices.defaultCurrency,
         }
-        : { ...c.prices, priceByCountryByCurrency: pricesData },
+        : {
+          ...c.prices,
+          priceByCountryByCurrency: pricesData,
+          defaultCurrency:
+            c?.prices?.defaultCurrency === item.currency ? null : c.prices.defaultCurrency,
+        },
     }));
   };
 

@@ -51,4 +51,12 @@ html, body {
       }
     }
   }
+
+  .localized-input-block{
+    .MuiOutlinedInput-input{
+      div {
+        display: inline;
+      }
+    }
+  }
 }

@@ -194,6 +194,7 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
           orientation='vertical'
           indicatorColor='primary'
           variant='scrollable'
+          scrollButtons='off'
           value={value}
           style={{ borderRight: '1px solid #e2e2e2', height: '100%' }}
           onChange={(e, newTab) => setValue(newTab)}
@@ -223,12 +224,14 @@ const LocalizedContent = ({ setNewData, currentProductData, parentId }) => {
             value={0}
             component={forwardRef(({ children, ...props }, ref) => (
               <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
-                <SelectCustom
-                  label='addLanguage'
-                  value={newLangValue}
-                  selectOptions={availableLocales}
-                  onChangeSelect={(e) => setNewLangValue(e.target.value)}
-                />
+                <Box maxWidth={243} minWidth={170} className='localized-input-block'>
+                  <SelectCustom
+                    label='addLanguage'
+                    value={newLangValue}
+                    selectOptions={availableLocales}
+                    onChangeSelect={(e) => setNewLangValue(e.target.value)}
+                  />
+                </Box>
 
                 <div hidden>{children}</div>
                 <AddCircleIcon
