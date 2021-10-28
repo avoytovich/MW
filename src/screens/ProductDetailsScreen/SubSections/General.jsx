@@ -213,12 +213,10 @@ const General = ({
               tooltip={localization.t('tooltips.publisherRefId')}
               label='publisherRefId'
               value={currentProductData.publisherRefId}
-              onChangeInput={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  publisherRefId: e.target.value,
-                })
-              }
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                publisherRefId: e.target.value,
+              })}
             />
           </InheritanceField>
         </Box>
@@ -343,12 +341,10 @@ const General = ({
               tooltip={localization.t('tooltips.externalContext')}
               label='externalContext'
               value={currentProductData.externalContext}
-              onChangeInput={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  externalContext: e.target.value,
-                })
-              }
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                externalContext: e.target.value,
+              })}
             />
           </InheritanceField>
         </Box>
@@ -367,12 +363,10 @@ const General = ({
               label='sellingStores'
               value={currentProductData.sellingStores}
               selectOptions={selectOptions.sellingStores}
-              onChangeSelect={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  sellingStores: e.target.value,
-                })
-              }
+              onChangeSelect={(e) => setProductData({
+                ...currentProductData,
+                sellingStores: e.target.value,
+              })}
               onClickDelIcon={(chip) => {
                 const newValue = [...currentProductData.sellingStores].filter(
                   (val) => val !== chip,
@@ -382,6 +376,7 @@ const General = ({
                   sellingStores: newValue,
                 });
               }}
+              redirectTo='store'
             />
           </InheritanceField>
         </Box>
@@ -397,12 +392,10 @@ const General = ({
               label='family'
               tooltip={localization.t('tooltips.family')}
               value={currentProductData.productFamily}
-              onChangeInput={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  productFamily: e.target.value,
-                })
-              }
+              onChangeInput={(e) => setProductData({
+                ...currentProductData,
+                productFamily: e.target.value,
+              })}
             />
           </InheritanceField>
         </Box>
@@ -421,12 +414,10 @@ const General = ({
               label='blockedCountries'
               value={currentProductData.blackListedCountries || []}
               selectOptions={countriesOptions}
-              onChangeSelect={(e) =>
-                setProductData({
-                  ...currentProductData,
-                  blackListedCountries: e.target.value,
-                })
-              }
+              onChangeSelect={(e) => setProductData({
+                ...currentProductData,
+                blackListedCountries: e.target.value,
+              })}
               onClickDelIcon={(chip) => {
                 const newValue = [...currentProductData.blackListedCountries].filter(
                   (val) => val !== chip,
