@@ -18,7 +18,7 @@ import {
 import { logout } from '../../redux/actions/Account';
 import { setTableScope } from '../../redux/actions/TableData';
 
-const TopBar = ({ toggleDrawer }) => {
+const TopBar = ({ toggleDrawer, drawerOpen }) => {
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -31,15 +31,18 @@ const TopBar = ({ toggleDrawer }) => {
       dispatch(setTableScope(scope));
     }
   }, [scope]);
-
   return (
     <AppBar position='static' className='top-bar' elevation={1}>
       <Toolbar>
         <Box display='flex' width={1} justifyContent='space-between'>
-          <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
-            <MenuIcon />
-          </IconButton>
-
+          { drawerOpen
+            ? <Box />
+            : (
+              <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
+                <MenuIcon />
+              </IconButton>
+            )
+          }
           <IconButton edge='start' aria-label='logout' color='secondary' onClick={doLogout}>
             <LogoutIcon />
           </IconButton>
@@ -51,6 +54,7 @@ const TopBar = ({ toggleDrawer }) => {
 
 TopBar.propTypes = {
   toggleDrawer: PropTypes.func,
+  drawerOpen: PropTypes.bool,
 };
 
 export default TopBar;

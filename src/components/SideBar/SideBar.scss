@@ -78,5 +78,15 @@
         }
       }
     }
+
+    .MuiBox-root{
+      &.bar-style-development{
+        background-color: rgb(255, 113, 51);
+      }
+
+      &.bar-style-staging{
+        background-color: #000;
+      }
+    }
   }
 }

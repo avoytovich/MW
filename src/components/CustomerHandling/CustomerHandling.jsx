@@ -107,7 +107,6 @@ const CustomerHandling = () => {
       <Box
         width="100%"
         m="auto"
-        mb="20px"
         p="0 3px"
         display="flex"
         alignItems="center"
