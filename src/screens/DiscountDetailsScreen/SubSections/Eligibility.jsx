@@ -14,7 +14,7 @@ import { email } from '../../../services/helpers/inputValidators';
 
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
-import { SelectWithChip } from '../../../components/Inputs';
+import { SelectWithChip, SelectWithDeleteIcon } from '../../../components/Inputs';
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
@@ -58,6 +58,30 @@ const Eligibility = ({
             onChange={() => updateDiscount('sources', 'PURCHASE', 'empty')}
             label='Purchase'
           />
+          <FormControlLabel
+            data-test='subscription'
+            control={(
+              <Checkbox
+                name='SUBSCRIPTION'
+                color='primary'
+                checked={curDiscount?.sources?.indexOf('SUBSCRIPTION') >= 0}
+              />
+            )}
+            onChange={() => updateDiscount('sources', 'SUBSCRIPTION', 'empty')}
+            label='Subscription'
+          />
+          <FormControlLabel
+            data-test='billingPlan'
+            control={(
+              <Checkbox
+                name='BILLING_PLAN'
+                color='primary'
+                checked={curDiscount?.sources?.indexOf('BILLING_PLAN') >= 0}
+              />
+            )}
+            onChange={() => updateDiscount('sources', 'BILLING_PLAN', 'empty')}
+            label='Billing Plan'
+          />
         </Box>
         <Box pt={2} pl={2}>
           <Typography>{localization.t('labels.endUserTypes')}</Typography>
@@ -73,7 +97,7 @@ const Eligibility = ({
               />
             )}
             onChange={() => updateDiscount('endUserTypes', 'BUYER', 'empty')}
-            label='Buyer'
+            label='End-user'
           />
           <FormControlLabel
             data-test='reseller'
@@ -88,117 +112,22 @@ const Eligibility = ({
             label='Approved reseller'
           />
         </Box>
-      </Grid>
-      <Grid item md={6} sm={12}>
         <Box p={2}>
-          <Typography>{localization.t('labels.minimumCartAmount')}</Typography>
-        </Box>
-        <EditKeyValueInputs
-          curValue={curDiscount.thresholds}
-          setCurValue={(value) => setCurDiscount({ ...curDiscount, thresholds: value })}
-          selectOptions={priceCurrency}
-          labels={['currency', 'amount']}
-        />
-        <Box p={2}>
-          <SelectWithChip
-            label='countries'
-            value={curDiscount.countries}
-            selectOptions={countriesOptions}
-            onChangeSelect={(e) => setCurDiscount({
-              ...curDiscount,
-              countries: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.countries].filter(
-                (val) => val !== chip,
-              );
+          <SelectWithDeleteIcon
+            data-test='endUser'
+            label="endUser"
+            value={curDiscount.enduserId}
+            selectOptions={selectOptions.endUsers}
+            onChangeSelect={(e) => {
               setCurDiscount({
                 ...curDiscount,
-                countries: newValue,
+                enduserId: e.target.value,
               });
             }}
-          />
-        </Box>
-      </Grid>
-      <Grid item md={6} sm={12}>
-        <Box p={2}>
-          <SelectWithChip
-            label='stores'
-            value={curDiscount.storeIds}
-            selectOptions={selectOptions.stores}
-            onChangeSelect={(e) => setCurDiscount({
-              ...curDiscount,
-              storeIds: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.storeIds].filter(
-                (val) => val !== chip,
-              );
+            onClickDelIcon={() => {
               setCurDiscount({
                 ...curDiscount,
-                storeIds: newValue,
-              });
-            }}
-          />
-        </Box>
-        <Box p={2}>
-          <SelectWithChip
-            label='products'
-            value={curDiscount.productIds}
-            selectOptions={selectOptions.discountProducts}
-            onChangeSelect={(e) => setCurDiscount({
-              ...curDiscount,
-              productIds: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.productIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                productIds: newValue,
-              });
-            }}
-          />
-        </Box>
-        <Box p={2}>
-          <SelectWithChip
-            label='productsByParent'
-            value={curDiscount.parentProductIds}
-            selectOptions={selectOptions.parentProducts}
-            onChangeSelect={(e) => setCurDiscount({
-              ...curDiscount,
-              parentProductIds: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.parentProductIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                parentProductIds: newValue,
-              });
-            }}
-          />
-        </Box>
-      </Grid>
-      <Grid item md={6} sm={12}>
-        <Box p={2}>
-          <SelectWithChip
-            label='productsByReference'
-            value={curDiscount.publisherRefIds}
-            selectOptions={selectOptions.refProducts}
-            onChangeSelect={(e) => setCurDiscount({
-              ...curDiscount,
-              publisherRefIds: e.target.value,
-            })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.publisherRefIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                publisherRefIds: newValue,
+                enduserId: '',
               });
             }}
           />
@@ -271,6 +200,117 @@ const Eligibility = ({
                 label={localization.t('labels.endUserMails')}
               />
             )}
+          />
+        </Box>
+        <Box p={2}>
+          <Typography>{localization.t('labels.minimumCartAmount')}</Typography>
+        </Box>
+        <EditKeyValueInputs
+          curValue={curDiscount.thresholds}
+          setCurValue={(value) => setCurDiscount({ ...curDiscount, thresholds: value })}
+          selectOptions={priceCurrency}
+          labels={['currency', 'amount']}
+        />
+      </Grid>
+      <Grid item md={6} sm={12}>
+        <Box p={2}>
+          <SelectWithChip
+            label='countries'
+            value={curDiscount.countries}
+            selectOptions={countriesOptions}
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              countries: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.countries].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                countries: newValue,
+              });
+            }}
+          />
+        </Box>
+        <Box p={2}>
+          <SelectWithChip
+            label='stores'
+            value={curDiscount.storeIds}
+            selectOptions={selectOptions.stores}
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              storeIds: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.storeIds].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                storeIds: newValue,
+              });
+            }}
+          />
+        </Box>
+        <Box p={2}>
+          <SelectWithChip
+            label='products'
+            value={curDiscount.productIds}
+            selectOptions={selectOptions.discountProducts}
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              productIds: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.productIds].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                productIds: newValue,
+              });
+            }}
+          />
+        </Box>
+        <Box p={2}>
+          <SelectWithChip
+            label='productsByParent'
+            value={curDiscount.parentProductIds}
+            selectOptions={selectOptions.parentProducts}
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              parentProductIds: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.parentProductIds].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                parentProductIds: newValue,
+              });
+            }}
+          />
+        </Box>
+        <Box p={2}>
+          <SelectWithChip
+            label='productsByReference'
+            value={curDiscount.publisherRefIds}
+            selectOptions={selectOptions.refProducts}
+            onChangeSelect={(e) => setCurDiscount({
+              ...curDiscount,
+              publisherRefIds: e.target.value,
+            })}
+            onClickDelIcon={(chip) => {
+              const newValue = [...curDiscount.publisherRefIds].filter(
+                (val) => val !== chip,
+              );
+              setCurDiscount({
+                ...curDiscount,
+                publisherRefIds: newValue,
+              });
+            }}
           />
         </Box>
       </Grid>
