@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -14,11 +15,13 @@ import './orderDetailsScreen.scss';
 const OrderRow = ({
   rowData, customerId, creationDate, curLanguage,
 }) => {
-  const downloadPdf = (data, label) => {
+  const { id } = useParams();
+
+  const downloadPdf = (data) => {
     const url = window.URL.createObjectURL(new Blob([data]));
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `${label}.pdf`);
+    link.setAttribute('download', `${id}.invoice.pdf`);
     document.body.appendChild(link);
     link.click();
   };
@@ -35,7 +38,7 @@ const OrderRow = ({
 
   const downloadInvoice = (data) => (
     api.getInvoicePdfById(data.value)
-      .then((response) => downloadPdf(response.data, data.label))
+      .then((response) => downloadPdf(response.data))
   );
 
   const makeCopy = (value) => {
