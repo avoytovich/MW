@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Typography, Zoom, Button, TextField,
+  Box, Typography, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -9,27 +9,11 @@ import localization from '../../localization';
 import './FontLayout.scss';
 
 const FontLayout = ({
-  hasChanges,
-  saveFont,
   currentFont,
   setCurrentFont,
-  disabled,
   customer,
 }) => (
   <Box className="font-screen">
-    <Zoom in={hasChanges}>
-      <Button
-        disabled={disabled}
-        id="save-font-button"
-        color="primary"
-        size="large"
-        type="submit"
-        variant="contained"
-        onClick={saveFont}
-      >
-        {localization.t('forms.buttons.save')}
-      </Button>
-    </Zoom>
     {currentFont.id && (
       <Box width="100%" flexWrap="nowrap" display="flex" flexDirection="row">
         <Box pr={4} pt="7px" pl="4px">
@@ -95,11 +79,8 @@ const FontLayout = ({
 );
 
 FontLayout.propTypes = {
-  hasChanges: PropTypes.bool,
-  saveFont: PropTypes.func,
   currentFont: PropTypes.object,
   setCurrentFont: PropTypes.func,
-  disabled: PropTypes.bool,
   customer: PropTypes.string,
 };
 export default FontLayout;

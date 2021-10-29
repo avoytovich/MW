@@ -1,25 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {
-  LinearProgress,
-  Zoom,
-  Button,
-  Box,
-  Typography,
-  Tabs,
-  Tab,
-  Breadcrumbs,
-} from '@material-ui/core';
-import { toast } from 'react-toastify';
 
-import Payment from './SubSections/Payment';
-import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
-import General from './SubSections/General';
-import Design from './SubSections/Design';
-import LocalizedContent from './SubSections/LocalizedContent';
-import StoreSection from './StoreSection';
-import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
+import StoreDetailsView from './StoreDetailsView';
+
+import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import {
   storeRequiredFields,
   structureSelectOptions,
@@ -32,16 +17,12 @@ import {
   structureResources,
   checkLabelDuplicate,
   checkExistingLabelsUrl,
-  tabLabels,
   formatBeforeSending,
-  resourceLabel,
 } from './utils';
 
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
-  const history = useHistory();
-  const [curTab, setCurTab] = useState(0);
   const [customerName, setCustomerName] = useState(null);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -84,7 +65,7 @@ const StoreDetailsScreen = () => {
     || !currentStoreData?.displayName
     || !currentStoreData?.routes[0].hostname;
 
-  const saveDetails = () => {
+  const beforeSend = () => {
     const updatedData = formatBeforeSending(
       currentStoreData,
       currentStoreResources,
@@ -98,21 +79,7 @@ const StoreDetailsScreen = () => {
       delete updatedData.saleLocales;
       delete updatedData.thankYouDesc;
     }
-
-    if (id === 'add') {
-      api.addNewStore(updatedData).then((res) => {
-        const location = res.headers.location.split('/');
-        const newId = location[location.length - 1];
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.stores}/${newId}`);
-        setUpdate((u) => u + 1);
-      });
-    } else {
-      api.updateStoreById(currentStoreData.id, updatedData).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        setUpdate((u) => u + 1);
-      });
-    }
+    return updatedData;
   };
 
   useEffect(() => {
@@ -199,7 +166,7 @@ const StoreDetailsScreen = () => {
           },
         );
       }
-    });
+    }).finally(() => setLoading(false));
 
     return () => {
       isCancelled = true;
@@ -230,10 +197,6 @@ const StoreDetailsScreen = () => {
     }
   }, [currentCustomerData?.id]);
 
-  if (isLoading) return <LinearProgress />;
-
-  if (id === 'add' && !nxState?.selectedCustomer?.id) return <SelectCustomerNotification />;
-
   const validation = () => {
     if (checkExistingLabelsUrl(currentStoreResources)) {
       if (!checkLabelDuplicate(currentStoreResources)) {
@@ -244,112 +207,32 @@ const StoreDetailsScreen = () => {
   };
 
   return (
-    storeData && (
-      <>
-        {id !== 'add' && (
-          <Box mx={2}>
-            <CustomBreadcrumbs
-              url={`${parentPaths.stores}`}
-              section={localization.t('general.store')}
-              id={storeData.id}
-            />
-          </Box>
-        )}
-        <Box
-          display='flex'
-          flexDirection='row'
-          m={2}
-          justifyContent='space-between'
-        >
-          <Box alignSelf='center'>
-            <Typography data-test='discountName' gutterBottom variant='h3'>
-              {storeData.name}
-            </Typography>
-            <Box py={2}>
-              <Breadcrumbs color='secondary' aria-label='breadcrumb'>
-                <Typography color='primary'>
-                  {localization.t('labels.customerId')}
-                </Typography>
-                {currentCustomerData && (
-                  <Typography color='secondary'>
-                    {customerName}
-                  </Typography>
-                )}
-              </Breadcrumbs>
-            </Box>
-          </Box>
-
-          <Zoom in={storeHasChanges || resourcesHasChanges}>
-            <Box mb={1} mr={1}>
-              <Button
-                disabled={validation() || handleDisabledSave}
-                id='save-discount-button'
-                color='primary'
-                size='large'
-                type='submit'
-                variant='contained'
-                onClick={saveDetails}
-              >
-                {localization.t('general.save')}
-              </Button>
-            </Box>
-          </Zoom>
-        </Box>
-        <Box my={2} bgcolor='#fff'>
-          <Tabs
-            value={curTab}
-            indicatorColor='primary'
-            textColor='primary'
-            onChange={(event, newValue) => {
-              setCurTab(newValue);
-            }}
-            aria-label='disabled tabs example'
-          >
-            {tabLabels.map((tab) => (
-              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-            ))}
-          </Tabs>
-        </Box>
-        {curTab === 0 && (
-          <StoreSection label={tabLabels[0]}>
-            <General
-              currentStoreData={currentStoreData}
-              setCurrentStoreData={setCurrentStoreData}
-              selectOptions={selectOptions}
-            />
-          </StoreSection>
-        )}
-        {curTab === 1 && (
-          <Design
-            resourceLabel={resourceLabel}
-            currentStoreResources={currentStoreResources}
-            setCurrentStoreResources={setCurrentStoreResources}
-            selectOptions={selectOptions}
-            currentStoreData={currentStoreData}
-            setCurrentStoreData={setCurrentStoreData}
-          />
-        )}
-        {curTab === 2 && (
-          <StoreSection label={tabLabels[2]}>
-            <Payment
-              selectOptions={selectOptions}
-              currentStoreData={currentStoreData}
-              setCurrentStoreData={setCurrentStoreData}
-            />
-          </StoreSection>
-        )}
-        {curTab === 3 && (
-          <StoreSection label={tabLabels[3]}>
-            <LocalizedContent
-              selectedLang={selectedLang}
-              setSelectedLang={setSelectedLang}
-              currentStoreData={currentStoreData}
-              setCurrentStoreData={setCurrentStoreData}
-            />
-          </StoreSection>
-        )}
-      </>
-    )
+    <DetailPageWrapper
+      nxState={nxState}
+      id={id}
+      name={storeData?.name || `${localization.t('general.new')} ${localization.t(
+        'general.store',
+      )}`}
+      saveIsDisabled={validation() || handleDisabledSave}
+      hasChanges={storeHasChanges || resourcesHasChanges}
+      isLoading={isLoading}
+      curParentPath={parentPaths.stores}
+      curData={currentStoreData}
+      addFunc={api.addNewStore}
+      updateFunc={api.updateStoreById}
+      beforeSend={beforeSend}
+      setUpdate={setUpdate}
+    >
+      <StoreDetailsView
+        currentStoreData={currentStoreData}
+        selectOptions={selectOptions}
+        setCurrentStoreData={setCurrentStoreData}
+        currentStoreResources={currentStoreResources}
+        setCurrentStoreResources={setCurrentStoreResources}
+        selectedLang={selectedLang}
+        setSelectedLang={setSelectedLang}
+      />
+    </DetailPageWrapper>
   );
 };
 

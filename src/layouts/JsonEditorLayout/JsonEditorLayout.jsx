@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ReactJson from 'react-json-view';
 import {
-  Box, Typography, Zoom, Button, TextField, Tabs, Tab,
+  Box, Typography, Button, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
@@ -12,14 +12,11 @@ import PublishIcon from '@material-ui/icons/Publish';
 import CustomCard from '../../components/utils/CustomCard';
 
 import localization from '../../localization';
-
+import parentPaths from '../../services/paths';
 import './jsonEditorLayout.scss';
 
 const JsonEditorLayout = ({
-  hasChanges,
-  doSave,
   currentData,
-  staticData,
   setCurrentData,
   customer,
   title,
@@ -46,27 +43,6 @@ const JsonEditorLayout = ({
 
   return (
     <div className='json-editor-screen'>
-      <Tabs
-        value={0}
-        indicatorColor='primary'
-        textColor='primary'
-      >
-        <Tab label={staticData.name || 'new'} />
-      </Tabs>
-
-      <Zoom in={hasChanges}>
-        <Button
-          id="save-json-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={doSave}
-        >
-          {localization.t('forms.buttons.save')}
-        </Button>
-      </Zoom>
-
       <CustomCard title='General'>
         <Box py={5} pb={2}>
           <Box width="100%" flexWrap="nowrap" display="flex" flexDirection="row">
@@ -84,19 +60,22 @@ const JsonEditorLayout = ({
 
             <Box display='flex' flexDirection="row" width="50%">
               <Box width="100%" display="flex" flexDirection='column'>
-                <Box display="flex">
-                  {!isNew && (
-                    <Box pr={4} pt="0" pl={6}>
-                      <Typography color="secondary">
-                        {localization.t('labels.id')}
-                      </Typography>
+                {currentData.id
+                  && (
+                    <Box display="flex">
+                      {!isNew && (
+                        <Box pr={4} pt="0" pl={6}>
+                          <Typography color="secondary">
+                            {localization.t('labels.id')}
+                          </Typography>
+                        </Box>
+                      )}
+
+                      <Box pr={4} pt="0" pl={2}>
+                        <Typography>{currentData.id}</Typography>
+                      </Box>
                     </Box>
                   )}
-
-                  <Box pr={4} pt="0" pl={2}>
-                    <Typography>{currentData.id}</Typography>
-                  </Box>
-                </Box>
 
                 <Box display="flex">
                   <Box pr={4} pt="7px" pl={6}>
@@ -106,7 +85,7 @@ const JsonEditorLayout = ({
                   </Box>
 
                   <Box pr={4} pt="7px" pl={2}>
-                    <Link to={`/settings/administration/${customer}`} className='link-to-customer'>
+                    <Link to={`${parentPaths.customers}/${currentData.customerId}`} className='link-to-customer'>
                       <Typography>{customer}</Typography>
                     </Link>
                   </Box>
@@ -170,10 +149,7 @@ const JsonEditorLayout = ({
 };
 
 JsonEditorLayout.propTypes = {
-  hasChanges: PropTypes.bool,
-  doSave: PropTypes.func,
   currentData: PropTypes.object,
-  staticData: PropTypes.object,
   setCurrentData: PropTypes.func,
   isNew: PropTypes.bool,
   customer: PropTypes.string,

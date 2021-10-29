@@ -6,6 +6,8 @@ import {
 import api from '../../api';
 
 const useDiscountDetails = (id, nxState) => {
+  const [isLoading, setLoading] = useState(true);
+
   const [discount, setDiscount] = useState(null);
   const [curDiscount, setCurDiscount] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
@@ -25,6 +27,8 @@ const useDiscountDetails = (id, nxState) => {
 
   useEffect(() => {
     let discountRequest;
+    setLoading(true);
+
     if (id === 'add') {
       discountRequest = Promise.resolve({
         data: { customerId: nxState?.selectedCustomer?.id },
@@ -40,6 +44,8 @@ const useDiscountDetails = (id, nxState) => {
       // const parentIds = data.parentProductIds?.length
       //   ? data.parentProductIds.join('&')
       //   : null;
+      setLoading(false);
+
       const { customerId } = data;
       Promise.allSettled([
         api.getEndUsersByCustomerId(customerId),
@@ -92,7 +98,10 @@ const useDiscountDetails = (id, nxState) => {
           });
         },
       );
-    });
+    })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [update]);
 
   const handleUpdateAmountType = (newValue) => {
@@ -111,6 +120,7 @@ const useDiscountDetails = (id, nxState) => {
     discount,
   ]);
   return {
+    isLoading,
     discount,
     curDiscount,
     hasChanges,

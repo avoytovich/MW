@@ -23,7 +23,6 @@ const useEndUserDetailScreen = (id) => {
     let isCancelled = false;
     setLoading(true);
     const requestedData = api.getEnduserById(id);
-
     requestedData.then(({ data }) => {
       const promiseArray = [];
       if (!isCancelled) {

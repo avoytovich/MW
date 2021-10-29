@@ -1,49 +1,34 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
-import { toast } from 'react-toastify';
-
-import {
-  LinearProgress,
-  Zoom,
-  Button,
-  Tabs,
-  Tab,
-  Box,
-  Typography,
-} from '@material-ui/core';
+import { useParams } from 'react-router-dom';
 import {
   recoRequiredFields,
   formateProductOptions,
   fromArrayToObj,
 } from './utils';
 import parentPaths from '../../services/paths';
-import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import { getCustomerName } from '../../services/helpers/customersHelper';
 import api from '../../api';
+import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 
-import Basic from './SubSections/Basic';
-import Eligibility from './SubSections/Eligibility';
-import Recommendations from './SubSections/Recommendations';
-import CappingAndLimits from './SubSections/CappingAndLimits';
-
-import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
+import RecoDetailsView from './RecoDetailsView';
 import localization from '../../localization';
 
 import './recoDetailsScreen.scss';
 
 const RecoDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
-  const history = useHistory();
-
   const { id } = useParams();
+  const [isLoading, setLoading] = useState(true);
+
   const [customerName, setCustomerName] = useState(null);
   const [reco, setReco] = useState(null);
   const [curReco, setCurReco] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
-  const [curTab, setCurTab] = useState(0);
+  const [update, setUpdate] = useState(0);
+
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
     products: null,
@@ -51,12 +36,8 @@ const RecoDetailsScreen = () => {
     recoByProduct: null,
     recoByParent: null,
   });
-  const handleChange = (e) => {
-    e.persist();
-    const { name, value } = e.target;
-    setCurReco({ ...curReco, [name]: value });
-  };
-  const saveIdentity = () => {
+
+  const beforeSend = () => {
     const objToSend = { ...curReco };
     if (curReco.function === 'idToIdsRecoRule') {
       delete objToSend.productIds;
@@ -66,17 +47,7 @@ const RecoDetailsScreen = () => {
       delete objToSend.byParentProductIds;
       delete objToSend.byProductIds;
     }
-    if (id === 'add') {
-      api.addNewRecommendation(objToSend).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.marketing}/recommendations`);
-      });
-    } else {
-      api.updateRecoById(id, objToSend).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        window.location.reload();
-      });
-    }
+    return objToSend;
   };
 
   useEffect(() => {
@@ -84,8 +55,10 @@ const RecoDetailsScreen = () => {
 
     return () => setHasChanges(false);
   }, [curReco, reco]);
+
   useEffect(() => {
     let recoRequest;
+    setLoading(true);
     if (id === 'add') {
       recoRequest = Promise.resolve({
         data: { customerId: nxState?.selectedCustomer?.id },
@@ -97,6 +70,7 @@ const RecoDetailsScreen = () => {
       const checkedReco = recoRequiredFields(data);
       setReco(JSON.parse(JSON.stringify(checkedReco)));
       setCurReco(JSON.parse(JSON.stringify(checkedReco)));
+      setLoading(false);
       Promise.allSettled([
         api.getStores({ filters: `&customerId=${data.customerId}` }),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}` }),
@@ -133,8 +107,8 @@ const RecoDetailsScreen = () => {
             || [],
         }),
       );
-    });
-  }, []);
+    }).catch(() => setLoading(false));
+  }, [update]);
 
   useEffect(() => {
     if (reco?.customerId) {
@@ -142,104 +116,29 @@ const RecoDetailsScreen = () => {
     }
   }, [reco?.customerId]);
 
-  const updateReco = (type, value, selections) => {
-    let setValue = value;
-
-    if (!curReco[type]) {
-      setValue = [value];
-    } else if (selections === 'multiple' || selections === 'empty') {
-      const curValInd = curReco[type].indexOf(value);
-      if (curValInd >= 0) {
-        if (curReco[type].length === 1) {
-          if (selections === 'multiple') return;
-          setValue = [];
-        } else {
-          const newArr = [...curReco[type]];
-          newArr.splice(curValInd, 1);
-          setValue = newArr;
-        }
-      } else {
-        setValue = [...curReco[type], value];
-      }
-    }
-
-    setCurReco((c) => ({ ...c, [type]: setValue }));
-  };
-  if (id === 'add' && !nxState?.selectedCustomer?.id) return <SelectCustomerNotification />;
-
-  if (curReco === null) return <LinearProgress />;
-
   return (
-    <div className='reco-details-screen'>
-      {id !== 'add' && (
-        <CustomBreadcrumbs
-          url={`${parentPaths.recommendations}`}
-          section={localization.t('general.recommendation')}
-          id={reco?.id ? reco.id : localization.t('general.addRecommendation')}
-        />
-      )}
-      <Box py={2}>
-        <Typography gutterBottom variant='h3'>
-          {customerName}
-        </Typography>
-      </Box>
-      <Box my={1} bgcolor='#fff'>
-        <Tabs
-          value={curTab}
-          indicatorColor='primary'
-          textColor='primary'
-          onChange={(e, newTab) => setCurTab(newTab)}
-        >
-          <Tab label='General' />
-          <Tab label='Eligibility' />
-          <Tab label='Capping and limits' />
-          <Tab label='Recommendations' disabled={!selectOptions.recoByParent} />
-        </Tabs>
-      </Box>
-      <Zoom in={hasChanges}>
-        <Button
-          disabled={curReco.eligibleStoreIds.length < 1 || curReco.name === ''}
-          id='save-reco-button'
-          color='primary'
-          size='large'
-          type='submit'
-          variant='contained'
-          onClick={saveIdentity}
-        >
-          Save
-        </Button>
-      </Zoom>
-      <Box pt={1}>
-        {curTab === 0 && (
-          <Basic
-            curReco={curReco}
-            updateReco={updateReco}
-            handleChange={handleChange}
-            setCurReco={setCurReco}
-          />
-        )}
-
-        {curTab === 1 && (
-          <Eligibility
-            selectOptions={selectOptions}
-            curReco={curReco}
-            setCurReco={setCurReco}
-          />
-        )}
-
-        {curTab === 2 && (
-          <CappingAndLimits curReco={curReco} setCurReco={setCurReco} />
-        )}
-
-        {curTab === 3 && (
-          <Recommendations
-            selectOptions={selectOptions}
-            curReco={curReco}
-            setCurReco={setCurReco}
-          />
-        )}
-      </Box>
-    </div>
+    <DetailPageWrapper
+      nxState={nxState}
+      id={id}
+      name={curReco?.name || `${localization.t('general.new')} ${localization.t(
+        'general.recommendation',
+      )}`}
+      saveIsDisabled={curReco?.eligibleStoreIds?.length < 1 || curReco?.name === ''}
+      hasChanges={hasChanges}
+      isLoading={isLoading}
+      curParentPath={parentPaths.recommendations}
+      curData={curReco}
+      addFunc={api.addNewRecommendation}
+      updateFunc={api.updateNotificationById}
+      beforeSend={beforeSend}
+      setUpdate={setUpdate}
+    >
+      <RecoDetailsView
+        curReco={curReco}
+        setCurReco={setCurReco}
+        selectOptions={selectOptions}
+      />
+    </DetailPageWrapper>
   );
 };
 

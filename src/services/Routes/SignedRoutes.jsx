@@ -212,48 +212,32 @@ const SignedRoutes = () => {
       />
 
       <Route
-        path={`${parentPaths.pricemodels}/prices/:id`}
+        path={`${parentPaths.pricemodels.pricesTab}/:id`}
         component={lazy(() => import('../../screens/PricesDetailsScreen'))}
       />
       <Route
-        path={`${parentPaths.pricemodels}`}
+        path={`${parentPaths.pricemodels.main}`}
         component={lazy(() => import('../../screens/PriceModelsScreen'))}
       />
       <Route
-        path={`${parentPaths.checkoutpagebuilder.fontsTab}/add`}
-        component={lazy(() => import('../../screens/FontScreen/FontAddScreen'))}
-      />
-      <Route
-        path={`${parentPaths.checkoutpagebuilder.themesTab}/add`}
-        component={lazy(() => import('../../screens/ThemeScreen/ThemeAddScreen'))}
-      />
-      <Route
-        path={`${parentPaths.checkoutpagebuilder.layoutsTab}/add`}
-        component={lazy(() => import('../../screens/LayoutScreen/LayoutAddScreen'))}
-      />
-      <Route
         path={`${parentPaths.checkoutpagebuilder.themesTab}/:id`}
-        component={lazy(() => import('../../screens/ThemeScreen/ThemeEditScreen'))}
+        component={lazy(() => import('../../screens/ThemeDetailsScreen'))}
       />
       <Route
         path={`${parentPaths.checkoutpagebuilder.layoutsTab}/:id`}
-        component={lazy(() => import('../../screens/LayoutScreen/LayoutEditScreen'))}
+        component={lazy(() => import('../../screens/LayoutDetailsScreen'))}
       />
       <Route
         path={`${parentPaths.checkoutpagebuilder.fontsTab}/:id`}
-        component={lazy(() => import('../../screens/FontScreen/FontEditScreen'))}
+        component={lazy(() => import('../../screens/FontDetailsScreen'))}
       />
       <Route
         path={`${parentPaths.checkoutpagebuilder.main}`}
         component={lazy(() => import('../../screens/CheckoutExperienceScreen'))}
       />
       <Route
-        path={`${parentPaths.localization.translationsTab}/add`}
-        component={lazy(() => import('../../screens/TranslationScreen/TranslationAddScreen'))}
-      />
-      <Route
         path={`${parentPaths.localization.translationsTab}/:id`}
-        component={lazy(() => import('../../screens/TranslationScreen/TranslationEditScreen'))}
+        component={lazy(() => import('../../screens/TranslationDetailScreen'))}
       />
       <Route
         path={`${parentPaths.localization.main}`}

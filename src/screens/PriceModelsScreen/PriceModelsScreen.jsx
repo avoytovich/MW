@@ -22,7 +22,7 @@ const availTabs = [
   {
     label: 'prices',
     scope: 'prices',
-    path: `${parentPaths.pricemodels}/prices`,
+    path: parentPaths.pricemodels.pricesTab,
     button: `${localization.t('general.add')} ${localization.t(
       'general.price',
     )}`,
@@ -32,7 +32,7 @@ const availTabs = [
   {
     label: 'price-functions',
     scope: 'price-functions',
-    path: `${parentPaths.pricemodels}/price-functions`,
+    path: parentPaths.pricemodels.pricefunctionsTab,
     deleteFunc: api.deletePriceFunctionById,
     headers: markUpPriceFunctions.headers,
   },
@@ -48,7 +48,7 @@ const PriceModelsScreen = () => {
     const section = pathname.split('/').pop();
     const index = availTabs.findIndex((i) => i.label === section);
     if (index < 0) {
-      return history.push(`${parentPaths.pricemodels}/prices`);
+      return history.push(`${parentPaths.pricemodels.pricesTab}`);
     }
 
     setCurTab(index);
@@ -81,7 +81,7 @@ const PriceModelsScreen = () => {
     );
   };
 
-  const changeTab = (tab) => history.push(`${parentPaths.pricemodels}/${availTabs[tab].label}`);
+  const changeTab = (tab) => history.push(`${availTabs[tab].path}`);
 
   return (
     <Box display='flex' flexDirection='column'>

@@ -3,7 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import * as R from 'ramda';
-
+import { LinearProgress } from '@material-ui/core';
+import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import api from '../../api';
 
 import { handleGetOptions, handleGetProductDetails } from './utils';
@@ -23,6 +24,7 @@ const CreateProduct = () => {
     ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.id,
   );
   const history = useHistory();
+  const [isLoading, setLoading] = useState(true);
 
   const [currentProductData, setCurrentProductData] = useState(defaultProduct);
   const [selectOptions, setSelectOptions] = useState({
@@ -46,6 +48,7 @@ const CreateProduct = () => {
   const parentId = history?.state?.parentId;
   useEffect(() => {
     let isCancelled = false;
+    setLoading(true);
     parentId
       ? api.getProductById(parentId)
         .then(({ data: product }) => {
@@ -60,6 +63,7 @@ const CreateProduct = () => {
           }
           const { customerId: _customerId, id, descriptionId } = product;
           handleGetOptions(
+            setLoading,
             _customerId,
             id,
             descriptionId,
@@ -70,7 +74,9 @@ const CreateProduct = () => {
             setProductDetails,
           );
         })
+
       : handleGetOptions(
+        setLoading,
         customerId,
         null,
         null,
@@ -157,6 +163,11 @@ const CreateProduct = () => {
       });
     });
   };
+
+  if (isLoading) return <LinearProgress />;
+  if (!customerId) {
+    return <SelectCustomerNotification />;
+  }
 
   if (!customerId) {
     return <div data-test='emptyProductDetailsView'>Select customer</div>;

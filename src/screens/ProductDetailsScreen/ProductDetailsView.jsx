@@ -64,7 +64,6 @@ const ProductDetailsView = ({
         : prices?.value?.priceByCountryByCurrency[prices?.value?.defaultCurrency]?.default
           ?.value
       : prices?.defaultCurrency;
-
     if (catalogId && publisherRefId && genericName && type && currency) {
       setTabsDisabled(false);
     } else {

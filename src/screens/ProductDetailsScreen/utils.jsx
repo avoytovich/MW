@@ -8,6 +8,7 @@ import {
 import api from '../../api';
 
 const handleGetOptions = (
+  setLoading,
   customerId,
   id,
   descriptionId,
@@ -79,7 +80,7 @@ const handleGetOptions = (
         }
       },
     );
-  });
+  }).finally(() => setLoading(false));
 };
 
 const handleGetProductDetails = (

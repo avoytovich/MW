@@ -1,36 +1,18 @@
-import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import React from 'react';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import {
-  LinearProgress,
-  Tabs,
-  Tab,
-  Button,
-  Zoom,
-  Box,
-  Typography,
-} from '@material-ui/core';
-import { toast } from 'react-toastify';
-
-import General from './SubSections/General';
-import HTTPConfiguration from './SubSections/HTTPConfiguration';
-import TestModeHTTPConfiguration from './SubSections/TestModeHTTPConfiguration';
-import OperationDetails from './SubSections/OperationDetails';
-import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
-import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
+import LicenseProviderDefinitionDetailsView from './LicenseProviderDefinitionDetailsView';
+import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import localization from '../../localization';
 import useLicenseProviderDefinitionDetail from './useLicenseProviderDefinitionDetail';
 import parentPaths from '../../services/paths';
 
 import api from '../../api';
 import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
-import SectionLayout from '../../components/SectionLayout';
 
 const LicenseProviderDefinitionDetails = () => {
-  const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
-  const history = useHistory();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -42,125 +24,28 @@ const LicenseProviderDefinitionDetails = () => {
     licenseProvider,
   } = useLicenseProviderDefinitionDetail(id, nxState);
 
-  const handleSave = () => {
-    const formattedData = removeEmptyPropsInObject(curLicenseProvider);
-    if (id === 'add') {
-      api.addLicenseProviderDefinition(formattedData).then((res) => {
-        const location = res.headers.location.split('/');
-        const newId = location[location.length - 1];
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.fulfillment.licenseProviderDefinitionsTab}/${newId}`);
-        setUpdate((u) => u + 1);
-      });
-    } else {
-      api.updateLicenseProviderDefinition(id, formattedData).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        setUpdate((u) => u + 1);
-      });
-    }
-  };
-
-  if (isLoading) return <LinearProgress />;
-
-  if (id === 'add' && !nxState.selectedCustomer?.id) {
-    return <SelectCustomerNotification />;
-  }
-
   return (
-    <>
-      {id !== 'add' && (
-        <Box mx={2}>
-          <CustomBreadcrumbs
-            url={parentPaths.fulfillment.licenseProviderDefinitionsTab}
-            section={localization.t('general.licenseProviderDefinition')}
-            id={licenseProvider.id}
-          />
-        </Box>
-      )}
-      <Box
-        display='flex'
-        flexDirection='row'
-        m={2}
-        justifyContent='space-between'
-      >
-        <Box alignSelf='center'>
-          <Typography data-test='notificationName' gutterBottom variant='h3'>
-            {id !== 'add'
-              ? licenseProvider.name
-              : `${localization.t('general.new')} ${localization.t(
-                'general.licenseProviderDefinition',
-              )}`}
-          </Typography>
-        </Box>
-        <Zoom in={hasChanges}>
-          <Button
-            disabled={curLicenseProvider.name === ''}
-            id='save-notification-button'
-            color='primary'
-            size='large'
-            type='submit'
-            variant='contained'
-            onClick={handleSave}
-          >
-            {localization.t('general.save')}
-          </Button>
-        </Zoom>
-      </Box>
-      <Box my={2} bgcolor='#fff'>
-        <Tabs
-          data-test='tabs'
-          value={curTab}
-          onChange={(e, newTab) => setCurTab(newTab)}
-          indicatorColor='primary'
-          textColor='primary'
-        >
-          <Tab label={localization.t('labels.general')} />
-          <Tab label={localization.t('labels.operationDetails')} />
-          <Tab label={localization.t('labels.httpConfiguration')} />
-          <Tab label={localization.t('labels.testModeHTTPConfiguration')} disabled={curLicenseProvider.status !== 'TestMode'} />
-        </Tabs>
-      </Box>
-      {
-        curTab === 0 && curLicenseProvider && (
-          <SectionLayout label='general'>
-            <General
-              curLicenseProvider={curLicenseProvider}
-              setCurLicenseProvider={setCurLicenseProvider}
-            />
-          </SectionLayout>
-        )
-      }
-      {
-        curTab === 1 && curLicenseProvider && (
-          <SectionLayout label='operationDetails'>
-            <OperationDetails
-              curLicenseProvider={curLicenseProvider}
-              setCurLicenseProvider={setCurLicenseProvider}
-            />
-          </SectionLayout>
-        )
-      }
-      {
-        curTab === 2 && curLicenseProvider && (
-          <SectionLayout label='httpConfiguration'>
-            <HTTPConfiguration
-              curLicenseProvider={curLicenseProvider}
-              setCurLicenseProvider={setCurLicenseProvider}
-            />
-          </SectionLayout>
-        )
-      }
-      {
-        curTab === 3 && curLicenseProvider && (
-          <SectionLayout label='testModeHTTPConfiguration'>
-            <TestModeHTTPConfiguration
-              curLicenseProvider={curLicenseProvider}
-              setCurLicenseProvider={setCurLicenseProvider}
-            />
-          </SectionLayout>
-        )
-      }
-    </>
+    <DetailPageWrapper
+      nxState={nxState}
+      id={id}
+      name={licenseProvider?.name || `${localization.t('general.new')} ${localization.t(
+        'general.licenseProviderDefinition',
+      )}`}
+      saveIsDisabled={curLicenseProvider?.name === ''}
+      hasChanges={hasChanges}
+      isLoading={isLoading}
+      curParentPath={parentPaths.fulfillment.licenseProviderDefinitionsTab}
+      curData={curLicenseProvider}
+      addFunc={api.addLicenseProviderDefinition}
+      updateFunc={api.updateLicenseProviderDefinition}
+      beforeSend={removeEmptyPropsInObject}
+      setUpdate={setUpdate}
+    >
+      <LicenseProviderDefinitionDetailsView
+        curLicenseProvider={curLicenseProvider}
+        setCurLicenseProvider={setCurLicenseProvider}
+      />
+    </DetailPageWrapper>
   );
 };
 
