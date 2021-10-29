@@ -7,6 +7,7 @@ import {
 import api from '../../api';
 
 const useCustomerDetailData = (id) => {
+  const [isLoading, setLoading] = useState(true);
   const [hasChanges, setHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
   const [selectOptions, setSelectOptions] = useState({
@@ -21,6 +22,8 @@ const useCustomerDetailData = (id) => {
   const [currentCustomer, setCurrentCustomer] = useState(null);
   useEffect(() => {
     let customerRequest;
+    setLoading(true);
+
     const createCustomer = id === 'add';
     if (id === 'add') {
       customerRequest = Promise.resolve({
@@ -33,6 +36,8 @@ const useCustomerDetailData = (id) => {
       const checkedData = checkRequiredFields(data, createCustomer);
       setCustomerData(checkedData);
       setCurrentCustomer(checkedData);
+      setLoading(false);
+
       Promise.allSettled([
         api.getSubscriptionsOptions(),
         api.getFulfillmentsOptions(),
@@ -48,7 +53,10 @@ const useCustomerDetailData = (id) => {
           forcedPaymentTypes: allPayments.forced || [],
         });
       });
-    });
+    })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [update]);
   useEffect(() => {
     setHasChanges(
@@ -58,6 +66,7 @@ const useCustomerDetailData = (id) => {
   }, [currentCustomer]);
 
   return {
+    isLoading,
     customerData,
     currentCustomer,
     setCurrentCustomer,

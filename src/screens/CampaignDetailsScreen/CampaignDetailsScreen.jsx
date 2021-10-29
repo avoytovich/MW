@@ -1,67 +1,35 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-
-import {
-  Box,
-  TextField,
-  LinearProgress,
-  Zoom,
-  Button,
-  Typography,
-  FormControlLabel,
-  Switch,
-} from '@material-ui/core';
+import { useParams } from 'react-router-dom';
 
 import moment from 'moment';
-import { toast } from 'react-toastify';
+import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 
 import {
   generateData,
-  defaultShow,
 } from '../../services/useData/tableMarkups/campaignPrices';
 import parentPaths from '../../services/paths';
-
+import CampaignDetailsView from './CampaignDetailsView';
 import api from '../../api';
-import CustomCard from '../../components/utils/CustomCard';
-import TableComponent from '../../components/TableComponent';
-import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
-import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
-import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import { getCustomerName } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 
-import './campaignDetailsScreen.scss';
-
 const CampaignDetailsScreen = () => {
-  const history = useHistory();
   const { id } = useParams();
   const [customerName, setCustomerName] = useState(null);
   const [campaign, setCampaign] = useState(null);
+  const [update, setUpdate] = useState(0);
+
   const [curCampaign, setCurCampaign] = useState(null);
   const [pricesData, setPricesData] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
-
+  const [isLoading, setLoading] = useState(false);
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
     setCurCampaign({ ...curCampaign, [name]: value });
-  };
-
-  const saveIdentity = () => {
-    if (id === 'add') {
-      api.addNewCampaign(curCampaign).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        history.goBack();
-      });
-    } else {
-      api.updateCampaignById(id, curCampaign).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        setCampaign(curCampaign);
-      });
-    }
   };
 
   useEffect(() => {
@@ -72,10 +40,15 @@ const CampaignDetailsScreen = () => {
 
   useEffect(() => {
     if (id !== 'add') {
+      setLoading(true);
       api.getCampaignById(id).then(({ data }) => {
         setCampaign(data);
         setCurCampaign(data);
-      });
+        setLoading(false);
+      })
+        .catch(() => {
+          setLoading(false);
+        });
 
       api.getPricesByCampaignId(id).then(({ data }) => {
         const pricesTableData = generateData(data);
@@ -93,7 +66,7 @@ const CampaignDetailsScreen = () => {
       setCampaign(data);
       setCurCampaign(data);
     }
-  }, []);
+  }, [update]);
 
   useEffect(() => {
     if (campaign?.customerId) {
@@ -112,121 +85,31 @@ const CampaignDetailsScreen = () => {
     }));
   };
 
-  const selectionRange = {
-    startDate: new Date(curCampaign?.startDate),
-    endDate: new Date(curCampaign?.endDate),
-    key: 'selection',
-  };
-
-  if (id === 'add' && !nxState?.selectedCustomer?.id) return <SelectCustomerNotification />;
-
-  if (curCampaign === null) return <LinearProgress />;
-
   return (
-    <div className="campaign-details-screen">
-      {id !== 'add' && (
-        <CustomBreadcrumbs
-          url={`${parentPaths.campaigns.campaigns}`}
-          section={localization.t('general.campaign')}
-          id={campaign?.id ? campaign.id : localization.t('general.addCampaign')}
-        />
-      )}
-      <Box py={2}>
-        <Typography gutterBottom variant='h3'>
-          {customerName}
-        </Typography>
-      </Box>
-
-      <Zoom in={hasChanges}>
-        <Button
-          id="save-campaign-button"
-          color="primary"
-          size="large"
-          type="submit"
-          variant="contained"
-          onClick={saveIdentity}
-        >
-          Save
-        </Button>
-      </Zoom>
-
-      <CustomCard title="General">
-        <Box display="flex" py={5} pb={2}>
-          <Box px={1} width=" 100%">
-            <TextField
-              fullWidth
-              label="Customer"
-              name="customerId"
-              type="text"
-              disabled
-              value={customerName || ''}
-              variant="outlined"
-            />
-          </Box>
-          <Box px={1} width=" 100%">
-            <TextField
-              fullWidth
-              label="Name"
-              name="name"
-              type="text"
-              value={curCampaign.name}
-              onChange={handleChange}
-              variant="outlined"
-            />
-          </Box>
-        </Box>
-
-        <Box display="flex" pb={2} flexDirection="column">
-          <Typography gutterBottom variant="h5">
-            Date range:
-          </Typography>
-          <Box display="flex" alignItems="baseline">
-            {'Between '}
-            <DateRangePicker
-              values={selectionRange}
-              handleChange={handleSelectDate}
-            />
-          </Box>
-        </Box>
-
-        <Box pb={2}>
-          <Typography gutterBottom variant="h5">
-            Status
-          </Typography>
-
-          <Box display="flex" alignItems="center">
-            <FormControlLabel
-              control={(
-                <Switch
-                  color="primary"
-                  checked={curCampaign.status === 'ENABLED'}
-                  name="status"
-                />
-              )}
-              onChange={() => updateReco(
-                'status',
-                curCampaign.status === 'ENABLED' ? 'DISABLED' : 'ENABLED',
-              )}
-              label={curCampaign.status === 'ENABLED' ? 'Enabled' : 'Disabled'}
-            />
-          </Box>
-        </Box>
-      </CustomCard>
-
-      {id !== 'add' && (
-        <CustomCard title="Products Price Table">
-          <Box pt={4}>
-            <TableComponent
-              defaultShowColumn={defaultShow}
-              tableData={pricesData}
-              isLoading={pricesData === null}
-              customPath={`${parentPaths.productlist}/:productId`}
-              noActions
-            />
-          </Box>
-        </CustomCard>
-      )}
-    </div>
+    <DetailPageWrapper
+      nxState={nxState}
+      id={id}
+      name={curCampaign?.name || `${localization.t('general.new')} ${localization.t(
+        'labels.abandonedCart',
+      )}`}
+      hasChanges={hasChanges}
+      isLoading={isLoading}
+      curParentPath={parentPaths.campaigns.campaigns}
+      curData={curCampaign}
+      addFunc={api.addNewCampaign}
+      updateFunc={api.updateCampaignById}
+      setUpdate={setUpdate}
+    >
+      <CampaignDetailsView
+        curCampaign={curCampaign}
+        updateReco={updateReco}
+        pricesData={pricesData}
+        id={id}
+        handleSelectDate={handleSelectDate}
+        handleChange={handleChange}
+        customerName={customerName}
+      />
+    </DetailPageWrapper>
   );
 };
 

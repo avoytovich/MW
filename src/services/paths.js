@@ -24,7 +24,11 @@ const parentPaths = {
   emailbuilder: `${defPath}/storesetup/emailbuilder`,
 
   productlist: `${defPath}/products/productlist`,
-  pricemodels: `${defPath}/products/pricemodels`,
+  pricemodels: {
+    main: `${defPath}/products/pricemodels`,
+    pricesTab: `${defPath}/products/pricemodels/prices`,
+    pricefunctionsTab: `${defPath}/products/pricemodels/price-functions`,
+  },
   recommendations: `${defPath}/products/recommendations`,
   fulfillment: {
     main: `${defPath}/products/fulfillment`,

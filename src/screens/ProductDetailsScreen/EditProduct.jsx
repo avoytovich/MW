@@ -7,6 +7,8 @@ import * as R from 'ramda';
 import localization from '../../localization';
 import ProductDetailsView from './ProductDetailsView';
 import api from '../../api';
+import LoadingErrorNotification from '../../components/utils/LoadingErrorNotification';
+
 import { handleGetOptions, handleGetProductDetails } from './utils';
 import {
   productRequiredFields,
@@ -138,6 +140,7 @@ const EditProduct = () => {
       }
       const { customerId, id: _id, descriptionId } = product;
       handleGetOptions(
+        setLoading,
         customerId,
         _id,
         descriptionId,
@@ -147,7 +150,7 @@ const EditProduct = () => {
         setSubProductVariations,
         setProductDetails,
       );
-    });
+    }).catch(() => setLoading(false));
     return () => {
       isCancelled = true;
     };
@@ -174,6 +177,7 @@ const EditProduct = () => {
   }, [selectOptions.sellingStores]);
 
   if (isLoading) return <LinearProgress />;
+  if (!isLoading && !currentProductData) return <LoadingErrorNotification />;
 
   return (
     <ProductDetailsView

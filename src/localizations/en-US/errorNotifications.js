@@ -23,6 +23,9 @@ const errorNotifications = {
   invalidUrl: 'Must be a valid https:// scheme URL',
   invalidVatNumber: 'Invalid vat number',
   hasNotGivenConsent: ' Has not given consent (refused or not asked yet)',
+  loadingError: 'Loading error',
+  couldNotLoadNeededResources: 'Could not load needed resources :(',
+
 };
 
 export default errorNotifications;

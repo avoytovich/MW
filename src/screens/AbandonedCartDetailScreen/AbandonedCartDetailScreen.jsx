@@ -1,32 +1,19 @@
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-import moment from 'moment';
 
-import {
-  LinearProgress,
-  Button,
-  Zoom,
-  Box,
-  Typography,
-  FormControlLabel,
-  Switch,
-  Grid,
-  TextField,
-} from '@material-ui/core';
+import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import parentPaths from '../../services/paths';
-import { validPeriodOptions, beforeSend } from './utils';
-import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
-import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
+import { beforeSend } from './utils';
 import localization from '../../localization';
 import useAbandonedCartDetailScreen from './useAbandonedCartDetailScreen';
-import { InputCustom, NumberInput, SelectCustom } from '../../components/Inputs';
 import api from '../../api';
+import AbandonedCartDetailsView from './AbandonedCartDetailsView';
 
 const AbandonedCartDetailScreen = () => {
+  const [hasError, setHasError] = useState(false);
+
   const { id } = useParams();
-  const history = useHistory();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const {
     setUpdate,
@@ -36,230 +23,32 @@ const AbandonedCartDetailScreen = () => {
     hasChanges,
     abandonedCart,
   } = useAbandonedCartDetailScreen(id, nxState);
-  const [hasError, setHasError] = useState(false);
 
-  const handleSave = () => {
-    const sendObj = beforeSend(curAbandonedCart);
-    if (id === 'add') {
-      api.addAbandonedCart(sendObj).then((res) => {
-        const location = res.headers.location.split('/');
-        const newId = location[location.length - 1];
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${parentPaths.marketing.abandoned}/${newId}`);
-        setUpdate((u) => u + 1);
-      });
-    } else {
-      api.updateAbandonedCart(id, sendObj).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        setUpdate((u) => u + 1);
-      });
-    }
-  };
-
-  if (isLoading) return <LinearProgress />;
-
-  if (id === 'add' && !nxState.selectedCustomer?.id) {
-    return <SelectCustomerNotification />;
-  }
 
   return (
-    <>
-      {id !== 'add' && (
-        <Box mx={2}>
-          <CustomBreadcrumbs
-            url={`${parentPaths.campaigns.abandoned}`}
-            section={localization.t('labels.abandonedCarts')}
-            id={abandonedCart.id}
-          />
-        </Box>
-      )}
-      <Box
-        display='flex'
-        flexDirection='row'
-        m={2}
-        justifyContent='space-between'
-      >
-        <Box alignSelf='center'>
-          <Typography gutterBottom variant='h3'>
-            {id !== 'add'
-              ? abandonedCart.name
-              : `${localization.t('general.new')} ${localization.t(
-                'labels.abandonedCart',
-              )}`}
-          </Typography>
-        </Box>
-        <Zoom in={hasChanges}>
-          <Button
-            disabled={curAbandonedCart.name === '' || hasError}
-            id='save-abandonedCart-button'
-            color='primary'
-            size='large'
-            type='submit'
-            variant='contained'
-            onClick={handleSave}
-          >
-            {localization.t('general.save')}
-          </Button>
-        </Zoom>
-      </Box>
-      <Box my={3} bgcolor='#fff' boxShadow={2} width='100%' pb={4}>
-        <Box display='flex' flexDirection='column' width='100%' px={2}>
-          <Box display="flex" p={2} pt={4} flexDirection="row" alignItems="baseline">
-            <Box>
-              <Typography>{localization.t('labels.status')}</Typography>
-            </Box>
-            <Box px={2}>
-              <FormControlLabel
-                data-test='status'
-                control={(
-                  <Switch
-                    name="status"
-                    onChange={(e) => {
-                      setCurAbandonedCart({
-                        ...curAbandonedCart,
-                        status: e.target.checked ? 'Active' : 'Inactive',
-                      });
-                    }}
-                    color="primary"
-                    checked={curAbandonedCart.status === 'Active'}
-                  />
-                )}
-                label={localization.t(
-                  `labels.${curAbandonedCart.status === 'Active' ? 'enabled' : 'disabled'
-                  }`,
-                )}
-              />
-            </Box>
-          </Box>
-          <Box p={2} width='60%'>
-            <InputCustom
-              data-test='name'
-              label='name'
-              value={curAbandonedCart.name}
-              onChangeInput={(e) => setCurAbandonedCart(
-                { ...curAbandonedCart, name: e.target.value },
-              )}
-              isRequired
-            />
-          </Box>
-          <Grid container alignItems='center'>
-            <Grid item md={3} sm={6}>
-              <Box p={2}>
-                <SelectCustom
-                  data-test='date'
-                  label='date'
-                  value={curAbandonedCart.validPeriod}
-                  selectOptions={validPeriodOptions}
-                  onChangeSelect={(e) => setCurAbandonedCart(
-                    { ...curAbandonedCart, validPeriod: e.target.value },
-                  )}
-                  isRequired
-                />
-              </Box>
-            </Grid>
-            {curAbandonedCart.validPeriod !== 'unlimited'
-              && (
-                <Grid item>
-                  {curAbandonedCart.validPeriod === 'between'
-                    && (
-                      <Box
-                        p={2}
-                        display='flex'
-                        alignItems='center'
-                        flexDirection='row'
-                      >
-                        <form noValidate>
-                          <TextField
-                            data-test='betweenStartDate'
-                            fullWidth
-                            name={curAbandonedCart.validPeriod === 'startDate'}
-                            value={moment(curAbandonedCart.startDate).format('YYYY-MM-DDTHH:mm')}
-                            label={localization.t('labels.startDate')}
-                            type='datetime-local'
-                            variant='outlined'
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            onChange={(e) => {
-                              setCurAbandonedCart({
-                                ...curAbandonedCart, startDate: e.target.value,
-                              });
-                            }}
-                          />
-                        </form>
-                        <Box px={2}>{localization.t('general.and')}</Box>
-                        <form noValidate>
-                          <TextField
-                            data-test='betweenEndDate'
-                            fullWidth
-                            name='betweenEndDate'
-                            value={moment(curAbandonedCart.endDate).format('YYYY-MM-DDTHH:mm')}
-                            label={localization.t('labels.endDate')}
-                            type='datetime-local'
-                            variant='outlined'
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            onChange={(e) => {
-                              setCurAbandonedCart({ ...curAbandonedCart, endDate: e.target.value });
-                            }}
-                          />
-                        </form>
-                      </Box>
-                    )}
-                  {(curAbandonedCart.validPeriod === 'after' || curAbandonedCart.validPeriod === 'before')
-                    && (
-                      <Box p={2}>
-                        <form noValidate>
-                          <TextField
-                            data-test={curAbandonedCart.validPeriod === 'after' ? 'startDate' : 'endDate'}
-                            fullWidth
-                            name={curAbandonedCart.validPeriod === 'after' ? 'startDate' : 'endDate'}
-                            value={moment(curAbandonedCart.validPeriod === 'after' ? curAbandonedCart.startDate : curAbandonedCart.endDate).format('YYYY-MM-DDTHH:mm')}
-                            label={curAbandonedCart.validPeriod === 'after' ? localization.t('labels.startDate') : localization.t('labels.endDate')}
-                            type='datetime-local'
-                            variant='outlined'
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                            onChange={(e) => {
-                              const key = curAbandonedCart.validPeriod === 'after' ? 'startDate' : 'endDate';
-                              setCurAbandonedCart({ ...curAbandonedCart, [key]: e.target.value });
-                            }}
-                          />
-                        </form>
-                      </Box>
-
-                    )}
-
-                </Grid>
-              )}
-          </Grid>
-          <Box p={2} width='60%'>
-            <NumberInput
-              data-test='delayMn'
-              hasError={hasError}
-              helperText={hasError ? 'Delay must be a positive number of minutes less of equal to 10,080 s after the enduser email is captured.' : ''}
-              minMAx={{ min: 1, max: 10080 }}
-              label='delayMn'
-              value={curAbandonedCart.delay}
-              onChangeInput={(e) => {
-                if (e.target.value > 10080 || e.target.value < 1) {
-                  setHasError(true);
-                } else {
-                  setHasError(false);
-                }
-                setCurAbandonedCart(
-                  { ...curAbandonedCart, delay: e.target.value },
-                );
-              }}
-              isRequired
-            />
-          </Box>
-        </Box>
-      </Box>
-
-    </>
+    <DetailPageWrapper
+      nxState={nxState}
+      id={id}
+      name={abandonedCart?.name || `${localization.t('general.new')} ${localization.t(
+        'labels.abandonedCart',
+      )}`}
+      saveIsDisabled={curAbandonedCart?.name === '' || hasError}
+      hasChanges={hasChanges}
+      isLoading={isLoading}
+      curParentPath={parentPaths.campaigns.abandoned}
+      curData={curAbandonedCart}
+      addFunc={api.addAbandonedCart}
+      updateFunc={api.updateAbandonedCart}
+      beforeSend={beforeSend}
+      setUpdate={setUpdate}
+    >
+      <AbandonedCartDetailsView
+        setCurAbandonedCart={setCurAbandonedCart}
+        curAbandonedCart={curAbandonedCart}
+        hasError={hasError}
+        setHasError={setHasError}
+      />
+    </DetailPageWrapper>
   );
 };
 

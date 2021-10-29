@@ -101,7 +101,7 @@ const navConfig = [
       {
         id: 'price-models',
         title: sideBarTitle.pricemodels,
-        href: parentPaths.pricemodels,
+        href: parentPaths.pricemodels.main,
       },
       {
         id: 'cros-sell-up-sell-reco',

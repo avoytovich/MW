@@ -101,7 +101,7 @@ const formatBeforeSanding = (data) => {
   if (data.subscriptions) {
     resObj.subscriptions = fromArrayToObj(data.subscriptions);
   }
-  if (data.assets.length > 0) {
+  if (data.assets?.length > 0) {
     data.assets.forEach((asset) => {
       const key = assetsLabels.find((item) => item.id === asset.label).apiKey;
       resObj[key] = asset.url;
