@@ -613,6 +613,12 @@ const labels = {
   identityId: 'Identity ID',
   linkedCustomerId: 'Linked Customer ID',
   linkedCustomer: 'Linked Customer',
+  templateId: 'Template ID',
+  version: 'Version',
+  firstMailingDate: 'First Mailing Date',
+  tags: 'Tags',
+  locales: 'Locales',
+  fallbackLanguage: 'Fallback language',
 };
 
 export default labels;

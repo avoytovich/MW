@@ -2,14 +2,19 @@ import moment from 'moment';
 // eslint-disable-next-line
 const truthyValue = ['features'];
 
-const generateFilterUrl = (filters) => {
+const generateFilterUrl = (filters, availableFilters) => {
   let url = '';
 
   Object.entries(filters).forEach(([key, val]) => {
+    const filterConfig = availableFilters.filter((item) => item.id === key);
     const subFilter = `&${key}=`;
 
     if (typeof val !== 'object') {
-      url += `${subFilter}*${val}*`;
+      if (filterConfig[0].exactSearch) {
+        url += `${subFilter}${val}`;
+      } else {
+        url += `${subFilter}*${val}*`;
+      }
     } else if (Array.isArray(val)) {
       if (truthyValue.includes(key)) {
         val.forEach((v) => { url += `&${v}=true`; });
