@@ -39,7 +39,7 @@ const markUp = {
     },
     {
       value: localization.t('labels.lastUpdate'),
-      id: 'updateDate',
+      id: 'lastUpdate',
       sortParam: 'updateDate',
     },
     {
