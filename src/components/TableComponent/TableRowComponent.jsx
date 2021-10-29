@@ -89,6 +89,8 @@ const TableRowComponent = ({
             {rowItem[item.id]}
           </Typography>
         );
+      } else if (Array.isArray(rowItem[item.id])) {
+        valueToShow = <Typography style={{ whiteSpace: 'pre-line', textAlign: 'left' }}>{rowItem[item.id].join('\r\n')}</Typography>;
       } else {
         valueToShow = rowItem[item.id];
       }

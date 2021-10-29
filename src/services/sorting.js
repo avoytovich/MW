@@ -27,6 +27,7 @@ export const sortKeys = {
   abandoned: 'abandonedSortParams',
   campaigns: 'campaignsSortParams',
   discounts: 'discountsSortParams',
+  emailbuilder: 'emailbuilderSortParams',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));

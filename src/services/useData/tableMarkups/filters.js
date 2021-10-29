@@ -6,6 +6,7 @@ const filters = {
       id: 'id',
       label: localization.t('labels.productId'),
       type: 'text',
+      exactSearch: true,
     },
     {
       id: 'creationDate',
@@ -840,6 +841,7 @@ const filters = {
       id: 'id',
       label: localization.t('labels.campaignId'),
       type: 'text',
+      exactSearch: true,
     },
     {
       id: 'creationDate',
@@ -1001,7 +1003,41 @@ const filters = {
         { id: 'RUNNING', value: localization.t('labels.live') },
       ],
     },
-
+  ],
+  emailbuilder: [
+    {
+      id: 'id',
+      label: localization.t('labels.templateId'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'version',
+      label: localization.t('labels.version'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'firstMailingDate',
+      label: localization.t('labels.firstMailingDate'),
+      type: 'date',
+    },
+    {
+      id: 'tag',
+      label: localization.t('labels.tags'),
+      type: 'text',
+      exactSearch: true,
+    },
   ],
 };
 

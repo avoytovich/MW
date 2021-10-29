@@ -16,9 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCheckedItems } from '../../redux/actions/TableData';
 import setShowColumns from '../../redux/actions/ShowColumns';
 import TableRowComponent from './TableRowComponent';
-import TableItemsActions from './TableItemsActions';
 import PaginationComponent from '../PaginationComponent';
-import TableActionsBar from '../TableActionsBar';
 import localization from '../../localization';
 
 import './TableComponent.scss';
@@ -30,7 +28,6 @@ const TableComponent = ({
   isLoading,
   handleDeleteItem,
   noActions,
-  noTableActionsBar,
   noEditDeleteActions,
   setSortParams,
   sortParams,
@@ -73,15 +70,6 @@ const TableComponent = ({
 
   return tableData?.values?.length ? (
     <>
-      {/* {!noActions && (
-        <TableItemsActions
-          items={checkedItems}
-          setItems={setChecked}
-          headers={tableData.headers}
-          onDelete={handleDeleteItem}
-          noEditDeleteActions={noEditDeleteActions}
-        />
-      )} */}
       <Box display="flex" mb={3}>
         <PaginationComponent
           location="flex-end"
@@ -176,18 +164,6 @@ const TableComponent = ({
           ))}
         </Box>
       </Paper>
-      {/* {!noTableActionsBar && (
-        <Box pt={2}>
-          <TableActionsBar positionBottom>
-            <PaginationComponent
-              location="flex-end"
-              currentPage={currentPage}
-              updatePage={updatePage}
-              totalPages={tableData.meta?.totalPages}
-            />
-          </TableActionsBar>
-        </Box>
-      )} */}
     </>
   ) : (
     <Typography data-test='noResultsNotification'>{localization.t('general.noResults')}</Typography>
@@ -202,7 +178,6 @@ TableComponent.propTypes = {
   isLoading: PropTypes.bool,
   defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
-  noTableActionsBar: PropTypes.bool,
   noEditDeleteActions: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,

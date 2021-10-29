@@ -1,4 +1,4 @@
-const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-definition', 'notification-history', 'carts', 'licenses', 'recommendations', 'marketingAbandoned', 'resellers', 'customerslist', 'marketingCampaigns', 'discounts'];
+const VALID_REFRESH_SCOPES = ['productlist', 'stores', 'orderlist', 'notifications', 'notification-definition', 'notification-history', 'carts', 'licenses', 'recommendations', 'marketingAbandoned', 'resellers', 'customerslist', 'marketingCampaigns', 'discounts', 'emailbuilder'];
 const VALID_FILTER_SCOPES = [
   'productlist',
   'stores',
@@ -25,6 +25,7 @@ const VALID_FILTER_SCOPES = [
   'resellers',
   'enduserlist',
   'customerslist',
+  'emailbuilder',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];

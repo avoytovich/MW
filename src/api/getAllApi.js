@@ -568,7 +568,21 @@ const getAllApi = {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
     if (filters) {
-      filters = filters.replace(/\*/g, '');
+      url += filters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getEmailBuilder({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/email-builder/template-definitions?format=short&size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
       url += filters;
     }
     return axiosInstance({
