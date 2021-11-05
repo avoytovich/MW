@@ -59,12 +59,11 @@ const handleGetOptions = (
         });
 
         // setProductDetails(productDetails?.data);
-
         if (!isCancelled) {
           setSelectOptions({
             ...selectOptions,
             sellingStores:
-              structureSelectOptions(sellingStores.data?.items, 'name', 'hostnames') || [],
+              structureSelectOptions(sellingStores.data?.items, 'name', 'hostnames', 'saleLocales', 'defaultLocale') || [],
             renewingProducts: renewingProductsOptions(renewingProducts.data?.items) || [],
             fulfillmentTemplates:
               structureSelectOptions(fulfillmentTemplates.data?.items, 'name') || [],

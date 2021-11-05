@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Box } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import { SelectCustom } from '../../../components/Inputs';
 
 import InheritanceField from '../InheritanceField';
 import { checkValue } from '../../../services/helpers/dataStructuring';
@@ -43,22 +44,23 @@ const LocalizationInputs = ({
 
     newData[name]?.state
       ? handleChange(
-          name,
-          curContent === '<p><br></p>'
-            ? {
-                ...newData[name],
-                value: '',
-              }
-            : {
-                ...newData[name],
-                value: curContent,
-              },
-        )
+        name,
+        curContent === '<p><br></p>'
+          ? {
+            ...newData[name],
+            value: '',
+          }
+          : {
+            ...newData[name],
+            value: curContent,
+          },
+      )
       : handleChange(name, curContent === '<p><br></p>' ? '' : curContent);
     setEditing(false);
   };
 
   const LocalizationInput = ({ val }) => (
+
     <InheritanceField
       field={val}
       onChange={setNewData}
@@ -105,16 +107,16 @@ const LocalizationInputs = ({
       )}
     </InheritanceField>
   );
-
+  
   LocalizationInput.propTypes = {
     val: PropTypes.string,
   };
 
   const stylesForVariations = parentId
     ? {
-        display: 'grid',
-        gridTemplateColumns: '1fr 50px',
-      }
+      display: 'grid',
+      gridTemplateColumns: '1fr 50px',
+    }
     : {};
 
   return (
@@ -160,4 +162,32 @@ LocalizationInputs.propTypes = {
   setNewTabValues: PropTypes.func,
 };
 
-export default LocalizationInputs;
+const DefaultLanguage = ({
+  curData, selectOptions, onChange, parentId,
+}) => (
+  <Box p={2} width='50%' display='flex'>
+    <InheritanceField
+      field='fallbackLocale'
+      onChange={onChange}
+      value={curData.fallbackLocale}
+      selectOptions={selectOptions || []}
+      parentId={parentId}
+      currentProductData={curData}
+    >
+      <SelectCustom
+        label='defaultLanguage'
+        value={checkValue(curData.fallbackLocale, curData.fallbackLocale?.state)}
+        selectOptions={selectOptions}
+        onChangeSelect={(e) => onChange(e.target.value)}
+      />
+    </InheritanceField>
+  </Box>
+);
+
+DefaultLanguage.propTypes = {
+  curData: PropTypes.object,
+  selectOptions: PropTypes.array,
+  onChange: PropTypes.func,
+  parentId: PropTypes.string,
+};
+export { LocalizationInputs, DefaultLanguage };
