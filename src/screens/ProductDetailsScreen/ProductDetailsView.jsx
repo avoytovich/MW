@@ -47,6 +47,7 @@ const ProductDetailsView = ({
   productDetails,
   parentId,
   variablesDescriptions,
+  storeLanguages,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
@@ -213,6 +214,7 @@ const ProductDetailsView = ({
         {curTab === 2 && (
           <SectionLayout dataTest={allTabs[2]} label={allTabs[2]}>
             <LocalizedContent
+              storeLanguages={storeLanguages}
               setProductData={setProductData}
               currentProductData={currentProductData}
               productData={productData}
@@ -288,6 +290,7 @@ ProductDetailsView.propTypes = {
   productDetails: PropTypes.object,
   parentId: PropTypes.string,
   variablesDescriptions: PropTypes.array,
+  storeLanguages: PropTypes.array,
 };
 
 export default ProductDetailsView;

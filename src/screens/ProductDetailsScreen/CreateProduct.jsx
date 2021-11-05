@@ -24,6 +24,8 @@ const CreateProduct = () => {
     ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.id,
   );
   const history = useHistory();
+  const [storeLanguages, setStoreLanguages] = useState([]);
+  const [productData, setProductData] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
   const [currentProductData, setCurrentProductData] = useState(defaultProduct);
@@ -42,10 +44,11 @@ const CreateProduct = () => {
   const [variablesDescriptions, setVariablesDescriptions] = useState([]);
 
   useEffect(() => {
+    setProductData({ ...currentProductData, customerId });
     setCurrentProductData({ ...currentProductData, customerId });
   }, [customerId]);
   // ToDo: refactor handleGetOptions props !!!
-  const parentId = history?.state?.parentId;
+  const parentId = history?.location?.state?.parentId;
   useEffect(() => {
     let isCancelled = false;
     setLoading(true);
@@ -94,11 +97,33 @@ const CreateProduct = () => {
     };
   }, [history?.state]);
 
+  const filterCheckoutStores = () => {
+    let newLanguages = [];
+    const res = [];
+    const storesList = currentProductData?.sellingStores?.state // eslint-disable-line
+      ? currentProductData?.sellingStores?.state === 'inherits'
+        ? currentProductData?.sellingStores?.parentValue
+        : currentProductData?.sellingStores?.value
+      : currentProductData?.sellingStores;
+    storesList.forEach((item) => {
+      const selectedStore = selectOptions?.sellingStores?.filter((store) => store.id === item);
+
+      if (selectedStore?.[0]) {
+        const languages = selectedStore[0].saleLocales ? [...selectedStore[0].saleLocales] : [];
+        if (!languages.includes(selectedStore[0].defaultLocale)) {
+          languages.push(selectedStore[0].defaultLocale);
+        }
+        newLanguages = [...new Set([...newLanguages, ...languages])];
+        const { value, hostnames } = selectedStore[0];
+        hostnames.forEach((hostname) => res.push({ value, hostname }));
+      }
+    });
+    setStoreLanguages(newLanguages);
+  };
   const saveProduct = () => {
     if (!currentProductData.businessSegment) {
       delete currentProductData.businessSegment;
     }
-
     const dataToSave = frontToBack(currentProductData);
     if (!dataToSave?.customerId) {
       dataToSave.customerId = currentProductData?.customerId?.state
@@ -114,11 +139,11 @@ const CreateProduct = () => {
       const id = location[location.length - 1];
       api.getProductById(id).then(({ data }) => {
         if (productHasLocalizationChanges) {
-          const i18nFields = Object.entries(productHasLocalizationChanges.i18nFields).reduce(
+          const frontToBackObj = frontToBack(productHasLocalizationChanges);
+          const i18nFields = Object.entries(frontToBackObj.i18nFields).reduce(
             (accumulator, [key, value]) => ({ ...accumulator, [key]: frontToBack(value || {}) }),
             {},
           );
-
           const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
             const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
               if (i18nFields[key][cur]) {
@@ -132,14 +157,14 @@ const CreateProduct = () => {
             };
           }, {});
 
-          if (productHasLocalizationChanges.i18nFields) {
-            delete productHasLocalizationChanges.i18nFields;
+          if (frontToBackObj.i18nFields) {
+            delete frontToBackObj.i18nFields;
           }
           const localizationChangesToSave = R.mergeRight(
-            productHasLocalizationChanges, localizedValuesToSave,
+            frontToBackObj, localizedValuesToSave,
           );
-          if (!productHasLocalizationChanges?.customerId) {
-            productHasLocalizationChanges.customerId = currentProductData?.customerId?.state
+          if (!frontToBackObj?.customerId) {
+            frontToBackObj.customerId = currentProductData?.customerId?.state
               ? currentProductData?.customerId?.value
               : currentProductData?.customerId;
           }
@@ -164,6 +189,20 @@ const CreateProduct = () => {
     });
   };
 
+  useEffect(() => {
+    if (
+      JSON.stringify(currentProductData?.sellingStores)
+      !== JSON.stringify(productData?.sellingStores)
+    ) {
+      filterCheckoutStores();
+    }
+  }, [currentProductData]);
+
+  useEffect(() => {
+    if (selectOptions.sellingStores) {
+      filterCheckoutStores();
+    }
+  }, [selectOptions.sellingStores]);
   if (isLoading) return <LinearProgress />;
   if (!customerId) {
     return <SelectCustomerNotification />;
@@ -175,13 +214,14 @@ const CreateProduct = () => {
 
   return (
     <ProductDetailsView
+      storeLanguages={storeLanguages}
       setProductDetails={setProductDetails}
       selectOptions={selectOptions}
       setProductData={setCurrentProductData}
       currentProductData={currentProductData}
       saveData={saveProduct}
       productVariations={productVariations}
-      parentId={history?.state?.parentId}
+      parentId={parentId}
       productDetails={productDetails}
       setProductLocalizationChanges={setProductLocalizationChanges}
       productHasLocalizationChanges={productHasLocalizationChanges}

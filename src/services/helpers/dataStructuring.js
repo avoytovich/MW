@@ -368,4 +368,5 @@ export {
   languagesOptionsFormatting,
   notificationRequiredFields,
   removeEmptyPropsInObject,
+  createInheritableValue,
 };
