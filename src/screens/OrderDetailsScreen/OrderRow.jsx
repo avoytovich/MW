@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -6,10 +7,12 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { Grid, Box } from '@material-ui/core';
 import moment from 'moment';
+
+import parentPaths from '../../services/paths';
 import localization from '../../localization';
 import api from '../../api';
-
 import { shouldDownload, shouldCopy } from './utils';
+
 import './orderDetailsScreen.scss';
 
 const OrderRow = ({
@@ -46,6 +49,21 @@ const OrderRow = ({
       .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
 
+  const renderId = (item) => {
+    switch (item.label) {
+      case 'ID':
+        return (
+          <Link to={`${parentPaths.endusers}/${item.value}`}>
+            { item.value }
+          </Link>
+        );
+      default:
+        return (
+          item.value || '-'
+        );
+    }
+  };
+
   return rowData.map((item) => (
     <Grid container className="orderDetailsRow" key={item.key}>
       <Grid item md={6} xs={6}>
@@ -62,11 +80,12 @@ const OrderRow = ({
               </Box>
             ) : (
               <Box p={2} className="rowValue">
-                {item.external ? (
-                  <a href={item.external} target='_blank' rel='noreferrer'>
-                    {item.value || '-'}
-                  </a>
-                ) : (item.value || '-')}
+                {item.external
+                  ? (
+                    <a href={item.external} target='_blank' rel='noreferrer'>
+                      {item.value || '-'}
+                    </a>
+                  ) : renderId(item)}
               </Box>
             )
           )}
