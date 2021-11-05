@@ -95,6 +95,7 @@
   }
   .headers {
     min-width: 175px;
+    padding: 5px 0;
   }
 }
 .tableBodyGrid {
@@ -152,4 +153,7 @@
   max-height: calc(100vh - 216px);
   width: 100%;
   overflow: auto;
+}
+.checkbox{
+  padding-left: 6px;
 }

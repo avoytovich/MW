@@ -100,6 +100,7 @@ const TableRowComponent = ({
           className="tableCellItemGrid"
           item
           xs
+          md={4}
           zeroMinWidth
           key={`${item.id}_${rowItem.id}`}
           style={{ overflow: 'hidden' }}
@@ -168,7 +169,7 @@ const TableRowComponent = ({
         )}
 
         {markupSequence.map((item) => drawTableCell(item))}
-        <Grid item xs style={{ minWidth: '200px' }}>
+        <Grid item xs md={4} style={{ minWidth: '200px' }}>
           {rowHover && !customPath && (
           <Grid>
             <Box mt={2} textAlign='center'>
