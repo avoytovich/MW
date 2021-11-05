@@ -5,21 +5,19 @@ import {
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
-import OrderDetailsTableComponent from '../../../components/TableComponent/OrderDetailsTableComponent';
+import TableComponent from '../../../components/TableComponent';
 
 const Emails = ({ emails }) => (emails ? (
-  <Box
-    border={1}
-    borderRadius="borderRadius"
-    borderColor="#c7c7c7"
-  >
-    <OrderDetailsTableComponent
-      showColumn={emails.defaultEmailsShow}
+  <Box>
+    <TableComponent
+      defaultShowColumn={emails.defaultEmailsShow}
       tableData={emails}
-      isLoading={emails === null}
+      scope="endUsersEmails"
+      noActions
+      noTableActionsBar
+      noEditDeleteActions
       customPath='disabled'
       errorHighlight='processingError'
-      noActions
     />
   </Box>
 ) : (<Box p={2}><Typography>{localization.t('general.noEmails')}</Typography></Box>));

@@ -80,7 +80,6 @@ const TableComponent = ({
       </Box>
       <Paper className='paper' elevation={1} style={{ maxHeight: 'auto' }}>
         <Grid
-          spacing={2}
           container
           wrap="nowrap"
           justify="center"
@@ -93,13 +92,14 @@ const TableComponent = ({
                 name="checkAll"
                 color="primary"
                 onChange={handleCheckAll}
+                className='checkbox'
               />
             </Grid>
           )}
           {tableData.headers.map(
             (header) => showColumn[header.id]
               && (header.sortParam ? (
-                <Grid item xs zeroMinWidth key={header.value} className='headers'>
+                <Grid xs={1} md={4} zeroMinWidth key={header.value} className='headers'>
                   <Box
                     className='sortableHeader'
                     my={1}
@@ -129,7 +129,7 @@ const TableComponent = ({
                   </Box>
                 </Grid>
               ) : (
-                <Grid item xs zeroMinWidth key={header.value} className='headers'>
+                <Grid xs={1} md={4} zeroMinWidth key={header.value} className='headers'>
                   <Box my={1}>
                     <Typography
                       variant="h6"
@@ -143,7 +143,7 @@ const TableComponent = ({
                 </Grid>
               )),
           )}
-          <Grid item xs />
+          <Grid xs={1} md={4} />
         </Grid>
 
         <Box className="tableBodyGrid">
