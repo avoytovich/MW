@@ -4,6 +4,7 @@ import localization from '../../../localization';
 
 const defaultShow = {
   fullName: true,
+  customer: true,
   managedCustomerId: false,
   managedCustomer: false,
   roles: false,
@@ -24,6 +25,10 @@ const markUp = {
       value: localization.t('labels.fullName'),
       id: 'fullName',
       sortParam: 'firstName',
+    },
+    {
+      value: localization.t('labels.customer'),
+      id: 'customer',
     },
     {
       value: localization.t('labels.managedCustomerId'),
@@ -80,6 +85,7 @@ const generateData = (data) => {
   const values = data.items.map(async (val) => {
     const returnData = {
       fullName: `${val.firstName} ${val.lastName}`,
+      customer: val.customerId,
       id: val.id,
       managedCustomerId: val.authorizedCustomerIds?.length ? val.authorizedCustomerIds.join(', ') : '-',
       managedCustomer: '-',
