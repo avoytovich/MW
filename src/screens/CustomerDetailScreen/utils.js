@@ -135,9 +135,16 @@ const checkBoxObj = {
   workflowAgreement: ['seller', 'sellOnBehalf', 'createInvoice', 'sendOrderConfirmationEmail'],
   technicalFeatures: ['subscriptionUpgradeAuthorized', 'usingSubscriptionV1', 'usingFulfillmentV1'],
 };
+
 const checkLabelDuplicate = (values) => {
   const valueArr = values?.map((item) => item.label);
   return valueArr?.some((item, id) => valueArr.indexOf(item) !== id);
+};
+
+const checkExistingLabelsUrl = (values) => {
+  const checkExistingLabel = values?.map((item) => item.label).every((item) => item);
+  const checkExistingUrl = values?.map((item) => item.url).every((item) => item);
+  return checkExistingLabel && checkExistingUrl;
 };
 
 export {
@@ -146,5 +153,6 @@ export {
   checkBoxObj,
   formatPaymentOptions,
   assetsLabels,
+  checkExistingLabelsUrl,
   checkLabelDuplicate,
 };

@@ -17,39 +17,38 @@ const resourceLabels = [
   { id: 'product_icon', value: localization.t('labels.icon') },
 ];
 
-const defaultFiles = [
-  {
-    key: 0,
-    label: null,
-    url: null,
-  },
-];
-
-const defaultContentsFiles = [
-  {
-    key: 0,
-    label: null,
-    url: null,
-  },
-];
+const defaultFiles = { key: 0, label: null, url: null };
 
 const ProductFiles = ({ currentProductData, setProductData }) => {
-  const [contents, setContents] = useState([]);
-  const [resources, setResources] = useState([]);
+  const [contents, setContents] = useState([{ ...defaultFiles }]);
+  const [resources, setResources] = useState([{ ...defaultFiles }]);
 
-  const updateResources = (newData) => setProductData((c) => ({ ...c, resources: [...newData] }));
+  const updateResources = (newData) => {
+    setProductData((c) => ({ ...c, resources: [...newData] }));
+  };
 
-  const updateContents = (newData) => setProductData((c) => ({
-    ...c, relatedContents: [...newData.map((f) => ({ ...f, file: f.url }))],
-  }));
+  const updateContents = (newData) => {
+    setProductData((c) => ({ ...c, relatedContents: [...newData] }));
+  };
 
   useEffect(() => {
-    currentProductData?.relatedContents?.value
-      && setContents([...currentProductData.relatedContents.value]);
+    let toSetData = currentProductData?.relatedContents || [];
+
+    if (!toSetData.length) {
+      toSetData = [{ ...defaultFiles }];
+    }
+
+    setContents([...toSetData]);
   }, [currentProductData.relatedContents]);
 
   useEffect(() => {
-    currentProductData?.resources && setResources([...currentProductData.resources]);
+    let toSetData = currentProductData?.resources || [];
+
+    if (!toSetData.length) {
+      toSetData = [{ ...defaultFiles }];
+    }
+
+    setResources([...toSetData]);
   }, [currentProductData.resources]);
 
   return (
@@ -59,9 +58,10 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
       </Typography>
 
       <AssetsResource
+        isFile
         label={localization.t('labels.relatedContents')}
         labelOptions={[]}
-        resources={contents.length ? contents : defaultContentsFiles}
+        resources={[...contents]}
         setResources={updateContents}
         currentStoreData={currentProductData}
         setCurrentStoreData={setProductData}
@@ -75,7 +75,7 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
       <AssetsResource
         label={localization.t('labels.resources')}
         labelOptions={resourceLabels}
-        resources={resources.length ? resources : defaultFiles}
+        resources={[...resources]}
         setResources={updateResources}
         currentStoreData={currentProductData}
         setCurrentStoreData={setProductData}

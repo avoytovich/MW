@@ -12,7 +12,7 @@ import localization from '../../localization';
 import './AssetsResource.scss';
 
 const FileBlock = ({
-  item, updateResources, deleteItem, index, labelOptions, data, withSelect,
+  item, updateResources, deleteItem, index, labelOptions, data, withSelect, isFile,
 }) => {
   const [urlLoading, setUrlLoading] = useState(true);
 
@@ -117,10 +117,10 @@ const FileBlock = ({
           <Grid item md={11} sm={11}>
             <InputCustom
               label="url"
-              value={item.url || item.file}
-              onChangeInput={(e) => updateResources(index, 'url', e.target.value)}
+              value={isFile ? item.file : item.url}
+              onChangeInput={(e) => updateResources(index, isFile ? 'file' : 'url', e.target.value)}
             />
-            {!item.url && !item.file && item.url !== null && (
+            {!item.url && !item.file && item.url !== null && item.file !== null && (
               <Box width={1} pl={1}>
                 <Typography variant="body2" style={{ color: 'red' }}>
                   {localization.t('labels.validationUrl')}
@@ -148,6 +148,7 @@ FileBlock.propTypes = {
   index: PropTypes.number,
   labelOptions: PropTypes.array,
   withSelect: PropTypes.bool,
+  isFile: PropTypes.bool,
 };
 
 export default FileBlock;

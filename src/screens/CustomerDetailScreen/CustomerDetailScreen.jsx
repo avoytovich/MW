@@ -9,6 +9,7 @@ import useCustomerDetailData from '../../services/useData/useCustomerDetailData'
 import {
   formatBeforeSanding,
   checkLabelDuplicate,
+  checkExistingLabelsUrl,
 } from './utils';
 import parentPaths from '../../services/paths';
 
@@ -27,6 +28,15 @@ const CustomerDetailScreen = () => {
     selectOptions,
   } = useCustomerDetailData(id);
 
+  const validation = () => {
+    if (checkExistingLabelsUrl(currentCustomer?.assets)) {
+      if (!checkLabelDuplicate(currentCustomer?.assets)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   return (
     <DetailPageWrapper
       nxStateNotNeeded
@@ -34,7 +44,7 @@ const CustomerDetailScreen = () => {
       name={customerData?.name || `${localization.t('general.new')} ${localization.t(
         'labels.customer',
       )}`}
-      saveIsDisabled={checkLabelDuplicate(currentCustomer?.assets)}
+      saveIsDisabled={validation()}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.customers}

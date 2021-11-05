@@ -7,12 +7,13 @@ import localization from '../../localization';
 import FileBlock from './FileBlock';
 
 const AssetsResource = ({
-  resources, setResources, maxPayloadFiles, labelOptions, label, withSelect = true,
+  resources, setResources, maxPayloadFiles, labelOptions, label, withSelect = true, isFile,
 }) => {
   const deleteItem = (key) => {
     const newResources = resources.filter((item) => item.key !== key);
     setResources(newResources);
   };
+
   const updateResources = (index, key, value) => {
     const newResources = [...resources];
     newResources[index][key] = value;
@@ -21,7 +22,7 @@ const AssetsResource = ({
 
   const addItem = () => {
     const lastKey = resources[resources.length - 1]?.key;
-    const newResource = { label: null, url: null, key: lastKey ? lastKey + 1 : 1 };
+    const newResource = { label: null, [isFile ? 'file' : 'url']: null, key: lastKey ? lastKey + 1 : 1 };
 
     setResources([...resources, newResource]);
   };
@@ -46,6 +47,7 @@ const AssetsResource = ({
                   updateResources={updateResources}
                   index={index}
                   withSelect={withSelect}
+                  isFile={isFile}
                   type="file"
                 />
               </Box>
@@ -77,6 +79,7 @@ AssetsResource.propTypes = {
   labelOptions: PropTypes.array,
   label: PropTypes.string,
   withSelect: PropTypes.bool,
+  isFile: PropTypes.bool,
 };
 
 export default AssetsResource;
