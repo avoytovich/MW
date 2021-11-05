@@ -53,10 +53,28 @@ const ProductDetailsView = ({
   const [saveDisabled, setSaveDisabled] = useState(false);
   const history = useHistory();
 
+  const checkSaveDisable = () => {
+    let disableSave = false;
+    const { relatedContents, resources } = currentProductData;
+
+    if (relatedContents?.value?.length) {
+      const [hasInvalid] = relatedContents.value.filter((v) => !v.label || !v.url);
+      disableSave = disableSave || !!hasInvalid;
+    }
+
+    if (resources?.length) {
+      const [hasInvalid] = resources.filter((v) => !v.label || !v.url);
+      disableSave = disableSave || !!hasInvalid;
+    }
+
+    setSaveDisabled(disableSave);
+  };
+
   useEffect(() => {
     const {
       catalogId, publisherRefId, genericName, type, prices,
     } = currentProductData;
+
     const currency = prices?.state // eslint-disable-line
       ? prices?.state === 'inherits'
         ? prices?.parentValue?.priceByCountryByCurrency[prices?.parentValue?.defaultCurrency]
@@ -64,12 +82,16 @@ const ProductDetailsView = ({
         : prices?.value?.priceByCountryByCurrency[prices?.value?.defaultCurrency]?.default
           ?.value
       : prices?.defaultCurrency;
+
     if (catalogId && publisherRefId && genericName && type && currency) {
       setTabsDisabled(false);
     } else {
       setTabsDisabled(true);
     }
+
+    checkSaveDisable();
   }, [currentProductData]);
+
   const handleChangeTab = (tab) => (parentId && tab === 7 ? history.push(`${parentPaths.productlist}/${parentId}`) : setCurTab(tab));
 
   return (
@@ -241,6 +263,7 @@ const ProductDetailsView = ({
               productData={productData}
               currentProductData={currentProductData}
               setProductData={setProductData}
+              setSaveDisabled={setSaveDisabled}
             />
           </SectionLayout>
         )}

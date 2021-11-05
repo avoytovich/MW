@@ -15,13 +15,7 @@ import PaymentServiceConfiguration from './SubSections/PaymentServiceConfigurati
 
 import './CustomerDetailScreen.scss';
 
-const defaultResources = [
-  {
-    key: 0,
-    label: null,
-    url: null,
-  },
-];
+const defaultResources = { key: 0, label: null, url: null };
 
 const CustomerDetailsView = ({
   currentCustomer, setCurrentCustomer, selectOptions, id,
@@ -78,7 +72,9 @@ const CustomerDetailsView = ({
           <AssetsResource
             labelOptions={assetsLabels}
             maxPayloadFiles={2}
-            resources={currentCustomer?.assets?.length ? currentCustomer.assets : defaultResources}
+            resources={
+              currentCustomer?.assets?.length ? currentCustomer.assets : [{ ...defaultResources }]
+            }
             setResources={(newValue) => {
               setCurrentCustomer({ ...currentCustomer, assets: newValue });
             }}
