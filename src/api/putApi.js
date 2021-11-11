@@ -177,6 +177,14 @@ const putApi = {
       data,
     });
   },
+  updateEmailTemplate(id, data) {
+    const url = `/email-builder/template-definitions/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
 };
 
 export default putApi;

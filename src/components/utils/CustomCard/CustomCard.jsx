@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 
 const CustomCard = ({
-  title, children, noDivider, ...other
+  title, children, noDivider, extraActions, ...other
 }) => (
   <Box
     my={3}
@@ -17,9 +17,12 @@ const CustomCard = ({
     p={3}
     {...other}
   >
-    <Typography gutterBottom variant='h4'>{title}</Typography>
+    <Box display='flex' justifyContent='space-between'>
+      <Typography variant='h4'>{title}</Typography>
+      {extraActions}
+    </Box>
 
-    {title && !noDivider && <Divider light />}
+    {title && !noDivider && <Box mt={3}><Divider light /></Box>}
 
     {children}
   </Box>
@@ -29,6 +32,7 @@ CustomCard.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
   noDivider: PropTypes.bool,
+  extraActions: PropTypes.any,
 };
 
 export default CustomCard;

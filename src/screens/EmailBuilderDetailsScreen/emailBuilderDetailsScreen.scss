@@ -1,0 +1,16 @@
+@import '../../styles/variables.scss';
+
+.email-builder-details{
+  .MuiTabScrollButton-root{
+    transition: all .3s ease-in-out;
+    color: $navItemButtonHover;
+
+    &.Mui-disabled{
+      width: 0;
+    }
+    
+    .MuiSvgIcon-fontSizeSmall{
+      font-size: 24px;
+    }
+  }
+}

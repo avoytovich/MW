@@ -143,6 +143,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/AdministrationScreen'))}
       /> */}
       <Route
+        path={`${parentPaths.emailbuilder}/:id`}
+        component={lazy(() => import('../../screens/EmailBuilderDetailsScreen'))}
+      />
+      <Route
         path={`${parentPaths.emailbuilder}`}
         component={lazy(() => import('../../screens/EmailBuilderScreen'))}
       />

@@ -15,6 +15,7 @@ const InputCustom = ({
   hasError,
   rowsMax,
   tooltip,
+  onBlur,
 }) => (
   <form autoComplete='off' style={{ width: '100%', position: 'relative' }}>
     <TextField
@@ -28,6 +29,7 @@ const InputCustom = ({
       name={label}
       value={value || ''}
       fullWidth
+      onBlur={onBlur}
       label={label ? localization.t(`labels.${label}`) : ''}
       type='text'
       InputProps={{
@@ -59,6 +61,7 @@ InputCustom.propTypes = {
   isMultiline: PropTypes.bool,
   hasError: PropTypes.bool,
   onChangeInput: PropTypes.func,
+  onBlur: PropTypes.func,
   helperText: PropTypes.string,
   rowsMax: PropTypes.number,
   tooltip: PropTypes.string,
