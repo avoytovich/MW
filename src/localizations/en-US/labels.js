@@ -633,6 +633,15 @@ const labels = {
   tags: 'Tags',
   locales: 'Locales',
   fallbackLanguage: 'Fallback language',
+  emailbuilder: 'Email Builder',
+  editor: 'Editor',
+  sampleData: 'Sample Data',
+  mergedSample: 'Merged Sample',
+  lastSeenSample: 'Last Seen Sample',
+  renderedHtml: 'Rendered HTML',
+  htmlCode: 'HTML code',
+  body: 'Body',
+  subj: 'Subject',
 };
 
 export default labels;

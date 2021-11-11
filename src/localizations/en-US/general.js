@@ -110,6 +110,8 @@ const general = {
   abandoned: 'Abandoned',
   licenses: 'Licenses',
   and: 'and',
+  noTmplData: 'No template data',
+  subjectIsMandatory: 'Subject is mandatory.',
 };
 
 export default general;

@@ -337,5 +337,21 @@ const getOneByIdApi = {
       url,
     });
   },
+  getEmailTemplate(id) {
+    const url = `/email-builder/template-definitions/${id}?includeNexwayTemplate=true`;
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getTemplateSamples({ customerId, name }) {
+    const url = `/email-builder/template-samples?format=full&version=0&customerId=${customerId}&name=${name}&size=1&page=0`;
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;
