@@ -1,12 +1,17 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
-import EmailBuilderDetailsView from './EmailBuilderDetailsView';
+import { Box, Button } from '@material-ui/core';
 
-import api from '../../api';
+import EmailBuilderDetailsView from './EmailBuilderDetailsView';
+import CloneTemplatePopup from './CloneTemplatePopup';
+import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
+
 import parentPaths from '../../services/paths';
 import { getCustomerName } from '../../services/helpers/customersHelper';
+
+import api from '../../api';
+import localization from '../../localization';
 
 import './emailBuilderDetailsScreen.scss';
 
@@ -21,6 +26,7 @@ const EmailBuilderDetailsScreen = () => {
   const [firstSampleData, setFirstSampleData] = useState(null);
   const [upd, setUpdate] = useState(0);
   const [selectedLang, setSelectedLang] = useState(null);
+  const [cloneModal, setCloneModal] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -36,7 +42,7 @@ const EmailBuilderDetailsScreen = () => {
           );
         }
       });
-  }, [upd]);
+  }, [upd, id]);
 
   useEffect(() => {
     if (curTemplateData) {
@@ -67,6 +73,20 @@ const EmailBuilderDetailsScreen = () => {
     }
   }, [templateData]);
 
+  const ExtraActions = () => (
+    <Box ml={2}>
+      <Button
+        id='clone-template-button'
+        color='primary'
+        size='large'
+        variant='contained'
+        onClick={() => setCloneModal(true)}
+      >
+        {localization.t('labels.cloneTemplate')}
+      </Button>
+    </Box>
+  );
+
   return (
     <DetailPageWrapper
       nxStateNotNeeded
@@ -80,6 +100,7 @@ const EmailBuilderDetailsScreen = () => {
       updateFunc={api.updateEmailTemplate}
       beforeSend={null}
       setUpdate={setUpdate}
+      extraActions={<ExtraActions />}
     >
       <EmailBuilderDetailsView
         updateData={setCurTemplateData}
@@ -89,6 +110,19 @@ const EmailBuilderDetailsScreen = () => {
         firstSampleData={firstSampleData}
         selectedLang={selectedLang}
         setSelectedLang={setSelectedLang}
+      />
+
+      <CloneTemplatePopup
+        open={cloneModal}
+        data={{
+          id,
+          storeId: curTemplateData?.storeId,
+          name: curTemplateData?.name,
+          customerId: curTemplateData?.customerId,
+          customer: customerName,
+          nexwayDefinition: curTemplateData?.nexwayTemplateDefinition?.id,
+        }}
+        handleClose={() => setCloneModal(false)}
       />
     </DetailPageWrapper>
   );

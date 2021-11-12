@@ -116,6 +116,7 @@ const Forms = {
     retrySending: 'Retry sending',
     generateQuote: 'Generate quote',
     checkout: 'Checkout',
+    clone: 'Clone',
   },
   links: {
     signUp: 'Sign Up',

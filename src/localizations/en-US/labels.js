@@ -642,6 +642,9 @@ const labels = {
   htmlCode: 'HTML code',
   body: 'Body',
   subj: 'Subject',
+  cloneTemplate: 'Clone template',
+  storeForTemplate: 'Store on which the new template will apply',
+  leaveUnset: 'Leave unset to apply template on all stores ...',
 };
 
 export default labels;

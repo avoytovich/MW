@@ -22,7 +22,7 @@ import api from '../../../api';
 
 const TemplateEditor = ({
   data,
-  firstSampleData,
+  firstSampleData = {},
   editorMode,
   updateData,
   selectedLang,
@@ -33,7 +33,7 @@ const TemplateEditor = ({
   const [curTab, setCurTab] = useState(0);
 
   useEffect(() => {
-    if (Object.values(data.templates).length && Object.keys(firstSampleData).length && editorMode === 'preview') {
+    if (data?.templates && Object.values(data?.templates).length && Object.keys(firstSampleData).length && editorMode === 'preview') {
       setTmplData(null);
 
       const curLocale = data.fallbackLocale && data.templates[data.fallbackLocale]

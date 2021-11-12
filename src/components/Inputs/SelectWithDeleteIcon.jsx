@@ -57,7 +57,7 @@ const SelectWithDeleteIcon = ({
       {selectOptions?.length ? (
         selectOptions.map((option) => (
           <MenuItem key={option.id} value={option.id}>
-            {option.value}
+            {option.value || option.name}
           </MenuItem>
         ))
       ) : (
