@@ -180,7 +180,7 @@ const navConfig = [
       {
         id: 'user-roles-profiles',
         title: sideBarTitle.userroles,
-        href: parentPaths.userroles,
+        href: parentPaths.userroles.main,
       },
       {
         id: 'event-notifications',

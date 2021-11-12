@@ -8,6 +8,7 @@ import {
 import api from '../../api';
 
 const useRoleDetailsData = (id, nxState) => {
+  const [isLoading, setLoading] = useState(true);
   const [role, setRole] = useState(null);
   const [curRole, setCurRole] = useState(null);
   const [selectOptions, setSelectOptions] = useState({
@@ -20,9 +21,10 @@ const useRoleDetailsData = (id, nxState) => {
 
   useEffect(() => {
     let roleRequest;
+    setLoading(true);
     if (id === 'add') {
       roleRequest = Promise.resolve({
-        data: { customerId: nxState.selectedCustomer.id },
+        data: { customerId: nxState.selectedCustomer?.id },
       });
     } else {
       roleRequest = api.getRoleById(id);
@@ -31,7 +33,12 @@ const useRoleDetailsData = (id, nxState) => {
       const checkedRole = requiredFields(data);
       setRole(JSON.parse(JSON.stringify(checkedRole)));
       setCurRole(JSON.parse(JSON.stringify(checkedRole)));
-    });
+      setLoading(false);
+    })
+      .catch(() => {
+        setLoading(false);
+      });
+
     Promise.allSettled([
       api.getConditionsOfAvailability(),
       api.getPrivileges({ size: 500 }),
@@ -56,11 +63,13 @@ const useRoleDetailsData = (id, nxState) => {
   }, [curRole]);
 
   return {
+    role,
     hasChanges,
     setUpdate,
     curRole,
     setCurRole,
     selectOptions,
+    isLoading,
   };
 };
 

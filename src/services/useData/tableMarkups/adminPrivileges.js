@@ -1,6 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
+  id: false,
   serviceName: true,
   availableActions: true,
   createDate: true,
@@ -9,6 +10,10 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    {
+      value: localization.t('labels.id'),
+      id: 'id',
+    },
     {
       value: localization.t('labels.serviceName'),
       id: 'serviceName',

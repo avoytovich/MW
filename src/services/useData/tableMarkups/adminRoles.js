@@ -1,6 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
+  id: false,
   name: true,
   rights: true,
   conditionsOfAvailability: true,
@@ -10,6 +11,8 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.id'), id: 'id' },
+
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     {
       value: localization.t('labels.rights'),
@@ -41,11 +44,9 @@ const generateData = (data) => {
     return {
       id: val.id,
       name: val.name,
-      rights: `${actionsAmount.length || 0} actions in ${
-        val.rights.length || 0
+      rights: `${actionsAmount.length || 0} actions in ${val.rights.length || 0
       } services`,
-      conditionsOfAvailability: `${
-        val.availabilityConditions?.length || 0
+      conditionsOfAvailability: `${val.availabilityConditions?.length || 0
       } conditions`,
       createDate: val.createDate,
       updateDate: val.updateDate,

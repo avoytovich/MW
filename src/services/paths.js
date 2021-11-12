@@ -50,7 +50,12 @@ const parentPaths = {
 
   users: `${defPath}/settings/users`,
   userprivileges: `${defPath}/settings/userprivileges`,
-  userroles: `${defPath}/settings/userroles`,
+  userroles: {
+    main: `${defPath}/settings/userroles`,
+    roles: `${defPath}/settings/userroles/roles`,
+    metaRoles: `${defPath}/settings/userroles/metaRoles`,
+    privileges: `${defPath}/settings/userroles/privileges`,
+  },
   notifications: {
     main: `${defPath}/settings/notifications`,
     notificationTab: `${defPath}/settings/notifications/notifications`,
