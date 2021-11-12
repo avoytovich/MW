@@ -118,30 +118,22 @@ const SignedRoutes = () => {
         path={`${parentPaths.customers}`}
         component={lazy(() => import('../../screens/CustomersScreen'))}
       />
-
-      {/* ToDo: remove when moved to another sections
-
       <Route
-        path={`${parentPaths.administration}/customers/:id`}
-        component={lazy(() => import('../../screens/AdministrationDetailsScreens/CustomerDetailScreen'))}
-      />
-      <Route
-        path={`${parentPaths.administration}/metaRoles/:id`}
+        path={`${parentPaths.userroles.metaRoles}/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'))}
       />
       <Route
-        path={`${parentPaths.administration}/roles/:id`}
+        path={`${parentPaths.userroles.roles}/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/RoleDetailScreen'))}
       />
-
       <Route
-        path={`${parentPaths.administration}/privileges/:id`}
+        path={`${parentPaths.userroles.privileges}/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/PrivilegesDetailScreen'))}
       />
       <Route
-        path={`${parentPaths.administration}`}
+        path={`${parentPaths.userroles.main}`}
         component={lazy(() => import('../../screens/AdministrationScreen'))}
-      /> */}
+      />
       <Route
         path={`${parentPaths.emailbuilder}/:id`}
         component={lazy(() => import('../../screens/EmailBuilderDetailsScreen'))}

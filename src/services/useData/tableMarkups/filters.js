@@ -1039,6 +1039,80 @@ const filters = {
       exactSearch: true,
     },
   ],
+  roles: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.createDate'),
+      type: 'date',
+    },
+  ],
+  metaRoles: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'description',
+      label: localization.t('labels.description'),
+      type: 'text',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.createDate'),
+      type: 'date',
+    },
+  ],
+  privileges: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'serviceName',
+      label: localization.t('labels.serviceName'),
+      type: 'text',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.createDate'),
+      type: 'date',
+    },
+  ],
 };
 
 export default filters;

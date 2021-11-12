@@ -1,6 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
+  id: false,
   name: true,
   customer: true,
   aggregatedRoles: true,
@@ -10,6 +11,8 @@ const defaultShow = {
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.id'), id: 'id' },
+
     { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     {
       value: localization.t('labels.customer'),
