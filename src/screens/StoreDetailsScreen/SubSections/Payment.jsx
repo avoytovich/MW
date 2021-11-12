@@ -11,27 +11,29 @@ import localization from '../../../localization';
 
 import '../storeDetailsScreen.scss';
 
-const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
-  const countriesOptions = getCountriesOptions();
+const Payment = ({
+  currentStoreData, setCurrentStoreData, selectOptions,
+}) => {
+  const allCountries = getCountriesOptions();
 
-  const handleUpdatePayment = (value, group) => {
+  const handleUpdateGroup = (targetEvent, key) => {
+    const newPaymentGroups = {
+      ...currentStoreData.paymentGroups,
+      [key]: { ...currentStoreData.paymentGroups[key], [targetEvent.name]: targetEvent.value },
+    };
+    setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
+  };
+
+  const handleUpdatePayment = (value) => {
     const newArray = [
       ...currentStoreData.designs.paymentComponent
         .rankedPaymentTabsByCountriesList,
     ];
-    if (group) {
-      newArray[group.index] = {
-        ...currentStoreData.designs.paymentComponent
-          .rankedPaymentTabsByCountriesList[group.index],
-        [group.key]: value,
-      };
-    } else {
-      newArray[0] = {
-        ...currentStoreData.designs.paymentComponent
-          .rankedPaymentTabsByCountriesList[0],
-        rankedPaymentTabs: value,
-      };
-    }
+    newArray[0] = {
+      ...currentStoreData.designs.paymentComponent
+        .rankedPaymentTabsByCountriesList[0],
+      rankedPaymentTabs: value,
+    };
 
     setCurrentStoreData({
       ...currentStoreData,
@@ -45,39 +47,21 @@ const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
     });
   };
   const handleAddGroup = () => {
-    const newArray = [
-      ...currentStoreData.designs.paymentComponent
-        .rankedPaymentTabsByCountriesList,
-    ];
-    newArray.push({ countries: [], rankedPaymentTabs: [] });
-    setCurrentStoreData({
-      ...currentStoreData,
-      designs: {
-        ...currentStoreData.designs,
-        paymentComponent: {
-          ...currentStoreData.designs.paymentComponent,
-          rankedPaymentTabsByCountriesList: newArray,
-        },
-      },
-    });
+    const keys = Object.keys(currentStoreData.paymentGroups);
+    const key = keys[keys.length - 1] + 1 || 0;
+    const newPaymentGroups = {
+      ...currentStoreData.paymentGroups,
+      [key]: { countries: [], rankedPaymentTabs: [] },
+    };
+    setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
   };
-  const handleRemoveGroup = (index) => {
-    const newArray = [
-      ...currentStoreData.designs.paymentComponent
-        .rankedPaymentTabsByCountriesList,
-    ];
-    newArray.splice(index, 1);
-    setCurrentStoreData({
-      ...currentStoreData,
-      designs: {
-        ...currentStoreData.designs,
-        paymentComponent: {
-          ...currentStoreData.designs.paymentComponent,
-          rankedPaymentTabsByCountriesList: newArray,
-        },
-      },
-    });
+
+  const handleRemoveGroup = (key) => {
+    const newPaymentGroups = { ...currentStoreData.paymentGroups };
+    delete newPaymentGroups[key];
+    setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
   };
+
   return (
     <Box display="flex" flexDirection="column" width={1}>
       <Box p={2}>
@@ -184,19 +168,16 @@ const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
           checkout page.
         </Typography>
       </Box>
-      {currentStoreData.designs.paymentComponent
-        .rankedPaymentTabsByCountriesList.length === 1 && (
-          <Box display="flex" alignItems="center" p={2}>
-            <AddCircleIcon color="primary" onClick={handleAddGroup} />
-            <Box pl={1}>Add Group</Box>
-          </Box>
-      )}
-      {currentStoreData.designs.paymentComponent.rankedPaymentTabsByCountriesList.map(
-        (item, index) => index !== 0 && (
-          <Box p={2} key={item.countries.join()}>
+      <Box display="flex" alignItems="center" p={2}>
+        <AddCircleIcon color="primary" onClick={handleAddGroup} />
+        <Box pl={1}>Add Group</Box>
+      </Box>
+      {Object.keys(currentStoreData.paymentGroups).map(
+        (key) => (
+          <Box p={2} key={key}>
             <Box pb={1}>
               <Typography>
-                {`${localization.t('labels.group')} #${index}`}
+                {`${localization.t('labels.group')} #${Object.keys(currentStoreData.paymentGroups).indexOf(key) + 1}`}
               </Typography>
             </Box>
             <Box width={1} pt={2}>
@@ -204,68 +185,39 @@ const Payment = ({ currentStoreData, setCurrentStoreData, selectOptions }) => {
                 <Grid item md={6} sm={12}>
                   <SelectWithChip
                     label="countries"
-                    value={item.countries}
-                    selectOptions={filterOptions(
-                      countriesOptions,
-                      currentStoreData.designs.paymentComponent
-                        .rankedPaymentTabsByCountriesList,
-                      index,
-                    )}
-                    onChangeSelect={(e) => {
-                      handleUpdatePayment(e.target.value, {
-                        key: 'countries',
-                        index,
-                      });
-                    }}
+                    name='countries'
+                    value={currentStoreData.paymentGroups[key].countries}
+                    selectOptions={filterOptions(allCountries, currentStoreData.paymentGroups, key)}
+                    onChangeSelect={(e) => handleUpdateGroup(e.target, key)}
                     onClickDelIcon={(chip) => {
-                      const newValue = [...item.countries].filter(
+                      const newValue = [...currentStoreData.paymentGroups[key].countries].filter(
                         (val) => val !== chip,
                       );
-                      handleUpdatePayment(newValue, {
-                        key: 'countries',
-                        index,
-                      });
+                      handleUpdateGroup({ value: newValue, name: 'countries' }, key);
                     }}
                   />
                 </Grid>
                 <Grid item md={5} sm={11}>
                   <SelectWithChip
+                    name='rankedPaymentTabs'
                     label="paymentTypes"
-                    value={item.rankedPaymentTabs}
+                    value={currentStoreData.paymentGroups[key].rankedPaymentTabs}
                     selectOptions={paymentDefaults}
-                    onChangeSelect={(e) => handleUpdatePayment(e.target.value, {
-                      key: 'rankedPaymentTabs',
-                      index,
-                    })}
+                    onChangeSelect={(e) => handleUpdateGroup(e.target, key)}
                     onClickDelIcon={(chip) => {
-                      const newValue = [...item.rankedPaymentTabs].filter(
-                        (val) => val !== chip,
-                      );
-                      handleUpdatePayment(newValue, {
-                        key: 'rankedPaymentTabs',
-                        index,
-                      });
+                      const newValue = [...currentStoreData.paymentGroups[key].rankedPaymentTabs]
+                        .filter(
+                          (val) => val !== chip,
+                        );
+                      handleUpdateGroup({ value: newValue, name: 'rankedPaymentTabs' }, key);
                     }}
                   />
                 </Grid>
                 <Grid item md={1} sm={1} className="iconWrapper">
-                  {index === 1 ? (
-                    <>
-                      <ClearIcon
-                        color="secondary"
-                        onClick={() => handleRemoveGroup(index)}
-                      />
-                      <AddCircleIcon
-                        color="primary"
-                        onClick={handleAddGroup}
-                      />
-                    </>
-                  ) : (
-                    <ClearIcon
-                      color="secondary"
-                      onClick={() => handleRemoveGroup(index)}
-                    />
-                  )}
+                  <ClearIcon
+                    color="secondary"
+                    onClick={() => handleRemoveGroup(key)}
+                  />
                 </Grid>
               </Grid>
             </Box>

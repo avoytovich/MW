@@ -149,7 +149,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
                   />
                 </Box>
                 <Button variant='contained' disabled>
-                  @nexway.com.
+                  @nexway.com
                 </Button>
               </Box>
             </Grid>

@@ -20,23 +20,20 @@ const formDesignOptions = (options, customers) => (options
       (customer) => customer.id === option.customerId,
     );
     return {
-      value: `${curCustomer ? curCustomer.name : option.customerId}: ${
-        option.name
+      value: `${curCustomer ? curCustomer.name : option.customerId}: ${option.name
       }`,
-      id: `${curCustomer ? curCustomer.id : option.customerId}: ${
-        option.name
+      id: `${curCustomer ? curCustomer.id : option.customerId}: ${option.name
       }`,
     };
   })
   : []);
 
-const filterOptions = (all, selected, currentIndex) => {
-  const availableCountries = [...selected].filter(
-    (item, i) => i !== 0 && i !== currentIndex,
-  );
-  let keys = [];
-  availableCountries.forEach((item) => {
-    keys = [...keys, ...item.countries];
+const filterOptions = (all, selected, curKey) => {
+  const obj = { ...selected };
+  delete obj[curKey];
+  const keys = [];
+  Object.keys(obj).forEach((key) => {
+    keys.push(...obj[key].countries);
   });
   const res = all.filter((option) => !keys.includes(option.id));
   return res;
@@ -94,7 +91,22 @@ const formatBeforeSending = (currentStoreData, currentStoreResources, resourcesH
       delete updatedData[key];
     });
   }
-
+  const newRankedPayment = [
+    currentStoreData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0],
+  ];
+  if (Object.keys(currentStoreData.paymentGroups).length > 0) {
+    Object.keys(currentStoreData.paymentGroups).forEach(
+      (key) => newRankedPayment.push(currentStoreData.paymentGroups[key]),
+    );
+  }
+  updatedData.designs = {
+    ...updatedData.designs,
+    paymentComponent: {
+      ...currentStoreData.designs.paymentComponent,
+      rankedPaymentTabsByCountriesList: newRankedPayment,
+    },
+  };
+  delete updatedData.paymentGroups;
   return updatedData;
 };
 export {

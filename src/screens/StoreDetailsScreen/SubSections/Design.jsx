@@ -53,7 +53,7 @@ const Design = ({
             {localization.t('labels.design')}
           </Typography>
         </Box>
-        <Box>
+        <Box px={6}>
           <Tabs
             value={curTab}
             indicatorColor="primary"

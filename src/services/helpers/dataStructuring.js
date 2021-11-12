@@ -57,6 +57,7 @@ const defaultStore = {
   installmentOptions: [],
   eligibleEndUserTypes: ['RESELLER_AUTHENTICATION_REQUIRED', 'BUYER_AUTHENTICATION_REQUIRED', 'AUTHENTICATION_NOT_REQUIRED'],
   externalContextGenerationParams: [],
+  paymentGroups: {},
   designs: {
     endUserPortal: {
       fontRef: {},
@@ -146,8 +147,18 @@ const productsVariations = (renewingProducts, productId) => (productId
     }, [])[0]
   : {});
 
+const formatePaymentGroups = (array) => {
+  const ar = [...array].splice(1);
+  const newParams = {};
+  ar.forEach((item, index) => {
+    newParams[index] = { ...item };
+  });
+  return newParams;
+};
+
 const storeRequiredFields = (store) => {
   const res = { ...defaultStore, ...store };
+
   if (store.designs) {
     const checkoutObj = {
       ...defaultStore.designs.checkout,
@@ -168,6 +179,12 @@ const storeRequiredFields = (store) => {
       resellerCheckout: resellerCheckoutObj,
     };
     res.designs = newDesigns;
+  }
+  if (res.designs.paymentComponent.rankedPaymentTabsByCountriesList.length > 1) {
+    const nwePaymentGroups = formatePaymentGroups(
+      res.designs.paymentComponent.rankedPaymentTabsByCountriesList,
+    );
+    res.paymentGroups = nwePaymentGroups;
   }
   return res;
 };
@@ -222,7 +239,9 @@ const backToFront = (
   // if field in both parent and variant, associate fieldName with properly set inheritable
   if (!parent) resource;
 
-  const handler = (resourceOwn, parentOwn) => createInheritableValue(resourceOwn.value, parentOwn.parentValue);
+  const handler = (resourceOwn, parentOwn) => createInheritableValue(
+    resourceOwn.value, parentOwn.parentValue,
+  );
   const inputA = R.mapObjIndexed(
     (value) => createInheritableValue(value, undefined),
     resource,
@@ -368,5 +387,6 @@ export {
   languagesOptionsFormatting,
   notificationRequiredFields,
   removeEmptyPropsInObject,
+  formatePaymentGroups,
   createInheritableValue,
 };

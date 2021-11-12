@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/styles';
 import { toast } from 'react-toastify';
 import { CSVLink } from 'react-csv';
 import { useLocation } from 'react-router-dom';
+import moment from 'moment';
 
 import {
   ViewColumn as ViewColumnIcon,
@@ -47,7 +48,7 @@ const useStyles = makeStyles({
     },
     '&:active': {
       color: '#4791db',
-    }
+    },
   },
 });
 
@@ -81,6 +82,19 @@ const TableActionsBar = ({
     });
   };
 
+  const formateData = (data) => {
+    const res = data.map((item) => {
+      const netItem = { ...item };
+      if (netItem.createDate) {
+        netItem.createDate = moment(netItem.createDate).format('D MMM YYYY');
+      }
+      if (netItem.updateDate) {
+        netItem.updateDate = moment(netItem.updateDate).format('D MMM YYYY');
+      }
+      return netItem;
+    });
+    return res;
+  };
   const filtersConfig = useSelector(({ tableData: { filters } }) => filters[scope]);
   const filtersCount = filtersConfig && Object.keys(filtersConfig).length;
 
@@ -156,7 +170,7 @@ const TableActionsBar = ({
                   onClick={(!headers || tableCheckedItems.length === 0)
                     ? (e) => e.preventDefault() : () => { }}
                   className="CSVLinkBlock"
-                  data={tableCheckedItems}
+                  data={formateData(tableCheckedItems)}
                   headers={csvHeaders}
                   ref={csvLink}
                   filename="table-export.csv"
