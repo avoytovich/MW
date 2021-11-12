@@ -72,14 +72,6 @@ const StoreDetailsScreen = () => {
       currentStoreResources,
       resourcesHasChanges,
     );
-
-    updatedData.saleLocales = updatedData?.saleLocales
-      ?.filter((locale) => !!updatedData.thankYouDesc[locale]);
-
-    if (!updatedData?.saleLocales?.length) {
-      delete updatedData.saleLocales;
-      delete updatedData.thankYouDesc;
-    }
     return updatedData;
   };
 
