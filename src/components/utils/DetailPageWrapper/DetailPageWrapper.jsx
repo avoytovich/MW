@@ -30,6 +30,7 @@ const DetailPageWrapper = ({
   updateFunc,
   beforeSend,
   setUpdate,
+  extraActions,
 }) => {
   const location = useLocation();
   const url = location.pathname.split('/');
@@ -84,19 +85,24 @@ const DetailPageWrapper = ({
             {name}
           </Typography>
         </Box>
-        <Zoom in={hasChanges}>
-          <Button
-            disabled={saveIsDisabled}
-            id='save-notification-button'
-            color='primary'
-            size='large'
-            type='submit'
-            variant='contained'
-            onClick={handleSave}
-          >
-            {localization.t('general.save')}
-          </Button>
-        </Zoom>
+
+        <Box display='flex'>
+          <Zoom in={hasChanges}>
+            <Button
+              disabled={saveIsDisabled}
+              id='save-notification-button'
+              color='primary'
+              size='large'
+              type='submit'
+              variant='contained'
+              onClick={handleSave}
+            >
+              {localization.t('general.save')}
+            </Button>
+          </Zoom>
+
+          {extraActions}
+        </Box>
       </Box>
       {children}
     </>
@@ -117,6 +123,7 @@ DetailPageWrapper.propTypes = {
   setUpdate: PropTypes.func,
   beforeSend: PropTypes.func,
   nxStateNotNeeded: PropTypes.bool,
+  extraActions: PropTypes.node,
 };
 
 export default DetailPageWrapper;

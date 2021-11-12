@@ -112,6 +112,7 @@ const general = {
   and: 'and',
   noTmplData: 'No template data',
   subjectIsMandatory: 'Subject is mandatory.',
+  templateCloned: 'Email template successfully cloned',
 };
 
 export default general;

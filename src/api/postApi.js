@@ -301,6 +301,15 @@ const postApi = {
       data,
     });
   },
+  cloneEmailTemplate(data) {
+    const url = '/email-builder/template-definitions/clone?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
 };
 
 export default postApi;
