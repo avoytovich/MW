@@ -23,6 +23,7 @@ import {
 import api from '../../api';
 
 const StoreDetailsScreen = () => {
+  // eslint-disable-next-line no-unused-vars
   const [customerName, setCustomerName] = useState(null);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -85,19 +86,19 @@ const StoreDetailsScreen = () => {
   useEffect(() => {
     let isCancelled = false;
 
-    let roleRequest;
+    let fetchedData;
 
     if (id === 'add') {
-      roleRequest = Promise.resolve({
+      fetchedData = Promise.resolve({
         data: {
           customerId: nxState?.selectedCustomer?.id,
         },
       });
     } else {
-      roleRequest = api.getStoreById(id);
+      fetchedData = api.getStoreById(id);
     }
 
-    roleRequest.then(({ data: store }) => {
+    fetchedData.then(({ data: store }) => {
       if (!isCancelled) {
         const checkedStore = storeRequiredFields(store);
         const resourcesArray = structureResources(store);

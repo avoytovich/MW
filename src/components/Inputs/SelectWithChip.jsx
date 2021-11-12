@@ -23,6 +23,7 @@ const SelectWithChip = ({
   isMultiple = true,
   helperText,
   redirectTo = '',
+  name,
 }) => {
   const handleClick = (condition, id) => {
     switch (condition) {
@@ -37,6 +38,7 @@ const SelectWithChip = ({
     <TextField
       fullWidth
       select
+      name={name}
       data-test={label}
       label={label ? localization.t(`labels.${label}`) : null}
       SelectProps={{
@@ -106,6 +108,7 @@ SelectWithChip.propTypes = {
   isMultiple: PropTypes.bool,
   helperText: PropTypes.string,
   redirectTo: PropTypes.string,
+  name: PropTypes.string,
 };
 
 export default SelectWithChip;
