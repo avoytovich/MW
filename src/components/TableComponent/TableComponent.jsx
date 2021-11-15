@@ -34,6 +34,7 @@ const TableComponent = ({
   customPath,
   errorHighlight,
   defaultShowColumn,
+  withDeletePopup,
   scope,
 
 }) => {
@@ -160,6 +161,7 @@ const TableComponent = ({
               noEditDeleteActions={noEditDeleteActions}
               customPath={customPath}
               errorHighlight={errorHighlight}
+              withDeletePopup
             />
           ))}
         </Box>

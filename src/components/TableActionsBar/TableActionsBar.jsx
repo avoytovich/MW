@@ -38,6 +38,7 @@ import localization from '../../localization';
 import ShowColumnPopper from './ShowColumnPopper';
 import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
 
+import DeletePopup from '../Popup/DeletePopup';
 import TableFilters from '../utils/TableFilters';
 
 const useStyles = makeStyles({
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
 const selectOptions = ['20', '50', '100', '200'];
 
 const TableActionsBar = ({
-  children, positionBottom, findByCC, scope, deleteFunc, headers,
+  children, positionBottom, findByCC, scope, deleteFunc, headers, handleDeleteItem, withDeletePopup,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showFilters, setShowFilters] = useState(null);
@@ -72,7 +73,7 @@ const TableActionsBar = ({
   })) : [];
 
   const handleDeleteItems = () => {
-    const promiseArray = tableCheckedItems.map((item) => deleteFunc(item.id));
+    const promiseArray = tableCheckedItems.map((item) => handleDeleteItem(item.id));
     Promise.allSettled(promiseArray).then((res) => {
       if (res[0].status !== 'rejected') {
         toast(localization.t('general.updatesHaveBeenSaved'));
@@ -81,7 +82,6 @@ const TableActionsBar = ({
       dispatch(setWasUpdated());
     });
   };
-
   const formateData = (data) => {
     const res = data.map((item) => {
       const netItem = { ...item };
@@ -179,9 +179,14 @@ const TableActionsBar = ({
                 <Tooltip arrow title="Export" placement="top">
                   <IconButton onClick={() => csvLink.current.link.click()} disabled={!headers || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><GetAppIcon /></IconButton>
                 </Tooltip>
-                <Tooltip arrow title="Delete" placement="top">
-                  <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
-                </Tooltip>
+                {!withDeletePopup
+                  && (
+                  <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon></DeleteIcon></IconButton>
+                  )}
+                {withDeletePopup
+                  && (
+                    <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><DeletePopup  deleteFunc={handleDeleteItems}/></IconButton>
+                  )}
                 {findByCC
                   && (
                     <Tooltip arrow title="Find by CC" placement="top">
@@ -216,4 +221,6 @@ TableActionsBar.propTypes = {
   findByCC: PropTypes.func,
   deleteFunc: PropTypes.func,
   headers: PropTypes.array,
+  handleDeleteItem: PropTypes.func,
+  withDeletePopup: PropTypes.bool,
 };
