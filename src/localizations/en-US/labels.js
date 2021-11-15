@@ -559,6 +559,7 @@ const labels = {
   testModeHTTPConfiguration: 'Test mode HTTP configuration',
   baseUrlTest: 'Base URL (Test)',
   operationExecutions: 'Operation Executions',
+  fulfillmentPackages: 'Fulfillment Packages',
   autoFulfillments: 'Auto Fulfillments',
   manualFulfillments: 'Manual Fulfillments',
   licenseProviderDefinitions: 'License Provider Definitions',

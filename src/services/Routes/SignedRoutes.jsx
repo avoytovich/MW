@@ -46,6 +46,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/ProductsScreen'))}
       />
       <Route
+        path={`${parentPaths.fulfillment.autoFulfillmentsTab}/:id`}
+        component={lazy(() => import('../../screens/AutoFulfillmentDetails'))}
+      />
+      <Route
         path={`${parentPaths.fulfillment.licenseProviderDefinitionsTab}/:id`}
         component={lazy(() => import('../../screens/LicenseProviderDefinitionDetails'))}
       />
