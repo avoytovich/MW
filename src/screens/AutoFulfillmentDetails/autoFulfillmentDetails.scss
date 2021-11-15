@@ -1,0 +1,30 @@
+@import '../../styles/variables.scss';
+
+.wrapper-fulfillment-details {
+  padding: 15px;
+}
+
+.wrapper-fulfillment-details .fulfillment {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.wrapper-fulfillment-details .fulfillment .fulfillment-value {
+  margin-right: 5px;
+}
+
+.wrapper-fulfillment-details .customer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  .customer-value-id {
+    margin-right: 5px;
+    cursor: pointer;
+    color: $clickable;
+  }
+}
+
+.wrapper-fulfillment-details .customer .customer-value-name {
+  margin-right: 5px;
+}

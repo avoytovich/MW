@@ -50,6 +50,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getFulfillmentsPartnerById(id) {
+    const url = `/fulfillments/partners/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getPaymentById(id) {
     const url = `/payment-proxy/payments/${id}`;
     return axiosInstance({
