@@ -64,7 +64,6 @@ const LicenseScreen = () => {
     <>
       <TableActionsBar
         scope={scope}
-        deleteFunc={api.deleteCartById}
         headers={markUp.headers}
       />
       <TableComponent
@@ -77,6 +76,7 @@ const LicenseScreen = () => {
         updatePage={updatePage}
         tableData={licenses}
         isLoading={isLoading}
+        noEditDeleteActions
       />
     </>
   );
