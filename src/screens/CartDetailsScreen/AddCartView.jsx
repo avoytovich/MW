@@ -23,71 +23,37 @@ import {
 } from 'formik-material-ui';
 import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { useSelector } from 'react-redux';
-import {
-  Formik, Form, Field,
-} from 'formik';
+import { Form, Field } from 'formik';
 
 import localization from '../../localization';
 import { priceCurrency } from '../../services/selectOptions/selectOptions';
+import {
+  tabLabelsAdd, checkBoxSource, checkBoxBuyerDetails, checkBoxSalutation,
+} from './utils';
 
-import './AddCartView.scss';
+import './addCartView.scss';
 
 const AddCartView = ({
-  initialValues,
   storeOpt,
   prefillOpt,
+  selectedEndUser,
   setSelectedEndUser,
   selectedStore,
   setSelectedStore,
   productOpt,
   countriesOpt,
-  saveData,
+  handleFormik: {
+    errors,
+    handleChange,
+    handleSubmit,
+    isSubmitting,
+    setFieldValue,
+    touched,
+    isValidating,
+    values,
+  },
 }) => {
   const [curTab, setCurTab] = useState(0);
-
-  const customerName = useSelector(
-    ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.name,
-  );
-
-  const tabLabels = ['general', 'endUser'];
-
-  const checkBoxSource = [
-    {
-      label: 'Acquisition',
-      value: 'ACQUISITION',
-    },
-    {
-      label: 'Manual Renewal',
-      value: 'MANUAL_RENEWAL',
-    },
-  ];
-
-  const checkBoxBuyerDetails = [
-    {
-      label: 'No information about buyer yet',
-      value: 'No_information_about_buyer_yet',
-    },
-    {
-      label: 'Fill-in details directly',
-      value: 'Fill-in_details_directly',
-    },
-    {
-      label: 'Refer to an existing end-user (private cart)',
-      value: 'Refer_to_an_existing_end-user_(private cart)',
-    },
-  ];
-
-  const checkBoxSalutation = [
-    {
-      label: 'Mr',
-      value: 'mr',
-    },
-    {
-      label: 'Mrs',
-      value: 'mrs',
-    },
-  ];
 
   const allowCountriesOpt = () => {
     if (selectedStore) {
@@ -113,16 +79,7 @@ const AddCartView = ({
     return error;
   };
 
-  const renderGeneral = (
-    errors,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    setFieldValue,
-    touched,
-    isValidating,
-    values,
-  ) => (
+  const renderGeneral = () => (
     <Box display='flex' flexDirection='column' alignItems='baseline' bgcolor='#fff'>
       <Box p={2}>
         <Typography gutterBottom variant="h4">
@@ -396,16 +353,7 @@ const AddCartView = ({
     </Box>
   );
 
-  const renderEndUser = (
-    errors,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    setFieldValue,
-    touched,
-    isValidating,
-    values,
-  ) => (
+  const renderEndUser = () => (
     <>
       <Box display='flex' flexDirection='column' alignItems='baseline' bgcolor='#fff'>
         <Box p={2}>
@@ -639,142 +587,46 @@ const AddCartView = ({
     </>
   );
 
-  const renderContent = (
-    errors,
-    handleChange,
-    handleSubmit,
-    isSubmitting,
-    setFieldValue,
-    touched,
-    isValidating,
-    values,
-  ) => {
+  const renderContent = () => {
     switch (curTab) {
       case 0:
-        return renderGeneral(
-          errors,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          setFieldValue,
-          touched,
-          isValidating,
-          values,
-        );
+        return renderGeneral();
       case 1:
-        return renderEndUser(
-          errors,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          setFieldValue,
-          touched,
-          isValidating,
-          values,
-        );
+        return renderEndUser();
       default:
-        return renderGeneral(
-          errors,
-          handleChange,
-          handleSubmit,
-          isSubmitting,
-          setFieldValue,
-          touched,
-          isValidating,
-          values,
-        );
+        return renderGeneral();
     }
   };
 
   return (
-    <>
-      <div className="wrapper-add-cart">
-        <Formik
-          className="formik"
-          initialValues={initialValues}
-          onSubmit={(val) => saveData(val)}
-        >
-          {({
-            errors,
-            handleChange,
-            handleSubmit,
-            isSubmitting,
-            setFieldValue,
-            touched,
-            isValidating,
-            values,
-          }) => (
-            <Form>
-              <Box
-                display='flex'
-                flexDirection='row'
-                m={2}
-                justifyContent='space-between'
-              >
-                <Box alignSelf='center'>
-                  <Box py={2}>
-                    <Breadcrumbs color='secondary' aria-label='breadcrumb'>
-                      <Typography color='primary'>
-                        {localization.t('labels.customerId')}
-                      </Typography>
-                      <Typography color='secondary'>
-                        {customerName}
-                      </Typography>
-                    </Breadcrumbs>
-                  </Box>
-                </Box>
-                <Box>
-                  <Button
-                    id="save-cart"
-                    type="submit"
-                    color="primary"
-                    size="large"
-                    variant="contained"
-                    disabled={values.buyerDetails.includes('Fill-in_details_directly') ? !values.phone : false}
-                  >
-                    {localization.t('general.save')}
-                  </Button>
-                </Box>
-              </Box>
-              <Box my={2} bgcolor='#fff'>
-                <Tabs
-                  value={curTab}
-                  indicatorColor='primary'
-                  textColor='primary'
-                  onChange={(event, newValue) => {
-                    setCurTab(newValue);
-                  }}
-                  aria-label='disabled tabs example'
-                >
-                  {tabLabels.map((tab) => (
-                    <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-                  ))}
-                </Tabs>
-              </Box>
-              <Grid container spacing={0} justify="center">
-                <Grid item xs={12} sm={12}>
-                  {renderContent(
-                    errors,
-                    handleChange,
-                    handleSubmit,
-                    isSubmitting,
-                    setFieldValue,
-                    touched,
-                    isValidating,
-                    values,
-                  )}
-                </Grid>
-              </Grid>
-            </Form>
-          )}
-        </Formik>
-      </div>
-    </>
+    <div className="wrapper-add-cart">
+      <Form>
+        <Box my={2} bgcolor='#fff'>
+          <Tabs
+            value={curTab}
+            indicatorColor='primary'
+            textColor='primary'
+            onChange={(event, newValue) => {
+              setCurTab(newValue);
+            }}
+            aria-label='disabled tabs example'
+          >
+            {tabLabelsAdd.map((tab) => (
+              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+            ))}
+          </Tabs>
+        </Box>
+        <Grid container spacing={0} justify="center">
+          <Grid item xs={12} sm={12}>
+            {renderContent()}
+          </Grid>
+        </Grid>
+      </Form>
+    </div>
   );
 };
 
 AddCartView.propTypes = {
-  initialValues: PropTypes.object,
   storeOpt: PropTypes.object,
   prefillOpt: PropTypes.object,
   selectedEndUser: PropTypes.object,
@@ -783,7 +635,7 @@ AddCartView.propTypes = {
   setSelectedStore: PropTypes.func,
   productOpt: PropTypes.object,
   countriesOpt: PropTypes.object,
-  saveData: PropTypes.func,
+  handleFormik: PropTypes.object,
 };
 
 export default AddCartView;

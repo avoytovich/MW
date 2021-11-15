@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { Formik, Form } from 'formik';
 
-import api from '../../../api';
-import localization from '../../../localization';
-import AddCartView from '../AddCartView';
-import parentPaths from '../../../services/paths';
-import SelectCustomerNotification from '../../../components/utils/SelectCustomerNotification';
+import api from '../../api';
+import localization from '../../localization';
+import AddCartView from './AddCartView';
+import parentPaths from '../../services/paths';
+import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
+import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 
 const AddCart = () => {
   const customerId = useSelector(
     ({ account: { nexwayState } }) => nexwayState?.selectedCustomer?.id,
   );
   const history = useHistory();
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const [isLoading, setLoading] = useState(true);
   const [storeOpt, setStoreOpt] = useState(null);
@@ -115,18 +118,58 @@ const AddCart = () => {
   if (!storeOpt) return null;
 
   return (
-    <AddCartView
+    <Formik
+      className="formik"
       initialValues={initialValues}
-      storeOpt={storeOpt}
-      prefillOpt={prefillOpt}
-      selectedStore={selectedStore}
-      selectedEndUser={selectedEndUser}
-      setSelectedEndUser={setSelectedEndUser}
-      setSelectedStore={setSelectedStore}
-      productOpt={productOpt}
-      countriesOpt={countriesOpt}
-      saveData={saveCart}
-    />
+      onSubmit={(val) => saveCart(val)}
+    >
+      {({
+        errors,
+        handleChange,
+        handleSubmit,
+        isSubmitting,
+        setFieldValue,
+        touched,
+        isValidating,
+        values,
+      }) => (
+        <Form>
+          <DetailPageWrapper
+            nxState={nxState}
+            id='add'
+            name={`${localization.t('general.new')} ${localization.t('general.cart')}`}
+            hasChanges
+            isLoading={isLoading}
+            curParentPath={parentPaths.carts}
+            addFunc={handleSubmit}
+            curData={values}
+            saveIsDisabled={values.buyerDetails.includes('Fill-in_details_directly') ? !values.phone : false}
+          >
+            <AddCartView
+              initialValues={initialValues}
+              storeOpt={storeOpt}
+              prefillOpt={prefillOpt}
+              selectedStore={selectedStore}
+              selectedEndUser={selectedEndUser}
+              setSelectedEndUser={setSelectedEndUser}
+              setSelectedStore={setSelectedStore}
+              productOpt={productOpt}
+              countriesOpt={countriesOpt}
+              handleFormik={{
+                errors,
+                handleChange,
+                handleSubmit,
+                isSubmitting,
+                setFieldValue,
+                touched,
+                isValidating,
+                values,
+              }}
+            />
+          </DetailPageWrapper>
+        </Form>
+      )}
+    </Formik>
   );
 };
 

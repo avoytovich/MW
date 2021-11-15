@@ -160,7 +160,7 @@ const SignedRoutes = () => {
       />
       <Route
         path={`${parentPaths.carts}/add`}
-        component={lazy(() => import('../../screens/CartsScreen/containers/AddCart'))}
+        component={lazy(() => import('../../screens/CartDetailsScreen/AddCart'))}
       />
       <Route
         path={`${parentPaths.carts}/:id`}

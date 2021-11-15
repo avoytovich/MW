@@ -310,6 +310,7 @@ const labels = {
   upSell: 'Up Sell',
   upgrade: 'Upgrade',
   cart: 'Cart',
+  carts: 'Carts',
   interstitial: 'Interstitial',
   purchase: 'Purchase',
   manualRenewal: 'Manual Renewal',
