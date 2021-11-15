@@ -10,7 +10,7 @@ import api from '../../../api';
 
 const ConfirmationPopup = ({ id, currentOrderData }) => {
   const [open, setOpen] = useState(false);
-  const [confirmation, setConfirmation] = useState({ to: currentOrderData.endUser.email, template: 'ORDERCONFIRMATION' });
+  const [confirmation, setConfirmation] = useState({ to: currentOrderData?.endUser.email, template: 'ORDERCONFIRMATION' });
 
   const sendConfirmationMailAgain = () => {
     api

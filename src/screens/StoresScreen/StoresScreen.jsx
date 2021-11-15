@@ -57,21 +57,17 @@ const StoresScreen = () => {
   const handleDeleteStore = (id, force) => api.deleteStoreById(id, force)
     .then(() => {
       setMakeUpdate((v) => v + 1);
-      toast(
-        `${localization.t('general.store')} ${id} ${localization.t(
-          'general.hasBeenSuccessfullyDeleted',
-        )}`,
-      );
     })
     .catch((msg) => {
       if (force) {
         toast.error(msg);
       } else {
-        toast.error(<ToastWithAction
-          text={msg}
-          buttonText={localization.t('general.force')}
-          actionFn={() => handleDeleteStore(id, true)}
-        />);
+        handleDeleteStore(id, true);
+        toast(
+          `${localization.t('general.store')} ${id} ${localization.t(
+            'general.hasBeenSuccessfullyDeleted',
+          )}`,
+        );
       }
     });
 
@@ -91,6 +87,8 @@ const StoresScreen = () => {
         scope={scope}
         deleteFunc={api.deleteStoreById}
         headers={markUp.headers}
+        handleDeleteItem={handleDeleteStore}
+        withDeletePopup
       >
         <Box>
           <Button
@@ -115,6 +113,7 @@ const StoresScreen = () => {
         updatePage={updatePage}
         tableData={stores}
         isLoading={isLoading}
+        withDeletePopup
       />
     </>
   );

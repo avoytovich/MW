@@ -34,7 +34,7 @@ const CancelOrderPopup = ({ currentOrderData }) => {
 
   return (
     <>
-      <Button fullWidth display='flex' color='inherit' onClick={handleClickOpen}>
+      <Button fullWidth display='flex' color='inherit' onClick={(e) => { e.stopPropagation(); handleClickOpen() }}>
         {localization.t('forms.text.cancelOrder')}
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>

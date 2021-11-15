@@ -8,6 +8,7 @@ import {
   Grid,
   Box,
   Checkbox,
+  Button,
 } from '@material-ui/core';
 
 import {
@@ -19,6 +20,7 @@ import {
 } from '@material-ui/icons';
 
 import { toast } from 'react-toastify';
+import DeletePopup from '../Popup/DeletePopup';
 
 import FullNameAvatar from '../utils/FullNameAvatar';
 import localization from '../../localization';
@@ -36,6 +38,7 @@ const TableRowComponent = ({
   noEditDeleteActions,
   customPath,
   errorHighlight,
+  withDeletePopup,
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
@@ -167,13 +170,19 @@ const TableRowComponent = ({
         <Grid item xs md={4} style={{ minWidth: '200px' }}>
           {rowHover && !customPath && (
           <Grid>
-            <Box mt={2} textAlign='center'>
-              {!noActions && !noEditDeleteActions && (
+            <Box mt={2} display='flex' justifyContent='center' textAlign='center'>
+              {!noActions && !noEditDeleteActions && !withDeletePopup &&(
               <DeleteIcon
                 onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
                 className="deleteIcon icons"
               />
               )}
+              {withDeletePopup
+                && (
+                <Box onClick={(e) => { e.stopPropagation(); }}>
+                  <DeletePopup id={rowItem.id} deleteFunc={handleDeleteItem} />
+                </Box>
+                )}
               {!noEditDeleteActions && (
               <EditIcon className="editIcon icons" />
               )}
@@ -203,6 +212,7 @@ TableRowComponent.propTypes = {
   noEditDeleteActions: PropTypes.bool,
   customPath: PropTypes.string,
   errorHighlight: PropTypes.string,
+  withDeletePopup: PropTypes.bool,
 };
 
 export default TableRowComponent;
