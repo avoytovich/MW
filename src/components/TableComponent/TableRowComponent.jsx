@@ -141,12 +141,11 @@ const TableRowComponent = ({
     }
     return null;
   };
-
   return (
-    <Box className={`tableRowGrid ${rowItem[errorHighlight] ? 'error-row' : ''}`} data-id={rowItem.id} boxShadow={rowHover ? 2 : 0}>
+    <Box className={`tableRowGrid ${rowItem[errorHighlight] ? 'error-row' : '', checked ? 'selected-row' : ''}` } data-id={rowItem.id}>
       <Grid
         data-test='tableRow'
-        spacing={1}
+        style={{ paddingLeft: '20px' }}
         onClick={() => customPath !== 'disabled' && history.push(customPath ? parsePath(customPath) : `${history.location.pathname}/${rowItem.id}`)}
         onMouseOver={() => setRowHover(true)}
         onMouseLeave={() => setRowHover(false)}

@@ -2,21 +2,20 @@
 
 .tableRowGrid {
   display: flex;
-  padding: 2px 5px;
-  padding-left: 20px;
+  padding: 2px 0px;
   min-height: 58px;
-
-  &:nth-of-type(odd) {
+  :hover {
     background-color: $tablesOddRow;
-  }
-  &:nth-of-type(even) {
-    background-color: $tablesEvenRow;
   }
 
   &.error-row {
     .MuiTypography-colorSecondary {
       color: #fff;
     }
+  }
+
+  &.selected-row {
+    background-color: #f9f5ff;
   }
 
   .tableCellItemGrid {
@@ -94,6 +93,8 @@
     }
   }
   .headers {
+    display: flex;
+    align-items: center;
     min-width: 175px;
     padding: 5px 0;
   }
