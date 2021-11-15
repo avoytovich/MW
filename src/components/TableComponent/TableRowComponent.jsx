@@ -23,7 +23,6 @@ import { toast } from 'react-toastify';
 import FullNameAvatar from '../utils/FullNameAvatar';
 import localization from '../../localization';
 import PriceNumberFormat from '../PriceNumberFormat';
-import parentPaths from '../../services/paths';
 import './TableComponent.scss';
 
 const TableRowComponent = ({
@@ -82,10 +81,7 @@ const TableRowComponent = ({
         valueToShow = <PriceNumberFormat number={rowItem[item.id]} currency={rowItem.currency} />;
       } else if (item.id === 'name') {
         valueToShow = (
-          <Typography
-            className="name-value"
-            onClick={() => history.push(`${parentPaths.productlist}/${rowItem.productId}`)}
-          >
+          <Typography>
             {rowItem[item.id]}
           </Typography>
         );
