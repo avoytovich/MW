@@ -40,50 +40,61 @@ const PaginationComponent = ({
       ? calculatePaginationNumbers(exitConditin === 0 && min > 2 ? -2 : -1)
       : res;
   };
-
   const pageNumbers = calculatePaginationNumbers();
 
   return (
     (totalPages > 1
-    && (
-    <Grid className="paginationBlock">
-      <Grid spacing={5} container justify={location} direction="row">
-        <Grid item>
-          <Grid spacing={3} container justify="center" direction="row" className="paginationNumbers">
-            {pageNumbers.map((item) => (
-              <Grid item key={`page ${item}`}>
+      && (
+        <Grid className="paginationBlock">
+          <Grid spacing={5} container justify={location} direction="row">
+            {pageNumbers?.[0] !== 1
+              && (
+              <Grid item>
                 <Typography
                   color="secondary"
-                  className={item === currentPage ? 'currentPage' : ''}
-                  onClick={() => updatePage(item)}
+                  onClick={() => updatePage(1)}
+                  className="lastPaginationPage"
                 >
-                  {item}
+                  {localization.t('general.first')}
                 </Typography>
               </Grid>
-            ))}
+              )}
+            <Grid item>
+              <Grid spacing={3} container justify="center" direction="row" className="paginationNumbers">
+                {pageNumbers.map((item) => (
+                  <Grid item key={`page ${item}`}>
+                    <Typography
+                      color="secondary"
+                      className={item === currentPage ? 'currentPage' : ''}
+                      onClick={() => updatePage(item)}
+                    >
+                      {item}
+                    </Typography>
+                  </Grid>
+                ))}
+              </Grid>
+            </Grid>
+            {pageNumbers[pageNumbers.length - 1] !== totalPages && (
+              <Grid item>
+                <Typography
+                  color="secondary"
+                  onClick={() => updatePage(totalPages)}
+                  className="lastPaginationPage"
+                >
+                  {localization.t('general.last')}
+                </Typography>
+              </Grid>
+            )}
+            {pageNumbers[pageNumbers.length - 1] !== currentPage && (
+              <Grid item>
+                <Typography onClick={() => updatePage(currentPage + 1)} className="nextPaginationPage">
+                  {localization.t('general.next')}
+                </Typography>
+              </Grid>
+            )}
           </Grid>
         </Grid>
-        {pageNumbers[pageNumbers.length - 1] !== totalPages && (
-        <Grid item>
-          <Typography
-            color="secondary"
-            onClick={() => updatePage(totalPages)}
-            className="lastPaginationPage"
-          >
-            {localization.t('general.last')}
-          </Typography>
-        </Grid>
-        )}
-        {pageNumbers[pageNumbers.length - 1] !== currentPage && (
-        <Grid item>
-          <Typography onClick={() => updatePage(currentPage + 1)} className="nextPaginationPage">
-            {localization.t('general.next')}
-          </Typography>
-        </Grid>
-        )}
-      </Grid>
-    </Grid>
-    )
+      )
     )
   );
 };
