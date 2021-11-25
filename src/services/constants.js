@@ -16,6 +16,7 @@ const VALID_REFRESH_SCOPES = ['productlist',
   'roles',
   'metaRoles',
   'privileges',
+  'onboarding',
 ];
 const VALID_FILTER_SCOPES = [
   'productlist',
@@ -47,6 +48,7 @@ const VALID_FILTER_SCOPES = [
   'roles',
   'metaRoles',
   'privileges',
+  'onboarding',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];

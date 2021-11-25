@@ -123,6 +123,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/CustomersScreen'))}
       />
       <Route
+        path={`${parentPaths.onboarding}`}
+        component={lazy(() => import('../../screens/OnboardingScreen'))}
+      />
+      <Route
         path={`${parentPaths.userroles.metaRoles}/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'))}
       />

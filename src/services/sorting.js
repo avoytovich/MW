@@ -28,6 +28,7 @@ export const sortKeys = {
   campaigns: 'campaignsSortParams',
   discounts: 'discountsSortParams',
   emailbuilder: 'emailbuilderSortParams',
+  onboarding: 'onboarding',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));

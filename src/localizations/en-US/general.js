@@ -94,6 +94,7 @@ const general = {
   addCart: 'Add Cart',
   endUsersGroups: 'End-users Groups',
   addEndUsersGroups: 'Add End-users Groups',
+  onboarding: 'Onboarding',
   fulfillmentPackages: 'Fulfillment packages',
   findColumn: 'Find column',
   hideAll: 'Hide All',

@@ -153,6 +153,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteOnboardingById(id) {
+    const url = `/onboarding/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;

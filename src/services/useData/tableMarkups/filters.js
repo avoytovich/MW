@@ -1113,6 +1113,54 @@ const filters = {
       type: 'date',
     },
   ],
+  onboarding: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'text',
+    },
+    {
+      id: 'customer',
+      label: localization.t('labels.customer'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'lastUpdate',
+      label: localization.t('labels.lastUpdate'),
+      type: 'date',
+    },
+    {
+      id: 'companyName',
+      label: localization.t('labels.companyName'),
+      type: 'text',
+    },
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
+    },
+    {
+      id: 'email',
+      label: localization.t('labels.email'),
+      type: 'text',
+    },
+  ],
 };
 
 export default filters;
