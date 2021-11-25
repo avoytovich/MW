@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import ReactQuill from 'react-quill';
 import PropTypes from 'prop-types';
 
 import { Box } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
 import { SelectCustom } from '../../../components/Inputs';
 
 import InheritanceField from '../InheritanceField';
@@ -15,6 +12,7 @@ import localization from '../../../localization';
 
 import 'react-quill/dist/quill.bubble.css';
 import './localizations.scss';
+import TinyEditor from '../../../components/TinyEditor';
 
 const LocalizationInputs = ({
   data = {},
@@ -24,100 +22,66 @@ const LocalizationInputs = ({
   setNewTabValues,
 }) => {
   const [newData, setNewData] = useState({ ...data });
-  const [isEditing, setEditing] = useState(false);
-  const editor = useRef();
 
   useEffect(() => {
-    setNewData(() => ({ ...data }));
+    if (JSON.stringify(data) !== JSON.stringify(newData)) {
+      setNewData(() => ({ ...data }));
+    }
   }, [data]);
 
   useEffect(() => {
     const hasChanges = JSON.stringify(data) !== JSON.stringify(newData);
+
     if (hasChanges) {
       setNewTabValues({ ...newData });
     }
+
     return () => {};
   }, [newData]);
 
-  const updateNewData = (name) => {
-    const curContent = editor.current.getEditorContents();
+  const updateNewData = (e, name) => {
+    const curContent = e.target.getContent();
+    if (!name
+        || (!curContent && !checkValue(newData[name], newData[name]?.state))
+        || (JSON.stringify(curContent) === JSON.stringify(
+          checkValue(newData[name], newData[name]?.state),
+        ))) return;
 
     newData[name]?.state
       ? handleChange(
         name,
-        curContent === '<p><br></p>'
-          ? {
-            ...newData[name],
-            value: '',
-          }
-          : {
-            ...newData[name],
-            value: curContent,
-          },
+        {
+          ...newData[name],
+          value: curContent,
+        },
       )
-      : handleChange(name, curContent === '<p><br></p>' ? '' : curContent);
-    setEditing(false);
+      : handleChange(name, curContent);
   };
 
   const LocalizationInput = ({ val }) => (
-
     <InheritanceField
       field={val}
       onChange={setNewData}
-      value={newData[val]}
+      value={newData[val] || ''}
       parentId={parentId}
       currentProductData={newData}
     >
-      {isEditing === val ? (
-        <Box position='relative'>
-          <ReactQuill
-            theme='bubble'
-            value={checkValue(newData[val], newData[val]?.state)}
-            placeholder={localization.t(`labels.${val}`)}
-            ref={editor}
-          />
-
-          <SaveIcon
-            className='edit-loc-field'
-            color='secondary'
-            onClick={() => updateNewData(val)}
-          />
-        </Box>
-      ) : (
-        <Box position='relative' className='localization-input-holder'>
-          <div className={`localization-text-legend ${newData[val] ? '' : 'empty'}`}>
-            <span className='MuiFormLabel-root'>{localization.t(`labels.${val}`)}</span>
-          </div>
-
-          <div
-            className='localization-text-block'
-            dangerouslySetInnerHTML={{
-              __html: checkValue(newData[val], newData[val]?.state),
-            }}
-          />
-
-          {!newData[val]?.state || newData[val]?.state === 'overrides' ? (
-            <EditIcon
-              className='edit-loc-field'
-              color='secondary'
-              onClick={() => setEditing(val)}
-            />
-          ) : null}
-        </Box>
-      )}
+      <TinyEditor
+        initialValue={newData[val] ? (checkValue(newData[val], newData[val]?.state) || '') : ''}
+        placeholder={localization.t(`labels.${val}`)}
+        onChange={(e) => updateNewData(e, val)}
+      />
     </InheritanceField>
   );
-  
+
   LocalizationInput.propTypes = {
     val: PropTypes.string,
   };
 
-  const stylesForVariations = parentId
-    ? {
-      display: 'grid',
-      gridTemplateColumns: '1fr 50px',
-    }
-    : {};
+  const stylesForVariations = parentId ? {
+    display: 'grid',
+    gridTemplateColumns: '1fr 50px',
+  } : {};
 
   return (
     <Box display='flex' width='100%' flexDirection='column'>

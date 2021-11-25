@@ -209,6 +209,7 @@ const LocalizedContent = ({
   useEffect(() => getValues(), [value]);
   useEffect(() => {
     const hasChanges = JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
+
     if (hasChanges) {
       makeNewData();
     } else if (JSON.stringify(curData) === initData) {
@@ -281,15 +282,17 @@ const LocalizedContent = ({
         </Box>
 
         <Box display='flex' flexDirection='row' alignItems='baseline' width='80%'>
-          <LocalizationInputs
-            handleChange={handleChange}
-            setNewTabValues={setNewTabValues}
-            data={newTabValues}
-            isDefault={
-              value === curData?.fallbackLocale || value === curData?.fallbackLocale?.value
-            }
-            parentId={parentId}
-          />
+          {!!value && (
+            <LocalizationInputs
+              handleChange={handleChange}
+              setNewTabValues={setNewTabValues}
+              data={newTabValues}
+              isDefault={
+                value === curData?.fallbackLocale || value === curData?.fallbackLocale?.value
+              }
+              parentId={parentId}
+            />
+          )}
         </Box>
       </Box>
     </>
