@@ -60,6 +60,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "4.0.0-alpha.56",
     "@material-ui/pickers": "3.2.10",
+    "@tinymce/tinymce-react": "3.13.0",
     "ace-builds": "1.4.12",
     "axios": ">=0.21.1",
     "babel-plugin-transform-es2015-modules-commonjs": "6.26.2",
@@ -74,6 +75,7 @@
     "i18n-js": "3.7.1",
     "jwt-decode": "3.0.0-beta.2",
     "material-ui-dropzone": "3.5.0",
+    "mini-css-extract-plugin": "2.4.5",
     "moment": "2.29.1",
     "moment-timezone": "^0.5.33",
     "prop-types": "15.7.2",
@@ -92,6 +94,7 @@
     "react-transition-group": "4.4.1",
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
-    "style-loader": "1.2.1"
+    "style-loader": "1.2.1",
+    "tinymce": "5.10.2"
   }
 }

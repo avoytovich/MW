@@ -1,0 +1,31 @@
+@import '../../styles/variables.scss';
+
+#root {
+  .mce-content-body {
+    border: 1px solid $disabledGray;
+    padding: 17px 10px;
+    min-height: 56px;
+    border-radius: 4px;
+  
+    &.mce-edit-focus {
+      border-color: $navItemButtonActive;
+    }
+  
+    &:focus-visible {
+      outline: none;
+    }
+  
+    &:hover {
+      border-color: $darkGray;
+    }
+  
+    &:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before {
+      color: $discountInputText;
+      left: 10px;
+    }
+
+    ul, ol{
+      padding-left: 20px;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const fileDep = path.resolve(__dirname, 'dist');
@@ -7,6 +8,17 @@ const fileDep = path.resolve(__dirname, 'dist');
 module.exports = (env) => ({
   context: __dirname,
   entry: ['@babel/polyfill', './src/index.jsx'],
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        tinymceVendor: {
+          test: /[\\/]node_modules[\\/](tinymce)[\\/](.*js|.*skin.css)|[\\/]plugins[\\/]/,
+          name: 'tinymce',
+        },
+      },
+    },
+  },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'main.js',
@@ -20,6 +32,10 @@ module.exports = (env) => ({
       {
         test: /\.(js|jsx)$/,
         use: 'babel-loader',
+      },
+      {
+        test: /skin\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(s[ac]ss|css)$/i,
