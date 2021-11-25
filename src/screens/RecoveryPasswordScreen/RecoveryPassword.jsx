@@ -8,6 +8,8 @@ import {
   FormHelperText,
   CircularProgress,
 } from '@material-ui/core';
+import { ThemeProvider } from "@material-ui/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 import { Formik } from 'formik';
 
 import * as validators from '../../services/helpers/inputValidators';
@@ -29,6 +31,26 @@ const RecoveryPassword = () => {
         setErrors({ message: error.response.data.error });
       });
   };
+
+  const theme = createMuiTheme();
+  theme.palette.resetBtn = theme.palette.augmentColor({
+    main: "#19a6ff",
+    dark: "#0971b3",
+  });
+
+  const isResetBtn = style => props =>
+    props.color === "resetBtn" && props.variant === "contained" ? style : {};
+
+    theme.overrides = {
+      MuiButton: {
+        root: {
+          backgroundColor: isResetBtn(theme.palette.resetBtn.main),
+          "&:hover": {
+            backgroundColor: isResetBtn(theme.palette.resetBtn.dark)
+          }
+        }
+      }
+    };
 
   return emailSend ? (
     <Box mb={4}>
@@ -83,22 +105,26 @@ const RecoveryPassword = () => {
                 type="email"
                 value={values.email}
                 variant="outlined"
+                inputProps={{style: { WebkitBoxShadow: "0 0 0 1000px white inset" }}}
               />
               <Box mt={2}>
-                <Button
-                  color="primary"
-                  disabled={
-                    Object.keys(errors).length !== 0
-                    || !values.email
-                    || isSubmitting
-                  }
-                  fullWidth
-                  size="large"
-                  type="submit"
-                  variant="contained"
-                >
-                  {isSubmitting ? <CircularProgress size={26} /> : localization.t('general.reset')}
-                </Button>
+                <ThemeProvider theme={theme}>
+                  <Button
+                    color="resetBtn"
+                    disabled={
+                      Object.keys(errors).length !== 0
+                      || !values.email
+                      || isSubmitting
+                    }
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    style={{ borderRadius: 0, color: '#ffffff' }}
+                    >
+                    {isSubmitting ? <CircularProgress size={26} /> : localization.t('general.reset')}
+                  </Button>
+                </ThemeProvider>
                 {errors.message && (
                   <Box mt={3}>
                     <FormHelperText error>{errors.message}</FormHelperText>
