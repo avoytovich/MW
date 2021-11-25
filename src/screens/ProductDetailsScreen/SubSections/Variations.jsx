@@ -26,6 +26,8 @@ import { SelectCustom } from '../../../components/Inputs';
 import Popup from '../../../components/Popup';
 import AddVariationModal from '../../../components/utils/Modals/AddVariationModal';
 
+import './productFile.scss';
+
 const Variations = ({
   selectOptions,
   setProductData,
@@ -123,11 +125,36 @@ const Variations = ({
                       <TableCell component='th' scope='row'>
                         {id}
                       </TableCell>
-                      <TableCell align='center'>{status || ''}</TableCell>
-                      <TableCell align='center'>{publisherRefId || '-'}</TableCell>
-                      <TableCell align='center'>{lifeTime || ''}</TableCell>
-                      <TableCell align='center'>{fulfillmentTemplate || ''}</TableCell>
-                      <TableCell align='center'>{subscriptionTemplate || ''}</TableCell>
+                      <TableCell 
+                        align='center' 
+                        className={`status-${status === 'ENABLED' ? 'enabled' : 'disabled'}`}
+                      >
+                        {status || ''}
+                      </TableCell>
+                      <TableCell 
+                        align='center' 
+                        style={{ color: currentProductData.publisherRefId !== publisherRefId && '#719ded' }}
+                      >
+                        {publisherRefId || '-'}
+                      </TableCell>
+                      <TableCell 
+                        align='center' 
+                        style={{ color: currentProductData.lifeTime !== lifeTime && '#719ded' }}
+                      >
+                        {lifeTime || ''}
+                      </TableCell>
+                      <TableCell 
+                        align='center' 
+                        style={{ color: currentProductData.fulfillmentTemplate !== fulfillmentTemplate && '#719ded' }}
+                      >
+                        {fulfillmentTemplate || ''}
+                      </TableCell>
+                      <TableCell 
+                        align='center' 
+                        style={{ color: currentProductData.subscriptionTemplate !== subscriptionTemplate && '#719ded' }}
+                      >
+                        {subscriptionTemplate || ''}
+                      </TableCell>
                       {variations?.availableVariables?.map(
                         ({ fieldValue, field, localizedValue }) => (
                           <TableCell key={field} align='center'>

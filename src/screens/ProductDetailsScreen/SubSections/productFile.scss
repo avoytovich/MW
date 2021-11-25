@@ -104,3 +104,11 @@
     }
   }
 }
+
+.status-enabled {
+  color: $statusEnabled;
+}
+
+.status-disabled {
+  color: $validationRed;
+}
