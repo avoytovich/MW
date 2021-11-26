@@ -32,6 +32,7 @@ const general = {
   updatesHaveBeenSaved: 'Updates have been saved!',
   sendByEmailByCartIdSuccessed: 'Cart sent by email',
   sendByEmailByCartIdFailure: 'Can\'t send cart by email',
+  resendEmail: 'Re-send email',
   retrySendingNotificationSuccessed: 'A retry on notification has been forced',
   retrySendingNotificationFailure: 'A retry on notification hasn\'t been forced',
   selectImage: ' Select image',

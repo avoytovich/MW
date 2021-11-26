@@ -85,6 +85,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getOnboardingById(id) {
+    const url = `/onboarding/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getPriceById(id) {
     const url = `/prices/${id}`;
     return axiosInstance({
