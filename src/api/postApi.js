@@ -160,6 +160,14 @@ const postApi = {
       data,
     });
   },
+  sendConfirmationMailOnboarding(onboardingId, data) {
+    const url = `/onboarding/${onboardingId}/email/send?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   resyncPayments(customerId) {
     const url = `/payment-proxy/payments/${customerId}/resync?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
     return axiosInstance({

@@ -123,10 +123,6 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/CustomersScreen'))}
       />
       <Route
-        path={`${parentPaths.onboarding}`}
-        component={lazy(() => import('../../screens/OnboardingScreen'))}
-      />
-      <Route
         path={`${parentPaths.userroles.metaRoles}/:id`}
         component={lazy(() => import('../../screens/AdministrationDetailsScreens/MetaRoleDetailScreen'))}
       />
@@ -250,6 +246,14 @@ const SignedRoutes = () => {
       <Route
         path={`${defPath}${parentPaths.endusers}`}
         component={lazy(() => import('../../screens/EndUsersScreen'))}
+      />
+      <Route
+        path={`${parentPaths.onboarding}/:id`}
+        component={lazy(() => import('../../screens/OnboardingDetailsScreen'))}
+      />
+      <Route
+        path={`${parentPaths.onboarding}`}
+        component={lazy(() => import('../../screens/OnboardingScreen'))}
       />
 
       <Route

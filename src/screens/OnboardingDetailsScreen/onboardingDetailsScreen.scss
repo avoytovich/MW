@@ -1,0 +1,10 @@
+@import '../../styles/variables.scss';
+
+.wrapper-onboarding-general {
+  .onboarding-customer {
+    .customer-value {
+      cursor: pointer;
+      color: $clickable;
+    }
+  }
+}
