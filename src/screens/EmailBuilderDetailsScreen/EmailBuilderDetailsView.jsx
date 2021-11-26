@@ -6,7 +6,10 @@ import {
   Tabs,
   Tab,
   Button,
+  Typography,
 } from '@material-ui/core';
+
+import moment from 'moment';
 
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import EditIcon from '@material-ui/icons/Edit';
@@ -20,6 +23,8 @@ import localization from '../../localization';
 
 import './emailBuilderDetailsScreen.scss';
 
+import api from '../../api';
+
 const EmailBuilderDetailsView = ({
   customerName,
   templateData,
@@ -28,9 +33,26 @@ const EmailBuilderDetailsView = ({
   updateData,
   selectedLang,
   setSelectedLang,
+  setHasChanges,
+  saveCustomSample,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [editorMode, setEditorMode] = useState('preview');
+  const [activatedCapture, setActivatedCapture] = useState(false);
+
+  const activateCapture = () => {
+    const captureData = {
+      customerId: samplesData?.customerId,
+      dbVersion: samplesData?.dbVersion,
+      id: samplesData?.id,
+      inDevUntil: moment().add(1, 'hours').valueOf(),
+      name: samplesData?.name,
+    };
+
+    api
+      .updateEmailTemplateSample(samplesData?.id, captureData)
+      .then(() => setActivatedCapture(true));
+  };
 
   const ExtraActions = () => (
     <Box display='flex' justifyContent='space-between' width='140px' my='-6px'>
@@ -49,6 +71,26 @@ const EmailBuilderDetailsView = ({
       >
         <EditIcon />
       </Button>
+    </Box>
+  );
+
+  const SampleExtraActions = () => (
+    <Box display='flex' justifyContent='flex-end' alignItems='center' width='250px'>
+      {moment().isBefore(samplesData.inDevUntil) || activatedCapture ? (
+        <Typography variant='h5' color='primary'>Capture is activated</Typography>
+      ) : (
+        <>
+          <Typography variant='h5' style={{ marginRight: '10px' }}>Activate capture</Typography>
+
+          <Button
+            variant='outlined'
+            color={editorMode === 'preview' ? 'primary' : 'default'}
+            onClick={activateCapture}
+          >
+            Activate
+          </Button>
+        </>
+      )}
     </Box>
   );
 
@@ -94,8 +136,15 @@ const EmailBuilderDetailsView = ({
       )}
 
       {curTab === 2 && (
-        <CustomCard title={localization.t('labels.sampleData')}>
-          <SampleData data={samplesData} />
+        <CustomCard
+          title={localization.t('labels.sampleData')}
+          extraActions={samplesData && <SampleExtraActions />}
+        >
+          <SampleData
+            data={samplesData}
+            setHasChanges={setHasChanges}
+            saveCustomSample={saveCustomSample}
+          />
         </CustomCard>
       )}
     </Box>
@@ -110,6 +159,8 @@ EmailBuilderDetailsView.propTypes = {
   selectedLang: PropTypes.string,
   updateData: PropTypes.func,
   setSelectedLang: PropTypes.func,
+  setHasChanges: PropTypes.func,
+  saveCustomSample: PropTypes.func,
 };
 
 export default EmailBuilderDetailsView;

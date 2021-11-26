@@ -643,6 +643,7 @@ const labels = {
   sampleData: 'Sample Data',
   mergedSample: 'Merged Sample',
   lastSeenSample: 'Last Seen Sample',
+  customSample: 'Custom Sample',
   renderedHtml: 'Rendered HTML',
   htmlCode: 'HTML code',
   body: 'Body',

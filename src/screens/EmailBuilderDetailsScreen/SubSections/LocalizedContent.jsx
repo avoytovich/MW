@@ -115,9 +115,10 @@ const LocalizedContent = ({
             label='Add Language'
             value={0}
             component={forwardRef(({ children, ...props }, ref) => (
-              <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
+              <div role='button' {...props} style={{ minWidth: '100%', cursor: 'pointer' }} ref={ref}>
                 <SelectCustom
                   label='addLanguage'
+                  isDisabled={curTab !== 0}
                   value={newLangValue}
                   selectOptions={availableLocales}
                   onChangeSelect={(e) => setNewLangValue(e.target.value)}
