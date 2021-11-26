@@ -64,18 +64,17 @@ const markUp = {
 };
 
 const generateData = async (data, customers, selectedCustomer) => {
-  if (selectedCustomer.name) {
-    data.items.map(
+  if (selectedCustomer?.name) {
+    data?.items?.map(
       (item) => Object.assign(item, { customer: selectedCustomer.name }),
     );
   } else {
-    const arrEndUsersGroupsСustomerIds = data.items.map(
-      (item) => (item.customerId),
+    const arrOnboardingСustomerIds = data?.items?.map(
+      (item) => (item?.customerId),
     );
-    const strEndUsersGroupsСustomerIds = arrEndUsersGroupsСustomerIds.map((item) => `id=${item}`).join('&');
-    const resEndUsersGroupsByIds = await api.getCustomersByIds(strEndUsersGroupsСustomerIds);
-    // todo: remake using common service
-    data.items.map((item) => resEndUsersGroupsByIds.data.items.map((each) => {
+    const strOnboardingСustomerIds = arrOnboardingСustomerIds.map((item) => `id=${item}`).join('&');
+    const resOnboardingByIds = await api.getCustomersByIds(strOnboardingСustomerIds);
+    data?.items?.map((item) => resOnboardingByIds.data.items.map((each) => {
       if (each.id === item.customerId) {
         Object.assign(item, { customer: each.name });
       }
