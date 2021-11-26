@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Switch, Typography } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ClearIcon from '@material-ui/icons/Clear';
+import {
+  Box, Switch, Typography,
+  Button,
+  ButtonGroup,
+  TextField,
+  IconButton,
+} from '@material-ui/core';
 import {
   lifeTime,
   type,
@@ -9,6 +17,8 @@ import {
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import localization from '../../../localization';
+import Popup from '../../../components/Popup';
+
 import {
   SelectWithChip,
   SelectCustom,
@@ -26,6 +36,14 @@ const General = ({
     value: '',
   });
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
+  const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
+
+  const counts = {};
+  const subProductsList = currentProductData?.subProducts || [];
+
+  subProductsList.forEach((x) => {
+    counts[x] = (counts[x] || 0) + 1;
+  });
 
   const countriesOptions = getCountriesOptions();
 
@@ -48,7 +66,7 @@ const General = ({
       setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: '' });
     }
     setShowLifeTimeNumber(LifeTimeNumber);
-    return () => {};
+    return () => { };
   }, [currentProductData?.lifeTime?.state]);
 
   useEffect(() => {
@@ -431,6 +449,132 @@ const General = ({
           </InheritanceField>
         </Box>
       </Box>
+      <Box p={2}>
+        <Box py={4}>
+          <Typography gutterBottom variant='h4'>
+            {localization.t('labels.bundledProducts')}
+          </Typography>
+        </Box>
+        {Object.entries(counts).map(([key, value]) => {
+          const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+          return (
+            <Box
+              key={key}
+              display='flex'
+              justifyContent='space-between'
+              marginBottom='30px'
+              marginRight='30px'
+            >
+              <Popup
+                text={selectValue.value}
+                childrenComponent={(props) => (
+                  <TextField
+                    name={key}
+                    aria-owns={props.open ? `mouse-over-popover ${key}` : undefined}
+                    aria-haspopup='true'
+                    disabled
+                    value={selectValue.value || ''}
+                    fullWidth
+                    label='Name or Id'
+                    type='text'
+                    variant='outlined'
+                    onMouseEnter={props.handlePopoverOpen}
+                    onMouseLeave={props.handlePopoverClose}
+                  />
+                )}
+              />
+              <Box marginLeft='17px' height='inherit'>
+                <ButtonGroup
+                  size='large'
+                  aria-label='large outlined button group'
+                  style={{ height: '100%' }}
+                >
+                  <Button
+                    data-test='decrementSubProduct'
+                    onClick={() => {
+                      const index = currentProductData?.subProducts?.findIndex(
+                        (item) => item === selectValue.id,
+                      );
+                      const newSubProducts = [...currentProductData.subProducts];
+                      newSubProducts.splice(index, 1);
+                      setProductData({
+                        ...currentProductData,
+                        subProducts: newSubProducts,
+                      });
+                    }}
+                  >
+                    -
+                  </Button>
+                  <Button data-test='subProductCount' disabled>
+                    {value}
+                  </Button>
+                  <Button
+                    data-test='incrementSubProduct'
+                    onClick={() => {
+                      setProductData({
+                        ...currentProductData,
+                        subProducts: [...currentProductData.subProducts, selectValue.id],
+                      });
+                    }}
+                  >
+                    +
+                  </Button>
+                </ButtonGroup>
+              </Box>
+              <Box marginLeft='20px'>
+                <IconButton
+                  color='secondary'
+                  aria-label='clear'
+                  onClick={() => {
+                    setProductData({
+                      ...currentProductData,
+                      subProducts: currentProductData.subProducts.filter(
+                        (item) => item !== selectValue.id,
+                      ),
+                    });
+                  }}
+                >
+                  <ClearIcon />
+                </IconButton>
+              </Box>
+            </Box>
+          );
+        })}
+        <Box
+          display='flex'
+          justifyContent='space-between'
+          alignItems='center'
+          marginBottom='30px'
+          marginRight='30px'
+        >
+          <SelectCustom
+            label='nameOrId'
+            value={selectedBundledProduct || ''}
+            selectOptions={selectOptions?.renewingProducts || []}
+            onChangeSelect={(e) => {
+              setSelectedBundledProduct(e.target.value);
+            }}
+          />
+          <Box marginLeft='20px'>
+            <IconButton
+              color={selectedBundledProduct ? 'primary' : 'secondary'}
+              aria-label='add to shopping cart'
+              disabled={!selectedBundledProduct}
+              onClick={() => {
+                setProductData({
+                  ...currentProductData,
+                  subProducts: currentProductData?.subProducts
+                    ? [...currentProductData.subProducts, selectedBundledProduct]
+                    : [selectedBundledProduct],
+                });
+                setSelectedBundledProduct(null);
+              }}
+            >
+              <AddCircleOutlineIcon size='medium' color='primary' />
+            </IconButton>
+          </Box>
+        </Box>
+      </Box>
     </>
   );
 };
@@ -440,6 +584,9 @@ General.propTypes = {
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
+  open: PropTypes.bool,
+  handlePopoverClose: PropTypes.func,
+  handlePopoverOpen: PropTypes.func,
 };
 
 export default General;
