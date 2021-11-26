@@ -59,6 +59,7 @@ const TableRowComponent = ({
     key === 'id'
     || key === 'executionId'
     || key === 'processingDataLicenseId'
+    || key === 'discountRuleId'
   );
 
   const getStatus = () => {
@@ -194,7 +195,7 @@ const TableRowComponent = ({
     return null;
   };
   return (
-    <Box className={`tableRowGrid ${rowItem[errorHighlight] ? 'error-row' : '', checked ? 'selected-row' : ''}` } data-id={rowItem.id}>
+    <Box className={`tableRowGrid ${rowItem[errorHighlight] ? 'error-row' : '', checked ? 'selected-row' : ''}`} data-id={rowItem.id}>
       <Grid
         data-test='tableRow'
         style={{ paddingLeft: '20px' }}
@@ -222,26 +223,26 @@ const TableRowComponent = ({
         {markupSequence.map((item) => drawTableCell(item))}
         <Grid item xs md={4} style={{ minWidth: '200px' }}>
           {rowHover && !customPath && (
-          <Grid>
-            <Box mt={2} display='flex' justifyContent='center' textAlign='center'>
-              {!noActions && !noEditDeleteActions && !withDeletePopup &&(
-              <DeleteIcon
-                onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-                className="deleteIcon icons"
-              />
-              )}
-              {withDeletePopup
-                && (
-                <Box onClick={(e) => { e.stopPropagation(); }}>
-                  <DeletePopup id={rowItem.id} deleteFunc={handleDeleteItem} />
-                </Box>
+            <Grid>
+              <Box mt={2} display='flex' justifyContent='center' textAlign='center'>
+                {!noActions && !noEditDeleteActions && !withDeletePopup && (
+                  <DeleteIcon
+                    onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                    className="deleteIcon icons"
+                  />
                 )}
-              {!noEditDeleteActions && (
-              <EditIcon className="editIcon icons" />
-              )}
-              <FileCopyIcon className="copyIcon icons" style={{ marginLeft: '5px' }} onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
-            </Box>
-          </Grid>
+                {withDeletePopup
+                  && (
+                    <Box onClick={(e) => { e.stopPropagation(); }}>
+                      <DeletePopup id={rowItem.id} deleteFunc={handleDeleteItem} />
+                    </Box>
+                  )}
+                {!noEditDeleteActions && (
+                  <EditIcon className="editIcon icons" />
+                )}
+                <FileCopyIcon className="copyIcon icons" style={{ marginLeft: '5px' }} onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+              </Box>
+            </Grid>
           )}
         </Grid>
       </Grid>

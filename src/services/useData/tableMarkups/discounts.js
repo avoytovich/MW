@@ -3,15 +3,19 @@ import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
-  id: false,
   customer: true,
   discountRuleName: true,
+  discountRuleId: true,
   model: true,
   status: true,
+  creationDate: true,
+  lastUpdate: true,
   discountAmount: true,
   startDate: true,
   endDate: true,
   maximumUses: true,
+  maximumUsesPerStore: true,
+  maximumUsesPerEndUser: true,
   sources: true,
 };
 
@@ -23,6 +27,7 @@ const markUp = {
       id: 'discountRuleName',
       sortParam: 'name',
     },
+    { value: localization.t('labels.discountRuleId'), id: 'discountRuleId' },
     {
       value: localization.t('labels.model'),
       id: 'model',
@@ -32,6 +37,16 @@ const markUp = {
       value: localization.t('labels.status'),
       id: 'status',
       sortParam: 'status',
+    },
+    {
+      value: localization.t('labels.creationDate'),
+      id: 'creationDate',
+      sortParam: 'createDate',
+    },
+    {
+      value: localization.t('labels.lastUpdate'),
+      id: 'lastUpdate',
+      sortParam: 'updateDate',
     },
     {
       value: localization.t('labels.discountAmount'),
@@ -53,6 +68,18 @@ const markUp = {
       id: 'maximumUses',
       sortParam: 'maxUsages',
     },
+
+    {
+      value: localization.t('labels.maximumUsesPerStore'),
+      id: 'maximumUsesPerStore',
+      sortParam: 'maxUsePerStore',
+    },
+
+    {
+      value: localization.t('labels.maximumUsesPerEndUser'),
+      id: 'maximumUsesPerEndUser',
+      sortParam: 'maxUsePerEndUser',
+    },
     { value: localization.t('labels.sources'), id: 'sources' },
   ],
 };
@@ -61,14 +88,19 @@ const generateData = (data) => {
   const values = data.items.map(async (val) => {
     const returnData = {
       id: val.id,
+      discountRuleId: val.id,
       customer: val.customerId,
       discountRuleName: val.name,
       model: val.model.replaceAll('_', ' '),
       status: val.status,
+      creationDate: moment(val.createDate).format('D MMM YYYY'),
+      lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
       discountAmount: val.discountRate ? `${val.discountRate * 100}%` : null,
       startDate: moment(val.startDate).format('D MMM YYYY'),
       endDate: moment(val.endDate).format('D MMM YYYY'),
       maximumUses: val.maxUsages,
+      maximumUsesPerStore: val.maxUsePerStore || '-',
+      maximumUsesPerEndUser: val.maxUsePerEndUser || '-',
       sources: val.sources ? val.sources.join(', ') : null,
     };
 

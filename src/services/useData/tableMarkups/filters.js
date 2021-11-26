@@ -1113,6 +1113,58 @@ const filters = {
       type: 'date',
     },
   ],
+  discountrules: [
+    {
+      id: 'id',
+      label: localization.t('labels.discountRuleId'),
+      type: 'text',
+      exactSearch: true,
+    }, {
+      id: 'name',
+      label: localization.t('labels.discountRuleName'),
+      type: 'text',
+    },
+    {
+      id: 'model',
+      label: localization.t('labels.model'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'CAMPAIGN', value: localization.t('labels.campaign') },
+        { id: 'COUPON', value: localization.t('labels.coupon') },
+        { id: 'SINGLE_USE_CODE', value: localization.t('labels.singleUseCode') },
+      ],
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'select',
+      values: [
+        { label: localization.t('labels.enabled'), value: 'ENABLED' },
+        { label: localization.t('labels.disabled'), value: 'DISABLED' },
+      ],
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.createDate'),
+      type: 'date',
+    },
+    {
+      id: 'source',
+      label: localization.t('labels.sources'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'PURCHASE', value: localization.t('labels.purchase') },
+        { id: 'MANUAL_RENEWAL', value: localization.t('labels.manualRenewal') },
+        { id: 'SUBSCRIPTION', value: localization.t('labels.subscription') },
+        { id: 'BILLING_PLAN', value: localization.t('labels.billingPlan') },
+      ],
+    },
+  ],
   onboarding: [
     {
       id: 'id',
@@ -1159,6 +1211,7 @@ const filters = {
       id: 'email',
       label: localization.t('labels.email'),
       type: 'text',
+      exactSearch: true,
     },
   ],
 };
