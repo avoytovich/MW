@@ -36,6 +36,7 @@ const TableComponent = ({
   defaultShowColumn,
   withDeletePopup,
   scope,
+  isOrders,
 
 }) => {
   const dispatch = useDispatch();
@@ -162,6 +163,7 @@ const TableComponent = ({
               customPath={customPath}
               errorHighlight={errorHighlight}
               withDeletePopup
+              isOrders={isOrders}
             />
           ))}
         </Box>
@@ -186,6 +188,7 @@ TableComponent.propTypes = {
   customPath: PropTypes.string,
   errorHighlight: PropTypes.string,
   scope: PropTypes.string,
+  isOrders: PropTypes.bool,
 };
 
 export default TableComponent;
