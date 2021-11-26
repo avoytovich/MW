@@ -260,7 +260,10 @@ const SignedRoutes = () => {
         path={`${parentPaths.invoices}`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
-
+      <Route
+        path={`${parentPaths.audits}`}
+        component={lazy(() => import('../../screens/AuditsScreen'))}
+      />
       <Redirect to='/' />
     </Switch>
   );

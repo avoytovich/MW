@@ -1113,6 +1113,69 @@ const filters = {
       type: 'date',
     },
   ],
+  audits: [
+    {
+      id: 'who.userName',
+      label: localization.t('labels.userName'),
+      type: 'text',
+    },
+    {
+      id: 'who.id',
+      label: localization.t('labels.userId'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'who.type',
+      label: localization.t('labels.userType'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'BEARER', value: localization.t('labels.jwtBearer') },
+        { id: 'INTERNAL', value: localization.t('labels.internalCall') },
+        { id: 'ANONYMOUS', value: localization.t('labels.anonymous') },
+        { id: 'ENDUSER', value: localization.t('labels.endUser') },
+        { id: 'CUSTOMER', value: localization.t('labels.сustomer') },
+        { id: 'NEXWAY', value: 'Nexway' },
+      ],
+    },
+    {
+      id: 'what.fact',
+      label: localization.t('labels.operation'),
+      type: 'text',
+    },
+    {
+      id: 'who.ip',
+      label: localization.t('labels.userIp'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'what.type',
+      label: localization.t('labels.subjectType'),
+      type: 'text',
+    },
+    {
+      id: 'what.id',
+      label: localization.t('labels.subjectId'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'what.customerId',
+      label: localization.t('labels.subjectCustomer'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'where.serviceName',
+      label: localization.t('labels.service'),
+      type: 'text',
+    },
+    {
+      id: 'why.reason',
+      label: localization.t('labels.reasonOfOperation'),
+      type: 'text',
+    }],
   discountrules: [
     {
       id: 'id',

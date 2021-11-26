@@ -52,10 +52,9 @@ const Filters = ({ scope, onClose }) => {
 
     newConfig[id] = newData;
 
-    if (!newData) {
+    if (!newData || (Array.isArray(newData) && newData.length === 0)) {
       delete newConfig[id];
     }
-
     setNewConfig(newConfig);
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -24,6 +25,7 @@ const SelectWithChip = ({
   helperText,
   redirectTo = '',
   name,
+  noTranslate,
 }) => {
   const handleClick = (condition, id) => {
     switch (condition) {
@@ -33,14 +35,14 @@ const SelectWithChip = ({
         return null;
     }
   };
-
+  const curLabel = noTranslate ? label : label ? localization.t(`labels.${label}`) : null;
   return (
     <TextField
       fullWidth
       select
       name={name}
       data-test={label}
-      label={label ? localization.t(`labels.${label}`) : null}
+      label={curLabel}
       SelectProps={{
         placeholder: 'Write here...',
         multiple: isMultiple,
@@ -109,6 +111,7 @@ SelectWithChip.propTypes = {
   helperText: PropTypes.string,
   redirectTo: PropTypes.string,
   name: PropTypes.string,
+  noTranslate: PropTypes.bool,
 };
 
 export default SelectWithChip;
