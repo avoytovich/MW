@@ -2,23 +2,23 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import { Box, Button } from '@material-ui/core';
-import TableActionsBar from '../../../../components/TableActionsBar';
-import api from '../../../../api';
-import parentPaths from '../../../../services/paths';
-import TableComponent from '../../../../components/TableComponent';
+import TableActionsBar from '../../components/TableActionsBar';
+import api from '../../api';
+import parentPaths from '../../services/paths';
+import TableComponent from '../../components/TableComponent';
 
 import {
   markUp,
   generateData,
   defaultShow,
-} from '../../../../services/useData/tableMarkups/discounts';
-import { useTableData } from '../../../../services/useData';
-import localization from '../../../../localization';
+} from '../../services/useData/tableMarkups/discounts';
+import { useTableData } from '../../services/useData';
+import localization from '../../localization';
 import {
   getSortParams,
   saveSortParams,
   sortKeys,
-} from '../../../../services/sorting';
+} from '../../services/sorting';
 
 const DiscountsScreen = () => {
   const scope = 'discountrules';
