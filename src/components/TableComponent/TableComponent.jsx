@@ -162,7 +162,7 @@ const TableComponent = ({
               noEditDeleteActions={noEditDeleteActions}
               customPath={customPath}
               errorHighlight={errorHighlight}
-              withDeletePopup
+              withDeletePopup={withDeletePopup}
               isOrders={isOrders}
             />
           ))}
@@ -175,6 +175,7 @@ const TableComponent = ({
 };
 
 TableComponent.propTypes = {
+  withDeletePopup: PropTypes.bool,
   handleDeleteItem: PropTypes.func,
   tableData: PropTypes.object,
   updatePage: PropTypes.func,

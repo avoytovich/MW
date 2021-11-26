@@ -121,7 +121,8 @@ const FilterBlockInputs = ({
   );
   const SelectWithChipSubFilter = () => (
     <SelectWithChip
-      label={data.id}
+      noTranslate
+      label={data.label}
       value={curData || []}
       selectOptions={data.values}
       onClickDelIcon={(chip) => {

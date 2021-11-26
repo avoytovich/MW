@@ -18,6 +18,7 @@ const VALID_REFRESH_SCOPES = [
   'roles',
   'metaRoles',
   'privileges',
+  'audits',
   'onboarding',
 ];
 const VALID_FILTER_SCOPES = [
@@ -51,6 +52,7 @@ const VALID_FILTER_SCOPES = [
   'roles',
   'metaRoles',
   'privileges',
+  'audits',
   'onboarding',
 ];
 

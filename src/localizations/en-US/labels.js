@@ -660,6 +660,19 @@ const labels = {
   cloneTemplate: 'Clone template',
   storeForTemplate: 'Store on which the new template will apply',
   leaveUnset: 'Leave unset to apply template on all stores ...',
+  userId: 'User ID',
+  userType: 'User type',
+  customerOfUser: 'Customer of user',
+  operation: 'Operation',
+  userIp: 'User IP',
+  subjectType: 'Subject type',
+  subjectId: 'Subject ID',
+  subjectCustomer: 'Subject customer',
+  platform: 'Platform',
+  reasonOfOperation: 'Reason of operation',
+  jwtBearer: 'JWT Bearer',
+  internalCall: 'Internal Call',
+  anonymous: 'Anonymous',
 };
 
 export default labels;
