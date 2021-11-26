@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useParams } from 'react-router-dom';
-
 import {
   Box,
   Button,
-  ButtonGroup,
-  TextField,
   Table,
   TableBody,
   TableCell,
@@ -17,19 +14,15 @@ import {
   IconButton,
   Typography,
 } from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 import parentPaths from '../../../services/paths';
 import SectionLayout from '../../../components/SectionLayout';
-import { SelectCustom } from '../../../components/Inputs';
 
-import Popup from '../../../components/Popup';
 import AddVariationModal from '../../../components/utils/Modals/AddVariationModal';
 
 import './productFile.scss';
 
 const Variations = ({
-  selectOptions,
   setProductData,
   currentProductData,
   productVariations: { bundledProducts = [], variations },
@@ -42,7 +35,6 @@ const Variations = ({
   const history = useHistory();
   const { id: productId } = useParams();
 
-  const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
   const [open, setOpen] = useState(false);
 
   const counts = {};
@@ -80,237 +72,114 @@ const Variations = ({
   return (
     <Box display='flex' flexDirection='column' width='100%'>
       {currentProductData.id && (
-      <SectionLayout label='productVariations' wrapperWidth='initial'>
-        <Box mt={3}>
-          <Typography>Emphasized values override parent product's values.</Typography>
-        </Box>
-        <Box mt={3}>
-          <TableContainer component={Paper}>
-            <Table aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Id</TableCell>
-                  <TableCell align='center'>Status</TableCell>
-                  <TableCell align='center'>Publisher reference</TableCell>
-                  <TableCell align='center'>Lifetime</TableCell>
-                  <TableCell align='center'>Fulfillment Model</TableCell>
-                  <TableCell align='center'>Subscription Model</TableCell>
-                  {variations?.availableVariables?.map(({ field }) => (
-                    <TableCell key={field} align='center'>
-                      {field}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody data-test='productVariants'>
-                {bundledProducts?.map((item) => {
-                  const {
-                    id,
-                    status,
-                    publisherRefId,
-                    lifeTime,
-                    fulfillmentTemplate,
-                    subscriptionTemplate,
-                  } = item;
-                  return (
-                    <TableRow
-                      key={id}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => {
-                        history.push(`${parentPaths.productlist}/${id}`, {
-                          parentId: productId,
-                        });
-                      }}
-                    >
-                      <TableCell component='th' scope='row'>
-                        {id}
-                      </TableCell>
-                      <TableCell 
-                        align='center' 
-                        className={`status-${status === 'ENABLED' ? 'enabled' : 'disabled'}`}
-                      >
-                        {status || ''}
-                      </TableCell>
-                      <TableCell 
-                        align='center' 
-                        style={{ color: currentProductData.publisherRefId !== publisherRefId && '#719ded' }}
-                      >
-                        {publisherRefId || '-'}
-                      </TableCell>
-                      <TableCell 
-                        align='center' 
-                        style={{ color: currentProductData.lifeTime !== lifeTime && '#719ded' }}
-                      >
-                        {lifeTime || ''}
-                      </TableCell>
-                      <TableCell 
-                        align='center' 
-                        style={{ color: currentProductData.fulfillmentTemplate !== fulfillmentTemplate && '#719ded' }}
-                      >
-                        {fulfillmentTemplate || ''}
-                      </TableCell>
-                      <TableCell 
-                        align='center' 
-                        style={{ color: currentProductData.subscriptionTemplate !== subscriptionTemplate && '#719ded' }}
-                      >
-                        {subscriptionTemplate || ''}
-                      </TableCell>
-                      {variations?.availableVariables?.map(
-                        ({ fieldValue, field, localizedValue }) => (
-                          <TableCell key={field} align='center'>
-                            {localizedValue[fieldValue][defaultLocale]}
-                          </TableCell>
-                        ),
-                      )}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
+        <SectionLayout label='productVariations' wrapperWidth='initial'>
           <Box mt={3}>
-            <Button
-              variant='outlined'
-              data-test='addVariant'
-              color='primary'
-              onClick={() => {
-                history.push(`${parentPaths.productlist}/add`, {
-                  parentId: productId,
-                });
-              }}
-              disabled={!currentProductData?.availableVariables?.length}
-            >
-              Add variant
-            </Button>
+            <Typography>Emphasized values override parent product's values.</Typography>
           </Box>
-        </Box>
-      </SectionLayout>
-      )}
-      <Box display='flex'>
-        {currentProductData.id && (
-        <SectionLayout label='bundledProducts' contentWidth='100%'>
-          {Object.entries(counts).map(([key, value]) => {
-            const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+          <Box mt={3}>
+            <TableContainer component={Paper}>
+              <Table aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Id</TableCell>
+                    <TableCell align='center'>Status</TableCell>
+                    <TableCell align='center'>Publisher reference</TableCell>
+                    <TableCell align='center'>Lifetime</TableCell>
+                    <TableCell align='center'>Fulfillment Model</TableCell>
+                    <TableCell align='center'>Subscription Model</TableCell>
+                    {variations?.availableVariables?.map(({ field }) => (
+                      <TableCell key={field} align='center'>
+                        {field}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody data-test='productVariants'>
+                  {bundledProducts?.map((item) => {
+                    const {
+                      id,
+                      status,
+                      publisherRefId,
+                      lifeTime,
+                      fulfillmentTemplate,
+                      subscriptionTemplate,
+                    } = item;
+                    return (
+                      <TableRow
+                        key={id}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          history.push(`${parentPaths.productlist}/${id}`, {
+                            parentId: productId,
+                          });
+                        }}
+                      >
+                        <TableCell component='th' scope='row'>
+                          {id}
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                          className={`status-${status === 'ENABLED' ? 'enabled' : 'disabled'}`}
+                        >
+                          {status || ''}
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                          style={{ color: currentProductData.publisherRefId !== publisherRefId && '#719ded' }}
+                        >
+                          {publisherRefId || '-'}
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                          style={{ color: currentProductData.lifeTime !== lifeTime && '#719ded' }}
+                        >
+                          {lifeTime || ''}
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                          style={{ color: currentProductData.fulfillmentTemplate !== fulfillmentTemplate && '#719ded' }}
+                        >
+                          {fulfillmentTemplate || ''}
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                          style={{ color: currentProductData.subscriptionTemplate !== subscriptionTemplate && '#719ded' }}
+                        >
+                          {subscriptionTemplate || ''}
+                        </TableCell>
+                        {variations?.availableVariables?.map(
+                          ({ fieldValue, field, localizedValue }) => (
+                            <TableCell key={field} align='center'>
+                              {localizedValue[fieldValue][defaultLocale]}
+                            </TableCell>
+                          ),
+                        )}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
 
-            return (
-              <Box
-                key={key}
-                display='flex'
-                justifyContent='space-between'
-                marginBottom='30px'
-                marginRight='30px'
-              >
-                <Popup
-                  text={selectValue.value}
-                  childrenComponent={(props) => (
-                    <TextField
-                      name={key}
-                      aria-owns={props.open ? `mouse-over-popover ${key}` : undefined}
-                      aria-haspopup='true'
-                      disabled
-                      value={selectValue.value || ''}
-                      fullWidth
-                      label='Name or Id'
-                      type='text'
-                      variant='outlined'
-                      onMouseEnter={props.handlePopoverOpen}
-                      onMouseLeave={props.handlePopoverClose}
-                    />
-                  )}
-                />
-                <Box marginLeft='17px' height='inherit'>
-                  <ButtonGroup
-                    size='large'
-                    aria-label='large outlined button group'
-                    style={{ height: '100%' }}
-                  >
-                    <Button
-                      data-test='decrementSubProduct'
-                      onClick={() => {
-                        const index = currentProductData?.subProducts?.findIndex(
-                          (item) => item === selectValue.id,
-                        );
-                        const newSubProducts = [...currentProductData.subProducts];
-                        newSubProducts.splice(index, 1);
-                        setProductData({
-                          ...currentProductData,
-                          subProducts: newSubProducts,
-                        });
-                      }}
-                    >
-                      -
-                    </Button>
-                    <Button data-test='subProductCount' disabled>
-                      {value}
-                    </Button>
-                    <Button
-                      data-test='incrementSubProduct'
-                      onClick={() => {
-                        setProductData({
-                          ...currentProductData,
-                          subProducts: [...currentProductData.subProducts, selectValue.id],
-                        });
-                      }}
-                    >
-                      +
-                    </Button>
-                  </ButtonGroup>
-                </Box>
-                <Box marginLeft='20px'>
-                  <IconButton
-                    color='secondary'
-                    aria-label='clear'
-                    onClick={() => {
-                      setProductData({
-                        ...currentProductData,
-                        subProducts: currentProductData.subProducts.filter(
-                          (item) => item !== selectValue.id,
-                        ),
-                      });
-                    }}
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                </Box>
-              </Box>
-            );
-          })}
-          <Box
-            display='flex'
-            justifyContent='space-between'
-            alignItems='center'
-            marginBottom='30px'
-            marginRight='30px'
-          >
-            <SelectCustom
-              label='nameOrId'
-              value={selectedBundledProduct || ''}
-              selectOptions={selectOptions?.renewingProducts || []}
-              onChangeSelect={(e) => {
-                setSelectedBundledProduct(e.target.value);
-              }}
-            />
-            <Box marginLeft='20px'>
-              <IconButton
-                color={selectedBundledProduct ? 'primary' : 'secondary'}
-                aria-label='add to shopping cart'
-                disabled={!selectedBundledProduct}
+            <Box mt={3}>
+              <Button
+                variant='outlined'
+                data-test='addVariant'
+                color='primary'
                 onClick={() => {
-                  setProductData({
-                    ...currentProductData,
-                    subProducts: currentProductData?.subProducts
-                      ? [...currentProductData.subProducts, selectedBundledProduct]
-                      : [selectedBundledProduct],
+                  history.push(`${parentPaths.productlist}/add`, {
+                    parentId: productId,
                   });
-                  setSelectedBundledProduct(null);
                 }}
+                disabled={!currentProductData?.availableVariables?.length}
               >
-                <AddCircleOutlineIcon size='medium' color='primary' />
-              </IconButton>
+                Add variant
+              </Button>
             </Box>
           </Box>
         </SectionLayout>
-        )}
+      )}
+      <Box display='flex'>
         <SectionLayout label='variationParameters' width='100%'>
           <TableContainer component={Paper}>
             <Table aria-label='simple table'>
@@ -361,10 +230,6 @@ const Variations = ({
 Variations.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
-  selectOptions: PropTypes.object,
-  open: PropTypes.bool,
-  handlePopoverClose: PropTypes.func,
-  handlePopoverOpen: PropTypes.func,
   productVariations: PropTypes.shape({
     bundledProducts: PropTypes.array,
     variations: PropTypes.object,
