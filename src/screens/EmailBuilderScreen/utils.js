@@ -78,7 +78,7 @@ const generateData = (data, stores) => {
       store: store || valueNotExists,
       lastUpdate: moment(val.updateDate).format('D MMM YYYY') || valueNotExists,
       firstMailingDate: moment(val.firstMailingDate).format('D MMM YYYY') || valueNotExists,
-      tags: val.tags.length > 0 ? val.tags : valueNotExists,
+      tags: val?.tags?.length > 0 ? val.tags : valueNotExists,
       locales: val.templates ? Object.keys(val.templates) : valueNotExists,
       fallbackLanguage: val.fallbackLocale || valueNotExists,
     };

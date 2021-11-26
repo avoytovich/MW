@@ -1,7 +1,10 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import ReactJson from 'react-json-view';
+
+import { Edit } from '@material-ui/icons';
 
 import {
   Box,
@@ -11,9 +14,25 @@ import {
 
 import localization from '../../../localization';
 
-const SampleData = ({ data }) => {
+const SampleData = ({ data, setHasChanges, saveCustomSample }) => {
   const [curSampleData, setCurSampleData] = useState(null);
-  const [curTab, setCurTab] = useState(data?.samples?.length ? 0 : 'merged');
+  const [customSampleData, setCustomSampleData] = useState({});
+  const [curTab, setCurTab] = useState(data?.samples?.length ? 0 : 'custom');
+
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+
+  const editSample = (edit) => {
+    /* eslint-disable camelcase */
+    const { updated_src } = edit;
+    setCustomSampleData({ ...updated_src });
+
+    if (JSON.stringify(nxState?.customSample) !== JSON.stringify({ ...updated_src })) {
+      setHasChanges(true);
+      saveCustomSample({ ...updated_src });
+    } else {
+      setHasChanges(false);
+    }
+  };
 
   useEffect(() => {
     if (curTab === 'merged') {
@@ -26,6 +45,10 @@ const SampleData = ({ data }) => {
       );
     }
   }, [curTab]);
+
+  useEffect(() => {
+    setCustomSampleData(nxState?.customSample || {});
+  }, [nxState]);
 
   return (
     <>
@@ -43,16 +66,28 @@ const SampleData = ({ data }) => {
             data?.samples?.length && data?.samples.map((smpl, ind) => <Tab label={`${localization.t('labels.sampleData')} #${ind + 1}`} />)
           }
 
-          <Tab label={localization.t('labels.mergedSample')} value='merged' />
-          <Tab label={localization.t('labels.lastSeenSample')} value='lastSeen' />
+          {data?.mergedSample && <Tab label={localization.t('labels.mergedSample')} value='merged' />}
+          {data?.lastSeenSample && <Tab label={localization.t('labels.lastSeenSample')} value='lastSeen' />}
+          <Tab
+            component={forwardRef(({ ...props }, ref) => (
+              <div role='button' {...props} ref={ref}>
+                <Edit style={{ marginRight: '5px' }} />
+                {localization.t('labels.customSample')}
+              </div>
+            ))}
+            value='custom'
+          />
         </Tabs>
       </Box>
 
       <Box p={2} pt={4}>
         <ReactJson
-          src={curSampleData || {}}
+          src={curTab === 'custom' ? customSampleData : curSampleData || {}}
           name={false}
           displayDataTypes={false}
+          onAdd={curTab === 'custom' && editSample}
+          onEdit={curTab === 'custom' && editSample}
+          onDelete={curTab === 'custom' && editSample}
           defaultValue=''
           sortKeys
           collapsed={1}
@@ -83,6 +118,8 @@ const SampleData = ({ data }) => {
 
 SampleData.propTypes = {
   data: PropTypes.object,
+  setHasChanges: PropTypes.func,
+  saveCustomSample: PropTypes.func,
 };
 
 export default SampleData;

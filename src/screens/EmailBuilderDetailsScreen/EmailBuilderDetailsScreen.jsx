@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button } from '@material-ui/core';
 
 import EmailBuilderDetailsView from './EmailBuilderDetailsView';
@@ -10,12 +11,15 @@ import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import parentPaths from '../../services/paths';
 import { getCustomerName } from '../../services/helpers/customersHelper';
 
+import { setNexwayState } from '../../redux/actions/Account';
+
 import api from '../../api';
 import localization from '../../localization';
 
 import './emailBuilderDetailsScreen.scss';
 
 const EmailBuilderDetailsScreen = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [isLoading, setLoading] = useState(true);
   const [customerName, setCustomerName] = useState(null);
@@ -27,6 +31,9 @@ const EmailBuilderDetailsScreen = () => {
   const [upd, setUpdate] = useState(0);
   const [selectedLang, setSelectedLang] = useState(null);
   const [cloneModal, setCloneModal] = useState(false);
+  const [customSample, setCustomSampleData] = useState({});
+
+  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   useEffect(() => {
     setLoading(true);
@@ -38,7 +45,8 @@ const EmailBuilderDetailsScreen = () => {
         setCurTemplateData({ ...data });
         if (!selectedLang) {
           setSelectedLang(
-            Object.values(data.templates).length ? Object.keys(data.templates)[0] : null,
+            data?.templates && Object.values(data?.templates).length
+              ? Object.keys(data?.templates)[0] : null,
           );
         }
       });
@@ -73,6 +81,10 @@ const EmailBuilderDetailsScreen = () => {
     }
   }, [templateData]);
 
+  const saveCustomSample = () => dispatch(
+    setNexwayState({ ...nxState, customSample: { ...customSample } }),
+  );
+
   const ExtraActions = () => (
     <Box ml={2}>
       <Button
@@ -100,6 +112,7 @@ const EmailBuilderDetailsScreen = () => {
       updateFunc={api.updateEmailTemplate}
       beforeSend={null}
       setUpdate={setUpdate}
+      customSave={saveCustomSample}
       extraActions={<ExtraActions />}
     >
       <EmailBuilderDetailsView
@@ -110,6 +123,8 @@ const EmailBuilderDetailsScreen = () => {
         firstSampleData={firstSampleData}
         selectedLang={selectedLang}
         setSelectedLang={setSelectedLang}
+        setHasChanges={setHasChanges}
+        saveCustomSample={setCustomSampleData}
       />
 
       <CloneTemplatePopup
