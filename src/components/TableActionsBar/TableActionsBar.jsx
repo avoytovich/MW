@@ -14,7 +14,7 @@ import {
   GetApp as GetAppIcon,
   Delete as DeleteIcon,
   Refresh as RefreshIcon,
-  FindInPage as FindIcon,
+  CreditCard as CreditCardIcon,
 } from '@material-ui/icons';
 
 import {
@@ -190,7 +190,7 @@ const TableActionsBar = ({
                 {findByCC
                   && (
                     <Tooltip arrow title="Find by CC" placement="top">
-                      <IconButton className={classes.button} edge='start' color='secondary' onClick={findByCC}><FindIcon /></IconButton>
+                      <IconButton className={classes.button} edge='start' color='secondary' onClick={findByCC}><CreditCardIcon /></IconButton>
                     </Tooltip>
                   )}
                 <Tooltip arrow title="Refresh" placement="top">

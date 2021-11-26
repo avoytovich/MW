@@ -1,6 +1,6 @@
 const sideBar = {
   subheaders: {
-    orders: 'Orders',
+    orders: 'Orders management',
     storeSetup: 'Store Setup',
     products: 'Products',
     marketing: 'Marketing',

@@ -39,6 +39,7 @@ const TableRowComponent = ({
   customPath,
   errorHighlight,
   withDeletePopup,
+  isOrders
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
@@ -54,10 +55,60 @@ const TableRowComponent = ({
   };
 
   const shouldCopy = (key) => (
+    isOrders && key === 'orderId' ||
     key === 'id'
     || key === 'executionId'
     || key === 'processingDataLicenseId'
   );
+
+  const getStatus = () => {
+    switch (rowItem.status) {
+      case "COMPLETED":
+      case "FORCE_COMPLETED":
+        return (
+          <div 
+            style={{ 
+              backgroundColor: '#00A300', 
+              height: '30px', 
+              width: rowItem.status.length * 10 + 2, 
+              position: 'absolute', 
+              opacity: 0.5, 
+              borderRadius: 5 
+            }}>
+          </div>
+        );
+      case 'CANCELED':
+      case 'CANCELED_WITH_ERROR':
+      case 'FORCE_CANCELED':
+      case 'ABORTED':  
+        return (
+          <div 
+            style={{ 
+              backgroundColor: '#FF0000', 
+              height: '30px', 
+              width: rowItem.status.length * 10 + 2, 
+              position: 'absolute', 
+              opacity: 0.5, 
+              borderRadius: 5 
+            }}>
+          </div>
+        );
+      default:  
+      return (
+        <div 
+            style={{ 
+              backgroundColor: '#FFA500', 
+              height: '30px', 
+              width: rowItem.status.length * 10 + 2, 
+              position: 'absolute', 
+              opacity: 0.5, 
+              borderRadius: 5 
+            }}>
+        </div>
+      );
+
+    }
+  }
 
   const parsePath = (path) => {
     let newPath = path;
@@ -110,8 +161,10 @@ const TableRowComponent = ({
             alignItems='center'
             justifyContent={item.id === 'fullName' ? 'flex-start' : 'left'}
             flexDirection='row'
+            position='relative'
           >
             {item.id === 'fullName' && <FullNameAvatar name={valueToShow} />}
+            {isOrders && item.value === 'Status' && getStatus()}
             <Typography
               color={
                 item.id === 'genericName' || item.id === 'customerId' || item.id === 'customer'

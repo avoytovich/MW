@@ -33,7 +33,6 @@ const defaultShow = {
   creditNoteId: false,
   cancelationReasons: false,
   preorder: false,
-  id: false,
   priceFunction: false,
   ip: false,
   invoiceDate: false,
@@ -46,7 +45,6 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.customer'), id: 'customer' },
     { value: localization.t('labels.customerStatus'), id: 'customerStatus' },
     {
