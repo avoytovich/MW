@@ -1198,6 +1198,25 @@ const filters = {
       ],
     },
     {
+      id: 'source',
+      label: localization.t('labels.sources'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'PURCHASE', value: localization.t('labels.purchase') },
+        { id: 'MANUAL_RENEWAL', value: localization.t('labels.manualRenewal') },
+        { id: 'SUBSCRIPTION', value: localization.t('labels.subscription') },
+        { id: 'BILLING_PLAN', value: localization.t('labels.billingPlan') },
+      ],
+    },
+  ],
+  remittables: [
+    {
+      id: 'id',
+      label: localization.t('labels.remittableId'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
       id: 'status',
       label: localization.t('labels.status'),
       type: 'select',
@@ -1205,6 +1224,11 @@ const filters = {
         { label: localization.t('labels.enabled'), value: 'ENABLED' },
         { label: localization.t('labels.disabled'), value: 'DISABLED' },
       ],
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
     },
     {
       id: 'updatingDate',
@@ -1215,17 +1239,6 @@ const filters = {
       id: 'creationDate',
       label: localization.t('labels.createDate'),
       type: 'date',
-    },
-    {
-      id: 'source',
-      label: localization.t('labels.sources'),
-      type: 'selectWithChip',
-      values: [
-        { id: 'PURCHASE', value: localization.t('labels.purchase') },
-        { id: 'MANUAL_RENEWAL', value: localization.t('labels.manualRenewal') },
-        { id: 'SUBSCRIPTION', value: localization.t('labels.subscription') },
-        { id: 'BILLING_PLAN', value: localization.t('labels.billingPlan') },
-      ],
     },
   ],
   onboarding: [

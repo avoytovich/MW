@@ -153,6 +153,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteRemittablesById(id) {
+    const url = `/remittables/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
   deleteOnboardingById(id) {
     const url = `/onboarding/${id}`;
     return axiosInstance({

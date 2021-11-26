@@ -28,6 +28,7 @@ export const sortKeys = {
   campaigns: 'campaignsSortParams',
   discounts: 'discountsSortParams',
   emailbuilder: 'emailbuilderSortParams',
+  remittables: 'remittables',
   audits: 'auditsSortParams',
   onboarding: 'onboarding',
 };

@@ -660,6 +660,8 @@ const labels = {
   cloneTemplate: 'Clone template',
   storeForTemplate: 'Store on which the new template will apply',
   leaveUnset: 'Leave unset to apply template on all stores ...',
+  accountStatus: 'Account status',
+  remittable: 'Remittable',
   userId: 'User ID',
   userType: 'User type',
   customerOfUser: 'Customer of user',
