@@ -39,7 +39,7 @@ const TableRowComponent = ({
   customPath,
   errorHighlight,
   withDeletePopup,
-  isOrders
+  isOrders,
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
@@ -55,61 +55,61 @@ const TableRowComponent = ({
   };
 
   const shouldCopy = (key) => (
-    isOrders && key === 'orderId' ||
-    key === 'id'
+    isOrders && key === 'orderId'
+    || key === 'id'
     || key === 'executionId'
     || key === 'processingDataLicenseId'
+    || key === 'remittableId'
     || key === 'discountRuleId'
   );
 
   const getStatus = () => {
     switch (rowItem.status) {
-      case "COMPLETED":
-      case "FORCE_COMPLETED":
+      case 'COMPLETED':
+      case 'FORCE_COMPLETED':
         return (
-          <div 
-            style={{ 
-              backgroundColor: '#00A300', 
-              height: '30px', 
-              width: rowItem.status.length * 10 + 2, 
-              position: 'absolute', 
-              opacity: 0.5, 
-              borderRadius: 5 
-            }}>
-          </div>
+          <div
+            style={{
+              backgroundColor: '#00A300',
+              height: '30px',
+              width: rowItem.status.length * 10 + 2,
+              position: 'absolute',
+              opacity: 0.5,
+              borderRadius: 5,
+            }}
+          />
         );
       case 'CANCELED':
       case 'CANCELED_WITH_ERROR':
       case 'FORCE_CANCELED':
-      case 'ABORTED':  
+      case 'ABORTED':
         return (
-          <div 
-            style={{ 
-              backgroundColor: '#FF0000', 
-              height: '30px', 
-              width: rowItem.status.length * 10 + 2, 
-              position: 'absolute', 
-              opacity: 0.5, 
-              borderRadius: 5 
-            }}>
-          </div>
+          <div
+            style={{
+              backgroundColor: '#FF0000',
+              height: '30px',
+              width: rowItem.status.length * 10 + 2,
+              position: 'absolute',
+              opacity: 0.5,
+              borderRadius: 5,
+            }}
+          />
         );
-      default:  
-      return (
-        <div 
-            style={{ 
-              backgroundColor: '#FFA500', 
-              height: '30px', 
-              width: rowItem.status.length * 10 + 2, 
-              position: 'absolute', 
-              opacity: 0.5, 
-              borderRadius: 5 
-            }}>
-        </div>
-      );
-
+      default:
+        return (
+          <div
+            style={{
+              backgroundColor: '#FFA500',
+              height: '30px',
+              width: rowItem.status.length * 10 + 2,
+              position: 'absolute',
+              opacity: 0.5,
+              borderRadius: 5,
+            }}
+          />
+        );
     }
-  }
+  };
 
   const parsePath = (path) => {
     let newPath = path;

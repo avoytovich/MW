@@ -261,6 +261,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
       />
       <Route
+        path={`${parentPaths.remittables}`}
+        component={lazy(() => import('../../screens/RemittablesScreen'))}
+      />
+      <Route
         path={`${parentPaths.audits}`}
         component={lazy(() => import('../../screens/AuditsScreen'))}
       />
