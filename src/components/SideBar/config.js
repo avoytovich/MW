@@ -183,11 +183,6 @@ const navConfig = [
         href: parentPaths.userroles.main,
       },
       {
-        id: 'event-notifications',
-        title: sideBarTitle.notifications,
-        href: parentPaths.notifications.main,
-      },
-      {
         id: 'my-account',
         title: sideBarTitle.myaccount,
         href: parentPaths.myaccount,
@@ -217,6 +212,11 @@ const navConfig = [
         id: 'audits',
         title: sideBarTitle.audits,
         href: parentPaths.audits,
+      },
+      {
+        id: 'event-notifications',
+        title: sideBarTitle.notifications,
+        href: parentPaths.notifications.main,
       },
     ],
   },
