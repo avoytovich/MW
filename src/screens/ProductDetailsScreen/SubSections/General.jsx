@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ClearIcon from '@material-ui/icons/Clear';
+
 import {
-  Box, Switch, Typography,
+  Box,
+  Switch,
+  Typography,
   Button,
   ButtonGroup,
   TextField,
   IconButton,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
 } from '@material-ui/core';
 import {
   lifeTime,
@@ -36,6 +43,11 @@ const General = ({
     value: '',
   });
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
+  const [countrySelection, setCountrySelection] = useState('blocked');
+  const [selectedCountries, setSelectedCountries] = useState(
+    currentProductData?.blackListedCountries || [],
+  );
+
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
 
   const counts = {};
@@ -92,6 +104,44 @@ const General = ({
         })
       : setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
+
+  useEffect(() => {
+    const newCountries = countrySelection === 'blocked'
+      ? [...selectedCountries]
+      : [...countriesOptions.map((l) => l.id).filter((c) => selectedCountries?.indexOf(c) < 0)];
+
+    const [hasChanges] = newCountries
+      .filter((itm) => currentProductData?.blackListedCountries?.indexOf(itm) < 0);
+    const [hasReverseChanges] = currentProductData?.blackListedCountries?.filter(
+      (itm) => newCountries?.indexOf(itm) < 0,
+    );
+
+    if (hasChanges || hasReverseChanges) {
+      setProductData({
+        ...currentProductData,
+        blackListedCountries: [...newCountries],
+      });
+    }
+  }, [selectedCountries]);
+
+  useEffect(() => {
+    if (!countriesOptions?.length && currentProductData?.blackListedCountries?.length) return;
+
+    if (countrySelection === 'blocked') {
+      const newCountries = currentProductData?.blackListedCountries?.length ? countriesOptions
+        .map((l) => l.id)
+        .filter((c) => currentProductData?.blackListedCountries?.indexOf(c) >= 0) : [];
+
+      setSelectedCountries([...newCountries]);
+    } else {
+      const newCountries = currentProductData?.blackListedCountries?.length ? countriesOptions
+        .map((l) => l.id)
+        .filter((c) => currentProductData?.blackListedCountries?.indexOf(c) < 0)
+        : countriesOptions.map((l) => l.id);
+
+      setSelectedCountries([...newCountries]);
+    }
+  }, [countrySelection]);
 
   const stylesForVariations = parentId
     ? {
@@ -428,24 +478,48 @@ const General = ({
             parentId={parentId}
             currentProductData={currentProductData}
           >
-            <SelectWithChip
-              label='blockedCountries'
-              value={currentProductData.blackListedCountries || []}
-              selectOptions={countriesOptions}
-              onChangeSelect={(e) => setProductData({
-                ...currentProductData,
-                blackListedCountries: e.target.value,
-              })}
-              onClickDelIcon={(chip) => {
-                const newValue = [...currentProductData.blackListedCountries].filter(
-                  (val) => val !== chip,
-                );
-                setProductData({
-                  ...currentProductData,
-                  blackListedCountries: newValue,
-                });
-              }}
-            />
+            <Box p={2} height={74} alignItems='center' display='flex'>
+              <Typography variant='h4'>{localization.t('labels.allowedBlockedCountries')}</Typography>
+
+              <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={() => setSelectedCountries(countriesOptions.map((l) => l.id))}>
+                {localization.t('labels.selectAll')}
+              </Button>
+              <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={() => setSelectedCountries([])}>
+                {localization.t('labels.removeAll')}
+              </Button>
+            </Box>
+
+            <Box p={2}>
+              <RadioGroup
+                row
+                value={countrySelection}
+                onChange={(e) => setCountrySelection(e.target.value)}
+              >
+                <FormControlLabel
+                  value='blocked'
+                  control={<Radio color="primary" />}
+                  label={localization.t('labels.blocked')}
+                />
+                <FormControlLabel
+                  value='allowed'
+                  control={<Radio color="primary" />}
+                  label={localization.t('labels.allowed')}
+                />
+              </RadioGroup>
+            </Box>
+
+            <Box p={2}>
+              <SelectWithChip
+                label={countrySelection === 'blocked' ? 'blockedCountries' : 'allowedCountries'}
+                value={selectedCountries}
+                selectOptions={countriesOptions}
+                onChangeSelect={(e) => setSelectedCountries(e.target.value)}
+                onClickDelIcon={(chip) => {
+                  const newValue = [...selectedCountries].filter((val) => val !== chip);
+                  setSelectedCountries(newValue);
+                }}
+              />
+            </Box>
           </InheritanceField>
         </Box>
       </Box>
