@@ -367,5 +367,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getAuditById(id) {
+    const url = `/audits/auditItems/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;

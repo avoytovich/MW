@@ -1,0 +1,28 @@
+@import '../../styles/variables.scss';
+
+.rowValue {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  a, a:visited, a:hover, a:active {
+    color: #4791dc;
+  }
+}
+
+.rowValue:hover {
+  overflow: visible;
+  white-space: normal;
+}
+.orderDetailsRow:nth-child(even) {
+  background-color: $tablesOddRow;
+}
+
+.download {
+  cursor: pointer;
+  color: $clickable;
+}
+
+.copyIcon:hover {
+  color:#4791dc;
+}
