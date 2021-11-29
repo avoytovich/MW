@@ -248,6 +248,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/EndUsersScreen'))}
       />
       <Route
+        path={`${defPath}${parentPaths.audits}/:id`}
+        component={lazy(() => import('../../screens/AuditDetailsScreen'))}
+      />
+      <Route
         path={`${parentPaths.onboarding}/:id`}
         component={lazy(() => import('../../screens/OnboardingDetailsScreen'))}
       />
@@ -255,7 +259,6 @@ const SignedRoutes = () => {
         path={`${parentPaths.onboarding}`}
         component={lazy(() => import('../../screens/OnboardingScreen'))}
       />
-
       <Route
         path={`${parentPaths.invoices}`}
         component={lazy(() => import('../../screens/InvoicesCreditNotesScreen/InvoicesCreditNotesScreen'))}
