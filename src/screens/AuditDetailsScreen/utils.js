@@ -5,21 +5,25 @@ import { getCustomerName } from '../../services/helpers/customersHelper';
 const emptyValue = '-';
 
 const generateData = async (data) => {
-  let customerName = emptyValue;
+  let customerOfUserName = emptyValue;
+  let subjectCustomerName = emptyValue;
   if (data.who.customerId) {
-    customerName = await getCustomerName(data.who.customerId);
+    customerOfUserName = await getCustomerName(data.who.customerId);
+  }
+  if (data.what.customerId) {
+    subjectCustomerName = await getCustomerName(data.what.customerId);
   }
   const res = {
     who: [
       {
         key: 'userName',
-        label: localization.t('labels.lastUpdate'),
+        label: localization.t('labels.userName'),
         value: data.who.userName || emptyValue,
       },
       {
         key: 'customerOfUser',
         label: localization.t('labels.customerOfUser'),
-        value: customerName,
+        value: customerOfUserName,
         shouldCopy: data.who.customerId,
         link: 'internal',
         path: `${parentPaths.customers}/${data.who.customerId}`,
@@ -62,7 +66,10 @@ const generateData = async (data) => {
       {
         key: 'subjectCustomer',
         label: localization.t('labels.subjectCustomer'),
-        value: data.what.customerId || emptyValue,
+        value: subjectCustomerName,
+        shouldCopy: data.what.customerId,
+        link: 'internal',
+        path: `${parentPaths.customers}/${data.what.customerId}`,
       },
     ],
     where: [
@@ -81,4 +88,4 @@ const generateData = async (data) => {
 
   return res;
 };
-export default generateData;
+export { generateData, emptyValue };
