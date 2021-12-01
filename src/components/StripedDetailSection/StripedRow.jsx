@@ -12,7 +12,7 @@ import localization from '../../localization';
 import './stripedDetailSection.scss';
 
 const StripedRow = ({
-  rowData,
+  rowData, emptyValue,
 }) => {
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
@@ -28,7 +28,7 @@ const StripedRow = ({
       </Grid>
       <Grid item md={6} xs={6}>
         <Box display="flex">
-          {!item.link ? (
+          {(!item.link || item.value === emptyValue) ? (
             <Box p={2} className="rowValue">
               {item.value}
             </Box>
@@ -47,19 +47,22 @@ const StripedRow = ({
                   )}
               </Box>
             )}
-          <Box p={2}>
-            {item.downloadFunc && (
-              <GetAppIcon onClick={() => item.downloadFunc(item)} color="secondary" />
+          {item.value !== emptyValue
+            && (
+              <Box display='flex' p={2}>
+                {item.downloadFunc && (
+                  <GetAppIcon onClick={() => item.downloadFunc(item)} color="secondary" className='actionIcon' />
+                )}
+                {item.value && item.shouldCopy && (
+                  <FileCopyIcon
+                    onClick={() => makeCopy(item.shouldCopy)}
+                    style={{ marginLeft: '5px' }}
+                    color="secondary"
+                    className="actionIcon"
+                  />
+                )}
+              </Box>
             )}
-            {item.value && item.shouldCopy && (
-              <FileCopyIcon
-                onClick={() => makeCopy(item.shouldCopy)}
-                style={{ marginLeft: '5px' }}
-                color="secondary"
-                className="copyIcon"
-              />
-            )}
-          </Box>
         </Box>
       </Grid>
     </Grid>
@@ -67,6 +70,7 @@ const StripedRow = ({
 };
 StripedRow.propTypes = {
   rowData: PropTypes.array,
+  emptyValue: PropTypes.string,
 };
 
 export default StripedRow;

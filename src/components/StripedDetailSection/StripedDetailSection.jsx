@@ -15,6 +15,7 @@ const StripedDetailSection = ({
   xsValue = 12,
   mdValue = 12,
   sectionsData,
+  emptyValue,
 }) => (
   <>
     {sectionsData && (
@@ -28,6 +29,7 @@ const StripedDetailSection = ({
                 </Typography>
               </Box>
               <StripedRow
+                emptyValue={emptyValue}
                 rowData={sectionsData[key]}
               />
             </Box>
@@ -42,5 +44,6 @@ StripedDetailSection.propTypes = {
   sectionsData: PropTypes.object,
   xsValue: PropTypes.number,
   mdValue: PropTypes.number,
+  emptyValue: PropTypes.string,
 };
 export default StripedDetailSection;

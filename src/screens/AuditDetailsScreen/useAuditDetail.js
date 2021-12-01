@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../../api';
-import generateData from './utils';
+import { generateData } from './utils';
 
 const useAuditDetail = (id) => {
   const [isLoading, setLoading] = useState(true);

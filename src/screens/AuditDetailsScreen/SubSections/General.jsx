@@ -30,7 +30,7 @@ const General = ({ audit }) => {
               onClick={() => makeCopy(audit.id)}
               style={{ marginLeft: '5px' }}
               color="secondary"
-              className="copyIcon"
+              className="actionIcon"
             />
           </Box>
         </Box>
