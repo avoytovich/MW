@@ -311,7 +311,7 @@ const countriesOptionsFormatting = (array) => array.map((item) => (
 const languagesOptionsFormatting = (array) => array.map((item) => {
   const languageNames = new Intl.DisplayNames([item.code], { type: 'language' });
   return (
-    { id: item.code, value: languageNames.of(item.code) });
+    { id: item.code, value: `${item.code}: ${languageNames.of(item.code)}` });
 });
 
 const notificationRequiredFields = (obj) => {
