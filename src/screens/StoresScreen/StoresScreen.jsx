@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 import TableComponent from '../../components/TableComponent';
 import TableActionsBar from '../../components/TableActionsBar';
-import ToastWithAction from '../../components/utils/ToastWithAction/ToastWithAction';
 
 import api from '../../api';
 import {

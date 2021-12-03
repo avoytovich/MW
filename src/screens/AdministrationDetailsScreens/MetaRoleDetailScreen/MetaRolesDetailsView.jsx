@@ -17,7 +17,7 @@ const MetaRolesDetailsView = ({ curMetaRole, setCurMetaRole, selectOptions }) =>
   const [curTab, setCurTab] = useState(0);
   return (
     <>
-      <Box my={2} bgcolor="#fff">
+      <Box my={2} position='sticky' top='90px' zIndex='2' bgcolor="#fff" pt='20px'>
         <Tabs
           value={curTab}
           onChange={(e, newTab) => setCurTab(newTab)}

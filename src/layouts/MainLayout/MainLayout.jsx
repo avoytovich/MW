@@ -23,8 +23,9 @@ const MainLayout = ({ children }) => {
 
       <Grid container item style={{ paddingLeft: drawerOpen ? 260 : 0 }}>
         <TopBar toggleDrawer={() => setDrawer((d) => !d)} drawerOpen={drawerOpen} />
-        <Grid className="table">
+        <Grid className="tableWrapper">
           <Grid
+            className="table"
             item
           >
             {children}

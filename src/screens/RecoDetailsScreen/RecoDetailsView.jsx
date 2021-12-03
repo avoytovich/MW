@@ -47,7 +47,7 @@ const RecoDetailsView = ({ curReco, setCurReco, selectOptions }) => {
 
   return (
     <div className='reco-details-screen'>
-      <Box my={1} bgcolor='#fff'>
+      <Box my={1} position='sticky' top='90px' bgcolor='#fff' zIndex='2'>
         <Tabs
           value={curTab}
           indicatorColor='primary'

@@ -18,10 +18,10 @@ import './AuthScreen.scss';
 const AuthScreen = () => (
   <Box display="flex" flexDirection="column" alignItems="center">
     <Box width="65%">
-      <Typography variant="h1" color="textPrimary" className="welcomLogin" style={{fontFamily: 'DM Serif Display, serif'}}>
+      <Typography variant="h1" color="textPrimary" className="welcomLogin" style={{ fontFamily: 'DM Serif Display, serif' }}>
         {localization.t('forms.headers.welcome')}
       </Typography>
-      <Typography variant="subtitle1" color="textPrimary" style={{fontFamily: 'Roboto, sans-serif'}}>
+      <Typography variant="subtitle1" color="textPrimary" style={{ fontFamily: 'Roboto, sans-serif' }}>
         {localization.t('forms.subHeaders.loginWelcomSubHeader')}
       </Typography>
     </Box>

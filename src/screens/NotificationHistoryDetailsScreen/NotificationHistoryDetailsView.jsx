@@ -141,9 +141,9 @@ const NotificationHistoryDetailsView = ({ customer, notificationHistory, custome
   };
 
   return (
-    <Grid container spacing={2} className="wrapper-notification-history">
+    <Grid container className="wrapper-notification-history">
       {mapStructure.map((each) => (
-        <Grid container spacing={2} key={each.label}>
+        <Grid container key={each.label}>
           {renderFields(each)}
         </Grid>
       ))}

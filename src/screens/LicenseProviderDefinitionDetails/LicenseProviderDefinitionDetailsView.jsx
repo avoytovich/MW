@@ -20,7 +20,7 @@ const LicenseProviderDefinitionDetailsView = ({ curLicenseProvider, setCurLicens
 
   return (
     <>
-      <Box my={2} bgcolor='#fff'>
+      <Box my={2} position='sticky' top='90px' bgcolor='#fff' zIndex='2'>
         <Tabs
           data-test='tabs'
           value={curTab}

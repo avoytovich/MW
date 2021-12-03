@@ -41,8 +41,7 @@ const TopBar = ({ toggleDrawer, drawerOpen }) => {
               <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
                 <MenuIcon />
               </IconButton>
-            )
-          }
+            )}
           <IconButton edge='start' aria-label='logout' color='secondary' onClick={doLogout}>
             <LogoutIcon />
           </IconButton>

@@ -66,7 +66,6 @@ const LayoutDetailsScreen = () => {
     return () => setChanges(false);
   }, [currentLayout, layoutData]);
 
-
   return (
     <DetailPageWrapper
       nxState={nxState}

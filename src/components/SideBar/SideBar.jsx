@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import {
   Box,
   Drawer,
   List,
   ListItem,
-  Typography,
   IconButton,
 } from '@material-ui/core';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
@@ -46,7 +44,7 @@ const SideBar = ({ toggleDrawer, open }) => (
           <Box display='flex' flexDirection='row'>
             <LogoHome wrapperHeight={64} height={32} width={107} />
             <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
-              <NavigateBeforeIcon color='primary'/>
+              <NavigateBeforeIcon color='primary' />
             </IconButton>
           </Box>
 

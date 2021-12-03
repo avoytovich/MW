@@ -24,7 +24,6 @@ const ThemeDetailsScreen = () => {
   const [themeData, setThemeData] = useState(null);
   const [currentTheme, setCurrentTheme] = useState(null);
 
-
   useEffect(() => {
     let isCancelled = false;
     setLoading(true);

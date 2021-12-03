@@ -1,3 +1,3 @@
-import InvoicesCreditNotes from './InvoicesCreditNotes';
+import InvoicesCreditNotes from './InvoicesCreditNotesScreen';
 
 export default InvoicesCreditNotes;
