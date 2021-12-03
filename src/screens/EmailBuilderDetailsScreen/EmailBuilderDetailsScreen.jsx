@@ -59,6 +59,10 @@ const EmailBuilderDetailsScreen = () => {
   }, [curTemplateData]);
 
   useEffect(() => {
+    setCustomSampleData(nxState?.customSample || {});
+  }, [nxState]);
+
+  useEffect(() => {
     if (templateData?.customerId) {
       getCustomerName(templateData?.customerId).then((name) => {
         setCustomerName(name);
@@ -86,17 +90,35 @@ const EmailBuilderDetailsScreen = () => {
   );
 
   const ExtraActions = () => (
-    <Box ml={2}>
-      <Button
-        id='clone-template-button'
-        color='primary'
-        size='large'
-        variant='contained'
-        onClick={() => setCloneModal(true)}
-      >
-        {localization.t('labels.cloneTemplate')}
-      </Button>
-    </Box>
+    <>
+      {(Object.keys(customSample).length > 0
+        || (!Object.keys(customSample).length && nxState?.customSample))
+        && (JSON.stringify(nxState?.customSample) !== JSON.stringify(customSample)) && (
+        <Box ml={2}>
+          <Button
+            id='save-template-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            onClick={saveCustomSample}
+          >
+            {localization.t('labels.saveSample')}
+          </Button>
+        </Box>
+      )}
+
+      <Box ml={2}>
+        <Button
+          id='clone-template-button'
+          color='primary'
+          size='large'
+          variant='contained'
+          onClick={() => setCloneModal(true)}
+        >
+          {localization.t('labels.cloneTemplate')}
+        </Button>
+      </Box>
+    </>
   );
 
   return (
@@ -112,7 +134,6 @@ const EmailBuilderDetailsScreen = () => {
       updateFunc={api.updateEmailTemplate}
       beforeSend={null}
       setUpdate={setUpdate}
-      customSave={saveCustomSample}
       extraActions={<ExtraActions />}
     >
       <EmailBuilderDetailsView

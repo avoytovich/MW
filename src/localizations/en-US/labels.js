@@ -658,6 +658,7 @@ const labels = {
   body: 'Body',
   subj: 'Subject',
   cloneTemplate: 'Clone template',
+  saveSample: 'Save sample',
   storeForTemplate: 'Store on which the new template will apply',
   leaveUnset: 'Leave unset to apply template on all stores ...',
   audits: 'Audits',

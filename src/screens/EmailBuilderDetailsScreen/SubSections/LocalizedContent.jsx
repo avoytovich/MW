@@ -72,7 +72,7 @@ const LocalizedContent = ({
   useEffect(() => {
     const newAvailLocales = [];
 
-    if (data?.templates && Object.keys(data.templates).length) {
+    if (data?.templates && Object.keys(data?.templates).length) {
       newAvailLocales.push(...Object.keys(data.templates));
     }
 

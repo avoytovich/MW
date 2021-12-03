@@ -30,7 +30,6 @@ const DetailPageWrapper = ({
   updateFunc,
   beforeSend,
   setUpdate,
-  customSave,
   extraActions,
 }) => {
   const location = useLocation();
@@ -49,8 +48,6 @@ const DetailPageWrapper = ({
         history.push(`${detailsPath}/${newId}`);
         setUpdate((u) => u + 1);
       });
-    } else if (customSave) {
-      customSave();
     } else {
       updateFunc(id, sendObj).then(() => {
         toast(localization.t('general.updatesHaveBeenSaved'));
@@ -125,7 +122,6 @@ DetailPageWrapper.propTypes = {
   updateFunc: PropTypes.func,
   setUpdate: PropTypes.func,
   beforeSend: PropTypes.func,
-  customSave: PropTypes.func,
   nxStateNotNeeded: PropTypes.bool,
   extraActions: PropTypes.node,
 };

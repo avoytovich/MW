@@ -14,7 +14,7 @@ import {
 
 import localization from '../../../localization';
 
-const SampleData = ({ data, setHasChanges, saveCustomSample }) => {
+const SampleData = ({ data, saveCustomSample }) => {
   const [curSampleData, setCurSampleData] = useState(null);
   const [customSampleData, setCustomSampleData] = useState({});
   const [curTab, setCurTab] = useState(data?.samples?.length ? 0 : 'custom');
@@ -25,13 +25,7 @@ const SampleData = ({ data, setHasChanges, saveCustomSample }) => {
     /* eslint-disable camelcase */
     const { updated_src } = edit;
     setCustomSampleData({ ...updated_src });
-
-    if (JSON.stringify(nxState?.customSample) !== JSON.stringify({ ...updated_src })) {
-      setHasChanges(true);
-      saveCustomSample({ ...updated_src });
-    } else {
-      setHasChanges(false);
-    }
+    saveCustomSample({ ...updated_src });
   };
 
   useEffect(() => {
@@ -118,7 +112,6 @@ const SampleData = ({ data, setHasChanges, saveCustomSample }) => {
 
 SampleData.propTypes = {
   data: PropTypes.object,
-  setHasChanges: PropTypes.func,
   saveCustomSample: PropTypes.func,
 };
 
