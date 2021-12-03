@@ -39,13 +39,13 @@ const markUp = {
 };
 
 const generateData = (data) => {
-  const values = data.operationExecutions.map((val) => ({
+  const sortByDate = data.operationExecutions.slice().sort((a, b) => b.requestTimestamp - a.requestTimestamp);
+  const values = sortByDate.map((val) => ({
     executionId: val?.id,
     requestTime: moment(val?.requestTimestamp).format('D MMM YYYY, h:mm:ss'),
     requestOperation: val?.request?.operation,
     requestUserEmail: val?.request?.user ? val?.request?.user?.email : '-',
     processingDataLicenseId: val?.processingData?.licenseId,
-
   }));
 
   const meta = {

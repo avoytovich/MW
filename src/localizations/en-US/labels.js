@@ -661,6 +661,7 @@ const labels = {
   saveSample: 'Save sample',
   storeForTemplate: 'Store on which the new template will apply',
   leaveUnset: 'Leave unset to apply template on all stores ...',
+  customerNotFound: 'Customer not found',
   audits: 'Audits',
   audit: 'Audit',
   details: 'Details',
