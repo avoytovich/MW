@@ -20,6 +20,7 @@ import {
 
 import { toast } from 'react-toastify';
 import DeletePopup from '../Popup/DeletePopup';
+import FailedEventOrderPopup from '../Popup/FailedEventOrderPopup';
 
 import FullNameAvatar from '../utils/FullNameAvatar';
 import localization from '../../localization';
@@ -39,6 +40,7 @@ const TableRowComponent = ({
   errorHighlight,
   withDeletePopup,
   isOrders,
+  orderData,
 }) => {
   const [rowHover, setRowHover] = useState(false);
   const history = useHistory();
@@ -141,6 +143,8 @@ const TableRowComponent = ({
         );
       } else if (Array.isArray(rowItem[item.id])) {
         valueToShow = <Typography style={{ whiteSpace: 'pre-line', textAlign: 'left' }}>{rowItem[item.id].join('\r\n')}</Typography>;
+      } else if (item.id === 'details' && rowItem[item.id] === 'failed_event') {
+        valueToShow = <FailedEventOrderPopup orderData={orderData} eventInfo={rowItem} />
       } else {
         valueToShow = rowItem[item.id];
       }

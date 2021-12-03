@@ -11,6 +11,7 @@ const defaultShow = {
   netPrice: true,
   grossPrice: true,
   vatAmount: true,
+  details: true,
 };
 
 const markUp = {
@@ -24,6 +25,7 @@ const markUp = {
     { value: localization.t('labels.net'), id: 'netPrice' },
     { value: localization.t('labels.gross'), id: 'grossPrice' },
     { value: localization.t('labels.vat'), id: 'vatAmount' },
+    { value: localization.t('labels.details'), id: 'details' },
   ],
 };
 
@@ -44,6 +46,7 @@ const generateData = (data) => {
     discountedGross: '-',
     discountedVat: '-',
     processingError: val.processingStatus === 'FAILURE',
+    details: val.processingEvent?.some(obj => obj.status === 'Failed') ? 'failed_event' : undefined,
     productId: val.productId,
   }));
 
