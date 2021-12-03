@@ -5,7 +5,6 @@ import {
   Chip,
   Box,
   Typography,
-  Grid,
   Button,
   Menu,
   MenuItem,
@@ -18,10 +17,12 @@ import localization from '../../localization';
 import api from '../../api';
 import { tabLabels } from './utils';
 import Products from './SubSections/Products';
-import OrderRow from './OrderRow';
 import Events from './SubSections/Events';
+import StripedDetailSection from '../../components/StripedDetailSection';
 import ConfirmationPopup from '../../components/Popup/ConfirmationPopup/index';
 import CancelOrderPopup from '../../components/Popup/CancelOrderPopup/index';
+import { emptyValue } from '../../services/useData/tableMarkups/orderDetails';
+
 import './orderDetailsScreen.scss';
 
 const OrderDetailsView = ({
@@ -29,7 +30,6 @@ const OrderDetailsView = ({
   currentOrderData,
   customer,
   orderRows,
-  curLanguage,
   id,
 }) => {
   const [curTab, setCurTab] = useState(0);
@@ -115,46 +115,15 @@ const OrderDetailsView = ({
           ))}
         </Tabs>
       </Box>
-      {curTab === 0 && orderRows && (
-        <Grid container spacing={2}>
-          <Grid item md={4} xs={12}>
-            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
-              <Box py={3} pl={2}>
-                <Typography gutterBottom variant='h4'>
-                  {localization.t('labels.general')}
-                </Typography>
-              </Box>
-              <OrderRow
-                curLanguage={curLanguage}
-                customerId={currentOrderData.customer?.id}
-                creationDate={currentOrderData.createDate}
-                rowData={orderRows.general}
-              />
-            </Box>
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
-              <Box py={3} pl={2}>
-                <Typography gutterBottom variant='h4'>
-                  {localization.t('labels.endUser')}
-                </Typography>
-              </Box>
-
-              <OrderRow rowData={orderRows.endUser} />
-            </Box>
-          </Grid>
-          <Grid item md={4} xs={12}>
-            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
-              <Box py={3} pl={2}>
-                <Typography gutterBottom variant='h4'>
-                  {localization.t('labels.paymentAttempt1_1')}
-                </Typography>
-              </Box>
-              <OrderRow rowData={orderRows.paymentAttempt} />
-            </Box>
-          </Grid>
-        </Grid>
-      )}
+      {curTab === 0
+        && (
+          <StripedDetailSection
+            emptyValue={emptyValue}
+            xsValue={12}
+            mdValue={4}
+            sectionsData={orderRows}
+          />
+        )}
       {curTab === 1 && <Products orderData={orderData} />}
       {curTab === 2 && <Events orderData={orderData} />}
     </>
@@ -165,7 +134,6 @@ OrderDetailsView.propTypes = {
   currentOrderData: PropTypes.object,
   customer: PropTypes.object,
   orderRows: PropTypes.object,
-  curLanguage: PropTypes.string,
   id: PropTypes.string,
 };
 export default OrderDetailsView;

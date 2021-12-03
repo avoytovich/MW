@@ -6,6 +6,7 @@ import localization from '../../localization';
 import api from '../../api';
 import { generateData } from '../../services/useData/tableMarkups/LicenseDetails';
 import LicenseDetailsView from './LicenseDetailsView';
+import { generateGeneralData } from './utils';
 
 const LicenseDetailsScreen = () => {
   const scope = 'licensesDetails';
@@ -20,10 +21,12 @@ const LicenseDetailsScreen = () => {
     api
       .getLicenseById(id)
       .then(({ data }) => {
-        setLicense(data);
-        setLoading(false);
         const eventsTableData = generateData(data);
         settableData(eventsTableData);
+        generateGeneralData(data).then((res) => {
+          setLicense(res);
+          setLoading(false);
+        });
       }).catch(() => {
         setLoading(false);
       });
@@ -33,7 +36,7 @@ const LicenseDetailsScreen = () => {
     <DetailPageWrapper
       nxStateNotNeeded
       id={id}
-      name={`${localization.t('labels.licenseId')} ${license?.id}`}
+      name={`${localization.t('labels.licenseId')} ${id}`}
       isLoading={isLoading}
       curParentPath={parentPaths.licenses}
       curData={license}
