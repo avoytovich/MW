@@ -1251,7 +1251,14 @@ const filters = {
     {
       id: 'status',
       label: localization.t('labels.status'),
-      type: 'text',
+      type: 'selectWithChip',
+      values: [
+        { id: 'APPROVED', value: localization.t('labels.approved') },
+        { id: 'APPROVED_IN_ERROR', value: localization.t('labels.approvedInError') },
+        { id: 'DECLINED', value: localization.t('labels.declined') },
+        { id: 'WAITING_FOR_EMAIL_VARIFICATION', value: localization.t('labels.waitingEmailValidation') },
+        { id: 'APPROVING', value: localization.t('labels.approving') },
+      ],
     },
     {
       id: 'customer',

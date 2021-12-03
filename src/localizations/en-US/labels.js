@@ -612,6 +612,7 @@ const labels = {
   pendingApprovals: 'Pending approvals',
   approved: 'Approved',
   declined: 'Declined',
+  approving: 'Approving',
   approvedInError: 'Approved in error',
   waitingEmailValidation: 'Waiting for email verification',
   allowedBlockedCountries: 'Allowed/Blocked Countries',
