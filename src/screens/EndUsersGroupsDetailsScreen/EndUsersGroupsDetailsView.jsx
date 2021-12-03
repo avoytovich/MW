@@ -23,7 +23,7 @@ const EndUsersGroupsDetailsView = ({
 
   return (
     <>
-      <Box my={2} bgcolor='#fff' display='flex'>
+      <Box my={2} bgcolor='#fff' position='sticky' top='90px' zIndex='2'>
         <Tabs
           value={curTab}
           indicatorColor='primary'

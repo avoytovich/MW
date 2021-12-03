@@ -64,7 +64,8 @@ const DetailPageWrapper = ({
 
   return curData && (
     <>
-      {id !== 'add'
+      <Box position='sticky' top='0px' bgcolor='#f9f9f9' zIndex='2'>
+        {id !== 'add'
         && (
           <Box mx={2}>
             <CustomBreadcrumbs
@@ -74,34 +75,35 @@ const DetailPageWrapper = ({
             />
           </Box>
         )}
-      <Box
-        display='flex'
-        flexDirection='row'
-        m={2}
-        justifyContent='space-between'
-      >
-        <Box alignSelf='center'>
-          <Typography data-test='notificationName' gutterBottom variant='h3'>
-            {name}
-          </Typography>
-        </Box>
+        <Box
+          display='flex'
+          flexDirection='row'
+          m={2}
+          justifyContent='space-between'
+        >
+          <Box alignSelf='center'>
+            <Typography data-test='notificationName' gutterBottom variant='h3'>
+              {name}
+            </Typography>
+          </Box>
 
-        <Box display='flex'>
-          <Zoom in={hasChanges}>
-            <Button
-              disabled={saveIsDisabled}
-              id='save-notification-button'
-              color='primary'
-              size='large'
-              type='submit'
-              variant='contained'
-              onClick={handleSave}
-            >
-              {localization.t('general.save')}
-            </Button>
-          </Zoom>
+          <Box display='flex'>
+            <Zoom in={hasChanges}>
+              <Button
+                disabled={saveIsDisabled}
+                id='save-notification-button'
+                color='primary'
+                size='large'
+                type='submit'
+                variant='contained'
+                onClick={handleSave}
+              >
+                {localization.t('general.save')}
+              </Button>
+            </Zoom>
 
-          {extraActions}
+            {extraActions}
+          </Box>
         </Box>
       </Box>
       {children}

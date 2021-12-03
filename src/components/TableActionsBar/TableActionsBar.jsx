@@ -181,11 +181,11 @@ const TableActionsBar = ({
                 </Tooltip>
                 {!withDeletePopup
                   && (
-                  <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon></DeleteIcon></IconButton>
+                  <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
                   )}
                 {withDeletePopup
                   && (
-                    <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><DeletePopup  deleteFunc={handleDeleteItems}/></IconButton>
+                    <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><DeletePopup deleteFunc={handleDeleteItems} /></IconButton>
                   )}
                 {findByCC
                   && (

@@ -289,65 +289,67 @@ const CartDetailsScreenView = ({ detailsData, customer }) => {
 
   return (
     <>
-      <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-        <Box display='flex' alignItems='flex-end'>
-          <Button
-            aria-haspopup='true'
-            variant='contained'
-            color='primary'
-            aria-controls='checkoutMenu'
-            onClick={handleClick}
-            size='large'
-          >
-            {localization.t('forms.buttons.actions')}
-          </Button>
-          <Menu
-            getContentAnchorEl={null}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={sendByEmail}>
-              <Button color="inherit" fullWidth>{localization.t('forms.buttons.sendByEmail')}</Button>
-            </MenuItem>
-            <MenuItem onClick={() => {}}>
-              <Button color="inherit" fullWidth disabled>{localization.t('forms.buttons.generateQuote')}</Button>
-            </MenuItem>
-            <MenuItem onClick={() => {}}>
-              <Button
-                color="inherit"
-                target='_blank'
-                href={`https://dev-kasperskyfrance-default.staging.nexway.build/checkout/add?cartid=${id}&layout=default&layoutname=default`}
-                fullWidth
-              >
-                {localization.t('forms.buttons.checkout')}
-              </Button>
-            </MenuItem>
-          </Menu>
+      <Box position='sticky' top='90px' bgcolor='#f9f9f9' zIndex='2'>
+        <Box display='flex' flexDirection='row' justifyContent='flex-end'>
+          <Box display='flex' alignItems='flex-end'>
+            <Button
+              aria-haspopup='true'
+              variant='contained'
+              color='primary'
+              aria-controls='checkoutMenu'
+              onClick={handleClick}
+              size='large'
+            >
+              {localization.t('forms.buttons.actions')}
+            </Button>
+            <Menu
+              getContentAnchorEl={null}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={sendByEmail}>
+                <Button color="inherit" fullWidth>{localization.t('forms.buttons.sendByEmail')}</Button>
+              </MenuItem>
+              <MenuItem onClick={() => {}}>
+                <Button color="inherit" fullWidth disabled>{localization.t('forms.buttons.generateQuote')}</Button>
+              </MenuItem>
+              <MenuItem onClick={() => {}}>
+                <Button
+                  color="inherit"
+                  target='_blank'
+                  href={`https://dev-kasperskyfrance-default.staging.nexway.build/checkout/add?cartid=${id}&layout=default&layoutname=default`}
+                  fullWidth
+                >
+                  {localization.t('forms.buttons.checkout')}
+                </Button>
+              </MenuItem>
+            </Menu>
+          </Box>
         </Box>
-      </Box>
-      <Box my={2} bgcolor='#fff'>
-        <Tabs
-          value={curTab}
-          indicatorColor='primary'
-          textColor='primary'
-          onChange={(event, newValue) => {
-            setCurTab(newValue);
-          }}
-          aria-label='disabled tabs example'
-        >
-          {tabLabelsView.map((tab) => (
-            <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-          ))}
-        </Tabs>
+        <Box my={2} bgcolor='#fff'>
+          <Tabs
+            value={curTab}
+            indicatorColor='primary'
+            textColor='primary'
+            onChange={(event, newValue) => {
+              setCurTab(newValue);
+            }}
+            aria-label='disabled tabs example'
+            >
+            {tabLabelsView.map((tab) => (
+              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+              ))}
+          </Tabs>
+        </Box>
       </Box>
       {
         detailsData && customer && (

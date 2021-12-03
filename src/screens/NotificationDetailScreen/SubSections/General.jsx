@@ -44,7 +44,7 @@ const General = ({ setCurNotification, curNotification, selectOptions }) => {
               )}
               label={localization.t(
                 `labels.${
-                curNotification.status === 'Active' ? 'enabled' : 'disabled'
+                  curNotification.status === 'Active' ? 'enabled' : 'disabled'
                 }`,
               )}
             />

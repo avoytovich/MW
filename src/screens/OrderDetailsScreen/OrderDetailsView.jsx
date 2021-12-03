@@ -44,60 +44,62 @@ const OrderDetailsView = ({
 
   return (
     <>
-      <Box display='flex' flexDirection='row' justifyContent='space-between'>
-        <Box display='flex' flexDirection='column'>
-          <Box display='flex' alignItems='center'>
-            {customer && (
-              <>
-                <Box pr={2}>
-                  <Typography variant='body2' gutterBottom>
-                    {localization.t('labels.customer')}
-                  </Typography>
-                </Box>
-                <Chip
-                  label={customer.status === 'RUNNING' ? 'LIVE' : 'TEST'}
-                  style={{
-                    backgroundColor:
-                      customer.status === 'RUNNING' ? '#99de90' : '',
-                    color: '#fff',
-                  }}
-                />
-              </>
-            )}
+      <Box position='sticky' top='90px' bgcolor='#f9f9f9' zIndex='2'>
+        <Box display='flex' flexDirection='row' justifyContent='space-between'>
+          <Box display='flex' flexDirection='column'>
+            <Box display='flex' alignItems='center'>
+              {customer && (
+                <>
+                  <Box pr={2}>
+                    <Typography variant='body2' gutterBottom>
+                      {localization.t('labels.customer')}
+                    </Typography>
+                  </Box>
+                  <Chip
+                    label={customer.status === 'RUNNING' ? 'LIVE' : 'TEST'}
+                    style={{
+                      backgroundColor:
+                        customer.status === 'RUNNING' ? '#99de90' : '',
+                      color: '#fff',
+                    }}
+                  />
+                </>
+              )}
+            </Box>
           </Box>
-        </Box>
 
-        <Box display='flex' alignItems='flex-end'>
-          <Button
-            aria-haspopup='true'
-            variant='contained'
-            color='primary'
-            aria-controls='checkoutMenu'
-            onClick={handleClick}
-            size='large'
-          >
-            {localization.t('forms.buttons.actions')}
-          </Button>
-          <Menu
-            getContentAnchorEl={null}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'right',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'right',
-            }}
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem><ConfirmationPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
-            <MenuItem onClick={resyncPayment}>
-              <Button color="inherit" fullWidth>{localization.t('forms.buttons.resyncPayments')}</Button>
-            </MenuItem>
-            <MenuItem><CancelOrderPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
-          </Menu>
+          <Box display='flex' alignItems='flex-end'>
+            <Button
+              aria-haspopup='true'
+              variant='contained'
+              color='primary'
+              aria-controls='checkoutMenu'
+              onClick={handleClick}
+              size='large'
+            >
+              {localization.t('forms.buttons.actions')}
+            </Button>
+            <Menu
+              getContentAnchorEl={null}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem><ConfirmationPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
+              <MenuItem onClick={resyncPayment}>
+                <Button color="inherit" fullWidth>{localization.t('forms.buttons.resyncPayments')}</Button>
+              </MenuItem>
+              <MenuItem><CancelOrderPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
+            </Menu>
+          </Box>
         </Box>
       </Box>
       <Box my={2} bgcolor='#fff'>

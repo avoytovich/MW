@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
   Tabs,
   Tab,
+  Box,
 } from '@material-ui/core';
 import General from './SubSections/General';
 import Identification from './SubSections/Identification';
@@ -26,18 +27,20 @@ const IdentityDetailsView = ({
   const [curTab, setCurTab] = useState(0);
   return (
     <div className='identity-details-screen'>
-      <Tabs
-        data-test='tabs'
-        value={curTab}
-        onChange={(e, newTab) => setCurTab(newTab)}
-        indicatorColor='primary'
-        textColor='primary'
-      >
-        <Tab label='General' />
-        <Tab label='Identification' />
-        <Tab label='Permissions' disabled={id === 'add'} />
-        <Tab label='Emails' disabled={id === 'add'} />
-      </Tabs>
+      <Box my={2} position='sticky' top='90px' bgcolor='#fff' zIndex='2'>
+        <Tabs
+          data-test='tabs'
+          value={curTab}
+          onChange={(e, newTab) => setCurTab(newTab)}
+          indicatorColor='primary'
+          textColor='primary'
+        >
+          <Tab label='General' />
+          <Tab label='Identification' />
+          <Tab label='Permissions' disabled={id === 'add'} />
+          <Tab label='Emails' disabled={id === 'add'} />
+        </Tabs>
+      </Box>
 
       {curTab === 0 && curIdentity && (
         <SectionLayout label='general'>

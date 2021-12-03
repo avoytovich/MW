@@ -8,7 +8,6 @@ import {
   Grid,
   Box,
   Checkbox,
-  Button,
 } from '@material-ui/core';
 
 import {
@@ -267,6 +266,7 @@ TableRowComponent.propTypes = {
   customPath: PropTypes.string,
   errorHighlight: PropTypes.string,
   withDeletePopup: PropTypes.bool,
+  isOrders: PropTypes.bool,
 };
 
 export default TableRowComponent;

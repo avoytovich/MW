@@ -20,7 +20,7 @@ const NotificationDetailScreenView = ({ curNotification, setCurNotification, sel
 
   return (
     <>
-      <Box my={2} bgcolor='#fff'>
+      <Box my={2} position='sticky' top='90px' zIndex='2' bgcolor='#fff' pt='20px'>
         <Tabs
           data-test='tabs'
           value={curTab}
