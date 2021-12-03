@@ -10,10 +10,12 @@ import {
   FormControlLabel,
   Switch,
 } from '@material-ui/core';
+
 import {
   defaultShow,
 } from '../../services/useData/tableMarkups/campaignPrices';
 import parentPaths from '../../services/paths';
+import { InputCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
 import TableComponent from '../../components/TableComponent';
 import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
@@ -52,6 +54,15 @@ const CampaignDetailsView = ({
               value={curCampaign.name}
               onChange={handleChange}
               variant="outlined"
+            />
+          </Box>
+          <Box px={1} width='100%'>
+            <InputCustom
+              data-test='description'
+              label='description'
+              isMultiline
+              value={curCampaign.description}
+              onChangeInput={handleChange}
             />
           </Box>
         </Box>

@@ -5,6 +5,7 @@ import localization from '../../../localization';
 const defaultShow = {
   id: false,
   customer: true,
+  description: true,
   creationDate: true,
   lastUpdate: true,
   name: true,
@@ -17,6 +18,7 @@ const markUp = {
   headers: [
     { value: localization.t('labels.id'), id: 'id' },
     { value: localization.t('labels.customer'), id: 'customer' },
+    { value: localization.t('labels.description'), id: 'description' },
     {
       value: localization.t('labels.creationDate'),
       id: 'creationDate',
@@ -56,6 +58,7 @@ const generateData = (data) => {
     const returnData = {
       id: val.id,
       customer: val.customerId,
+      description: val.description,
       creationDate: moment(val.createDate).format('D MMM YYYY'),
       lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
       name: val.name,
