@@ -13,9 +13,8 @@ import { emptyValue } from './utils';
 import localization from '../../localization';
 
 const LicenseDetailsView = ({ license, tableData, scope }) => {
-  const tabLabels = ['general', 'operationExecutions'];
+  const tabLabels = ['general', 'events'];
   const [curTab, setCurTab] = useState(0);
-
   return (
     <>
       <Box my={2} bgcolor='#fff'>

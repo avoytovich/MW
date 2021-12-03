@@ -1,11 +1,12 @@
 import api from '../../api';
+import localization from '../../localization';
 // eslint-disable-next-line
 export const getCustomerName = async (id) => {
   const loadedCustomers = JSON.parse(sessionStorage.getItem('customersData')) || [];
   const [existing] = loadedCustomers.filter((c) => c.id === id);
 
   if (existing) {
-    return existing.name || existing.id;
+    return existing.name || localization.t('labels.customerNotFound');
   }
 
   const updateStorage = (name) => {
