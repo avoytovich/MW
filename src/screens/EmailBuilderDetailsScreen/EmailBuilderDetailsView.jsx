@@ -33,7 +33,6 @@ const EmailBuilderDetailsView = ({
   updateData,
   selectedLang,
   setSelectedLang,
-  setHasChanges,
   saveCustomSample,
 }) => {
   const [curTab, setCurTab] = useState(0);
@@ -142,7 +141,6 @@ const EmailBuilderDetailsView = ({
         >
           <SampleData
             data={samplesData}
-            setHasChanges={setHasChanges}
             saveCustomSample={saveCustomSample}
           />
         </CustomCard>
@@ -159,7 +157,6 @@ EmailBuilderDetailsView.propTypes = {
   selectedLang: PropTypes.string,
   updateData: PropTypes.func,
   setSelectedLang: PropTypes.func,
-  setHasChanges: PropTypes.func,
   saveCustomSample: PropTypes.func,
 };
 

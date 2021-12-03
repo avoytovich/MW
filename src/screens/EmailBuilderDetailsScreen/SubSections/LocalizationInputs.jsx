@@ -20,8 +20,8 @@ const LocalizationInputs = ({
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    setCurSubj(data?.templates[lang].subject ? b64DecodeUnicode(data?.templates[lang].subject) : '');
-    setCurBody(data?.templates[lang].body ? b64DecodeUnicode(data?.templates[lang].body) : '');
+    setCurSubj(data?.templates[lang].subject ? b64DecodeUnicode(data?.templates[lang]?.subject) : '');
+    setCurBody(data?.templates[lang].body ? b64DecodeUnicode(data?.templates[lang]?.body) : '');
   }, [lang]);
 
   useEffect(() => {
