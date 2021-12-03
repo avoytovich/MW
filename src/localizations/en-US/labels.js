@@ -679,6 +679,7 @@ const labels = {
   platform: 'Platform',
   auditItemId: 'Audit item ID',
   reasonOfOperation: 'Reason of operation',
+  paymentAttempt: 'Payment attempt',
   accountStatus: 'Account status',
   remittable: 'Remittable',
   jwtBearer: 'JWT Bearer',

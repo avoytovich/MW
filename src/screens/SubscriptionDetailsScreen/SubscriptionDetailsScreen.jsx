@@ -6,37 +6,31 @@ import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import SubscriptionDetailsView from './SubscriptionDetailsView';
 import api from '../../api';
 import parentPaths from '../../services/paths';
-import { getCustomerName } from '../../services/helpers/customersHelper';
-
+import { generateData } from './utils';
 import './subscriptionDetailsScreen.scss';
 
 const SubscriptionDetailsScreen = () => {
   const { id } = useParams();
   const [isLoading, setLoading] = useState(true);
-  const [customerName, setCustomerName] = useState(null);
   const [subscription, setSubscription] = useState(null);
-
+  const [subscriptionName, setSubscriptionName] = useState(null);
   useEffect(() => {
     setLoading(true);
     api
       .getSubscriptionById(id)
       .then(({ data }) => {
-        setSubscription(data);
+        const subscriptionData = generateData(data);
+        setSubscriptionName(data.name);
+        subscriptionData.then((res) => setSubscription(res));
       })
       .finally(() => setLoading(false));
   }, []);
-
-  useEffect(() => {
-    if (subscription?.customerId) {
-      getCustomerName(subscription?.customerId).then((name) => setCustomerName(name));
-    }
-  }, [subscription?.customerId]);
 
   return (
     <DetailPageWrapper
       nxStateNotNeeded
       id={id}
-      name={subscription?.name}
+      name={subscriptionName}
       isLoading={isLoading}
       curParentPath={parentPaths.subscriptions}
       curData={subscription}
@@ -44,7 +38,7 @@ const SubscriptionDetailsScreen = () => {
       updateFunc={null}
       beforeSend={null}
     >
-      <SubscriptionDetailsView customerName={customerName} subscription={subscription} />
+      <SubscriptionDetailsView subscription={subscription} />
     </DetailPageWrapper>
   );
 };

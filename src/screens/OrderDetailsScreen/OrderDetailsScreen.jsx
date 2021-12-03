@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import parentPaths from '../../services/paths';
 import localization from '../../localization';
 import api from '../../api';
-import generateData from '../../services/useData/tableMarkups/orderDetails';
+import { generateData } from '../../services/useData/tableMarkups/orderDetails';
 
 import OrderDetailsView from './OrderDetailsView';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';

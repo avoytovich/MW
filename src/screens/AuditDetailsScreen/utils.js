@@ -16,12 +16,10 @@ const generateData = async (data) => {
   const res = {
     who: [
       {
-        key: 'userName',
         label: localization.t('labels.userName'),
         value: data.who.userName || emptyValue,
       },
       {
-        key: 'customerOfUser',
         label: localization.t('labels.customerOfUser'),
         value: customerOfUserName,
         shouldCopy: data.who.customerId,
@@ -29,18 +27,15 @@ const generateData = async (data) => {
         path: `${parentPaths.customers}/${data.who.customerId}`,
       },
       {
-        key: 'userId',
         label: localization.t('labels.userId'),
         value: data.who.id || emptyValue,
         shouldCopy: data.who.id,
       },
       {
-        key: 'userType',
         label: localization.t('labels.userType'),
         value: data.who.userType || emptyValue,
       },
       {
-        key: 'userIp',
         label: localization.t('labels.userIp'),
         value: data.who.ip || emptyValue,
         shouldCopy: data.who.ip,
@@ -48,23 +43,19 @@ const generateData = async (data) => {
     ],
     what: [
       {
-        key: 'subjectId',
         label: localization.t('labels.subjectId'),
         value: data.what.id || emptyValue,
         shouldCopy: data.what.id,
       },
       {
-        key: 'operation',
         label: localization.t('labels.operation'),
         value: data.what.fact || emptyValue,
       },
       {
-        key: 'subjectType',
         label: localization.t('labels.subjectType'),
         value: data.what.type || emptyValue,
       },
       {
-        key: 'subjectCustomer',
         label: localization.t('labels.subjectCustomer'),
         value: subjectCustomerName,
         shouldCopy: data.what.customerId,
@@ -74,12 +65,10 @@ const generateData = async (data) => {
     ],
     where: [
       {
-        key: 'platform',
         label: localization.t('labels.platform'),
         value: data.where.platformName || emptyValue,
       },
       {
-        key: 'service',
         label: localization.t('labels.service'),
         value: data.where.serviceName || emptyValue,
       },

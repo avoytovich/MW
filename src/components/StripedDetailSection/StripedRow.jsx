@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 import { toast } from 'react-toastify';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -20,7 +19,7 @@ const StripedRow = ({
   };
 
   return rowData.map((item) => (
-    <Grid container className="orderDetailsRow" key={item.key}>
+    <Grid container className="orderDetailsRow" key={item.label}>
       <Grid item md={6} xs={6}>
         <Box p={2} fontWeight={500}>
           {item.label}
@@ -29,7 +28,7 @@ const StripedRow = ({
       <Grid item md={6} xs={6}>
         <Box display="flex">
           {(!item.link || item.value === emptyValue) ? (
-            <Box p={2} className="rowValue">
+            <Box p={2} style={item.color ? { color: item.color } : {}}>
               {item.value}
             </Box>
           )

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -54,7 +53,7 @@ const OrderRow = ({
       case 'ID':
         return (
           <Link to={`${parentPaths.endusers}/${item.value}`}>
-            { item.value }
+            {item.value}
           </Link>
         );
       default:
