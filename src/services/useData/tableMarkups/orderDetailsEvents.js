@@ -5,6 +5,7 @@ const defaultShow = {
   occuredAt: true,
   event: true,
   status: true,
+  details: true,
 };
 
 const markUp = {
@@ -12,6 +13,7 @@ const markUp = {
     { value: localization.t('labels.occuredAt'), id: 'occuredAt' },
     { value: localization.t('labels.event'), id: 'event' },
     { value: localization.t('labels.status'), id: 'status' },
+    { value: localization.t('labels.details'), id: 'details' },
   ],
 };
 
@@ -21,6 +23,8 @@ const generateData = (data) => {
     occuredAt: moment(val.createDate).format('D MMM YYYY'),
     event: val.name,
     status: val.status,
+    message: val.message,
+    details: val.status === 'Failed' ? 'failed_event' : undefined,
     processingError: val.status === 'Failed',
   }));
 

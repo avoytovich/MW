@@ -29,6 +29,7 @@ const Products = ({ orderData }) => {
         noTableActionsBar
         noEditDeleteActions
         customPath
+        orderData={orderData?.processingEvent}
       />
     </Box>
   );

@@ -37,6 +37,7 @@ const TableComponent = ({
   withDeletePopup,
   scope,
   isOrders,
+  orderData,
 
 }) => {
   const dispatch = useDispatch();
@@ -164,6 +165,7 @@ const TableComponent = ({
               errorHighlight={errorHighlight}
               withDeletePopup={withDeletePopup}
               isOrders={isOrders}
+              orderData={orderData}
             />
           ))}
         </Box>
@@ -190,6 +192,7 @@ TableComponent.propTypes = {
   errorHighlight: PropTypes.string,
   scope: PropTypes.string,
   isOrders: PropTypes.bool,
+  orderData: PropTypes.array,
 };
 
 export default TableComponent;

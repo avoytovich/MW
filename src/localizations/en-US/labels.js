@@ -15,6 +15,7 @@ const labels = {
   b2B: 'B2B',
   b2C: 'B2C',
   status: 'Status',
+  details: 'Details',
   enabled: 'Enabled',
   disabled: 'Disabled',
   orderStatusCompleted: 'Completed',
