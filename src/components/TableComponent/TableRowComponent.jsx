@@ -141,6 +141,8 @@ const TableRowComponent = ({
             {rowItem[item.id]}
           </Typography>
         );
+      } else if (item.id === 'description') {
+        valueToShow = rowItem[item.id] === '' ? '-' : rowItem[item.id];
       } else if (Array.isArray(rowItem[item.id])) {
         valueToShow = <Typography style={{ whiteSpace: 'pre-line', textAlign: 'left' }}>{rowItem[item.id].join('\r\n')}</Typography>;
       } else if (item.id === 'details' && rowItem[item.id] === 'failed_event') {
