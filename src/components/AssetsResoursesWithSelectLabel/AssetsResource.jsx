@@ -57,7 +57,7 @@ const AssetsResource = ({
         {(!maxPayloadFiles || resources.length < maxPayloadFiles) && (
           <Box alignSelf='flex-start' px={2} minWidth={220}>
             <Button
-              disabled={resources.filter((i) => !i.label || !i.url).length}
+              disabled={resources.filter((i) => !i.label || (!i.url && !i.file)).length}
               style={{ width: '100%' }}
               onClick={addItem}
               variant="outlined"

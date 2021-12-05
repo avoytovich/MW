@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -38,7 +38,6 @@ const TableComponent = ({
   scope,
   isOrders,
   orderData,
-
 }) => {
   const dispatch = useDispatch();
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
@@ -68,6 +67,10 @@ const TableComponent = ({
 
     dispatch(setCheckedItems(newChecked));
   };
+
+  useEffect(() => {
+    dispatch(setCheckedItems([]));
+  }, [currentPage]);
 
   if (isLoading || !showColumn) return <LinearProgress />;
 

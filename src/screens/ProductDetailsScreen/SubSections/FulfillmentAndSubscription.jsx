@@ -137,8 +137,8 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
               disabled={!currentProductData.fulfillmentTemplate}
               name="datetime"
               value={
-                currentProductData.releaseDate
-                  ? moment(currentProductData.releaseDate).format('YYYY-MM-DDTkk:mm')
+                currentProductData?.releaseDate
+                  ? moment(currentProductData.releaseDate).format('YYYY-MM-DD')
                   : ''
               }
               label={localization.t('labels.preorderReleaseDate')}
