@@ -3,8 +3,8 @@ import { getCustomerName } from '../../helpers/customersHelper';
 
 const defaultShow = {
   id: false,
-  name: true,
   customer: true,
+  name: true,
   createDate: true,
   updateDate: true,
 };
@@ -12,8 +12,8 @@ const defaultShow = {
 const markUp = {
   headers: [
     { value: localization.t('labels.id'), id: 'id' },
-    { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     { value: localization.t('labels.customer'), id: 'customer' },
+    { value: localization.t('labels.name'), id: 'name', sortParam: 'name' },
     {
       value: localization.t('labels.creationDate'),
       id: 'createDate',
@@ -31,8 +31,8 @@ const generateData = (data) => {
   const values = data.items.map(async (val) => {
     const returnData = {
       id: val.id,
-      name: val.name,
       customer: val.customerId,
+      name: val.name,
       createDate: val.createDate,
       updateDate: val.updateDate,
     };

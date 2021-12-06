@@ -1297,6 +1297,28 @@ const filters = {
       exactSearch: true,
     },
   ],
+  invoicetranslations: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updateDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
 };
 
 export default filters;

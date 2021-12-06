@@ -374,5 +374,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getInvoiceTranslationById(id) {
+    const url = `/designs/legali18ns/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;
