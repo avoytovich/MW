@@ -71,6 +71,7 @@ const FilterBlockInputs = ({
           style: {
             fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '8px',
           },
+          min: curData?.from ? moment(curData.from).format('YYYY-MM-DD') : '',
         }}
         onChange={(e) => {
           const toSave = { to: e.target.value };

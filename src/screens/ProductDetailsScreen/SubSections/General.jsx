@@ -42,11 +42,13 @@ const General = ({
     number: 1,
     value: '',
   });
+
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
   const [countrySelection, setCountrySelection] = useState('blocked');
-  const [selectedCountries, setSelectedCountries] = useState(
-    currentProductData?.blackListedCountries || [],
-  );
+
+  const defaultBlacklisted = parentId
+    ? currentProductData?.blackListedCountries?.value : currentProductData?.blackListedCountries;
+  const [selectedCountries, setSelectedCountries] = useState(defaultBlacklisted || []);
 
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
 
@@ -111,32 +113,42 @@ const General = ({
       : [...countriesOptions.map((l) => l.id).filter((c) => selectedCountries?.indexOf(c) < 0)];
 
     const [hasChanges] = newCountries
-      .filter((itm) => currentProductData?.blackListedCountries?.indexOf(itm) < 0);
-    const [hasReverseChanges] = currentProductData?.blackListedCountries?.filter(
+      .filter((itm) => defaultBlacklisted.indexOf(itm) < 0);
+    const [hasReverseChanges] = defaultBlacklisted.filter(
       (itm) => newCountries?.indexOf(itm) < 0,
     );
 
     if (hasChanges || hasReverseChanges) {
-      setProductData({
-        ...currentProductData,
-        blackListedCountries: [...newCountries],
-      });
+      if (parentId) {
+        setProductData({
+          ...currentProductData,
+          blackListedCountries: {
+            ...currentProductData.blackListedCountries,
+            value: [...newCountries],
+          },
+        });
+      } else {
+        setProductData({
+          ...currentProductData,
+          blackListedCountries: [...newCountries],
+        });
+      }
     }
   }, [selectedCountries]);
 
   useEffect(() => {
-    if (!countriesOptions?.length && currentProductData?.blackListedCountries?.length) return;
+    if (!countriesOptions?.length && defaultBlacklisted?.length) return;
 
     if (countrySelection === 'blocked') {
-      const newCountries = currentProductData?.blackListedCountries?.length ? countriesOptions
+      const newCountries = defaultBlacklisted.length ? countriesOptions
         .map((l) => l.id)
-        .filter((c) => currentProductData?.blackListedCountries?.indexOf(c) >= 0) : [];
+        .filter((c) => defaultBlacklisted?.indexOf(c) >= 0) : [];
 
       setSelectedCountries([...newCountries]);
     } else {
-      const newCountries = currentProductData?.blackListedCountries?.length ? countriesOptions
+      const newCountries = defaultBlacklisted?.length ? countriesOptions
         .map((l) => l.id)
-        .filter((c) => currentProductData?.blackListedCountries?.indexOf(c) < 0)
+        .filter((c) => defaultBlacklisted?.indexOf(c) < 0)
         : countriesOptions.map((l) => l.id);
 
       setSelectedCountries([...newCountries]);
@@ -469,11 +481,11 @@ const General = ({
         </Box>
       </Box>
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box p={2} width='50%' {...stylesForVariations}>
+        <Box p={2} width='50%'>
           <InheritanceField
             field='blackListedCountries'
             onChange={setProductData}
-            value={currentProductData.blackListedCountries || []}
+            value={defaultBlacklisted || []}
             selectOptions={countriesOptions || []}
             parentId={parentId}
             currentProductData={currentProductData}

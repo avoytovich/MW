@@ -272,7 +272,11 @@ const LocalizedContent = ({
                   <div hidden>{children}</div>
                   <AddCircleIcon
                     color='primary'
-                    style={{ marginLeft: 15 }}
+                    style={{
+                      marginLeft: 15,
+                      opacity: !newLangValue ? 0.3 : 1,
+                      pointerEvents: !newLangValue ? 'none' : 'auto',
+                    }}
                     onClick={addLocale}
                   />
                 </div>
