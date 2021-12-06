@@ -167,6 +167,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteInvoiceTranslationsById(id) {
+    const url = `/designs/legali18ns/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;

@@ -145,7 +145,7 @@ const labels = {
   themes: 'Themes',
   layouts: 'Layouts',
   translations: 'Translations',
-  invoiceTranslations: 'Invoice Translations',
+  invoiceTranslations: 'Invoice translations',
   fonts: 'Fonts',
   price: 'Price',
   productName: 'Product name',
@@ -666,7 +666,6 @@ const labels = {
   customerNotFound: 'Customer not found',
   audits: 'Audits',
   audit: 'Audit',
-  details: 'Details',
   delta: 'Delta',
   who: 'Who',
   what: 'What',
@@ -688,6 +687,9 @@ const labels = {
   jwtBearer: 'JWT Bearer',
   internalCall: 'Internal Call',
   anonymous: 'Anonymous',
+  data: 'Data',
+  invoicetranslations: 'Invoice Translations',
+  invoiceTranslation: 'Invoice Translation',
 };
 
 export default labels;

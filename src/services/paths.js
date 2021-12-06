@@ -19,7 +19,7 @@ const parentPaths = {
   localization: {
     main: `${defPath}/storesetup/localization`,
     translationsTab: `${defPath}/storesetup/localization/translations`,
-    invoiceTranslationsTab: `${defPath}/storesetup/localization/invoice-translations`,
+    invoiceTranslationsTab: `${defPath}/storesetup/localization/invoicetranslations`,
   },
   emailbuilder: `${defPath}/storesetup/emailbuilder`,
 

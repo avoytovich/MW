@@ -637,5 +637,22 @@ const getAllApi = {
       url,
     });
   },
+  getInvoiceTranslations({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/designs/legali18ns?format=short&size=${size}&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getAllApi;

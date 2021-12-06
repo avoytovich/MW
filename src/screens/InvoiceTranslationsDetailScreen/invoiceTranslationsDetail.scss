@@ -1,0 +1,10 @@
+@import '../../styles/variables.scss';
+
+.link-to-customer{
+  color: $currentPageText;
+  text-decoration: none;
+}
+.copyIcon:hover{
+  color: $currentPageText;
+  cursor: pointer;
+}

@@ -240,6 +240,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/TranslationDetailScreen'))}
       />
       <Route
+        path={`${parentPaths.localization.invoiceTranslationsTab}/:id`}
+        component={lazy(() => import('../../screens/InvoiceTranslationsDetailScreen'))}
+      />
+      <Route
         path={`${parentPaths.localization.main}`}
         component={lazy(() => import('../../screens/LocalizationScreen'))}
       />
@@ -271,6 +275,7 @@ const SignedRoutes = () => {
         path={`${parentPaths.audits}`}
         component={lazy(() => import('../../screens/AuditsScreen'))}
       />
+
       <Redirect to='/' />
     </Switch>
   );
