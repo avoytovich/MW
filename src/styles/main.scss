@@ -49,6 +49,11 @@ html, body {
       &.bar-style-preproduction{
         background-color: #0f0f0f;
       }
+
+      &.bar-style-production{
+        height: 0;
+        display: none;
+      }
     }
   }
 

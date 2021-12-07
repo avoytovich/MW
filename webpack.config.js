@@ -57,7 +57,7 @@ module.exports = (env) => ({
       'process.env.ENV_MODE': JSON.stringify(env.ENV_MODE),
       'process.env.API_SERVER':
         // eslint-disable-next-line
-        env.ENV_MODE === 'production' ? JSON.stringify('https://api.nexway.build') :
+        env.ENV_MODE === 'production' ? JSON.stringify('https://api.nexway.store') :
           env.ENV_MODE === 'preproduction' ? JSON.stringify('https://api.preproduction.nexway.build')
             : JSON.stringify('https://api.staging.nexway.build'),
       'process.env.envObj': JSON.stringify(env),
