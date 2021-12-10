@@ -1,8 +1,7 @@
 /* eslint-disable consistent-return */
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import localization from '../../localization';
 import useInvoiceTranslationsDetail from './useInvoiceTranslationsDetail';
 
@@ -14,16 +13,22 @@ import InvoiceTranslationsView from './InvoiceTranslationsView';
 const InvoiceTranslationsDetailScreen = () => {
   const { id } = useParams();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const [jsonIsValid, setJsonIsValid] = useState(true);
 
   const {
     setUpdate,
-    cuInvoiceTranslation,
+    curInvoiceTranslation,
     setCurInvoiceTranslation,
     isLoading,
     hasChanges,
     invoiceTranslation,
     customerName,
   } = useInvoiceTranslationsDetail(id, nxState);
+
+  const beforeSend = (curData) => {
+    const data = JSON.parse(curData.data);
+    return ({ ...curData, data });
+  };
 
   return (
     <DetailPageWrapper
@@ -32,20 +37,22 @@ const InvoiceTranslationsDetailScreen = () => {
       name={invoiceTranslation?.name || `${localization.t('general.new')} ${localization.t(
         'labels.invoiceTranslation',
       )}`}
-      saveIsDisabled={!cuInvoiceTranslation?.name}
+      saveIsDisabled={!curInvoiceTranslation?.name || !jsonIsValid}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.localization.invoiceTranslationsTab}
-      curData={cuInvoiceTranslation}
+      curData={curInvoiceTranslation}
       addFunc={api.addInvoiceTranslation}
       updateFunc={api.updateInvoiceTranslationById}
-      beforeSend={null}
+      beforeSend={beforeSend}
       setUpdate={setUpdate}
     >
       <InvoiceTranslationsView
         customerName={customerName}
-        cuInvoiceTranslation={cuInvoiceTranslation}
+        curInvoiceTranslation={curInvoiceTranslation}
         setCurInvoiceTranslation={setCurInvoiceTranslation}
+        jsonIsValid={jsonIsValid}
+        setJsonIsValid={setJsonIsValid}
       />
     </DetailPageWrapper>
   );

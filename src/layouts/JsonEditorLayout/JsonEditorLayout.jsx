@@ -16,6 +16,9 @@ const JsonEditorLayout = ({
   setCurrentData,
   customer,
   isNew,
+  jsonKey,
+  jsonIsValid,
+  setJsonIsValid,
 }) => (
   <div className='json-editor-screen'>
     <CustomCard title='General'>
@@ -71,6 +74,9 @@ const JsonEditorLayout = ({
       </Box>
     </CustomCard>
     <JsonEditor
+      jsonIsValid={jsonIsValid}
+      setJsonIsValid={setJsonIsValid}
+      jsonKey={jsonKey}
       currentData={currentData}
       setCurrentData={setCurrentData}
     />
@@ -82,6 +88,9 @@ JsonEditorLayout.propTypes = {
   setCurrentData: PropTypes.func,
   isNew: PropTypes.bool,
   customer: PropTypes.string,
+  jsonKey: PropTypes.string,
+  jsonIsValid: PropTypes.bool,
+  setJsonIsValid: PropTypes.func,
 };
 
 export default JsonEditorLayout;

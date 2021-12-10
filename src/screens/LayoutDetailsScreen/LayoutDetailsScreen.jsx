@@ -25,6 +25,7 @@ const LayoutDetailsScreen = () => {
   const { id } = useParams();
   const [hasChanges, setChanges] = useState(false);
   const [update, setUpdate] = useState(0);
+  const [jsonIsValid, setJsonIsValid] = useState(true);
 
   const [layoutData, setLayoutData] = useState(null);
 
@@ -45,8 +46,8 @@ const LayoutDetailsScreen = () => {
 
     fetchData.then(({ data }) => {
       if (!isCancelled) {
-        setLayoutData(data);
-        setCurrentLayout(data);
+        setLayoutData({ ...data, data: JSON.stringify(data.data, 0, 4) });
+        setCurrentLayout({ ...data, data: JSON.stringify(data.data, 0, 4) });
       }
       Promise.allSettled([
         api.getCustomerById(data.customerId),
@@ -66,6 +67,11 @@ const LayoutDetailsScreen = () => {
     return () => setChanges(false);
   }, [currentLayout, layoutData]);
 
+  const beforeSend = (curData) => {
+    const data = JSON.parse(curData.data);
+    return ({ ...curData, data });
+  };
+
   return (
     <DetailPageWrapper
       nxState={nxState}
@@ -73,13 +79,14 @@ const LayoutDetailsScreen = () => {
       name={layoutData?.name || `${localization.t('general.new')} ${localization.t(
         'general.layout',
       )}`}
+      saveIsDisabled={!jsonIsValid}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.checkoutpagebuilder.layoutsTab}
       curData={currentLayout}
       addFunc={api.addNewLayout}
       updateFunc={api.updateLayoutById}
-      beforeSend={(data) => data}
+      beforeSend={beforeSend}
       setUpdate={setUpdate}
     >
       <JsonEditorLayout
@@ -88,6 +95,9 @@ const LayoutDetailsScreen = () => {
         setCurrentData={setCurrentLayout}
         staticData={layoutData}
         title='Layout Data'
+        jsonKey='data'
+        jsonIsValid={jsonIsValid}
+        setJsonIsValid={setJsonIsValid}
       />
     </DetailPageWrapper>
   );

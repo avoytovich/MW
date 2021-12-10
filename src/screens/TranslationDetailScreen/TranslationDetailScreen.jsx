@@ -20,6 +20,7 @@ const TranslationDetailScreen = () => {
 
   const [currentTranslation, setCurrentTranslation] = useState(null);
   const [currentCustomer, setCurrentCustomer] = useState(null);
+  const [jsonIsValid, setJsonIsValid] = useState(true);
 
   useEffect(() => {
     let isCancelled = false;
@@ -35,8 +36,8 @@ const TranslationDetailScreen = () => {
       });
     fetchData.then(({ data }) => {
       if (!isCancelled) {
-        setTranslationData(data);
-        setCurrentTranslation(data);
+        setTranslationData({ ...data, data: JSON.stringify(data.data, 0, 4) });
+        setCurrentTranslation({ ...data, data: JSON.stringify(data.data, 0, 4) });
         setLoading(false);
       }
       Promise.allSettled([api.getCustomerById(data.customerId)]).then(([customer]) => {
@@ -55,6 +56,11 @@ const TranslationDetailScreen = () => {
     return () => setChanges(false);
   }, [currentTranslation, translationData]);
 
+  const beforeSend = (curData) => {
+    const data = JSON.parse(curData.data);
+    return ({ ...curData, data });
+  };
+
   return (
     <DetailPageWrapper
       nxState={nxState}
@@ -62,13 +68,14 @@ const TranslationDetailScreen = () => {
       name={translationData?.name || `${localization.t('general.new')} ${localization.t(
         'general.translation',
       )}`}
+      saveIsDisabled={!jsonIsValid}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.localization.translationsTab}
       curData={currentTranslation}
       addFunc={api.addNewTranslation}
       updateFunc={api.updateTranslationById}
-      beforeSend={(data) => data}
+      beforeSend={beforeSend}
       setUpdate={setUpdate}
     >
       <JsonEditorLayout
@@ -78,6 +85,9 @@ const TranslationDetailScreen = () => {
         setCurrentData={setCurrentTranslation}
         staticData={translationData}
         title='Translations JSON'
+        jsonKey='data'
+        jsonIsValid={jsonIsValid}
+        setJsonIsValid={setJsonIsValid}
       />
     </DetailPageWrapper>
   );
