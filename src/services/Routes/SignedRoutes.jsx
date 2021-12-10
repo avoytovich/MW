@@ -280,6 +280,16 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/AuditsScreen'))}
       />
 
+      {/* <Route
+        path={`${parentPaths.crudHelper.main}`}
+        component={lazy(() => import('../../screens/CrudHelperScreen'))}
+      /> */}
+
+      {/* <Route
+        path={`${parentPaths.crudHelper.request}`}
+        component={lazy(() => import('../../screens/CrudHelperRequestScreen'))}
+      /> */}
+
       <Redirect to='/' />
     </Switch>
   );

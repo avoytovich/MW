@@ -654,5 +654,27 @@ const getAllApi = {
       url,
     });
   },
+  getRequest(url_, {
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject, extraParams) {
+    let url = `${url_}?format=short&size=${size}&page=${page}`;
+
+    if (filters) {
+      url += filters;
+    }
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    if (extraParams) {
+      url += `&${extraParams}`;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getAllApi;

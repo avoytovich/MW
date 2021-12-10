@@ -187,6 +187,11 @@ const navConfig = [
         title: sideBarTitle.myaccount,
         href: parentPaths.myaccount,
       },
+      /* {
+        id: 'crud-helper',
+        title: sideBarTitle.crudHelper,
+        href: parentPaths.crudHelper.main,
+      }, */
     ],
   },
   {
@@ -227,7 +232,7 @@ const navConfig = [
       {
         id: 'api',
         title: localization.t('sideBar.titles.apiDocumentation'),
-        href: 'https://api-doc.staging.nexway.build',
+        href: process?.env?.ENV_MODE === 'production' ? 'https://apidoc.nexway.store' : 'https://api-doc.staging.nexway.build',
         external: true,
       },
       {

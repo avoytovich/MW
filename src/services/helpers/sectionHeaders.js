@@ -31,12 +31,17 @@ const sideBarTitle = {
   onboarding: localization.t('sideBar.titles.onboarding'),
   remittables: localization.t('sideBar.titles.remittables'),
   audits: localization.t('sideBar.titles.audits'),
+  crudHelper: localization.t('sideBar.titles.crudHelper'),
   'product-documentation': localization.t('sideBar.titles.productDocumentation'),
+};
+
+const customHeaders = {
+  crudHelper: localization.t('labels.crudHelperResources'),
 };
 
 const getSectionHeader = (pathname) => {
   const url = pathname.split(`/${defPath}/`)[0].split('/')[2];
-  return sideBarTitle[url];
+  return customHeaders[url] || sideBarTitle[url];
 };
 
 export { getSectionHeader, sideBarTitle };

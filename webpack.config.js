@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
@@ -51,6 +52,20 @@ module.exports = (env) => ({
     new HtmlWebPackPlugin({
       template: path.resolve(__dirname, 'public/index.html'),
       filename: 'index.html',
+    }),
+    new FaviconsWebpackPlugin({
+      logo: './src/assets/favicon.png',
+      devMode: 'webapp',
+      favicons: {
+        appName: 'My Nexway',
+        appDescription: 'Nexway Center',
+        background: '#fff',
+        theme_color: '#fff',
+        icons: {
+          coast: false,
+          yandex: false,
+        },
+      },
     }),
     new webpack.DefinePlugin({
       'process.env.BUILT_AT': webpack.DefinePlugin.runtimeValue(Date.now, [fileDep]),

@@ -50,6 +50,7 @@ const sideBar = {
     audits: 'Audits',
     apiDocumentation: 'API Documentation',
     productDocumentation: 'Product Documentation',
+    crudHelper: 'C.R.U.D. Helper',
   },
 };
 
