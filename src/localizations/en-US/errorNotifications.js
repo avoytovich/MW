@@ -25,7 +25,11 @@ const errorNotifications = {
   hasNotGivenConsent: ' Has not given consent (refused or not asked yet)',
   loadingError: 'Loading error',
   couldNotLoadNeededResources: 'Could not load needed resources :(',
-
+  minShouldBeSmallerThanMax: 'Min should be < than max',
+  maxShouldBeBiggerThanMin: 'Max should be > than min',
+  defaultValueShouldBeBetweenMinOrMaxOrEqual: 'Default value should be between min or max, or equal to one of them',
+  alreadyExists: 'Already exists',
+  fieldIsRequired: 'Field is required',
 };
 
 export default errorNotifications;

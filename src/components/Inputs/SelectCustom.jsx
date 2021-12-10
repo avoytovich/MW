@@ -22,8 +22,7 @@ const SelectCustom = ({
   isDisabled,
 }) => {
   const noRepeatingOptions = selectOptions
-    .filter((so) => !usedOptions.filter((uo) => uo.id === so.id).length);
-
+    .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
   return (
     <Box display='flex' alignItems='center' flexGrow='1'>
       <TextField

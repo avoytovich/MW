@@ -374,6 +374,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getProductsPriceFunctionById(id) {
+    const url = `/products/price-functions/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getInvoiceTranslationById(id) {
     const url = `/designs/legali18ns/${id}`;
     return axiosInstance({

@@ -27,7 +27,7 @@ const parentPaths = {
   pricemodels: {
     main: `${defPath}/products/pricemodels`,
     pricesTab: `${defPath}/products/pricemodels/prices`,
-    pricefunctionsTab: `${defPath}/products/pricemodels/price-functions`,
+    pricefunctionsTab: `${defPath}/products/pricemodels/pricefunctions`,
   },
   recommendations: `${defPath}/products/recommendations`,
   fulfillment: {

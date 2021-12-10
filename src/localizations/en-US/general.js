@@ -116,6 +116,7 @@ const general = {
   noTmplData: 'No template data',
   subjectIsMandatory: 'Subject is mandatory.',
   templateCloned: 'Email template successfully cloned',
+  productsWith: ' Products with',
   upload: 'Upload',
 };
 

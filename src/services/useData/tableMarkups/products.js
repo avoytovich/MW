@@ -13,6 +13,7 @@ const defaultShow = {
   status: true,
   family: false,
   subscriptionModel: true,
+  priceFunction: true,
 };
 const markUp = {
   headers: [
@@ -50,7 +51,7 @@ const markUp = {
       sortParam: 'status',
     },
     { value: localization.t('labels.family'), id: 'family' },
-    { value: localization.t('labels.priceFunction'), id: 'priseFunction' },
+    { value: localization.t('labels.priceFunction'), id: 'priceFunction' },
     { value: localization.t('labels.subscriptionModel'), id: 'subscriptionModel' },
   ],
 };
@@ -69,6 +70,7 @@ const generateData = (data) => {
       status: val.status,
       family: val.family,
       subscriptionModel: val?.subscriptionTemplate,
+      priceFunction: val.priceFunction || '-',
     };
 
     if (val.customerId) {

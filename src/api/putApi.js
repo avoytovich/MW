@@ -201,6 +201,14 @@ const putApi = {
       data,
     });
   },
+  updatePriceFunction(id, data) {
+    const url = `/products/price-functions/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateInvoiceTranslationById(id, data) {
     const url = `/designs/legali18ns/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
     return axiosInstance({

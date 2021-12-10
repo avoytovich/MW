@@ -39,7 +39,7 @@ const VALID_FILTER_SCOPES = [
   'notification-history',
   'carts',
   'prices',
-  'price-functions',
+  'pricefunctions',
   'autoFulfillments',
   'manualFulfillments',
   'marketingCampaigns',
