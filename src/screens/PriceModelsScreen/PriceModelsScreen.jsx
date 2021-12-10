@@ -30,11 +30,14 @@ const availTabs = [
     headers: markUpPrices.headers,
   },
   {
-    label: 'price-functions',
-    scope: 'price-functions',
+    label: 'pricefunctions',
+    scope: 'pricefunctions',
     path: parentPaths.pricemodels.pricefunctionsTab,
     deleteFunc: api.deletePriceFunctionById,
     headers: markUpPriceFunctions.headers,
+    button: `${localization.t('general.add')} ${localization.t(
+      'labels.priceFunction',
+    )}`,
   },
 ];
 

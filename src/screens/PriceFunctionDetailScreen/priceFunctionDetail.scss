@@ -1,0 +1,22 @@
+@import '../../styles/variables.scss';
+
+
+.customerLink{
+  color: $currentPageText;
+  text-decoration: none;
+}
+.copyIcon:hover{
+  color: $currentPageText;
+  cursor: pointer;
+}
+.actionIcon:hover{
+  color: $currentPageText;
+  cursor: pointer;
+}
+.tabWrapper{
+padding-right: 10px;}
+
+.clickableText{
+  color: $currentPageText;
+  cursor: pointer;
+}

@@ -18,7 +18,7 @@ import localization from '../../../../localization';
 import api from '../../../../api';
 
 const PriceFunctionsScreen = () => {
-  const scope = 'price-functions';
+  const scope = 'pricefunctions';
 
   const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);

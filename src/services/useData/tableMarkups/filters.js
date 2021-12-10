@@ -51,6 +51,12 @@ const filters = {
       label: localization.t('labels.family'),
       type: 'text',
     },
+    {
+      id: 'priceFunction',
+      label: localization.t('labels.priceFunction'),
+      type: 'text',
+      exactSearch: true,
+    },
   ],
   orderlist: [
     {
@@ -675,7 +681,7 @@ const filters = {
       ],
     },
   ],
-  'price-functions': [
+  pricefunctions: [
     {
       id: 'id',
       label: localization.t('labels.priceFunctionId'),

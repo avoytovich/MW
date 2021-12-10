@@ -216,6 +216,10 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/PricesDetailsScreen'))}
       />
       <Route
+        path={`${parentPaths.pricemodels.pricefunctionsTab}/:id`}
+        component={lazy(() => import('../../screens/PriceFunctionDetailScreen'))}
+      />
+      <Route
         path={`${parentPaths.pricemodels.main}`}
         component={lazy(() => import('../../screens/PriceModelsScreen'))}
       />
