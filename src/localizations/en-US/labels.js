@@ -701,6 +701,10 @@ const labels = {
   data: 'Data',
   invoicetranslations: 'Invoice Translations',
   invoiceTranslation: 'Invoice Translation',
+  dataBegining: 'Data (beginning)',
+  crudHelperResources: 'C.R.U.D. Helper resource list',
+  resourceUrlEndpoint: 'Resource URL / Endpoint',
+  extraParams: 'Extra parameters',
   jsonValidation: 'JSON validation',
 };
 

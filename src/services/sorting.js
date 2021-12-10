@@ -31,6 +31,7 @@ export const sortKeys = {
   remittables: 'remittables',
   audits: 'auditsSortParams',
   onboarding: 'onboarding',
+  crudHelper: 'crudHelper',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));

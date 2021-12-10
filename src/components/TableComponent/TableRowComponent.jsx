@@ -36,6 +36,7 @@ const TableRowComponent = ({
   handleDeleteItem,
   noActions,
   noEditDeleteActions,
+  noActionButtons,
   customPath,
   errorHighlight,
   withDeletePopup,
@@ -226,30 +227,33 @@ const TableRowComponent = ({
         )}
 
         {markupSequence.map((item) => drawTableCell(item))}
-        <Grid item xs md={4} style={{ minWidth: '200px' }}>
-          {rowHover && !customPath && (
-            <Grid>
-              <Box mt={2} display='flex' justifyContent='center' textAlign='center'>
-                {!noActions && !noEditDeleteActions && !withDeletePopup && (
-                  <DeleteIcon
-                    onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
-                    className="deleteIcon icons"
-                  />
-                )}
-                {withDeletePopup
-                  && (
-                    <Box onClick={(e) => { e.stopPropagation(); }}>
-                      <DeletePopup id={rowItem.id} deleteFunc={handleDeleteItem} />
-                    </Box>
+
+        {!noActionButtons && (
+          <Grid item xs md={4} style={{ minWidth: '200px' }}>
+            {rowHover && !customPath && (
+              <Grid>
+                <Box mt={2} display='flex' justifyContent='center' textAlign='center'>
+                  {!noActions && !noEditDeleteActions && !withDeletePopup && (
+                    <DeleteIcon
+                      onClick={(e) => { e.stopPropagation(); handleDeleteItem(rowItem.id); }}
+                      className="deleteIcon icons"
+                    />
                   )}
-                {!noEditDeleteActions && (
-                  <EditIcon className="editIcon icons" />
-                )}
-                <FileCopyIcon className="copyIcon icons" style={{ marginLeft: '5px' }} onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
-              </Box>
-            </Grid>
-          )}
-        </Grid>
+                  {withDeletePopup
+                    && (
+                      <Box onClick={(e) => { e.stopPropagation(); }}>
+                        <DeletePopup id={rowItem.id} deleteFunc={handleDeleteItem} />
+                      </Box>
+                    )}
+                  {!noEditDeleteActions && (
+                    <EditIcon className="editIcon icons" />
+                  )}
+                  <FileCopyIcon className="copyIcon icons" style={{ marginLeft: '5px' }} onClick={(e) => { e.stopPropagation(); copyUrl(); }} />
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+        )}
       </Grid>
     </Box>
   );
@@ -269,10 +273,12 @@ TableRowComponent.propTypes = {
   ),
   noActions: PropTypes.bool,
   noEditDeleteActions: PropTypes.bool,
+  noActionButtons: PropTypes.bool,
   customPath: PropTypes.string,
   errorHighlight: PropTypes.string,
   withDeletePopup: PropTypes.bool,
   isOrders: PropTypes.bool,
+  orderData: PropTypes.object,
 };
 
 export default TableRowComponent;

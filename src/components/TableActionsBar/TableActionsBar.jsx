@@ -56,7 +56,16 @@ const useStyles = makeStyles({
 const selectOptions = ['20', '50', '100', '200'];
 
 const TableActionsBar = ({
-  children, positionBottom, findByCC, scope, deleteFunc, headers, handleDeleteItem, withDeletePopup,
+  children,
+  positionBottom,
+  findByCC,
+  scope,
+  deleteFunc,
+  headers,
+  handleDeleteItem,
+  withDeletePopup,
+  extraComponent,
+  noActions,
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showFilters, setShowFilters] = useState(null);
@@ -101,113 +110,120 @@ const TableActionsBar = ({
   return (
     <>
       <SectionHeader pathname={location.pathname} />
-      <Box display="flex" alignItems='center' justifyContent='space-between'>
-        <Box display='flex' alignItems='center' py={2}>
-          <Typography data-test='rowsPerPageLabel' variant="subtitle2">{localization.t('general.rowsPerPage')}</Typography>
-          <Box px={2}>
-            <TextField
-              select
-              value={reduxRowPerPage}
-              onChange={(e) => {
-                dispatch(setRowsPerPage(e.target.value));
-              }}
-            >
-              {selectOptions.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Box>
-          {!positionBottom
-            && (
-              <>
-                <Tooltip arrow title="Show Columns" placement="top">
-                  <IconButton className={classes.button} onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)} edge='start' aria-label='refresh'>
-                    <ViewColumnIcon color={anchorEl ? 'primary' : ''} />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip arrow title="Filter" placement="top">
-                  <IconButton
-                    className={classes.button}
-                    disabled={VALID_FILTER_SCOPES.indexOf(scope) < 0}
-                    onClick={(e) => setShowFilters(e.currentTarget)}
-                    edge='start'
-                    aria-label='refresh'
-                  >
-                    <FilterListIcon color={showFilters ? 'primary' : ''} />
-                    {filtersCount > 0 && (
-                      <Box
-                        position='absolute'
-                        width='18px'
-                        height='18px'
-                        bgcolor='#4791db'
-                        fontSize='12px'
-                        color='#fff'
-                        top='3px'
-                        right='4px'
-                        lineHeight='18px'
-                        borderRadius='50%'
-                      >
-                        {filtersCount}
-                      </Box>
-                    )}
-                  </IconButton>
-                </Tooltip>
-                <Popover
-                  open={!!showFilters}
-                  anchorEl={showFilters}
-                  onClose={() => setShowFilters(null)}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
+
+      {extraComponent}
+
+      {
+        !noActions && (
+          <Box display="flex" alignItems='center' justifyContent='space-between'>
+            <Box display='flex' alignItems='center' py={2}>
+              <Typography data-test='rowsPerPageLabel' variant="subtitle2">{localization.t('general.rowsPerPage')}</Typography>
+              <Box px={2}>
+                <TextField
+                  select
+                  value={reduxRowPerPage}
+                  onChange={(e) => {
+                    dispatch(setRowsPerPage(e.target.value));
                   }}
-                  style={{ marginLeft: '-15px' }}
                 >
-                  <TableFilters scope={scope} onClose={() => setShowFilters(null)} />
-                </Popover>
-                <CSVLink
-                  onClick={(!headers || tableCheckedItems.length === 0)
-                    ? (e) => e.preventDefault() : () => { }}
-                  className="CSVLinkBlock"
-                  data={formateData(tableCheckedItems)}
-                  headers={csvHeaders}
-                  ref={csvLink}
-                  filename="table-export.csv"
-                  target="_blank"
-                />
-                <Tooltip arrow title="Export" placement="top">
-                  <IconButton onClick={() => csvLink.current.link.click()} disabled={!headers || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><GetAppIcon /></IconButton>
-                </Tooltip>
-                {!withDeletePopup
-                  && (
-                  <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
-                  )}
-                {withDeletePopup
-                  && (
-                    <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><DeletePopup deleteFunc={handleDeleteItems} /></IconButton>
-                  )}
-                {findByCC
-                  && (
-                    <Tooltip arrow title="Find by CC" placement="top">
-                      <IconButton className={classes.button} edge='start' color='secondary' onClick={findByCC}><CreditCardIcon /></IconButton>
+                  {selectOptions.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Box>
+              {!positionBottom
+                && (
+                  <>
+                    <Tooltip arrow title="Show Columns" placement="top">
+                      <IconButton className={classes.button} onClick={(e) => setAnchorEl(anchorEl ? null : e.currentTarget)} edge='start' aria-label='refresh'>
+                        <ViewColumnIcon color={anchorEl ? 'primary' : ''} />
+                      </IconButton>
                     </Tooltip>
-                  )}
-                <Tooltip arrow title="Refresh" placement="top">
-                  <IconButton className={classes.button} disabled={VALID_REFRESH_SCOPES.indexOf(scope) < 0} edge='start' color='secondary' onClick={doRefresh}><RefreshIcon /></IconButton>
-                </Tooltip>
-                <ShowColumnPopper
-                  anchorEl={anchorEl}
-                  setAnchorEl={setAnchorEl}
-                  scope={scope}
-                />
-              </>
-            )}
-        </Box>
-        <Box>
-          {children}
-        </Box>
-      </Box>
+                    <Tooltip arrow title="Filter" placement="top">
+                      <IconButton
+                        className={classes.button}
+                        disabled={VALID_FILTER_SCOPES.indexOf(scope) < 0}
+                        onClick={(e) => setShowFilters(e.currentTarget)}
+                        edge='start'
+                        aria-label='refresh'
+                      >
+                        <FilterListIcon color={showFilters ? 'primary' : ''} />
+                        {filtersCount > 0 && (
+                          <Box
+                            position='absolute'
+                            width='18px'
+                            height='18px'
+                            bgcolor='#4791db'
+                            fontSize='12px'
+                            color='#fff'
+                            top='3px'
+                            right='4px'
+                            lineHeight='18px'
+                            borderRadius='50%'
+                          >
+                            {filtersCount}
+                          </Box>
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                    <Popover
+                      open={!!showFilters}
+                      anchorEl={showFilters}
+                      onClose={() => setShowFilters(null)}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                      }}
+                      style={{ marginLeft: '-15px' }}
+                    >
+                      <TableFilters scope={scope} onClose={() => setShowFilters(null)} />
+                    </Popover>
+                    <CSVLink
+                      onClick={(!headers || tableCheckedItems.length === 0)
+                        ? (e) => e.preventDefault() : () => { }}
+                      className="CSVLinkBlock"
+                      data={formateData(tableCheckedItems)}
+                      headers={csvHeaders}
+                      ref={csvLink}
+                      filename="table-export.csv"
+                      target="_blank"
+                    />
+                    <Tooltip arrow title="Export" placement="top">
+                      <IconButton onClick={() => csvLink.current.link.click()} disabled={!headers || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><GetAppIcon /></IconButton>
+                    </Tooltip>
+                    {!withDeletePopup
+                      && (
+                      <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
+                      )}
+                    {withDeletePopup
+                      && (
+                        <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} className={classes.button} edge='start' color='secondary'><DeletePopup deleteFunc={handleDeleteItems} /></IconButton>
+                      )}
+                    {findByCC
+                      && (
+                        <Tooltip arrow title="Find by CC" placement="top">
+                          <IconButton className={classes.button} edge='start' color='secondary' onClick={findByCC}><CreditCardIcon /></IconButton>
+                        </Tooltip>
+                      )}
+                    <Tooltip arrow title="Refresh" placement="top">
+                      <IconButton className={classes.button} disabled={VALID_REFRESH_SCOPES.indexOf(scope) < 0} edge='start' color='secondary' onClick={doRefresh}><RefreshIcon /></IconButton>
+                    </Tooltip>
+                    <ShowColumnPopper
+                      anchorEl={anchorEl}
+                      setAnchorEl={setAnchorEl}
+                      scope={scope}
+                    />
+                  </>
+                )}
+            </Box>
+            <Box>
+              {children}
+            </Box>
+          </Box>
+        )
+      }
     </>
   );
 };
@@ -223,4 +239,6 @@ TableActionsBar.propTypes = {
   headers: PropTypes.array,
   handleDeleteItem: PropTypes.func,
   withDeletePopup: PropTypes.bool,
+  extraComponent: PropTypes.node,
+  noActions: PropTypes.bool,
 };

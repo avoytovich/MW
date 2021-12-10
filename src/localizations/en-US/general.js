@@ -118,6 +118,9 @@ const general = {
   templateCloned: 'Email template successfully cloned',
   productsWith: ' Products with',
   upload: 'Upload',
+  reload: 'Reload',
+  noResourceUrl: 'No resource URL selected',
+  selectResource: 'Please select an endpoint and press the reload button.',
 };
 
 export default general;

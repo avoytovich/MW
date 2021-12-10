@@ -29,6 +29,7 @@ const TableComponent = ({
   handleDeleteItem,
   noActions,
   noEditDeleteActions,
+  noActionButtons,
   setSortParams,
   sortParams,
   customPath,
@@ -149,7 +150,7 @@ const TableComponent = ({
                 </Grid>
               )),
           )}
-          <Grid xs={1} md={4} />
+          {!noActionButtons && <Grid xs={1} md={4} />}
         </Grid>
 
         <Box className="tableBodyGrid">
@@ -164,6 +165,7 @@ const TableComponent = ({
               rowItem={rowItem}
               noActions={noActions}
               noEditDeleteActions={noEditDeleteActions}
+              noActionButtons={noActionButtons}
               customPath={customPath}
               errorHighlight={errorHighlight}
               withDeletePopup={withDeletePopup}
@@ -189,6 +191,7 @@ TableComponent.propTypes = {
   defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
   noEditDeleteActions: PropTypes.bool,
+  noActionButtons: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,
   customPath: PropTypes.string,

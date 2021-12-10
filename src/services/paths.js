@@ -63,6 +63,10 @@ const parentPaths = {
     notificationHistoryTab: `${defPath}/settings/notifications/notification-history`,
   },
   myaccount: `${defPath}/settings/myaccount`,
+  crudHelper: {
+    main: `${defPath}/settings/crudHelper`,
+    request: `${defPath}/settings/crudHelper/request`,
+  },
 
   customers: `${defPath}/customermanagement/customerslist`,
   onboarding: `${defPath}/customermanagement/onboarding`,
