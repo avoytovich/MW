@@ -690,6 +690,7 @@ const labels = {
   data: 'Data',
   invoicetranslations: 'Invoice Translations',
   invoiceTranslation: 'Invoice Translation',
+  jsonValidation: 'JSON validation',
 };
 
 export default labels;

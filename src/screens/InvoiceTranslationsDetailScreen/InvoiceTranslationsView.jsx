@@ -17,9 +17,11 @@ import SectionLayout from '../../components/SectionLayout';
 import './invoiceTranslationsDetail.scss';
 
 const InvoiceTranslationsView = ({
-  cuInvoiceTranslation,
+  curInvoiceTranslation,
   setCurInvoiceTranslation,
   customerName,
+  jsonIsValid,
+  setJsonIsValid,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const handleCopy = (value) => {
@@ -46,7 +48,7 @@ const InvoiceTranslationsView = ({
         curTab === 0 && (
           <SectionLayout label='general'>
             <Box display='flex' flexDirection='column' width='60%'>
-              {cuInvoiceTranslation.id
+              {curInvoiceTranslation.id
                 && (
                   <Box display="flex" p={2}>
                     <Box pr={2}>
@@ -55,13 +57,13 @@ const InvoiceTranslationsView = ({
                       </Typography>
                     </Box>
                     <Box pr={2}>
-                      <Typography color='secondary'>{cuInvoiceTranslation.id}</Typography>
+                      <Typography color='secondary'>{curInvoiceTranslation.id}</Typography>
                     </Box>
                     <Box>
                       <FileCopyIcon
                         color='secondary'
                         className="copyIcon"
-                        onClick={() => handleCopy(cuInvoiceTranslation.id)}
+                        onClick={() => handleCopy(curInvoiceTranslation.id)}
                       />
                     </Box>
                   </Box>
@@ -75,7 +77,7 @@ const InvoiceTranslationsView = ({
                 </Box>
 
                 <Box pr={2}>
-                  <Link to={`${parentPaths.customers}/${cuInvoiceTranslation.customerId}`} className='link-to-customer'>
+                  <Link to={`${parentPaths.customers}/${curInvoiceTranslation.customerId}`} className='link-to-customer'>
                     <Typography>{customerName}</Typography>
                   </Link>
                 </Box>
@@ -83,7 +85,7 @@ const InvoiceTranslationsView = ({
                   <FileCopyIcon
                     color='secondary'
                     className="copyIcon"
-                    onClick={() => handleCopy(cuInvoiceTranslation.customerId)}
+                    onClick={() => handleCopy(curInvoiceTranslation.customerId)}
                   />
                 </Box>
               </Box>
@@ -92,9 +94,9 @@ const InvoiceTranslationsView = ({
                 <InputCustom
                   label='name'
                   isRequired
-                  value={cuInvoiceTranslation.name}
+                  value={curInvoiceTranslation.name}
                   onChangeInput={(e) => setCurInvoiceTranslation(
-                    { ...cuInvoiceTranslation, name: e.target.value },
+                    { ...curInvoiceTranslation, name: e.target.value },
                   )}
                 />
               </Box>
@@ -106,7 +108,10 @@ const InvoiceTranslationsView = ({
         curTab === 1 && (
           <SectionLayout label='data'>
             <JsonEditor
-              currentData={cuInvoiceTranslation}
+              jsonIsValid={jsonIsValid}
+              setJsonIsValid={setJsonIsValid}
+              jsonKey='data'
+              currentData={curInvoiceTranslation}
               setCurrentData={setCurInvoiceTranslation}
             />
           </SectionLayout>
@@ -119,7 +124,9 @@ const InvoiceTranslationsView = ({
 export default InvoiceTranslationsView;
 
 InvoiceTranslationsView.propTypes = {
-  cuInvoiceTranslation: PropTypes.object,
+  curInvoiceTranslation: PropTypes.object,
   setCurInvoiceTranslation: PropTypes.func,
   customerName: PropTypes.string,
+  jsonIsValid: PropTypes.bool,
+  setJsonIsValid: PropTypes.func,
 };

@@ -6,7 +6,7 @@ import { getCustomerName } from '../../services/helpers/customersHelper';
 const useInvoiceTranslationsDetail = (id, nxState) => {
   const [isLoading, setLoading] = useState(true);
 
-  const [cuInvoiceTranslation, setCurInvoiceTranslation] = useState(null);
+  const [curInvoiceTranslation, setCurInvoiceTranslation] = useState(null);
   const [invoiceTranslation, setInvoiceTranslation] = useState(null);
   const [update, setUpdate] = useState(0);
   const [hasChanges, setHasChanges] = useState(false);
@@ -25,8 +25,8 @@ const useInvoiceTranslationsDetail = (id, nxState) => {
     invoiceTranslationData.then(({ data }) => {
       getCustomerName(data.customerId).then((name) => {
         if (!isCancelled) {
-          setInvoiceTranslation({ ...data });
-          setCurInvoiceTranslation({ ...data });
+          setInvoiceTranslation({ ...data, data: JSON.stringify(data.data, 0, 4) });
+          setCurInvoiceTranslation({ ...data, data: JSON.stringify(data.data, 0, 4) });
           setCustomerName(name);
           setLoading(false);
         }
@@ -42,14 +42,14 @@ const useInvoiceTranslationsDetail = (id, nxState) => {
   }, [update]);
 
   useEffect(() => {
-    setHasChanges(JSON.stringify(cuInvoiceTranslation) !== JSON.stringify(invoiceTranslation));
+    setHasChanges(JSON.stringify(curInvoiceTranslation) !== JSON.stringify(invoiceTranslation));
 
     return () => setHasChanges(false);
-  }, [cuInvoiceTranslation]);
+  }, [curInvoiceTranslation]);
 
   return {
     setUpdate,
-    cuInvoiceTranslation,
+    curInvoiceTranslation,
     setCurInvoiceTranslation,
     isLoading,
     hasChanges,
