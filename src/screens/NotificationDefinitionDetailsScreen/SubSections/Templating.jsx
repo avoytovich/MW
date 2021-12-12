@@ -8,7 +8,7 @@ import { InputCustom } from '../../../components/Inputs';
 
 import localization from '../../../localization';
 
-import 'ace-builds/src-noconflict/mode-json';
+import 'ace-builds/src-noconflict/mode-handlebars';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 
 const Templating = ({ setCurNotification, curNotification }) => (
@@ -33,7 +33,7 @@ const Templating = ({ setCurNotification, curNotification }) => (
       <Box px={2} width={1}>
         <Grid item md={12} sm={12} px={2}>
           <AceEditor
-            mode='json'
+            mode='handlebars'
             theme='tomorrow'
             name='mailBodyTemplate'
             width='100%'
@@ -58,12 +58,10 @@ const Templating = ({ setCurNotification, curNotification }) => (
       <Box px={2} width={1}>
         <Grid item md={12} sm={12} px={2}>
           <AceEditor
-            mode='json'
+            mode='handlebars'
             theme='tomorrow'
             name='webHookPayloadTemplate'
             width='100%'
-            maxLines={15}
-            minLines={10}
             onChange={(newVal) => {
               setCurNotification({ ...curNotification, webHookPayloadTemplate: newVal });
             }}
