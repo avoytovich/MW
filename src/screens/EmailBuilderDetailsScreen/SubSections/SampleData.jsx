@@ -1,8 +1,7 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable no-nested-ternary */
 import React, { useEffect, useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import ReactJson from 'react-json-view';
 
 import { Edit } from '@material-ui/icons';
 
@@ -11,38 +10,34 @@ import {
   Tabs,
   Tab,
 } from '@material-ui/core';
-
+import JsonEditor from '../../../components/JsonEditor';
 import localization from '../../../localization';
 
-const SampleData = ({ data, saveCustomSample }) => {
+const SampleData = ({
+  data, saveCustomSample, jsonIsValid, setJsonIsValid, customSample,
+}) => {
   const [curSampleData, setCurSampleData] = useState(null);
-  const [customSampleData, setCustomSampleData] = useState({});
   const [curTab, setCurTab] = useState(data?.samples?.length ? 0 : 'custom');
 
-  const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  // const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  const editSample = (edit) => {
-    /* eslint-disable camelcase */
-    const { updated_src } = edit;
-    setCustomSampleData({ ...updated_src });
-    saveCustomSample({ ...updated_src });
+  const formateCurSampleData = () => {
+    const res = {};
+    data?.samples?.length && data?.samples.forEach((smpl, ind) => {
+      res[ind] = JSON.stringify(JSON.parse(data.samples[ind] || {}), 0, 4);
+    });
+    if (data?.mergedSample) {
+      res.merged = JSON.stringify(JSON.parse(data?.mergedSample), 0, 4);
+    }
+    if (data?.lastSeenSample) {
+      res.lastSeen = JSON.stringify(JSON.parse(data?.lastSeenSample), 0, 4);
+    }
+    setCurSampleData({ ...res });
   };
 
   useEffect(() => {
-    if (curTab === 'merged') {
-      setCurSampleData(data?.mergedSample ? JSON.parse(data.mergedSample) : {});
-    } else if (curTab === 'lastSeen') {
-      setCurSampleData(data?.lastSeenSample ? JSON.parse(data.lastSeenSample) : {});
-    } else {
-      setCurSampleData(
-        data?.samples && data.samples[curTab] ? JSON.parse(data.samples[curTab]) : {},
-      );
-    }
-  }, [curTab]);
-
-  useEffect(() => {
-    setCustomSampleData(nxState?.customSample || {});
-  }, [nxState]);
+    formateCurSampleData();
+  }, []);
 
   return (
     <>
@@ -57,9 +52,8 @@ const SampleData = ({ data, saveCustomSample }) => {
           onChange={(event, newValue) => setCurTab(newValue)}
         >
           {
-            data?.samples?.length && data?.samples.map((smpl, ind) => <Tab label={`${localization.t('labels.sampleData')} #${ind + 1}`} />)
+            data?.samples?.length && data?.samples.map((smpl, ind) => <Tab key={`sampleData#${ind + 1}`} label={`${localization.t('labels.sampleData')} #${ind + 1}`} />)
           }
-
           {data?.mergedSample && <Tab label={localization.t('labels.mergedSample')} value='merged' />}
           {data?.lastSeenSample && <Tab label={localization.t('labels.lastSeenSample')} value='lastSeen' />}
           <Tab
@@ -73,39 +67,28 @@ const SampleData = ({ data, saveCustomSample }) => {
           />
         </Tabs>
       </Box>
-
-      <Box p={2} pt={4}>
-        <ReactJson
-          src={curTab === 'custom' ? customSampleData : curSampleData || {}}
-          name={false}
-          displayDataTypes={false}
-          onAdd={curTab === 'custom' && editSample}
-          onEdit={curTab === 'custom' && editSample}
-          onDelete={curTab === 'custom' && editSample}
-          defaultValue=''
-          sortKeys
-          collapsed={1}
-          iconStyle='square'
-          theme={{
-            base00: 'rgba(255, 255, 255, 1)',
-            base01: 'rgba(206, 200, 197, 1)',
-            base02: 'rgba(71, 145, 219, 1)',
-            base03: 'rgba(206, 200, 197, 1)',
-            base04: 'rgba(206, 200, 197, 1)',
-            base05: 'rgba(71, 145, 219, 1)',
-            base06: 'rgba(206, 200, 197, 1)',
-            base07: 'rgba(0, 0, 0, 1)',
-            base08: 'rgba(71, 145, 219, 1)',
-            base09: 'rgba(255, 0, 0, 1)',
-            base0A: 'rgba(0, 0, 0, 1)',
-            base0B: 'rgba(71, 145, 219, 1)',
-            base0C: 'rgba(71, 145, 219, 1)',
-            base0D: 'rgba(71, 145, 219, 1)',
-            base0E: 'rgba(71, 145, 219, 1)',
-            base0F: 'rgba(71, 145, 219, 1)',
-          }}
-        />
-      </Box>
+      {curSampleData && (
+        <Box p={2} pt={4}>
+          {Object.keys(curSampleData).map((key) => curTab == key && (
+            <JsonEditor
+              key={key}
+              isReadOnly
+              currentData={curSampleData[key]}
+            />
+          ))}
+          {
+            curTab === 'custom' && (
+              <JsonEditor
+                jsonIsValid={jsonIsValid}
+                setJsonIsValid={setJsonIsValid}
+                jsonKey={null}
+                currentData={customSample}
+                setCurrentData={saveCustomSample}
+              />
+            )
+          }
+        </Box>
+      )}
     </>
   );
 };
@@ -113,6 +96,9 @@ const SampleData = ({ data, saveCustomSample }) => {
 SampleData.propTypes = {
   data: PropTypes.object,
   saveCustomSample: PropTypes.func,
+  jsonIsValid: PropTypes.bool,
+  setJsonIsValid: PropTypes.func,
+  customSample: PropTypes.string,
 };
 
 export default SampleData;

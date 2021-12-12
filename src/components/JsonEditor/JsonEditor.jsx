@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useEffect } from 'react';
 import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/ext-searchbox';
 import 'ace-builds/src-noconflict/mode-json';
@@ -17,21 +17,34 @@ import './jsonEditor.scss';
 const JsonEditor = ({
   currentData,
   setCurrentData,
-  title,
+  title = 'JSON',
   jsonKey,
-  jsonIsValid,
-  setJsonIsValid,
+  jsonIsValid = true,
+  setJsonIsValid = () => { },
+  isReadOnly,
 }) => {
   const handleChange = (newValue) => {
+    if (jsonKey) { setCurrentData({ ...currentData, [jsonKey]: newValue }); } else {
+      setCurrentData(newValue);
+    }
     try {
+      if (newValue !== '') {
+        JSON.parse(newValue);
+      }
+      setJsonIsValid(true);
+    } catch {
+      setJsonIsValid(false);
+    }
+  };
+  useEffect(() => {
+    try {
+      const newValue = jsonKey ? currentData[jsonKey] : currentData;
       JSON.parse(newValue);
       setJsonIsValid(true);
     } catch {
       setJsonIsValid(false);
     }
-    setCurrentData({ ...currentData, [jsonKey]: newValue });
-  };
-
+  }, []);
   const handleJsonUpload = (e) => {
     e.persist();
 
@@ -45,15 +58,17 @@ const JsonEditor = ({
   };
   return (
     <>
-
-      <Box display='flex' p={2}>
-        <Box pr={2}>
-          <Typography color='secondary'>{localization.t('labels.jsonValidation')}</Typography>
-        </Box>
-        <Box>
-          <Typography style={jsonIsValid ? { color: '#00A300' } : { color: '#FF0000' }}>{jsonIsValid ? localization.t('labels.success') : localization.t('labels.failed')}</Typography>
-        </Box>
-      </Box>
+      {!isReadOnly
+        && (
+          <Box display='flex' p={2}>
+            <Box pr={2}>
+              <Typography color='secondary'>{localization.t('labels.jsonValidation')}</Typography>
+            </Box>
+            <Box>
+              <Typography style={jsonIsValid ? { color: '#00A300' } : { color: '#FF0000' }}>{jsonIsValid ? localization.t('labels.success') : localization.t('labels.failed')}</Typography>
+            </Box>
+          </Box>
+        )}
       <Box
         my={3}
         bgcolor='#fff'
@@ -63,31 +78,35 @@ const JsonEditor = ({
       >
         <Box display='flex' justifyContent='space-between' alignItems='center'>
           <Box display='flex' justifyContent='space-between'>
-            <Typography variant='h4'>{title || 'JSON'}</Typography>
+            <Typography variant='h4'>{title}</Typography>
           </Box>
-          <Box>
-            <Button
-              variant='outlined'
-              component='label'
-            >
-              {localization.t('general.upload')}
-              <PublishIcon style={{ marginLeft: 5, fontSize: 20 }} />
-              <input
-                type='file'
-                accept="application/JSON"
-                onChange={handleJsonUpload}
-                hidden
-              />
-            </Button>
-          </Box>
+          {!isReadOnly
+            && (
+              <Box>
+                <Button
+                  variant='outlined'
+                  component='label'
+                >
+                  {localization.t('general.upload')}
+                  <PublishIcon style={{ marginLeft: 5, fontSize: 20 }} />
+                  <input
+                    type='file'
+                    accept="application/JSON"
+                    onChange={handleJsonUpload}
+                    hidden
+                  />
+                </Button>
+              </Box>
+            )}
         </Box>
         <Box mt={3}><Divider light /></Box>
         <Box>
           <AceEditor
             name="jsonEditor"
             theme='tomorrow'
-            value={currentData[jsonKey]}
+            value={jsonKey ? currentData[jsonKey] : currentData}
             mode="json"
+            readOnly={isReadOnly}
             onChange={handleChange}
             setOptions={{
               showInvisibles: true,
@@ -105,12 +124,16 @@ const JsonEditor = ({
 };
 
 JsonEditor.propTypes = {
-  currentData: PropTypes.object,
+  currentData: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
   setCurrentData: PropTypes.func,
   title: PropTypes.string,
   jsonKey: PropTypes.string,
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
+  isReadOnly: PropTypes.bool,
 };
 
 export default JsonEditor;

@@ -31,7 +31,8 @@ const EmailBuilderDetailsScreen = () => {
   const [upd, setUpdate] = useState(0);
   const [selectedLang, setSelectedLang] = useState(null);
   const [cloneModal, setCloneModal] = useState(false);
-  const [customSample, setCustomSampleData] = useState({});
+  const [customSample, setCustomSampleData] = useState(null);
+  const [jsonIsValid, setJsonIsValid] = useState(true);
 
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -57,9 +58,11 @@ const EmailBuilderDetailsScreen = () => {
       setHasChanges(JSON.stringify(curTemplateData) !== JSON.stringify(templateData));
     }
   }, [curTemplateData]);
-
   useEffect(() => {
-    setCustomSampleData(nxState?.customSample || {});
+    const savedCustomSample = nxState?.customSample || {};
+
+    const stringifyCustomSample = typeof savedCustomSample === 'object' ? JSON.stringify(savedCustomSample, 0, 4) : savedCustomSample;
+    setCustomSampleData(stringifyCustomSample);
   }, [nxState]);
 
   useEffect(() => {
@@ -85,17 +88,18 @@ const EmailBuilderDetailsScreen = () => {
     }
   }, [templateData]);
 
-  const saveCustomSample = () => dispatch(
-    setNexwayState({ ...nxState, customSample: { ...customSample } }),
-  );
+  const saveCustomSample = () => {
+    dispatch(
+      setNexwayState({ ...nxState, customSample: customSample || '{}' }),
+    );
+  };
 
   const ExtraActions = () => (
     <>
-      {(Object.keys(customSample).length > 0
-        || (!Object.keys(customSample).length && nxState?.customSample))
-        && (JSON.stringify(nxState?.customSample) !== JSON.stringify(customSample)) && (
+      {(nxState?.customSample !== customSample) && (
         <Box ml={2}>
           <Button
+            disabled={!jsonIsValid}
             id='save-template-button'
             color='primary'
             size='large'
@@ -141,11 +145,14 @@ const EmailBuilderDetailsScreen = () => {
         customerName={customerName}
         templateData={curTemplateData}
         samplesData={samplesData}
+        customSample={customSample}
         firstSampleData={firstSampleData}
         selectedLang={selectedLang}
         setSelectedLang={setSelectedLang}
         setHasChanges={setHasChanges}
         saveCustomSample={setCustomSampleData}
+        jsonIsValid={jsonIsValid}
+        setJsonIsValid={setJsonIsValid}
       />
 
       <CloneTemplatePopup

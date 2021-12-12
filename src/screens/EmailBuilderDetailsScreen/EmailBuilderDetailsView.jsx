@@ -34,6 +34,9 @@ const EmailBuilderDetailsView = ({
   selectedLang,
   setSelectedLang,
   saveCustomSample,
+  customSample,
+  jsonIsValid,
+  setJsonIsValid,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const [editorMode, setEditorMode] = useState('preview');
@@ -140,6 +143,9 @@ const EmailBuilderDetailsView = ({
           extraActions={samplesData && <SampleExtraActions />}
         >
           <SampleData
+            customSample={customSample}
+            jsonIsValid={jsonIsValid}
+            setJsonIsValid={setJsonIsValid}
             data={samplesData}
             saveCustomSample={saveCustomSample}
           />
@@ -158,6 +164,9 @@ EmailBuilderDetailsView.propTypes = {
   updateData: PropTypes.func,
   setSelectedLang: PropTypes.func,
   saveCustomSample: PropTypes.func,
+  customSample: PropTypes.string,
+  jsonIsValid: PropTypes.bool,
+  setJsonIsValid: PropTypes.func,
 };
 
 export default EmailBuilderDetailsView;
