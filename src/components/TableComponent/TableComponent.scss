@@ -75,6 +75,7 @@
   overflow-x: hidden;
   min-width: fit-content;
   .tableHeader {
+    max-width: 170px;
     display: flex;
     white-space: nowrap;
     text-align: left;
