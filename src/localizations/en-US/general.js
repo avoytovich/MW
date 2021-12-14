@@ -26,6 +26,7 @@ const general = {
   store: 'Store',
   recommendation: 'Recommendation',
   discount: 'Discount',
+  catalog: 'Catalog',
   price: 'Price',
   priceFunction: 'Price Function',
   hasBeenSuccessfullyDeleted: ' has been successfully deleted!',

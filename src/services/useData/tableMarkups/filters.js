@@ -500,6 +500,73 @@ const filters = {
       type: 'text',
     },
   ],
+  catalogs: [
+    {
+      id: 'id',
+      label: localization.t('labels.catalogsId'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'type',
+      label: localization.t('labels.type'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'INTERNAL', value: localization.t('labels.internal') },
+        { id: 'FULL_REMOTE', value: localization.t('labels.fullRemote') },
+        { id: 'PRICING_REMOTE', value: localization.t('labels.pricingRemote') },
+        { id: 'VARIANT_PRICING_REMOTE', value: localization.t('labels.variantPricingRemote') },
+        { id: 'SIGNED', value: localization.t('labels.signed') },
+        { id: 'SHARED', value: localization.t('labels.shared') },
+      ],
+    },
+    {
+      id: 'salesMode',
+      label: localization.t('labels.salesMode'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'STANDARD', value: localization.t('labels.standart') },
+        { id: 'BILLING_PLAN', value: localization.t('labels.billingPlan') },
+      ],
+    },
+    {
+      id: 'singleUse',
+      label: localization.t('labels.singleUse_v1'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'true', value: localization.t('labels.yes') },
+        { id: 'false', value: localization.t('labels.no') },
+      ],
+    },
+    {
+      id: 'running',
+      label: localization.t('labels.running'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'true', value: localization.t('labels.yes') },
+        { id: 'false', value: localization.t('labels.no') },
+      ],
+    },
+    {
+      id: 'status',
+      label: localization.t('labels.status'),
+      type: 'selectWithChip',
+      values: [
+        { id: 'ENABLED', value: localization.t('labels.enabled') },
+        { id: 'DISABLED', value: localization.t('labels.disabled') },
+      ],
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
   subscriptions: [
     {
       id: 'id',

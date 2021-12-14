@@ -57,6 +57,14 @@ const SignedRoutes = () => {
         path={`${parentPaths.fulfillment.main}`}
         component={lazy(() => import('../../screens/FulfillmentPackagesScreen'))}
       />
+      <Route
+        path={`${parentPaths.catalogs}/:id`}
+        component={lazy(() => import('../../screens/CatalogsDetailsScreen'))}
+      />
+      <Route
+        path={`${parentPaths.catalogs}`}
+        component={lazy(() => import('../../screens/CatalogsScreen'))}
+      />
 
       <Route
         path={`${parentPaths.stores}/:id`}

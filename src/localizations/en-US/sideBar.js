@@ -39,6 +39,7 @@ const sideBar = {
     priceModels: 'Price Models',
     crosSellUpSellReco: 'Crossell Upsell Recommendations',
     fulfillmentPackages: 'Fulfillment packages',
+    catalogs: 'Catalogs',
     discountRules: 'Discount rules',
     campaigns: 'Campaigns',
     users: 'Users',

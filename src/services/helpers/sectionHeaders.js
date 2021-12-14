@@ -16,6 +16,7 @@ const sideBarTitle = {
   pricemodels: localization.t('sideBar.titles.priceModels'),
   recommendations: localization.t('sideBar.titles.crosSellUpSellReco'),
   fulfillment: localization.t('sideBar.titles.fulfillmentPackages'),
+  catalogs: localization.t('sideBar.titles.catalogs'),
   discountrules: localization.t('sideBar.titles.discountRules'),
   campaigns: localization.t('sideBar.titles.campaigns'),
   enduserlist: localization.t('sideBar.titles.endUsers'),

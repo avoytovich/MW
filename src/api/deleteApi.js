@@ -8,6 +8,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteCatalogsById(id) {
+    const url = `/catalogs/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
   deleteOrderById(id) {
     const url = `/orders/${id}`;
     return axiosInstance({

@@ -73,6 +73,14 @@ const putApi = {
       data,
     });
   },
+  updateCatalogsById(id, data) {
+    const url = `/catalogs/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateOnboardingById(id, data) {
     const url = `/onboarding/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
     return axiosInstance({
