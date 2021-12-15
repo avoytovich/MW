@@ -10,8 +10,8 @@ import {
   Paper,
 } from '@material-ui/core';
 
-import VerticalAlignTopIcon from '@material-ui/icons/VerticalAlignTop';
-import VerticalAlignBottomIcon from '@material-ui/icons/VerticalAlignBottom';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCheckedItems } from '../../redux/actions/TableData';
 import setShowColumns from '../../redux/actions/ShowColumns';
@@ -130,7 +130,7 @@ const TableComponent = ({
                         {header.value}
                       </div>
                       <div className='sort-icon-container'>
-                        {sortParams?.value === header.sortParam && (sortParams.type === 'desc' ? <VerticalAlignTopIcon /> : <VerticalAlignBottomIcon />)}
+                        {sortParams?.value === header.sortParam && (sortParams.type === 'desc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
                       </div>
                     </Typography>
                   </Box>
