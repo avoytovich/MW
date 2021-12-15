@@ -78,7 +78,7 @@ const defaultStore = {
       i18nRef: {},
     },
     paymentComponent: {
-      rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: [] }],
+      rankedPaymentTabsByCountriesList: [{ rankedPaymentTabs: ['credit_card'] }],
     },
   },
 };

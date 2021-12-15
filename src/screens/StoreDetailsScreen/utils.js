@@ -1,4 +1,5 @@
 import localization from '../../localization';
+import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
 
 const resourcesKeys = [
   'logoFavicon',
@@ -88,7 +89,7 @@ const checkLabelDuplicate = (values) => {
 };
 
 const formatBeforeSending = (currentStoreData, currentStoreResources, resourcesHasChanges) => {
-  const updatedData = { ...currentStoreData };
+  const updatedData = removeEmptyPropsInObject({ ...currentStoreData });
   Object.keys(updatedData).forEach((item) => {
     if (updatedData[item] === '') {
       delete updatedData[item];

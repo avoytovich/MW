@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Box, Typography, Grid, Divider,
+  Box, Typography, Grid, Divider, IconButton,
 } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -90,6 +90,16 @@ const Payment = ({
     setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
   };
   const handleUpdatePayment = (value) => {
+    if (value.length === 0) {
+      setErrors({
+        ...errors,
+        defaultRanking: localization.t('errorNotifications.fieldIsRequired'),
+      });
+    } else if (errors.defaultRanking) {
+      const newErrors = { ...errors };
+      delete newErrors.defaultRanking;
+      setErrors(newErrors);
+    }
     const newArray = [
       ...currentStoreData.designs.paymentComponent
         .rankedPaymentTabsByCountriesList,
@@ -239,6 +249,9 @@ const Payment = ({
         <Grid item md={7} sm={12}>
           <Box p={2}>
             <DroppableSelectWithChip
+              isRequired
+              hasError={!!errors.defaultRanking}
+              helperText={errors.defaultRanking ? errors.defaultRanking : ''}
               label="defaultRanking"
               value={
                 currentStoreData.designs.paymentComponent
@@ -349,7 +362,14 @@ const Payment = ({
         )}
       </Box>
       <Box display="flex" alignItems="center" p={2}>
-        <AddCircleIcon color="primary" onClick={handleAddGroup} />
+        <IconButton
+          color="primary"
+          disabled={currentStoreData.designs.paymentComponent
+            .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs.length === 0}
+          onClick={handleAddGroup}
+        >
+          <AddCircleIcon />
+        </IconButton>
         <Box pl={1}>
           {`${localization.t('labels.add')} ${localization.t('labels.specificRanking')}`}
         </Box>
