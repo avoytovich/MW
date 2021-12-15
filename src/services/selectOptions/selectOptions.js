@@ -23,16 +23,16 @@ const orderDetailStatus = [
 ];
 
 const type = [
-  { id: 'SOFTWARE', value: 'SOFTWARE' },
-  { id: 'GAMES', value: 'GAMES' },
-  { id: 'CASUAL', value: 'CASUAL' },
-  { id: 'SERVICE', value: 'SERVICE' },
+  { id: 'SOFTWARE', value: 'Software' },
+  { id: 'GAMES', value: 'Games' },
+  { id: 'CASUAL', value: 'Casual' },
+  { id: 'SERVICE', value: 'Service' },
   { id: 'B2B', value: 'B2B' },
   { id: 'B2C', value: 'B2C' },
 ];
 
 const lifeTime = [
-  { id: 'PERMANENT', value: 'PERMANENT' },
+  { id: 'PERMANENT', value: 'Permanent' },
   { id: '7DAY', value: 'Weekly renewal' },
   { id: 'MONTH', value: 'Month(s)' },
   { id: 'YEAR', value: 'Year(s)' },

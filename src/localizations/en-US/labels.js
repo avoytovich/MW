@@ -80,6 +80,7 @@ const labels = {
   catalogs: 'Catalogs',
   salesMode: 'Sales Mode',
   singleUse: 'singleUse',
+  priority: 'Priority',
   family: 'Family',
   externalContext: 'External Context',
   decodedExtContext: 'Decoded Ext. Context',

@@ -88,6 +88,9 @@ const General = ({
       ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
       : lifeTimeUpdateValue.value;
 
+    const newLifeTimeUpdated = newLifeTime[0] === '1' 
+      ? newLifeTime.slice(1) : newLifeTime.slice(1) === 'MONTH' || newLifeTime.slice(1) === 'YEAR' 
+        ? newLifeTime.toLowerCase() : newLifeTime 
     currentProductData?.lifeTime?.state // eslint-disable-line
       ? currentProductData?.lifeTime?.state === 'inherits'
         ? setProductData({
@@ -104,7 +107,7 @@ const General = ({
             value: newLifeTime,
           },
         })
-      : setProductData({ ...currentProductData, lifeTime: newLifeTime });
+        : setProductData({ ...currentProductData, lifeTime: newLifeTimeUpdated });
   }, [lifeTimeUpdateValue]);
 
   useEffect(() => {
@@ -376,7 +379,21 @@ const General = ({
         </Box>
       </Box>
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box display='flex' flexDirection='row' alignItems='baseline' width='50%' pr={2}>
+      <Box width='25%'>
+        <Box p={2} gridArea='count'>
+          <NumberInput
+            label='priority'
+            value={currentProductData?.priority}
+            onChangeInput={(e) => {
+              setProductData({
+                ...currentProductData,
+                priority: e.target.value,
+              });
+            }}
+          />
+        </Box>
+      </Box>
+        <Box display='flex' flexDirection='row' alignItems='baseline' width='25%' pr={2}>
           <Box p={2}>
             <Typography color='secondary'>
               {localization.t('labels.physicalProduct')}

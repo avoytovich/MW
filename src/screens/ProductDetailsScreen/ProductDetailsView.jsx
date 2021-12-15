@@ -5,7 +5,9 @@ import {
   Zoom, Button, Box, Typography, Tabs, Tab,
 } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
+import { FileCopy as FileCopyIcon } from '@material-ui/icons';
 
+import { toast } from 'react-toastify';
 import localization from '../../localization';
 import ProductFiles from './SubSections/ProductFiles';
 
@@ -71,6 +73,11 @@ const ProductDetailsView = ({
     setSaveDisabled(disableSave);
   };
 
+  const makeCopy = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.productIDHasBeenCopied')));
+  };
+
   useEffect(() => {
     const {
       catalogId, publisherRefId, genericName, type, prices,
@@ -112,7 +119,15 @@ const ProductDetailsView = ({
           <Box alignSelf='center'>
             {productId ? (
               <Typography data-test='productName' gutterBottom variant='h3'>
-                {productData?.genericName?.value || productData.genericName}
+                {productData?.genericName?.value || productData.genericName} - {localization.t('labels.orderId')} {productId}
+                {productId && (
+                  <FileCopyIcon
+                    onClick={(e) => { e.stopPropagation(); makeCopy(productId); }}
+                    color="secondary"
+                    style={{ marginLeft: '5px' }}
+                    className="copyIcon"
+                  />
+                )}
               </Typography>
             ) : (
               <Typography data-test='productName' gutterBottom variant='h3'>

@@ -17,6 +17,7 @@ const general = {
   passwordUpdated: 'Password Updated!',
   itemURLHasBeenCopied: 'Item URL has been copied!',
   itemHasBeenCopied: 'Item has been copied!',
+  productIDHasBeenCopied: 'Product ID has been copied!',
   welcomeBack: 'Welcome back',
   sessionEnded: 'Session ended!',
   identity: 'Identity',
