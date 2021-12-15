@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Box } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import api from '../../api';
+import { setCheckedItems } from '../../redux/actions/TableData';
 import {
   generateData,
   defaultShow,
@@ -23,8 +25,11 @@ import parentPaths from '../../services/paths';
 
 const ProductsScreen = () => {
   const scope = 'productlist';
+  const dispatch = useDispatch();
+  const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [allCheckedItems, setAllCheckedItems] = useState(tableCheckedItems);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -62,6 +67,17 @@ const ProductsScreen = () => {
   });
 
   const updatePage = (page) => setCurrentPage(page);
+
+  useEffect(() => {
+    if (allCheckedItems[currentPage]) {
+      dispatch(setCheckedItems(allCheckedItems[allCheckedItems.length - 1]));
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    setAllCheckedItems([...allCheckedItems, tableCheckedItems]);
+  }, [tableCheckedItems]);
+
   return (
     <>
       <TableActionsBar
@@ -83,6 +99,7 @@ const ProductsScreen = () => {
         </Box>
       </TableActionsBar>
       <TableComponent
+        allCheckedItems={allCheckedItems}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteProduct}
