@@ -65,6 +65,23 @@ const getAllApi = {
     });
   },
 
+  getCatalogs({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/catalogs?format=short&asc&size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+    if (filters) {
+      url += filters;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   getIdentities({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {

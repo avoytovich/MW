@@ -85,6 +85,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getCatalogsById(id) {
+    const url = `/catalogs/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getOnboardingById(id) {
     const url = `/onboarding/${id}`;
     return axiosInstance({

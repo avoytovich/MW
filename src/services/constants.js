@@ -1,5 +1,6 @@
 const VALID_REFRESH_SCOPES = [
   'productlist',
+  'catalogs',
   'stores',
   'orderlist',
   'notifications',
@@ -26,6 +27,7 @@ const VALID_REFRESH_SCOPES = [
 ];
 const VALID_FILTER_SCOPES = [
   'productlist',
+  'catalogs',
   'stores',
   'subscriptions',
   'licenses',

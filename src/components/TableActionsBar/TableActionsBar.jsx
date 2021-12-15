@@ -82,7 +82,12 @@ const TableActionsBar = ({
   })) : [];
 
   const handleDeleteItems = () => {
-    const promiseArray = tableCheckedItems.map((item) => handleDeleteItem(item.id));
+    let promiseArray = [];
+    if (handleDeleteItem) {
+      promiseArray = tableCheckedItems.map((item) => handleDeleteItem(item.id));
+    } else {
+      promiseArray = tableCheckedItems.map((item) => deleteFunc(item.id));
+    }
     Promise.allSettled(promiseArray).then((res) => {
       if (res[0].status !== 'rejected') {
         toast(localization.t('general.updatesHaveBeenSaved'));

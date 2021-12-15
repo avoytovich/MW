@@ -113,6 +113,11 @@ const navConfig = [
         title: sideBarTitle.fulfillment,
         href: parentPaths.fulfillment.main,
       },
+      {
+        id: 'catalogs',
+        title: sideBarTitle.catalogs,
+        href: parentPaths.catalogs,
+      },
     ],
   },
   {

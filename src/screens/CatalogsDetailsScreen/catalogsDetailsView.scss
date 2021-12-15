@@ -1,0 +1,16 @@
+@import '../../styles/variables.scss';
+
+.wrapper-catalog {
+  background-color: #fff;
+}
+
+.wrapper-catalog {
+  .catalogs-customer {
+    .catalogs-customer-value {
+      .customer-value {
+        cursor: pointer;
+        color: $clickable;
+      }
+    }
+  }
+}

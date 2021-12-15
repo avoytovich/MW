@@ -225,6 +225,15 @@ const postApi = {
       data,
     });
   },
+  addCatalogs(data) {
+    const url = '/catalogs?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addNotification(data) {
     const url = '/customer-notifier/receivers?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
 

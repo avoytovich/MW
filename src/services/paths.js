@@ -36,6 +36,7 @@ const parentPaths = {
     manualFulfillmentsTab: `${defPath}/products/fulfillment/manualFulfillments`,
     licenseProviderDefinitionsTab: `${defPath}/products/fulfillment/licenseProviderDefinitions`,
   },
+  catalogs: `${defPath}/products/catalogs`,
   discountrules: `${defPath}/marketing/discountrules`,
   campaigns: {
     main: `${defPath}/marketing/campaigns`,
