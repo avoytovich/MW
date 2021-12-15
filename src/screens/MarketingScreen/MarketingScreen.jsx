@@ -17,9 +17,6 @@ const availTabs = [
     label: 'marketingCampaigns',
     scope: 'marketingCampaigns',
     path: `${parentPaths.campaigns.campaigns}`,
-    button: `${localization.t('general.add')} ${localization.t(
-      'general.campaign',
-    )}`,
     deleteFunc: null,
     headers: null,
   },
@@ -62,16 +59,18 @@ const MarketingScreen = () => {
         deleteFunc={currentTab.deleteFunc}
         headers={currentTab.headers}
       >
-        <Button
-          id='add-marketing-button'
-          color='primary'
-          size='large'
-          variant='contained'
-          component={Link}
-          to={`${currentTab.path}/add`}
-        >
-          {currentTab.button}
-        </Button>
+        {currentTab?.button && (
+          <Button
+            id='add-marketing-button'
+            color='primary'
+            size='large'
+            variant='contained'
+            component={Link}
+            to={`${currentTab.path}/add`}
+          >
+            {currentTab.button}
+          </Button>
+        )}
       </TableActionsBar>
 
     );

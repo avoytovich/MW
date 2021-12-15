@@ -13,7 +13,6 @@ import parentPaths from '../../services/paths';
 import CampaignDetailsView from './CampaignDetailsView';
 import api from '../../api';
 import { getCustomerName } from '../../services/helpers/customersHelper';
-import localization from '../../localization';
 
 const CampaignDetailsScreen = () => {
   const { id } = useParams();
@@ -39,33 +38,20 @@ const CampaignDetailsScreen = () => {
   }, [curCampaign, campaign]);
 
   useEffect(() => {
-    if (id !== 'add') {
-      setLoading(true);
-      api.getCampaignById(id).then(({ data }) => {
-        setCampaign(data);
-        setCurCampaign(data);
-        setLoading(false);
-      })
-        .catch(() => {
-          setLoading(false);
-        });
+    setLoading(true);
 
-      api.getPricesByCampaignId(id).then(({ data }) => {
-        const pricesTableData = generateData(data);
-        setPricesData(pricesTableData || []);
-      });
-    } else {
-      const data = {
-        startDate: moment().valueOf(),
-        endDate: moment().add(1, 'days').valueOf(),
-        customerId: nxState?.selectedCustomer?.id,
-        name: '',
-        status: 'DISABLED',
-      };
-
+    api.getCampaignById(id).then(({ data }) => {
       setCampaign(data);
       setCurCampaign(data);
-    }
+      setLoading(false);
+    }).catch(() => {
+      setLoading(false);
+    });
+
+    api.getPricesByCampaignId(id).then(({ data }) => {
+      const pricesTableData = generateData(data);
+      setPricesData(pricesTableData || []);
+    });
   }, [update]);
 
   useEffect(() => {
@@ -89,14 +75,11 @@ const CampaignDetailsScreen = () => {
     <DetailPageWrapper
       nxState={nxState}
       id={id}
-      name={curCampaign?.name || `${localization.t('general.new')} ${localization.t(
-        'labels.abandonedCart',
-      )}`}
+      name={curCampaign?.name}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.campaigns.campaigns}
       curData={curCampaign}
-      addFunc={api.addNewCampaign}
       updateFunc={api.updateCampaignById}
       setUpdate={setUpdate}
     >
