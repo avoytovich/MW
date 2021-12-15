@@ -1,29 +1,94 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Grid } from '@material-ui/core';
+import {
+  Box, Typography, Grid, Divider,
+} from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ClearIcon from '@material-ui/icons/Clear';
 import { paymentDefaults, installmentOptions } from '../../../services/selectOptions/selectOptions';
-import { SelectWithChip, SelectWithChipImages, SwitchInput } from '../../../components/Inputs';
-import { filterOptions } from '../utils';
+import {
+  SelectWithChip, SwitchInput, SelectCustom, DroppableSelectWithChip,
+} from '../../../components/Inputs';
+import { filterOptions, customerTypeOptions, handleTypeOptions } from '../utils';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import localization from '../../../localization';
 
 import '../storeDetailsScreen.scss';
 
 const Payment = ({
-  currentStoreData, setCurrentStoreData, selectOptions,
+  currentStoreData, setCurrentStoreData, selectOptions, errors, setErrors,
 }) => {
   const allCountries = getCountriesOptions();
-
-  const handleUpdateGroup = (targetEvent, key) => {
-    const newPaymentGroups = {
-      ...currentStoreData.paymentGroups,
-      [key]: { ...currentStoreData.paymentGroups[key], [targetEvent.name]: targetEvent.value },
-    };
-    setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
+  const handleDeleteError = (key, optionKey, onDelete) => {
+    const newErrors = { ...errors };
+    if (onDelete) {
+      Object.keys(newErrors).forEach((errorKey) => {
+        delete newErrors[errorKey][key];
+        if (Object.keys(newErrors[errorKey]).length === 0) {
+          delete newErrors[errorKey];
+        }
+      });
+    } else if (optionKey && newErrors.rankedPaymentTabs?.[key]?.[optionKey]) {
+      delete newErrors.rankedPaymentTabs[key][optionKey];
+      if (Object.keys(newErrors.rankedPaymentTabs[key]).length === 0) {
+        delete newErrors.rankedPaymentTabs[key];
+      }
+      if (Object.keys(newErrors.rankedPaymentTabs).length === 0) {
+        delete newErrors.rankedPaymentTabs;
+      }
+    } else if (!optionKey && newErrors.countries?.[key]) {
+      delete newErrors.countries[key];
+      if (Object.keys(newErrors.countries).length === 0) {
+        delete newErrors.countries;
+      }
+    }
+    setErrors({ ...newErrors });
   };
 
+  const handleUpdateGroup = (targetEvent, key, optionKey) => {
+    let newPaymentGroups;
+    if (!optionKey) {
+      if (targetEvent.value.length === 0) {
+        setErrors({
+          ...errors,
+          countries: {
+            ...errors.countries,
+            [key]: localization.t('errorNotifications.groupDoesNotReferenceAnyCountry'),
+          },
+        });
+      } else if (errors.countries?.[key]) {
+        handleDeleteError(key, optionKey);
+      }
+      newPaymentGroups = {
+        ...currentStoreData.paymentGroups,
+        [key]: { ...currentStoreData.paymentGroups[key], [targetEvent.name]: targetEvent.value },
+      };
+    } else {
+      if (Array.isArray(targetEvent.value) && targetEvent.value.length === 0) {
+        setErrors({
+          ...errors,
+          rankedPaymentTabs: {
+            ...errors.rankedPaymentTabs,
+            [key]: { ...errors.rankedPaymentTabs?.[key], [optionKey]: localization.t('errorNotifications.groupDoesNotReferenceAnyPaymentType') },
+          },
+        });
+      } else if (errors.rankedPaymentTabs?.[key]?.[optionKey]) {
+        handleDeleteError(key, optionKey);
+      }
+      newPaymentGroups = {
+        ...currentStoreData.paymentGroups,
+        [key]: {
+          ...currentStoreData.paymentGroups[key],
+          options: {
+            ...currentStoreData.paymentGroups[key].options,
+            [optionKey]: { ...currentStoreData.paymentGroups[key].options[optionKey], [targetEvent.name]: targetEvent.value },
+          },
+        },
+      };
+    }
+    setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
+  };
   const handleUpdatePayment = (value) => {
     const newArray = [
       ...currentStoreData.designs.paymentComponent
@@ -48,40 +113,44 @@ const Payment = ({
   };
   const handleAddGroup = () => {
     const keys = Object.keys(currentStoreData.paymentGroups);
-    const key = keys[keys.length - 1] + 1 || 0;
+    const key = Number(keys[keys.length - 1]) + 1 || 0;
     const newPaymentGroups = {
       ...currentStoreData.paymentGroups,
-      [key]: { countries: [], rankedPaymentTabs: [] },
+      [key]: { countries: [], options: { 0: { rankedPaymentTabs: [], customerType: 'PERSONAL' } } },
     };
     setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
   };
 
-  const handleRemoveGroup = (key) => {
+  const handleRemoveGroup = (key, optionKey) => {
     const newPaymentGroups = { ...currentStoreData.paymentGroups };
-    delete newPaymentGroups[key];
+    if (Object.keys(currentStoreData.paymentGroups[key].options).length === 1) {
+      delete newPaymentGroups[key];
+      handleDeleteError(key, optionKey, true);
+    } else {
+      delete newPaymentGroups[key].options[optionKey];
+      handleDeleteError(key, optionKey);
+    }
     setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
   };
 
+  const handleAddCustomerType = (groupKey) => {
+    const keys = Object.keys(currentStoreData.paymentGroups[groupKey].options);
+    const customerType = currentStoreData.paymentGroups[groupKey].options[keys[0]].customerType === 'PERSONAL' ? 'COMPANY' : 'PERSONAL';
+    const key = Number(keys[keys.length - 1]) + 1;
+    const newPaymentGroups = {
+      ...currentStoreData.paymentGroups,
+      [groupKey]: {
+        ...currentStoreData.paymentGroups[groupKey],
+        options: {
+          ...currentStoreData.paymentGroups[groupKey].options,
+          [key]: { rankedPaymentTabs: [], customerType },
+        },
+      },
+    };
+    setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
+  };
   return (
     <Box display="flex" flexDirection="column" width={1}>
-      <Box p={2}>
-        <SelectWithChipImages
-          label="paymentMethodsByDefault"
-          value={
-            currentStoreData.designs.paymentComponent
-              .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs
-          }
-          selectOptions={paymentDefaults}
-          onChangeSelect={(e) => handleUpdatePayment(e.target.value)}
-          onClickDelIcon={(chip) => {
-            const newValue = [
-              ...currentStoreData.designs.paymentComponent
-                .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs,
-            ].filter((val) => val !== chip);
-            handleUpdatePayment(newValue);
-          }}
-        />
-      </Box>
       <Box p={2}>
         <SelectWithChip
           label="blacklistedPaymentTypes"
@@ -158,72 +227,133 @@ const Payment = ({
           isChecked={currentStoreData.promoteOneClickPayment}
         />
       </Box>
-      <Box p={2}>
-        <Box pb={1}>
-          <Typography>{localization.t('labels.paymentTabsRanking')}</Typography>
+      <Box px={2} py={4}>
+        <Box pb={2}>
+          <Typography variant="h4">{localization.t('labels.paymentTabsRanking')}</Typography>
         </Box>
-        <Typography variant="body2">
-          Declare here the payment tabs order depending on the buyer country.
-          The order of the payment tabs is relevant and will be used in your
-          checkout page.
+        <Typography color='secondary'>
+          {localization.t('tooltips.paymentTabsRanking')}
         </Typography>
+      </Box>
+      <Grid container alignItems='flex-start'>
+        <Grid item md={7} sm={12}>
+          <Box p={2}>
+            <DroppableSelectWithChip
+              label="defaultRanking"
+              value={
+                currentStoreData.designs.paymentComponent
+                  .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs
+              }
+              selectOptions={paymentDefaults}
+              onChangeSelect={(newVal) => handleUpdatePayment(newVal)}
+              onClickDelIcon={(chip) => {
+                const newValue = [
+                  ...currentStoreData.designs.paymentComponent
+                    .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs,
+                ].filter((val) => val !== chip);
+                handleUpdatePayment(newValue);
+              }}
+            />
+          </Box>
+        </Grid>
+      </Grid>
+      <Box pt={4}>
+        {Object.keys(currentStoreData.paymentGroups).map(
+          (key) => (
+            <Box p={2} key={key}>
+              <Box pb={1}>
+                <Typography>
+                  {`${localization.t('labels.group')} #${Object.keys(currentStoreData.paymentGroups).indexOf(key) + 1}`}
+                </Typography>
+              </Box>
+              <Box py={2}>
+                <Grid container alignItems='flex-start' spacing={2}>
+                  <Grid item md={4} sm={12}>
+                    <Box pb={2}>
+                      <SelectWithChip
+                        isRequired
+                        hasError={!!errors.countries?.[key]}
+                        helperText={errors.countries?.[key] ? errors.countries?.[key] : ''}
+                        label="countries"
+                        name='countries'
+                        value={currentStoreData.paymentGroups[key].countries}
+                        selectOptions={filterOptions(allCountries, currentStoreData.paymentGroups, key)}
+                        onChangeSelect={(e) => { handleUpdateGroup(e.target || e, key); }}
+                        onClickDelIcon={(chip) => {
+                          const newValue = [...currentStoreData.paymentGroups[key].countries].filter(
+                            (val) => val !== chip,
+                          );
+                          handleUpdateGroup({ value: newValue, name: 'countries' }, key);
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item md={8} sm={12}>
+                    {Object.keys(currentStoreData.paymentGroups[key].options).map((objKey) => (
+                      <Grid container spacing={2} key={`options${key}_${objKey}`}>
+                        <Grid item md={3} sm={12}>
+                          <Box pb={2}>
+                            <SelectCustom
+                              usedOptions={handleTypeOptions(currentStoreData.paymentGroups[key].options, objKey)}
+                              name='customerType'
+                              label='customerType'
+                              value={currentStoreData.paymentGroups[key].options[objKey].customerType}
+                              selectOptions={customerTypeOptions}
+                              onChangeSelect={(e) => handleUpdateGroup(e.target, key, objKey)}
+                            />
+                            {Object.keys(currentStoreData.paymentGroups[key].options).length < 2 && (
+                              <Box display="flex" alignItems="center" py={2}>
+                                <AddCircleIcon color="secondary" onClick={() => handleAddCustomerType(key)} />
+                                <Box pl={1}>{`${localization.t('labels.add')} ${localization.t('labels.customerType')}`}</Box>
+                              </Box>
+                            )}
+                          </Box>
+                        </Grid>
+                        <Grid item md={8} sm={11}>
+                          <Box pb={2} width='100%'>
+                            <DroppableSelectWithChip
+                              isRequired
+                              hasError={!!errors.rankedPaymentTabs?.[key]?.[objKey]}
+                              helperText={errors.rankedPaymentTabs?.[key]?.[objKey] ? errors.rankedPaymentTabs?.[key][objKey] : ''}
+                              name='rankedPaymentTabs'
+                              label="paymentTypes"
+                              value={currentStoreData.paymentGroups[key].options[objKey].rankedPaymentTabs}
+                              selectOptions={paymentDefaults}
+                              onChangeSelect={(newVal) => handleUpdateGroup({ value: newVal, name: 'rankedPaymentTabs' }, key, objKey)}
+                              onClickDelIcon={(chip) => {
+                                const newValue = [...currentStoreData.paymentGroups[key].options[objKey].rankedPaymentTabs]
+                                  .filter(
+                                    (val) => val !== chip,
+                                  );
+                                handleUpdateGroup({ value: newValue, name: 'rankedPaymentTabs' }, key, objKey);
+                              }}
+                            />
+                          </Box>
+                        </Grid>
+                        <Grid item md={1} sm={1}>
+                          <Box pl={1}>
+                            <ClearIcon
+                              color="secondary"
+                              onClick={() => handleRemoveGroup(key, objKey)}
+                            />
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Grid>
+              </Box>
+              <Divider light />
+            </Box>
+          ),
+        )}
       </Box>
       <Box display="flex" alignItems="center" p={2}>
         <AddCircleIcon color="primary" onClick={handleAddGroup} />
-        <Box pl={1}>Add Group</Box>
+        <Box pl={1}>
+          {`${localization.t('labels.add')} ${localization.t('labels.specificRanking')}`}
+        </Box>
       </Box>
-      {Object.keys(currentStoreData.paymentGroups).map(
-        (key) => (
-          <Box p={2} key={key}>
-            <Box pb={1}>
-              <Typography>
-                {`${localization.t('labels.group')} #${Object.keys(currentStoreData.paymentGroups).indexOf(key) + 1}`}
-              </Typography>
-            </Box>
-            <Box width={1} pt={2}>
-              <Grid container spacing={1} alignItems="center">
-                <Grid item md={6} sm={12}>
-                  <SelectWithChip
-                    label="countries"
-                    name='countries'
-                    value={currentStoreData.paymentGroups[key].countries}
-                    selectOptions={filterOptions(allCountries, currentStoreData.paymentGroups, key)}
-                    onChangeSelect={(e) => handleUpdateGroup(e.target, key)}
-                    onClickDelIcon={(chip) => {
-                      const newValue = [...currentStoreData.paymentGroups[key].countries].filter(
-                        (val) => val !== chip,
-                      );
-                      handleUpdateGroup({ value: newValue, name: 'countries' }, key);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={5} sm={11}>
-                  <SelectWithChip
-                    name='rankedPaymentTabs'
-                    label="paymentTypes"
-                    value={currentStoreData.paymentGroups[key].rankedPaymentTabs}
-                    selectOptions={paymentDefaults}
-                    onChangeSelect={(e) => handleUpdateGroup(e.target, key)}
-                    onClickDelIcon={(chip) => {
-                      const newValue = [...currentStoreData.paymentGroups[key].rankedPaymentTabs]
-                        .filter(
-                          (val) => val !== chip,
-                        );
-                      handleUpdateGroup({ value: newValue, name: 'rankedPaymentTabs' }, key);
-                    }}
-                  />
-                </Grid>
-                <Grid item md={1} sm={1} className="iconWrapper">
-                  <ClearIcon
-                    color="secondary"
-                    onClick={() => handleRemoveGroup(key)}
-                  />
-                </Grid>
-              </Grid>
-            </Box>
-          </Box>
-        ),
-      )}
     </Box>
   );
 };
@@ -232,6 +362,8 @@ Payment.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
   selectOptions: PropTypes.object,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default Payment;

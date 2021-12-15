@@ -26,6 +26,8 @@ const StoreDetailsView = ({
   setCurrentStoreResources,
   selectedLang,
   setSelectedLang,
+  errors,
+  setErrors,
 }) => {
   const [curTab, setCurTab] = useState(0);
   return (
@@ -67,6 +69,8 @@ const StoreDetailsView = ({
       {curTab === 2 && (
         <StoreSection label={tabLabels[2]}>
           <Payment
+            errors={errors}
+            setErrors={setErrors}
             selectOptions={selectOptions}
             currentStoreData={currentStoreData}
             setCurrentStoreData={setCurrentStoreData}
@@ -94,6 +98,8 @@ StoreDetailsView.propTypes = {
   setCurrentStoreResources: PropTypes.func,
   currentStoreResources: PropTypes.array,
   selectedLang: PropTypes.any,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default StoreDetailsView;

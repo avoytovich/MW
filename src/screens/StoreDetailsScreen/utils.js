@@ -13,7 +13,21 @@ const tabLabels = [
   'payment',
   'localizedContent',
 ];
-
+const checkGroupFields = (data) => {
+  let checkingPassed = false;
+  if (data?.paymentGroups && Object.keys(data?.paymentGroups).length) {
+    const emptyFields = Object.keys(
+      data.paymentGroups,
+    ).find((item) => {
+      const emptyRankedPaymentTabs = Object.keys(data.paymentGroups[item].options)
+        .find((option) => data.paymentGroups[item].options[option].rankedPaymentTabs.length === 0);
+      return data.paymentGroups[item].countries.length === 0
+        || emptyRankedPaymentTabs;
+    });
+    checkingPassed = !!emptyFields;
+  }
+  return checkingPassed;
+};
 const formDesignOptions = (options, customers) => (options
   ? options.map((option) => {
     const curCustomer = customers.find(
@@ -21,9 +35,9 @@ const formDesignOptions = (options, customers) => (options
     );
     return {
       value: `${curCustomer ? curCustomer.name : option.customerId}: ${option.name
-      }`,
+        }`,
       id: `${curCustomer ? curCustomer.id : option.customerId}: ${option.name
-      }`,
+        }`,
     };
   })
   : []);
@@ -94,9 +108,19 @@ const formatBeforeSending = (currentStoreData, currentStoreResources, resourcesH
   const newRankedPayment = [
     currentStoreData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0],
   ];
-  if (Object.keys(currentStoreData.paymentGroups).length > 0) {
-    Object.keys(currentStoreData.paymentGroups).forEach(
-      (key) => newRankedPayment.push(currentStoreData.paymentGroups[key]),
+  const resPaymentGroups = { ...currentStoreData.paymentGroups };
+  if (Object.keys(resPaymentGroups).length > 0 && resPaymentGroups[0].countries.length > 0) {
+    Object.keys(resPaymentGroups).forEach(
+      (key) => {
+        Object.keys(resPaymentGroups[key].options).forEach((option) => {
+          newRankedPayment.push({
+            countries: [...resPaymentGroups[key].countries],
+            rankedPaymentTabs: [...resPaymentGroups[key].options[option].rankedPaymentTabs],
+            customerType: resPaymentGroups[key].options[option].customerType,
+          });
+        });
+      },
+
     );
   }
   updatedData.designs = {
@@ -109,6 +133,18 @@ const formatBeforeSending = (currentStoreData, currentStoreResources, resourcesH
   delete updatedData.paymentGroups;
   return updatedData;
 };
+const customerTypeOptions = [{ id: 'PERSONAL', value: 'Personal' }, { id: 'COMPANY', value: 'Company' }];
+
+const handleTypeOptions = (selected, curKey) => {
+  const obj = { ...selected };
+  delete obj[curKey];
+  const keys = [];
+  Object.keys(obj).forEach((key) => {
+    keys.push(obj[key].customerType);
+  });
+  return keys;
+};
+
 export {
   formDesignOptions,
   filterOptions,
@@ -119,4 +155,7 @@ export {
   resourcesKeys,
   tabLabels,
   formatBeforeSending,
+  customerTypeOptions,
+  handleTypeOptions,
+  checkGroupFields,
 };

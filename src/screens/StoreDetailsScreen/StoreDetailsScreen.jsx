@@ -18,6 +18,7 @@ import {
   checkLabelDuplicate,
   checkExistingLabelsUrl,
   formatBeforeSending,
+  checkGroupFields,
 } from './utils';
 
 import api from '../../api';
@@ -32,7 +33,7 @@ const StoreDetailsScreen = () => {
   const [resourcesHasChanges, setResourcesHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
   const [selectedLang, setSelectedLang] = useState(0);
-
+  const [errors, setErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
   const { id } = useParams();
   const [storeHasChanges, setStoreChanges] = useState(false);
@@ -58,13 +59,13 @@ const StoreDetailsScreen = () => {
     });
     return res;
   };
-
   const handleDisabledSave = (currentStoreData?.externalContextAlias
     && !!currentStoreData?.externalContextGenerationParams.length)
     || !currentStoreData?.name
     || !currentStoreData?.defaultLocale
     || !currentStoreData?.displayName
-    || !currentStoreData?.routes[0].hostname;
+    || !currentStoreData?.routes[0].hostname
+    || Object.keys(errors).length > 0;
 
   const beforeSend = () => {
     const updatedData = formatBeforeSending(
@@ -193,7 +194,9 @@ const StoreDetailsScreen = () => {
   const validation = () => {
     if (checkExistingLabelsUrl(currentStoreResources)) {
       if (!checkLabelDuplicate(currentStoreResources)) {
-        return false;
+        if (!checkGroupFields(currentStoreData)) {
+          return false;
+        }
       }
     }
     return true;
@@ -217,6 +220,8 @@ const StoreDetailsScreen = () => {
       setUpdate={setUpdate}
     >
       <StoreDetailsView
+        errors={errors}
+        setErrors={setErrors}
         currentStoreData={currentStoreData}
         selectOptions={selectOptions}
         setCurrentStoreData={setCurrentStoreData}
