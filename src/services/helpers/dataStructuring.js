@@ -119,7 +119,14 @@ const structureSelectOptions = (options, optionValue, ...otherOptions) => {
   }
   return res;
 };
-
+const groupBy = (objectArray, property) => objectArray.reduce((acc, obj) => {
+  const key = obj[property];
+  if (!acc[key]) {
+    acc[key] = [];
+  }
+  acc[key].push(obj);
+  return acc;
+}, {});
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName
     ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}${item.subscriptionTemplate || ''})`
@@ -150,8 +157,17 @@ const productsVariations = (renewingProducts, productId) => (productId
 const formatePaymentGroups = (array) => {
   const ar = [...array].splice(1);
   const newParams = {};
-  ar.forEach((item, index) => {
-    newParams[index] = { ...item };
+  const data = groupBy(ar, 'countries');
+  Object.keys(data).forEach((key, index) => {
+    newParams[index] = {
+      countries: key.split(','),
+      options: {},
+    };
+    data[key].forEach((item, ind) => {
+      newParams[index].options[ind] = {
+        customerType: item.customerType || 'PERSONAL', rankedPaymentTabs: item.rankedPaymentTabs,
+      };
+    });
   });
   return newParams;
 };

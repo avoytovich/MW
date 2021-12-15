@@ -26,6 +26,7 @@ const SelectWithChip = ({
   redirectTo = '',
   name,
   noTranslate,
+  hasError,
 }) => {
   const handleClick = (condition, id) => {
     switch (condition) {
@@ -39,6 +40,7 @@ const SelectWithChip = ({
   return (
     <TextField
       fullWidth
+      error={hasError}
       select
       name={name}
       data-test={label}
@@ -112,6 +114,7 @@ SelectWithChip.propTypes = {
   redirectTo: PropTypes.string,
   name: PropTypes.string,
   noTranslate: PropTypes.bool,
+  hasError: PropTypes.bool,
 };
 
 export default SelectWithChip;

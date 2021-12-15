@@ -30,6 +30,8 @@ const errorNotifications = {
   defaultValueShouldBeBetweenMinOrMaxOrEqual: 'Default value should be between min or max, or equal to one of them',
   alreadyExists: 'Already exists',
   fieldIsRequired: 'Field is required',
+  groupDoesNotReferenceAnyPaymentType: 'Group does not reference any payment type',
+  groupDoesNotReferenceAnyCountry: 'Group does not reference any country',
 };
 
 export default errorNotifications;

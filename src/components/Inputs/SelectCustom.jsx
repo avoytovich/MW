@@ -20,12 +20,14 @@ const SelectCustom = ({
   onChangeSelect,
   isRequired,
   isDisabled,
+  name,
 }) => {
   const noRepeatingOptions = selectOptions
     .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
   return (
     <Box display='flex' alignItems='center' flexGrow='1'>
       <TextField
+        name={name}
         fullWidth
         select
         data-test={label}
@@ -100,6 +102,7 @@ SelectCustom.propTypes = {
   onChangeSelect: PropTypes.func,
   isRequired: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  name: PropTypes.string,
 };
 
 export default SelectCustom;
