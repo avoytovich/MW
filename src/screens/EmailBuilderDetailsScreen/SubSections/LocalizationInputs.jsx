@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, Button, TextField } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import SaveIcon from '@material-ui/icons/Save';
-
+import CodeEditor from '../../../components/CodeEditor';
 import { InputCustom } from '../../../components/Inputs';
 import { b64DecodeUnicode, b64EncodeUnicode } from '../../../services/helpers/utils';
 
@@ -72,16 +72,13 @@ const LocalizationInputs = ({
           </Button>
         </Box>
       </Box>
-
       <Box display="flex">
-        <TextField
-          fullWidth
-          multiline
-          rows={25}
-          label={localization.t('labels.body')}
+        <CodeEditor
+          title='body'
+          editorName='bodyEditor'
+          mode='html'
+          onChangeHandler={(newVal) => setCurBody(newVal)}
           value={curBody}
-          variant="outlined"
-          onChange={(e) => setCurBody(e.target.value)}
         />
       </Box>
     </Box>

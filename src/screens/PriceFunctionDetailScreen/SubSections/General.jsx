@@ -15,6 +15,7 @@ import { copyText } from '../../../services/helpers/utils';
 import parentPaths from '../../../services/paths';
 import localization from '../../../localization';
 import { InputCustom } from '../../../components/Inputs';
+import CodeEditor from '../../../components/CodeEditor';
 import '../priceFunctionDetail.scss';
 
 const General = ({ setCurPriceFunction, curPriceFunction }) => (
@@ -51,20 +52,20 @@ const General = ({ setCurPriceFunction, curPriceFunction }) => (
         </Box>
       </Box>
       {curPriceFunction.id && (
-      <>
-        <Box display="flex" p={2} flexDirection="row">
-          <Box pr={2}><Typography>{localization.t('labels.creationDate')}</Typography></Box>
-          <Box>
-            <Typography color='secondary'>{moment(curPriceFunction.createDate).format('YYYY-MM-DD HH:mm')}</Typography>
+        <>
+          <Box display="flex" p={2} flexDirection="row">
+            <Box pr={2}><Typography>{localization.t('labels.creationDate')}</Typography></Box>
+            <Box>
+              <Typography color='secondary'>{moment(curPriceFunction.createDate).format('YYYY-MM-DD HH:mm')}</Typography>
+            </Box>
           </Box>
-        </Box>
-        <Box display="flex" p={2} flexDirection="row">
-          <Box pr={2}><Typography>{localization.t('labels.lastUpdate')}</Typography></Box>
-          <Box>
-            <Typography color='secondary'>{moment(curPriceFunction.updateDate).format('YYYY-MM-DD HH:mm')}</Typography>
+          <Box display="flex" p={2} flexDirection="row">
+            <Box pr={2}><Typography>{localization.t('labels.lastUpdate')}</Typography></Box>
+            <Box>
+              <Typography color='secondary'>{moment(curPriceFunction.updateDate).format('YYYY-MM-DD HH:mm')}</Typography>
+            </Box>
           </Box>
-        </Box>
-      </>
+        </>
       )}
     </Grid>
     <Grid item md={6} sm={12}>
@@ -117,15 +118,18 @@ const General = ({ setCurPriceFunction, curPriceFunction }) => (
         />
       </Box>
       <Box p={2}>
-        <InputCustom
-          label='expression'
-          isMultiline
-          value={curPriceFunction.expression}
-          onChangeInput={(e) => setCurPriceFunction({
-            ...curPriceFunction,
-            expression: e.target.value,
-          })}
+        <CodeEditor
+          title='expression'
           isRequired
+          editorName='expressionEditor'
+          mode='java'
+          onChangeHandler={(newVal) => {
+            setCurPriceFunction({
+              ...curPriceFunction,
+              expression: newVal,
+            });
+          }}
+          value={curPriceFunction.expression}
         />
       </Box>
     </Grid>

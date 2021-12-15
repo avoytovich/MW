@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AceEditor from 'react-ace';
 
-import { Box, Grid, Typography } from '@material-ui/core';
+import { Box, Grid } from '@material-ui/core';
 
 import { InputCustom } from '../../../components/Inputs';
-
-import localization from '../../../localization';
+import CodeEditor from '../../../components/CodeEditor';
 
 import 'ace-builds/src-noconflict/mode-handlebars';
 import 'ace-builds/src-noconflict/theme-tomorrow';
@@ -26,24 +24,15 @@ const Templating = ({ setCurNotification, curNotification }) => (
     </Grid>
 
     <Grid item md={12} sm={12}>
-      <Box p={2}>
-        <Typography gutterBottom variant='h5'>{localization.t('labels.mailBodyTemplate')}</Typography>
-      </Box>
-
       <Box px={2} width={1}>
         <Grid item md={12} sm={12} px={2}>
-          <AceEditor
+          <CodeEditor
+            title='mailBodyTemplate'
+            editorName='mailBodyTemplateEditor'
             mode='handlebars'
-            theme='tomorrow'
-            name='mailBodyTemplate'
-            width='100%'
-            maxLines={15}
-            minLines={10}
-            onChange={(newVal) => {
+            onChangeHandler={(newVal) => {
               setCurNotification({ ...curNotification, mailBodyTemplate: newVal });
             }}
-            fontSize={14}
-            highlightActiveLine
             value={curNotification?.mailBodyTemplate}
           />
         </Grid>
@@ -51,22 +40,15 @@ const Templating = ({ setCurNotification, curNotification }) => (
     </Grid>
 
     <Grid item md={12} sm={12}>
-      <Box p={2}>
-        <Typography gutterBottom variant='h5'>{localization.t('labels.webHookPayloadTemplate')}</Typography>
-      </Box>
-
       <Box px={2} width={1}>
         <Grid item md={12} sm={12} px={2}>
-          <AceEditor
+          <CodeEditor
+            title='webHookPayloadTemplate'
+            editorName='webHookPayloadTemplateEditor'
             mode='handlebars'
-            theme='tomorrow'
-            name='webHookPayloadTemplate'
-            width='100%'
-            onChange={(newVal) => {
+            onChangeHandler={(newVal) => {
               setCurNotification({ ...curNotification, webHookPayloadTemplate: newVal });
             }}
-            fontSize={14}
-            highlightActiveLine
             value={curNotification?.webHookPayloadTemplate}
           />
         </Grid>
