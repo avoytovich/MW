@@ -245,7 +245,6 @@ const LocalizedContent = ({
                   : ''
                 }`}
                 key={locale}
-                value={locale}
                 component={forwardRef(({ children, ...props }, ref) => (
                   <div role='button' {...props} ref={ref}>
                     {children}
@@ -259,7 +258,6 @@ const LocalizedContent = ({
 
             <Tab
               label='Add Language'
-              value={0}
               component={forwardRef(({ children, ...props }, ref) => (
                 <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
                   <SelectCustom

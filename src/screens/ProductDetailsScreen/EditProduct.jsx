@@ -43,11 +43,12 @@ const EditProduct = () => {
       const sendObj = currentProductData?.parentId
         ? frontToBack(currentProductData)
         : { ...currentProductData };
+      sendObj["lifeTime"] = sendObj.lifeTime.toUpperCase();
 
       if (!sendObj.businessSegment) {
         delete sendObj.businessSegment;
       }
-
+      
       api.updateProductById(currentProductData.id, sendObj).then(() => {
         toast(localization.t('general.updatesHaveBeenSaved'));
         window.location.reload();
