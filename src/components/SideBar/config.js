@@ -192,11 +192,11 @@ const navConfig = [
         title: sideBarTitle.myaccount,
         href: parentPaths.myaccount,
       },
-      /* {
+      {
         id: 'crud-helper',
         title: sideBarTitle.crudHelper,
         href: parentPaths.crudHelper.main,
-      }, */
+      },
     ],
   },
   {
