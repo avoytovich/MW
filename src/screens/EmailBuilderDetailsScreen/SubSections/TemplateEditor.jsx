@@ -7,10 +7,9 @@ import {
   LinearProgress,
   Tabs,
   Tab,
-  TextField,
   Typography,
 } from '@material-ui/core';
-
+import CodeEditor from '../../../components/CodeEditor';
 import LocalizedContent from './LocalizedContent';
 import localization from '../../../localization';
 import { b64DecodeUnicode } from '../../../services/helpers/utils';
@@ -110,11 +109,11 @@ const TemplateEditor = ({
           )}
 
           {curTab === 1 && (
-            <TextField
-              fullWidth
-              multiline
+            <CodeEditor
+              title='body'
+              mode='html'
+              isReadOnly
               value={tmplData?.body}
-              variant="outlined"
             />
           )}
         </Box>

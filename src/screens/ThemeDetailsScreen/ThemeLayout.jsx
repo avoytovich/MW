@@ -3,7 +3,7 @@ import {
   Box, Typography, TextField,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-
+import CodeEditor from '../../components/CodeEditor';
 import localization from '../../localization';
 
 import './ThemeLayout.scss';
@@ -48,15 +48,11 @@ const ThemeLayout = ({
       />
     </Box>
     <Box>
-      <TextField
-        fullWidth
-        id="outlined-multiline-flexible"
-        label={localization.t('labels.css')}
-        multiline
-        rows={20}
-        value={currentTheme.data}
-        onChange={(e) => setCurrentTheme({ ...currentTheme, data: e.target.value })}
-        variant="outlined"
+      <CodeEditor
+        editorName='cssEditor'
+        mode='css'
+        onChangeHandler={(newVal) => setCurrentTheme({ ...currentTheme, data: newVal })}
+        value={currentTheme?.data}
       />
     </Box>
   </Box>
