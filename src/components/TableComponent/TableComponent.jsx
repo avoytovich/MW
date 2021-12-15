@@ -22,6 +22,7 @@ import localization from '../../localization';
 import './TableComponent.scss';
 
 const TableComponent = ({
+  allCheckedItems,
   tableData,
   updatePage,
   currentPage,
@@ -62,15 +63,40 @@ const TableComponent = ({
   const handleCheckAll = () => {
     let newChecked = [];
 
-    if (!tableCheckedItems.length) {
+    if (allCheckedItems) {
+      if (!tableCheckedItems.length || allCheckedItems[allCheckedItems.length - 1]) {
+        newChecked = allCheckedItems[allCheckedItems.length - 1];
+        const isTableDataIncludes = allCheckedItems[allCheckedItems.length - 1]
+          .map((each) => each.id)
+          .includes(tableData.values[0].id);
+        if (isTableDataIncludes) {
+          newChecked = allCheckedItems[allCheckedItems.length - 1]
+            .filter((el) => !tableData.values.some((f) => f.id === el.id));
+        } else {
+          newChecked = [...allCheckedItems[allCheckedItems.length - 1], ...tableData?.values];
+        }
+      }
+    } else if (!tableCheckedItems.length) {
       newChecked = tableData?.values;
     }
 
     dispatch(setCheckedItems(newChecked));
   };
 
+  const isCheckedAll = () => tableData?.values
+    ?.filter((el) => allCheckedItems?.[allCheckedItems.length - 1]
+      .filter((item) => item.id === el.id).length === 1).length === tableData?.values.length;
+
   useEffect(() => {
-    dispatch(setCheckedItems([]));
+    if (allCheckedItems) {
+      setCheckedItems(allCheckedItems[allCheckedItems.length - 1]);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!allCheckedItems) {
+      dispatch(setCheckedItems([]));
+    }
   }, [currentPage]);
 
   if (isLoading || !showColumn) return <LinearProgress />;
@@ -95,7 +121,8 @@ const TableComponent = ({
           {!noActions && (
             <Grid>
               <Checkbox
-                checked={tableData?.values.length === tableCheckedItems.length}
+                checked={allCheckedItems
+                  ? isCheckedAll() : tableData?.values.length === tableCheckedItems.length}
                 name="checkAll"
                 color="primary"
                 onChange={handleCheckAll}
@@ -182,6 +209,7 @@ const TableComponent = ({
 };
 
 TableComponent.propTypes = {
+  allCheckedItems: PropTypes.array,
   withDeletePopup: PropTypes.bool,
   handleDeleteItem: PropTypes.func,
   tableData: PropTypes.object,
