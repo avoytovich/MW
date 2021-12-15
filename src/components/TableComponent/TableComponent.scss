@@ -89,7 +89,7 @@
       width: 50%;
     }
     .sort-icon-container > svg {
-      margin-left: 5px;
+      margin-left: 16px;
     }
   }
   .headers {
@@ -145,8 +145,7 @@
   svg {
     position: absolute;
     font-size: 18px;
-    color: $navItemButtonActive;
-    margin-top: 2px;
+    color: $lightGray;
   }
 }
 .paper {
