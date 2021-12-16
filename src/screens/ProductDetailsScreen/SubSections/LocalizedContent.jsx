@@ -78,7 +78,7 @@ const LocalizedContent = ({
       if (availLocales.indexOf(newLangValue) < 0) {
         makeNewData(newLangValue);
         setNewLangValue('');
-        setAvailLocales((c) => [...c, newLangValue]);
+        setAvailLocales((c) => [newLangValue, ...c]);
       } else {
         toast.error('Locale already exists!');
       }
@@ -86,7 +86,7 @@ const LocalizedContent = ({
       const languageIndex = availLocales.indexOf(defLanguage);
       if (languageIndex < 0) {
         makeNewData(defLanguage);
-        setAvailLocales((c) => [...c, defLanguage]);
+        setAvailLocales((c) => [defLanguage, ...c]);
         setValue(defLanguage);
       } else {
         setValue(defLanguage);
@@ -176,7 +176,7 @@ const LocalizedContent = ({
         if (data[it]) {
           Object.keys(data[it]).forEach((loc) => {
             if (avail.indexOf(loc) < 0) {
-              avail.push(loc);
+              avail.unshift(loc);
             }
           });
         }
@@ -245,6 +245,7 @@ const LocalizedContent = ({
                   : ''
                 }`}
                 key={locale}
+                value={locale}
                 component={forwardRef(({ children, ...props }, ref) => (
                   <div role='button' {...props} ref={ref}>
                     {children}
@@ -258,6 +259,7 @@ const LocalizedContent = ({
 
             <Tab
               label='Add Language'
+              value={0}
               component={forwardRef(({ children, ...props }, ref) => (
                 <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
                   <SelectCustom
