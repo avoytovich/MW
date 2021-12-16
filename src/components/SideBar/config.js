@@ -197,6 +197,11 @@ const navConfig = [
       //   title: sideBarTitle.crudHelper,
       //   href: parentPaths.crudHelper.main,
       // },
+      {
+        id: 'service-configuration',
+        title: sideBarTitle.serviceconfiguration,
+        href: parentPaths.serviceconfiguration,
+      },
     ],
   },
   {

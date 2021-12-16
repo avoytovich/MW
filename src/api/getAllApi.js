@@ -693,5 +693,12 @@ const getAllApi = {
       url,
     });
   },
+  getServiceConfig(name) {
+    const url = `/${name}/service/config/clear`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getAllApi;

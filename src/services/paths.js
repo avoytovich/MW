@@ -68,6 +68,7 @@ const parentPaths = {
     main: `${defPath}/settings/crudHelper`,
     request: `${defPath}/settings/crudHelper/request`,
   },
+  serviceconfiguration: `${defPath}/settings/serviceconfiguration`,
 
   customers: `${defPath}/customermanagement/customerslist`,
   onboarding: `${defPath}/customermanagement/onboarding`,

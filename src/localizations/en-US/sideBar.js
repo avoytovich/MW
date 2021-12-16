@@ -27,6 +27,7 @@ const sideBar = {
     checkoutPageBuilder: 'Checkout Page Builder',
     reports: 'Reports',
     myAccount: 'My Account',
+    serviceConfiguration: 'Service Configuration',
     api: 'API',
     servicesConfiguration: 'Services Configuration',
     administration: 'Administration',

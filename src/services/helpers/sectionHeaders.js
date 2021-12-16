@@ -28,6 +28,7 @@ const sideBarTitle = {
   userroles: localization.t('sideBar.titles.userRolesProfiles'),
   notifications: localization.t('sideBar.titles.eventNotifications'),
   myaccount: localization.t('sideBar.titles.myAccount'),
+  serviceconfiguration: localization.t('sideBar.titles.serviceConfiguration'),
   customerslist: localization.t('sideBar.titles.customers'),
   onboarding: localization.t('sideBar.titles.onboarding'),
   remittables: localization.t('sideBar.titles.remittables'),
