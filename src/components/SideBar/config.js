@@ -28,7 +28,7 @@ const navConfig = [
     ],
   },
   {
-    subheader: localization.t('sideBar.subheaders.orders'),
+    subheader: localization.t('sideBar.subheaders.sales'),
     subheaderIcon: ShoppingCart,
     items: [
       {
@@ -192,11 +192,11 @@ const navConfig = [
         title: sideBarTitle.myaccount,
         href: parentPaths.myaccount,
       },
-      {
-        id: 'crud-helper',
-        title: sideBarTitle.crudHelper,
-        href: parentPaths.crudHelper.main,
-      },
+      // {
+      //   id: 'crud-helper',
+      //   title: sideBarTitle.crudHelper,
+      //   href: parentPaths.crudHelper.main,
+      // },
     ],
   },
   {

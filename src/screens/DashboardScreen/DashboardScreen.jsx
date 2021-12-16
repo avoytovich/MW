@@ -21,15 +21,7 @@ import InfoItemBlock from './SubSections/InfoItemBlock';
 import './dashboardScreen.scss';
 
 const rows = [
-  {
-    date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00',
-  },
-  {
-    date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00',
-  },
-  {
-    date: '03/31/2019', orders: '0', gross: '$0.00', refunds: '$0.00', coupons: '$0.00', taxes: '$0.00', shipping: '$0.00', notRev: '$0.00',
-  },
+
 ];
 
 const DashboardScreen = () => {
@@ -52,7 +44,7 @@ const DashboardScreen = () => {
               select
             >
               <MenuItem value='lastMonth'>
-                Last Month (Feb 1 - 28, 2021)
+                Last Month
               </MenuItem>
             </TextField>
           </form>
@@ -68,7 +60,7 @@ const DashboardScreen = () => {
               select
             >
               <MenuItem value='previousYear'>
-                Previous Year (Feb 1 - 29, 2020)
+                Previous Year
               </MenuItem>
             </TextField>
           </form>
@@ -79,10 +71,10 @@ const DashboardScreen = () => {
         <Box display='flex' width='100%' borderBottom='1px solid #e2e2e2'>
           <InfoItemBlock
             title='Gross Revenue'
-            price='$32,502.00'
-            previousPrice='$41,927.58'
+            price='$0'
+            previousPrice='$0'
             selected
-            change='-29'
+            change='0'
           />
 
           <InfoItemBlock
@@ -94,9 +86,9 @@ const DashboardScreen = () => {
 
           <InfoItemBlock
             title='Coupons'
-            price='$11,178.00'
-            previousPrice='$10,004.00'
-            change='17'
+            price='$0'
+            previousPrice='$0'
+            change='0'
           />
         </Box>
 
@@ -110,16 +102,16 @@ const DashboardScreen = () => {
 
           <InfoItemBlock
             title='Shipping'
-            price='$15.00'
+            price='$0.00'
             previousPrice='$0.00'
-            change='1500'
+            change='000'
           />
 
           <InfoItemBlock
             title='Gross Revenue'
-            price='$32,502.00'
-            previousPrice='$41,927.58'
-            change='-29'
+            price='$0'
+            previousPrice='$0'
+            change='0'
           />
         </Box>
       </Box>
@@ -133,16 +125,16 @@ const DashboardScreen = () => {
               <Box display='flex'>
                 <Box width='18px' height='18px' bgcolor='#9ec5ec' borderRadius='2px' mr='10px' />
                 <Box mt='-3px'>
-                  <Typography>Last Month (Feb 1-28, 2021)</Typography>
-                  <Typography variant='h4'>$32,502.00</Typography>
+                  <Typography>Last Month</Typography>
+                  <Typography variant='h4'>$0</Typography>
                 </Box>
               </Box>
 
               <Box display='flex'>
                 <Box width='18px' height='18px' bgcolor='#ff7133' borderRadius='2px' mr='10px' />
                 <Box mt='-3px'>
-                  <Typography>Previous Year (Feb 1-29, 2020):</Typography>
-                  <Typography variant='h4'>$46,018.00</Typography>
+                  <Typography>Previous Year</Typography>
+                  <Typography variant='h4'>$0</Typography>
                 </Box>
               </Box>
             </Box>
@@ -168,7 +160,7 @@ const DashboardScreen = () => {
         <ChartBlock chartType={chartType} />
       </Box>
 
-      <Box bgcolor='#fff' boxShadow={2} pb='50px' pt='30px' className='revenue-table'>
+      {/* <Box bgcolor='#fff' boxShadow={2} pb='50px' pt='30px' className='revenue-table'>
         <Box pl='30px'>
           <Typography variant='h4'>Revenue</Typography>
         </Box>
@@ -207,7 +199,7 @@ const DashboardScreen = () => {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

@@ -2,12 +2,12 @@ import defPath from './helpers/routingHelper';
 
 const parentPaths = {
   default: `${defPath}/`,
-  orderlist: `${defPath}/orders/orderlist`,
-  subscriptions: `${defPath}/orders/subscriptions`,
-  invoices: `${defPath}/orders/invoices`,
-  licenses: `${defPath}/orders/licenses`,
-  carts: `${defPath}/orders/carts`,
-  archivedOrders: `${defPath}/orders/archivedorders`,
+  orderlist: `${defPath}/sales/orderlist`,
+  subscriptions: `${defPath}/sales/subscriptions`,
+  invoices: `${defPath}/sales/invoices`,
+  licenses: `${defPath}/sales/licenses`,
+  carts: `${defPath}/sales/carts`,
+  archivedOrders: `${defPath}/sales/archivedorders`,
 
   stores: `${defPath}/storesetup/stores`,
   checkoutpagebuilder: {
