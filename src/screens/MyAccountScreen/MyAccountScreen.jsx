@@ -16,9 +16,8 @@ import {
   Switch,
 } from '@material-ui/core';
 
-import SectionHeader from '../../components/SectionHeader';
-
 import api from '../../api';
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import { setNexwayState } from '../../redux/actions/Account';
 import CustomCard from '../../components/utils/CustomCard';
 import ToastWithAction from '../../components/utils/ToastWithAction/ToastWithAction';
@@ -38,6 +37,7 @@ const MyAccountScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const [errorDetails, setErrorDetails] = useState(!!nxState?.errorDetails);
   const location = useLocation();
+  const sections = location.pathname.split('/').slice(1);
 
   useEffect(() => {
     if (nxState?.errorDetails !== errorDetails) {
@@ -137,7 +137,9 @@ const MyAccountScreen = () => {
 
   return (
     <>
-      <SectionHeader pathname={location.pathname} />
+      <CustomBreadcrumbs
+        sections={sections}
+      />
       <div className="my-account-screen">
         <Tabs value={0} indicatorColor="primary" textColor="primary">
           <Tab label="My Account" />

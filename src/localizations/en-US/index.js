@@ -5,6 +5,7 @@ import sideBar from './sideBar';
 import errorNotifications from './errorNotifications';
 import labels from './labels';
 import tooltips from './tooltips';
+import sections from './sections';
 
 export default {
   general,
@@ -14,4 +15,5 @@ export default {
   errorNotifications,
   labels,
   tooltips,
+  sections,
 };
