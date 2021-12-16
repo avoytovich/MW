@@ -98,6 +98,7 @@ const LayoutDetailsScreen = () => {
         jsonKey='data'
         jsonIsValid={jsonIsValid}
         setJsonIsValid={setJsonIsValid}
+        additionalFields
       />
     </DetailPageWrapper>
   );

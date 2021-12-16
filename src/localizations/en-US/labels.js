@@ -730,6 +730,7 @@ const labels = {
   exportUsed: 'Export used',
   newProduct: 'New product',
   newPrice: 'New price',
+  serviceConfiguration: 'Service Configuration',
 };
 
 export default labels;
