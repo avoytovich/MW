@@ -97,6 +97,7 @@ const LocalizedContent = ({
     if (typeof defLanguage === 'string') {
       addLocale(defLanguage);
       setCurData({ ...curData, fallbackLocale: defLanguage });
+      setAvailLocales((avail) => [defLanguage, ...avail.filter((localLanguage) => localLanguage !== defLanguage )]);
       if (curData.i18nFields[value]?.localizedMarketingName) {
         setNewData({ ...curData, fallbackLocale: defLanguage });
       }
