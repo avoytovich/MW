@@ -725,6 +725,11 @@ const labels = {
   jsonValidation: 'JSON validation',
   customerType: 'Customer type',
   specificRanking: 'Specific ranking',
+  exportAll: 'Export all',
+  exportNotUsed: 'Export not used',
+  exportUsed: 'Export used',
+  newProduct: 'New product',
+  newPrice: 'New price',
 };
 
 export default labels;

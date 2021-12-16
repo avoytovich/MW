@@ -12,7 +12,7 @@ import {
 import localization from '../../../localization';
 
 const CustomBreadcrumbs = ({ sections, url, id = null }) => {
-  const filteredSections = [...sections].filter((item) => item !== id);
+  const filteredSections = [...sections].filter((item) => (id ? item !== id && item !== 'add' : item !== id));
   const history = useHistory();
   return (
     <Box display='flex' flexDirection='row' pb={2}>

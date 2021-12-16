@@ -50,7 +50,7 @@ const IdentityDetailsScreen = () => {
     <DetailPageWrapper
       nxState={nxState}
       id={id}
-      name={`${curIdentity?.firstName} ${curIdentity?.lastName}` || `${localization.t('general.new')} ${localization.t(
+      name={curIdentity?.firstName ? `${curIdentity?.firstName} ${curIdentity?.lastName}` : `${localization.t('general.new')} ${localization.t(
         'labels.user',
       )}`}
       saveIsDisabled={!curIdentity?.email
