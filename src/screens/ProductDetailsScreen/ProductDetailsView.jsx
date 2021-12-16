@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
-  Zoom, Button, Box, Typography, Tabs, Tab,
+  Zoom, Button, Box, Typography, Tabs, Tab, Chip,
 } from '@material-ui/core';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import { FileCopy as FileCopyIcon } from '@material-ui/icons';
@@ -10,6 +10,7 @@ import { FileCopy as FileCopyIcon } from '@material-ui/icons';
 import { toast } from 'react-toastify';
 import localization from '../../localization';
 import ProductFiles from './SubSections/ProductFiles';
+import api from '../../api';
 
 import General from './SubSections/General';
 import Prices from './SubSections/Prices';
@@ -54,6 +55,7 @@ const ProductDetailsView = ({
   const [curTab, setCurTab] = useState(0);
   const [tabsDisabled, setTabsDisabled] = useState(true);
   const [saveDisabled, setSaveDisabled] = useState(false);
+  const [customer, setCustomer] = useState(null);
   const history = useHistory();
   const location = useLocation();
   const sections = location.pathname.split('/').slice(1);
@@ -73,6 +75,11 @@ const ProductDetailsView = ({
 
     setSaveDisabled(disableSave);
   };
+
+  useEffect(() => {
+    api.getCustomerById(productData.customerId)
+      .then((res) => setCustomer(res.data));
+  }, []);
 
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
@@ -117,7 +124,7 @@ const ProductDetailsView = ({
           <Box alignSelf='center'>
             {productId ? (
               <Typography data-test='productName' gutterBottom variant='h3'>
-                {productData?.genericName?.value || productData.genericName} - {localization.t('labels.orderId')} {productId}
+                {productData?.genericName?.value || productData.genericName} - {localization.t('labels.productId')} {productId}
                 {productId && (
                   <FileCopyIcon
                     onClick={(e) => { e.stopPropagation(); makeCopy(productId); }}
@@ -161,6 +168,27 @@ const ProductDetailsView = ({
                   />
                 )}
               </Box>
+            )}
+          </Box>
+        </Box>
+        <Box display='flex' flexDirection='column'>
+          <Box display='flex' alignItems='center'>
+            {customer && (
+              <>
+                <Box pr={2}>
+                  <Typography variant='body2' gutterBottom>
+                    {localization.t('labels.customer')}
+                  </Typography>
+                </Box>
+                <Chip
+                  label={customer.status === 'RUNNING' ? 'LIVE' : 'TEST'}
+                  style={{
+                    backgroundColor:
+                      customer.status === 'RUNNING' ? '#99de90' : '',
+                    color: '#fff',
+                  }}
+                />
+              </>
             )}
           </Box>
         </Box>

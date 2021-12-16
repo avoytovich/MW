@@ -58,6 +58,15 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
       </Typography>
 
       <AssetsResource
+        label={localization.t('labels.resources')}
+        labelOptions={resourceLabels}
+        resources={[...resources]}
+        setResources={updateResources}
+        currentStoreData={currentProductData}
+        setCurrentStoreData={setProductData}
+      />
+
+      <AssetsResource
         isFile
         label={localization.t('labels.relatedContents')}
         labelOptions={[]}
@@ -72,14 +81,6 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
         <Divider light />
       </Box>
 
-      <AssetsResource
-        label={localization.t('labels.resources')}
-        labelOptions={resourceLabels}
-        resources={[...resources]}
-        setResources={updateResources}
-        currentStoreData={currentProductData}
-        setCurrentStoreData={setProductData}
-      />
     </Box>
   );
 };
