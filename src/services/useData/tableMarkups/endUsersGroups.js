@@ -13,10 +13,10 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    // {
-    //   value: localization.t('labels.id'),
-    //   id: 'id',
-    // },
+    {
+      value: localization.t('labels.id'),
+      id: 'id',
+    },
     {
       value: localization.t('labels.customer'),
       id: 'customer',

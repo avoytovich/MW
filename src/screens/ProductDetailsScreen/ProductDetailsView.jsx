@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import {
   Zoom, Button, Box, Typography, Tabs, Tab,
 } from '@material-ui/core';
@@ -55,7 +55,8 @@ const ProductDetailsView = ({
   const [tabsDisabled, setTabsDisabled] = useState(true);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const history = useHistory();
-
+  const location = useLocation();
+  const sections = location.pathname.split('/').slice(1);
   const checkSaveDisable = () => {
     let disableSave = false;
     const { relatedContents, resources } = currentProductData;
@@ -105,16 +106,13 @@ const ProductDetailsView = ({
   return (
     <>
       <Box position='sticky' top='0' bgcolor='#f9f9f9' zIndex='2'>
-        {productId && (
-          <Box mx={2} data-test='breadcrumbs'>
-            <CustomBreadcrumbs
-              url={`${parentPaths.productlist}`}
-              section={localization.t('general.product')}
-              id={productId}
-            />
-          </Box>
-        )}
-
+        <Box mx={2} data-test='breadcrumbs'>
+          <CustomBreadcrumbs
+            url={`${parentPaths.productlist}`}
+            sections={sections}
+            id={productId || localization.t('labels.newProduct')}
+          />
+        </Box>
         <Box display='flex' flexDirection='row' m={2} justifyContent='space-between'>
           <Box alignSelf='center'>
             {productId ? (

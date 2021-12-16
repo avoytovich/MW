@@ -11,6 +11,7 @@ import PricesDetailsView from './PricesDetailsView';
 import api from '../../api';
 
 import './pricesDetailsScreen.scss';
+import localization from '../../localization';
 
 const PricesDetailsScreen = () => {
   const [isLoading, setLoading] = useState(true);
@@ -88,7 +89,7 @@ const PricesDetailsScreen = () => {
     <DetailPageWrapper
       nxState={nxState}
       id={id}
-      name={customerName}
+      name={curPrice?.id ? customerName : localization.t('labels.newPrice')}
       isLoading={isLoading}
       curParentPath={parentPaths.pricemodels.pricesTab}
       curData={curPrice}

@@ -16,7 +16,8 @@ const markUp = {
 const generateData = (data) => {
   const values = data.items.map((val) => ({
     discountCode: val.discountCode,
-    status: val.used ? val.used : 'Not used',
+    status: val.used ? 'Used' : 'Not used',
+    used: val.used,
     orderId: '',
   }));
 
