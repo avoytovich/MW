@@ -17,7 +17,7 @@ import TimelineIcon from '@material-ui/icons/Timeline';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import ChartBlock from './SubSections/ChartBlock';
 import InfoItemBlock from './SubSections/InfoItemBlock';
-
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import './dashboardScreen.scss';
 
 const rows = [
@@ -26,11 +26,11 @@ const rows = [
 
 const DashboardScreen = () => {
   const [chartType, setChartType] = useState('line');
-
   return (
     <Box className='dashboard'>
-      <Typography variant='h5'>Business Analysis</Typography>
-
+      <CustomBreadcrumbs
+        sections={['businessAnalysis']}
+      />
       <Box width='50%' pb={2}>
         <Typography variant='h6'>Date Range:</Typography>
 

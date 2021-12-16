@@ -26,14 +26,13 @@ import {
   Tooltip,
   Popover,
 } from '@material-ui/core';
-
+import CustomBreadcrumbs from '../utils/CustomBreadcrumbs';
 import {
   setRowsPerPage,
   setCheckedItems,
   refreshTable,
   setWasUpdated,
 } from '../../redux/actions/TableData';
-import SectionHeader from '../SectionHeader';
 import localization from '../../localization';
 import ShowColumnPopper from './ShowColumnPopper';
 import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
@@ -74,6 +73,8 @@ const TableActionsBar = ({
   const dispatch = useDispatch();
   const doRefresh = () => dispatch(refreshTable(scope));
   const location = useLocation();
+  const sections = location.pathname.split('/').slice(1);
+
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
   const csvHeaders = headers ? [...headers].map((header) => ({
@@ -114,10 +115,10 @@ const TableActionsBar = ({
 
   return (
     <>
-      <SectionHeader pathname={location.pathname} />
-
+      <CustomBreadcrumbs
+        sections={sections}
+      />
       {extraComponent}
-
       {
         !noActions && (
           <Box display="flex" alignItems='center' justifyContent='space-between'>
@@ -200,7 +201,7 @@ const TableActionsBar = ({
                     </Tooltip>
                     {!withDeletePopup
                       && (
-                      <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
+                        <IconButton disabled={!deleteFunc || tableCheckedItems.length === 0} onClick={handleDeleteItems} className={classes.button} edge='start' color='secondary'><DeleteIcon /></IconButton>
                       )}
                     {withDeletePopup
                       && (

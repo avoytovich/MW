@@ -33,10 +33,9 @@ const DetailPageWrapper = ({
   extraActions,
 }) => {
   const location = useLocation();
-  const url = location.pathname.split('/');
+  const url = location.pathname.split('/').splice(1);
   const breadcrumbSection = url[url.length - 2];
   const history = useHistory();
-
   const handleSave = () => {
     const sendObj = beforeSend ? beforeSend(curData) : curData;
     if (id === 'add') {
@@ -66,15 +65,16 @@ const DetailPageWrapper = ({
     <>
       <Box position='sticky' top='0px' bgcolor='#f9f9f9' zIndex='2'>
         {id !== 'add'
-        && (
-          <Box mx={2}>
-            <CustomBreadcrumbs
-              url={curParentPath}
-              section={localization.t(`labels.${breadcrumbSection}`)}
-              id={id}
-            />
-          </Box>
-        )}
+          && (
+            <Box mx={2}>
+              <CustomBreadcrumbs
+                sections={url}
+                url={curParentPath}
+                section={localization.t(`labels.${breadcrumbSection}`)}
+                id={id}
+              />
+            </Box>
+          )}
         <Box
           display='flex'
           flexDirection='row'

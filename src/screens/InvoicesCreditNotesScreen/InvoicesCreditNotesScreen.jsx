@@ -3,14 +3,15 @@ import { useLocation } from 'react-router-dom';
 
 import { Box, Button } from '@material-ui/core';
 import { InputCustom, SelectCustom } from '../../components/Inputs';
-import SectionHeader from '../../components/SectionHeader';
-
+import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import api from '../../api/getOneByIdApi';
 
 const InvoicesCreditNotesScreen = () => {
   const [typeOfID, setTypeOfID] = useState('');
   const [id, setId] = useState('');
   const location = useLocation();
+  const sections = location.pathname.split('/').slice(1);
+
   const selectTypeOfIDOptions = [
     { id: 'order', value: 'Order ID' },
     { id: 'invoice', value: 'Invoice ID' },
@@ -57,7 +58,9 @@ const InvoicesCreditNotesScreen = () => {
 
   return (
     <>
-      <SectionHeader pathname={location.pathname} />
+      <CustomBreadcrumbs
+        sections={sections}
+      />
       <Box width='250px' pt={2}>
         <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center' mb='20px'>
           <Box width='250px'>
