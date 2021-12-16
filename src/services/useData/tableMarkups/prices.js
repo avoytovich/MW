@@ -25,7 +25,7 @@ const markUp = {
     { value: localization.t('labels.startDate'), id: 'startDate', sortParam: 'startDate' },
     { value: localization.t('labels.endDate'), id: 'endDate', sortParam: 'endDate' },
     { value: localization.t('labels.productId'), id: 'productId', sortParam: 'productId' },
-    { value: localization.t('labels.genericName'), id: 'genericName' },
+    { value: localization.t('labels.productName'), id: 'genericName' },
     { value: localization.t('labels.publisherRefId'), id: 'publisherRefId' },
     { value: localization.t('labels.marketingId'), id: 'marketingId', sortParam: 'marketingCampaignId' },
     { value: localization.t('labels.priceCountry'), id: 'country', sortParam: 'country' },
