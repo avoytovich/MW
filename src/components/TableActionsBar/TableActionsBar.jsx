@@ -36,7 +36,7 @@ import {
 import localization from '../../localization';
 import ShowColumnPopper from './ShowColumnPopper';
 import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
-
+import defPath from '../../services/helpers/routingHelper';
 import DeletePopup from '../Popup/DeletePopup';
 import TableFilters from '../utils/TableFilters';
 
@@ -73,7 +73,7 @@ const TableActionsBar = ({
   const dispatch = useDispatch();
   const doRefresh = () => dispatch(refreshTable(scope));
   const location = useLocation();
-  const sections = location.pathname.split('/').slice(1);
+  const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
 
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);

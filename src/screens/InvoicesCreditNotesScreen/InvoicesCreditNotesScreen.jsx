@@ -5,12 +5,13 @@ import { Box, Button } from '@material-ui/core';
 import { InputCustom, SelectCustom } from '../../components/Inputs';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import api from '../../api/getOneByIdApi';
+import defPath from '../../services/helpers/routingHelper';
 
 const InvoicesCreditNotesScreen = () => {
   const [typeOfID, setTypeOfID] = useState('');
   const [id, setId] = useState('');
   const location = useLocation();
-  const sections = location.pathname.split('/').slice(1);
+  const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
 
   const selectTypeOfIDOptions = [
     { id: 'order', value: 'Order ID' },

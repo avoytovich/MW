@@ -23,6 +23,7 @@ import CustomCard from '../../components/utils/CustomCard';
 import ToastWithAction from '../../components/utils/ToastWithAction/ToastWithAction';
 import { SelectWithChip } from '../../components/Inputs';
 import localization from '../../localization';
+import defPath from '../../services/helpers/routingHelper';
 
 import './myAccountScreen.scss';
 
@@ -37,7 +38,7 @@ const MyAccountScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const [errorDetails, setErrorDetails] = useState(!!nxState?.errorDetails);
   const location = useLocation();
-  const sections = location.pathname.split('/').slice(1);
+  const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
 
   useEffect(() => {
     if (nxState?.errorDetails !== errorDetails) {
