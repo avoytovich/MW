@@ -88,9 +88,13 @@ const General = ({
       ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
       : lifeTimeUpdateValue.value;
 
-    const newLifeTimeUpdated = newLifeTime[0] === '1' 
-      ? newLifeTime.slice(1) : newLifeTime.slice(1) === 'MONTH' || newLifeTime.slice(1) === 'YEAR' 
+    const newLifeTimeSliced = newLifeTime[0] === '1' && lifeTimeUpdateValue.number === 1
+      ? newLifeTime.slice(1) : lifeTimeUpdateValue.value === 'MONTH' || lifeTimeUpdateValue.value === 'YEAR' 
         ? newLifeTime.toLowerCase() : newLifeTime 
+
+    const newLifeTimeUpdated = newLifeTimeSliced === '1month' 
+      ? 'Month(s)' : newLifeTimeSliced === '1year' 
+        ? 'Year(s)' : newLifeTimeSliced
     currentProductData?.lifeTime?.state // eslint-disable-line
       ? currentProductData?.lifeTime?.state === 'inherits'
         ? setProductData({
