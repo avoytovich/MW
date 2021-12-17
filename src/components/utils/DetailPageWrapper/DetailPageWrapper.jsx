@@ -14,6 +14,7 @@ import localization from '../../../localization';
 import CustomBreadcrumbs from '../CustomBreadcrumbs';
 import LoadingErrorNotification from '../LoadingErrorNotification';
 import SelectCustomerNotification from '../SelectCustomerNotification';
+import defPath from '../../../services/helpers/routingHelper';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -33,7 +34,7 @@ const DetailPageWrapper = ({
   extraActions,
 }) => {
   const location = useLocation();
-  const url = location.pathname.split('/').splice(1);
+  const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
   const history = useHistory();
   const handleSave = () => {
     const sendObj = beforeSend ? beforeSend(curData) : curData;
@@ -64,7 +65,7 @@ const DetailPageWrapper = ({
       <Box position='sticky' top='0px' bgcolor='#f9f9f9' zIndex='2'>
         <Box mx={2}>
           <CustomBreadcrumbs
-            sections={url}
+            sections={sections}
             url={curParentPath}
             id={id === 'add' ? name : id}
           />

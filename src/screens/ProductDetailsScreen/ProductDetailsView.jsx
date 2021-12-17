@@ -22,6 +22,7 @@ import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
 import SubProductVariations from './SubSections/SubProductVariations';
 import parentPaths from '../../services/paths';
+import defPath from '../../services/helpers/routingHelper';
 
 const allTabs = [
   'general',
@@ -58,7 +59,8 @@ const ProductDetailsView = ({
   const [customer, setCustomer] = useState(null);
   const history = useHistory();
   const location = useLocation();
-  const sections = location.pathname.split('/').slice(1);
+  const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
+
   const checkSaveDisable = () => {
     let disableSave = false;
     const { relatedContents, resources } = currentProductData;
