@@ -78,7 +78,7 @@ const LocalizedContent = ({
       if (availLocales.indexOf(newLangValue) < 0) {
         makeNewData(newLangValue);
         setNewLangValue('');
-        setAvailLocales((c) => [newLangValue, ...c]);
+        setAvailLocales((c) => [...c, newLangValue]);
       } else {
         toast.error('Locale already exists!');
       }
