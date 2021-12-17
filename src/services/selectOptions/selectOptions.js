@@ -160,6 +160,24 @@ const paymentImages = {
   trustly: '1eiROm7Sjb-SO3-Ce1Vuhc1dUP3_7wcbI',
 };
 
+const serviceConfigs = [
+  { id: 'KL', value: 'kaspersky-led [No endpoint configured]' },
+  { id: 'ED', value: 'eset-dexter', configName: 'dexter' },
+  { id: 'PL', value: 'iap-pageview-logger [No endpoint configured]' },
+  { id: 'KP', value: 'kaspersky-proxy', configName: 'kaspersky-proxy' },
+  { id: 'TA', value: 'tandc [No endpoint configured]' },
+  { id: 'OG', value: 'order-sg', configName: 'ordersgs' },
+  { id: 'CS', value: 'customer service [No endpoint configured]' },
+  { id: 'IO', value: 'iap-onboarding', configName: 'onboarding' },
+  { id: 'AP', value: 'avast-proxy', configName: 'avast-proxy' },
+  { id: 'KK', value: 'kaspersky-korm [No endpoint configured]' },
+  { id: 'SE', value: 'cart-service [No endpoint configured]' },
+  { id: 'PP', value: 'payment-proxy', configName: 'payment-proxy' },
+  { id: 'IP', value: 'iap-price [No endpoint configured]' },
+  { id: 'EB', value: 'email-builder-service', configName: 'email-builder' },
+  { id: 'BD', value: 'bitdefender-proxy', configName: 'bitdefender' },
+];
+
 export {
   validityPeriod,
   status,
@@ -174,4 +192,5 @@ export {
   installmentOptions,
   paymentDefaults,
   paymentImages,
+  serviceConfigs,
 };

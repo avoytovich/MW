@@ -22,6 +22,7 @@ const JsonEditor = ({
   jsonIsValid = true,
   setJsonIsValid = () => { },
   isReadOnly,
+  showUploadButton,
 }) => {
   const handleChange = (newValue) => {
     if (jsonKey) { setCurrentData({ ...currentData, [jsonKey]: newValue }); } else {
@@ -80,7 +81,7 @@ const JsonEditor = ({
           <Box display='flex' justifyContent='space-between'>
             <Typography variant='h4'>{title}</Typography>
           </Box>
-          {!isReadOnly
+          {!isReadOnly && !showUploadButton
             && (
               <Box>
                 <Button
@@ -134,6 +135,7 @@ JsonEditor.propTypes = {
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
   isReadOnly: PropTypes.bool,
+  showUploadButton: PropTypes.bool,
 };
 
 export default JsonEditor;

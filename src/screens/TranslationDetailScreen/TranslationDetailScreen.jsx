@@ -88,7 +88,6 @@ const TranslationDetailScreen = () => {
         jsonKey='data'
         jsonIsValid={jsonIsValid}
         setJsonIsValid={setJsonIsValid}
-        additionalFields
       />
     </DetailPageWrapper>
   );

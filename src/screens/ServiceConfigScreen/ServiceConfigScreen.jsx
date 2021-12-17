@@ -1,45 +1,34 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { Box, Zoom, Button, Typography } from '@material-ui/core';
 
 import { SelectCustom } from '../../components/Inputs';
 
-import JsonEditorLayout from '../../layouts/JsonEditorLayout';
+import JsonEditor from '../../components/JsonEditor';
+import { serviceConfigs } from '../../services/selectOptions/selectOptions';
 
 import api from '../../api';
 
 import './serviceConfigScreen.scss';
 
 const ServiceConfigScreen = () => {
-  const [serviceDataName, setServiceDataName] = useState('')
-  const [editorData, setEditorData] = useState({})
-  const location = useLocation();
-
-  const serviceConfigs = [
-    { id:'DE', value: 'dexter' },
-    { id:'KP', value:'kaspersky-proxy' }, 
-    { id:'OG', value:'ordersgs' }, 
-    { id:'OB', value:'onboarding' }, 
-    { id:'AP', value:'avast-proxy' }, 
-    { id:'PP', value:'payment-proxy' }, 
-    { id:'EB', value:'email-builder' }, 
-    { id:'BD', value:'bitdefender' }
-  ]
+  const [serviceDataName, setServiceDataName] = useState('');
+  const [editorData, setEditorData] = useState({});
+  const [jsonIsValid, setJsonIsValid] = useState(true);
 
   const getConfigData = (value) => {
     setServiceDataName(value);
-    const selectedConfig = serviceConfigs.find(obj => obj.id === value);
-    api.getServiceConfig(selectedConfig.value).then((response) => {
+    const selectedConfig = serviceConfigs.find((obj) => obj.id === value);
+    api.getServiceConfig(selectedConfig.configName).then((response) => {
       setEditorData({
         ...editorData,
-        data: JSON.stringify(response.data, 0, 4)
-      })
+        data: JSON.stringify(response.data, 0, 4),
+      });
     });
   };
 
   return (
     <>
-    <Typography style={{ marginLeft: 10 }} variant='h3'>Service Configuration</Typography>
+      <Typography style={{ marginLeft: 10 }} variant='h3'>Service Configuration</Typography>
       <div className="service-config-screen">
         <Zoom in={serviceDataName}>
           <Button
@@ -61,7 +50,14 @@ const ServiceConfigScreen = () => {
           selectOptions={serviceConfigs}
           onChangeSelect={(e) => getConfigData(e.target.value)}
         />
-        <JsonEditorLayout currentData={editorData} jsonKey='data' title='Serive Configuration' />
+        <JsonEditor
+          jsonKey='data'
+          currentData={editorData}
+          setCurrentData={setEditorData}
+          jsonIsValid={jsonIsValid}
+          setJsonIsValid={setJsonIsValid}
+          showUploadButton
+        />
       </Box>
     </>
   );
