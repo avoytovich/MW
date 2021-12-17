@@ -126,7 +126,7 @@ const ProductDetailsView = ({
           <Box alignSelf='center'>
             {productId ? (
               <Typography data-test='productName' gutterBottom variant='h3'>
-                {productData?.genericName?.value || productData.genericName} - {localization.t('labels.productId')} {productId}
+                {productData?.genericName?.value || productData.genericName} - {productId}
                 {productId && (
                   <FileCopyIcon
                     onClick={(e) => { e.stopPropagation(); makeCopy(productId); }}
