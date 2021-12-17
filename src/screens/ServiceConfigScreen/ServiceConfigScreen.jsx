@@ -49,6 +49,7 @@ const ServiceConfigScreen = () => {
           value={serviceDataName}
           selectOptions={serviceConfigs}
           onChangeSelect={(e) => getConfigData(e.target.value)}
+          name='serviceConfig'
         />
         <JsonEditor
           jsonKey='data'

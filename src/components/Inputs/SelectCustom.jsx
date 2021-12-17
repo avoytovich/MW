@@ -72,7 +72,7 @@ const SelectCustom = ({
               <MenuItem
                 key={option.id || option.value}
                 value={option.id}
-                disabled={!option.configName}
+                disabled={!option.configName && name === 'serviceConfig'}
               >
                 {option.value}
               </MenuItem>
