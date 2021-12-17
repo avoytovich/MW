@@ -69,7 +69,11 @@ const SelectCustom = ({
           noRepeatingOptions
             .filter((so) => !usedOptions.filter((uo) => uo.id === so.id).length)
             .map((option) => (
-              <MenuItem key={option.id || option.value} value={option.id}>
+              <MenuItem
+                key={option.id || option.value}
+                value={option.id}
+                disabled={!option.configName}
+              >
                 {option.value}
               </MenuItem>
             ))
