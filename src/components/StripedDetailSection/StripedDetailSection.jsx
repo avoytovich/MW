@@ -25,7 +25,11 @@ const StripedDetailSection = ({
             <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
               <Box py={3} pl={2}>
                 <Typography gutterBottom variant='h4'>
-                  {localization.t(`labels.${key}`)}
+                  {
+                    key === 'user'
+                      ? localization.t(`labels.end${key.charAt(0).toUpperCase()}${key.slice(1)}`)
+                      : localization.t(`labels.${key}`)
+                  }
                 </Typography>
               </Box>
               <StripedRow

@@ -25,6 +25,7 @@ import FailedEventOrderPopup from '../Popup/FailedEventOrderPopup';
 import FullNameAvatar from '../utils/FullNameAvatar';
 import localization from '../../localization';
 import PriceNumberFormat from '../PriceNumberFormat';
+import { getMergedLineItems } from '../../screens/OrdersScreen/utils';
 import './TableComponent.scss';
 
 const TableRowComponent = ({
@@ -147,7 +148,13 @@ const TableRowComponent = ({
       } else if (Array.isArray(rowItem[item.id])) {
         valueToShow = <Typography style={{ whiteSpace: 'pre-line', textAlign: 'left' }}>{rowItem[item.id].join('\r\n')}</Typography>;
       } else if (item.id === 'details' && rowItem[item.id] === 'failed_event') {
-        valueToShow = <FailedEventOrderPopup orderData={orderData} eventInfo={rowItem} />
+        valueToShow = <FailedEventOrderPopup orderData={orderData} eventInfo={rowItem} />;
+      } else if (isOrders && item.id === 'products') {
+        valueToShow = getMergedLineItems(rowItem).map((each) => (
+          <Typography>
+            {each}
+          </Typography>
+        ));
       } else {
         valueToShow = rowItem[item.id];
       }

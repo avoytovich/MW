@@ -31,11 +31,20 @@ const CartsScreen = () => {
   );
 
   const requests = async (rowsPerPage, filtersUrl) => {
+    const storeIds = [];
     const res = await api.getCarts({
       page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
-    return generateData(res.data);
+    res.data.items.forEach((item) => {
+      const store = `id=${item.storeId}`;
+      if (!storeIds.includes(store)) {
+        storeIds.push(store);
+      }
+    });
+    const stores = await api.getStoresByIds(storeIds.join('&'));
+
+    return generateData(res.data, stores.data);
   };
 
   const handleSetSortParams = (params) => {
