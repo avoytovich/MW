@@ -50,9 +50,9 @@ const OrderDetailsView = ({
             <Box display='flex' alignItems='center'>
               {customer && (
                 <>
-                  <Box pr={2}>
+                  <Box p={2}>
                     <Typography variant='body2' gutterBottom>
-                      {localization.t('labels.customer')}
+                      {customer.name}
                     </Typography>
                   </Box>
                   <Chip

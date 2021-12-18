@@ -275,6 +275,7 @@ const generateData = (data, customers, stores) => {
       informativeDPStatus: val?.informativeDPStatus,
       subscriptionId: val.lineItems[0]?.subscriptionId,
       salesFlags: val?.salesFlags,
+      lineItems: val.lineItems,
     };
   });
 

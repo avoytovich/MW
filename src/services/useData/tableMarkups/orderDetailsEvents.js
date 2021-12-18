@@ -20,7 +20,7 @@ const markUp = {
 const generateData = (data) => {
   const values = data.map((val, ind) => ({
     id: val.name + ind,
-    occuredAt: moment(val.createDate).format('D MMM YYYY'),
+    occuredAt: moment(val.createDate).format('YYYY/MM/DD kk:mm (Z)'),
     event: val.name,
     status: val.status,
     message: val.message,

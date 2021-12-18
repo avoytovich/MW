@@ -213,6 +213,11 @@ const generateData = (orderData, paymentData) => {
         shouldCopy: paymentData?.transactionId,
       },
       {
+        key: 'amount',
+        label: localization.t('labels.amount'),
+        value: `${orderData?.payment?.amount || 0} ${orderData.currency}` || emptyValue,
+      },
+      {
         key: 'paymentType',
         label: localization.t('labels.paymentType'),
         value: paymentData?.paymentType?.id || emptyValue,

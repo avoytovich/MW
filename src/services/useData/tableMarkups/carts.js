@@ -56,15 +56,19 @@ const markUp = {
   ],
 };
 
-const generateData = (data) => {
+const generateData = (data, stores) => {
   const values = data.items.map(async (val) => {
+    const store = stores.items.filter(
+      (item) => item.id === val.storeId,
+    )[0]?.name;
+
     const returnData = {
       id: val.id,
       customer: val.customerId,
       createDate: val.createDate,
       updateDate: val.updateDate,
       scheduledRemoval: moment(val.scheduledSuppressionDate).format('D MMM YYYY'),
-      store: val.storeId,
+      store,
       source: val.source === 'PURCHASE' ? localization.t('labels.acquisition') : localization.t('labels.manualRenewal'),
       emailAddress: val.endUser.email,
       firstName: val.endUser.firstName,
