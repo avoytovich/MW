@@ -11,26 +11,22 @@ import {
 
 const SubscriptionsScreen = () => {
   const scope = 'subscriptions';
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(true);
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getSubscriptions({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl,
     });
 
     return generateData(res.data);
   };
 
   const subscriptions = useTableData(
-    currentPage - 1,
     setLoading,
     false,
     scope,
     requests,
   );
-
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <>
@@ -40,8 +36,6 @@ const SubscriptionsScreen = () => {
       <TableComponent
         scope={scope}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={subscriptions}
         isLoading={isLoading}
         noActions

@@ -22,17 +22,15 @@ import {
 
 const DiscountsScreen = () => {
   const scope = 'discountrules';
-
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.discounts),
   );
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getDiscounts({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
   };
@@ -43,7 +41,6 @@ const DiscountsScreen = () => {
   };
 
   const discounts = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -59,8 +56,6 @@ const DiscountsScreen = () => {
       )}`,
     );
   });
-
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <Box display='flex' flexDirection='column'>
@@ -89,8 +84,6 @@ const DiscountsScreen = () => {
           sortParams={sortParams}
           setSortParams={handleSetSortParams}
           defaultShowColumn={defaultShow}
-          currentPage={currentPage}
-          updatePage={updatePage}
           tableData={discounts}
           isLoading={isLoading}
         />

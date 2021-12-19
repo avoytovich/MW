@@ -26,9 +26,8 @@ import parentPaths from '../../services/paths';
 const ProductsScreen = () => {
   const scope = 'productlist';
   const dispatch = useDispatch();
+  const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
-
-  const [currentPage, setCurrentPage] = useState(1);
   const [allCheckedItems, setAllCheckedItems] = useState(tableCheckedItems);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
@@ -36,9 +35,9 @@ const ProductsScreen = () => {
     getSortParams(sortKeys.products),
   );
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getProducts({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
   };
@@ -49,7 +48,6 @@ const ProductsScreen = () => {
   };
 
   const products = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -66,13 +64,11 @@ const ProductsScreen = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
-
   useEffect(() => {
-    if (allCheckedItems[currentPage]) {
+    if (allCheckedItems[reduxRowPerPage]) {
       dispatch(setCheckedItems(allCheckedItems[allCheckedItems.length - 1]));
     }
-  }, [currentPage]);
+  }, [reduxRowPerPage]);
 
   useEffect(() => {
     setAllCheckedItems([...allCheckedItems, tableCheckedItems]);
@@ -105,8 +101,6 @@ const ProductsScreen = () => {
         handleDeleteItem={handleDeleteProduct}
         defaultShowColumn={defaultShow}
         scope={scope}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={products}
         isLoading={isLoading}
       />

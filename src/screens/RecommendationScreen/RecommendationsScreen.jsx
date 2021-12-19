@@ -17,20 +17,17 @@ import api from '../../api';
 
 const RecommendationsScreen = () => {
   const scope = 'recommendations';
-
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getRecommendations({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl,
     });
     return generateData(res.data);
   };
 
   const campaigns = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -45,8 +42,6 @@ const RecommendationsScreen = () => {
       )}`,
     );
   });
-
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <>
@@ -70,8 +65,6 @@ const RecommendationsScreen = () => {
         scope={scope}
         handleDeleteItem={handleDeleteRecommendation}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={campaigns}
         isLoading={isLoading}
       />

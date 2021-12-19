@@ -18,7 +18,6 @@ import {
 
 const AuditsScreen = () => {
   const scope = 'audits';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.audits));
@@ -27,24 +26,21 @@ const AuditsScreen = () => {
     saveSortParams(sortKeys.audits, params);
   };
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getAudits({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
     return generateData(res.data);
   };
 
   const audits = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
     requests,
     sortParams,
   );
-
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <Box pb={3}>
@@ -56,8 +52,6 @@ const AuditsScreen = () => {
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         scope={scope}
         tableData={audits}
         isLoading={isLoading}

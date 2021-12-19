@@ -19,7 +19,6 @@ import {
 
 const FontsTab = () => {
   const scope = 'fonts';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -31,10 +30,10 @@ const FontsTab = () => {
     saveSortParams(sortKeys.fontsTab, params);
   };
 
-  const requests = async (rowsPerPage) => {
+  const requests = async (rowsPerPage, reduxCurrentPage) => {
     const costumersIds = [];
     const res = await api.getDesignsFonts({
-      page: currentPage - 1, size: rowsPerPage, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, sortParams,
     });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
@@ -47,7 +46,6 @@ const FontsTab = () => {
   };
 
   const fonts = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -64,8 +62,6 @@ const FontsTab = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <TableComponent
       scope={scope}
@@ -73,8 +69,6 @@ const FontsTab = () => {
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteFont}
       defaultShowColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={fonts}
       isLoading={isLoading}
     />

@@ -189,7 +189,6 @@ const FindByCC = ({ open, onClose }) => {
 
           <Box mr={2} minWidth='180px'>
             <TextField
-              required
               value={l4}
               inputProps={{ maxLength: 4 }}
               error={hasError && !l4 && !bin}

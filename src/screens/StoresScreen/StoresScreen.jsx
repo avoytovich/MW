@@ -25,7 +25,6 @@ import localization from '../../localization';
 
 const StoresScreen = () => {
   const scope = 'stores';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.stores));
@@ -35,10 +34,10 @@ const StoresScreen = () => {
     saveSortParams(sortKeys.stores, params);
   };
 
-  const requests = async (rowPerPage, filtersUrl) => {
+  const requests = async (rowPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
     const res = await api.getStores({
-      page: currentPage - 1,
+      page: reduxCurrentPage,
       size: rowPerPage,
       filters: filtersUrl,
       sortParams,
@@ -71,14 +70,12 @@ const StoresScreen = () => {
     });
 
   const stores = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
     requests,
     sortParams,
   );
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <>
@@ -108,8 +105,6 @@ const StoresScreen = () => {
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteStore}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={stores}
         isLoading={isLoading}
         withDeletePopup

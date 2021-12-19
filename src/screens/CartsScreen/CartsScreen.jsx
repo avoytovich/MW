@@ -23,17 +23,16 @@ import {
 
 const CartsScreen = () => {
   const scope = 'carts';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.carts),
   );
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const storeIds = [];
     const res = await api.getCarts({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
     res.data.items.forEach((item) => {
@@ -53,7 +52,6 @@ const CartsScreen = () => {
   };
 
   const carts = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -70,7 +68,6 @@ const CartsScreen = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
   return (
     <>
       <TableActionsBar
@@ -97,8 +94,6 @@ const CartsScreen = () => {
         handleDeleteItem={handleDeleteCart}
         defaultShowColumn={defaultShow}
         scope={scope}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={carts}
         isLoading={isLoading}
       />

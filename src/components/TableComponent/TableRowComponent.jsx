@@ -66,51 +66,18 @@ const TableRowComponent = ({
     || key === 'discountRuleId'
   );
 
-  const getStatus = () => {
+  const getColor = () => {
     switch (rowItem.status) {
       case 'COMPLETED':
       case 'FORCE_COMPLETED':
-        return (
-          <div
-            style={{
-              backgroundColor: '#00A300',
-              height: '30px',
-              width: rowItem.status.length * 10 + 2,
-              position: 'absolute',
-              opacity: 0.5,
-              borderRadius: 5,
-            }}
-          />
-        );
+        return '#00A300';
+
       case 'CANCELED':
       case 'CANCELED_WITH_ERROR':
       case 'FORCE_CANCELED':
       case 'ABORTED':
-        return (
-          <div
-            style={{
-              backgroundColor: '#FF0000',
-              height: '30px',
-              width: rowItem.status.length * 10 + 2,
-              position: 'absolute',
-              opacity: 0.5,
-              borderRadius: 5,
-            }}
-          />
-        );
-      default:
-        return (
-          <div
-            style={{
-              backgroundColor: '#FFA500',
-              height: '30px',
-              width: rowItem.status.length * 10 + 2,
-              position: 'absolute',
-              opacity: 0.5,
-              borderRadius: 5,
-            }}
-          />
-        );
+        return '#FF0000';
+      default: return '#FFA500';
     }
   };
 
@@ -178,8 +145,9 @@ const TableRowComponent = ({
             position='relative'
           >
             {item.id === 'fullName' && <FullNameAvatar name={valueToShow} />}
-            {isOrders && item.value === 'Status' && getStatus()}
+            {isOrders && item.value === 'Status'}
             <Typography
+              style={item.value === 'Status' && isOrders ? { color: getColor() } : {}}
               color={
                 item.id === 'genericName' || item.id === 'customerId' || item.id === 'customer'
                   ? 'primary'

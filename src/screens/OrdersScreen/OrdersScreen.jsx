@@ -20,7 +20,6 @@ import TableActionsBar from '../../components/TableActionsBar';
 
 const OrdersScreen = () => {
   const scope = 'orderlist';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [findCCOpen, setFindCC] = useState(false);
@@ -30,11 +29,11 @@ const OrdersScreen = () => {
     saveSortParams(sortKeys.orders, params);
   };
 
-  const requests = async (rowPerPage, filtersUrl) => {
+  const requests = async (rowPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
     const storeIds = [];
     const res = await api.getOrders({
-      page: currentPage - 1,
+      page: reduxCurrentPage,
       size: rowPerPage,
       filters: filtersUrl,
       sortParams,
@@ -55,7 +54,6 @@ const OrdersScreen = () => {
   };
 
   const orders = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -72,8 +70,6 @@ const OrdersScreen = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <Box pb={3}>
       <TableActionsBar
@@ -87,8 +83,6 @@ const OrdersScreen = () => {
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteOrder}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={orders}
         isLoading={isLoading}
         noEditDeleteActions

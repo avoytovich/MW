@@ -24,8 +24,6 @@ import './TableComponent.scss';
 const TableComponent = ({
   allCheckedItems,
   tableData,
-  updatePage,
-  currentPage,
   isLoading,
   handleDeleteItem,
   noActions,
@@ -41,6 +39,7 @@ const TableComponent = ({
   isOrders,
   orderData,
 }) => {
+  const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
   const dispatch = useDispatch();
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
@@ -97,7 +96,7 @@ const TableComponent = ({
     if (!allCheckedItems) {
       dispatch(setCheckedItems([]));
     }
-  }, [currentPage]);
+  }, [reduxCurrentPage]);
 
   if (isLoading || !showColumn) return <LinearProgress />;
 
@@ -106,8 +105,6 @@ const TableComponent = ({
       <Box display="flex" mb={3}>
         <PaginationComponent
           location="flex-end"
-          currentPage={currentPage}
-          updatePage={updatePage}
           totalPages={tableData.meta?.totalPages}
         />
       </Box>
@@ -213,8 +210,6 @@ TableComponent.propTypes = {
   withDeletePopup: PropTypes.bool,
   handleDeleteItem: PropTypes.func,
   tableData: PropTypes.object,
-  updatePage: PropTypes.func,
-  currentPage: PropTypes.number,
   isLoading: PropTypes.bool,
   defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
