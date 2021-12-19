@@ -19,7 +19,6 @@ const TabTable = ({ tabObject, noEditDeleteActions = false }) => {
   const {
     sortKey, generateData, request, deleteFunc, label, scope, defaultShow,
   } = tabObject;
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(
@@ -43,25 +42,23 @@ const TabTable = ({ tabObject, noEditDeleteActions = false }) => {
       });
     }
   };
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage,reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
 
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
 
     const res = await request({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data, customers.data.items, selectedCustomer);
   };
   const data = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
     requests,
     sortParams,
   );
-  const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
       scope={scope}
@@ -70,8 +67,6 @@ const TabTable = ({ tabObject, noEditDeleteActions = false }) => {
       noEditDeleteActions={noEditDeleteActions}
       handleDeleteItem={handleDelete}
       defaultShowColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={data}
       isLoading={isLoading}
     />

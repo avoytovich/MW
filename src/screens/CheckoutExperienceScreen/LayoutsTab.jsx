@@ -12,7 +12,6 @@ import { getSortParams, saveSortParams, sortKeys } from '../../services/sorting'
 
 const LayoutsTab = () => {
   const scope = 'layouts';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -24,10 +23,10 @@ const LayoutsTab = () => {
     saveSortParams(sortKeys.layoutsTab, params);
   };
 
-  const requests = async (rowsPerPage) => {
+  const requests = async (rowsPerPage, reduxCurrentPage) => {
     const costumersIds = [];
     const res = await api.getDesignsLayouts({
-      page: currentPage - 1, size: rowsPerPage, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, sortParams,
     });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
@@ -40,7 +39,6 @@ const LayoutsTab = () => {
   };
 
   const layout = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -57,8 +55,6 @@ const LayoutsTab = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <TableComponent
       scope={scope}
@@ -66,8 +62,6 @@ const LayoutsTab = () => {
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteLayout}
       defaultShowColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={layout}
       isLoading={isLoading}
     />

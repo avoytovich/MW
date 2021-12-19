@@ -17,15 +17,14 @@ import {
 const AbandonedScreen = () => {
   const scope = 'marketingAbandoned';
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.abandoned),
   );
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getAbandoned({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
   };
@@ -36,7 +35,6 @@ const AbandonedScreen = () => {
   };
 
   const abandoned = useTableData(
-    currentPage - 1,
     setLoading,
     false,
     scope,
@@ -44,16 +42,12 @@ const AbandonedScreen = () => {
     sortParams,
   );
 
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <TableComponent
       scope={scope}
       defaultShowColumn={defaultShow}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={abandoned}
       isLoading={isLoading}
       noActions

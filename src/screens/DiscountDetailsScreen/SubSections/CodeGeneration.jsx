@@ -25,7 +25,6 @@ const CodeGeneration = ({
   prevSaveSingleUseCode,
 }) => {
   const scope = 'generateCodes';
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [quantity, setQuantity] = useState();
@@ -46,7 +45,6 @@ const CodeGeneration = ({
   };
 
   const tableData = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -118,7 +116,6 @@ const CodeGeneration = ({
 
                   defaultShowColumn={defaultShow}
                   scope={scope}
-                  currentPage={currentPage}
                   tableData={tableData}
                   isLoading={isLoading}
                   noActions

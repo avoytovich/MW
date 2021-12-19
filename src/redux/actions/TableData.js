@@ -8,6 +8,7 @@ import {
   SET_TABLE_ROWS_PER_PAGE,
   SET_TABLE_CHECKED_ITEMS,
   SET_WAS_UPDATED,
+  SET_TABLE_CURRENT_PAGE,
 } from '../constants/actionTypes';
 
 const setTableScope = (scope) => {
@@ -22,6 +23,7 @@ const setTableScope = (scope) => {
       filterViews: storageFilterViews ? JSON.parse(storageFilterViews) : {},
       search: '',
       checkedItems: [],
+      currentPage: 1,
     },
   });
 };
@@ -53,9 +55,12 @@ const setCheckedItems = (checkedItems) => (
 
 const setRowsPerPage = (rowsPerPage) => {
   localStorage.setItem('rowsPerPage', JSON.stringify(rowsPerPage));
-  return ({ type: SET_TABLE_ROWS_PER_PAGE, payload: { rowsPerPage } }
+  return ({ type: SET_TABLE_ROWS_PER_PAGE, payload: { rowsPerPage, currentPage: 1 } }
   );
 };
+
+const setCurrentPage = (currentPage) => (
+  { type: SET_TABLE_CURRENT_PAGE, payload: { currentPage } });
 
 const setWasUpdated = () => ({ type: SET_WAS_UPDATED });
 
@@ -69,4 +74,5 @@ export {
   setRowsPerPage,
   setCheckedItems,
   setWasUpdated,
+  setCurrentPage,
 };

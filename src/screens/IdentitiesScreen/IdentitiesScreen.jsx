@@ -21,7 +21,6 @@ import parentPaths from '../../services/paths';
 
 const IdentitiesScreen = () => {
   const scope = 'users';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -33,12 +32,12 @@ const IdentitiesScreen = () => {
     saveSortParams(sortKeys.identities, params);
   };
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const custumersIds = [];
 
     const res = await api.getIdentities(
       {
-        page: currentPage - 1,
+        page: reduxCurrentPage,
         size: rowsPerPage,
         filters: filtersUrl,
         sortParams,
@@ -58,7 +57,6 @@ const IdentitiesScreen = () => {
   };
 
   const identities = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -75,7 +73,6 @@ const IdentitiesScreen = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <Box display='flex' flexDirection='column'>
@@ -105,8 +102,6 @@ const IdentitiesScreen = () => {
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteIdentity}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={identities}
         isLoading={isLoading}
       />

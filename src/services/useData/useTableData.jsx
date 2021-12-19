@@ -4,7 +4,6 @@ import generateFilterUrl from '../helpers/filters';
 import availableFilters from './tableMarkups/filters';
 
 const useTableData = (
-  page,
   setLoading,
   makeUpdate,
   dataScope,
@@ -13,6 +12,7 @@ const useTableData = (
   refresh = false,
 ) => {
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
+  const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
   const [fetchedData, setFetchedData] = useState();
   const reduxWasUpdated = useSelector(({ tableData: { wasUpdated } }) => wasUpdated);
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
@@ -32,7 +32,7 @@ const useTableData = (
       }
 
       setLoading(true);
-      requests(reduxRowPerPage, filtersUrl)
+      requests(reduxRowPerPage, reduxCurrentPage - 1, filtersUrl)
         .then((payload) => {
           if (!isCancelled) {
             setFetchedData(payload);
@@ -50,7 +50,6 @@ const useTableData = (
       isCancelled = true;
     };
   }, [
-    page,
     makeUpdate,
     tableScope,
     activeFilters,
@@ -58,6 +57,7 @@ const useTableData = (
     sortParams,
     reduxRowPerPage,
     reduxWasUpdated,
+    reduxCurrentPage,
     refresh,
   ]);
 

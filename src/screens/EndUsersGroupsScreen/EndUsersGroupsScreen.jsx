@@ -24,7 +24,6 @@ import {
 
 const EndUsersGroupsScreen = () => {
   const scope = 'endusergroups';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -33,13 +32,13 @@ const EndUsersGroupsScreen = () => {
 
   const { selectedCustomer } = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage,reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
 
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
 
     const res = await api.getEndUsersGroups({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data, customers.data.items, selectedCustomer);
   };
@@ -50,7 +49,6 @@ const EndUsersGroupsScreen = () => {
   };
 
   const endUsersGroups = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -67,7 +65,6 @@ const EndUsersGroupsScreen = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
   return (
     <>
       <TableActionsBar
@@ -94,8 +91,6 @@ const EndUsersGroupsScreen = () => {
         handleDeleteItem={handleDeleteEndUserGroups}
         defaultShowColumn={defaultShow}
         scope={scope}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={endUsersGroups}
         isLoading={isLoading}
       />

@@ -20,20 +20,18 @@ import api from '../../../../api';
 const PricesScreen = () => {
   const scope = 'prices';
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.prices));
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getMarketingPrices({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
   };
 
   const prices = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -55,8 +53,6 @@ const PricesScreen = () => {
     saveSortParams(sortKeys.prices, params);
   };
 
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <TableComponent
       sortParams={sortParams}
@@ -64,8 +60,6 @@ const PricesScreen = () => {
       scope={scope}
       handleDeleteItem={handleDeletePrice}
       defaultShowColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={prices}
       isLoading={isLoading}
     />

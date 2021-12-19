@@ -14,7 +14,6 @@ import {
 } from '../../services/sorting';
 
 const MetaRoles = ({ sortKey, scope, label }) => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(
@@ -26,10 +25,10 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     saveSortParams(sortKeys[sortKey], params);
   };
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
     const res = await api.getMetaRoles({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
@@ -41,7 +40,6 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     return generateData(res.data, customers.data.items);
   };
   const tableData = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -60,7 +58,6 @@ const MetaRoles = ({ sortKey, scope, label }) => {
     });
   };
 
-  const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
       sortParams={sortParams}
@@ -68,8 +65,6 @@ const MetaRoles = ({ sortKey, scope, label }) => {
       handleDeleteItem={handleDelete}
       defaultShowColumn={defaultShow}
       scope={scope}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={tableData}
       isLoading={isLoading}
     />

@@ -28,7 +28,6 @@ import './crudHelperScreen.scss';
 
 const CrudHelperScreen = () => {
   const scope = 'crudHelper';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.crudHelper));
@@ -40,12 +39,12 @@ const CrudHelperScreen = () => {
     saveSortParams(sortKeys.crudHelper, params);
   };
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     if (nxCrudHelper?.endpointId) {
       const res = await api.getRequest(
         nxCrudHelper?.endpointId,
         {
-          page: currentPage - 1,
+          page: reduxCurrentPage,
           size: rowsPerPage,
           filters: filtersUrl,
           sortParams,
@@ -60,15 +59,12 @@ const CrudHelperScreen = () => {
   };
 
   const resources = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
     requests,
     sortParams,
   );
-
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <Box display='flex' flexDirection='column'>
@@ -97,8 +93,6 @@ const CrudHelperScreen = () => {
             sortParams={sortParams}
             setSortParams={handleSetSortParams}
             defaultShowColumn={defaultShow}
-            currentPage={currentPage}
-            updatePage={updatePage}
             tableData={resources}
             isLoading={isLoading}
             noActionButtons

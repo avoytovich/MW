@@ -16,16 +16,14 @@ import {
 
 const CampaignsScreen = () => {
   const scope = 'marketingCampaigns';
-
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.campaigns),
   );
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getCampaigns({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
   };
@@ -36,7 +34,6 @@ const CampaignsScreen = () => {
   };
 
   const campaigns = useTableData(
-    currentPage - 1,
     setLoading,
     false,
     scope,
@@ -44,16 +41,12 @@ const CampaignsScreen = () => {
     sortParams,
   );
 
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <TableComponent
       scope={scope}
       defaultShowColumn={defaultShow}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={campaigns}
       isLoading={isLoading}
       noActions

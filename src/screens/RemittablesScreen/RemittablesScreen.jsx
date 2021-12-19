@@ -25,7 +25,6 @@ import localization from '../../localization';
 
 const RemittablesScreen = () => {
   const scope = 'remittables';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.remittables));
@@ -35,9 +34,9 @@ const RemittablesScreen = () => {
     saveSortParams(sortKeys.remittables, params);
   };
 
-  const requests = async (rowPerPage, filtersUrl) => {
+  const requests = async (rowPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getRemittables({
-      page: currentPage - 1,
+      page: reduxCurrentPage,
       size: rowPerPage,
       filters: filtersUrl,
       sortParams,
@@ -56,15 +55,12 @@ const RemittablesScreen = () => {
     });
 
   const remittables = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
     requests,
     sortParams,
   );
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <>
       <TableActionsBar
@@ -91,8 +87,6 @@ const RemittablesScreen = () => {
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteRemittables}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         tableData={remittables}
         isLoading={isLoading}
       />

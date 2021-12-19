@@ -22,7 +22,6 @@ const TabTable = ({ tabObject }) => {
     secondaryRequest,
     additionalParams,
   } = tabObject;
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -48,11 +47,11 @@ const TabTable = ({ tabObject }) => {
     }
   };
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     let secondaryData;
     const res = await request({
       ...additionalParams,
-      page: currentPage - 1,
+      page: reduxCurrentPage,
       size: rowsPerPage,
       filters: filtersUrl,
       sortParams,
@@ -65,14 +64,12 @@ const TabTable = ({ tabObject }) => {
   };
 
   const data = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
     requests,
     sortParams,
   );
-  const updatePage = (page) => setCurrentPage(page);
   return (
     <TableComponent
       noActions={tabObject.noActions}
@@ -80,8 +77,6 @@ const TabTable = ({ tabObject }) => {
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}
       defaultShowColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={data}
       isLoading={isLoading}
       scope={scope}

@@ -18,7 +18,6 @@ import {
 const ThemesTab = () => {
   const scope = 'themes';
 
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -30,10 +29,10 @@ const ThemesTab = () => {
     saveSortParams(sortKeys.themesTab, params);
   };
 
-  const requests = async (rowsPerPage) => {
+  const requests = async (rowsPerPage, reduxCurrentPage) => {
     const costumersIds = [];
     const res = await api.getDesignsThemes({
-      page: currentPage - 1, size: rowsPerPage, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, sortParams,
     });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
@@ -46,7 +45,6 @@ const ThemesTab = () => {
   };
 
   const themes = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -63,8 +61,6 @@ const ThemesTab = () => {
     );
   });
 
-  const updatePage = (page) => setCurrentPage(page);
-
   return (
     <TableComponent
       scope={scope}
@@ -72,8 +68,6 @@ const ThemesTab = () => {
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDeleteTheme}
       defaultShowColumn={defaultShow}
-      currentPage={currentPage}
-      updatePage={updatePage}
       tableData={themes}
       isLoading={isLoading}
     />

@@ -18,7 +18,6 @@ import {
 
 const EndUsersScreen = () => {
   const scope = 'enduserlist';
-  const [currentPage, setCurrentPage] = useState(1);
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.endusers));
@@ -27,16 +26,15 @@ const EndUsersScreen = () => {
     saveSortParams(sortKeys.endusers, params);
   };
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getEndUsers({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
     return generateData(res.data);
   };
 
   const endusers = useTableData(
-    currentPage - 1,
     setLoading,
     makeUpdate,
     scope,
@@ -44,7 +42,6 @@ const EndUsersScreen = () => {
     sortParams,
   );
 
-  const updatePage = (page) => setCurrentPage(page);
 
   return (
     <Box pb={3}>
@@ -56,8 +53,6 @@ const EndUsersScreen = () => {
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         defaultShowColumn={defaultShow}
-        currentPage={currentPage}
-        updatePage={updatePage}
         scope={scope}
         tableData={endusers}
         isLoading={isLoading}

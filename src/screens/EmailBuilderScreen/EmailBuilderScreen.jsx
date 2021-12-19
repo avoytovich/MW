@@ -18,18 +18,16 @@ import {
 
 const EmailBuilderScreen = () => {
   const scope = 'emailbuilder';
-
-  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.emailbuilder),
   );
 
-  const requests = async (rowsPerPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const storeIds = [];
     let stores = [];
     const res = await api.getEmailBuilder({
-      page: currentPage - 1, size: rowsPerPage, filters: filtersUrl, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     res.data.items.forEach((item) => {
       if (item.storeId) {
@@ -52,7 +50,6 @@ const EmailBuilderScreen = () => {
   };
 
   const emails = useTableData(
-    currentPage - 1,
     setLoading,
     null,
     scope,
@@ -60,7 +57,6 @@ const EmailBuilderScreen = () => {
     sortParams,
   );
 
-  const updatePage = (page) => setCurrentPage(page);
   return (
     <Box display='flex' flexDirection='column'>
       <TableActionsBar
@@ -75,8 +71,6 @@ const EmailBuilderScreen = () => {
           sortParams={sortParams}
           setSortParams={handleSetSortParams}
           defaultShowColumn={defaultShow}
-          currentPage={currentPage}
-          updatePage={updatePage}
           tableData={emails}
           isLoading={isLoading}
         />

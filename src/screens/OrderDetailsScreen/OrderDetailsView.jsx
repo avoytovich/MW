@@ -101,21 +101,21 @@ const OrderDetailsView = ({
             </Menu>
           </Box>
         </Box>
-      </Box>
-      <Box my={2} bgcolor='#fff'>
-        <Tabs
-          value={curTab}
-          indicatorColor='primary'
-          textColor='primary'
-          onChange={(event, newValue) => {
-            setCurTab(newValue);
-          }}
-          aria-label='disabled tabs example'
-        >
-          {tabLabels.map((tab) => (
-            <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-          ))}
-        </Tabs>
+        <Box my={2} bgcolor='#fff'>
+          <Tabs
+            value={curTab}
+            indicatorColor='primary'
+            textColor='primary'
+            onChange={(event, newValue) => {
+              setCurTab(newValue);
+            }}
+            aria-label='disabled tabs example'
+          >
+            {tabLabels.map((tab) => (
+              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+            ))}
+          </Tabs>
+        </Box>
       </Box>
       {curTab === 0
         && (
