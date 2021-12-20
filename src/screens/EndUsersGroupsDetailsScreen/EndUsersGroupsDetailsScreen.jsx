@@ -17,6 +17,7 @@ const EndUsersGroupsDetailsScreen = () => {
   const [initData, setInitData] = useState(null);
   const [upd, setUpdate] = useState(0);
   const [selectedLang, setSelectedLang] = useState(0);
+  const [curTab, setCurTab] = useState(0);
 
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -65,12 +66,18 @@ const EndUsersGroupsDetailsScreen = () => {
       updateFunc={api.updateEndUserGroup}
       beforeSend={(data) => data}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'localizedContent'],
+      }}
     >
       <EndUsersGroupsDetailsView
         curData={curData}
         setCurData={setCurData}
         selectedLang={selectedLang}
         setSelectedLang={setSelectedLang}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

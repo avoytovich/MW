@@ -82,6 +82,7 @@ const CampaignDetailsScreen = () => {
       curData={curCampaign}
       updateFunc={api.updateCampaignById}
       setUpdate={setUpdate}
+      noTabsMargin
     >
       <CampaignDetailsView
         curCampaign={curCampaign}

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, TextField, IconButton, Button, Tooltip } from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ClearIcon from '@material-ui/icons/Clear';
+import { Box, Typography, TextField, IconButton, Button, Tooltip } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { NumberInput } from '../../../../Inputs';
 
@@ -130,8 +130,9 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState, setModalSt
               color='secondary'
               aria-label='remove'
               onClick={() => handleRemoveParamether(i)}
+              size='large'
             >
-              <Tooltip title='Remove this and below'>
+              <Tooltip disableInteractive title='Remove this and below'>
                 <ClearIcon size='medium' color='secondary' />
               </Tooltip>
             </IconButton>
@@ -174,6 +175,7 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState, setModalSt
             aria-label='add to shopping cart'
             disabled={!range.label}
             onClick={handleAddParameterRow}
+            size='large'
           >
             <AddCircleOutlineIcon
               size='medium'

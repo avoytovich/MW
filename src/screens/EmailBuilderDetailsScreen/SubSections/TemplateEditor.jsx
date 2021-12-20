@@ -8,7 +8,7 @@ import {
   Tabs,
   Tab,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import CodeEditor from '../../../components/CodeEditor';
 import LocalizedContent from './LocalizedContent';
 import localization from '../../../localization';
@@ -47,8 +47,8 @@ const TemplateEditor = ({
           },
         })
         .then(({ data: _data }) => {
-          const subject = b64DecodeUnicode(_data.subject);
-          const body = b64DecodeUnicode(_data.body);
+          const subject = b64DecodeUnicode(_data?.subject);
+          const body = b64DecodeUnicode(_data?.body);
 
           const blob = new Blob([body], { type: 'text/html' });
 

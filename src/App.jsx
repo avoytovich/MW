@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { ThemeProvider } from '@material-ui/core/styles';
-import { Box, CircularProgress } from '@material-ui/core';
+import { ThemeProvider } from '@mui/material/styles';
+import { Box, CircularProgress } from '@mui/material';
 
 import RootComponent from './components/RootComponent';
 
@@ -33,7 +33,19 @@ const App = () => {
     };
   }, []);
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) {
+    return (
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        width={1}
+        height={1}
+      >
+        <CircularProgress size='3rem' />
+      </Box>
+    );
+  }
 
   if (hasError) return <Box color='error.main'>{localization.t('general.error')}</Box>;
 

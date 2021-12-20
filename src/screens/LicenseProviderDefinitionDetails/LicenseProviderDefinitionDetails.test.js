@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 import {
   LinearProgress,
   Tab,
-} from '@material-ui/core';
+} from '@mui/material';
 import LicenseProviderDefinitionDetails from './LicenseProviderDefinitionDetails';
 import General from './SubSections/General';
 import HTTPConfiguration from './SubSections/HTTPConfiguration';

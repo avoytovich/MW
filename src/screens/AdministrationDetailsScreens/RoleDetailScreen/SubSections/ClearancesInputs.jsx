@@ -9,8 +9,8 @@ import {
   TableRow,
   TableCell,
   Paper,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import PropTypes from 'prop-types';
 import localization from '../../../../localization';
 import { createKey } from '../utils';
@@ -128,7 +128,11 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
                       </TableCell>
                       <TableCell align="right">
                         <Box>
-                          <IconButton color='primary' onClick={() => handleRemove(right, index)}>
+                          <IconButton
+                            color='primary'
+                            onClick={() => handleRemove(right, index)}
+                            size='large'
+                          >
                             <ClearIcon color='secondary' />
                           </IconButton>
                         </Box>

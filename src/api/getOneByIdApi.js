@@ -2,7 +2,7 @@ import { axiosInstance } from '../axios';
 
 const getOneByIdApi = {
   getRenewingProductsByCustomerId(id) {
-    const url = `/products?format=full&customerId=${id}&hasSubscription=true&status=ENABLED&size=30&page=0`;
+    const url = `/products?format=short&customerId=${id}&hasSubscription=true&status=ENABLED&size=30&page=0`;
     return axiosInstance({
       method: 'get',
       url,
@@ -16,7 +16,7 @@ const getOneByIdApi = {
     });
   },
   getSubProductsById(parentId) {
-    const url = `/products?format=full&parentId=${parentId}&size=500`;
+    const url = `/products?format=short&parentId=${parentId}&size=500`;
     return axiosInstance({
       method: 'get',
       url,

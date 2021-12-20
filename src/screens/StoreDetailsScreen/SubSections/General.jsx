@@ -8,10 +8,10 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-} from '@material-ui/core';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
+} from '@mui/material';
+import Modal from '@mui/material/Modal';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
 import { getCountriesOptions, getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { urlIsValid } from '../../../services/helpers/inputValidators';
 
@@ -327,6 +327,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
               control={<Radio color="primary" />}
               label={localization.t('labels.blocked')}
             />
+
             <FormControlLabel
               value='allowed'
               control={<Radio color="primary" />}

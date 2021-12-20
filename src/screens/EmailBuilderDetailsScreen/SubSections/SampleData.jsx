@@ -3,13 +3,13 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { Edit } from '@material-ui/icons';
+import { Edit } from '@mui/icons-material';
 
 import {
   Box,
   Tabs,
   Tab,
-} from '@material-ui/core';
+} from '@mui/material';
 import JsonEditor from '../../../components/JsonEditor';
 import localization from '../../../localization';
 
@@ -48,7 +48,7 @@ const SampleData = ({
           indicatorColor='primary'
           textColor='primary'
           variant='scrollable'
-          scrollButtons='auto'
+          scrollButtons
           onChange={(event, newValue) => setCurTab(newValue)}
         >
           {

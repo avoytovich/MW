@@ -45,6 +45,7 @@ const NotificationHistoryDetailsScreen = () => {
       addFunc={null}
       updateFunc={null}
       beforeSend={(data) => data}
+      noTabsMargin
     >
       <NotificationHistoryDetailsView
         customer={customer}

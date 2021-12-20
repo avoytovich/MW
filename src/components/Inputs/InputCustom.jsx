@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Tooltip } from '@material-ui/core';
-import HelpIcon from '@material-ui/icons/Help';
+import { TextField, Tooltip } from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import localization from '../../localization';
 
 const InputCustom = ({
@@ -19,7 +19,7 @@ const InputCustom = ({
 }) => (
   <form autoComplete='off' style={{ width: '100%', position: 'relative' }}>
     <TextField
-      rowsMax={rowsMax}
+      maxRows={rowsMax}
       error={hasError}
       data-test={label}
       helperText={helperText}
@@ -42,6 +42,7 @@ const InputCustom = ({
     {
       tooltip && (
         <Tooltip
+          disableInteractive
           placement='right'
           title={tooltip}
           style={{ position: 'absolute', right: 10, top: 16 }}

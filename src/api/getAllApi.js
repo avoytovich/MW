@@ -52,7 +52,8 @@ const getAllApi = {
   getProducts({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
-    let url = `/products?format=full&size=${size}&page=${page}&parentId=null`;
+    let url = `/products?format=short&size=${size}&page=${page}&parentId=null`;
+
     if (filters) {
       url += filters;
     }

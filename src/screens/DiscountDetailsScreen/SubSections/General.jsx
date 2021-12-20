@@ -8,7 +8,7 @@ import {
   RadioGroup,
   Radio,
   Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   priceCurrency,
 } from '../../../services/selectOptions/selectOptions';

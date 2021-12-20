@@ -3,9 +3,9 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Grid, Typography, IconButton,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { filterOptions } from '../utils';
 import localization from '../../../localization';
@@ -112,6 +112,7 @@ const SelectModeInputs = ({
                   && item.value.length === 0
                 }
                 onClick={() => handleRemove(index)}
+                size='large'
               >
                 <ClearIcon color='secondary' />
               </IconButton>
@@ -123,6 +124,7 @@ const SelectModeInputs = ({
                     curValue[curValue.length - 1].keyValue === ''
                     || curValue[curValue.length - 1].value.length === 0
                   }
+                  size='large'
                 >
                   <AddCircleIcon />
                 </IconButton>

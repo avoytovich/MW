@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import Grid from '@material-ui/core/Grid';
-import CardMedia from '@material-ui/core/CardMedia';
+import Grid from '@mui/material/Grid';
+import CardMedia from '@mui/material/CardMedia';
 
 import Logo from '../../../assets/NexwayWhiteLogo.png';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +13,8 @@ import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring
 
 const LicenseProviderDefinitionDetails = () => {
   const { id } = useParams();
+
+  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -40,10 +42,16 @@ const LicenseProviderDefinitionDetails = () => {
       updateFunc={api.updateLicenseProviderDefinition}
       beforeSend={removeEmptyPropsInObject}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'operationDetails', 'httpConfiguration', 'testModeHTTPConfiguration'],
+      }}
     >
       <LicenseProviderDefinitionDetailsView
         curLicenseProvider={curLicenseProvider}
         setCurLicenseProvider={setCurLicenseProvider}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Grid } from '@material-ui/core';
+import { Box, Typography, Grid } from '@mui/material';
 
 import localization from '../../localization';
 
@@ -11,7 +11,7 @@ const DiscountSection = ({ label, children }) => (
         {localization.t(`labels.${label}`)}
       </Typography>
     </Box>
-    <Grid container justify="center" spacing={1}>
+    <Grid container justifyContent="center" spacing={1}>
       {children}
     </Grid>
   </Box>

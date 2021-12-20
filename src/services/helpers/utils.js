@@ -17,12 +17,20 @@ const b64DecodeUnicode = (str) => {
 const b64EncodeUnicode = (str) => window.btoa(
   encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => String.fromCharCode(`0x${p1}`)),
 );
+
 const copyText = (value) => {
   navigator.clipboard.writeText(value)
     .then(() => toast(localization.t('general.itemHasBeenCopied')));
 };
+
+const copyUrl = (value) => {
+  navigator.clipboard.writeText(`${window.location.href}/${value}`)
+    .then(() => toast(localization.t('general.itemURLHasBeenCopied')));
+};
+
 export {
   b64DecodeUnicode,
   b64EncodeUnicode,
   copyText,
+  copyUrl,
 };

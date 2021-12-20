@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from '@mui/icons-material/Cancel';
 import {
   MenuItem,
   Select,
@@ -8,7 +8,7 @@ import {
   InputLabel,
   CircularProgress,
   InputAdornment,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../localization';
 import './Inputs.scss';
 
@@ -20,7 +20,7 @@ const SelectWithDeleteIcon = ({
   onChangeSelect,
   onClickDelIcon,
 }) => (
-  <FormControl fullWidth variant='outlined'>
+  <FormControl fullWidth>
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
       value={selectOptions && value ? value : ''}
@@ -35,22 +35,24 @@ const SelectWithDeleteIcon = ({
       variant='outlined'
       startAdornment={
         !selectOptions && (
-          <InputAdornment>
+          <InputAdornment position='start'>
             <CircularProgress />
           </InputAdornment>
         )
       }
       endAdornment={
         value && (
-          <CancelIcon
-            className='cancelSelectIcon'
-            fontSize='small'
-            color='secondary'
-            onClick={isDisabled ? () => null : onClickDelIcon}
-            onMouseDown={(e) => {
-              e.stopPropagation();
-            }}
-          />
+          <InputAdornment position='end'>
+            <CancelIcon
+              className='cancelSelectIcon'
+              fontSize='small'
+              color='secondary'
+              onClick={isDisabled ? () => null : onClickDelIcon}
+              onMouseDown={(e) => {
+                e.stopPropagation();
+              }}
+            />
+          </InputAdornment>
         )
       }
     >

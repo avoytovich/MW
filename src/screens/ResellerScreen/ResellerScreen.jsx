@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Tabs, Tab, Box,
-} from '@material-ui/core';
+} from '@mui/material';
 import api from '../../api';
 import localization from '../../localization';
 
@@ -63,6 +63,7 @@ const ResellerScreen = () => {
         deleteFunc={tabsData[curTab].deleteFunc}
         headers={tabsData[curTab].headers}
       />
+
       <Tabs
         value={curTab}
         onChange={(e, newTab) => {
@@ -71,16 +72,16 @@ const ResellerScreen = () => {
         }}
         indicatorColor='primary'
         textColor='primary'
+        sx={{ marginBottom: '20px' }}
       >
         <Tab label={`${localization.t('labels.pendingApprovals')}`} />
         <Tab label={`${localization.t('labels.approved')}`} />
         <Tab label={`${localization.t('labels.declined')}`} />
       </Tabs>
-      <Box mt={4} mb={2}>
-        {curTab === 0 && (<TabTable tabObject={tabsData[curTab]} />)}
-        {curTab === 1 && (<TabTable tabObject={tabsData[curTab]} />)}
-        {curTab === 2 && (<TabTable tabObject={tabsData[curTab]} />)}
-      </Box>
+
+      {curTab === 0 && (<TabTable tabObject={tabsData[curTab]} />)}
+      {curTab === 1 && (<TabTable tabObject={tabsData[curTab]} />)}
+      {curTab === 2 && (<TabTable tabObject={tabsData[curTab]} />)}
     </>
   );
 };

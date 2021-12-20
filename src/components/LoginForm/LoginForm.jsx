@@ -7,9 +7,8 @@ import {
   Button,
   TextField,
   CircularProgress,
-} from '@material-ui/core';
-import { ThemeProvider } from "@material-ui/styles";
-import { createMuiTheme } from "@material-ui/core/styles";
+} from '@mui/material';
+
 import { Formik } from 'formik';
 
 import { login, setNexwayState } from '../../redux/actions/Account';
@@ -33,26 +32,6 @@ const LoginForm = () => {
       setSubmitting(false);
     }
   };
-
-  const theme = createMuiTheme();
-  theme.palette.loginBtn = theme.palette.augmentColor({
-    main: "#19a6ff",
-    dark: "#0971b3",
-  });
-
-  const isLoginBtn = style => props =>
-    props.color === "loginBtn" && props.variant === "contained" ? style : {};
-
-    theme.overrides = {
-      MuiButton: {
-        root: {
-          backgroundColor: isLoginBtn(theme.palette.loginBtn.main),
-          "&:hover": {
-            backgroundColor: isLoginBtn(theme.palette.loginBtn.dark)
-          }
-        }
-      }
-    };
 
   return (
     <Formik
@@ -99,25 +78,23 @@ const LoginForm = () => {
             inputProps={{ autoComplete: 'new-password', style: { WebkitBoxShadow: "0 0 0 1000px white inset" } }}
           />
 
-          <Box mt={2} >
-            <ThemeProvider theme={theme}>
-              <Button
-                color="loginBtn"
-                disabled={
-                  Object.keys(errors).length !== 0
-                  || !values.username
-                  || !values.password
-                  || isSubmitting
-                }
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                style={{ borderRadius: 0, color: '#ffffff' }}
-              >
-                {isSubmitting ? <CircularProgress size={26} /> : localization.t('forms.buttons.signIn')}
-              </Button>
-            </ThemeProvider>
+          <Box mt={2}>
+            <Button
+              color='loginBtns'
+              disabled={
+                Object.keys(errors).length !== 0
+                || !values.username
+                || !values.password
+                || isSubmitting
+              }
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              style={{ borderRadius: 0, color: '#ffffff' }}
+            >
+              {isSubmitting ? <CircularProgress size={26} /> : localization.t('forms.buttons.signIn')}
+            </Button>
           </Box>
         </form>
       )}

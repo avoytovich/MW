@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import {
   Box,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../../localization';
 
 const General = ({ audit }) => {

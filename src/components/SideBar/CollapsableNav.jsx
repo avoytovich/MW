@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import {
   Collapse, Box, List, Button,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const CollapsableNav = ({ header, icon: Icon, children }) => {
   const [isOpen, setIsOpen] = useState(false);

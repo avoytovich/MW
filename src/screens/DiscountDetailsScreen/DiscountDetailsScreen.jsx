@@ -1,9 +1,9 @@
 // ToDo: consider making a common layout for such type of settings screens
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { fromArrayToObject } from './utils';
+import { fromArrayToObject, tabsLabels } from './utils';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import api from '../../api';
 import localization from '../../localization';
@@ -12,6 +12,7 @@ import parentPaths from '../../services/paths';
 import DiscountDetailsView from './DiscountDetailsView';
 
 const DiscountDetailsScreen = () => {
+  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const { id } = useParams();
 
@@ -62,6 +63,12 @@ const DiscountDetailsScreen = () => {
       updateFunc={api.updateDiscountById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
+      noTabsMargin
+      tabs={{
+        tabLabels: tabsLabels,
+        curTab,
+        setCurTab,
+      }}
     >
       <DiscountDetailsView
         curDiscount={curDiscount}
@@ -70,6 +77,7 @@ const DiscountDetailsScreen = () => {
         setAmountType={setAmountType}
         amountType={amountType}
         selectOptions={selectOptions}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 import {
   Typography,
   Box,
-} from '@material-ui/core';
+} from '@mui/material';
+
 import localization from '../../../localization';
 
 const CustomBreadcrumbs = ({ sections, url, id = null }) => {

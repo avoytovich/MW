@@ -3,7 +3,7 @@ import React from 'react';
 import {
   Box,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import CustomCard from '../../../components/utils/CustomCard';
 

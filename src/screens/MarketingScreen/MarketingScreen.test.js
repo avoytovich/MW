@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Tab } from '@material-ui/core';
+import { Tab } from '@mui/material';
 import MarketingScreen from './MarketingScreen';
 import { BrowserRouter as Router } from 'react-router-dom';
 

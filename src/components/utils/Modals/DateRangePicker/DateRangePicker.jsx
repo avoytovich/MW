@@ -8,7 +8,7 @@ import {
   DialogContent,
   Typography,
   Box,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import moment from 'moment';
 import { DateRange } from 'react-date-range';
@@ -71,8 +71,8 @@ const DateRangePicker = ({ values, handleChange }) => {
           aria-labelledby="date-range-dialog-title"
           open={modalOpened}
         >
-          <DialogTitle id="date-range-dialog-title" disableTypography>
-            <Typography variant="h4">Select range</Typography>
+          <DialogTitle id="date-range-dialog-title">
+            <Typography variant="h4" component='span'>Select range</Typography>
           </DialogTitle>
 
           <DialogContent dividers>

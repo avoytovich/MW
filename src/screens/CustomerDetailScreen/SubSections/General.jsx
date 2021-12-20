@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, Grid, Link,
-} from '@material-ui/core';
-import { FileCopy } from '@material-ui/icons';
+} from '@mui/material';
+import { FileCopy } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
 import localization from '../../../localization';

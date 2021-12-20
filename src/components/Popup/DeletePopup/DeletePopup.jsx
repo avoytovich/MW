@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
   Button, Box, Dialog, DialogActions, DialogContent, DialogContentText,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   Delete as DeleteIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
@@ -24,11 +24,9 @@ const DeletePopup = ({ id, deleteFunc }) => {
   };
 
   return (
-    <div>
+    <>
+      <DeleteIcon className="deleteIcon icons" onClick={handleClickOpen} />
 
-      <Box color="inherit" onClick={handleClickOpen}>
-        <DeleteIcon className="deleteIcon icons" />
-      </Box>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>
           <DialogContentText color="inherit">
@@ -44,7 +42,7 @@ const DeletePopup = ({ id, deleteFunc }) => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 

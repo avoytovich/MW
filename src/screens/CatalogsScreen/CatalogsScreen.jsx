@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import TableActionsBar from '../../components/TableActionsBar';
 import api from '../../api';
 import parentPaths from '../../services/paths';
@@ -58,9 +58,8 @@ const CatalogsScreen = () => {
     );
   });
 
-
   return (
-    <Box display='flex' flexDirection='column'>
+    <>
       <TableActionsBar
         scope={scope}
         deleteFunc={api.deleteCatalogsById}
@@ -80,18 +79,17 @@ const CatalogsScreen = () => {
           )}`}
         </Button>
       </TableActionsBar>
-      <Box mt={4} mb={2}>
-        <TableComponent
-          scope={scope}
-          handleDeleteItem={handleDeleteCatalogs}
-          sortParams={sortParams}
-          setSortParams={handleSetSortParams}
-          defaultShowColumn={defaultShow}
-          tableData={catalogs}
-          isLoading={isLoading}
-        />
-      </Box>
-    </Box>
+
+      <TableComponent
+        scope={scope}
+        handleDeleteItem={handleDeleteCatalogs}
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
+        defaultShowColumn={defaultShow}
+        tableData={catalogs}
+        isLoading={isLoading}
+      />
+    </>
   );
 };
 

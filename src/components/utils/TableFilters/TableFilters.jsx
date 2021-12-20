@@ -16,12 +16,12 @@ import {
   Dialog,
   DialogContent,
   DialogActions,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   Close as CloseIcon,
   Edit as EditIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import FilterBlock from './FilterBlock';
 
@@ -174,8 +174,8 @@ const Filters = ({ scope, onClose }) => {
           <Box mb='15px' display='flex' justifyContent='space-between'>
             <Typography variant='h6'>{localization.t('general.filters')}</Typography>
 
-            <Box color='primary' style={{ cursor: 'pointer' }} onClick={() => selectedView && setIsChanging(true)}>
-              <Typography variant='h6' color='primary'>{localization.t('general.saveView')}</Typography>
+            <Box color='primary' style={{ cursor: 'pointer' }} onClick={clearFilters}>
+              <Typography variant='h6' color='primary'>{localization.t('general.clearFilters')}</Typography>
             </Box>
           </Box>
 
@@ -194,13 +194,32 @@ const Filters = ({ scope, onClose }) => {
             displayEmpty
             renderValue={(selected) => {
               if (!selected) {
-                return <Typography color='secondary' variant='h6' style={{ font: '14px Roboto Regular' }}>Select a view</Typography>;
+                return (
+                  <Typography
+                    color='secondary'
+                    variant='h6'
+                    sx={{
+                      height: '24px',
+                      font: '14px Roboto',
+                      lineHeight: '24px',
+                    }}
+                  >
+                    {filterViewsConfig?.length ? localization.t('forms.labels.selectView') : localization.t('forms.labels.addView')}
+                  </Typography>
+                );
               }
 
               return selected;
             }}
           >
-            <MenuItem value='#add' key='#add'><Typography color='primary' variant='h6'>Add new view</Typography></MenuItem>
+            <MenuItem value='#add' key='#add'>
+              <Typography
+                color='primary'
+                variant='h6'
+              >
+                {localization.t('forms.labels.addView')}
+              </Typography>
+            </MenuItem>
             {
               filterViewsConfig?.length > 0 && filterViewsConfig.map((view) => (
                 <MenuItem value={view.name} key={view.name}>
@@ -232,8 +251,8 @@ const Filters = ({ scope, onClose }) => {
           <Divider />
 
           <Box display='flex' justifyContent='space-between' alignItems='center' mt='15px'>
-            <Box color='primary' style={{ cursor: 'pointer' }} onClick={clearFilters}>
-              <Typography variant='h6' color='primary'>{localization.t('general.clearFilters')}</Typography>
+            <Box color='primary' style={{ cursor: 'pointer' }} onClick={() => selectedView && setIsChanging(true)}>
+              <Typography variant='h6' color='primary'>{localization.t('general.saveView')}</Typography>
             </Box>
 
             <Button variant='contained' color='primary' onClick={applyFilters}>{localization.t('forms.buttons.apply')}</Button>

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Box,
   Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 
 import { InputCustom } from '../../../components/Inputs';

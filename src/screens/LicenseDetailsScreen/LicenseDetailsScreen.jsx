@@ -10,8 +10,10 @@ import { generateGeneralData } from './utils';
 
 const LicenseDetailsScreen = () => {
   const scope = 'licensesDetails';
+  const tabLabels = ['general', 'events'];
 
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
   const [license, setLicense] = useState(null);
   const [tableData, settableData] = useState(null);
   const [isLoading, setLoading] = useState(true);
@@ -43,8 +45,18 @@ const LicenseDetailsScreen = () => {
       addFunc={null}
       updateFunc={null}
       beforeSend={null}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels,
+      }}
     >
-      <LicenseDetailsView license={license} tableData={tableData} scope={scope} />
+      <LicenseDetailsView
+        license={license}
+        curTab={curTab}
+        tableData={tableData}
+        scope={scope}
+      />
     </DetailPageWrapper>
   );
 };

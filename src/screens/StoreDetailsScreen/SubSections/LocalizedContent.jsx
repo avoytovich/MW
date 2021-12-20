@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 
 import {
   Box, Tabs, Tab,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { toast } from 'react-toastify';
 
-import ClearIcon from '@material-ui/icons/Clear';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import { SelectCustom } from '../../../components/Inputs';
 import LocalizationInputs from './LocalizationInputs';
@@ -75,7 +75,7 @@ const LocalizedContent = ({
           orientation='vertical'
           indicatorColor='primary'
           variant='scrollable'
-          scrollButtons='off'
+          scrollButtons={false}
           value={value}
           style={{ borderRight: '1px solid #e2e2e2', height: '100%' }}
           onChange={(e, newTab) => setValue(newTab)}
@@ -88,7 +88,7 @@ const LocalizedContent = ({
               value={locale}
               component={forwardRef(({ children, ...props }, ref) => locale && (
                 <div role='button' {...props} ref={ref}>
-                  {children}
+                  <span className='localization-label'>{children}</span>
                   <ClearIcon onClick={(e) => removeLocale(e, locale)} />
                 </div>
               ))}

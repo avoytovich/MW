@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +13,7 @@ import IdentityDetailsView from './IdentityDetailsView';
 
 const IdentityDetailsScreen = () => {
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -63,6 +64,11 @@ const IdentityDetailsScreen = () => {
       updateFunc={api.updateIdentityById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'identification', 'permissions', 'emails'],
+      }}
     >
       <IdentityDetailsView
         id={id}
@@ -73,6 +79,7 @@ const IdentityDetailsScreen = () => {
         addSecretKey={addSecretKey}
         removeSecretKey={removeSecretKey}
         selectOptions={selectOptions}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Box } from '@material-ui/core';
+import { Modal, Box } from '@mui/material';
 
 import {
   AddParameterFirstStep,

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Typography, Box } from '@material-ui/core';
-import { FolderOpen } from '@material-ui/icons';
+import { Typography, Box } from '@mui/material';
+import { FolderOpen } from '@mui/icons-material';
 
 import ProductDetails from '../../components/ProductDetails';
 import StoreDetails from '../../components/StoreDetails';

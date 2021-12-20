@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -14,6 +14,7 @@ import NotificationDetailScreenView from './NotificationDetailScreenView';
 
 const NotificationDetailScreen = () => {
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -56,11 +57,17 @@ const NotificationDetailScreen = () => {
       updateFunc={api.updateNotificationById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'httpHeaders', 'oAuthConfiguration', 'tlsConfiguration'],
+      }}
     >
       <NotificationDetailScreenView
         curNotification={curNotification}
         setCurNotification={setCurNotification}
         selectOptions={selectOptions}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

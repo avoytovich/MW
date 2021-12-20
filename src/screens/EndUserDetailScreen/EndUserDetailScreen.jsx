@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import useEndUserDetailScreen from './useEndUserDetailScreen';
@@ -12,6 +12,7 @@ const EndUserDetailScreen = ({ location }) => {
   const scope = location.pathname.split('/endusers/')[1].split('/')[0];
   const curParentPath = scope === 'enduserlist' ? parentPaths.endusers : parentPaths.resellers;
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
   const {
     setUpdate,
     curEndUser,
@@ -41,6 +42,11 @@ const EndUserDetailScreen = ({ location }) => {
       updateFunc={api.updateEndUser}
       beforeSend={removeEmptyPropsInObject}
       setUpdate={setUpdate}
+      tabs={{
+        tabLabels: ['general', 'emails', 'orders'],
+        curTab,
+        setCurTab,
+      }}
     >
       <EndUserDetailView
         scope={scope}
@@ -52,6 +58,7 @@ const EndUserDetailScreen = ({ location }) => {
         consent={consent}
         orders={orders}
         emails={emails}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

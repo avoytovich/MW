@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { Tab } from '@material-ui/core';
+import { Tab } from '@mui/material';
 import NotificationScreen from './NotificationScreen';
 import { BrowserRouter as Router } from 'react-router-dom';
 

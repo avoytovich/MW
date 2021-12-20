@@ -5,11 +5,11 @@ import {
   Box,
   Button,
   TextField,
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+  Autocomplete,
+} from '@mui/material';
 
-// import AddCircle from '@material-ui/icons/AddCircle';
-import CachedIcon from '@material-ui/icons/Cached';
+// import AddCircle from '@mui/icons-material/AddCircle';
+import CachedIcon from '@mui/icons-material/Cached';
 
 import { InputCustom } from '../../components/Inputs';
 

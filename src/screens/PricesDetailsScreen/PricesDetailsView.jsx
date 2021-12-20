@@ -11,9 +11,9 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import { getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 import { SelectCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
@@ -66,7 +66,7 @@ const PricesDetailsView = ({
 
   return (
     <div className="price-details-screen">
-      <CustomCard title="General" style={{ marginTop: '20px' }}>
+      <CustomCard title="General">
         {
           price?.productId ? (
             <Box mt={4} display="flex">

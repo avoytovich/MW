@@ -8,9 +8,9 @@ import {
   Select,
   MenuItem,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 import { SelectWithChip } from '../../Inputs';
 
 import localization from '../../../localization';
@@ -26,7 +26,7 @@ const FilterBlockInputs = ({
       variant='outlined'
       onChange={(e) => updateConfig(data.id, e.target.value)}
       InputProps={{
-        endAdornment: <InputAdornment position="end"><SearchIcon color='secondary' /></InputAdornment>,
+        endAdornment: <InputAdornment position='end'><SearchIcon color='secondary' /></InputAdornment>,
       }}
     />
   );
@@ -120,6 +120,7 @@ const FilterBlockInputs = ({
       ))}
     </Select>
   );
+
   const SelectWithChipSubFilter = () => (
     <SelectWithChip
       noTranslate
@@ -131,10 +132,15 @@ const FilterBlockInputs = ({
           (val) => val !== chip,
         );
         updateConfig(data.id, newValue);
+
+        if (!newValue.length) {
+          document.activeElement.blur();
+        }
       }}
       onChangeSelect={(e) => updateConfig(data.id, e.target.value)}
     />
   );
+
   switch (type) {
     case 'date': return DateSubFilter();
     case 'select': return SelectSubFilter();

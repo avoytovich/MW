@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import NotificationDetailScreen from './NotificationDetailScreen';
-import { Tab, Tabs, Button } from '@material-ui/core';
+import { Tab, Tabs, Button } from '@mui/material';
 import useNotificationDetail from '../../services/useData/useNotificationDetail';
 import General from './SubSections/General';
 import HttpHeaders from './SubSections/HttpHeaders';

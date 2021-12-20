@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Close as CloseIcon } from '@material-ui/icons';
+import { Close as CloseIcon } from '@mui/icons-material';
 
 import {
   Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Box,
-} from '@material-ui/core';
+} from '@mui/material';
 import { InputCustom, SelectCustom } from '../../../components/Inputs';
 import localization from '../../../localization';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';

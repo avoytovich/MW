@@ -4,7 +4,7 @@ import {
 } from 'react-router-dom';
 import {
   Tabs, Tab, Box, Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../localization';
 import FontsTab from './FontsTab';
@@ -74,7 +74,7 @@ const CheckoutExperienceScreen = ({ location }) => {
   return (
     <>
       {drawAddButton()}
-      <Box display="flex" flexDirection="column">
+      <>
         <Tabs
           value={
             location.pathname === parentPaths.checkoutpagebuilder.main
@@ -83,6 +83,7 @@ const CheckoutExperienceScreen = ({ location }) => {
           }
           indicatorColor="primary"
           textColor="primary"
+          sx={{ marginBottom: '20px' }}
         >
           {allTabs.map((item) => (
             <Tab
@@ -94,15 +95,14 @@ const CheckoutExperienceScreen = ({ location }) => {
             />
           ))}
         </Tabs>
-        <Box mt={3}>
-          <Switch>
-            <Route exact path={allTabs[0].path} component={ThemesTab} />
-            <Route exact path={allTabs[1].path} component={LayoutsTab} />
-            <Route exact path={allTabs[2].path} component={FontsTab} />
-            <Redirect exact from={parentPaths.checkoutpagebuilder.main} to={allTabs[0].path} />
-          </Switch>
-        </Box>
-      </Box>
+
+        <Switch>
+          <Route exact path={allTabs[0].path} component={ThemesTab} />
+          <Route exact path={allTabs[1].path} component={LayoutsTab} />
+          <Route exact path={allTabs[2].path} component={FontsTab} />
+          <Redirect exact from={parentPaths.checkoutpagebuilder.main} to={allTabs[0].path} />
+        </Switch>
+      </>
     </>
   );
 };

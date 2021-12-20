@@ -9,7 +9,7 @@ import {
   IconButton,
   InputBase,
   Dialog,
-} from '@material-ui/core';
+} from '@mui/material';
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),

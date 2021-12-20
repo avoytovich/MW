@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Clearances from './Clearances';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress } from '@mui/material';
 
 describe('MetaRoleDetailScreen <Clearances/>', () => {
   let wrapper;

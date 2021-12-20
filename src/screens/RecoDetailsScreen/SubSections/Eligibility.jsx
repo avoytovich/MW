@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { SelectWithChip } from '../../../components/Inputs';
 
 import CustomCard from '../../../components/utils/CustomCard';
 
 const Eligibility = ({ curReco, setCurReco, selectOptions }) => (
-  <CustomCard>
+  <CustomCard mt={0}>
     <Box display='flex' py={2} mx={1} flexDirection='column'>
       <Box width='100%'>
         <SelectWithChip

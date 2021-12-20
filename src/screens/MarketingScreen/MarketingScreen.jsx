@@ -3,7 +3,7 @@ import { useHistory, Link } from 'react-router-dom';
 
 import {
   Tabs, Tab, Box, Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import CampaignsScreen from './SubSections/CampaignsScreen';
 import AbandonedScreen from './SubSections/AbandonedScreen';
 import localization from '../../localization';
@@ -75,26 +75,27 @@ const MarketingScreen = () => {
 
     );
   };
-  const changeTab = (tab) => history.push(`${parentPaths.campaigns.main}/${availTabs[tab].label}`);
-  return (
-    <Box display='flex' flexDirection='column'>
 
+  const changeTab = (tab) => history.push(`${parentPaths.campaigns.main}/${availTabs[tab].label}`);
+
+  return (
+    <>
       {drawAddButton()}
+
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}
         indicatorColor='primary'
         textColor='primary'
+        sx={{ marginBottom: '20px' }}
       >
         <Tab label='Marketing Campaigns' />
         <Tab label='Abandoned Cart Campaigns' />
       </Tabs>
 
-      <Box mt={4} mb={2}>
-        {curTab === 0 && <CampaignsScreen />}
-        {curTab === 1 && <AbandonedScreen />}
-      </Box>
-    </Box>
+      {curTab === 0 && <CampaignsScreen />}
+      {curTab === 1 && <AbandonedScreen />}
+    </>
   );
 };
 

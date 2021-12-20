@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { SelectCustom } from '../../../components/Inputs';
 
 import InheritanceField from '../InheritanceField';
@@ -10,7 +10,6 @@ import { checkValue } from '../../../services/helpers/dataStructuring';
 
 import localization from '../../../localization';
 
-import 'react-quill/dist/quill.bubble.css';
 import './localizations.scss';
 import TinyEditor from '../../../components/TinyEditor';
 

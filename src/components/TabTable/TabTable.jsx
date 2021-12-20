@@ -73,6 +73,7 @@ const TabTable = ({ tabObject }) => {
   return (
     <TableComponent
       noActions={tabObject.noActions}
+      noEditDeleteActions={tabObject.noEditDeleteActions}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}

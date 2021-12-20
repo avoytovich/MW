@@ -4,7 +4,7 @@ import {
   Box,
   Grid,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../../localization';
 import {
   InputCustom,

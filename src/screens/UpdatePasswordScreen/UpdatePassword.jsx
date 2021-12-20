@@ -8,7 +8,7 @@ import {
   FormHelperText,
   Typography,
   CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import { toast } from 'react-toastify';
 
 import { Formik } from 'formik';

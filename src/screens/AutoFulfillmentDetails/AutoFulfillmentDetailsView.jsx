@@ -6,8 +6,8 @@ import {
   Box,
   Typography,
   Grid,
-} from '@material-ui/core';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+} from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import { toast } from 'react-toastify';
 
@@ -16,6 +16,7 @@ import parentPaths from '../../services/paths';
 import { structure } from './utils';
 
 import './autoFulfillmentDetails.scss';
+import CustomCard from '../../components/utils/CustomCard';
 
 const AutoFulfillmentDetailsView = ({ detailsData, customer }) => {
   const history = useHistory();
@@ -50,7 +51,7 @@ const AutoFulfillmentDetailsView = ({ detailsData, customer }) => {
         </Typography>
       </Grid>
       <Grid item md={9} xs={12}>
-        <Box className='fulfillment'>
+        <Box className='fulfillment' display='inline-flex'>
           <Typography variant='subtitle1' className='fulfillment-value'>
             {each.field}
           </Typography>
@@ -115,9 +116,7 @@ const AutoFulfillmentDetailsView = ({ detailsData, customer }) => {
     <>
       {
         detailsData && customer && (
-          <Grid container spacing={2} className="wrapper-fulfillment-details">
-            {renderContent()}
-          </Grid>
+          <CustomCard mt={0}>{renderContent()}</CustomCard>
         )
       }
     </>

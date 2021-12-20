@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Tabs, Tab, Box, Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import {
   Link,
@@ -90,7 +90,7 @@ const AdministrationScreen = ({ location }) => {
   };
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <Box display='flex' flexDirection='column' height={1}>
       {drawAddButton()}
       <Tabs
         value={location.pathname === parentPaths.userroles.main ? tabsData[0].path
@@ -98,6 +98,7 @@ const AdministrationScreen = ({ location }) => {
         indicatorColor='primary'
         textColor='primary'
         data-test='tabs'
+        sx={{ marginBottom: '20px' }}
       >
         {tabsData.map((tab) => (
           <Tab
@@ -109,20 +110,19 @@ const AdministrationScreen = ({ location }) => {
           />
         ))}
       </Tabs>
-      <Box mt={4} mb={2}>
-        <Switch>
-          <Route exact path={tabsData[0].path}><TabTable tabObject={tabsData[0]} /></Route>
-          <Route exact path={tabsData[1].path}>
-            <MetaRoles
-              sortKey={tabsData[1].sortKey}
-              scope={tabsData[1].scope}
-              label={tabsData[1].label}
-            />
-          </Route>
-          <Route exact path={tabsData[2].path}><TabTable tabObject={tabsData[2]} /></Route>
-          <Redirect exact from={parentPaths.userroles.main} to={tabsData[0].path} />
-        </Switch>
-      </Box>
+
+      <Switch>
+        <Route exact path={tabsData[0].path}><TabTable tabObject={tabsData[0]} /></Route>
+        <Route exact path={tabsData[1].path}>
+          <MetaRoles
+            sortKey={tabsData[1].sortKey}
+            scope={tabsData[1].scope}
+            label={tabsData[1].label}
+          />
+        </Route>
+        <Route exact path={tabsData[2].path}><TabTable tabObject={tabsData[2]} /></Route>
+        <Redirect exact from={parentPaths.userroles.main} to={tabsData[0].path} />
+      </Switch>
     </Box>
   );
 };

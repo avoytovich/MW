@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import ClearIcon from '@material-ui/icons/Clear';
+import ClearIcon from '@mui/icons-material/Clear';
 import {
   Box,
   Typography,
@@ -8,7 +8,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { InputCustom } from '../../../../Inputs';
 

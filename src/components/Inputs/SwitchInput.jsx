@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, FormControlLabel, Switch,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import localization from '../../localization';
 
@@ -23,7 +23,7 @@ const SwitchInput = ({
             checked={isChecked}
           />
         )}
-        label={switchLabel}
+        label={switchLabel || ''}
       />
     </Box>
   </Box>

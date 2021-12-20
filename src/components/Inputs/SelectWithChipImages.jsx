@@ -6,8 +6,8 @@ import {
   TextField,
   InputAdornment,
   CircularProgress,
-} from '@material-ui/core';
-import CancelIcon from '@material-ui/icons/Cancel';
+} from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import localization from '../../localization';
 import { paymentImages } from '../../services/selectOptions/selectOptions';
@@ -79,7 +79,7 @@ const SelectWithChipImages = ({
     variant='outlined'
     InputProps={{
       startAdornment: !selectOptions && (
-      <InputAdornment>
+      <InputAdornment position='start'>
         <CircularProgress />
       </InputAdornment>
       ),

@@ -11,10 +11,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import TimelineIcon from '@material-ui/icons/Timeline';
-import BarChartIcon from '@material-ui/icons/BarChart';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import BarChartIcon from '@mui/icons-material/BarChart';
 import ChartBlock from './SubSections/ChartBlock';
 import InfoItemBlock from './SubSections/InfoItemBlock';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
@@ -27,7 +27,7 @@ const rows = [
 const DashboardScreen = () => {
   const [chartType, setChartType] = useState('line');
   return (
-    <Box className='dashboard'>
+    <Box className='dashboard' overflow='auto' p='2px'>
       <CustomBreadcrumbs
         sections={['businessAnalysis']}
       />

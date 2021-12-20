@@ -8,7 +8,7 @@ import {
   Grid,
   TextField,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import TableComponent from '../../../components/TableComponent';
 import useTableData from '../../../services/useData/useTableData';
 import {

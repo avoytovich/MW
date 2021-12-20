@@ -1,23 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
 import PropTypes from 'prop-types';
 
 import {
   Typography,
-  Grid,
   Box,
-  Checkbox,
   LinearProgress,
-  Paper,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import { useSelector, useDispatch } from 'react-redux';
-import { setCheckedItems } from '../../redux/actions/TableData';
-import setShowColumns from '../../redux/actions/ShowColumns';
-import TableRowComponent from './TableRowComponent';
+import { DataGridPro } from '@mui/x-data-grid-pro';
+
 import PaginationComponent from '../PaginationComponent';
 import localization from '../../localization';
+
+import { setCheckedItems } from '../../redux/actions/TableData';
+import setShowColumns from '../../redux/actions/ShowColumns';
+
+import { adjustColumnsData } from '../../services/helpers/dataGridHelper';
 
 import './TableComponent.scss';
 
@@ -28,7 +29,6 @@ const TableComponent = ({
   handleDeleteItem,
   noActions,
   noEditDeleteActions,
-  noActionButtons,
   setSortParams,
   sortParams,
   customPath,
@@ -38,24 +38,33 @@ const TableComponent = ({
   scope,
   isOrders,
   orderData,
+  wrapperStyles,
 }) => {
-  const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
+  const history = useHistory();
   const dispatch = useDispatch();
+
+  const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
+
+  const [sortModel, setSortModel] = useState(sortParams ? [sortParams] : []);
+
   if (!showColumn) {
     dispatch(setShowColumns({ [scope]: defaultShowColumn }));
   }
+
   const handleCheck = (item) => {
     let newChecked = [];
 
-    const [isChecked] = tableCheckedItems.filter((v) => v.id === item.id);
+    const [isChecked] = tableCheckedItems.filter((v) => v.id === item);
 
     if (isChecked) {
-      newChecked = [...tableCheckedItems].filter((v) => v.id !== item.id);
+      newChecked = [...tableCheckedItems].filter((v) => v.id !== item);
     } else {
-      newChecked = [...tableCheckedItems, item];
+      const [newItem] = tableData?.values?.filter((v) => v.id === item);
+      newChecked = [...tableCheckedItems, newItem];
     }
+
     dispatch(setCheckedItems(newChecked));
   };
 
@@ -82,10 +91,6 @@ const TableComponent = ({
     dispatch(setCheckedItems(newChecked));
   };
 
-  const isCheckedAll = () => tableData?.values
-    ?.filter((el) => allCheckedItems?.[allCheckedItems.length - 1]
-      .filter((item) => item.id === el.id).length === 1).length === tableData?.values.length;
-
   useEffect(() => {
     if (allCheckedItems) {
       setCheckedItems(allCheckedItems[allCheckedItems.length - 1]);
@@ -98,108 +103,88 @@ const TableComponent = ({
     }
   }, [reduxCurrentPage]);
 
+  useEffect(() => {
+    if (sortParams) {
+      setSortModel([{ field: sortParams?.value, sort: sortParams?.type }]);
+    }
+  }, [sortParams]);
+
+  const parsePath = (path, rowItem) => {
+    let newPath = path;
+
+    if (path.indexOf(':') >= 0) {
+      const replacingParts = path.match(/:[^/]*/gi);
+
+      replacingParts.forEach((part) => {
+        const rowItemValue = rowItem[part.replace(':', '')];
+        newPath = path.replace(part, rowItemValue);
+      });
+    }
+
+    return newPath;
+  };
+
+  const curListCheckedItems = tableCheckedItems.length
+    ? tableCheckedItems
+      .filter((v) => !!tableData?.values?.find(({ id }) => id === v.id))
+      .map((v) => v?.id) : [];
+
   if (isLoading || !showColumn) return <LinearProgress />;
 
   return tableData?.values?.length ? (
-    <>
-      <Box display="flex" mb={3}>
-        <PaginationComponent
-          location="flex-end"
-          totalPages={tableData.meta?.totalPages}
-        />
-      </Box>
-      <Paper className='paper' elevation={1} style={{ maxHeight: 'auto' }}>
-        <Grid
-          container
-          wrap="nowrap"
-          justify="center"
-          className="tableHeaderGrid"
-        >
-          {!noActions && (
-            <Grid>
-              <Checkbox
-                checked={allCheckedItems
-                  ? isCheckedAll() : tableData?.values.length === tableCheckedItems.length}
-                name="checkAll"
-                color="primary"
-                onChange={handleCheckAll}
-                className='checkbox'
-              />
-            </Grid>
-          )}
-          {tableData.headers.map(
-            (header) => showColumn[header.id]
-              && (header.sortParam ? (
-                <Grid xs={1} md={4} zeroMinWidth key={header.value} className='headers'>
-                  <Box
-                    className='sortableHeader'
-                    my={1}
-                    onClick={() => {
-                      let type;
-                      if (sortParams) {
-                        type = sortParams.type === 'desc' ? 'asc' : 'desc';
-                      } else {
-                        type = 'desc';
-                      }
-                      setSortParams({ value: header.sortParam, type });
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      className="tableHeader"
-                      noWrap
-                      align="center"
-                    >
-                      <div className='header-value'>
-                        {header.value}
-                      </div>
-                      <div className='sort-icon-container'>
-                        {sortParams?.value === header.sortParam && (sortParams.type === 'desc' ? <ArrowUpwardIcon /> : <ArrowDownwardIcon />)}
-                      </div>
-                    </Typography>
-                  </Box>
-                </Grid>
-              ) : (
-                <Grid xs={1} md={4} zeroMinWidth key={header.value} className='headers'>
-                  <Box my={1}>
-                    <Typography
-                      variant="h6"
-                      className="tableHeader"
-                      noWrap
-                      align="center"
-                    >
-                      {header.value}
-                    </Typography>
-                  </Box>
-                </Grid>
-              )),
-          )}
-          {!noActionButtons && <Grid xs={1} md={4} />}
-        </Grid>
-
-        <Box className="tableBodyGrid">
-          {tableData.values.map((rowItem) => (
-            <TableRowComponent
-              handleDeleteItem={handleDeleteItem}
-              checked={tableCheckedItems.filter((v) => v.id === rowItem.id).length > 0}
-              handleCheck={handleCheck}
-              markupSequence={tableData.headers}
-              showColumn={showColumn}
-              key={rowItem.id}
-              rowItem={rowItem}
-              noActions={noActions}
-              noEditDeleteActions={noEditDeleteActions}
-              noActionButtons={noActionButtons}
-              customPath={customPath}
-              errorHighlight={errorHighlight}
-              withDeletePopup={withDeletePopup}
-              isOrders={isOrders}
-              orderData={orderData}
-            />
-          ))}
+    <Box display='flex' flexDirection='column' flexGrow='1' pb={4} height={1} sx={wrapperStyles}>
+      {tableData.meta?.totalPages > 1 && (
+        <Box display='flex' mb={3}>
+          <PaginationComponent
+            location='flex-end'
+            totalPages={tableData.meta?.totalPages}
+          />
         </Box>
-      </Paper>
-    </>
+      )}
+
+      <DataGridPro
+        rows={tableData?.values}
+        columns={adjustColumnsData(
+          tableData?.headers,
+          showColumn,
+          noEditDeleteActions,
+          handleDeleteItem,
+          withDeletePopup,
+          orderData,
+          isOrders,
+          errorHighlight,
+        )}
+        componentsProps={{ row: { style: { cursor: 'context-menu' } } }}
+        hideFooter
+        disableColumnMenu
+        disableColumnFilter
+        sortingOrder={['asc', 'desc']}
+        sortModel={sortModel}
+        onSortModelChange={([col]) => {
+          if (col?.field && col?.sort) {
+            setSortParams({ value: col?.field, type: col?.sort });
+          }
+        }}
+        disableSelectionOnClick
+        checkboxSelection={!noActions}
+        isRowSelectable={() => !noActions}
+        onSelectionModelChange={(model) => {
+          if (tableData?.values?.length
+              && (!model.length || model.length === tableData?.values?.length)) {
+            handleCheckAll();
+          } else if (model.length < curListCheckedItems.length) {
+            const [changedItem] = curListCheckedItems.filter((it) => model.indexOf(it) < 0);
+
+            handleCheck(changedItem);
+          } else {
+            handleCheck(model.pop());
+          }
+        }}
+        selectionModel={curListCheckedItems}
+        onRowClick={({ row }) => customPath !== 'disabled'
+          && history.push(customPath ? parsePath(customPath, row) : `${history.location.pathname}/${row.id}`)}
+      />
+    </Box>
   ) : (
     <Typography data-test='noResultsNotification'>{localization.t('general.noResults')}</Typography>
   );
@@ -214,7 +199,6 @@ TableComponent.propTypes = {
   defaultShowColumn: PropTypes.object,
   noActions: PropTypes.bool,
   noEditDeleteActions: PropTypes.bool,
-  noActionButtons: PropTypes.bool,
   setSortParams: PropTypes.func,
   sortParams: PropTypes.object,
   customPath: PropTypes.string,
@@ -222,6 +206,7 @@ TableComponent.propTypes = {
   scope: PropTypes.string,
   isOrders: PropTypes.bool,
   orderData: PropTypes.array,
+  wrapperStyles: PropTypes.any,
 };
 
 export default TableComponent;

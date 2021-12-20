@@ -7,9 +7,9 @@ import 'ace-builds/src-noconflict/theme-tomorrow';
 
 import {
   Button, Box, Typography, Divider,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishIcon from '@mui/icons-material/Publish';
 
 import localization from '../../localization';
 import './jsonEditor.scss';
@@ -74,7 +74,6 @@ const JsonEditor = ({
         my={3}
         bgcolor='#fff'
         boxShadow={2}
-        height={1}
         p={3}
       >
         <Box display='flex' justifyContent='space-between' alignItems='center'>

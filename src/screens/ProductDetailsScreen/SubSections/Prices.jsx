@@ -11,13 +11,12 @@ import {
   TableRow,
   Paper,
   Typography,
-  FormControlLabel,
   Checkbox,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import moment from 'moment';
 
-import ClearIcon from '@material-ui/icons/Clear';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import PriceNumberFormat from '../../../components/PriceNumberFormat';
 
@@ -182,16 +181,11 @@ const Prices = ({
                   <TableCell align='center'>{pr.upSell || '-'}</TableCell>
                   <TableCell align='center'>{pr.crossSell || '-'}</TableCell>
                   <TableCell align='center' style={{ minWidth: '120px', padding: 0 }}>
-                    <FormControlLabel
-                      control={(
-                        <Checkbox
-                          disabled
-                          checked={pr.vatIncluded}
-                          name='checkedB'
-                          color='primary'
-                        />
-                      )}
-                      style={{ margin: 0 }}
+                    <Checkbox
+                      disabled
+                      checked={pr.vatIncluded}
+                      name='checkedB'
+                      color='primary'
                     />
                   </TableCell>
                   <TableCell align='center' className='transparent-cell'>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, Button } from '@material-ui/core';
-import SaveIcon from '@material-ui/icons/Save';
+import { Box, Button } from '@mui/material';
+import SaveIcon from '@mui/icons-material/Save';
 import CodeEditor from '../../../components/CodeEditor';
 import { InputCustom } from '../../../components/Inputs';
 import { b64DecodeUnicode, b64EncodeUnicode } from '../../../services/helpers/utils';

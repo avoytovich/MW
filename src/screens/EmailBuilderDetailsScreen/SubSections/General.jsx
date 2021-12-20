@@ -7,9 +7,9 @@ import moment from 'moment';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { FileCopy } from '@material-ui/icons';
+import { FileCopy } from '@mui/icons-material';
 
 import localization from '../../../localization';
 import { InputCustom, SelectWithDeleteIcon } from '../../../components/Inputs';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import api from '../../api';
@@ -17,6 +17,7 @@ const tabsData = {
   generateData,
   defaultShow,
   noActions: true,
+  noEditDeleteActions: true,
   scope: 'customerslist',
   button: `${localization.t('general.add')} ${localization.t(
     'general.customer',
@@ -44,9 +45,8 @@ const CustomersScreen = () => (
         </Button>
       </Box>
     </TableActionsBar>
-    <Box mt={4} mb={2}>
-      <TabTable tabObject={tabsData} />
-    </Box>
+
+    <TabTable tabObject={tabsData} />
   </>
 );
 export default CustomersScreen;

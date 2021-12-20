@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -94,6 +94,7 @@ const ProductsScreen = () => {
           </Button>
         </Box>
       </TableActionsBar>
+
       <TableComponent
         allCheckedItems={allCheckedItems}
         sortParams={sortParams}

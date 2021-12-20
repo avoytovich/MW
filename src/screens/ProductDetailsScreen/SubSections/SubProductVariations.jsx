@@ -10,9 +10,9 @@ import {
   FormControlLabel,
   IconButton,
   Button,
-} from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { SelectCustom } from '../../../components/Inputs';
 import SectionLayout from '../../../components/SectionLayout';
@@ -140,6 +140,7 @@ const SubProductVariations = ({
                       },
                     });
                   }}
+                  size='large'
                 >
                   <ClearIcon />
                 </IconButton>
@@ -180,6 +181,7 @@ const SubProductVariations = ({
                   });
                   setSelectedBundledProduct(null);
                 }}
+                size='large'
               >
                 <AddCircleOutlineIcon size='medium' color='primary' />
               </IconButton>

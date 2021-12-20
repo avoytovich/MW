@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { Box, Zoom, Button, Typography } from '@material-ui/core';
+import {
+  Box,
+  Zoom,
+  Button,
+  Typography,
+} from '@mui/material';
 
 import { SelectCustom } from '../../components/Inputs';
 
@@ -27,7 +32,7 @@ const ServiceConfigScreen = () => {
   };
 
   return (
-    <>
+    <Box overflow='auto' p='2px'>
       <Typography style={{ marginLeft: 10 }} variant='h3'>Service Configuration</Typography>
       <div className="service-config-screen">
         <Zoom in={serviceDataName}>
@@ -43,7 +48,7 @@ const ServiceConfigScreen = () => {
           </Button>
         </Zoom>
       </div>
-      <Box p={2} mt={9} pr={0}>
+      <Box p={2} mt={2} pr={0}>
         <SelectCustom
           label='serviceConfiguration'
           value={serviceDataName}
@@ -60,7 +65,7 @@ const ServiceConfigScreen = () => {
           showUploadButton
         />
       </Box>
-    </>
+    </Box>
   );
 };
 export default ServiceConfigScreen;

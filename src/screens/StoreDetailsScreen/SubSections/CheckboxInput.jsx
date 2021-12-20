@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, FormControlLabel, Checkbox,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import localization from '../../../localization';
 

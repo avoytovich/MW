@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { act } from 'react-dom/test-utils';
-import { Tab } from '@material-ui/core';
+import { Tab } from '@mui/material';
 import CheckoutExperienceScreen from './CheckoutExperienceScreen';
 import ThemesTab from './ThemesTab';
 import FontsTab from './FontsTab';

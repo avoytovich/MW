@@ -11,10 +11,10 @@ import {
   Box,
   Typography,
   IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 import { toast } from 'react-toastify';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import ClearIcon from '@material-ui/icons/Clear';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import ClearIcon from '@mui/icons-material/Clear';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 import '../identityDetailsScreen.scss';
@@ -54,7 +54,11 @@ const SecretKeysTable = ({ curIdentity, removeSecretKey }) => {
                   {moment(item.createDate).format('YYYY/MM/DD kk:mm (Z)')}
                 </TableCell>
                 <TableCell data-test='clearIconCell' align="center" className='tableCellWithBorder'>
-                  <IconButton color='primary' onClick={() => removeSecretKey(item.secret)}>
+                  <IconButton
+                    color='primary'
+                    onClick={() => removeSecretKey(item.secret)}
+                    size='large'
+                  >
                     <ClearIcon color='secondary' />
                   </IconButton>
                 </TableCell>

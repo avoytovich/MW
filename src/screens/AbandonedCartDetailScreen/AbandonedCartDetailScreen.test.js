@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import AbandonedCartDetailScreen from './AbandonedCartDetailScreen';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import useAbandonedCartDetailScreen from './useAbandonedCartDetailScreen';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import DateRangePicker from '../../components/utils/Modals/DateRangePicker';

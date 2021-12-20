@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '@mui/icons-material/Search';
 import {
   FormControlLabel,
   Switch,
@@ -10,7 +10,7 @@ import {
   Popover,
   InputAdornment,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import setShowColumns from '../../redux/actions/ShowColumns';
 import localization from '../../localization';
 
@@ -66,7 +66,7 @@ const ShowColumnPopper = ({ scope, anchorEl, setAnchorEl }) => {
           placeholder={localization.t('general.findColumn')}
           onChange={(e) => setInputValue(e.target.value)}
           InputProps={{
-            startAdornment: <InputAdornment position="start"><SearchIcon color='secondary' /></InputAdornment>,
+            startAdornment: <InputAdornment position='start'><SearchIcon color='secondary' /></InputAdornment>,
           }}
         />
         <Box py={3} pr={4}>

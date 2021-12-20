@@ -4,7 +4,7 @@ import Eligibility from './Eligibility';
 import { SelectWithChip } from '../../../components/Inputs';
 import { discountObj } from '../../../../__mocks__/fileMock';
 import EditKeyValueInputs from '../EditKeyValueInputs';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import Autocomplete from '@mui/lab/Autocomplete';
 
 jest.mock('../../../components/utils/OptionsFetcher/OptionsFetcher',
   () => ({

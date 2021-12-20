@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Button, TextField, Dialog, DialogActions, DialogContent, DialogContentText,
-} from '@material-ui/core';
+} from '@mui/material';
 import { toast } from 'react-toastify';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
@@ -40,7 +40,7 @@ const ConfirmationPopup = ({ id, currentOrderData }) => {
             autoFocus
             value={confirmation.to || ''}
             onChange={(e) => setConfirmation({ ...confirmation, to: e.target.value })}
-            margin="dense"
+            size='small'
             id="name"
             label={localization.t('forms.labels.confirmationEmailAddress')}
             type="email"

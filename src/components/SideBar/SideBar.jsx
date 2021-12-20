@@ -7,8 +7,8 @@ import {
   List,
   ListItem,
   IconButton,
-} from '@material-ui/core';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
+} from '@mui/material';
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 import NavItem from './NavItem';
 import CollapsableNav from './CollapsableNav';
@@ -43,7 +43,13 @@ const SideBar = ({ toggleDrawer, open }) => (
         >
           <Box display='flex' flexDirection='row'>
             <LogoHome wrapperHeight={64} height={32} width={107} />
-            <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
+            <IconButton
+              edge='start'
+              aria-label='menu'
+              color='secondary'
+              onClick={toggleDrawer}
+              size='large'
+            >
               <NavigateBeforeIcon color='primary' />
             </IconButton>
           </Box>

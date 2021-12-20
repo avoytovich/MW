@@ -7,7 +7,7 @@ import {
   Button,
   Menu,
   MenuItem,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import localization from '../../localization';
 import api from '../../api';

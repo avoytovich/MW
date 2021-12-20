@@ -12,11 +12,10 @@ import {
   DialogContent,
   TextField,
   Typography,
-} from '@material-ui/core';
+  Autocomplete,
+} from '@mui/material';
 
-import Autocomplete from '@material-ui/lab/Autocomplete';
-
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
+import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import { SelectWithDeleteIcon } from '../../components/Inputs';
 
 import parentPaths from '../../services/paths';
@@ -92,7 +91,7 @@ const CloneTemplatePopup = ({ data, open, handleClose }) => {
           options={autoOptions}
           inputValue={search}
           value={selectedCustomer || ''}
-          getOptionSelected={(option) => option.id === selectedCustomer}
+          isOptionEqualToValue={(option) => option.id === selectedCustomer}
           getOptionDisabled={(option) => option.id === 'none'}
           onChange={(e, newCustomer) => {
             e.persist();

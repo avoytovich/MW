@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Box, Checkbox, FormControlLabel, Typography, Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import localization from '../../../localization';
 import { checkBoxObj } from '../../CustomerDetailScreen/utils';

@@ -5,7 +5,7 @@ import {
   Box,
   Typography,
   Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import localization from '../../localization';
 
@@ -19,10 +19,10 @@ const StripedDetailSection = ({
 }) => (
   <>
     {sectionsData && (
-      <Grid container spacing={2}>
+      <Grid container spacing={2} pb={4}>
         {Object.keys(sectionsData).map((key) => (
           <Grid key={key} item md={mdValue} xs={xsValue}>
-            <Box my={3} bgcolor='#fff' boxShadow={2} height='100%'>
+            <Box bgcolor='#fff' boxShadow={2} height='100%'>
               <Box py={3} pl={2}>
                 <Typography gutterBottom variant='h4'>
                   {

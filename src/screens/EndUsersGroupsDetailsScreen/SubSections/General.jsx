@@ -6,9 +6,9 @@ import {
   Box,
   Typography,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import FileCopy from '@material-ui/icons/FileCopyOutlined';
+import FileCopy from '@mui/icons-material/FileCopyOutlined';
 
 import { SelectCustom } from '../../../components/Inputs';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';

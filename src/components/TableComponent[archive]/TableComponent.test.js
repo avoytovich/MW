@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 
 import TableRowComponent from './TableRowComponent';
 import PaginationComponent from '../PaginationComponent';
-import { LinearProgress, Checkbox } from '@material-ui/core';
+import { LinearProgress, Checkbox } from '@mui/material';
 import TableComponent from './TableComponent';
 import { useSelector } from 'react-redux';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 
 import SideBar from '../../components/SideBar';
 import TopBar from '../../components/TopBar';
@@ -21,12 +21,21 @@ const MainLayout = ({ children }) => {
     >
       <SideBar toggleDrawer={() => setDrawer((d) => !d)} open={drawerOpen} />
 
-      <Grid container item style={{ paddingLeft: drawerOpen ? 260 : 0 }}>
+      <Grid
+        container
+        item
+        style={{ paddingLeft: drawerOpen ? 260 : 0 }}
+      >
         <TopBar toggleDrawer={() => setDrawer((d) => !d)} drawerOpen={drawerOpen} />
         <Grid className="tableWrapper">
           <Grid
             className="table"
             item
+            sx={{
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
           >
             {children}
           </Grid>

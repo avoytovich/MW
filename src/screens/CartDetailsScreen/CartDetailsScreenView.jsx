@@ -7,19 +7,13 @@ import {
   Box,
   Typography,
   Grid,
-  Button,
-  Menu,
-  MenuItem,
-  Tabs,
-  Tab,
-} from '@material-ui/core';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+} from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import { toast } from 'react-toastify';
 
 import localization from '../../localization';
 import parentPaths from '../../services/paths';
-import api from '../../api';
 import {
   generateData as generateDataCart,
   defaultShow as defaultShowCart,
@@ -28,24 +22,18 @@ import {
   generateData as generateDataEmails,
   defaultShow as defaultShowEmails,
 } from '../../services/useData/tableMarkups/emailDetails';
-import { tabLabelsView, structureGeneral, structureEndUser } from './utils';
+import { structureGeneral, structureEndUser } from './utils';
 import CustomCard from '../../components/utils/CustomCard';
 import OrderDetailsTableComponent from '../../components/TableComponent/OrderDetailsTableComponent';
 
 import './cartDetailsScreeen.scss';
 
-const CartDetailsScreenView = ({ detailsData, customer }) => {
+const CartDetailsScreenView = ({ detailsData, customer, curTab }) => {
   const { id } = useParams();
   const history = useHistory();
 
-  const [curTab, setCurTab] = useState(0);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [products, setProducts] = useState(null);
   const [emails, setEmails] = useState(null);
-
-  const handleClose = () => setAnchorEl(null);
-
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
 
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
@@ -188,19 +176,23 @@ const CartDetailsScreenView = ({ detailsData, customer }) => {
   };
 
   const renderGeneral = () => (
-    structureGeneral(detailsData, customer).map((each) => (
-      <Grid container spacing={2} key={each.label}>
-        {renderGeneralFields(each)}
-      </Grid>
-    ))
+    <CustomCard width={1}>
+      {structureGeneral(detailsData, customer).map((each) => (
+        <Grid container spacing={2} key={each.label}>
+          {renderGeneralFields(each)}
+        </Grid>
+      ))}
+    </CustomCard>
   );
 
   const renderEndUser = () => (
-    structureEndUser(detailsData).map((each) => (
-      <Grid container spacing={2} key={each.label}>
-        {renderGeneralFields(each)}
-      </Grid>
-    ))
+    <CustomCard width={1}>
+      {structureEndUser(detailsData).map((each) => (
+        <Grid container spacing={2} key={each.label}>
+          {renderGeneralFields(each)}
+        </Grid>
+      ))}
+    </CustomCard>
   );
 
   const renderProducts = () => products && (
@@ -211,7 +203,6 @@ const CartDetailsScreenView = ({ detailsData, customer }) => {
       <CustomCard title="Products" noDivider>
         <Box
           border={1}
-          borderRadius="borderRadius"
           borderColor="#c7c7c7"
         >
           <OrderDetailsTableComponent
@@ -235,7 +226,6 @@ const CartDetailsScreenView = ({ detailsData, customer }) => {
       <CustomCard title="Emails" noDivider>
         <Box
           border={emails.values.length ? 1 : 0}
-          borderRadius="borderRadius"
           borderColor="#c7c7c7"
         >
           <OrderDetailsTableComponent
@@ -266,13 +256,6 @@ const CartDetailsScreenView = ({ detailsData, customer }) => {
     }
   };
 
-  const sendByEmail = () => api.sendByEmailByCartId(id)
-    .then((data) => {
-      if ([200, 201].includes(data.status)) return toast(localization.t('general.sendByEmailByCartIdSuccessed'));
-      return toast.error(localization.t('general.sendByEmailByCartIdFailure'));
-    })
-    .catch((err) => toast.error(localization.t('general.sendByEmailByCartIdFailure')));
-
   useEffect(() => {
     const productsTableData = generateDataCart(detailsData?.products || []);
     setProducts(productsTableData || []);
@@ -289,75 +272,7 @@ const CartDetailsScreenView = ({ detailsData, customer }) => {
 
   return (
     <>
-      <Box position='sticky' top='90px' bgcolor='#f9f9f9' zIndex='2'>
-        <Box display='flex' flexDirection='row' justifyContent='flex-end'>
-          <Box display='flex' alignItems='flex-end'>
-            <Button
-              aria-haspopup='true'
-              variant='contained'
-              color='primary'
-              aria-controls='checkoutMenu'
-              onClick={handleClick}
-              size='large'
-            >
-              {localization.t('forms.buttons.actions')}
-            </Button>
-            <Menu
-              getContentAnchorEl={null}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={sendByEmail}>
-                <Button color="inherit" fullWidth>{localization.t('forms.buttons.sendByEmail')}</Button>
-              </MenuItem>
-              <MenuItem onClick={() => {}}>
-                <Button color="inherit" fullWidth disabled>{localization.t('forms.buttons.generateQuote')}</Button>
-              </MenuItem>
-              <MenuItem onClick={() => {}}>
-                <Button
-                  color="inherit"
-                  target='_blank'
-                  href={`https://dev-kasperskyfrance-default.staging.nexway.build/checkout/add?cartid=${id}&layout=default&layoutname=default`}
-                  fullWidth
-                >
-                  {localization.t('forms.buttons.checkout')}
-                </Button>
-              </MenuItem>
-            </Menu>
-          </Box>
-        </Box>
-        <Box my={2} bgcolor='#fff'>
-          <Tabs
-            value={curTab}
-            indicatorColor='primary'
-            textColor='primary'
-            onChange={(event, newValue) => {
-              setCurTab(newValue);
-            }}
-            aria-label='disabled tabs example'
-            >
-            {tabLabelsView.map((tab) => (
-              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-              ))}
-          </Tabs>
-        </Box>
-      </Box>
-      {
-        detailsData && customer && (
-          <Grid container spacing={2} className="wrapper-cart-details">
-            {renderContent()}
-          </Grid>
-        )
-      }
+      {detailsData && customer && renderContent()}
     </>
   );
 };
@@ -365,6 +280,7 @@ const CartDetailsScreenView = ({ detailsData, customer }) => {
 CartDetailsScreenView.propTypes = {
   detailsData: PropTypes.object,
   customer: PropTypes.string,
+  curTab: PropTypes.number,
 };
 
 export default CartDetailsScreenView;

@@ -98,6 +98,7 @@ const PricesDetailsScreen = () => {
       beforeSend={null}
       hasChanges={hasChanges}
       setUpdate={setUpdate}
+      noTabsMargin
     >
       <PricesDetailsView
         price={price}

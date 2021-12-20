@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import { Box, Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import TableActionsBar from '../../components/TableActionsBar';
 import api from '../../api';
 import parentPaths from '../../services/paths';
@@ -58,7 +58,7 @@ const DiscountsScreen = () => {
   });
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <>
       <TableActionsBar
         scope={scope}
         deleteFunc={api.deleteDiscountById}
@@ -77,18 +77,17 @@ const DiscountsScreen = () => {
           )}`}
         </Button>
       </TableActionsBar>
-      <Box mt={4} mb={2}>
-        <TableComponent
-          scope={scope}
-          handleDeleteItem={handleDeleteDiscount}
-          sortParams={sortParams}
-          setSortParams={handleSetSortParams}
-          defaultShowColumn={defaultShow}
-          tableData={discounts}
-          isLoading={isLoading}
-        />
-      </Box>
-    </Box>
+
+      <TableComponent
+        scope={scope}
+        handleDeleteItem={handleDeleteDiscount}
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
+        defaultShowColumn={defaultShow}
+        tableData={discounts}
+        isLoading={isLoading}
+      />
+    </>
   );
 };
 

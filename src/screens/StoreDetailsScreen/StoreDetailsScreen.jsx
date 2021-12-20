@@ -19,6 +19,7 @@ import {
   checkExistingLabelsUrl,
   formatBeforeSending,
   checkGroupFields,
+  tabLabels,
 } from './utils';
 
 import api from '../../api';
@@ -35,6 +36,7 @@ const StoreDetailsScreen = () => {
   const [selectedLang, setSelectedLang] = useState(0);
   const [errors, setErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
+  const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
   const [storeHasChanges, setStoreChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
@@ -218,6 +220,11 @@ const StoreDetailsScreen = () => {
       updateFunc={api.updateStoreById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
+      tabs={{
+        setCurTab,
+        curTab,
+        tabLabels,
+      }}
     >
       <StoreDetailsView
         errors={errors}
@@ -229,6 +236,7 @@ const StoreDetailsScreen = () => {
         setCurrentStoreResources={setCurrentStoreResources}
         selectedLang={selectedLang}
         setSelectedLang={setSelectedLang}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

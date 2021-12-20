@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 import { toast } from 'react-toastify';
 import FindByCC from './FindByCC';
 import TableComponent from '../../components/TableComponent';
@@ -71,12 +71,13 @@ const OrdersScreen = () => {
   });
 
   return (
-    <Box pb={3}>
+    <>
       <TableActionsBar
         scope={scope}
         findByCC={() => setFindCC(true)}
         headers={markUp.headers}
       />
+
       <TableComponent
         scope={scope}
         sortParams={sortParams}
@@ -90,7 +91,7 @@ const OrdersScreen = () => {
       />
 
       <FindByCC onClose={() => setFindCC(false)} open={findCCOpen} />
-    </Box>
+    </>
   );
 };
 

@@ -19,7 +19,7 @@ const getMergedLineItems = (rowItem) => {
     }
     const nbSeats = li.seats || 1;
     const { name } = li;
-    return `${li.quantity}x ${name}, ${nbSeats} seat, ${lifeTimeString}`;
+    return `${li.quantity}x ${name},\r\n ${nbSeats} seat,\r\n ${lifeTimeString}`;
   });
 
   return mergedLineItems;

@@ -3,11 +3,11 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Tabs, Tab, LinearProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import ClearIcon from '@material-ui/icons/Clear';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import api from '../../../api';
 import { LocalizationInputs, DefaultLanguage } from './LocalizationInputs';
@@ -249,7 +249,7 @@ const LocalizedContent = ({
                 value={locale}
                 component={forwardRef(({ children, ...props }, ref) => (
                   <div role='button' {...props} ref={ref}>
-                    {children}
+                    <span className='localization-label'>{children}</span>
                     {(locale !== curData?.fallbackLocale && (curData?.fallbackLocale?.state === 'inherits' ? locale !== curData?.fallbackLocale?.parentValue : locale !== curData?.fallbackLocale?.value)) && (
                       <ClearIcon onClick={(e) => removeLocale(e, locale)} />
                     )}

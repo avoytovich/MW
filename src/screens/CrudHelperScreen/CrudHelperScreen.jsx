@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 
 import api from '../../api';
 
@@ -95,7 +95,7 @@ const CrudHelperScreen = () => {
             defaultShowColumn={defaultShow}
             tableData={resources}
             isLoading={isLoading}
-            noActionButtons
+            noEditDeleteActions
             noActions
           />
         )

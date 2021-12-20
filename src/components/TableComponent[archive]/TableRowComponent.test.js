@@ -7,8 +7,8 @@ import {
   FileCopy as FileCopyIcon,
   Check as CheckIcon,
   Close as CloseIcon,
-} from '@material-ui/icons';
-import { Checkbox } from '@material-ui/core';
+} from '@mui/icons-material';
+import { Checkbox } from '@mui/material';
 import TableRowComponent from './TableRowComponent';
 
 const showColumn = {

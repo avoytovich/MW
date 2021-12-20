@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import { DropzoneArea } from 'material-ui-dropzone';
-import LandscapeIcon from '@material-ui/icons/Landscape';
+import { DropzoneArea } from 'react-mui-dropzone';
+import LandscapeIcon from '@mui/icons-material/Landscape';
 
 import localization from '../../../localization';
 import api from '../../../api';

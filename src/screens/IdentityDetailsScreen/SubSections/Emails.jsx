@@ -4,7 +4,7 @@ import {
   TableContainer,
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
@@ -30,22 +30,16 @@ const Emails = ({ curIdentity }) => {
   if (curIdentity === null) return <LinearProgress />;
 
   return curIdentity.emails ? (
-    <Box p={2}>
-
-      <TableContainer>
-
-        <TableComponent
-          defaultShowColumn={defaultShow}
-          tableData={emails}
-          scope={scope}
-          noActions
-          noTableActionsBar
-          noEditDeleteActions
-          customPath='disabled'
-          errorHighlight='processingError'
-        />
-      </TableContainer>
-    </Box>
+    <TableComponent
+      defaultShowColumn={defaultShow}
+      tableData={emails}
+      scope={scope}
+      noActions
+      noTableActionsBar
+      noEditDeleteActions
+      customPath='disabled'
+      errorHighlight='processingError'
+    />
   ) : (
     <Box textAlign='center'>
       <Typography data-test='noResourcesMatchCriteria'>

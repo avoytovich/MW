@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@mui/icons-material/Edit';
 
 import {
   Box, Chip, Select, FormControl, InputLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../localization';
 
 const ModalChipInput = ({ label, value, handleOnClick }) => (
-  <FormControl fullWidth variant="outlined">
+  <FormControl fullWidth>
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
       fullWidth

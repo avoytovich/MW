@@ -11,14 +11,14 @@ import {
   Grid,
   Divider,
   Box,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   Edit as EditIcon,
   AddCircle as AddIcon,
   Delete as DeleteIcon,
   FileCopy as FileCopyIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import { toast } from 'react-toastify';
 
@@ -72,8 +72,8 @@ const TableItems = ({
 
   return (
     <div className="table-items-modal">
-      <DialogTitle id="table-items-dialog-title" disableTypography>
-        <Typography variant="h4">{type}</Typography>
+      <DialogTitle id="table-items-dialog-title">
+        <Typography variant="h4" component='span'>{type}</Typography>
       </DialogTitle>
 
       <DialogContent dividers>
@@ -90,7 +90,7 @@ const TableItems = ({
                     container
                     item
                     xs={6}
-                    justify="flex-end"
+                    justifyContent="flex-end"
                     alignItems="center"
                     className="action-items"
                   >
@@ -135,7 +135,7 @@ const TableItems = ({
                       container
                       item
                       xs={6}
-                      justify="flex-end"
+                      justifyContent="flex-end"
                       alignItems="center"
                       className="action-items"
                     >

@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import RecoveryPassword from './RecoveryPassword';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import { Formik } from 'formik';
 
 describe('email', () => {

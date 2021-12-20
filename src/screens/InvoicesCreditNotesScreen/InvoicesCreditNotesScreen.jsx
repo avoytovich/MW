@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import { InputCustom, SelectCustom } from '../../components/Inputs';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import api from '../../api/getOneByIdApi';

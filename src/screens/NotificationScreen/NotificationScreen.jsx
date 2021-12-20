@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Tabs, Tab, Box,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   useHistory, Link, Switch, Redirect, Route,
 } from 'react-router-dom';
@@ -108,36 +108,37 @@ const NotficationScreen = () => {
   return (
     <>
       {drawAddButton()}
+
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}
         indicatorColor='primary'
         textColor='primary'
+        sx={{ marginBottom: '20px' }}
       >
         {tabsData.map((tab) => (
           <Tab key={tab.path} label={localization.t(`labels.${tab.label}`)} />
         ))}
       </Tabs>
-      <Box mt={4} mb={2}>
-        <Switch>
-          <Route
-            exact
-            path={tabsData[0].path}
-            component={() => <TabTable tabObject={tabsData[0]} />}
-          />
-          <Route
-            exact
-            path={tabsData[1].path}
-            component={() => <TabTable tabObject={tabsData[1]} />}
-          />
-          <Route
-            exact
-            path={tabsData[2].path}
-            component={() => <TabTable tabObject={tabsData[2]} noEditDeleteActions />}
-          />
-          <Redirect exact from={`${parentPaths.notifications.main}`} to={tabsData[0].path} />
-        </Switch>
-      </Box>
+
+      <Switch>
+        <Route
+          exact
+          path={tabsData[0].path}
+          component={() => <TabTable tabObject={tabsData[0]} />}
+        />
+        <Route
+          exact
+          path={tabsData[1].path}
+          component={() => <TabTable tabObject={tabsData[1]} />}
+        />
+        <Route
+          exact
+          path={tabsData[2].path}
+          component={() => <TabTable tabObject={tabsData[2]} noEditDeleteActions />}
+        />
+        <Redirect exact from={`${parentPaths.notifications.main}`} to={tabsData[0].path} />
+      </Switch>
     </>
   );
 };

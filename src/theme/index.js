@@ -1,4 +1,5 @@
-import { colors as MuiColors, createMuiTheme } from '@material-ui/core';
+import { colors as MuiColors } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import typography from './typography';
 import softShadows from './shadows';
 import colors from './colors';
@@ -10,91 +11,200 @@ const baseConfig = {
 
 const themeConfig = {
   name: 'DARK',
-  overrides: {
+  components: {
     MuiCssBaseline: {
-      '@global': {
-        '*': {
-          boxSizing: 'border-box',
-          margin: 0,
-          padding: 0,
-        },
-      },
+      styleOverrides: `
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          -webkit-font-smoothing: auto;
+        }
+
+        body {
+          font-size: 0.875rem;
+          line-height: 1.43;
+          letter-spacing: 0.01071em;
+        }
+      `,
     },
     MuiCardActionArea: {
-      root: {
-        boxSizing: 'border-box',
-        border: '3px solid transparent',
-        '&:hover': {
-          borderRadius: '10px',
-          border: '3px solid white',
+      styleOverrides: {
+        root: {
+          boxSizing: 'border-box',
+          border: '3px solid transparent',
+          '&:hover': {
+            borderRadius: '10px',
+            border: '3px solid white',
+          },
         },
       },
     },
     MuiFormLabel: {
-      root: {
-        color: colors.textPrimaryGray,
-        '&.Mui-disabled': {
-          opacity: 0.6,
+      styleOverrides: {
+        root: {
+          color: colors.textPrimaryGray,
+          '&.Mui-disabled': {
+            opacity: 0.6,
+          },
         },
       },
     },
     MuiFormControlLabel: {
-      root: {
-        color: colors.textPrimaryGray,
-        '&.Mui-disabled': {
-          opacity: 0.6,
+      styleOverrides: {
+        root: {
+          color: colors.textPrimaryGray,
+          '&.Mui-disabled': {
+            opacity: 0.6,
+          },
+        },
+      },
+    },
+    MuiDropzoneArea: {
+      styleOverrides: {
+        root: {
+          width: '198px',
+          height: '139px',
+          minWidth: '198px',
+          minHeight: '139px',
+          borderRadius: '2px',
+          border: 'solid 1px #c7c7c7',
+          backgroundColor: '#f5f5f5',
         },
       },
     },
     MuiInputBase: {
-      root: {
-        '&.Mui-disabled': {
-          opacity: 0.6,
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            opacity: 0.6,
+          },
         },
       },
     },
     MuiRadio: {
-      root: {
-        color: colors.radioButton,
+      styleOverrides: {
+        root: {
+          color: colors.radioButton,
+        },
       },
     },
-    MuiCheckbox: { root: { color: colors.textPrimaryGray } },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          color: colors.textPrimaryGray,
+        },
+      },
+    },
     MuiFormHelperText: {
-      root: { color: colors.textPrimaryGray },
-      contained: { margin: '5px', marginLeft: '5px', marginRight: '5px' },
+      styleOverrides: {
+        root: { color: colors.textPrimaryGray },
+        contained: { margin: '5px', marginLeft: '5px', marginRight: '5px' },
+      },
     },
     MuiTab: {
-      root: {
-        '&.MuiTab-root': {
+      styleOverrides: {
+        root: {
           textTransform: 'none',
           minWidth: 'auto',
           padding: 18,
           letterSpacing: 'unset',
-        },
-        '&.MuiTab-textColorPrimary': {
           color: colors.textPrimaryGray,
-        },
-        '&.Mui-disabled': {
-          opacity: 0.5,
+
+          '&.Mui-disabled': {
+            opacity: 0.5,
+          },
+
+          '& .localization-label': {
+            width: '100%',
+            display: 'inline-flex',
+            alignItems: 'center',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          },
         },
       },
     },
     MuiIconButton: {
-      root: {
-        '&.Mui-disabled': {
-          color: colors.buttonDisabled,
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            color: colors.buttonDisabled,
+          },
+        },
+      },
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          '&.Mui-disabled': {
+            color: colors.buttonDisabled,
+          },
+          '&.MuiTab-root': {
+            flexDirection: 'row',
+          },
         },
       },
     },
     MuiAppBar: {
-      colorPrimary: {
-        backgroundColor: colors.mainBackground,
+      styleOverrides: {
+        colorPrimary: {
+          backgroundColor: colors.mainBackground,
+        },
       },
     },
     MuiListSubheader: {
-      root: {
-        color: colors.textPrimaryGray,
-        fontSize: '12px',
+      styleOverrides: {
+        root: {
+          color: colors.textPrimaryGray,
+          fontSize: '12px',
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        variant: 'standard',
+      },
+    },
+    MuiLink: {
+      defaultProps: {
+        underline: 'hover',
+      },
+    },
+    MuiDataGrid: {
+      styleOverrides: {
+        root: {
+          backgroundColor: colors.mainBackground,
+
+          '& .MuiDataGrid-row': {
+            maxHeight: 'unset !important',
+
+            '& .MuiDataGrid-cell': {
+              maxHeight: 'unset !important',
+
+              '&:not([data-field="actions"]):not(.flex-cell).MuiDataGrid-cell--withRenderer': {
+                display: 'unset',
+              },
+            },
+            '&:not(.Mui-selected)': {
+              '&:hover': {
+                color: '#fff',
+
+                '& .MuiIconButton-root': {
+                  opacity: 1,
+                },
+              },
+              '& .MuiIconButton-root': {
+                color: colors.textPrimaryGray,
+                opacity: 0,
+
+                '&:hover': {
+                  color: 'inherit',
+                },
+              },
+            },
+          },
+        },
       },
     },
   },
@@ -119,11 +229,21 @@ const themeConfig = {
     error: {
       main: colors.errorText,
     },
+    default: {
+      main: colors.defaultLight,
+    },
   },
   shadows: softShadows,
   spacing: 6,
 };
 
-const theme = createMuiTheme({ ...baseConfig, ...themeConfig });
+const theme = createTheme({ ...baseConfig, ...themeConfig });
+
+theme.palette.loginBtns = theme.palette.augmentColor({
+  color: {
+    main: '#19a6ff',
+    dark: '#0971b3',
+  },
+});
 
 export default theme;
