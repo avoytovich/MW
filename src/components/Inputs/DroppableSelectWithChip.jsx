@@ -10,7 +10,7 @@ import {
   TextField,
   InputAdornment,
   CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../localization';
 
 const DroppableSelectWithChip = ({
@@ -128,7 +128,7 @@ const DroppableSelectWithChip = ({
       helperText={helperText}
       InputProps={{
         startAdornment: !selectOptions && (
-          <InputAdornment>
+          <InputAdornment position='start'>
             <CircularProgress />
           </InputAdornment>
         ),

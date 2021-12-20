@@ -39,6 +39,7 @@ const CatalogsDetailsScreen = () => {
       addFunc={api.addCatalogs}
       updateFunc={api.updateCatalogsById}
       setUpdate={setUpdate}
+      noTabsMargin
     >
       <CatalogsDetailsView
         id={catalogs?.id}

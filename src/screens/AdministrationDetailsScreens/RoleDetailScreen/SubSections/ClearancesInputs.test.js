@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { TableContainer, IconButton } from '@material-ui/core';
+import { TableContainer, IconButton } from '@mui/material';
 import localization from '../../../../localization';
 import ClearancesInputs from './ClearancesInputs';
 

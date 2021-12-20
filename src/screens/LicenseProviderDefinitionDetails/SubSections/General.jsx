@@ -6,7 +6,7 @@ import {
   RadioGroup,
   Radio,
   Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 import { InputCustom } from '../../../components/Inputs';

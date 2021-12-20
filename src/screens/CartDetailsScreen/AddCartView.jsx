@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import {
   Box,
   Typography,
-  Breadcrumbs,
-  Button,
   FormLabel,
   FormControl,
   FormGroup,
@@ -13,16 +11,16 @@ import {
   Grid,
   Tabs,
   Tab,
-} from '@material-ui/core';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+} from '@mui/material';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import {
   CheckboxWithLabel,
   Select,
   TextField,
   Switch,
-} from 'formik-material-ui';
-import { KeyboardDateTimePicker } from 'formik-material-ui-pickers';
-import DateFnsUtils from '@date-io/date-fns';
+} from 'formik-mui';
+import { DateTimePicker } from 'formik-mui-lab';
+import DateFnsUtils from '@mui/lab/AdapterDateFns';
 import { Form, Field } from 'formik';
 
 import localization from '../../localization';
@@ -86,7 +84,7 @@ const AddCartView = ({
           {localization.t('labels.general')}
         </Typography>
       </Box>
-      <Grid container spacing={0} justify="center">
+      <Grid container spacing={0} justifyContent="center">
         <Grid item xs={6} sm={6}>
           <Box p={2}>
             <FormControl component="fieldset">
@@ -116,7 +114,7 @@ const AddCartView = ({
                 label={localization.t('labels.externalContext')}
                 name="externalContext"
                 multiline
-                rows={6}
+                minRows={6}
                 variant="outlined"
               />
             </FormControl>
@@ -182,14 +180,14 @@ const AddCartView = ({
               </Box>
               <Box p={2}>
                 <FormControl className="spread">
-                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <LocalizationProvider utils={DateFnsUtils}>
                     <Field
-                      component={KeyboardDateTimePicker}
+                      component={DateTimePicker}
                       label={localization.t('labels.applicableUntil')}
                       name="applicableUntil"
                       inputVariant="outlined"
                     />
-                  </MuiPickersUtilsProvider>
+                  </LocalizationProvider>
                 </FormControl>
               </Box>
             </>
@@ -383,7 +381,7 @@ const AddCartView = ({
               {localization.t('labels.buyer')}
             </Typography>
           </Box>
-          <Grid container spacing={0} justify="center">
+          <Grid container spacing={0} justifyContent="center">
             <Grid item xs={6} sm={6}>
               <Box p={2}>
                 <FormControl className="spread">
@@ -616,7 +614,7 @@ const AddCartView = ({
             ))}
           </Tabs>
         </Box>
-        <Grid container spacing={0} justify="center">
+        <Grid container spacing={0} justifyContent="center">
           <Grid item xs={12} sm={12}>
             {renderContent()}
           </Grid>

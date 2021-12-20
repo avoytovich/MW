@@ -8,8 +8,9 @@ import {
   Grid,
   TextField,
   Chip,
-} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+  Autocomplete,
+} from '@mui/material';
+
 import { email } from '../../../services/helpers/inputValidators';
 
 import EditKeyValueInputs from '../EditKeyValueInputs';

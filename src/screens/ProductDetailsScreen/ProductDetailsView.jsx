@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router-dom';
 import {
-  Zoom, Button, Box, Typography, Tabs, Tab, Chip,
-} from '@material-ui/core';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import { FileCopy as FileCopyIcon } from '@material-ui/icons';
+  Zoom,
+  Button,
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+  Chip,
+} from '@mui/material';
+import ArrowBack from '@mui/icons-material/ArrowBack';
+import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 
 import { toast } from 'react-toastify';
 import localization from '../../localization';

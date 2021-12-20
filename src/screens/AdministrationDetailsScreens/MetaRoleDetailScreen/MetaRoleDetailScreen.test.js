@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import MetaRoleDetailScreen from './MetaRoleDetailScreen';
-import { Tab, Tabs, Button } from '@material-ui/core';
+import { Tab, Tabs, Button } from '@mui/material';
 import useMetaRoleDetailData from '../../../services/useData/useMetaRoleDetailData';
 import General from './SubSections/General';
 import { useParams } from 'react-router-dom';

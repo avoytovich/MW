@@ -1,0 +1,120 @@
+@import '../../../styles/variables.scss';
+
+.orderDetailsTableRowGrid {
+  display: flex;
+  min-height: 64px;
+
+  &:nth-of-type(odd) {
+    background-color: $tablesEvenRow;
+  }
+  &:nth-of-type(even) {
+    background-color: $tablesOddRow;
+  }
+
+  &.error-row {
+    background-color: $deleteIcon;
+
+    .MuiTypography-colorSecondary {
+      color: #fff;
+    }
+  }
+
+  .tableCellItemGrid {
+    overflow-x: hidden;
+
+    .tableCellItem {
+      display: inherit;
+      white-space: nowrap;
+      height: 100%;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      border: 1px solid $tableCellBorder;
+    }
+    .name-value {
+      cursor: pointer;
+      color: $clickable;
+    }
+    .clickable-value {
+      cursor: pointer;
+      color: $clickable;
+    }
+  }
+  .icons {
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  .deleteIcon {
+    color: $deleteIcon;
+  }
+  .copyIcon {
+    color: $copyIcon;
+  }
+  .editIcon {
+    color: $editIcon;
+  }
+  .statusEnabled {
+    color: $copyIcon;
+  }
+  .statusDisable {
+    color: $deleteIcon;
+  }
+  .publisher-copy {
+    margin-left: 5px;
+  }
+  .id-copy {
+    margin-left: 5px;
+  }
+}
+.OrderDetailsTableHeaderGrid {
+  overflow-x: hidden;
+  background-color: #eee;
+  .tableHeader {
+    display: inherit;
+    white-space: nowrap;
+    background-color: #eee;
+    height: 100%;
+    width: 100%;
+    padding: 17px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $tableCellBorder;
+  }
+}
+
+.table-items-actions {
+  .CSVLinkBlock {
+    text-decoration: none;
+    .importExportFab {
+      margin: 20px;
+      padding: 15px;
+      color: #fff;
+      .importExportIcon {
+        left: -4px;
+        position: relative;
+      }
+    }
+  }
+  .deleteFab {
+    margin: 20px;
+    padding: 15px;
+    margin-left: -10px;
+    background-color: $deleteIcon;
+    .deleteIcon {
+      left: -4px;
+      position: relative;
+    }
+  }
+}
+.sortableHeader {
+  cursor: pointer;
+
+  svg {
+    position: absolute;
+    font-size: 18px;
+    color: $navItemButtonActive;
+    margin-left: 5px;
+    margin-top: 2px;
+  }
+}

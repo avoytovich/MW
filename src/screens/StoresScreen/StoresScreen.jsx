@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box } from '@mui/material';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 

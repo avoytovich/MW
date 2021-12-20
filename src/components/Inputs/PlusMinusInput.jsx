@@ -5,8 +5,8 @@ import {
   IconButton,
   Typography,
   InputBase,
-} from '@material-ui/core';
-import { Add, Remove } from '@material-ui/icons';
+} from '@mui/material';
+import { Add, Remove } from '@mui/icons-material';
 import './Inputs.scss';
 
 const PlusMinusInput = ({
@@ -42,19 +42,33 @@ const PlusMinusInput = ({
     <>
       <Box display='flex' border={1} borderColor='#b9b1b1' borderRadius="borderRadius" width='150px' height='50px' justifyContent='space-between' alignItems='center'>
         <Box borderRight={1} style={{ borderColor: '#b9b1b1' }}>
-          <IconButton disabled={inputValue === minNumber} onClick={() => handleChangeInput(inputValue - step)}><Remove color='secondary' /></IconButton>
+          <IconButton
+            disabled={inputValue === minNumber}
+            onClick={() => handleChangeInput(inputValue - step)}
+            size='large'
+          >
+            <Remove color='secondary' />
+          </IconButton>
         </Box>
+
         <Box>
           <InputBase
             inputProps={{ style: { textAlign: 'center' } }}
-            margin='dense'
+            size='small'
             onBlur={checkInputValue}
             value={inputValue}
             onChange={handleChangeInput}
           />
         </Box>
+
         <Box borderLeft={1} borderColor='#b9b1b1'>
-          <IconButton disabled={inputValue === maxNumber} onClick={() => handleChangeInput(inputValue + step)}><Add color='secondary' /></IconButton>
+          <IconButton
+            disabled={inputValue === maxNumber}
+            onClick={() => handleChangeInput(inputValue + step)}
+            size='large'
+          >
+            <Add color='secondary' />
+          </IconButton>
         </Box>
       </Box>
       <Typography variant="caption" color='secondary'>{notification}</Typography>

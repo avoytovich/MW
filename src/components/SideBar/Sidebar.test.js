@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { List, Drawer } from '@material-ui/core';
+import { List, Drawer } from '@mui/material';
 
 import Sidebar from './SideBar';
 import navConfig from './config';
@@ -15,7 +15,7 @@ import {
   Settings,
   Person,
   Help,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 describe('<Sidebar />', () => {
   let wrapper;

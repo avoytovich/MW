@@ -1,7 +1,7 @@
 import React from 'react';
-import Popover from '@material-ui/core/Popover';
-import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import Popover from '@mui/material/Popover';
+import { Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({

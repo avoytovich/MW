@@ -1,14 +1,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 
 import {
-  Tabs,
-  Tab,
   Box,
-} from '@material-ui/core';
+} from '@mui/material';
 import General from './SubSections/General';
 import Parameters from './SubSections/Parameters';
 import parentPaths from '../../services/paths';
@@ -25,8 +23,8 @@ const PriceFunctionView = ({
   errorMessages,
   setErrorMessages,
   priceFunction,
+  curTab,
 }) => {
-  const [curTab, setCurTab] = useState(0);
   const history = useHistory();
 
   const handleClick = () => {
@@ -35,19 +33,6 @@ const PriceFunctionView = ({
   };
   return (
     <>
-      <Box my={2} bgcolor='#fff'>
-        <Tabs
-          data-test='tabs'
-          value={curTab}
-          onChange={(e, newTab) => setCurTab(newTab)}
-          indicatorColor='primary'
-          textColor='primary'
-        >
-          <Tab label={localization.t('labels.general')} />
-          <Tab label={localization.t('labels.parameters')} />
-
-        </Tabs>
-      </Box>
       {
         curTab === 0 && (
           <SectionLayout label='general'>
@@ -99,6 +84,7 @@ PriceFunctionView.propTypes = {
   errorMessages: PropTypes.object,
   setErrorMessages: PropTypes.func,
   priceFunction: PropTypes.object,
+  curTab: PropTypes.bool,
 };
 
 export default PriceFunctionView;

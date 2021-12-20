@@ -3,9 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, Grid, Divider, IconButton,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
 import { paymentDefaults, installmentOptions } from '../../../services/selectOptions/selectOptions';
 import {
   SelectWithChip, SwitchInput, SelectCustom, DroppableSelectWithChip,
@@ -367,6 +367,7 @@ const Payment = ({
           disabled={currentStoreData.designs.paymentComponent
             .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs.length === 0}
           onClick={handleAddGroup}
+          size='large'
         >
           <AddCircleIcon />
         </IconButton>

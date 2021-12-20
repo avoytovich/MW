@@ -9,7 +9,7 @@ import {
   Help,
   Settings,
   Dashboard,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import parentPaths from '../../services/paths';
 import localization from '../../localization';
 import { sideBarTitle } from '../../services/helpers/sectionHeaders';

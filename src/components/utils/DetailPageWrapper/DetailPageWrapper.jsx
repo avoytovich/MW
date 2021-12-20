@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -9,7 +10,9 @@ import {
   Zoom,
   Box,
   Typography,
-} from '@material-ui/core';
+  Tabs,
+  Tab,
+} from '@mui/material';
 import localization from '../../../localization';
 import CustomBreadcrumbs from '../CustomBreadcrumbs';
 import LoadingErrorNotification from '../LoadingErrorNotification';
@@ -32,6 +35,9 @@ const DetailPageWrapper = ({
   beforeSend,
   setUpdate,
   extraActions,
+  extraHeader,
+  noTabsMargin,
+  tabs,
 }) => {
   const location = useLocation();
   const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
@@ -62,7 +68,7 @@ const DetailPageWrapper = ({
   }
   return curData && (
     <>
-      <Box position='sticky' top='0px' bgcolor='#f9f9f9' zIndex='2'>
+      <Box>
         <Box mx={2}>
           <CustomBreadcrumbs
             sections={sections}
@@ -100,8 +106,29 @@ const DetailPageWrapper = ({
             {extraActions}
           </Box>
         </Box>
+
+        {extraHeader}
+
+        {tabs?.tabLabels && (
+          <Tabs
+            value={tabs?.curTab}
+            indicatorColor='primary'
+            textColor='primary'
+            onChange={(event, newValue) => {
+              tabs?.setCurTab(newValue);
+            }}
+            aria-label='disabled tabs example'
+          >
+            {tabs?.tabLabels.map((tab) => (
+              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+            ))}
+          </Tabs>
+        )}
       </Box>
-      {children}
+
+      <Box overflow='auto' mt={noTabsMargin ? 0 : 4} p='2px' flexGrow={1}>
+        {children}
+      </Box>
     </>
   );
 };
@@ -121,6 +148,8 @@ DetailPageWrapper.propTypes = {
   beforeSend: PropTypes.func,
   nxStateNotNeeded: PropTypes.bool,
   extraActions: PropTypes.node,
+  extraHeader: PropTypes.node,
+  tabs: PropTypes.object,
 };
 
 export default DetailPageWrapper;

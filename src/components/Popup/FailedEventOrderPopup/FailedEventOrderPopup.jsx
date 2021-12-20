@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Dialog, DialogTitle, DialogContent, DialogContentText, Divider, Box, makeStyles } from '@material-ui/core';
-import { Error as ErrorIcon, Close as CloseIcon } from '@material-ui/icons';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  Divider,
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Error as ErrorIcon, Close as CloseIcon } from '@mui/icons-material';
+
 import TableComponent from '../../TableComponent';
 
 import {
@@ -36,15 +44,17 @@ const FailedEventOrderPopup = ({ eventInfo, orderData }) => {
   });
 
   const classes = useStyles();
+
   return (
-    <div>
-      <ErrorIcon 
-        color='error' 
-        style={{ cursor: 'pointer', marginTop: '5px' }} 
-        onClick={(e) => { e.stopPropagation(); handleClickOpen(); }} 
+    <div style={{ display: 'flex', height: '100%', alignItems: 'center' }}>
+      <ErrorIcon
+        color='error'
+        style={{ cursor: 'pointer', marginTop: '5px' }}
+        onClick={(e) => { e.stopPropagation(); handleClickOpen(); }}
       />
-      <Dialog 
-        open={open} 
+
+      <Dialog
+        open={open}
         onClose={handleClose}
         classes={{
           scrollPaper: classes.topScrollPaper,
@@ -52,34 +62,34 @@ const FailedEventOrderPopup = ({ eventInfo, orderData }) => {
         }}
         PaperProps={{ style: { width: eventInfo && '700px', maxWidth: '700px' } }}
       >
-        <DialogTitle disableTypography style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px' }}>
+        <DialogTitle style={{ display: 'flex', justifyContent: 'space-between', fontSize: '18px' }}>
           <div>{orderData?.length ? 'Events' : 'Failure message'}</div>
           <CloseIcon onClick={handleClose} style={{ cursor: 'pointer', fontSize: '18px' }} />
         </DialogTitle>
+
         <Divider />
-        {orderData?.length 
-        ? 
+
+        {orderData?.length ? (
           <DialogContent>
-            <Box>
-              <TableComponent
-                defaultShowColumn={defaultShow}
-                tableData={events}
-                scope={scope}
-                noActions
-                noTableActionsBar
-                noEditDeleteActions
-                customPath
-                errorHighlight='processingError'
-                failedOrderEvent
-              />
-            </Box>
+            <TableComponent
+              defaultShowColumn={defaultShow}
+              tableData={events}
+              scope={scope}
+              noActions
+              noTableActionsBar
+              noEditDeleteActions
+              customPath
+              errorHighlight='processingError'
+              failedOrderEvent
+            />
           </DialogContent>
-        :
-        <DialogContent>
-          <DialogContentText color='inherit' style={{ marginBottom: 0 }}>
-            {eventInfo.message}
-          </DialogContentText>
-        </DialogContent>}
+        ) : (
+          <DialogContent>
+            <DialogContentText color='inherit' style={{ marginBottom: 0 }}>
+              {eventInfo.message}
+            </DialogContentText>
+          </DialogContent>
+        )}
       </Dialog>
     </div>
   );

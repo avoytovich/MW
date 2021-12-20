@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, useHistory } from 'react-router-dom';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
+import CssBaseline from '@mui/material/CssBaseline';
 
 import { ToastContainer } from 'react-toastify';
 

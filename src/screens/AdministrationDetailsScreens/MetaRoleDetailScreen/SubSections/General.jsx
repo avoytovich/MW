@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import {
   LinearProgress, Grid, Typography, Box,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import { InputCustom } from '../../../../components/Inputs';
 import localization from '../../../../localization';

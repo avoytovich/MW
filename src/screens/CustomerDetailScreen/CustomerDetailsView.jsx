@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-
-import { Tabs, Tab, Box } from '@material-ui/core';
 
 import {
   assetsLabels,
@@ -18,77 +16,61 @@ import './CustomerDetailScreen.scss';
 const defaultResources = { key: 0, label: null, url: null };
 
 const CustomerDetailsView = ({
-  currentCustomer, setCurrentCustomer, selectOptions, id,
-}) => {
-  const [curTab, setCurTab] = useState(0);
+  currentCustomer, setCurrentCustomer, selectOptions, curTab,
+}) => (
+  <>
+    {curTab === 0 && currentCustomer && (
+      <TabSection label='general'>
+        <General
+          currentCustomer={currentCustomer}
+          setCurrentCustomer={setCurrentCustomer}
+          selectOptions={selectOptions}
+        />
+      </TabSection>
+    )}
+    {curTab === 1 && currentCustomer && (
+      <TabSection label='features'>
+        <Features
+          currentCustomer={currentCustomer}
+          setCurrentCustomer={setCurrentCustomer}
+        />
+      </TabSection>
+    )}
+    {curTab === 2 && currentCustomer && (
+      <TabSection label='paymentServiceConfiguration'>
+        <PaymentServiceConfiguration
+          currentCustomer={currentCustomer}
+          setCurrentCustomer={setCurrentCustomer}
+          selectOptions={selectOptions}
+        />
+      </TabSection>
+    )}
+    {curTab === 3 && currentCustomer && (
+      <TabSection label='reports' />
+    )}
+    {curTab === 4 && currentCustomer && (
+      <TabSection label='assets'>
+        <AssetsResource
+          labelOptions={assetsLabels}
+          maxPayloadFiles={2}
+          resources={
+            currentCustomer?.assets?.length ? currentCustomer.assets : [{ ...defaultResources }]
+          }
+          setResources={(newValue) => {
+            setCurrentCustomer({ ...currentCustomer, assets: newValue });
+          }}
+        />
+      </TabSection>
+    )}
+  </>
+);
 
-  return (
-    <>
-      <Box my={2} position='sticky' top='90px' zIndex='2' bgcolor='#fff' pt='20px'>
-        <Tabs
-          value={curTab}
-          onChange={(e, newTab) => setCurTab(newTab)}
-          indicatorColor='primary'
-          textColor='primary'
-        >
-          <Tab data-test='general' label='General' />
-          <Tab data-test='features' label='Features' />
-          <Tab data-test='paymentServiceConfiguration' label='Payment Service Configuration' disabled={id === 'add'} />
-          <Tab data-test='reports' label='Reports' disabled={id === 'add'} />
-          <Tab data-test='assets' label='Assets' disabled={id === 'add'} />
-        </Tabs>
-      </Box>
-      {curTab === 0 && currentCustomer && (
-        <TabSection label='general'>
-          <General
-            currentCustomer={currentCustomer}
-            setCurrentCustomer={setCurrentCustomer}
-            selectOptions={selectOptions}
-          />
-        </TabSection>
-      )}
-      {curTab === 1 && currentCustomer && (
-        <TabSection label='features'>
-          <Features
-            currentCustomer={currentCustomer}
-            setCurrentCustomer={setCurrentCustomer}
-          />
-        </TabSection>
-      )}
-      {curTab === 2 && currentCustomer && (
-        <TabSection label='paymentServiceConfiguration'>
-          <PaymentServiceConfiguration
-            currentCustomer={currentCustomer}
-            setCurrentCustomer={setCurrentCustomer}
-            selectOptions={selectOptions}
-          />
-        </TabSection>
-      )}
-      {curTab === 3 && currentCustomer && (
-        <TabSection label='reports' />
-      )}
-      {curTab === 4 && currentCustomer && (
-        <TabSection label='assets'>
-          <AssetsResource
-            labelOptions={assetsLabels}
-            maxPayloadFiles={2}
-            resources={
-              currentCustomer?.assets?.length ? currentCustomer.assets : [{ ...defaultResources }]
-            }
-            setResources={(newValue) => {
-              setCurrentCustomer({ ...currentCustomer, assets: newValue });
-            }}
-          />
-        </TabSection>
-      )}
-    </>
-  );
-};
 CustomerDetailsView.propTypes = {
   setCurrentCustomer: PropTypes.func,
   currentCustomer: PropTypes.object,
   selectOptions: PropTypes.object,
   id: PropTypes.string,
+  curTab: PropTypes.number,
 };
 
 export default CustomerDetailsView;

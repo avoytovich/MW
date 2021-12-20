@@ -6,7 +6,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-} from '@material-ui/core';
+} from '@mui/material';
 import { toast } from 'react-toastify';
 
 import SelectCustom from '../../Inputs/SelectCustom';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
+import { Button } from '@mui/material';
 import TableComponent from '../../components/TableComponent';
 import TableActionsBar from '../../components/TableActionsBar';
 import parentPaths from '../../services/paths';

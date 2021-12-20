@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Box, Typography, TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import CustomCard from '../../components/utils/CustomCard';
 import JsonEditor from '../../components/JsonEditor';
@@ -21,7 +21,7 @@ const JsonEditorLayout = ({
   setJsonIsValid,
 }) => (
   <div className='json-editor-screen'>
-    <CustomCard title='General'>
+    <CustomCard title='General' mt={0}>
       <Box py={5} pb={2}>
         <Box width="100%" flexWrap="nowrap" display="flex" flexDirection="row">
           <Box width="50%">

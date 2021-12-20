@@ -7,12 +7,12 @@ import {
   Tab,
   Button,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import moment from 'moment';
 
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import EditIcon from '@material-ui/icons/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
 
 import General from './SubSections/General';
 import TemplateEditor from './SubSections/TemplateEditor';
@@ -37,8 +37,8 @@ const EmailBuilderDetailsView = ({
   customSample,
   jsonIsValid,
   setJsonIsValid,
+  curTab,
 }) => {
-  const [curTab, setCurTab] = useState(0);
   const [editorMode, setEditorMode] = useState('preview');
   const [activatedCapture, setActivatedCapture] = useState(false);
 
@@ -98,24 +98,8 @@ const EmailBuilderDetailsView = ({
 
   return (
     <Box className='email-builder-details'>
-      <Box my={2} position='sticky' top='90px' bgcolor='#fff' zIndex='2'>
-        <Tabs
-          data-test='tabs'
-          value={curTab}
-          indicatorColor='primary'
-          textColor='primary'
-          onChange={(event, newValue) => {
-            setCurTab(newValue);
-          }}
-        >
-          <Tab label={localization.t('labels.general')} />
-          <Tab label={localization.t('labels.editor')} />
-          <Tab label={localization.t('labels.sampleData')} />
-        </Tabs>
-      </Box>
-
       {curTab === 0 && (
-        <CustomCard title={localization.t('labels.general')}>
+        <CustomCard title={localization.t('labels.general')} mt={0}>
           <General
             customer={customerName}
             data={templateData}
@@ -125,7 +109,7 @@ const EmailBuilderDetailsView = ({
       )}
 
       {curTab === 1 && (
-        <CustomCard title={localization.t('labels.editor')} extraActions={<ExtraActions />}>
+        <CustomCard title={localization.t('labels.editor')} extraActions={<ExtraActions />} mt={0}>
           <TemplateEditor
             data={templateData}
             firstSampleData={firstSampleData}
@@ -141,6 +125,7 @@ const EmailBuilderDetailsView = ({
         <CustomCard
           title={localization.t('labels.sampleData')}
           extraActions={samplesData && <SampleExtraActions />}
+          mt={0}
         >
           <SampleData
             customSample={customSample}
@@ -167,6 +152,7 @@ EmailBuilderDetailsView.propTypes = {
   customSample: PropTypes.string,
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
+  curTab: PropTypes.number,
 };
 
 export default EmailBuilderDetailsView;

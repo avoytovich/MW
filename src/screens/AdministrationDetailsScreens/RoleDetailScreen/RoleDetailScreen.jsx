@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -15,6 +15,7 @@ import DetailPageWrapper from '../../../components/utils/DetailPageWrapper';
 
 const RoleDetailScreen = () => {
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -43,11 +44,17 @@ const RoleDetailScreen = () => {
       updateFunc={api.updateRoleById}
       beforeSend={formattingForSending}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'clearances'],
+      }}
     >
       <RoleDetailView
         curRole={curRole}
         setCurRole={setCurRole}
         selectOptions={selectOptions}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

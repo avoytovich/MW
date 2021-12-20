@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Grid, Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import LogoHome from '../../components/utils/LogoHome/LogoHome';
 
 import localization from '../../localization';
@@ -29,7 +29,7 @@ const AuthorizationLayout = ({ children }) => (
           container
           className='authWrapper'
           direction='row'
-          justify='center'
+          justifyContent='center'
           alignItems='center'
         />
       </Grid>
@@ -37,7 +37,7 @@ const AuthorizationLayout = ({ children }) => (
       <Grid md={8} xs={8} item>
         <Grid
           container
-          justify='center'
+          justifyContent='center'
           alignItems='center'
           direction='row'
           className='authWrapperChild'

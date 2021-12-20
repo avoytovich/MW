@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Tabs, Tab, Box,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   Link, Switch, Redirect, Route,
 } from 'react-router-dom';
@@ -83,6 +83,7 @@ const LocalizationScreen = ({ location }) => {
           : location.pathname}
         indicatorColor='primary'
         textColor='primary'
+        sx={{ marginBottom: '20px' }}
       >
         {tabsData.map((tab) => (
           <Tab
@@ -94,21 +95,20 @@ const LocalizationScreen = ({ location }) => {
           />
         ))}
       </Tabs>
-      <Box mt={4} mb={2}>
-        <Switch>
-          <Route
-            exact
-            path={tabsData[0].path}
-            component={() => <TabTable tabObject={tabsData[0]} />}
-          />
-          <Route
-            exact
-            path={tabsData[1].path}
-            component={() => <TabTable tabObject={tabsData[1]} />}
-          />
-          <Redirect exact from={`${parentPaths.localization.main}`} to={tabsData[0].path} />
-        </Switch>
-      </Box>
+
+      <Switch>
+        <Route
+          exact
+          path={tabsData[0].path}
+          component={() => <TabTable tabObject={tabsData[0]} />}
+        />
+        <Route
+          exact
+          path={tabsData[1].path}
+          component={() => <TabTable tabObject={tabsData[1]} />}
+        />
+        <Redirect exact from={`${parentPaths.localization.main}`} to={tabsData[0].path} />
+      </Switch>
     </>
   );
 };

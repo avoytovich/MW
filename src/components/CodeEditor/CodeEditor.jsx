@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 import {
   Box, Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import 'ace-builds/src-noconflict/ext-searchbox';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 import localization from '../../localization';

@@ -37,6 +37,7 @@ const PrivilegesDetailScreen = () => {
       updateFunc={null}
       beforeSend={(data) => data}
       setUpdate={setUpdate}
+      noTabsMargin
     >
       <PrivilegesDetailsView
         curPrivilege={curPrivilege}

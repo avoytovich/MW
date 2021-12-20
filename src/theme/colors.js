@@ -6,6 +6,7 @@ const colors = {
   buttonPrimary: '#4791db',
   radioButton: '#d9d9d9',
   buttonDisabled: '#dedddd',
+  defaultLight: '#e0e0e0',
 };
 
 export default colors;

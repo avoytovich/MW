@@ -7,9 +7,9 @@ import {
   Typography,
   IconButton,
   Button,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { InputCustom } from '../../../components/Inputs';
 
@@ -130,6 +130,7 @@ const EventMatching = ({ setCurNotification, curNotification, data }) => {
                   <IconButton
                     color='primary'
                     onClick={() => removeFilter(index)}
+                    size='large'
                   >
                     <ClearIcon color='secondary' />
                   </IconButton>
@@ -142,6 +143,7 @@ const EventMatching = ({ setCurNotification, curNotification, data }) => {
                         data?.filters[data?.filters?.length - 1].filterJsonPath === ''
                         || data?.filters[data?.filters?.length - 1].filterRegex === ''
                       }
+                      size='large'
                     >
                       <AddCircleIcon />
                     </IconButton>

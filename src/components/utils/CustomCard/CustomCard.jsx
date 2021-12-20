@@ -4,7 +4,7 @@ import {
   Typography,
   Box,
   Divider,
-} from '@material-ui/core';
+} from '@mui/material';
 
 const CustomCard = ({
   title, children, noDivider, extraActions, ...other
@@ -13,7 +13,6 @@ const CustomCard = ({
     my={3}
     bgcolor='#fff'
     boxShadow={2}
-    height={1}
     p={3}
     {...other}
   >

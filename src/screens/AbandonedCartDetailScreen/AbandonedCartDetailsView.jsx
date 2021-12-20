@@ -10,7 +10,7 @@ import {
   Switch,
   Grid,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import { validPeriodOptions } from './utils';
 import localization from '../../localization';
 import { InputCustom, NumberInput, SelectCustom } from '../../components/Inputs';

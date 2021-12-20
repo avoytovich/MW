@@ -1,14 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Tabs,
-  Tab,
-  Box,
-} from '@material-ui/core';
+
 import General from './SubSections/General';
 import Emails from './SubSections/Emails';
 import Orders from './SubSections/Orders';
-import localization from '../../localization';
+
 import SectionLayout from '../../components/SectionLayout';
 
 const EndUserDetailView = ({
@@ -21,59 +17,38 @@ const EndUserDetailView = ({
   consent,
   orders,
   emails,
-}) => {
-  const [curTab, setCurTab] = useState(0);
-  return (
-    <>
-      <Box my={2} position='sticky' top='90px' zIndex='2' bgcolor='#fff' pt='20px'>
-        <Tabs
-          data-test='tabs'
-          value={curTab}
-          onChange={(e, newTab) => setCurTab(newTab)}
-          indicatorColor='primary'
-          textColor='primary'
-        >
-          <Tab label={localization.t('labels.general')} />
-          <Tab label={localization.t('labels.emails')} />
-          <Tab label={localization.t('labels.orders')} />
-        </Tabs>
-      </Box>
-      {
-        curTab === 0 && curEndUser && (
-          <SectionLayout label='general'>
-            <General
-              scope={scope}
-              setInvalidVatNumber={setInvalidVatNumber}
-              invalidVatNumber={invalidVatNumber}
-              curEndUser={curEndUser}
-              setCurEndUser={setCurEndUser}
-              selectOptions={selectOptions}
-              consent={consent}
-            />
-          </SectionLayout>
-        )
-      }
-      {
-        curTab === 1 && curEndUser && (
-          <SectionLayout label='emails'>
-            <Emails
-              emails={emails}
-            />
-          </SectionLayout>
-        )
-      }
-      {
-        curTab === 2 && curEndUser && (
-          <SectionLayout label='orders'>
-            <Orders
-              orders={orders}
-            />
-          </SectionLayout>
-        )
-      }
-    </>
-  );
-};
+  curTab,
+}) => (
+  <>
+    {
+      curTab === 0 && curEndUser && (
+        <SectionLayout label='general'>
+          <General
+            scope={scope}
+            setInvalidVatNumber={setInvalidVatNumber}
+            invalidVatNumber={invalidVatNumber}
+            curEndUser={curEndUser}
+            setCurEndUser={setCurEndUser}
+            selectOptions={selectOptions}
+            consent={consent}
+          />
+        </SectionLayout>
+      )
+    }
+
+    {curTab === 1 && curEndUser && <Emails emails={emails} />}
+
+    {
+      curTab === 2 && curEndUser && (
+        <SectionLayout label='orders'>
+          <Orders
+            orders={orders}
+          />
+        </SectionLayout>
+      )
+    }
+  </>
+);
 
 EndUserDetailView.propTypes = {
   scope: PropTypes.string,
@@ -85,6 +60,7 @@ EndUserDetailView.propTypes = {
   emails: PropTypes.object,
   orders: PropTypes.object,
   consent: PropTypes.array,
+  curTab: PropTypes.bool,
 
 };
 

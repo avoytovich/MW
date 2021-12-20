@@ -8,7 +8,7 @@ import {
   TextField,
   InputAdornment,
   CircularProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import parentPaths from '../../services/paths';
 import localization from '../../localization';
@@ -82,7 +82,7 @@ const SelectWithChip = ({
       helperText={helperText}
       InputProps={{
         startAdornment: !selectOptions && (
-          <InputAdornment>
+          <InputAdornment position='start'>
             <CircularProgress />
           </InputAdornment>
         ),

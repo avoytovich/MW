@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Box, TextField } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Box, TextField, Autocomplete } from '@mui/material';
 
-import ContactsIcon from '@material-ui/icons/Contacts';
+import ContactsIcon from '@mui/icons-material/Contacts';
 import { setNexwayState } from '../../redux/actions/Account';
 import api from '../../api';
 
@@ -120,7 +119,7 @@ const CustomerHandling = () => {
           options={autoOptions}
           inputValue={search}
           value={nxState?.selectedCustomer?.id || null}
-          getOptionSelected={(option) => option.id === nxState?.selectedCustomer?.id}
+          isOptionEqualToValue={(option) => option.id === nxState?.selectedCustomer?.id}
           getOptionDisabled={(option) => option.id === 'none'}
           onChange={changeCustomer}
           disableClearable={!search}

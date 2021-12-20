@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Divider, Button, Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../localization';
 import FileBlock from './FileBlock';
 

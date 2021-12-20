@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 import TableComponent from '../../../components/TableComponent';

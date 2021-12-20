@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CustomerDetailScreen from './CustomerDetailScreen';
-import { Tab, Tabs, Button, LinearProgress } from '@material-ui/core';
+import { Tab, Tabs, Button, LinearProgress } from '@mui/material';
 import useCustomerDetailData from '../../../services/useData/useCustomerDetailData';
 import General from './SubSections/General';
 import Features from './SubSections/Features';

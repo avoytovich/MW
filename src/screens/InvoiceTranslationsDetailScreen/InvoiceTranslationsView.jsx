@@ -4,9 +4,9 @@ import {
   Tab,
   Box,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { toast } from 'react-toastify';
-import { FileCopy as FileCopyIcon } from '@material-ui/icons';
+import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import parentPaths from '../../services/paths';

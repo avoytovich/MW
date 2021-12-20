@@ -17,6 +17,7 @@ const NotificationDefinitionDetailScreen = () => {
   const [curNotification, setCurNotification] = useState(null);
   const [notification, setNotification] = useState(null);
   const [update, setUpdate] = useState(0);
+  const [curTab, setCurTab] = useState(0);
   const [hasChanges, setHasChanges] = useState(false);
 
   useEffect(() => {
@@ -82,10 +83,16 @@ const NotificationDefinitionDetailScreen = () => {
       updateFunc={api.updateNotificationDefinitionById}
       beforeSend={(data) => data}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'templating'],
+      }}
     >
       <NotificationDefinitionDetailView
         curNotification={curNotification}
         setCurNotification={setCurNotification}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

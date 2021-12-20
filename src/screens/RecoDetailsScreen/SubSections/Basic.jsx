@@ -10,7 +10,7 @@ import {
   Switch,
   RadioGroup,
   Radio,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../../localization';
 import { SelectCustom } from '../../../components/Inputs';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
@@ -22,7 +22,7 @@ const Basic = ({
   const availableLocales = getLanguagesOptions();
 
   return curReco && (
-    <CustomCard>
+    <CustomCard mt={0}>
       <Box mx={2} py={1} display='flex' alignItems='center'>
         <Typography variant='h5'>
           {`${localization.t(

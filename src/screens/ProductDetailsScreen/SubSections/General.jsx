@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ClearIcon from '@material-ui/icons/Clear';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import {
   Box,
@@ -15,7 +15,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   lifeTime,
   type,
@@ -640,6 +640,7 @@ const General = ({
                       ),
                     });
                   }}
+                  size='large'
                 >
                   <ClearIcon />
                 </IconButton>
@@ -676,6 +677,7 @@ const General = ({
                 });
                 setSelectedBundledProduct(null);
               }}
+              size='large'
             >
               <AddCircleOutlineIcon size='medium' color='primary' />
             </IconButton>

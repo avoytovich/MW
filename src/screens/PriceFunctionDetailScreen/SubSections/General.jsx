@@ -3,9 +3,9 @@ import {
   Box,
   Typography,
   Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import { FileCopy as FileCopyIcon } from '@material-ui/icons';
+import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 

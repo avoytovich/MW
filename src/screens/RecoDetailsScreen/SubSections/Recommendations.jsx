@@ -7,14 +7,14 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-} from '@material-ui/core';
+} from '@mui/material';
 import { SelectWithChip } from '../../../components/Inputs';
 import SelectModeInputs from './SelectModeInputs';
 import CustomCard from '../../../components/utils/CustomCard';
 import localization from '../../../localization';
 
 const Recommendations = ({ curReco, selectOptions, setCurReco }) => (
-  <CustomCard>
+  <CustomCard mt={0}>
     <Box p={2}>
       <Typography variant='h5'>
         {localization.t('labels.recommendationsSelectionMode')}

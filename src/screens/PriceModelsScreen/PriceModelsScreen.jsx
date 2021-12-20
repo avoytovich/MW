@@ -3,7 +3,7 @@ import { useHistory, Link } from 'react-router-dom';
 
 import {
   Tabs, Tab, Box, Button,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import PricesScreen from './SubSections/PricesScreen';
 import PriceFunctionsScreen from './SubSections/PriceFunctionsScreen';
@@ -87,24 +87,23 @@ const PriceModelsScreen = () => {
   const changeTab = (tab) => history.push(`${availTabs[tab].path}`);
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <Box display='flex' flexDirection='column' height={1}>
       {drawAddButton()}
       <Tabs
         value={curTab}
         onChange={(e, newTab) => changeTab(newTab)}
         indicatorColor='primary'
         textColor='primary'
+        sx={{ marginBottom: '20px' }}
       >
         <Tab label='Prices' />
 
         <Tab label='Price Functions' />
       </Tabs>
 
-      <Box mt={4} mb={2}>
-        {curTab === 0 && <PricesScreen />}
+      {curTab === 0 && <PricesScreen />}
 
-        {curTab === 1 && <PriceFunctionsScreen />}
-      </Box>
+      {curTab === 1 && <PriceFunctionsScreen />}
     </Box>
   );
 };

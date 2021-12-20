@@ -28,6 +28,7 @@ const RecoDetailsScreen = () => {
   const [curReco, setCurReco] = useState(null);
   const [hasChanges, setHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
+  const [curTab, setCurTab] = useState(0);
 
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
@@ -132,9 +133,15 @@ const RecoDetailsScreen = () => {
       updateFunc={api.updateNotificationById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'eligibility', 'cappingAndLimits', 'recommendations'],
+      }}
     >
       <RecoDetailsView
         curReco={curReco}
+        curTab={curTab}
         setCurReco={setCurReco}
         selectOptions={selectOptions}
       />

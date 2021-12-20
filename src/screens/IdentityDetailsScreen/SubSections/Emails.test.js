@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { LinearProgress, TableContainer } from '@material-ui/core';
+import { LinearProgress, TableContainer } from '@mui/material';
 import { formattedCreateDates, testDate } from '../../../../__mocks__/fileMock';
 import localization from '../../../localization';
 

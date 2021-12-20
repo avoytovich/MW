@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import ClearIcon from '@material-ui/icons/Clear';
+import ClearIcon from '@mui/icons-material/Clear';
 import {
   CircularProgress, Grid, Box, Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { InputCustom, SelectCustom } from '../Inputs';
 import FileUpload from '../utils/FileUpload';

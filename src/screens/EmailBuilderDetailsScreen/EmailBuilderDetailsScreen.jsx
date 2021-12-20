@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 
 import EmailBuilderDetailsView from './EmailBuilderDetailsView';
 import CloneTemplatePopup from './CloneTemplatePopup';
@@ -33,6 +33,7 @@ const EmailBuilderDetailsScreen = () => {
   const [cloneModal, setCloneModal] = useState(false);
   const [customSample, setCustomSampleData] = useState(null);
   const [jsonIsValid, setJsonIsValid] = useState(true);
+  const [curTab, setCurTab] = useState(0);
 
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -139,6 +140,16 @@ const EmailBuilderDetailsScreen = () => {
       beforeSend={null}
       setUpdate={setUpdate}
       extraActions={<ExtraActions />}
+      saveIsDisabled={
+        curTemplateData
+        && curTemplateData?.templates
+        && (Object.values(curTemplateData?.templates).filter((f) => !f.subject).length > 0)
+      }
+      tabs={{
+        setCurTab,
+        curTab,
+        tabLabels: ['general', 'editor', 'sampleData'],
+      }}
     >
       <EmailBuilderDetailsView
         updateData={setCurTemplateData}
@@ -153,6 +164,7 @@ const EmailBuilderDetailsScreen = () => {
         saveCustomSample={setCustomSampleData}
         jsonIsValid={jsonIsValid}
         setJsonIsValid={setJsonIsValid}
+        curTab={curTab}
       />
 
       <CloneTemplatePopup

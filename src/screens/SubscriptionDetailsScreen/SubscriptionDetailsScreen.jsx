@@ -37,6 +37,7 @@ const SubscriptionDetailsScreen = () => {
       addFunc={null}
       updateFunc={null}
       beforeSend={null}
+      noTabsMargin
     >
       <SubscriptionDetailsView subscription={subscription} />
     </DetailPageWrapper>

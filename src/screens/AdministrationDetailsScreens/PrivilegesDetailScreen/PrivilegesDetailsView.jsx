@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Box, Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import { InputCustom, SelectWithChip } from '../../../components/Inputs';
 import DateFormat from '../../../components/DateFormat';
@@ -18,7 +18,7 @@ const PrivilegesDetailsView = ({
 }) => (
   <>
     {id !== 'add' && (
-      <Box my={3} bgcolor="#fff" boxShadow={2} p={4}>
+      <Box mb={3} bgcolor="#fff" boxShadow={2} p={4}>
         <Box display='flex' mb='30px'>
           <Typography variant="h4">{localization.t('general.privileges.general')}</Typography>
         </Box>
@@ -58,8 +58,7 @@ const PrivilegesDetailsView = ({
       </Box>
     )}
     {id === 'add' && (
-
-      <Box my={3} bgcolor="#fff" boxShadow={2} p={4}>
+      <Box mb={3} bgcolor="#fff" boxShadow={2} p={4}>
         <Box p={2} width='60%'>
           <InputCustom
             data-test='name'

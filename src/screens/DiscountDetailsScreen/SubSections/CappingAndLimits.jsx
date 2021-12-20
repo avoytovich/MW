@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, TextField, Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 import moment from 'moment';
 
 import { validityPeriod } from '../../../services/selectOptions/selectOptions';

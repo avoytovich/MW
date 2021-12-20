@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Clearances from './Clearances';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress } from '@mui/material';
 import { testDate } from '../../../../../__mocks__/fileMock';
 import ClearancesInputs from './ClearancesInputs';
 

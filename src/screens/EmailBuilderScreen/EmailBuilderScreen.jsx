@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Box } from '@material-ui/core';
 import TableActionsBar from '../../components/TableActionsBar';
 import api from '../../api';
 import TableComponent from '../../components/TableComponent';
@@ -58,24 +57,23 @@ const EmailBuilderScreen = () => {
   );
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <>
       <TableActionsBar
         scope={scope}
         deleteFunc={api.deleteDiscountById}
         headers={markUp.headers}
       />
-      <Box mt={4} mb={2}>
-        <TableComponent
-          scope={scope}
-          noActions
-          sortParams={sortParams}
-          setSortParams={handleSetSortParams}
-          defaultShowColumn={defaultShow}
-          tableData={emails}
-          isLoading={isLoading}
-        />
-      </Box>
-    </Box>
+
+      <TableComponent
+        scope={scope}
+        noActions
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
+        defaultShowColumn={defaultShow}
+        tableData={emails}
+        isLoading={isLoading}
+      />
+    </>
   );
 };
 

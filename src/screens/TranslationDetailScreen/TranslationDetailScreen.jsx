@@ -77,6 +77,7 @@ const TranslationDetailScreen = () => {
       updateFunc={api.updateTranslationById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
+      noTabsMargin
     >
       <JsonEditorLayout
         customer={currentCustomer}

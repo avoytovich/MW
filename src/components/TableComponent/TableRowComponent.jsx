@@ -8,7 +8,7 @@ import {
   Grid,
   Box,
   Checkbox,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   Edit as EditIcon,
@@ -16,7 +16,7 @@ import {
   FileCopy as FileCopyIcon,
   Check as CheckIcon,
   Close as CloseIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import { toast } from 'react-toastify';
 import DeletePopup from '../Popup/DeletePopup';
@@ -185,7 +185,7 @@ const TableRowComponent = ({
         onMouseLeave={() => setRowHover(false)}
         container
         wrap="nowrap"
-        justify="center"
+        justifyContent="center"
       >
         {!noActions && (
           <Grid>

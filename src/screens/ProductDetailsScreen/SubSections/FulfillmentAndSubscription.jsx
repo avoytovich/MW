@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import CancelIcon from '@material-ui/icons/Cancel';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 import {
   Box,
   Switch,
-  FormControlLabel,
   Typography,
   TextField,
   InputAdornment,
-} from '@material-ui/core';
+  Autocomplete,
+} from '@mui/material';
 
 import { NumberInput, SelectWithDeleteIcon } from '../../../components/Inputs';
 import localization from '../../../localization';
@@ -61,21 +61,17 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
           <Typography color="secondary">{localization.t('labels.allowTrial')}</Typography>
         </Box>
         <Box p={2}>
-          <FormControlLabel
-            control={(
-              <Switch
-                disabled={!currentProductData.subscriptionTemplate}
-                name="allowTrial"
-                onChange={(e) => {
-                  setProductData({
-                    ...currentProductData,
-                    trialAllowed: e.target.checked,
-                  });
-                }}
-                color="primary"
-                checked={currentProductData?.trialAllowed || false}
-              />
-            )}
+          <Switch
+            disabled={!currentProductData.subscriptionTemplate}
+            name="allowTrial"
+            onChange={(e) => {
+              setProductData({
+                ...currentProductData,
+                trialAllowed: e.target.checked,
+              });
+            }}
+            color="primary"
+            checked={currentProductData?.trialAllowed || false}
           />
         </Box>
       </Box>
@@ -146,7 +142,7 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
               variant="outlined"
               InputProps={{
                 endAdornment: currentProductData.releaseDate && (
-                  <InputAdornment>
+                  <InputAdornment position='end'>
                     <CancelIcon
                       className="cancelDateIcon"
                       fontSize="small"

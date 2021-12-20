@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 
 const FullNameAvatar = ({ name }) => {
   const getNameAvatar = () => {
@@ -15,12 +15,12 @@ const FullNameAvatar = ({ name }) => {
       bgcolor='primary.main'
       color='#fff'
       textAlign='center'
-      width={54}
-      minWidth={54}
-      height={54}
+      width={44}
+      minWidth={44}
+      height={44}
       borderRadius='50%'
-      lineHeight='54px'
-      mr={2}
+      lineHeight='44px'
+      my='4px'
       style={{ textTransform: 'uppercase' }}
     >
       {getNameAvatar()}

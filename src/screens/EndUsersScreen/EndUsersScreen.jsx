@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Box from '@material-ui/core/Box';
+import Box from '@mui/material/Box';
 import TableComponent from '../../components/TableComponent';
 import TableActionsBar from '../../components/TableActionsBar';
 import useTableData from '../../services/useData/useTableData';
@@ -44,11 +44,12 @@ const EndUsersScreen = () => {
 
 
   return (
-    <Box pb={3}>
+    <>
       <TableActionsBar
         scope={scope}
         headers={markUp.headers}
       />
+
       <TableComponent
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
@@ -59,7 +60,7 @@ const EndUsersScreen = () => {
         noEditDeleteActions
         noActions
       />
-    </Box>
+    </>
   );
 };
 

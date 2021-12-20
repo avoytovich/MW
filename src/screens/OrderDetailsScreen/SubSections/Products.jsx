@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box } from '@material-ui/core';
 import TableComponent from '../../../components/TableComponent';
 
 import {
@@ -20,7 +19,7 @@ const Products = ({ orderData }) => {
     return () => setProducts(null);
   }, []);
   return (
-    <Box>
+    <>
       <TableComponent
         defaultShowColumn={defaultShow}
         tableData={products}
@@ -30,8 +29,11 @@ const Products = ({ orderData }) => {
         noEditDeleteActions
         customPath
         orderData={orderData?.processingEvent}
+        wrapperStyles={{
+          paddingBottom: '24px',
+        }}
       />
-    </Box>
+    </>
   );
 };
 

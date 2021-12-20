@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import { Grid, Box } from '@material-ui/core';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import { Grid, Box } from '@mui/material';
 import moment from 'moment';
 
 import parentPaths from '../../services/paths';

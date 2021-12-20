@@ -168,6 +168,8 @@ const Forms = {
       logo: 'Logo',
     },
     confirmationEmailAddress: 'Email Address',
+    selectView: 'Select a view',
+    addView: 'Add new view',
   },
 };
 

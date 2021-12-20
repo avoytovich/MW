@@ -8,12 +8,12 @@ import {
   Box,
   Toolbar,
   IconButton,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   Menu as MenuIcon,
   ExitToApp as LogoutIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 
 import { logout } from '../../redux/actions/Account';
 import { setTableScope } from '../../redux/actions/TableData';
@@ -32,17 +32,29 @@ const TopBar = ({ toggleDrawer, drawerOpen }) => {
     }
   }, [scope]);
   return (
-    <AppBar position='static' className='top-bar' elevation={1}>
+    <AppBar position='static' className='top-bar' elevation={1} sx={{ zIndex: 9 }}>
       <Toolbar>
         <Box display='flex' width={1} justifyContent='space-between'>
           { drawerOpen
             ? <Box />
             : (
-              <IconButton edge='start' aria-label='menu' color='secondary' onClick={toggleDrawer}>
+              <IconButton
+                edge='start'
+                aria-label='menu'
+                color='secondary'
+                onClick={toggleDrawer}
+                size='large'
+              >
                 <MenuIcon />
               </IconButton>
             )}
-          <IconButton edge='start' aria-label='logout' color='secondary' onClick={doLogout}>
+          <IconButton
+            edge='start'
+            aria-label='logout'
+            color='secondary'
+            onClick={doLogout}
+            size='large'
+          >
             <LogoutIcon />
           </IconButton>
         </Box>

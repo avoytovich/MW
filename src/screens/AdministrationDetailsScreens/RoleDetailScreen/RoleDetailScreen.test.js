@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import RoleDetailScreen from './RoleDetailScreen';
-import { Tab, LinearProgress, Tabs, Button } from '@material-ui/core';
+import { Tab, LinearProgress, Tabs, Button } from '@mui/material';
 import useRoleDetailsData from '../../../services/useData/useRoleDetailsData';
 import General from './SubSections/General';
 import Clearances from './SubSections/Clearances';

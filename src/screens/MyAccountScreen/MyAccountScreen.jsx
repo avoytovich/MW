@@ -14,7 +14,7 @@ import {
   Tab,
   Typography,
   Switch,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import api from '../../api';
 import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
@@ -141,7 +141,8 @@ const MyAccountScreen = () => {
       <CustomBreadcrumbs
         sections={sections}
       />
-      <div className="my-account-screen">
+
+      <div className='my-account-screen-header'>
         <Tabs value={0} indicatorColor="primary" textColor="primary">
           <Tab label="My Account" />
         </Tabs>
@@ -158,7 +159,9 @@ const MyAccountScreen = () => {
             Save
           </Button>
         </Zoom>
+      </div>
 
+      <div className="my-account-screen" style={{ overflow: 'auto', padding: '2px' }}>
         <CustomCard title="Basic Profile">
           <Box display="flex" py={5} pb={2}>
             <Box px={1} width=" 100%">

@@ -12,6 +12,7 @@ import { beforeSend } from './utils';
 
 const PriceFunctionDetailScreen = () => {
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const [errorMessages, setErrorMessages] = useState({});
 
@@ -44,6 +45,11 @@ const PriceFunctionDetailScreen = () => {
       updateFunc={api.updatePriceFunction}
       beforeSend={(data) => beforeSend(data, curParameters)}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'parameters'],
+      }}
     >
       <PriceFunctionView
         priceFunction={priceFunction}
@@ -53,6 +59,7 @@ const PriceFunctionDetailScreen = () => {
         curParameters={curParameters}
         errorMessages={errorMessages}
         setErrorMessages={setErrorMessages}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

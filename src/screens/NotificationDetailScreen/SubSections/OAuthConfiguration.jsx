@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Grid,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 import { urlIsValid } from '../../../services/helpers/inputValidators';

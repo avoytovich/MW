@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Tabs, Tab, Box, Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import {
   Link,
@@ -47,14 +47,16 @@ const FulfillmentPackagesScreen = ({ location }) => {
   };
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <>
       {drawAddButton()}
+
       <Tabs
         value={curBab}
         indicatorColor='primary'
         textColor='primary'
         data-test='tabs'
         onChange={(e, newTab) => setCurTab(newTab)}
+        sx={{ marginBottom: '20px' }}
       >
         {tabsData.map((tab) => (
           <Tab
@@ -66,27 +68,26 @@ const FulfillmentPackagesScreen = ({ location }) => {
           />
         ))}
       </Tabs>
-      <Box mt={4} mb={2}>
-        <Switch>
-          <Route
-            exact
-            path={tabsData[0].path}
-            component={() => <TabTable tabObject={tabsData[0]} />}
-          />
-          <Route
-            exact
-            path={tabsData[1].path}
-            component={() => <TabTable tabObject={tabsData[1]} />}
-          />
-          <Route
-            exact
-            path={tabsData[2].path}
-            component={() => <TabTable tabObject={tabsData[2]} />}
-          />
-          <Redirect exact from={`${parentPaths.fulfillment.main}`} to={tabsData[0].path} />
-        </Switch>
-      </Box>
-    </Box>
+
+      <Switch>
+        <Route
+          exact
+          path={tabsData[0].path}
+          component={() => <TabTable tabObject={tabsData[0]} />}
+        />
+        <Route
+          exact
+          path={tabsData[1].path}
+          component={() => <TabTable tabObject={tabsData[1]} />}
+        />
+        <Route
+          exact
+          path={tabsData[2].path}
+          component={() => <TabTable tabObject={tabsData[2]} />}
+        />
+        <Redirect exact from={`${parentPaths.fulfillment.main}`} to={tabsData[0].path} />
+      </Switch>
+    </>
   );
 };
 

@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import {
   Grid, Box, Typography,
-} from '@material-ui/core';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+} from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import moment from 'moment';
 import localization from '../../localization';
 
 import './notificationHistoryDetailsScreen.scss';
+import CustomCard from '../../components/utils/CustomCard';
 
 const NotificationHistoryDetailsView = ({ customer, notificationHistory, customerName }) => {
   const makeCopy = (value) => {
@@ -141,13 +142,15 @@ const NotificationHistoryDetailsView = ({ customer, notificationHistory, custome
   };
 
   return (
-    <Grid container className="wrapper-notification-history">
-      {mapStructure.map((each) => (
-        <Grid container key={each.label}>
-          {renderFields(each)}
-        </Grid>
-      ))}
-    </Grid>
+    <CustomCard width={1} mt={0}>
+      <Grid container className="wrapper-notification-history">
+        {mapStructure.map((each) => (
+          <Grid container key={each.label}>
+            {renderFields(each)}
+          </Grid>
+        ))}
+      </Grid>
+    </CustomCard>
   );
 };
 NotificationHistoryDetailsView.propTypes = {

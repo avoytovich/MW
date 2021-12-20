@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 
 import localization from '../../localization';
 
@@ -11,7 +11,7 @@ const SectionLayout = ({
   contentWidth = '100%',
   dataTest = '',
 }) => (
-  <Box data-test={dataTest} my={3} bgcolor='#fff' boxShadow={2} width={wrapperWidth} pb={4}>
+  <Box data-test={dataTest} mb={3} bgcolor='#fff' boxShadow={2} width={wrapperWidth} pb={4}>
     <Box p={4}>
       <Typography gutterBottom variant='h4'>
         {localization.t(`labels.${label}`)}

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Box, Typography, TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import CodeEditor from '../../components/CodeEditor';
 import localization from '../../localization';

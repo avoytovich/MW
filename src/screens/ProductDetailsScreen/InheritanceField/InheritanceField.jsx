@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tooltip } from '@material-ui/core';
-import InsertLinkIcon from '@material-ui/icons/InsertLink';
-import LinkOffIcon from '@material-ui/icons/LinkOff';
+import { Button, Tooltip } from '@mui/material';
+import InsertLinkIcon from '@mui/icons-material/InsertLink';
+import LinkOffIcon from '@mui/icons-material/LinkOff';
 
 const InheritanceField = (props) => {
   const {
@@ -124,6 +124,7 @@ const InheritanceField = (props) => {
     <>
       {newChildren}
       <Tooltip
+        disableInteractive
         title={
           value.state === 'inherits'
             ? 'Click this buuton to override value'

@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Chip from '@material-ui/core/Chip';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
+import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 
 import { setFilters } from '../../../redux/actions/TableData';
 

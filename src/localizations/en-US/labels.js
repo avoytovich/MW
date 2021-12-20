@@ -203,6 +203,7 @@ const labels = {
   code: 'Code',
   discountCode: 'Discount Code',
   cappingAndLimits: 'Capping And Limits',
+  recommendations: 'Recommendations',
   singleUseCodesGenerations: 'Single Use Codes Generations',
   remainingCodes: 'Remaining codes:',
   generationCodeLimit: 'Generate codes - 750 max per generation',

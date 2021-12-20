@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, Tabs, Tab,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
 
@@ -47,8 +47,8 @@ const Design = ({
 
   return (
     <>
-      <Box bgcolor="#fff" boxShadow={2} pb={4}>
-        <Box pt={6} px={6} mt={3}>
+      <Box mb={3} bgcolor="#fff" boxShadow={2} pb={4}>
+        <Box pt={6} px={6}>
           <Typography gutterBottom variant="h4">
             {localization.t('labels.design')}
           </Typography>

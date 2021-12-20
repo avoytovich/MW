@@ -9,7 +9,7 @@ import {
   Typography,
   FormControlLabel,
   Switch,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import {
   defaultShow,
@@ -32,7 +32,7 @@ const CampaignDetailsView = ({
 
   return (
     <>
-      <CustomCard title="General">
+      <CustomCard title="General" mt={0}>
         <Box display="flex" py={5} pb={2}>
           <Box px={1} width=" 100%">
             <TextField

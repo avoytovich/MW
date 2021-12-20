@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import * as R from 'ramda';
-import { LinearProgress } from '@material-ui/core';
+import { LinearProgress } from '@mui/material';
 import SelectCustomerNotification from '../../components/utils/SelectCustomerNotification';
 import api from '../../api';
 

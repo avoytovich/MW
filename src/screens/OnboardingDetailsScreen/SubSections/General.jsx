@@ -9,8 +9,8 @@ import {
   Switch,
   Button,
   Grid,
-} from '@material-ui/core';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
+} from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { toast } from 'react-toastify';
 
 import localization from '../../../localization';

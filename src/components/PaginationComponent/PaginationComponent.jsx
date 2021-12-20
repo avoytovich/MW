@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid } from '@mui/material';
 
 import localization from '../../localization';
 import { setCurrentPage } from '../../redux/actions/TableData';
@@ -48,7 +48,7 @@ const PaginationComponent = ({
     (totalPages > 1
       && (
         <Grid className="paginationBlock">
-          <Grid spacing={5} container justify={location} direction="row">
+          <Grid spacing={5} container justifyContent={location} direction="row">
             {pageNumbers?.[0] !== 1
               && (
                 <Grid item>
@@ -61,7 +61,7 @@ const PaginationComponent = ({
                 </Grid>
               )}
             <Grid item>
-              <Grid spacing={3} container justify="center" direction="row" className="paginationNumbers">
+              <Grid spacing={3} container justifyContent="center" direction="row" className="paginationNumbers">
                 {pageNumbers.map((item) => (
                   <Grid item key={`page ${item}`}>
                     <Typography

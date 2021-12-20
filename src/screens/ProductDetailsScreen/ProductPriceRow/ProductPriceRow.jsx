@@ -6,10 +6,9 @@ import {
   TextField,
   TableCell,
   TableRow,
-  FormControlLabel,
   Checkbox,
-} from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+} from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 import { SelectCustom } from '../../../components/Inputs';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
@@ -173,16 +172,11 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
         </TableCell>
 
         <TableCell align='center' style={{ minWidth: '50px' }}>
-          <FormControlLabel
-            control={(
-              <Checkbox
-                checked={newRow.vatIncluded}
-                onChange={handleCheckbox}
-                name='vatIncluded'
-                color='primary'
-              />
-            )}
-            style={{ margin: 0 }}
+          <Checkbox
+            checked={newRow.vatIncluded}
+            onChange={handleCheckbox}
+            name='vatIncluded'
+            color='primary'
           />
         </TableCell>
 

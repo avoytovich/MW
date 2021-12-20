@@ -2,25 +2,17 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  Box,
-  Tabs,
-  Tab,
-} from '@material-ui/core';
-import { tabsLabels } from './utils';
-
 import General from './SubSections/General';
 import Eligibility from './SubSections/Eligibility';
 import CappingAndLimits from './SubSections/CappingAndLimits';
 import CodeGeneration from './SubSections/CodeGeneration';
 import DiscountSection from './DiscountSection';
-import localization from '../../localization';
+
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsView = ({
-  curDiscount, setCurDiscount, discount, setAmountType, amountType, selectOptions,
+  curDiscount, curTab, setCurDiscount, discount, setAmountType, amountType, selectOptions,
 }) => {
-  const [curTab, setCurTab] = useState(0);
   const [checkedSingleUseCode, setCheckedSingleUseCode] = useState(false);
   const [prevSaveSingleUseCode, setPrevSaveSingleUseCode] = useState(false);
   const [usedDiscounts, setUsedDiscounts] = useState(0);
@@ -49,22 +41,6 @@ const DiscountDetailsView = ({
 
   return (
     <>
-      <Box my={2} position='sticky' top='90px' zIndex='2' bgcolor='#fff' pt='20px'>
-        <Tabs
-          data-test='tabs'
-          value={curTab}
-          indicatorColor='primary'
-          textColor='primary'
-          onChange={(event, newValue) => {
-            setCurTab(newValue);
-          }}
-        >
-          <Tab label={localization.t(`labels.${tabsLabels[0]}`)} />
-          <Tab label={localization.t(`labels.${tabsLabels[1]}`)} />
-          <Tab label={localization.t(`labels.${tabsLabels[2]}`)} />
-          {checkedSingleUseCode && <Tab label={localization.t(`labels.${tabsLabels[3]}`)} />}
-        </Tabs>
-      </Box>
       {curTab === 0 && (
         <DiscountSection label='general'>
           <General
@@ -117,6 +93,7 @@ DiscountDetailsView.propTypes = {
   discount: PropTypes.object,
   setAmountType: PropTypes.func,
   amountType: PropTypes.string,
+  curTab: PropTypes.number,
 };
 
 export default DiscountDetailsView;

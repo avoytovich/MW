@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
@@ -17,6 +17,8 @@ import CustomerDetailsView from './CustomerDetailsView';
 
 const CustomerDetailScreen = () => {
   const { id } = useParams();
+
+  const [curTab, setCurTab] = useState(0);
 
   const {
     isLoading,
@@ -53,11 +55,17 @@ const CustomerDetailScreen = () => {
       updateFunc={api.updateCustomerById}
       beforeSend={formatBeforeSanding}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'features', 'paymentServiceConfiguration', 'reports', 'assets'],
+      }}
     >
       <CustomerDetailsView
         currentCustomer={currentCustomer}
         setCurrentCustomer={setCurrentCustomer}
         selectOptions={selectOptions}
+        curTab={curTab}
         id={id}
       />
     </DetailPageWrapper>

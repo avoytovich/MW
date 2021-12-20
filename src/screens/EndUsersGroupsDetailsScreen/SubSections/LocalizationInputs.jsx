@@ -1,15 +1,13 @@
 import React, { useState, useRef } from 'react';
 
-import ReactQuill from 'react-quill';
 import PropTypes from 'prop-types';
 
-import { Box } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
+import { Box } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 
 import localization from '../../../localization';
 
-import 'react-quill/dist/quill.bubble.css';
 import './localizations.scss';
 
 const LocalizationInputs = ({
@@ -34,12 +32,12 @@ const LocalizationInputs = ({
   const LocalizationInput = ({ val }) => (
     isEditing === val ? (
       <Box position='relative' mb={4}>
-        <ReactQuill
+        {/* <ReactQuill
           theme='bubble'
           value={data[val][lang]}
           placeholder={localization.t(`forms.inputs.localizedContent.${val}`)}
           ref={editor}
-        />
+        /> */}
 
         <SaveIcon
           className='edit-loc-field'

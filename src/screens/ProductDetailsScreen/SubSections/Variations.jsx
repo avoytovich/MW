@@ -13,8 +13,8 @@ import {
   Paper,
   IconButton,
   Typography,
-} from '@material-ui/core';
-import ClearIcon from '@material-ui/icons/Clear';
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
 import parentPaths from '../../../services/paths';
 import SectionLayout from '../../../components/SectionLayout';
 
@@ -200,6 +200,7 @@ const Variations = ({
                         color='secondary'
                         aria-label='clear'
                         onClick={() => handleDeleteVariable(field)}
+                        size='large'
                       >
                         <ClearIcon />
                       </IconButton>

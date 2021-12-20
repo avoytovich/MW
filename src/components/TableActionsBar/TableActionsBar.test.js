@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import TableActionsBar from './TableActionsBar';
-import { TextField, IconButton } from '@material-ui/core';
+import { TextField, IconButton } from '@mui/material';
 
 const testNode = <div id='testNode'></div>
 

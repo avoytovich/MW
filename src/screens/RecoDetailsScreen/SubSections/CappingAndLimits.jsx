@@ -8,7 +8,7 @@ import {
   Typography,
   Grid,
   TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import DateRangePicker from '../../../components/utils/Modals/DateRangePicker';
 import CustomCard from '../../../components/utils/CustomCard';
@@ -69,7 +69,7 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
   };
 
   return (
-    <CustomCard>
+    <CustomCard mt={0}>
       <Grid item md={12} xs={12}>
         <Box p={2}>
           <Typography variant='h5'>{localization.t('labels.periodOfValidity')}</Typography>

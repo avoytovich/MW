@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import EditKeyValueInputs from './EditKeyValueInputs';
-import ClearIcon from '@material-ui/icons/Clear';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {
   SelectCustom,
   NumberInput,

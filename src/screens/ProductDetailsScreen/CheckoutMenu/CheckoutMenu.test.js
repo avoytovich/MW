@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import { MenuItem, Button } from '@material-ui/core';
+import { MenuItem, Button } from '@mui/material';
 
 import CheckoutMenu from './CheckoutMenu';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { LinearProgress, Box } from '@material-ui/core';
+import { LinearProgress, Box } from '@mui/material';
 import PropTypes from 'prop-types';
 import { SelectWithChip } from '../../../../components/Inputs';
 

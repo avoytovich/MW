@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tab,LinearProgress } from '@material-ui/core';
+import { Tab,LinearProgress } from '@mui/material';
 import { shallow } from 'enzyme';
 import General from './SubSections/General';
 import Identification from './SubSections/Identification';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import localization from '../../localization';
-import { Tab, Button } from '@material-ui/core';
+import { Tab, Button } from '@mui/material';
 import { Route } from 'react-router-dom';
 import FulfillmentPackagesScreen from './FulfillmentPackagesScreen';
 

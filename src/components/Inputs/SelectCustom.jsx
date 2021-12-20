@@ -7,8 +7,8 @@ import {
   InputAdornment,
   Box,
   Tooltip,
-} from '@material-ui/core';
-import HelpIcon from '@material-ui/icons/Help';
+} from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import localization from '../../localization';
 
 const SelectCustom = ({
@@ -36,7 +36,7 @@ const SelectCustom = ({
         disabled={!selectOptions || isDisabled}
         InputProps={{
           startAdornment: !selectOptions && (
-            <InputAdornment>
+            <InputAdornment position='start'>
               <CircularProgress />
             </InputAdornment>
           ),
@@ -85,6 +85,7 @@ const SelectCustom = ({
       {
         tooltip && (
           <Tooltip
+            disableInteractive
             placement='right'
             title={tooltip}
             style={{ marginLeft: '10px' }}

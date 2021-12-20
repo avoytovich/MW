@@ -22,9 +22,9 @@ import {
   TableBody,
   Paper,
   LinearProgress,
-} from '@material-ui/core';
+} from '@mui/material';
 
-import Refresh from '@material-ui/icons/Refresh';
+import Refresh from '@mui/icons-material/Refresh';
 
 import PaginationComponent from '../../components/PaginationComponent';
 import PriceNumberFormat from '../../components/PriceNumberFormat';
@@ -155,8 +155,8 @@ const FindByCC = ({ open, onClose }) => {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth='lg'>
-      <DialogTitle id='filters-dialog-title' disableTypography>
-        <Typography variant='h5'>{localization.t('forms.headers.findByCC')}</Typography>
+      <DialogTitle id='filters-dialog-title'>
+        <Typography variant='h5' component='span'>{localization.t('forms.headers.findByCC')}</Typography>
       </DialogTitle>
 
       <DialogContent dividers>

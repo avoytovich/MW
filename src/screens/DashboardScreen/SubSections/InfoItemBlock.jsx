@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 
 /* eslint-disable no-nested-ternary */
-import CallMadeIcon from '@material-ui/icons/CallMade';
-import CallReceivedIcon from '@material-ui/icons/CallReceived';
+import CallMadeIcon from '@mui/icons-material/CallMade';
+import CallReceivedIcon from '@mui/icons-material/CallReceived';
 
 const InfoItemBlock = ({
   title, price, selected, previousPrice, change,

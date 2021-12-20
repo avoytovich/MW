@@ -1,58 +1,42 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-
-import {
-  Box,
-  Tabs,
-  Tab,
-} from '@material-ui/core';
 
 import SectionLayout from '../../../components/SectionLayout';
 
-import localization from '../../../localization';
 import General from './SubSections/General';
 import Clearances from './SubSections/Clearances';
 
-const MetaRolesDetailsView = ({ curMetaRole, setCurMetaRole, selectOptions }) => {
-  const [curTab, setCurTab] = useState(0);
-  return (
-    <>
-      <Box my={2} position='sticky' top='90px' zIndex='2' bgcolor="#fff" pt='20px'>
-        <Tabs
-          value={curTab}
-          onChange={(e, newTab) => setCurTab(newTab)}
-          indicatorColor='primary'
-          textColor='primary'
-        >
-          <Tab label={`${localization.t('labels.general')}`} />
-          <Tab label={`${localization.t('labels.clearances')}`} />
-        </Tabs>
-      </Box>
-      {curTab === 0 && (
-        <SectionLayout label='general'>
-          <General
-            setCurMetaRole={setCurMetaRole}
-            curMetaRole={curMetaRole}
-          />
-        </SectionLayout>
-      )}
-      {curTab === 1 && (
-        <SectionLayout label='clearances'>
-          <Clearances
-            setCurMetaRole={setCurMetaRole}
-            curMetaRole={curMetaRole}
-            selectOptions={selectOptions}
-          />
-        </SectionLayout>
-      )}
-    </>
-  );
-};
+const MetaRolesDetailsView = ({
+  curMetaRole,
+  setCurMetaRole,
+  selectOptions,
+  curTab,
+}) => (
+  <>
+    {curTab === 0 && (
+      <SectionLayout label='general'>
+        <General
+          setCurMetaRole={setCurMetaRole}
+          curMetaRole={curMetaRole}
+        />
+      </SectionLayout>
+    )}
+    {curTab === 1 && (
+      <SectionLayout label='clearances'>
+        <Clearances
+          setCurMetaRole={setCurMetaRole}
+          curMetaRole={curMetaRole}
+          selectOptions={selectOptions}
+        />
+      </SectionLayout>
+    )}
+  </>
+);
 
 MetaRolesDetailsView.propTypes = {
   curMetaRole: PropTypes.object,
   selectOptions: PropTypes.object,
   setCurMetaRole: PropTypes.func,
-
+  curTab: PropTypes.number,
 };
 export default MetaRolesDetailsView;

@@ -5,7 +5,7 @@ import {
   FormControlLabel,
   TextField,
   Popover,
-} from '@material-ui/core';
+} from '@mui/material';
 import localization from '../../localization';
 
 const scope = 'product';

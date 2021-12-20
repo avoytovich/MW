@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Button, Box } from '@material-ui/core';
+import { Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

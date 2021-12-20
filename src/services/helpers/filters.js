@@ -12,6 +12,8 @@ const generateFilterUrl = (filters, availableFilters) => {
     if (typeof val !== 'object') {
       if (filterConfig[0].exactSearch) {
         url += `${subFilter}${val}`;
+      } else if (key === 'id') {
+        url += `${subFilter}${val}`;
       } else {
         url += `${subFilter}*${val}*`;
       }

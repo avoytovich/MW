@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Grid } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ClearIcon from '@material-ui/icons/Clear';
+import { Box, Typography, Grid } from '@mui/material';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ClearIcon from '@mui/icons-material/Clear';
 
 import { filterOptions } from './utils';
 import localization from '../../localization';

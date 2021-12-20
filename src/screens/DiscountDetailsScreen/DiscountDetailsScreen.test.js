@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import DiscountDetailsScreen from './DiscountDetailsScreen';
-import { Tab, LinearProgress, Tabs, Button } from '@material-ui/core';
+import { Tab, LinearProgress, Tabs, Button } from '@mui/material';
 import useDiscountDetails from '../../services/useData/useDiscountDetails';
 import General from './SubSections/General';
 import CappingAndLimits from './SubSections/CappingAndLimits';

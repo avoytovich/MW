@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, Button, TextareaAutosize,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import '../variations.scss';
 
@@ -26,7 +26,7 @@ const AddParameterSecondStepList = ({
     </Typography>
     <TextareaAutosize
       aria-label="minimum height"
-      rowsMin={3}
+      minRows={3}
       placeholder="
         Tee-shirt size S
         Tee-shirt size M

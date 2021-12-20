@@ -1,7 +1,7 @@
 // ToDo: consider making a common layout for such type of settings screens
 import React from 'react';
 
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 
 import localization from '../../../localization';
 

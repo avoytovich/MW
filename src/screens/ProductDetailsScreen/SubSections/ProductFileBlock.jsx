@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
-import ClearIcon from '@material-ui/icons/Clear';
-import SaveIcon from '@material-ui/icons/Save';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import ClearIcon from '@mui/icons-material/Clear';
+import SaveIcon from '@mui/icons-material/Save';
 
-import { Box, CircularProgress } from '@material-ui/core';
+import { Box, CircularProgress } from '@mui/material';
 
 import {
   InputCustom,

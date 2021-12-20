@@ -37,6 +37,7 @@ const AutoFulfillmentDetails = () => {
       isLoading={isLoading}
       curParentPath={parentPaths.fulfillment.main}
       curData={detailsData}
+      noTabsMargin
     >
       <AutoFulfillmentDetailsView
         detailsData={detailsData}

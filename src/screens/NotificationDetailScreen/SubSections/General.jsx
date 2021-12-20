@@ -9,9 +9,9 @@ import {
   Grid,
   TextField,
   Chip,
-} from '@material-ui/core';
+  Autocomplete,
+} from '@mui/material';
 import PropTypes from 'prop-types';
-import Autocomplete from '@material-ui/lab/Autocomplete';
 import { email, urlIsValid } from '../../../services/helpers/inputValidators';
 import localization from '../../../localization';
 import { InputCustom, SelectWithChip } from '../../../components/Inputs';

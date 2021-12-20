@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -13,6 +13,7 @@ import DetailPageWrapper from '../../../components/utils/DetailPageWrapper';
 
 const MetaRoleDetailScreen = () => {
   const { id } = useParams();
+  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const {
@@ -41,11 +42,17 @@ const MetaRoleDetailScreen = () => {
       updateFunc={api.updateMetaRoleById}
       beforeSend={(data) => data}
       setUpdate={setUpdate}
+      tabs={{
+        curTab,
+        setCurTab,
+        tabLabels: ['general', 'clearances'],
+      }}
     >
       <MetaRolesDetailsView
         curMetaRole={curMetaRole}
         setCurMetaRole={setCurMetaRole}
         selectOptions={selectOptions}
+        curTab={curTab}
       />
     </DetailPageWrapper>
   );

@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Close as CloseIcon } from '@material-ui/icons';
+import { Close as CloseIcon } from '@mui/icons-material';
 import {
   Tabs, Tab, Box, Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import { removeEmptyPropsInObject } from '../../../services/helpers/dataStructuring';
 import { InputCustom, NumberInput } from '../../../components/Inputs';
 import {

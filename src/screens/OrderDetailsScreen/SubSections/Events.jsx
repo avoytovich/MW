@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import TableComponent from '../../../components/TableComponent';
 
 import {
@@ -20,7 +20,7 @@ const Events = ({ orderData }) => {
     return () => setEvents(null);
   }, []);
   return (
-    <Box>
+    <>
       <TableComponent
         defaultShowColumn={defaultShow}
         tableData={events}
@@ -31,7 +31,7 @@ const Events = ({ orderData }) => {
         customPath
         errorHighlight='processingError'
       />
-    </Box>
+    </>
   );
 };
 

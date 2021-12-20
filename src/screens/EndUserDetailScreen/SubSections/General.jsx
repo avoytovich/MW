@@ -7,12 +7,12 @@ import {
   Radio,
   Grid,
   Switch,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useHistory } from 'react-router-dom';
 
 import {
   FileCopy as FileCopyIcon,
-} from '@material-ui/icons';
+} from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import { makeCopy } from '../utils';
 import api from '../../../api';

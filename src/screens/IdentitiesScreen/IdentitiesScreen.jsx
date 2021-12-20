@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Button } from '@material-ui/core';
+import { Box, Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import api from '../../api';
 import {
@@ -75,7 +75,7 @@ const IdentitiesScreen = () => {
 
 
   return (
-    <Box display='flex' flexDirection='column'>
+    <>
       <TableActionsBar
         scope={scope}
         deleteFunc={api.deleteIdentityById}
@@ -96,6 +96,7 @@ const IdentitiesScreen = () => {
           </Button>
         </Box>
       </TableActionsBar>
+
       <TableComponent
         scope={scope}
         sortParams={sortParams}
@@ -105,7 +106,7 @@ const IdentitiesScreen = () => {
         tableData={identities}
         isLoading={isLoading}
       />
-    </Box>
+    </>
   );
 };
 
