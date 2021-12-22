@@ -88,13 +88,6 @@ const General = ({
       ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
       : lifeTimeUpdateValue.value;
 
-    const newLifeTimeSliced = newLifeTime[0] === '1' && lifeTimeUpdateValue.number === 1
-      ? newLifeTime.slice(1) : lifeTimeUpdateValue.value === 'MONTH' || lifeTimeUpdateValue.value === 'YEAR' 
-        ? newLifeTime.toLowerCase() : newLifeTime 
-
-    const newLifeTimeUpdated = newLifeTimeSliced === '1month' 
-      ? 'Month(s)' : newLifeTimeSliced === '1year' 
-        ? 'Year(s)' : newLifeTimeSliced
     currentProductData?.lifeTime?.state // eslint-disable-line
       ? currentProductData?.lifeTime?.state === 'inherits'
         ? setProductData({
@@ -111,7 +104,7 @@ const General = ({
             value: newLifeTime,
           },
         })
-        : setProductData({ ...currentProductData, lifeTime: newLifeTimeUpdated });
+      : setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
 
   useEffect(() => {
@@ -350,7 +343,7 @@ const General = ({
               <SelectCustom
                 label='lifeTime'
                 gridArea='lifeTime'
-                value={currentProductData.lifeTime}
+                value={currentProductData.lifeTime === '7DAY' ? currentProductData.lifeTime : currentProductData.lifeTime.replace(/[0-9]/g, '')}
                 selectOptions={lifeTime}
                 onChangeSelect={(e) => {
                   setShowLifeTimeNumber(
@@ -373,7 +366,7 @@ const General = ({
                 onChangeInput={(e) => {
                   setLifeTimeUpdateValue({
                     ...lifeTimeUpdateValue,
-                    number: e.target.value,
+                    number: e.target.value > 11 ? 11 : e.target.value < 1 ? 1 : e.target.value,
                   });
                 }}
                 minMAx={{ min: 1, max: 11 }}
@@ -383,20 +376,20 @@ const General = ({
         </Box>
       </Box>
       <Box display='flex' flexDirection='row' alignItems='center'>
-      <Box width='25%'>
-        <Box p={2} gridArea='count'>
-          <NumberInput
-            label='priority'
-            value={currentProductData?.priority}
-            onChangeInput={(e) => {
-              setProductData({
-                ...currentProductData,
-                priority: e.target.value,
-              });
-            }}
-          />
+        <Box width='25%'>
+          <Box p={2} gridArea='count'>
+            <NumberInput
+              label='priority'
+              value={currentProductData?.priority}
+              onChangeInput={(e) => {
+                setProductData({
+                  ...currentProductData,
+                  priority: e.target.value,
+                });
+              }}
+            />
+          </Box>
         </Box>
-      </Box>
         <Box display='flex' flexDirection='row' alignItems='baseline' width='25%' pr={2}>
           <Box p={2}>
             <Typography color='secondary'>
