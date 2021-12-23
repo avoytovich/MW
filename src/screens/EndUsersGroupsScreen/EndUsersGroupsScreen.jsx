@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import api from '../../api';
+import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import {
   generateData,
@@ -29,10 +30,11 @@ const EndUsersGroupsScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.endUsersGroups),
   );
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const { selectedCustomer } = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  const requests = async (rowsPerPage,reduxCurrentPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
 
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
@@ -86,6 +88,7 @@ const EndUsersGroupsScreen = () => {
         </Box>
       </TableActionsBar>
       <TableComponent
+        allCheckedItems={allCheckedItems}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteEndUserGroups}

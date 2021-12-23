@@ -16,6 +16,7 @@ import {
 
 import localization from '../../../../localization';
 import api from '../../../../api';
+import useAllTablesItems from '../../../../services/customHooks/useAllTablesItems';
 
 const PricesScreen = () => {
   const scope = 'prices';
@@ -23,6 +24,7 @@ const PricesScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.prices));
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getMarketingPrices({
@@ -55,6 +57,7 @@ const PricesScreen = () => {
 
   return (
     <TableComponent
+      allCheckedItems={allCheckedItems}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       scope={scope}

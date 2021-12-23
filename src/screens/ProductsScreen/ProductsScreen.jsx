@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import api from '../../api';
-import { setCheckedItems } from '../../redux/actions/TableData';
+import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import {
   generateData,
   defaultShow,
@@ -25,10 +24,7 @@ import parentPaths from '../../services/paths';
 
 const ProductsScreen = () => {
   const scope = 'productlist';
-  const dispatch = useDispatch();
-  const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
-  const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
-  const [allCheckedItems, setAllCheckedItems] = useState(tableCheckedItems);
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -63,16 +59,6 @@ const ProductsScreen = () => {
       )}`,
     );
   });
-
-  useEffect(() => {
-    if (allCheckedItems[reduxRowPerPage]) {
-      dispatch(setCheckedItems(allCheckedItems[allCheckedItems.length - 1]));
-    }
-  }, [reduxRowPerPage]);
-
-  useEffect(() => {
-    setAllCheckedItems([...allCheckedItems, tableCheckedItems]);
-  }, [tableCheckedItems]);
 
   return (
     <>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import api from '../../api';
+import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import {
   generateData,
@@ -28,6 +29,7 @@ const CartsScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.carts),
   );
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const storeIds = [];
@@ -89,6 +91,7 @@ const CartsScreen = () => {
         </Box>
       </TableActionsBar>
       <TableComponent
+        allCheckedItems={allCheckedItems}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteCart}
