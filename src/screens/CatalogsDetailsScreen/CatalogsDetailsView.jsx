@@ -140,30 +140,32 @@ const CatalogsDetailsView = ({
           </Box>
           <Box display="flex" alignItems="baseline">
             <Grid item md={3} sm={12}>
-              <Typography>{localization.t('labels.salesMode')}</Typography>
+              <Typography variant='h6'>{localization.t('labels.salesMode')}</Typography>
             </Grid>
             <Grid item md={9} sm={12}>
               <FormControlLabel
                 control={(
                   <Checkbox
-                    isDisabled
                     name='STANDARD'
                     color='primary'
                     checked={curCatalogs?.salesMode?.indexOf('STANDARD') >= 0}
+                    onChange={() => updateCatalogs('salesMode', 'STANDARD')}
+                    label='STANDARD'
                   />
                 )}
-                label='Standart'
+                label='STANDARD'
               />
               <FormControlLabel
                 control={(
                   <Checkbox
-                    isDisabled
                     name='BILLING_PLAN'
                     color='primary'
                     checked={curCatalogs?.salesMode?.indexOf('BILLING_PLAN') >= 0}
+                    onChange={() => updateCatalogs('salesMode', 'BILLING_PLAN')}
+                    label='BILLING_PLAN'
                   />
                 )}
-                label='Billing Plan'
+                label='BILLING_PLAN'
               />
             </Grid>
           </Box>
@@ -199,7 +201,7 @@ const CatalogsDetailsView = ({
           </Box>
           <Box display="flex" alignItems="baseline">
             <Grid item md={3} sm={12}>
-              <Typography>{localization.t('labels.status')}</Typography>
+              <Typography variant='h6'>{localization.t('labels.status')}</Typography>
             </Grid>
             <Grid item md={9} sm={12}>
               <FormControlLabel
@@ -290,7 +292,7 @@ const CatalogsDetailsView = ({
               ]}
             />
           </Box>
-          {(showAfter || (catalogs.startDate && !catalogs.endDate)) && (
+          {showAfter && (
             <Box p={2}>
               <TextField
                 fullWidth
@@ -314,7 +316,7 @@ const CatalogsDetailsView = ({
               />
             </Box>
           )}
-          {(showBetween || catalogs.endDate) && (
+          {showBetween && (
             <Box p={2}>
               <TextField
                 fullWidth
