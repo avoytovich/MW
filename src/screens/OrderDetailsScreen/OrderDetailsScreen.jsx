@@ -3,8 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import {
   Box,
-  Chip,
-  Typography,
   Button,
   Menu,
   MenuItem,
@@ -18,6 +16,7 @@ import { generateData } from '../../services/useData/tableMarkups/orderDetails';
 
 import OrderDetailsView from './OrderDetailsView';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
+import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
 import ConfirmationPopup from '../../components/Popup/ConfirmationPopup/index';
 import CancelOrderPopup from '../../components/Popup/CancelOrderPopup/index';
 import { tabLabels } from './utils';
@@ -115,32 +114,7 @@ const OrderDetailsScreen = () => {
           </Menu>
         </Box>
       )}
-      extraHeader={(
-        <Box display='flex' flexDirection='row' justifyContent='space-between'>
-          <Box display='flex' flexDirection='column'>
-            <Box display='flex' alignItems='center'>
-              {customer && (
-                <>
-                  <Box p={2}>
-                    <Typography variant='body2' gutterBottom>
-                      {customer.name}
-                    </Typography>
-                  </Box>
-
-                  <Chip
-                    label={customer.status === 'RUNNING' ? 'LIVE' : 'TEST'}
-                    style={{
-                      backgroundColor:
-                        customer.status === 'RUNNING' ? '#99de90' : '',
-                      color: '#fff',
-                    }}
-                  />
-                </>
-              )}
-            </Box>
-          </Box>
-        </Box>
-      )}
+      extraHeader={<CustomerStatusLabel customer={customer} />}
       tabs={{
         curTab,
         setCurTab,

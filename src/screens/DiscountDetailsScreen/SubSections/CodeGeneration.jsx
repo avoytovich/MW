@@ -111,15 +111,19 @@ const CodeGeneration = ({
                 </Box>
               </Grid>
               <Box m={1}>
-                <TableComponent
-                  customPath='disabled'
+                {tableData && (
+                  <Box height='400px'>
+                    <TableComponent
+                      customPath='disabled'
+                      defaultShowColumn={defaultShow}
+                      scope={scope}
+                      tableData={tableData}
+                      isLoading={isLoading}
+                      noActions
+                    />
+                  </Box>
+                )}
 
-                  defaultShowColumn={defaultShow}
-                  scope={scope}
-                  tableData={tableData}
-                  isLoading={isLoading}
-                  noActions
-                />
                 <CSVLink
                   onClick={(!markUp.headers)
                     ? (e) => e.preventDefault() : () => { }}

@@ -5,10 +5,6 @@
 import React from 'react';
 
 import {
-  Typography,
-} from '@mui/material';
-
-import {
   Delete as DeleteIcon,
   FileCopy as FileCopyIcon,
   Check as CheckIcon,
@@ -139,7 +135,7 @@ export const adjustColumnsData = (
       // eslint-disable-next-line
       renderCell: ({ row }) => {
         if (Array.isArray(row[header?.id])) {
-          return <Typography style={{ whiteSpace: 'pre-line', textAlign: 'left' }}>{row[header?.id].join('\r\n')}</Typography>;
+          return row[header?.id].join(', ');
         }
 
         if (header?.id === 'details' && row?.details === 'failed_event') {
@@ -154,7 +150,7 @@ export const adjustColumnsData = (
           if (header?.id === 'products') {
             customConfigs.cellClassName = 'flex-cell';
 
-            return <Typography style={{ whiteSpace: 'pre-line', textAlign: 'left' }}>{getMergedLineItems(row)}</Typography>;
+            return getMergedLineItems(row);
           }
         }
 

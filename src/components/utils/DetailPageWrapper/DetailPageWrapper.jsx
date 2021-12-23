@@ -13,11 +13,15 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+
 import localization from '../../../localization';
 import CustomBreadcrumbs from '../CustomBreadcrumbs';
 import LoadingErrorNotification from '../LoadingErrorNotification';
 import SelectCustomerNotification from '../SelectCustomerNotification';
 import defPath from '../../../services/helpers/routingHelper';
+import { copyText } from '../../../services/helpers/utils';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -37,27 +41,35 @@ const DetailPageWrapper = ({
   extraActions,
   extraHeader,
   noTabsMargin,
+  customTabs,
+  customSave,
+  headerTitleCopy,
   tabs,
 }) => {
   const location = useLocation();
   const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
   const history = useHistory();
   const handleSave = () => {
-    const sendObj = beforeSend ? beforeSend(curData) : curData;
-    if (id === 'add') {
-      addFunc(sendObj).then((res) => {
-        const headersLocation = res.headers.location.split('/');
-        const newId = headersLocation[headersLocation.length - 1];
-        const detailsPath = location.pathname.split('/add')[0];
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        history.push(`${detailsPath}/${newId}`);
-        setUpdate((u) => u + 1);
-      });
+    if (customSave) {
+      customSave();
     } else {
-      updateFunc(id, sendObj).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        setUpdate((u) => u + 1);
-      });
+      const sendObj = beforeSend ? beforeSend(curData) : curData;
+
+      if (id === 'add') {
+        addFunc(sendObj).then((res) => {
+          const headersLocation = res.headers.location.split('/');
+          const newId = headersLocation[headersLocation.length - 1];
+          const detailsPath = location.pathname.split('/add')[0];
+          toast(localization.t('general.updatesHaveBeenSaved'));
+          history.push(`${detailsPath}/${newId}`);
+          setUpdate((u) => u + 1);
+        });
+      } else {
+        updateFunc(id, sendObj).then(() => {
+          toast(localization.t('general.updatesHaveBeenSaved'));
+          setUpdate((u) => u + 1);
+        });
+      }
     }
   };
 
@@ -85,6 +97,14 @@ const DetailPageWrapper = ({
           <Box alignSelf='center'>
             <Typography data-test='notificationName' gutterBottom variant='h3'>
               {name}
+              {headerTitleCopy && (
+                <ContentCopyIcon
+                  onClick={(e) => { e.stopPropagation(); copyText(headerTitleCopy); }}
+                  color="secondary"
+                  style={{ marginLeft: '5px', fontSize: '20px' }}
+                  className="copyIcon"
+                />
+              )}
             </Typography>
           </Box>
 
@@ -108,6 +128,8 @@ const DetailPageWrapper = ({
         </Box>
 
         {extraHeader}
+
+        {customTabs}
 
         {tabs?.tabLabels && (
           <Tabs
@@ -149,7 +171,10 @@ DetailPageWrapper.propTypes = {
   nxStateNotNeeded: PropTypes.bool,
   extraActions: PropTypes.node,
   extraHeader: PropTypes.node,
+  customTabs: PropTypes.node,
   tabs: PropTypes.object,
+  customSave: PropTypes.func,
+  headerTitleCopy: PropTypes.any,
 };
 
 export default DetailPageWrapper;

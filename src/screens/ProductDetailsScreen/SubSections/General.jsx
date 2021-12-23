@@ -113,17 +113,17 @@ const General = ({
       : [...countriesOptions.map((l) => l.id).filter((c) => selectedCountries?.indexOf(c) < 0)];
 
     const [hasChanges] = newCountries
-      .filter((itm) => defaultBlacklisted.indexOf(itm) < 0);
-    const [hasReverseChanges] = defaultBlacklisted.filter(
-      (itm) => newCountries?.indexOf(itm) < 0,
-    );
+      ? newCountries?.filter((itm) => defaultBlacklisted?.indexOf(itm) < 0) : [];
+
+    const [hasReverseChanges] = defaultBlacklisted
+      ? defaultBlacklisted?.filter((itm) => newCountries?.indexOf(itm) < 0) : [];
 
     if (hasChanges || hasReverseChanges) {
       if (parentId) {
         setProductData({
           ...currentProductData,
           blackListedCountries: {
-            ...currentProductData.blackListedCountries,
+            ...currentProductData?.blackListedCountries,
             value: [...newCountries],
           },
         });
@@ -140,7 +140,7 @@ const General = ({
     if (!countriesOptions?.length && defaultBlacklisted?.length) return;
 
     if (countrySelection === 'blocked') {
-      const newCountries = defaultBlacklisted.length ? countriesOptions
+      const newCountries = defaultBlacklisted?.length ? countriesOptions
         .map((l) => l.id)
         .filter((c) => defaultBlacklisted?.indexOf(c) >= 0) : [];
 
@@ -343,7 +343,7 @@ const General = ({
               <SelectCustom
                 label='lifeTime'
                 gridArea='lifeTime'
-                value={currentProductData.lifeTime === '7DAY' ? currentProductData.lifeTime : currentProductData.lifeTime.replace(/[0-9]/g, '')}
+                value={currentProductData?.lifeTime === '7DAY' ? currentProductData?.lifeTime : currentProductData?.lifeTime?.replace(/[0-9]/g, '')}
                 selectOptions={lifeTime}
                 onChangeSelect={(e) => {
                   setShowLifeTimeNumber(
@@ -434,7 +434,7 @@ const General = ({
               isMultiline
               tooltip={localization.t('tooltips.externalContext')}
               label='externalContext'
-              value={currentProductData.externalContext}
+              value={currentProductData?.externalContext}
               onChangeInput={(e) => setProductData({
                 ...currentProductData,
                 externalContext: e.target.value,
@@ -462,7 +462,7 @@ const General = ({
                 sellingStores: e.target.value,
               })}
               onClickDelIcon={(chip) => {
-                const newValue = [...currentProductData.sellingStores].filter(
+                const newValue = [...currentProductData?.sellingStores].filter(
                   (val) => val !== chip,
                 );
                 setProductData({
