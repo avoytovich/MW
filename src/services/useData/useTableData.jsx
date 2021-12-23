@@ -13,7 +13,7 @@ const useTableData = (
 ) => {
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
-  const [fetchedData, setFetchedData] = useState();
+  const [fetchedData, setFetchedData] = useState(null);
   const reduxWasUpdated = useSelector(({ tableData: { wasUpdated } }) => wasUpdated);
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);

@@ -1,12 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 
 import { Box } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
 
 import localization from '../../../localization';
+import TinyEditor from '../../../components/TinyEditor';
 
 import './localizations.scss';
 
@@ -15,55 +14,25 @@ const LocalizationInputs = ({
   lang,
   handleChange,
 }) => {
-  const [isEditing, setEditing] = useState(false);
-  const editor = useRef();
-
-  const updateNewData = () => {
-    const curContent = editor.current.getEditorContents();
+  const updateNewData = (editor, v) => {
+    const curContent = editor.target.getContent();
 
     handleChange((c) => ({
       ...c,
-      [isEditing]: { ...c[isEditing], [lang]: curContent === '<p><br></p>' ? '' : curContent },
+      [v]: { ...c[v], [lang]: curContent },
     }));
-
-    setEditing(false);
   };
 
   const LocalizationInput = ({ val }) => (
-    isEditing === val ? (
-      <Box position='relative' mb={4}>
-        {/* <ReactQuill
-          theme='bubble'
-          value={data[val][lang]}
-          placeholder={localization.t(`forms.inputs.localizedContent.${val}`)}
-          ref={editor}
-        /> */}
-
-        <SaveIcon
-          className='edit-loc-field'
-          color='secondary'
-          onClick={updateNewData}
+    <Box display='flex' width='100%' flexDirection='column'>
+      <Box width='100%' px={4} mb={4}>
+        <TinyEditor
+          initialValue={data[val][lang] || ''}
+          placeholder={localization.t(`forms.inputs.localizedContent.${[val]}`)}
+          onChange={(editor) => updateNewData(editor, val)}
         />
       </Box>
-    ) : (
-      <Box position='relative' className='localization-input-holder' mb={4}>
-        <div className={`localization-text-legend ${data[val][lang] ? '' : 'empty'}`}>
-          <span className='MuiFormLabel-root'>{localization.t(`forms.inputs.localizedContent.${val}`)}</span>
-        </div>
-
-        <div
-          className='localization-text-block'
-          dangerouslySetInnerHTML={{ __html: data[val][lang] }}
-        />
-
-        <EditIcon
-          className='edit-loc-field'
-          color='secondary'
-          disabled={!lang}
-          onClick={() => setEditing(val)}
-        />
-      </Box>
-    )
+    </Box>
   );
 
   LocalizationInput.propTypes = {

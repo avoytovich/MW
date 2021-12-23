@@ -14,7 +14,7 @@ const InheritanceField = (props) => {
 
   const handleOnClickDelIcon = (chip) => {
     const { value: inheritanceValue } = props;
-    const newValue = [...inheritanceValue.value].filter((val) => val !== chip);
+    const newValue = [...inheritanceValue?.value].filter((val) => val !== chip);
 
     onChange({
       ...currentProductData,

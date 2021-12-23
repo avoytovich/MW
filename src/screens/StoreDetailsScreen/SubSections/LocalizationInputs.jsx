@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 import { Box } from '@mui/material';
 
+import TinyEditor from '../../../components/TinyEditor';
 import localization from '../../../localization';
 
 import './localizations.scss';
-import TinyEditor from '../../../components/TinyEditor';
 
 const LocalizationInputs = ({
   data,
