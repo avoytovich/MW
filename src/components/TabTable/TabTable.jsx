@@ -9,6 +9,7 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 const TabTable = ({ tabObject }) => {
   const {
@@ -27,6 +28,7 @@ const TabTable = ({ tabObject }) => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys[sortKey]),
   );
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -72,6 +74,7 @@ const TabTable = ({ tabObject }) => {
   );
   return (
     <TableComponent
+      allCheckedItems={allCheckedItems}
       noActions={tabObject.noActions}
       noEditDeleteActions={tabObject.noEditDeleteActions}
       sortParams={sortParams}

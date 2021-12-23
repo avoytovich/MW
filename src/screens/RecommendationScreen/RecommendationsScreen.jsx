@@ -5,6 +5,7 @@ import { Button } from '@mui/material';
 import TableComponent from '../../components/TableComponent';
 import TableActionsBar from '../../components/TableActionsBar';
 import parentPaths from '../../services/paths';
+import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import {
   generateData,
@@ -19,6 +20,7 @@ const RecommendationsScreen = () => {
   const scope = 'recommendations';
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getRecommendations({
@@ -62,6 +64,7 @@ const RecommendationsScreen = () => {
         </Button>
       </TableActionsBar>
       <TableComponent
+        allCheckedItems={allCheckedItems}
         scope={scope}
         handleDeleteItem={handleDeleteRecommendation}
         defaultShowColumn={defaultShow}

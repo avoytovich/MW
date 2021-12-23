@@ -7,6 +7,7 @@ import TableComponent from '../../../components/TableComponent';
 import api from '../../../api';
 
 import { useTableData } from '../../../services/useData';
+import useAllTablesItems from '../../../services/customHooks/useAllTablesItems';
 import {
   getSortParams,
   saveSortParams,
@@ -24,6 +25,7 @@ const TabTable = ({ tabObject, noEditDeleteActions = false }) => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys[sortKey]),
   );
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
   const handleSetSortParams = (params) => {
     setSortParams(params);
     saveSortParams(sortKeys[sortKey], params);
@@ -42,7 +44,7 @@ const TabTable = ({ tabObject, noEditDeleteActions = false }) => {
       });
     }
   };
-  const requests = async (rowsPerPage,reduxCurrentPage, filtersUrl) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
 
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
@@ -61,6 +63,7 @@ const TabTable = ({ tabObject, noEditDeleteActions = false }) => {
   );
   return (
     <TableComponent
+      allCheckedItems={allCheckedItems}
       scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}

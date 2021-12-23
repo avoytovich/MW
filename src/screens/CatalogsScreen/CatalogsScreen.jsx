@@ -19,6 +19,7 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../services/sorting';
+import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 const CatalogsScreen = () => {
   const scope = 'catalogs';
@@ -28,6 +29,7 @@ const CatalogsScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.catalogs),
   );
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getCatalogs({
@@ -81,6 +83,7 @@ const CatalogsScreen = () => {
       </TableActionsBar>
 
       <TableComponent
+        allCheckedItems={allCheckedItems}
         scope={scope}
         handleDeleteItem={handleDeleteCatalogs}
         sortParams={sortParams}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { toast } from 'react-toastify';
 import api from '../../api';
+import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import {
   generateData,
@@ -25,6 +26,7 @@ const LicenseScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.carts),
   );
+  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getLicenses({
@@ -63,6 +65,7 @@ const LicenseScreen = () => {
         headers={markUp.headers}
       />
       <TableComponent
+        allCheckedItems={allCheckedItems}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteCart}
