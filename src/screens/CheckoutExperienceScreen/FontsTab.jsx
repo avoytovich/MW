@@ -32,10 +32,10 @@ const FontsTab = () => {
     saveSortParams(sortKeys.fontsTab, params);
   };
 
-  const requests = async (rowsPerPage, reduxCurrentPage) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
     const res = await api.getDesignsFonts({
-      page: reduxCurrentPage, size: rowsPerPage, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, sortParams, filters: filtersUrl,
     });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
