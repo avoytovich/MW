@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import StoreDetailsView from './StoreDetailsView';
+import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
 
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import {
@@ -33,7 +34,6 @@ const StoreDetailsScreen = () => {
   const [storeResources, setStoreResources] = useState([]);
   const [resourcesHasChanges, setResourcesHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
-  const [selectedLang, setSelectedLang] = useState(0);
   const [errors, setErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [curTab, setCurTab] = useState(0);
@@ -67,7 +67,8 @@ const StoreDetailsScreen = () => {
     || !currentStoreData?.defaultLocale
     || !currentStoreData?.displayName
     || !currentStoreData?.routes[0].hostname
-    || Object.keys(errors).length > 0;
+    || Object.keys(errors).length > 0
+    || (Object.keys(currentStoreData.thankYouDesc).length > 1 && currentStoreData.thankYouDesc[currentStoreData.defaultLocale] === '');
 
   const beforeSend = () => {
     const updatedData = formatBeforeSending(
@@ -103,12 +104,15 @@ const StoreDetailsScreen = () => {
         );
         setStoreData(checkedStore);
         setCurrentStoreData(checkedStore);
-        api
-          .getCustomerById(store?.customerId)
-          .then(({ data: customer }) => {
-            setCurrentCustomerData(customer);
-          });
-        setLoading(false);
+        if (store?.customerId) {
+          api.getCustomerById(store?.customerId)
+            .then(({ data: customer }) => {
+              setCurrentCustomerData(customer);
+              setLoading(false);
+            });
+        } else {
+          setLoading(false);
+        }
 
         Promise.allSettled([
           api.getDesignsThemes(),
@@ -162,7 +166,8 @@ const StoreDetailsScreen = () => {
           },
         );
       }
-    }).finally(() => setLoading(false));
+    })
+      .catch(() => setLoading(false));
 
     return () => {
       isCancelled = true;
@@ -207,8 +212,9 @@ const StoreDetailsScreen = () => {
   return (
     <DetailPageWrapper
       nxState={nxState}
+      headerTitleCopy={storeData?.id}
       id={id}
-      name={storeData?.name || `${localization.t('general.new')} ${localization.t(
+      name={id !== 'add' ? `${storeData?.name} - ${storeData?.id}` : `${localization.t('general.new')} ${localization.t(
         'general.store',
       )}`}
       saveIsDisabled={validation() || handleDisabledSave}
@@ -225,6 +231,11 @@ const StoreDetailsScreen = () => {
         curTab,
         tabLabels,
       }}
+      extraHeader={(
+        <CustomerStatusLabel
+          customer={currentCustomerData}
+        />
+      )}
     >
       <StoreDetailsView
         errors={errors}
@@ -234,8 +245,6 @@ const StoreDetailsScreen = () => {
         setCurrentStoreData={setCurrentStoreData}
         currentStoreResources={currentStoreResources}
         setCurrentStoreResources={setCurrentStoreResources}
-        selectedLang={selectedLang}
-        setSelectedLang={setSelectedLang}
         curTab={curTab}
       />
     </DetailPageWrapper>

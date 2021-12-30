@@ -161,10 +161,21 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
             isRequired
             value={currentStoreData.defaultLocale}
             selectOptions={availableLocales}
-            onChangeSelect={(e) => setCurrentStoreData({
-              ...currentStoreData,
-              defaultLocale: e.target.value,
-            })}
+            onChangeSelect={(e) => {
+              const thankYouDesc = { ...currentStoreData.thankYouDesc };
+              if (currentStoreData.defaultLocale !== e.target.value && currentStoreData.thankYouDesc[currentStoreData.defaultLocale] === '') {
+                delete thankYouDesc[currentStoreData.defaultLocale];
+              } else if (currentStoreData.defaultLocale !== e.target.value
+                && currentStoreData.thankYouDesc[currentStoreData.defaultLocale]
+                && !thankYouDesc[e.target.value]) {
+                thankYouDesc[e.target.value] = '';
+              }
+              setCurrentStoreData({
+                ...currentStoreData,
+                defaultLocale: e.target.value,
+                thankYouDesc,
+              });
+            }}
           />
         </Box>
         <Box p={2}>
@@ -213,7 +224,6 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
           />
         </Box>
         <Box p={2}>
-
           <SwitchInput
             label='enableRecipientCode'
             handleChange={(e) => {
@@ -223,19 +233,6 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
               });
             }}
             isChecked={currentStoreData.recipientCodeMandatory}
-          />
-        </Box>
-        <Box p={2}>
-
-          <SwitchInput
-            label='allowQuotes'
-            handleChange={(e) => {
-              setCurrentStoreData({
-                ...currentStoreData,
-                allowQuotes: e.target.checked,
-              });
-            }}
-            isChecked={currentStoreData.allowQuotes}
           />
         </Box>
         <CheckboxInput
@@ -297,6 +294,18 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
                 })),
               });
             }}
+          />
+        </Box>
+        <Box p={2}>
+          <SwitchInput
+            label='allowSubscriptionUpgrade'
+            handleChange={(e) => {
+              setCurrentStoreData({
+                ...currentStoreData,
+                allowSubscriptionUpgrade: e.target.checked,
+              });
+            }}
+            isChecked={currentStoreData.allowSubscriptionUpgrade}
           />
         </Box>
         <Box p={2} height={74} alignItems='center' display='flex'>

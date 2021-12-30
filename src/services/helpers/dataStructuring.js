@@ -41,9 +41,9 @@ const defaultStore = {
   name: '',
   emailSenderOverride: '',
   routes: [{ hostname: '' }],
-  defaultLocale: '',
+  defaultLocale: 'en-US',
   saleLocales: [],
-  thankYouDesc: [],
+  thankYouDesc: {},
   storeWebsite: '',
   displayName: '',
   blackListedPaymentTypes: [],
@@ -70,6 +70,7 @@ const defaultStore = {
       layoutRef: {},
       themeRef: {},
       i18nRef: {},
+      dpThemeRef: {},
     },
     resellerCheckout: {
       fontRef: {},
@@ -202,6 +203,10 @@ const storeRequiredFields = (store) => {
     );
     res.paymentGroups = nwePaymentGroups;
   }
+  if (Object.keys(res.thankYouDesc).length === 0 && res.defaultLocale) {
+    res.thankYouDesc = { [res.defaultLocale]: '' };
+  }
+
   return res;
 };
 

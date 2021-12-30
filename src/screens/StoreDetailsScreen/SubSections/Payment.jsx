@@ -162,6 +162,18 @@ const Payment = ({
   return (
     <Box display="flex" flexDirection="column" width={1}>
       <Box p={2}>
+        <SwitchInput
+          label='allowQuotes'
+          handleChange={(e) => {
+            setCurrentStoreData({
+              ...currentStoreData,
+              allowQuotes: e.target.checked,
+            });
+          }}
+          isChecked={currentStoreData.allowQuotes}
+        />
+      </Box>
+      <Box p={2}>
         <SelectWithChip
           label="blacklistedPaymentTypes"
           value={currentStoreData.blackListedPaymentTypes}

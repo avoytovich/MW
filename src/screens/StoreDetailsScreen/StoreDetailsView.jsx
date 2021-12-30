@@ -18,8 +18,6 @@ const StoreDetailsView = ({
   setCurrentStoreData,
   currentStoreResources,
   setCurrentStoreResources,
-  selectedLang,
-  setSelectedLang,
   errors,
   setErrors,
   curTab,
@@ -58,8 +56,8 @@ const StoreDetailsView = ({
     {curTab === 3 && (
       <StoreSection label={tabLabels[3]}>
         <LocalizedContent
-          selectedLang={selectedLang}
-          setSelectedLang={setSelectedLang}
+          errors={errors}
+          setErrors={setErrors}
           currentStoreData={currentStoreData}
           setCurrentStoreData={setCurrentStoreData}
         />
@@ -72,10 +70,8 @@ StoreDetailsView.propTypes = {
   setCurrentStoreData: PropTypes.func,
   currentStoreData: PropTypes.object,
   selectOptions: PropTypes.object,
-  setSelectedLang: PropTypes.func,
   setCurrentStoreResources: PropTypes.func,
   currentStoreResources: PropTypes.array,
-  selectedLang: PropTypes.any,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
   curTab: PropTypes.number,

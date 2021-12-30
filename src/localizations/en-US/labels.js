@@ -732,6 +732,8 @@ const labels = {
   newProduct: 'New product',
   newPrice: 'New price',
   serviceConfiguration: 'Service Configuration',
+  dpTheme: 'DP Theme',
+  allowSubscriptionUpgrade: 'Allow subscription upgrade',
 };
 
 export default labels;
