@@ -122,6 +122,7 @@ const Forms = {
     signUp: 'Sign Up',
     signIn: 'Back to sign in page',
     lostPassword: 'Forgotten password',
+    logInToYourAccount: 'Log in to your account',
   },
   messages: {
     welcome: 'Welcome',
