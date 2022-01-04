@@ -127,7 +127,7 @@ export const adjustColumnsData = (
       width: 200,
       valueFormatter: (row) => {
         if (ofDateType.indexOf(row?.field) >= 0) {
-          return moment(row.value).format('D MMM YYYY');
+          return row.value ? moment(row.value).format('D MMM YYYY') : '-';
         }
 
         return row.value;
