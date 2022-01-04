@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   Button,
@@ -84,7 +85,7 @@ const RecoveryPassword = () => {
                 type="email"
                 value={values.email}
                 variant="outlined"
-                inputProps={{style: { WebkitBoxShadow: "0 0 0 1000px white inset" }}}
+                inputProps={{ style: { WebkitBoxShadow: '0 0 0 1000px white inset' } }}
               />
               <Box mt={2}>
                 <Button
@@ -112,6 +113,14 @@ const RecoveryPassword = () => {
             </form>
           )}
         </Formik>
+        <Box className="signUpContainer" display='flex' justifyContent='end' mt={3}>
+          <Link
+            to="/"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            {localization.t('forms.links.logInToYourAccount')}
+          </Link>
+        </Box>
       </Box>
     </>
   );
