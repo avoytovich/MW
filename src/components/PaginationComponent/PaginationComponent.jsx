@@ -13,36 +13,45 @@ import './PaginationComponent.scss';
 const PaginationComponent = ({
   totalPages,
   location,
+  propCurrentPage,
+  propSetCurrentPage,
 }) => {
   const dispatch = useDispatch();
-
-  const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
+  const currentPagination = propCurrentPage
+    || useSelector(({ tableData: { currentPage } }) => currentPage);
   const calculatePaginationNumbers = (condition = 0) => {
     let plus;
-    const toLeft = reduxCurrentPage - 2;
+    const toLeft = currentPagination - 2;
     let min = condition;
     if (toLeft === -1) {
-      min += reduxCurrentPage;
+      min += currentPagination;
       plus = 4;
     } else if (toLeft === 0) {
-      min = min + reduxCurrentPage - 1;
+      min = min + currentPagination - 1;
       plus = 3;
     } else {
-      min = min + reduxCurrentPage - 2;
+      min = min + currentPagination - 2;
       plus = 2;
     }
-    const toRoght = totalPages - (reduxCurrentPage + plus);
-    const max = toRoght < 1 || toRoght === 0 ? totalPages : reduxCurrentPage + plus;
+    const toRoght = totalPages - (currentPagination + plus);
+    const max = toRoght < 1 || toRoght === 0 ? totalPages : currentPagination + plus;
     const res = [];
     for (let i = min; i <= max; i++) {
       res.push(i);
     }
-    const exitConditin = max - reduxCurrentPage;
+    const exitConditin = max - currentPagination;
     return exitConditin < 2 && min > 1 && res.length < 5
       ? calculatePaginationNumbers(exitConditin === 0 && min > 2 ? -2 : -1)
       : res;
   };
   const pageNumbers = calculatePaginationNumbers();
+  const handleSetCurrentPage = (newValue) => {
+    if (propCurrentPage) {
+      propSetCurrentPage(newValue);
+    } else {
+      dispatch(setCurrentPage(newValue));
+    }
+  };
 
   return (
     (totalPages > 1
@@ -53,7 +62,7 @@ const PaginationComponent = ({
               && (
                 <Grid item>
                   <Typography
-                    onClick={() => dispatch(setCurrentPage(1))}
+                    onClick={() => handleSetCurrentPage(1)}
                     className="lastPaginationPage"
                   >
                     {localization.t('general.first')}
@@ -66,8 +75,8 @@ const PaginationComponent = ({
                   <Grid item key={`page ${item}`}>
                     <Typography
                       color="secondary"
-                      className={item === reduxCurrentPage ? 'currentPage' : ''}
-                      onClick={() => dispatch(setCurrentPage(item))}
+                      className={item === currentPagination ? 'currentPage' : ''}
+                      onClick={() => handleSetCurrentPage(item)}
                     >
                       {item}
                     </Typography>
@@ -78,16 +87,16 @@ const PaginationComponent = ({
             {pageNumbers[pageNumbers.length - 1] !== totalPages && (
               <Grid item>
                 <Typography
-                  onClick={() => dispatch(setCurrentPage(totalPages))}
+                  onClick={() => handleSetCurrentPage(totalPages)}
                   className="lastPaginationPage"
                 >
                   {localization.t('general.last')}
                 </Typography>
               </Grid>
             )}
-            {pageNumbers[pageNumbers.length - 1] !== reduxCurrentPage && (
+            {pageNumbers[pageNumbers.length - 1] !== currentPagination && (
               <Grid item>
-                <Typography onClick={() => dispatch(setCurrentPage(reduxCurrentPage + 1))} className="nextPaginationPage">
+                <Typography onClick={() => handleSetCurrentPage(currentPagination + 1)} className="nextPaginationPage">
                   {localization.t('general.next')}
                 </Typography>
               </Grid>
@@ -102,6 +111,8 @@ const PaginationComponent = ({
 PaginationComponent.propTypes = {
   location: PropTypes.string,
   totalPages: PropTypes.number,
+  propCurrentPage: PropTypes.number,
+  propSetCurrentPage: PropTypes.func,
 };
 
 export default PaginationComponent;
