@@ -16,11 +16,7 @@ const LocalizationInputs = ({
 }) => {
   const updateNewData = (editor) => {
     const curContent = editor.target.getContent();
-
-    handleChange((c) => ({
-      ...c,
-      thankYouDesc: { ...c.thankYouDesc, [lang]: curContent },
-    }));
+    handleChange(lang, curContent);
   };
 
   return (

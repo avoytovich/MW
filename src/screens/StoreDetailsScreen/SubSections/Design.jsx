@@ -18,7 +18,6 @@ const Design = ({
   setCurrentStoreResources,
 }) => {
   const [curTab, setCurTab] = useState(0);
-
   const handleUpdateDesign = (parent, updateParam, value) => {
     let resObj = {};
     if (value) {
@@ -203,6 +202,20 @@ const Design = ({
                   selectOptions={selectOptions.translation}
                   onChangeSelect={(e) => handleUpdateDesign('checkout', 'i18nRef', e.target.value)}
                   onClickDelIcon={() => handleUpdateDesign('checkout', 'i18nRef')}
+                />
+              </Box>
+              <Box p={2}>
+                <SelectWithDeleteIcon
+                  label="dpTheme"
+                  value={
+                    Object.keys(currentStoreData.designs.checkout.dpThemeRef)
+                      .length !== 0
+                      ? `${currentStoreData.designs.checkout.dpThemeRef.customerId}: ${currentStoreData.designs.checkout.dpThemeRef.name}`
+                      : ''
+                  }
+                  selectOptions={selectOptions.theme}
+                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'dpThemeRef', e.target.value)}
+                  onClickDelIcon={() => handleUpdateDesign('checkout', 'dpThemeRef')}
                 />
               </Box>
             </>

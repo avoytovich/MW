@@ -32,6 +32,7 @@ const errorNotifications = {
   fieldIsRequired: 'Field is required',
   groupDoesNotReferenceAnyPaymentType: 'Group does not reference any payment type',
   groupDoesNotReferenceAnyCountry: 'Group does not reference any country',
+  deliveryRemarkIsMandatory: 'Delivery remark is mandatory on default locale as soon as a delivery remark is set for some locale',
 };
 
 export default errorNotifications;
