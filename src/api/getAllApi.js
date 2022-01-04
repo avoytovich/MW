@@ -258,9 +258,12 @@ const getAllApi = {
     });
   },
   getDesignsFonts({
-    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
     let url = `/designs/fonts?format=short&size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
@@ -270,9 +273,12 @@ const getAllApi = {
     });
   },
   getDesignsThemes({
-    page = defaultRequestedPage, size = defaultRequestedSize, sortParams,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
     let url = `/designs/themes?format=short&size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
     if (sortParams) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }

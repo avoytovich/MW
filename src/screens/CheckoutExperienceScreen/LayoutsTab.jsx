@@ -25,10 +25,10 @@ const LayoutsTab = () => {
     saveSortParams(sortKeys.layoutsTab, params);
   };
 
-  const requests = async (rowsPerPage, reduxCurrentPage) => {
+  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
     const res = await api.getDesignsLayouts({
-      page: reduxCurrentPage, size: rowsPerPage, sortParams,
+      page: reduxCurrentPage, size: rowsPerPage, sortParams, filters: filtersUrl,
     });
     res.data.items.forEach((item) => {
       const costumer = `id=${item.customerId}`;
