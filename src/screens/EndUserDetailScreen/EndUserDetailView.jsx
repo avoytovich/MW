@@ -38,15 +38,7 @@ const EndUserDetailView = ({
 
     {curTab === 1 && curEndUser && <Emails emails={emails} />}
 
-    {
-      curTab === 2 && curEndUser && (
-        <SectionLayout label='orders'>
-          <Orders
-            orders={orders}
-          />
-        </SectionLayout>
-      )
-    }
+    {curTab === 2 && curEndUser && <Orders orders={orders} />}
   </>
 );
 
@@ -60,7 +52,7 @@ EndUserDetailView.propTypes = {
   emails: PropTypes.object,
   orders: PropTypes.object,
   consent: PropTypes.array,
-  curTab: PropTypes.bool,
+  curTab: PropTypes.number,
 
 };
 
