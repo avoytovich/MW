@@ -62,6 +62,10 @@ const Prices = ({
             country: k,
             price: `${v.value}`,
             vatIncluded: v.vatIncluded,
+            crossSell: v.crossSell || '-',
+            msrp: v.msrp || '-',
+            upSell: v.upSell || '-',
+            value: v.value || '-',
           });
         });
       });
@@ -267,11 +271,11 @@ const Prices = ({
                         {price.endDate ? moment(price.endDate).format('ll') : '-'}
                       </TableCell>
                       <TableCell align='center'>{price.country || 'default'}</TableCell>
-                      <TableCell align='center'>{price.currency}</TableCell>
-                      <TableCell align='center'>{price.value}</TableCell>
-                      <TableCell align='center'>-</TableCell>
-                      <TableCell align='center'>-</TableCell>
-                      <TableCell align='center'>-</TableCell>
+                      <TableCell align='center'>{price.currency || '-'}</TableCell>
+                      <TableCell align='center'>{price.value || '-'}</TableCell>
+                      <TableCell align='center'>{price.msrp || '-'}</TableCell>
+                      <TableCell align='center'>{price.upSell || '-'}</TableCell>
+                      <TableCell align='center'>{price.crossSell || '-'}</TableCell>
                       <TableCell align='center'>{price.vatIncluded ? 'YES' : 'NO'}</TableCell>
                     </TableRow>
                   ))}
