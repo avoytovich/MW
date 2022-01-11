@@ -259,8 +259,8 @@ const FindByCC = ({ open, onClose }) => {
           </Box>
 
           <PaginationComponent
-            currentPage={curPage}
-            updatePage={setCurPage}
+            propCurrentPage={curPage}
+            propSetCurrentPage={setCurPage}
             totalPages={totalPages}
           />
         </Box>
