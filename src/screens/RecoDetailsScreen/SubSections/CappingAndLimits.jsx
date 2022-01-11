@@ -10,7 +10,6 @@ import {
   TextField,
 } from '@mui/material';
 
-import DateRangePicker from '../../../components/utils/Modals/DateRangePicker';
 import CustomCard from '../../../components/utils/CustomCard';
 import { SelectCustom } from '../../../components/Inputs';
 import localization from '../../../localization';
@@ -23,6 +22,32 @@ const validityPeriod = [
 
 const CappingAndLimits = ({ curReco, setCurReco }) => {
   const [validPeriod, setValidPeriod] = useState('between');
+  const [errorMessages, setErrorMessages] = useState({ endDate: null });
+
+  const onChangeEndDate = (e) => {
+    const isFuture = new Date() < new Date(e.target.value);
+    if (isFuture) {
+      setErrorMessages({
+        ...errorMessages,
+        endDate: null,
+      });
+      setCurReco({
+        ...curReco,
+        errors: { endDate: false },
+        endDate: moment(e.target.value).valueOf(),
+      });
+    } else {
+      setErrorMessages({
+        ...errorMessages,
+        endDate: localization.t('labels.validationEndDate'),
+      });
+      setCurReco({
+        ...curReco,
+        errors: { endDate: true },
+        endDate: moment(e.target.value).valueOf(),
+      });
+    }
+  };
 
   useEffect(() => {
     if (validPeriod === 'between') return;
@@ -34,7 +59,6 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
     } else if (validPeriod === 'after') {
       delete newReco.endDate;
     }
-
     setCurReco(newReco);
   }, [validPeriod]);
 
@@ -51,22 +75,6 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
 
     setValidPeriod(curVariant);
   }, []);
-
-  const selectionRange = {
-    startDate: curReco?.startDate ? new Date(curReco?.startDate) : new Date(),
-    endDate: curReco?.endDate ? new Date(curReco?.endDate) : new Date(),
-    key: 'selection',
-  };
-
-  const handleSelect = (ranges) => {
-    const { startDate, endDate } = ranges;
-
-    setCurReco({
-      ...curReco,
-      startDate: moment(startDate).valueOf(),
-      endDate: moment(endDate).valueOf(),
-    });
-  };
 
   return (
     <CustomCard mt={0}>
@@ -89,58 +97,72 @@ const CappingAndLimits = ({ curReco, setCurReco }) => {
         </Grid>
 
         <Grid item md={4} sm={6}>
-          {validPeriod === 'between' ? (
-            <Box p={2}>
-              <DateRangePicker
-                values={selectionRange}
-                handleChange={handleSelect}
-              />
-            </Box>
-          ) : validPeriod === 'after' ? (
-            <Box p={2}>
-              <form noValidate>
+          <Box p={2}>
+            {validPeriod === 'after' && (
+              <Box>
                 <TextField
                   fullWidth
-                  name='startDate'
-                  value={
-                    curReco.startDate
-                      ? moment(curReco.startDate).format('YYYY-MM-DD')
-                      : ''
-                  }
+                  name="startDate"
+                  value={curReco.startDate ? moment(curReco.startDate).format('YYYY-MM-DDTHH:mm') : ''}
                   label={localization.t('labels.startDate')}
-                  type='date'
-                  variant='outlined'
+                  type="datetime-local"
+                  variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   onChange={(e) => setCurReco({
                     ...curReco,
                     startDate: moment(e.target.value).valueOf(),
                   })}
                 />
-              </form>
-            </Box>
-          ) : (
-            <Box p={2}>
-              <form noValidate>
+              </Box>
+            )}
+            {validPeriod === 'between' && (
+              <Box>
                 <TextField
                   fullWidth
-                  name='endDate'
-                  value={
-                    curReco.endDate
-                      ? moment(curReco.endDate).format('YYYY-MM-DD')
-                      : ''
-                  }
-                  label={localization.t('labels.endDate')}
-                  type='date'
-                  variant='outlined'
+                  name="startDate"
+                  value={curReco.startDate ? moment(curReco.startDate).format('YYYY-MM-DDTHH:mm') : ''}
+                  label={localization.t('labels.startDate')}
+                  type="datetime-local"
+                  variant="outlined"
                   InputLabelProps={{ shrink: true }}
                   onChange={(e) => setCurReco({
                     ...curReco,
-                    endDate: moment(e.target.value).valueOf(),
+                    startDate: moment(e.target.value).valueOf(),
                   })}
                 />
-              </form>
-            </Box>
-          )}
+                <Box pt={2}>
+                  <TextField
+                    fullWidth
+                    name="endDate"
+                    value={curReco.endDate ? moment(curReco.endDate).format('YYYY-MM-DDTHH:mm') : ''}
+                    label={localization.t('labels.endDate')}
+                    type="datetime-local"
+                    variant="outlined"
+                    InputLabelProps={{ shrink: true }}
+                    onChange={(e) => onChangeEndDate(e)}
+                    error={!!errorMessages.endDate}
+                    helperText={errorMessages.endDate}
+                  />
+                </Box>
+              </Box>
+            )}
+            {validPeriod === 'before' && (
+              <Box>
+                <TextField
+                  fullWidth
+                  name="endDate"
+                  value={curReco.endDate ? moment(curReco.endDate).format('YYYY-MM-DDTHH:mm') : ''}
+                  label={localization.t('labels.endDate')}
+                  type="datetime-local"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: true }}
+                  onChange={(e) => onChangeEndDate(e)}
+                  error={!!errorMessages.endDate}
+                  helperText={errorMessages.endDate}
+                />
+              </Box>
+            )}
+          </Box>
         </Grid>
       </Grid>
     </CustomCard>

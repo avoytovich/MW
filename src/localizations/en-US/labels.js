@@ -180,6 +180,7 @@ const labels = {
   validationField: 'This field is mandatory',
   validationUrl: 'Please select a file',
   validationLabel: 'Please select asset label',
+  validationEndDate: 'End date must be in the future',
   validationDublicateLabel: 'There are several assets with the same label',
   salutation: 'Salutation',
   css: 'CSS',
