@@ -7,6 +7,7 @@ import {
   generateData,
   defaultShow,
 } from '../../../services/useData/tableMarkups/orderDetailsProducts';
+import parentPaths from '../../../services/paths';
 
 const Products = ({ orderData }) => {
   const [products, setProducts] = useState(null);
@@ -27,7 +28,7 @@ const Products = ({ orderData }) => {
         noActions
         noTableActionsBar
         noEditDeleteActions
-        customPath
+        customPath={`${parentPaths.productlist}/:productId`}
         orderData={orderData?.processingEvent}
         wrapperStyles={{
           paddingBottom: '24px',
