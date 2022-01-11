@@ -75,7 +75,7 @@ const AutoFulfillmentDetailsView = ({ detailsData, customer }) => {
       <Grid item md={9} xs={12}>
         <Box className='customer'>
           <Typography variant='subtitle1' className='customer-value-name'>
-            {`${each.field}, `}
+            {`${each.field} ${each.field !== '-' ? ',' : ''} `}
           </Typography>
           <span
             className="customer-value-id"
@@ -83,11 +83,13 @@ const AutoFulfillmentDetailsView = ({ detailsData, customer }) => {
           >
             {customer.id}
           </span>
+          {customer.id && (
           <FileCopyIcon
             onClick={() => makeCopy(customer.id)}
             style={{ marginLeft: '5px' }}
             color="secondary"
           />
+          )}
         </Box>
       </Grid>
     </>

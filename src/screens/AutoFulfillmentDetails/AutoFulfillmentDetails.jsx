@@ -10,7 +10,7 @@ import AutoFulfillmentDetailsView from './AutoFulfillmentDetailsView';
 
 const AutoFulfillmentDetails = () => {
   const [detailsData, setDetailsData] = useState(null);
-  const [customer, setCustomer] = useState(null);
+  const [customer, setCustomer] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,8 +22,10 @@ const AutoFulfillmentDetails = () => {
     api.getFulfillmentsPartnerById(id)
       .then((data) => {
         setDetailsData(data.data);
-        api.getCustomerById(data.data.customerId)
-          .then((res) => setCustomer(res.data));
+        if (data.data.customerId) {
+          api.getCustomerById(data.data.customerId)
+            .then((res) => setCustomer(res.data));
+        }
       })
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
