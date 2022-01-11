@@ -11,7 +11,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Error as ErrorIcon, Close as CloseIcon } from '@mui/icons-material';
 
-import TableComponent from '../../TableComponent';
+import TableComponentFailed from '../../TableComponentFailed';
 
 import {
   generateData,
@@ -71,16 +71,11 @@ const FailedEventOrderPopup = ({ eventInfo, orderData }) => {
 
         {orderData?.length ? (
           <DialogContent>
-            <TableComponent
+            <TableComponentFailed
               defaultShowColumn={defaultShow}
               tableData={events}
               scope={scope}
-              noActions
-              noTableActionsBar
-              noEditDeleteActions
-              customPath
               errorHighlight='processingError'
-              failedOrderEvent
             />
           </DialogContent>
         ) : (

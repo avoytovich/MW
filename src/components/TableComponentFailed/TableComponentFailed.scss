@@ -1,0 +1,71 @@
+@import '../../styles/variables.scss';
+
+.tableRowGrid {
+  display: flex;
+  padding: 2px 0px;
+  min-height: 58px;
+  :hover {
+    background-color: $tablesOddRow;
+  }
+
+  &.error-row {
+    .MuiTypography-colorSecondary {
+      color: #fff;
+    }
+  }
+
+  .tableCellItemGrid {
+    overflow-x: hidden;
+    width: 175px;
+    min-width: 130px;
+    .tableCellItem {
+      white-space: nowrap;
+      text-align: center;
+      font: 15px 'Roboto';
+      color: #959595;
+      display: block;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .error-row-color {
+      color: $deleteIcon;
+    }
+  }
+}
+.error-row-color {
+  color: $deleteIcon;
+}
+.tableHeaderGrid {
+  min-width: fit-content;
+  padding: 15px 0;
+  padding-left: 20px;
+  overflow-x: hidden;
+  min-width: fit-content;
+  .tableHeader {
+    max-width: 170px;
+    display: flex;
+    white-space: nowrap;
+    text-align: left;
+    font: 16px 'Roboto', sans-serif;
+    font-weight: bold;
+    color: #303030;
+    letter-spacing: normal;
+  }
+  .headers {
+    display: flex;
+    align-items: center;
+    min-width: 175px;
+    padding: 5px 0;
+  }
+}
+
+.tableBodyGrid {
+  min-width: fit-content;
+}
+
+.paper {
+  height: fit-content;
+  max-height: calc(100vh - 216px);
+  width: 100%;
+  overflow: auto;
+}
