@@ -10,7 +10,6 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import Modal from '@mui/material/Modal';
-import Backdrop from '@mui/material/Backdrop';
 import Fade from '@mui/material/Fade';
 import { getCountriesOptions, getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { urlIsValid } from '../../../services/helpers/inputValidators';
@@ -36,24 +35,14 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
   const availableLocales = getLanguagesOptions();
   const [open, setOpen] = useState(false);
   const [countrySelection, setCountrySelection] = useState(currentStoreData.restrictedCountries.length ? 'allowed' : 'blocked');
-  const [saveModalChecked, setSaveModalChecked] = useState(null);
   const [errorMessages, setErrorMessages] = useState(null);
-
-  const handleOpenModal = (e) => {
-    setSaveModalChecked(e.target.value);
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
 
   const confirmModal = () => {
     setCurrentStoreData({
       ...currentStoreData,
-      status: saveModalChecked ? 'ENABLED' : 'DISABLED',
+      status: 'DISABLED',
     });
-    handleCloseModal();
+    setOpen(false);
   };
 
   const selectAllCountries = () => {
@@ -77,9 +66,8 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
           <Modal
             className='modal'
             open={open}
-            onClose={handleCloseModal}
+            onClose={() => setOpen(false)}
             closeAfterTransition
-            BackdropComponent={Backdrop}
             BackdropProps={{
               timeout: 500,
             }}
@@ -90,7 +78,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
                   {localization.t('general.disableStore')}
                 </Typography>
                 <Box display='flex' justifyContent='space-around' pt={4}>
-                  <Button variant="outlined" onClick={handleCloseModal}>Cancel</Button>
+                  <Button variant="outlined" onClick={() => setOpen(false)}>Cancel</Button>
                   <Button variant="contained" color="primary" onClick={confirmModal}>Confirm</Button>
                 </Box>
               </Box>
@@ -100,7 +88,7 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
             label='status'
             handleChange={(e) => {
               !e.target.checked
-                ? handleOpenModal(e)
+                ? setOpen(true)
                 : setCurrentStoreData({
                   ...currentStoreData,
                   status: e.target.checked ? 'ENABLED' : 'DISABLED',
