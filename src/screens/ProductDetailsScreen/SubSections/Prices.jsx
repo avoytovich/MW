@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import {
   Box,
   Button,
@@ -13,7 +14,8 @@ import {
   Typography,
   Checkbox,
 } from '@mui/material';
-
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import { toast } from 'react-toastify';
 import moment from 'moment';
 
 import ClearIcon from '@mui/icons-material/Clear';
@@ -27,8 +29,12 @@ import { SelectCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
 
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 import { checkValue } from '../../../services/helpers/dataStructuring';
+import parentPaths from '../../../services/paths';
+import localization from '../../../localization';
 
 import api from '../../../api';
+
+import './prices.scss';
 
 const Prices = ({
   selectOptions,
@@ -40,6 +46,8 @@ const Prices = ({
   const [prices, setPrices] = useState([]);
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const [needDefault, setNeedDefault] = useState(null);
+
+  const history = useHistory();
 
   const priceByCountryByCurrency = checkValue(
     currentProductData?.prices,
@@ -61,6 +69,9 @@ const Prices = ({
             currency: key,
             country: k,
             price: `${v.value}`,
+            msrp: `${v.msrp || '-'}`,
+            upSell: `${v.upSell || '-'}`,
+            crossSell: `${v.crossSell || '-'}`,
             vatIncluded: v.vatIncluded,
             crossSell: v.crossSell || '-',
             msrp: v.msrp || '-',
@@ -119,6 +130,11 @@ const Prices = ({
             c?.prices?.defaultCurrency === item.currency ? null : c.prices.defaultCurrency,
         },
     }));
+  };
+
+  const makeCopy = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
 
   return (
@@ -261,7 +277,20 @@ const Prices = ({
                       }
                     >
                       <TableCell component='th' scope='row'>
-                        {price.id}
+                        <Box className="price">
+                          <Typography variant='subtitle1'>
+                            <span
+                              className="price-value"
+                              onClick={() => history.push(`${parentPaths.pricemodels.pricesTab}/${price.id}`)} // ToDo: should be replaced with new customer route
+                            >
+                              {price.id}
+                            </span>
+                          </Typography>
+                          <FileCopyIcon
+                            onClick={() => makeCopy(price.id)}
+                            color="secondary"
+                          />
+                        </Box>
                       </TableCell>
                       <TableCell align='center'>-</TableCell>
                       <TableCell align='center'>

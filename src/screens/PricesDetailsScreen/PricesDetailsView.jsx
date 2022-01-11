@@ -1,5 +1,5 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -17,7 +17,6 @@ import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
 import { getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 import { SelectCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
-import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
 import parentPaths from '../../services/paths';
 import {
   priceCurrency,
@@ -39,15 +38,6 @@ const PricesDetailsView = ({
     setCurPrice({ ...curPrice, [name]: value });
   };
 
-  const handleSelectDate = (ranges) => {
-    const { startDate, endDate } = ranges;
-    setCurPrice((c) => ({
-      ...c,
-      startDate: moment(startDate).valueOf(),
-      endDate: moment(endDate).valueOf(),
-    }));
-  };
-
   const handleCountry = (e) => {
     if (e.target.value === 'default' && curPrice?.country) {
       const newPrice = { ...curPrice };
@@ -58,11 +48,33 @@ const PricesDetailsView = ({
       setCurPrice((c) => ({ ...c, country: e.target.value }));
     }
   };
-  const selectionRange = {
-    startDate: curPrice?.startDate ? new Date(curPrice?.startDate) : new Date(),
-    endDate: curPrice?.endDate ? new Date(curPrice?.endDate) : new Date(),
-    key: 'selection',
-  };
+
+  useEffect(() => {
+    if (validPeriod === 'between') return;
+
+    const newPrice = { ...curPrice };
+
+    if (validPeriod === 'before') {
+      delete newPrice.startDate;
+    } else if (validPeriod === 'after') {
+      delete newPrice.endDate;
+    }
+    setCurPrice(newPrice);
+  }, [validPeriod]);
+
+  useEffect(() => {
+    let curVariant = 'between';
+
+    if (curPrice.startDate && curPrice.endDate) {
+      curVariant = 'between';
+    } else if (curPrice.startDate) {
+      curVariant = 'after';
+    } else if (curPrice.endDate) {
+      curVariant = 'before';
+    }
+
+    setValidPeriod(curVariant);
+  }, []);
 
   return (
     <div className="price-details-screen">
@@ -191,8 +203,8 @@ const PricesDetailsView = ({
                 *
               </Typography>
 
-              <Box py={2} display='flex'>
-                <Box width='200px'>
+              <Box py={2}>
+                <Box>
                   <SelectCustom
                     label="periodOfValidity"
                     onChangeSelect={(e) => setValidPeriod(e.target.value)}
@@ -203,28 +215,46 @@ const PricesDetailsView = ({
                     value={validPeriod}
                   />
                 </Box>
-
-                <Box ml={4}>
-                  {validPeriod === 'between' ? (
-                    <Box display='flex' alignItems='center' mt='8px' height='100%'>
-                      <DateRangePicker
-                        values={selectionRange}
-                        handleChange={handleSelectDate}
-                      />
-                    </Box>
-                  ) : (
-                    <form noValidate>
+                <Box>
+                  {validPeriod === 'after' && (
+                    <Box>
                       <TextField
                         fullWidth
                         name="startDate"
-                        value={curPrice.startDate ? moment(curPrice.startDate).format('YYYY-MM-DD') : ''}
+                        value={curPrice.startDate ? moment(curPrice.startDate).format('YYYY-MM-DDTHH:mm') : ''}
                         label={localization.t('labels.startDate')}
-                        type="date"
+                        type="datetime-local"
                         variant="outlined"
                         InputLabelProps={{ shrink: true }}
                         onChange={handleChange}
                       />
-                    </form>
+                    </Box>
+                  )}
+                  {validPeriod === 'between' && (
+                    <Box>
+                      <TextField
+                        fullWidth
+                        name="startDate"
+                        value={curPrice.startDate ? moment(curPrice.startDate).format('YYYY-MM-DDTHH:mm') : ''}
+                        label={localization.t('labels.startDate')}
+                        type="datetime-local"
+                        variant="outlined"
+                        InputLabelProps={{ shrink: true }}
+                        onChange={handleChange}
+                      />
+                      <Box pt={2}>
+                        <TextField
+                          fullWidth
+                          name="endDate"
+                          value={curPrice.endDate ? moment(curPrice.endDate).format('YYYY-MM-DDTHH:mm') : ''}
+                          label={localization.t('labels.endDate')}
+                          type="datetime-local"
+                          variant="outlined"
+                          InputLabelProps={{ shrink: true }}
+                          onChange={handleChange}
+                        />
+                      </Box>
+                    </Box>
                   )}
                 </Box>
               </Box>

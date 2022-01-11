@@ -124,13 +124,13 @@ const RecoDetailsScreen = () => {
       name={curReco?.name || `${localization.t('general.new')} ${localization.t(
         'general.recommendation',
       )}`}
-      saveIsDisabled={curReco?.eligibleStoreIds?.length < 1 || curReco?.name === ''}
+      saveIsDisabled={curReco?.eligibleStoreIds?.length < 1 || curReco?.name === '' || curReco?.errors?.endDate}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.recommendations}
       curData={curReco}
       addFunc={api.addNewRecommendation}
-      updateFunc={api.updateNotificationById}
+      updateFunc={api.updateRecoById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
       tabs={{
