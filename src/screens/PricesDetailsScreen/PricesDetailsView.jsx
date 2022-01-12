@@ -165,7 +165,7 @@ const PricesDetailsView = ({
           <Box width="50%" ml={4}>
             <SelectCustom
               label="priceCountry"
-              value={curPrice?.country || ''}
+              value={curPrice?.country || 'default'}
               selectOptions={[{ id: 'default', value: 'default' }, ...countriesOptions]}
               onChangeSelect={handleCountry}
             />
