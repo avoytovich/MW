@@ -21,18 +21,8 @@ const defaultProduct = {
   nextGenerationOf: [],
   resources: [],
   prices: {
-    defaultCurrency: 'AED',
-    priceByCountryByCurrency: {
-      AED: {
-        default: {
-          value: 1,
-          msrp: null,
-          upSell: null,
-          crossSell: null,
-          vatIncluded: false,
-        },
-      },
-    },
+    defaultCurrency: '',
+    priceByCountryByCurrency: {},
   },
 };
 

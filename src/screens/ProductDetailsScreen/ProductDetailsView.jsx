@@ -26,6 +26,8 @@ const ProductDetailsView = ({
   setSaveDisabled,
   setTabsDisabled,
   curTab,
+  needDefault,
+  setNeedDefault,
 }) => {
   const checkSaveDisable = () => {
     let disableSave = false;
@@ -102,6 +104,8 @@ const ProductDetailsView = ({
       {curTab === 3 && (
         <SectionLayout dataTest='prices' label='prices'>
           <Prices
+            needDefault={needDefault}
+            setNeedDefault={setNeedDefault}
             selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={curProductData}
@@ -164,6 +168,8 @@ ProductDetailsView.propTypes = {
   curTab: PropTypes.number,
   setSaveDisabled: PropTypes.func,
   setTabsDisabled: PropTypes.func,
+  needDefault: PropTypes.array,
+  setNeedDefault: PropTypes.func,
 };
 
 export default ProductDetailsView;
