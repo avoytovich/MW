@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { fromArrayToObject, tabsLabels } from './utils';
+import { fromArrayToObject, tabsLabels, formatCodesToObject } from './utils';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import api from '../../api';
 import localization from '../../localization';
 import useDiscountDetails from '../../services/useData/useDiscountDetails';
 import parentPaths from '../../services/paths';
 import DiscountDetailsView from './DiscountDetailsView';
+import { removeEmptyPropsInObject } from '../../services/helpers/dataStructuring';
 
 const DiscountDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
@@ -40,11 +41,11 @@ const DiscountDetailsScreen = () => {
       delete res.amountByCurrency;
     }
     if (curDiscount.model === 'COUPON') {
-      res.codes = fromArrayToObject(curDiscount.codes);
+      res.codes = formatCodesToObject(curDiscount.codes);
     } else {
       delete res.codes;
     }
-    return res;
+    return removeEmptyPropsInObject(res);
   };
 
   return (
@@ -54,7 +55,7 @@ const DiscountDetailsScreen = () => {
       name={discount?.name || `${localization.t('general.new')} ${localization.t(
         'general.discount',
       )}`}
-      saveIsDisabled={!curDiscount?.name}
+      saveIsDisabled={!curDiscount?.name || (curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === '')}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.discountrules}

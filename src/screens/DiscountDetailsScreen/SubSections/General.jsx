@@ -25,7 +25,6 @@ const General = ({
   id,
   curDiscount,
   setCurDiscount,
-  selectOptions,
   setAmountType,
   amountType,
   setCheckedSingleUseCode,
@@ -80,8 +79,7 @@ const General = ({
                 />
               )}
               label={localization.t(
-                `labels.${
-                  curDiscount.status === 'ENABLED' ? 'enabled' : 'disabled'
+                `labels.${curDiscount.status === 'ENABLED' ? 'enabled' : 'disabled'
                 }`,
               )}
             />
@@ -141,15 +139,15 @@ const General = ({
             </Box>
           ) : (
             curDiscount.amountByCurrency && (
-            <EditKeyValueInputs
-              data-test='amountByCurrency'
-              curValue={curDiscount.amountByCurrency}
-              setCurValue={(value) => setCurDiscount(
-                { ...curDiscount, amountByCurrency: value },
-              )}
-              selectOptions={priceCurrency}
-              labels={['currency', 'amount']}
-            />
+              <EditKeyValueInputs
+                data-test='amountByCurrency'
+                curValue={curDiscount.amountByCurrency}
+                setCurValue={(value) => setCurDiscount(
+                  { ...curDiscount, amountByCurrency: value },
+                )}
+                selectOptions={priceCurrency}
+                labels={['currency', 'amount']}
+              />
             )
           )}
         </Box>
@@ -211,6 +209,8 @@ const General = ({
         </Box>
         {curDiscount.model === 'COUPON' && (
           <EditKeyValueInputs
+            helperText={localization.t('errorNotifications.canNotBeEmpty')}
+            hasError={curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === ''}
             data-test='codes'
             labels={['language', 'code']}
             curValue={curDiscount.codes}
@@ -228,7 +228,6 @@ General.propTypes = {
   id: PropTypes.string,
   curDiscount: PropTypes.object,
   setCurDiscount: PropTypes.func,
-  selectOptions: PropTypes.object,
   setAmountType: PropTypes.func,
   amountType: PropTypes.string,
   setCheckedSingleUseCode: PropTypes.func,
