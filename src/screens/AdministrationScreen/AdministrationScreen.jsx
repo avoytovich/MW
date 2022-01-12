@@ -50,9 +50,9 @@ const tabsData = [
   {
     label: 'privilege',
     path: parentPaths.userroles.privileges,
-    button: `${localization.t('general.add')} ${localization.t(
+    /* button: `${localization.t('general.add')} ${localization.t(
       'general.privilege',
-    )}`,
+    )}`, */
     request: api.getPrivileges,
     sortKey: 'privilegesAdmin',
     generateData: generatePrivileges,
@@ -66,24 +66,27 @@ const tabsData = [
 const AdministrationScreen = ({ location }) => {
   const drawAddButton = () => {
     const currentTab = tabsData.find((item) => item.path === location.pathname) || tabsData[0];
+
     return (
       <TableActionsBar
         scope={currentTab.scope}
         deleteFunc={currentTab.deleteFunc}
         headers={currentTab.headers}
       >
-        <Box alignSelf='flex-end'>
-          <Button
-            id='add-administration-button'
-            color='primary'
-            size='large'
-            variant='contained'
-            component={Link}
-            to={`${currentTab.path}/add`}
-          >
-            {currentTab.button}
-          </Button>
-        </Box>
+        {currentTab?.button && (
+          <Box alignSelf='flex-end'>
+            <Button
+              id='add-administration-button'
+              color='primary'
+              size='large'
+              variant='contained'
+              component={Link}
+              to={`${currentTab.path}/add`}
+            >
+              {currentTab.button}
+            </Button>
+          </Box>
+        )}
       </TableActionsBar>
 
     );

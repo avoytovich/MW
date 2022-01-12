@@ -33,7 +33,6 @@ const PrivilegesDetailScreen = () => {
       isLoading={isLoading}
       curParentPath={parentPaths.userroles.privileges}
       curData={curPrivilege}
-      addFunc={() => { }}
       updateFunc={null}
       beforeSend={(data) => data}
       setUpdate={setUpdate}
