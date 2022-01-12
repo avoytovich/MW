@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography, Grid } from '@mui/material';
+import {
+  Box, Typography, Grid, IconButton,
+} from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -21,6 +23,8 @@ const EditKeyValueInputs = ({
   selectOptions,
   additionalOption,
   labels,
+  helperText,
+  hasError,
 }) => {
   const optionsArray = [...selectOptions];
   if (additionalOption) {
@@ -40,7 +44,7 @@ const EditKeyValueInputs = ({
   };
 
   return (
-    <Grid container alignItems="center">
+    <Grid container>
       {curValue.length !== 0 ? (
         curValue.map((item, index) => (
           <Fragment key={item.key}>
@@ -87,6 +91,8 @@ const EditKeyValueInputs = ({
                   />
                 ) : (
                   <InputCustom
+                    helperText={hasError && index === 0 ? helperText : ''}
+                    hasError={hasError}
                     label={labels[1]}
                     value={item.value}
                     onChangeInput={(e) => {
@@ -103,15 +109,26 @@ const EditKeyValueInputs = ({
                 )}
               </Box>
             </Grid>
-            <Grid item xs={1} className="iconsWrapper">
-              {index === 0 ? (
-                <AddCircleIcon color="primary" onClick={handleAdd} />
-              ) : (
-                <ClearIcon
-                  color="secondary"
-                  onClick={() => handleRemove(item.key)}
-                />
-              )}
+            <Grid item xs={1}>
+              <Box pt={3}>
+                {index === 0 ? (
+                  <IconButton
+                    disabled={hasError}
+                    onClick={handleAdd}
+                    color='primary'
+                  >
+                    <AddCircleIcon />
+                  </IconButton>
+
+                ) : (
+                  <IconButton
+                    onClick={() => handleRemove(item.key)}
+                    color='secondary'
+                  >
+                    <ClearIcon />
+                  </IconButton>
+                )}
+              </Box>
             </Grid>
           </Fragment>
         ))
@@ -137,4 +154,6 @@ EditKeyValueInputs.propTypes = {
   additionalOption: PropTypes.object,
   labels: PropTypes.array,
   selectOptions: PropTypes.array,
+  helperText: PropTypes.string,
+  hasError: PropTypes.bool,
 };

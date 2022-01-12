@@ -33,6 +33,7 @@ const errorNotifications = {
   groupDoesNotReferenceAnyPaymentType: 'Group does not reference any payment type',
   groupDoesNotReferenceAnyCountry: 'Group does not reference any country',
   deliveryRemarkIsMandatory: 'Delivery remark is mandatory on default locale as soon as a delivery remark is set for some locale',
+  canNotBeEmpty: 'Cannot be empty',
 };
 
 export default errorNotifications;
