@@ -33,6 +33,7 @@ const ProductDetailsScreen = () => {
   const parentId = history?.location?.state?.parentId;
   const [isLoading, setLoading] = useState(true);
   const [customer, setCustomer] = useState(null);
+  const [needDefault, setNeedDefault] = useState(null);
   const [curTab, setCurTab] = useState(0);
   const [upd, setUpd] = useState(0);
   const [saveDisabled, setSaveDisabled] = useState(false);
@@ -324,7 +325,7 @@ const ProductDetailsScreen = () => {
       nxState={nxState}
       id={id}
       name={id === 'add' ? localization.t('labels.newProduct') : `${productData?.genericName?.value || productData?.genericName} - ${id}`}
-      saveIsDisabled={saveDisabled || tabsDisabled}
+      saveIsDisabled={saveDisabled || tabsDisabled || Boolean(needDefault)}
       hasChanges={productHasChanges || productHasLocalizationChanges || !productData?.id}
       isLoading={isLoading}
       curParentPath={parentPaths.productlist}
@@ -386,6 +387,8 @@ const ProductDetailsScreen = () => {
       headerTitleCopy={productData?.id}
     >
       <ProductDetailsView
+        needDefault={needDefault}
+        setNeedDefault={setNeedDefault}
         productData={productData}
         setCurProductData={setCurrentProductData}
         curProductData={currentProductData}

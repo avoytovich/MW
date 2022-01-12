@@ -42,10 +42,11 @@ const Prices = ({
   setProductData,
   setSaveDisabled,
   parentId,
+  needDefault,
+  setNeedDefault,
 }) => {
   const [prices, setPrices] = useState([]);
   const [scheduledPrices, setScheduledPrices] = useState([]);
-  const [needDefault, setNeedDefault] = useState(null);
 
   const history = useHistory();
 
@@ -69,9 +70,6 @@ const Prices = ({
             currency: key,
             country: k,
             price: `${v.value}`,
-            msrp: `${v.msrp || '-'}`,
-            upSell: `${v.upSell || '-'}`,
-            crossSell: `${v.crossSell || '-'}`,
             vatIncluded: v.vatIncluded,
             crossSell: v.crossSell || '-',
             msrp: v.msrp || '-',
@@ -88,8 +86,7 @@ const Prices = ({
       } else {
         setSaveDisabled(false);
       }
-
-      setNeedDefault(needsDefault.length ? needsDefault : false);
+      setNeedDefault(needsDefault.length ? needsDefault : null);
       setPrices([...pricesArr]);
     }
   }, [currentProductData.prices]);
@@ -149,6 +146,8 @@ const Prices = ({
             currentProductData={currentProductData}
           >
             <SelectCustom
+              isDisabled={[...priceCurrency.filter((pr) => pricesList.includes(pr.id))]
+                .length === 0}
               label='defaultCurrency'
               value={currentProductData?.prices?.defaultCurrency}
               selectOptions={[...priceCurrency.filter((pr) => pricesList.includes(pr.id))]}
@@ -352,6 +351,8 @@ Prices.propTypes = {
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
   setSaveDisabled: PropTypes.func,
+  needDefault: PropTypes.array,
+  setNeedDefault: PropTypes.func,
 };
 
 export default Prices;
