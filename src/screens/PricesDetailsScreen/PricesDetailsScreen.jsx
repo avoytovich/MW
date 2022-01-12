@@ -85,9 +85,18 @@ const PricesDetailsScreen = () => {
     }
   }, [update]);
 
+  const beforeSend = () => {
+    const res = { ...curPrice };
+    if (res.country === 'default') {
+      delete res.country;
+    }
+    return res;
+  };
+
   return (
     <DetailPageWrapper
       nxState={nxState}
+      saveIsDisabled={!curPrice?.currency || !curPrice?.value || !curPrice?.productId}
       id={id}
       name={curPrice?.id ? customerName : localization.t('labels.newPrice')}
       isLoading={isLoading}
@@ -95,7 +104,7 @@ const PricesDetailsScreen = () => {
       curData={curPrice}
       addFunc={api.addNewPrice}
       updateFunc={api.updatePriceById}
-      beforeSend={null}
+      beforeSend={beforeSend}
       hasChanges={hasChanges}
       setUpdate={setUpdate}
       noTabsMargin
