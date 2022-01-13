@@ -32,7 +32,7 @@ const errorHandler = (error, customToast) => {
     return Promise.reject(message);
   }
 
-  toast.error(message);
+  toast.error(message, { toastId: 'request-error-message' });
 
   return Promise.reject(error);
 };
