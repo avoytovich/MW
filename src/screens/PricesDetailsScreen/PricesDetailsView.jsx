@@ -38,6 +38,12 @@ const PricesDetailsView = ({
     setCurPrice({ ...curPrice, [name]: value });
   };
 
+  const handleChangeDate = (e) => {
+    e.persist();
+    const { name, value } = e.target;
+    setCurPrice({ ...curPrice, [name]: moment(value).valueOf() });
+  };
+
   const handleCountry = (e) => {
     if (e.target.value === 'default' && curPrice?.country) {
       const newPrice = { ...curPrice };
@@ -226,7 +232,7 @@ const PricesDetailsView = ({
                         type="datetime-local"
                         variant="outlined"
                         InputLabelProps={{ shrink: true }}
-                        onChange={handleChange}
+                        onChange={handleChangeDate}
                       />
                     </Box>
                   )}
@@ -240,7 +246,7 @@ const PricesDetailsView = ({
                         type="datetime-local"
                         variant="outlined"
                         InputLabelProps={{ shrink: true }}
-                        onChange={handleChange}
+                        onChange={handleChangeDate}
                       />
                       <Box pt={2}>
                         <TextField
@@ -251,7 +257,7 @@ const PricesDetailsView = ({
                           type="datetime-local"
                           variant="outlined"
                           InputLabelProps={{ shrink: true }}
-                          onChange={handleChange}
+                          onChange={handleChangeDate}
                         />
                       </Box>
                     </Box>
