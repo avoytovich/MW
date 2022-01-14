@@ -126,7 +126,7 @@ const RecoDetailsScreen = () => {
       name={curReco?.name || `${localization.t('general.new')} ${localization.t(
         'general.recommendation',
       )}`}
-      saveIsDisabled={curReco?.eligibleStoreIds?.length < 1 || curReco?.name === '' || curReco?.errors?.endDate}
+      saveIsDisabled={curReco?.name === '' || curReco?.errors?.endDate}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.recommendations}
