@@ -188,8 +188,6 @@ const themeConfig = {
             },
             '&:not(.Mui-selected)': {
               '&:hover': {
-                color: '#fff',
-
                 '& .MuiIconButton-root': {
                   opacity: 1,
                 },
@@ -212,7 +210,7 @@ const themeConfig = {
     type: 'light',
     action: {
       active: MuiColors.blueGrey[600],
-      hover: colors.buttonPrimary,
+      hover: colors.lightBlue,
     },
     background: {
       default: colors.mainBackground,

@@ -24,6 +24,7 @@ import { tabLabels } from './utils';
 const OrderDetailsScreen = () => {
   const [curLanguage, setCurLanguage] = useState('');
   const [isLoading, setLoading] = useState(true);
+  const [update, setUpdate] = useState(0);
   const { id } = useParams();
   const [orderRows, setOrderRows] = useState(null);
   const [customer, setCustomer] = useState({ name: '-' });
@@ -31,7 +32,7 @@ const OrderDetailsScreen = () => {
   const [currentOrderData, setCurrentOrderData] = useState(null);
   const [orderData, setOrderData] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [subscriptions, setSubscriptions] = useState(null);
   const handleClose = () => setAnchorEl(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const resyncPayment = () => {
@@ -42,6 +43,7 @@ const OrderDetailsScreen = () => {
 
   useEffect(() => {
     let isCancelled = false;
+    setLoading(true);
 
     api.getOrderById(id).then(({ data: order }) => {
       if (!isCancelled) {
@@ -49,6 +51,7 @@ const OrderDetailsScreen = () => {
         setCurrentOrderData(order);
         setCurLanguage(order.endUser.locale);
       }
+
       Promise.allSettled([
         api.getCustomerById(order.customer?.id),
         api.getPaymentById(order.id),
@@ -59,7 +62,27 @@ const OrderDetailsScreen = () => {
         );
         setOrderRows(rows);
         setCustomer(customerData.value ? customerData.value.data : null);
-        setLoading(false);
+        const sud = [];
+        order.lineItems.forEach(((item) => {
+          if (item.subscriptionId) {
+            sud.push(api.getSubscriptionById(item.subscriptionId));
+          }
+        }
+        ));
+        if (sud.length > 0) {
+          Promise.allSettled([...sud]).then((sudData) => {
+            const subscriptionData = [];
+            sudData.forEach((e) => {
+              if (e.value?.data) {
+                subscriptionData.push(e.value?.data);
+              }
+            });
+            setSubscriptions(subscriptionData);
+            setLoading(false);
+          });
+        } else {
+          setLoading(false);
+        }
       });
     }).catch(() => {
       setLoading(false);
@@ -67,7 +90,7 @@ const OrderDetailsScreen = () => {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [update]);
 
   return (
     <DetailPageWrapper
@@ -122,6 +145,8 @@ const OrderDetailsScreen = () => {
       }}
     >
       <OrderDetailsView
+        setUpdate={setUpdate}
+        subscriptions={subscriptions}
         orderData={orderData}
         currentOrderData={currentOrderData}
         customer={customer}

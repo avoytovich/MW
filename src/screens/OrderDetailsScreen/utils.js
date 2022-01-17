@@ -10,5 +10,25 @@ const shouldCopy = (key) => (
   || key === 'customerId'
 );
 
-const tabLabels = ['general', 'products', 'events'];
-export { shouldDownload, shouldCopy, tabLabels };
+const tabLabels = ['general', 'products', 'events', 'subscriptions'];
+
+const generateSubscriptions = (data) => {
+  const res = [];
+  data.forEach((element) => {
+    res.push({
+      name: element.model.name || '',
+      subscriptionId: element.id || '',
+      status: element.lifecycle?.status || '',
+      creationDate: element.lifecycle?.creationDate || '',
+      expirationDate: element.lifecycle?.expirationDate || '',
+    });
+  });
+  return res;
+};
+
+export {
+  shouldDownload,
+  shouldCopy,
+  tabLabels,
+  generateSubscriptions,
+};

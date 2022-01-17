@@ -344,6 +344,14 @@ const postApi = {
       data,
     });
   },
+  updateSubscriptions(id, newStatus) {
+    const url = `/endusers/subscriptions/${id}/${newStatus}?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+
+    return axiosInstance({
+      method: 'post',
+      url,
+    });
+  },
 };
 
 export default postApi;
