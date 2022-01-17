@@ -123,6 +123,7 @@ const general = {
   reload: 'Reload',
   noResourceUrl: 'No resource URL selected',
   selectResource: 'Please select an endpoint and press the reload button.',
+  noSubscriptions: 'No subscriptions',
 };
 
 export default general;

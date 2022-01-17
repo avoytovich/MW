@@ -1,8 +1,10 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/prop-types */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   Delete as DeleteIcon,
@@ -57,7 +59,18 @@ const getStatusColor = (status) => {
       return '#FFA500';
   }
 };
+export const parsePath = (path, rowItem) => {
+  let newPath = path;
 
+  if (path.indexOf(':') >= 0) {
+    const replacingParts = path.match(/:[^/]*/gi);
+    replacingParts.forEach((part) => {
+      const rowItemValue = rowItem[part.replace(':', '')];
+      newPath = path.replace(part, rowItemValue);
+    });
+  }
+  return newPath;
+};
 export const adjustColumnsData = (
   headers,
   showColumn,
@@ -67,11 +80,27 @@ export const adjustColumnsData = (
   orderData,
   isOrders,
   errorHighlight,
+  tableCellLinks,
 ) => {
   const tableHeaders = headers.map((header) => {
     const customConfigs = {};
-
-    if (!isOrders && ofBoolIconType.indexOf(header?.id) >= 0) {
+    let tableLink = null;
+    if (tableCellLinks) {
+      tableLink = tableCellLinks.filter((item) => item.id === header.id)?.[0];
+    }
+    if (tableLink) {
+      customConfigs.renderCell = ({ row }) => (tableLink.internal
+        ? row[header?.id] ? (
+          <Link className='tableLink' to={parsePath(tableLink.path, row)}>
+            {row[header?.id]}
+          </Link>
+        ) : <div>-</div>
+        : row[header?.id] !== '' ? (
+          <a href={parsePath(tableLink.path, row)} className='tableLink' target='_blank' rel='noreferrer'>
+            {row[header?.id]}
+          </a>
+        ) : <div>-</div>);
+    } else if (!isOrders && ofBoolIconType.indexOf(header?.id) >= 0) {
       // eslint-disable-next-line
       customConfigs.renderCell = (cell) => {
         if (cell?.value === false || cell.value === 'DISABLED') {

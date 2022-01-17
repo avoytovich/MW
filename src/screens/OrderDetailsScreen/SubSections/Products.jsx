@@ -6,29 +6,30 @@ import TableComponent from '../../../components/TableComponent';
 import {
   generateData,
   defaultShow,
+  links,
 } from '../../../services/useData/tableMarkups/orderDetailsProducts';
-import parentPaths from '../../../services/paths';
 
-const Products = ({ orderData }) => {
+const Products = ({ orderData, subscriptions }) => {
   const [products, setProducts] = useState(null);
   const scope = 'orderProducts';
 
   useEffect(() => {
-    const productsTableData = generateData(orderData?.lineItems || []);
-    setProducts(productsTableData || []);
+    const productsTableData = orderData?.lineItems
+      ? generateData(orderData?.lineItems, subscriptions) : [];
+    setProducts(productsTableData);
 
     return () => setProducts(null);
   }, []);
   return (
     <>
       <TableComponent
+        tableCellLinks={links}
         defaultShowColumn={defaultShow}
         tableData={products}
         scope={scope}
         noActions
         noTableActionsBar
         noEditDeleteActions
-        customPath={`${parentPaths.productlist}/:productId`}
         orderData={orderData?.processingEvent}
         wrapperStyles={{
           paddingBottom: '24px',
@@ -40,6 +41,7 @@ const Products = ({ orderData }) => {
 
 Products.propTypes = {
   orderData: PropTypes.object,
+  subscriptions: PropTypes.array,
 };
 
 export default Products;

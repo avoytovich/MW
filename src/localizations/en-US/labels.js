@@ -204,7 +204,6 @@ const labels = {
   code: 'Code',
   discountCode: 'Discount Code',
   cappingAndLimits: 'Capping And Limits',
-  recommendations: 'Recommendations',
   singleUseCodesGenerations: 'Single Use Codes Generations',
   remainingCodes: 'Remaining codes:',
   generationCodeLimit: 'Generate codes - 750 max per generation',
@@ -735,6 +734,9 @@ const labels = {
   serviceConfiguration: 'Service Configuration',
   dpTheme: 'DP Theme',
   allowSubscriptionUpgrade: 'Allow subscription upgrade',
+  expirationDate: 'Expiration date',
+  suspend: 'Suspend',
+  resume: 'Resume',
 };
 
 export default labels;

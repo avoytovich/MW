@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box } from '@mui/material';
 import TableComponent from '../../../components/TableComponent';
 
 import {
@@ -28,7 +27,7 @@ const Events = ({ orderData }) => {
         noActions
         noTableActionsBar
         noEditDeleteActions
-        customPath
+        customPath='disabled'
         errorHighlight='processingError'
       />
     </>

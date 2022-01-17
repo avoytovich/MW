@@ -1,40 +1,77 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
 
 import {
   Box,
-  TextField,
+  Button,
+  Grid,
+  Typography,
 } from '@mui/material';
+import { generateSubscriptions } from '../utils';
+import localization from '../../../localization';
+import api from '../../../api';
+import '../orderDetailsScreen.scss';
 
-import CustomCard from '../../../components/utils/CustomCard';
+const Subscriptions = ({ subscriptions, setUpdate }) => {
+  const [subscriptionsData, setSubscriptionsData] = useState(null);
 
-const Subscriptions = () => (
-  <CustomCard title="Subscriptions">
-    <Box display="flex" py={5} pb={2}>
-      <Box px={1} width=" 100%">
-        <TextField
-          fullWidth
-          label="Customer"
-          name="customerId"
-          type="text"
-          disabled
-          // value={curReco.customerId}
-          variant="outlined"
-        />
-      </Box>
+  const handleClick = (id, status) => {
+    const newStatus = status === 'Active' ? 'suspend' : 'reactivate';
+    api.updateSubscriptions(id, newStatus).then(() => {
+      toast(localization.t('general.updatesHaveBeenSaved'));
+      setUpdate((u) => u + 1);
+    });
+  };
 
-      <Box px={1} width=" 100%">
-        <TextField
-          fullWidth
-          label="Recommendation Name"
-          name="name"
-          type="text"
-          // value={curReco.name}
-          // onChange={handleChange}
-          variant="outlined"
-        />
-      </Box>
-    </Box>
-  </CustomCard>
-);
+  useEffect(() => {
+    const data = (subscriptions && subscriptions.length > 0)
+      ? generateSubscriptions(subscriptions) : null;
+    setSubscriptionsData(data);
+
+    return () => setSubscriptionsData(null);
+  }, []);
+
+  return subscriptionsData ? (
+    <Grid container spacing={2}>
+      {subscriptionsData.map((sub) => (
+        <Grid key={sub.subscriptionId} item md={4} xs={12}>
+          <Box bgcolor='#fff' boxShadow={2} height='100%' py={2}>
+            {Object.keys(sub).map((key) => (
+              <Grid container className="orderDetailsRow" key={`${key}_${sub.subscriptionId}`}>
+                <Grid item md={6} xs={6}>
+                  <Box p={2} fontWeight={500}>
+                    {localization.t(`labels.${key}`)}
+                  </Box>
+                </Grid>
+                <Grid item md={6} xs={6}>
+                  <Box p={2} className="rowValue">
+                    {sub[key]}
+
+                  </Box>
+                </Grid>
+              </Grid>
+            ))}
+            <Box p={2} style={{ textAlign: 'center' }}>
+              <Button
+                style={sub.status !== 'Active' ? { backgroundColor: '#00A300' } : { backgroundColor: '#FF0000' }}
+                size='large'
+                variant='contained'
+                onClick={() => handleClick(sub.subscriptionId, sub.status)}
+              >
+                {sub.status !== 'Active' ? localization.t('labels.resume') : localization.t('labels.suspend')}
+              </Button>
+            </Box>
+          </Box>
+
+        </Grid>
+      ))}
+    </Grid>
+  ) : <Box p={2}><Typography>{localization.t('general.noSubscriptions')}</Typography></Box>;
+};
+Subscriptions.propTypes = {
+  subscriptions: PropTypes.array,
+  setUpdate: PropTypes.func,
+};
 
 export default Subscriptions;

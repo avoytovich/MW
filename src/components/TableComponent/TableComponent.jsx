@@ -18,7 +18,7 @@ import localization from '../../localization';
 import { setCheckedItems } from '../../redux/actions/TableData';
 import setShowColumns from '../../redux/actions/ShowColumns';
 
-import { adjustColumnsData } from '../../services/helpers/dataGridHelper';
+import { adjustColumnsData, parsePath } from '../../services/helpers/dataGridHelper';
 
 import './TableComponent.scss';
 
@@ -39,6 +39,7 @@ const TableComponent = ({
   isOrders,
   orderData,
   wrapperStyles,
+  tableCellLinks,
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -109,21 +110,6 @@ const TableComponent = ({
     }
   }, [sortParams]);
 
-  const parsePath = (path, rowItem) => {
-    let newPath = path;
-
-    if (path.indexOf(':') >= 0) {
-      const replacingParts = path.match(/:[^/]*/gi);
-
-      replacingParts.forEach((part) => {
-        const rowItemValue = rowItem[part.replace(':', '')];
-        newPath = path.replace(part, rowItemValue);
-      });
-    }
-
-    return newPath;
-  };
-
   const curListCheckedItems = tableCheckedItems.length
     ? tableCheckedItems
       .filter((v) => !!tableData?.values?.find(({ id }) => id === v.id))
@@ -153,6 +139,7 @@ const TableComponent = ({
           orderData,
           isOrders,
           errorHighlight,
+          tableCellLinks,
         )}
         componentsProps={{ row: { style: { cursor: 'context-menu' } } }}
         hideFooter
@@ -170,7 +157,7 @@ const TableComponent = ({
         isRowSelectable={() => !noActions}
         onSelectionModelChange={(model) => {
           if (tableData?.values?.length
-              && (!model.length || model.length === tableData?.values?.length)) {
+            && (!model.length || model.length === tableData?.values?.length)) {
             handleCheckAll();
           } else if (model.length < curListCheckedItems.length) {
             const [changedItem] = curListCheckedItems.filter((it) => model.indexOf(it) < 0);
@@ -181,7 +168,7 @@ const TableComponent = ({
           }
         }}
         selectionModel={curListCheckedItems}
-        onRowClick={({ row }) => customPath !== 'disabled'
+        onRowClick={({ row }) => customPath !== 'disabled' && !tableCellLinks
           && history.push(customPath ? parsePath(customPath, row) : `${history.location.pathname}/${row.id}`)}
       />
     </Box>
@@ -207,6 +194,7 @@ TableComponent.propTypes = {
   isOrders: PropTypes.bool,
   orderData: PropTypes.array,
   wrapperStyles: PropTypes.any,
+  tableCellLinks: PropTypes.array,
 };
 
 export default TableComponent;
