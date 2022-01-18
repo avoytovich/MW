@@ -21,6 +21,9 @@ const Forms = {
     cancelOrderPopupText: 'Are you sure you want to cancel Order, and refund payment to the end-user ?',
     sendConfirmationEmail: 'Send confirmation mail again',
     sendConfirmationEmailText: 'Send confirmation email on the following email address:',
+    sendCancellationMail: 'Send cancellation mail again',
+    SendPrebillingMailAgain: 'Send resources.orders.misc.emailTemplates.PREBILLING mail again',
+    repairOrder: 'Repair Order',
   },
   inputs: {
     username: 'Username',

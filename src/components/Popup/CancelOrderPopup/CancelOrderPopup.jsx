@@ -6,6 +6,8 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  Box,
+  Typography,
 } from '@mui/material';
 import { toast } from 'react-toastify';
 
@@ -20,7 +22,7 @@ const CancelOrderPopup = ({ currentOrderData }) => {
 
   const cancelOrder = () => {
     api
-      .cancelOrder(currentOrderData.id, cancelOrderReason)
+      .cancelOrder(currentOrderData.id, currentOrderData.dbVersion, cancelOrderReason)
       .then(() => toast(localization.t('general.updatesHaveBeenSaved')));
   };
 
@@ -34,23 +36,25 @@ const CancelOrderPopup = ({ currentOrderData }) => {
 
   return (
     <>
-      <Button fullWidth display='flex' color='inherit' onClick={(e) => { e.stopPropagation(); handleClickOpen(); }}>
+      <Typography style={{ textAlign: 'center', width: ' 100% ' }} onClick={(e) => { e.stopPropagation(); handleClickOpen(); }}>
         {localization.t('forms.text.cancelOrder')}
-      </Button>
+      </Typography>
       <Dialog open={open} onClose={handleClose} aria-labelledby='form-dialog-title'>
         <DialogContent>
           <DialogContentText color='inherit'>
             {localization.t('forms.text.cancelOrderPopupText')}
           </DialogContentText>
+          <Box pt={4}>
+            <SelectCustom
+              selectOptions={orderCancelAction}
+              value={cancelOrderReason}
+              onChangeSelect={(e) => {
+                setCancelOrderReason(e.target.value);
+              }}
+              label='cancelOrder'
+            />
 
-          <SelectCustom
-            selectOptions={orderCancelAction}
-            value={cancelOrderReason}
-            onChangeSelect={(e) => {
-              setCancelOrderReason(e.target.value);
-            }}
-            label='cancelOrder'
-          />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color='primary'>
