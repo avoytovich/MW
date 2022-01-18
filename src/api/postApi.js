@@ -175,8 +175,8 @@ const postApi = {
       url,
     });
   },
-  cancelOrder(customerId, reason) {
-    const url = `/orders/${customerId}/fullcancel?dbVersion=27&cancellationReason=${reason}&reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+  cancelOrder(customerId, dbVersion, reason) {
+    const url = `/orders/${customerId}/fullcancel?dbVersion=${dbVersion}&cancellationReason=${reason}&reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
     return axiosInstance({
       method: 'post',
       url,
@@ -344,9 +344,15 @@ const postApi = {
       data,
     });
   },
+  repairOrder(id, dbVersion) {
+    const url = `/orders/${id}/repair?dbVersion=${dbVersion}&reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'post',
+      url,
+    });
+  },
   updateSubscriptions(id, newStatus) {
     const url = `/endusers/subscriptions/${id}/${newStatus}?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
-
     return axiosInstance({
       method: 'post',
       url,

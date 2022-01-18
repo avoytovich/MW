@@ -6,6 +6,7 @@ import {
   Button,
   Menu,
   MenuItem,
+  Typography,
 } from '@mui/material';
 
 import { toast } from 'react-toastify';
@@ -13,12 +14,10 @@ import parentPaths from '../../services/paths';
 import localization from '../../localization';
 import api from '../../api';
 import { generateData } from '../../services/useData/tableMarkups/orderDetails';
-
+import MenuOptions from './MenuOptions';
 import OrderDetailsView from './OrderDetailsView';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
-import ConfirmationPopup from '../../components/Popup/ConfirmationPopup/index';
-import CancelOrderPopup from '../../components/Popup/CancelOrderPopup/index';
 import { tabLabels } from './utils';
 
 const OrderDetailsScreen = () => {
@@ -116,7 +115,6 @@ const OrderDetailsScreen = () => {
             {localization.t('forms.buttons.actions')}
           </Button>
           <Menu
-            getContentAnchorEl={null}
             anchorOrigin={{
               vertical: 'bottom',
               horizontal: 'right',
@@ -129,11 +127,10 @@ const OrderDetailsScreen = () => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem><ConfirmationPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
+            <MenuOptions currentOrderData={currentOrderData} />
             <MenuItem onClick={resyncPayment}>
-              <Button color="inherit" fullWidth>{localization.t('forms.buttons.resyncPayments')}</Button>
+              <Typography style={{ textAlign: 'center', width: ' 100% ' }}>{localization.t('forms.buttons.resyncPayments')}</Typography>
             </MenuItem>
-            <MenuItem><CancelOrderPopup currentOrderData={currentOrderData} id={id} /></MenuItem>
           </Menu>
         </Box>
       )}
