@@ -34,6 +34,7 @@ const type = [
 const lifeTime = [
   { id: 'PERMANENT', value: 'Permanent' },
   { id: '7DAY', value: 'Weekly renewal' },
+  { id: 'DAY', value: 'Day(s)' },
   { id: 'MONTH', value: 'Month(s)' },
   { id: 'YEAR', value: 'Year(s)' },
 ];
