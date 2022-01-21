@@ -1,4 +1,6 @@
 // ToDo: same as myaccount, make common solution
+@import '../../styles/variables.scss';
+
 .price-details-screen{
   position: relative;
 
@@ -14,5 +16,10 @@
 
   .MuiTab-root{
     text-transform: none;
+  }
+
+  .copyIcon:hover{
+    color: $currentPageText;
+    cursor: pointer;
   }
 }

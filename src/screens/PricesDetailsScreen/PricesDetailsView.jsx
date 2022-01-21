@@ -13,7 +13,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 
-import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
+import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import { getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 import { SelectCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
@@ -21,6 +21,7 @@ import parentPaths from '../../services/paths';
 import {
   priceCurrency,
 } from '../../services/selectOptions/selectOptions';
+import { copyText } from '../../services/helpers/utils';
 import localization from '../../localization';
 
 import './pricesDetailsScreen.scss';
@@ -94,9 +95,11 @@ const PricesDetailsView = ({
 
               <Typography variant="h6">{price?.productId}</Typography>
 
-              <FileCopyOutlinedIcon
-                style={{ opacity: 0.25, marginLeft: 10, cursor: 'pointer' }}
-                onClick={() => history.push(`${parentPaths.productlist}/${price?.productId}`)}
+              <FileCopyIcon
+                onClick={() => copyText(price?.productId)}
+                color="secondary"
+                style={{ marginLeft: '5px', cursor: 'pointer' }}
+                className="copyIcon"
               />
             </Box>
           ) : (
