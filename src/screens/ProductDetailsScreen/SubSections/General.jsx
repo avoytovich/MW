@@ -67,15 +67,15 @@ const General = ({
 
     const res = lT.match(/[a-zA-Z]+|[0-9]+/g);
 
-    if (res && res.length > 1 && res[1] !== 'DAY') {
+    if (res && res.length > 1 && res[1]) {
       setLifeTimeUpdateValue({ number: res[0], value: res[1] });
-      LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR';
+      LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR' || res[1] === 'DAY';
     } else if (res) {
       setLifeTimeUpdateValue({
         ...lifeTimeUpdateValue,
         value: lT,
       });
-      LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR';
+      LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR' || res[0] === 'DAY';
     } else {
       setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: '' });
     }
@@ -161,6 +161,27 @@ const General = ({
       gridTemplateColumns: '1fr 60px',
     }
     : {};
+
+  useEffect(() => {
+    if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number === '7') {
+      setShowLifeTimeNumber(false);
+      setLifeTimeUpdateValue({
+        ...lifeTimeUpdateValue,
+        number: 1,
+        value: '7DAY',
+      });
+    } else if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number >= 8) {
+      setLifeTimeUpdateValue({
+        ...lifeTimeUpdateValue,
+        number: 1,
+      });
+    } else if (lifeTimeUpdateValue.value === 'MONTH' && lifeTimeUpdateValue.number > 24) {
+      setLifeTimeUpdateValue({
+        ...lifeTimeUpdateValue,
+        number: 24,
+      });
+    }
+  }, [lifeTimeUpdateValue.value, lifeTimeUpdateValue.number]);
 
   // const stylesForVariationsLifeTime = parentId
   //   ? {
@@ -347,7 +368,7 @@ const General = ({
                 selectOptions={lifeTime}
                 onChangeSelect={(e) => {
                   setShowLifeTimeNumber(
-                    e.target.value === 'MONTH' || e.target.value === 'YEAR',
+                    e.target.value === 'MONTH' || e.target.value === 'YEAR' || e.target.value === 'DAY',
                   );
                   setLifeTimeUpdateValue({
                     ...lifeTimeUpdateValue,
@@ -366,10 +387,10 @@ const General = ({
                 onChangeInput={(e) => {
                   setLifeTimeUpdateValue({
                     ...lifeTimeUpdateValue,
-                    number: e.target.value > 11 ? 11 : e.target.value < 1 ? 1 : e.target.value,
+                    number: e.target.value > 99 ? 99 : e.target.value < 1 ? 1 : e.target.value,
                   });
                 }}
-                minMAx={{ min: 1, max: 11 }}
+                minMAx={{ min: 1, max: 99 }}
               />
             </Box>
           )}
