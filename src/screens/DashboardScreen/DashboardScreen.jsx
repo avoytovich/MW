@@ -28,6 +28,11 @@ const DashboardScreen = () => {
   const [chartType, setChartType] = useState('line');
   return (
     <Box className='dashboard' overflow='auto' p='2px'>
+      <div className='dashboard-banner'>
+        <p className='banner-content'>
+          Work in Progress ...
+        </p>
+      </div>
       <CustomBreadcrumbs
         sections={['businessAnalysis']}
       />
