@@ -105,7 +105,7 @@ const CartDetailsScreen = () => {
                 <Button
                   color="inherit"
                   target='_blank'
-                  href={`https://dev-kasperskyfrance-default.staging.nexway.build/checkout/add?cartid=${id}&layout=default&layoutname=default`}
+                  href={detailsData?.checkoutUrl}
                   fullWidth
                 >
                   {localization.t('forms.buttons.checkout')}
