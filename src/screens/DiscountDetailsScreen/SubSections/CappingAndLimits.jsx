@@ -72,17 +72,13 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
             <Box p={2}>
               <form noValidate>
                 <TextField
-                  data-test='endDate'
-                  fullWidth
-                  name='endDate'
-                  value={
-                      curDiscount.endDate
-                        ? moment(curDiscount.endDate).format('YYYY-MM-DDTHH:mm')
-                        : ''
-                    }
-                  label={localization.t('labels.endDate')}
-                  type='datetime-local'
                   variant='outlined'
+                  label={localization.t('labels.endDate')}
+                  id="datetime-local"
+                  value={curDiscount.endDate
+                    ? moment(curDiscount.endDate).format('YYYY-MM-DDTHH:mm')
+                    : ''}
+                  type="datetime-local"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -108,7 +104,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
                 label='maximumUses'
                 value={curDiscount.maxUsages}
                 onChangeInput={(e) => setCurDiscount({ ...curDiscount, maxUsages: e.target.value })}
-                minMAx={{ min: 1, max: 9999, step: 1 }}
+                minMAx={{ min: 0, max: 9999, step: 1 }}
               />
             </Box>
           </Grid>
@@ -122,7 +118,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
                   ...curDiscount,
                   maxUsePerStore: e.target.value,
                 })}
-                minMAx={{ min: 1, max: 9999, step: 1 }}
+                minMAx={{ min: 0, max: 9999, step: 1 }}
               />
             </Box>
           </Grid>
@@ -136,7 +132,7 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
                   ...curDiscount,
                   maxUsePerEndUser: e.target.value,
                 })}
-                minMAx={{ min: 1, max: 9999, step: 1 }}
+                minMAx={{ min: 0, max: 9999, step: 1 }}
               />
             </Box>
           </Grid>
