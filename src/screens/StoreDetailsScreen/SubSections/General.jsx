@@ -30,7 +30,9 @@ const checkBoxObj = [
   { name: 'BUYER_AUTHENTICATION_REQUIRED', label: 'buyerAuthentication' },
   { name: 'AUTHENTICATION_NOT_REQUIRED', label: 'noAuthentication' },
 ];
-const General = ({ currentStoreData, setCurrentStoreData }) => {
+const General = ({
+  currentStoreData, setCurrentStoreData, setErrors, errors,
+}) => {
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
   const [open, setOpen] = useState(false);
@@ -56,6 +58,20 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
     setCurrentStoreData({
       ...currentStoreData,
       [countrySelection === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: [],
+    });
+  };
+
+  const handleUpdateGtm = (key, newValue) => {
+    if (/^GTM[A-Z0-9]*$/.test(newValue)) {
+      const newErrors = { ...errors };
+      delete newErrors[key];
+      setErrors({ ...newErrors });
+    } else {
+      setErrors({ ...errors, [key]: true });
+    }
+    setCurrentStoreData({
+      ...currentStoreData,
+      [key]: newValue,
     });
   };
 
@@ -187,10 +203,22 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
           />
         </Box>
         <Box p={2}>
-          <InputCustom label='gtmId' onChangeInput={() => { }} />
+          <InputCustom
+            label='gtmId'
+            hasError={!!errors.gtmId}
+            helperText={errors.gtmId ? localization.t('errorNotifications.googleTagManagerIdShouldContains') : ''}
+            value={currentStoreData.gtmId}
+            onChangeInput={(e) => handleUpdateGtm('gtmId', e.target.value)}
+          />
         </Box>
         <Box p={2}>
-          <InputCustom label='gtmIdOwnedByNexway' onChangeInput={() => { }} />
+          <InputCustom
+            hasError={!!errors.nexwayGtmId}
+            helperText={errors.nexwayGtmId ? localization.t('errorNotifications.googleTagManagerIdShouldContains') : ''}
+            label='gtmIdOwnedByNexway'
+            value={currentStoreData.nexwayGtmId}
+            onChangeInput={(e) => handleUpdateGtm('nexwayGtmId', e.target.value)}
+          />
         </Box>
         <Box p={2}>
           <SwitchInput
@@ -452,6 +480,8 @@ const General = ({ currentStoreData, setCurrentStoreData }) => {
 General.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
+  setErrors: PropTypes.func,
+  errors: PropTypes.object,
 };
 
 export default General;
