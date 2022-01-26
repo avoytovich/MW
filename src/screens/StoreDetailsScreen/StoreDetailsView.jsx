@@ -26,6 +26,8 @@ const StoreDetailsView = ({
     {curTab === 0 && (
       <StoreSection label={tabLabels[0]}>
         <General
+          errors={errors}
+          setErrors={setErrors}
           currentStoreData={currentStoreData}
           setCurrentStoreData={setCurrentStoreData}
           selectOptions={selectOptions}
