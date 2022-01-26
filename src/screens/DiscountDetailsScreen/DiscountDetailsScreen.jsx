@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
 import { fromArrayToObject, tabsLabels, formatCodesToObject } from './utils';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
@@ -44,6 +45,9 @@ const DiscountDetailsScreen = () => {
       res.codes = formatCodesToObject(curDiscount.codes);
     } else {
       delete res.codes;
+    }
+    if (curDiscount.endDate) {
+      res.endDate = moment.utc(curDiscount.endDate).utc().format();
     }
     return removeEmptyPropsInObject(res);
   };
