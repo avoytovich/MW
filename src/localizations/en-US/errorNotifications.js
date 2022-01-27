@@ -34,6 +34,7 @@ const errorNotifications = {
   groupDoesNotReferenceAnyCountry: 'Group does not reference any country',
   deliveryRemarkIsMandatory: 'Delivery remark is mandatory on default locale as soon as a delivery remark is set for some locale',
   canNotBeEmpty: 'Cannot be empty',
+  pleaseUploadTheLicenseKeyPackageInCsvFormat: 'Please upload the license key package in CSV format',
   googleTagManagerIdShouldContains: 'Google Tag Manager ID should start with "GTM" prefix and contain only uppercase letters and numbers',
 };
 

@@ -395,5 +395,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getManualFulfillmentById(id) {
+    const url = `/license-keys-provider/packages/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;

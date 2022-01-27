@@ -25,7 +25,16 @@ const defaultProduct = {
     priceByCountryByCurrency: {},
   },
 };
-
+const defaultManualFulfillment = {
+  name: '',
+  nexwayProductId: [],
+  publisherProductId: [],
+  status: 'ENABLED',
+  stock: {
+    available: 0, blacklisted: 0, canceled: 0, occupied: 0, renewed: 0,
+  },
+  threshold: 0,
+};
 const defaultStore = {
   status: 'ENABLED',
   name: '',
@@ -95,21 +104,27 @@ const productRequiredFields = (product) => {
   return { ...defaultProduct, ...product, resources: resourcesKeys || [] };
 };
 
-const structureSelectOptions = (options, optionValue, ...otherOptions) => {
-  let res = [];
+const structureSelectOptions = ({
+  options, optionValue, otherOptions, optionId,
+}) => {
+  const res = [];
   if (options) {
-    res = options.map((option) => {
-      const resObj = { id: option.id || option[optionValue], value: option[optionValue] };
-      if (otherOptions) {
-        otherOptions.forEach((element) => {
-          resObj[element] = option[element];
-        });
+    options.forEach((option) => {
+      const id = optionId ? option[optionId] : option.id || option[optionValue];
+      if (!res.find((u) => u.id === id)) {
+        const newObj = { id, value: option[optionValue] };
+        if (otherOptions) {
+          otherOptions.forEach((element) => {
+            newObj[element] = option[element];
+          });
+        }
+        res.push(newObj);
       }
-      return resObj;
     });
   }
   return res;
 };
+
 const groupBy = (objectArray, property) => objectArray.reduce((acc, obj) => {
   const key = obj[property];
   if (!acc[key]) {
@@ -400,4 +415,5 @@ export {
   removeEmptyPropsInObject,
   formatePaymentGroups,
   createInheritableValue,
+  defaultManualFulfillment,
 };

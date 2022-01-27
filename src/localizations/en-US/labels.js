@@ -737,6 +737,11 @@ const labels = {
   expirationDate: 'Expiration date',
   suspend: 'Suspend',
   resume: 'Resume',
+  batches: 'Batches',
+  productByReference: 'Product by reference',
+  manualFulfillment: 'Manual fulfillment',
+  batchId: 'Batch ID',
+  uploadedAt: 'Uploaded at',
 };
 
 export default labels;

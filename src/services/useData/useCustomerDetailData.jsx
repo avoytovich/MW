@@ -46,8 +46,8 @@ const useCustomerDetailData = (id) => {
         const allPayments = formatPaymentOptions(paymentTypesOptions.value?.data.paymentTypes);
         setSelectOptions({
           ...selectOptions,
-          subscriptions: structureSelectOptions(subscriptionsOptions.value?.data.items, 'code') || [],
-          fulfillments: structureSelectOptions(fulfillmentsOptions.value?.data.items, 'name') || [],
+          subscriptions: structureSelectOptions({ options: subscriptionsOptions.value?.data.items, optionValue: 'code' }) || [],
+          fulfillments: structureSelectOptions({ options: fulfillmentsOptions.value?.data.items, optionValue: 'name' }) || [],
           additionalPaymentTypes: allPayments.additional || [],
           blackPaymentTypes: allPayments.black || [],
           forcedPaymentTypes: allPayments.forced || [],

@@ -125,6 +125,9 @@ const general = {
   selectResource: 'Please select an endpoint and press the reload button.',
   onTheFollowingEmailAddress: 'on the following email address: ',
   noSubscriptions: 'No subscriptions',
+  manualFulfillment: 'Manual fulfillment',
+  pleaseEitherDropAKeyfileHere: 'Please either drop a keyfile here',
+  validKeyfile: 'Valid keyfile contains a line by license key, with just license key on the line, followed by end-of-line character',
 };
 
 export default general;

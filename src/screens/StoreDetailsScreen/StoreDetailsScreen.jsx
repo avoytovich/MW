@@ -150,8 +150,10 @@ const StoreDetailsScreen = () => {
                     customers.items,
                   ),
                   paymentMethods: structureSelectOptions(
-                    paymentMethodsOptions.value?.data,
-                    'id',
+                    {
+                      options: paymentMethodsOptions.value?.data,
+                      optionValue: 'id',
+                    },
                   ),
                   layout: formDesignOptions(
                     layoutOptions.value?.data.items,
