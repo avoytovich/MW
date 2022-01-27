@@ -79,21 +79,25 @@ const useDiscountDetails = (id, nxState) => {
           setSelectOptions({
             ...selectOptions,
             endUsers:
-              structureSelectOptions(endUsers.value.data?.items, 'fullName') || [],
+              structureSelectOptions({ options: endUsers.value.data?.items, optionValue: 'fullName' }) || [],
             refProducts: refDiscountProductsObjs || [],
             endUserGroups:
-              structureSelectOptions(endUsersGroups.value.data?.items, 'name') || [],
+              structureSelectOptions({ options: endUsersGroups.value.data?.items, optionValue: 'name' }) || [],
             stores:
-              structureSelectOptions(stores.value?.data.items, 'name') || [],
+              structureSelectOptions({ options: stores.value?.data.items, optionValue: 'name' }) || [],
             parentProducts:
               structureSelectOptions(
-                parentProducts.value?.data.items,
-                'genericName',
+                {
+                  options: parentProducts.value?.data.items,
+                  optionValue: 'genericName',
+                },
               ) || [],
             discountProducts:
               structureSelectOptions(
-                discountProducts.value?.data.items,
-                'genericName',
+                {
+                  options: discountProducts.value?.data.items,
+                  optionValue: 'genericName',
+                },
               ) || [],
           });
         },

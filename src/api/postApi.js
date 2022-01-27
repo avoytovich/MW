@@ -358,6 +358,22 @@ const postApi = {
       url,
     });
   },
+  addManualFulfillment(data) {
+    const url = '/license-keys-provider/packages?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addBatchesToManualFulfillmentById(id, data) {
+    const url = `/license-keys-provider/import/${id}`;
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
 };
 
 export default postApi;

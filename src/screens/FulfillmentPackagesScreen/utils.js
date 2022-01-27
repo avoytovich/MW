@@ -43,6 +43,9 @@ const tabsData = [
     sortKey: 'manualFulfillments',
     scope: 'manualFulfillments',
     headers: null,
+    button: `${localization.t('general.add')} ${localization.t(
+      'labels.manualFulfillment',
+    )}`,
   },
   {
     label: 'licenseProviderDefinitions',

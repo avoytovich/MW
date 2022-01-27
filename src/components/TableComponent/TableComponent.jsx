@@ -40,6 +40,7 @@ const TableComponent = ({
   orderData,
   wrapperStyles,
   tableCellLinks,
+  isAutoHeight,
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -129,6 +130,7 @@ const TableComponent = ({
       )}
 
       <DataGridPro
+        autoHeight={isAutoHeight}
         rows={tableData?.values}
         columns={adjustColumnsData(
           tableData?.headers,
@@ -195,6 +197,7 @@ TableComponent.propTypes = {
   orderData: PropTypes.array,
   wrapperStyles: PropTypes.any,
   tableCellLinks: PropTypes.array,
+  isAutoHeight: PropTypes.bool,
 };
 
 export default TableComponent;

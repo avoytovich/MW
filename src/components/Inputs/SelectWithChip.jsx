@@ -71,7 +71,6 @@ const SelectWithChip = ({
           </Box>
         ),
         MenuProps: {
-          getContentAnchorEl: null,
           anchorOrigin: { vertical: 'top', horizontal: 'center' },
           transformOrigin: { vertical: 'top', horizontal: 'center' },
         },

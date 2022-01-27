@@ -51,7 +51,7 @@ const handleGetOptions = (
         // productDetails,
       ]) => {
         if (!subscriptionOptions) {
-          subscriptionOptions = structureSelectOptions(subscriptions?.data?.items, 'name');
+          subscriptionOptions = structureSelectOptions({ options: subscriptions?.data?.items, optionValue: 'name' });
         }
         setSubProductVariations({
           bundledProducts: subProducts?.data?.items,
@@ -63,13 +63,13 @@ const handleGetOptions = (
           setSelectOptions({
             ...selectOptions,
             sellingStores:
-              structureSelectOptions(sellingStores.data?.items, 'name', 'hostnames', 'saleLocales', 'defaultLocale') || [],
+              structureSelectOptions({ options: sellingStores.data?.items, optionValue: 'name', otherOptions: ['hostnames', 'saleLocales', 'defaultLocale'] }) || [],
             renewingProducts: renewingProductsOptions(renewingProducts.data?.items) || [],
             fulfillmentTemplates:
-              structureSelectOptions(fulfillmentTemplates.data?.items, 'name') || [],
-            catalogs: structureSelectOptions(catalogs.data?.items, 'name') || [],
+              structureSelectOptions({ options: fulfillmentTemplates.data?.items, optionValue: 'name' }) || [],
+            catalogs: structureSelectOptions({ options: catalogs.data?.items, optionValue: 'name' }) || [],
             priceFunctions:
-              structureSelectOptions(priceFunctionsOptions.data?.items, 'name') || [],
+              structureSelectOptions({ options: priceFunctionsOptions.data?.items, optionValue: 'name' }) || [],
             subscriptionModels: subscriptionOptions || [],
           });
 

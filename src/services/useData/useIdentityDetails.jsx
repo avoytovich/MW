@@ -44,9 +44,9 @@ const useIdentityDetails = (id, nxState) => {
         ]).then(([rolesOptions, metaRolesOptions, customersOptions]) => {
           setSelectOptions({
             ...selectOptions,
-            roles: structureSelectOptions(rolesOptions.value?.data.items, 'name') || [],
-            metaRoles: structureSelectOptions(metaRolesOptions.value?.data.items, 'name') || [],
-            customers: structureSelectOptions(customersOptions.value?.data.items, 'name') || [],
+            roles: structureSelectOptions({ options: rolesOptions.value?.data.items, optionValue: 'name' }) || [],
+            metaRoles: structureSelectOptions({ options: metaRolesOptions.value?.data.items, optionValue: 'name' }) || [],
+            customers: structureSelectOptions({ options: customersOptions.value?.data.items, optionValue: 'name' }) || [],
           });
         });
       }

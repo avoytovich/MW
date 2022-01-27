@@ -47,7 +47,7 @@ const useEndUserDetailScreen = (id) => {
         ) => {
           setSelectOptions({
             ...selectOptions,
-            groups: structureSelectOptions(groupsOptions.value?.data.items, 'name') || [],
+            groups: structureSelectOptions({ options: groupsOptions.value?.data.items, optionValue: 'name' }) || [],
           });
           if (ordersData.value?.data.items?.length) {
             const orderTableData = generateOrders(ordersData.value?.data.items);

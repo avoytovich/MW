@@ -92,8 +92,10 @@ const RecoDetailsScreen = () => {
           ...selectOptions,
           stores:
             structureSelectOptions(
-              storeOptions.value?.data.items,
-              'displayName',
+              {
+                options: storeOptions.value?.data.items,
+                optionValue: 'displayName',
+              },
             ) || [],
           products:
             formateProductOptions(productOptions.value?.data?.items) || [],

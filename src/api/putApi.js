@@ -225,6 +225,14 @@ const putApi = {
       data,
     });
   },
+  updateManualFulfillmentById(id, data) {
+    const url = `/license-keys-provider/packages/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
 };
 
 export default putApi;

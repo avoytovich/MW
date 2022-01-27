@@ -38,8 +38,8 @@ const useNotificationDetail = (id, nxState) => {
       ]).then(([eventsOptions, customersOptions]) => {
         setSelectOptions({
           ...selectOptions,
-          events: structureSelectOptions(eventsOptions.value?.data.items, 'name') || [],
-          customers: structureSelectOptions(customersOptions.value?.data.items, 'name') || [],
+          events: structureSelectOptions({ options: eventsOptions.value?.data.items, optionValue: 'name' }) || [],
+          customers: structureSelectOptions({ options: customersOptions.value?.data.items, optionValue: 'name' }) || [],
         });
       });
     })
