@@ -66,7 +66,7 @@ const StoreDetailsScreen = () => {
     || !currentStoreData?.name
     || !currentStoreData?.defaultLocale
     || !currentStoreData?.displayName
-    || !currentStoreData?.routes[0].hostname
+    || !currentStoreData?.routes[0]?.hostname
     || Object.keys(errors).length > 0
     || (Object.keys(currentStoreData.thankYouDesc).length > 1 && currentStoreData.thankYouDesc[currentStoreData.defaultLocale] === '');
 
