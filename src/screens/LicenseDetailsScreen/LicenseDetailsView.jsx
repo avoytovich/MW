@@ -23,6 +23,7 @@ const LicenseDetailsView = ({
     )}
     {curTab === 1 && (
       <TableComponent
+        customPath='disabled'
         defaultShowColumn={defaultShow}
         tableData={tableData}
         scope={scope}
