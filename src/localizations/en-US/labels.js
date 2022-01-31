@@ -737,6 +737,8 @@ const labels = {
   expirationDate: 'Expiration date',
   suspend: 'Suspend',
   resume: 'Resume',
+  inactive: 'Inactive',
+  active: 'Active',
   batches: 'Batches',
   productByReference: 'Product by reference',
   manualFulfillment: 'Manual fulfillment',

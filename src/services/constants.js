@@ -24,6 +24,7 @@ const VALID_REFRESH_SCOPES = [
   'onboarding',
   'translations',
   'invoicetranslations',
+  'users',
 ];
 const VALID_FILTER_SCOPES = [
   'productlist',
@@ -61,6 +62,7 @@ const VALID_FILTER_SCOPES = [
   'audits',
   'onboarding',
   'invoicetranslations',
+  'users',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];

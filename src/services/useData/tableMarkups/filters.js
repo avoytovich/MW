@@ -1394,6 +1394,52 @@ const filters = {
       type: 'date',
     },
   ],
+  users: [
+    {
+      id: 'userName',
+      label: localization.t('labels.userName'),
+      type: 'text',
+    },
+    {
+      id: 'clientId',
+      label: localization.t('labels.clientId'),
+      type: 'text',
+    },
+    {
+      id: 'firstName',
+      label: localization.t('labels.firstName'),
+      type: 'text',
+    },
+    {
+      id: 'lastName',
+      label: localization.t('labels.lastName'),
+      type: 'text',
+    },
+    {
+      id: 'email',
+      label: localization.t('labels.email'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.lastUpdate'),
+      type: 'date',
+    },
+    {
+      id: 'inactive',
+      label: localization.t('labels.status'),
+      type: 'selectWithChip',
+      values: [
+        { value: localization.t('labels.disabled'), id: true },
+        { value: localization.t('labels.enabled'), id: false },
+      ],
+    },
+  ],
 };
 
 export default filters;
