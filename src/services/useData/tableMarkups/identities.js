@@ -4,7 +4,10 @@ import localization from '../../../localization';
 
 const defaultShow = {
   fullName: true,
+  firstName: true,
+  lastName: true,
   customer: true,
+  status: true,
   managedCustomerId: false,
   managedCustomer: false,
   roles: false,
@@ -24,12 +27,27 @@ const markUp = {
     {
       value: localization.t('labels.fullName'),
       id: 'fullName',
+    },
+    {
+      value: localization.t('labels.firstName'),
+      id: 'firstName',
       sortParam: 'firstName',
+    },
+    {
+      value: localization.t('labels.lastName'),
+      id: 'lastName',
+      sortParam: 'lastName',
     },
     {
       value: localization.t('labels.customer'),
       id: 'customer',
     },
+    {
+      value: localization.t('labels.status'),
+      id: 'status',
+      sortParam: 'inactive',
+    },
+
     {
       value: localization.t('labels.managedCustomerId'),
       id: 'managedCustomerId',
@@ -85,6 +103,8 @@ const generateData = (data) => {
   const values = data.items.map(async (val) => {
     const returnData = {
       fullName: `${val.firstName} ${val.lastName}`,
+      firstName: val.firstName,
+      lastName: val.lastName,
       customer: val.customerId,
       id: val.id,
       managedCustomerId: val.authorizedCustomerIds?.length ? val.authorizedCustomerIds.join(', ') : '-',
@@ -99,6 +119,7 @@ const generateData = (data) => {
       identityId: val.id,
       email: val.email,
       createDate: val.createDate,
+      status: val.inactive ? localization.t('labels.disabled') : localization.t('labels.enabled'),
     };
 
     if (val.authorizedCustomerIds?.length) {
