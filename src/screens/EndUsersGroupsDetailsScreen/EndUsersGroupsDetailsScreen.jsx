@@ -6,6 +6,7 @@ import localization from '../../localization';
 import parentPaths from '../../services/paths';
 import api from '../../api';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
+import { generateLocals, defaultEndUserGroup, beforeSend } from './utils';
 
 import './endUsersGroupsDetailsScreen.scss';
 
@@ -18,7 +19,7 @@ const EndUsersGroupsDetailsScreen = () => {
   const [upd, setUpdate] = useState(0);
   const [selectedLang, setSelectedLang] = useState(0);
   const [curTab, setCurTab] = useState(0);
-
+  const [errors, setErrors] = useState({});
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   useEffect(() => {
@@ -33,20 +34,24 @@ const EndUsersGroupsDetailsScreen = () => {
     const request = id !== 'add' ? api.getEndUsersGroupsById(id) : Promise.resolve({
       data: {
         customerId: nxState?.selectedCustomer?.id,
+        ...defaultEndUserGroup,
       },
     });
 
     request
       .then(({ data }) => {
-        setInitData({ ...data });
-        setCurData({ ...JSON.parse(JSON.stringify(data)) });
+        const newData = {
+          ...data,
+          localizedContent: generateLocals(data.localizedLongDesc, data.localizedShortDesc),
+        };
+        setInitData({ ...newData });
+        setCurData({ ...JSON.parse(JSON.stringify(newData)) });
         setIsLoading(false);
       })
       .catch(() => {
         setIsLoading(false);
       });
   }, [upd]);
-
   return (
     <DetailPageWrapper
       nxState={nxState}
@@ -54,17 +59,17 @@ const EndUsersGroupsDetailsScreen = () => {
       name={initData?.name || `${localization.t('general.new')} ${localization.t(
         'labels.endUserGroup',
       )}`}
-      saveIsDisabled={!curData?.name
+      saveIsDisabled={!curData?.name || Object.keys(errors).length > 0
         || (curData?.fallbackLocale
           && (!curData?.localizedShortDesc
-            || !curData?.localizedShortDesc[curData.fallbackLocale]))}
+            || !curData?.localizedContent[curData.fallbackLocale]?.localizedShortDesc))}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.endusergroups}
       curData={curData}
       addFunc={api.addEndUserGroup}
       updateFunc={api.updateEndUserGroup}
-      beforeSend={(data) => data}
+      beforeSend={beforeSend}
       setUpdate={setUpdate}
       tabs={{
         curTab,
@@ -73,6 +78,8 @@ const EndUsersGroupsDetailsScreen = () => {
       }}
     >
       <EndUsersGroupsDetailsView
+        errors={errors}
+        setErrors={setErrors}
         curData={curData}
         setCurData={setCurData}
         selectedLang={selectedLang}

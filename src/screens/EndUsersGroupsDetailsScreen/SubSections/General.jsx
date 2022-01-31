@@ -50,7 +50,12 @@ const General = ({ setData, data }) => {
         <Box px={1} width="50%">
           <SelectCustom
             label='fallbackLocale'
-            onChangeSelect={(e) => setData((c) => ({ ...c, fallbackLocale: e.target.value }))}
+            onChangeSelect={(e) => {
+              if (!data.localizedContent[e.target.value]) {
+                setData((c) => ({ ...c, localizedContent: { ...c.localizedContent, [e.target.value]: { localizedShortDesc: '', localizedLongDesc: '' } } }));
+              }
+              setData((c) => ({ ...c, fallbackLocale: e.target.value }));
+            }}
             selectOptions={availableLocales}
             value={data?.fallbackLocale || ''}
           />

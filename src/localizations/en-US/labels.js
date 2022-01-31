@@ -744,6 +744,7 @@ const labels = {
   manualFulfillment: 'Manual fulfillment',
   batchId: 'Batch ID',
   uploadedAt: 'Uploaded at',
+  fields: 'Fields',
 };
 
 export default labels;

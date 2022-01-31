@@ -39,7 +39,7 @@ const markUp = {
 };
 
 const generateData = async (data, customers, selectedCustomer) => {
-  if (selectedCustomer.name) {
+  if (selectedCustomer?.name) {
     data.items.map(
       (item) => Object.assign(item, { customer: selectedCustomer.name }),
     );

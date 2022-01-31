@@ -11,9 +11,9 @@ import './endUsersGroupsDetailsScreen.scss';
 const EndUsersGroupsDetailsView = ({
   curData,
   setCurData,
-  selectedLang,
-  setSelectedLang,
   curTab,
+  errors,
+  setErrors,
 }) => (
   <>
     {curTab === 0 && (
@@ -25,10 +25,11 @@ const EndUsersGroupsDetailsView = ({
     {curTab === 1 && (
       <SectionLayout label='localizedContent'>
         <LocalizedContent
-          data={curData}
-          setData={setCurData}
-          selectedLang={selectedLang}
-          setSelectedLang={setSelectedLang}
+          currentData={curData.localizedContent}
+          handleSaveLocale={(newValue) => setCurData({ ...curData, localizedContent: newValue })}
+          defaultLocale={curData.fallbackLocale}
+          errors={errors}
+          setErrors={setErrors}
         />
       </SectionLayout>
     )}
@@ -38,8 +39,8 @@ const EndUsersGroupsDetailsView = ({
 EndUsersGroupsDetailsView.propTypes = {
   curData: PropTypes.object,
   setCurData: PropTypes.func,
-  selectedLang: PropTypes.number,
-  setSelectedLang: PropTypes.func,
-  curTab: PropTypes.bool,
+  curTab: PropTypes.number,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 export default EndUsersGroupsDetailsView;
