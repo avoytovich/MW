@@ -2,11 +2,10 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import localization from '../../../localization';
 import TinyEditor from '../../../components/TinyEditor';
-
 import './localizations.scss';
 
 const LocalizationInputs = ({
@@ -14,37 +13,23 @@ const LocalizationInputs = ({
   lang,
   handleChange,
 }) => {
-  const updateNewData = (editor, v) => {
+  const updateNewData = (editor, inputKey) => {
     const curContent = editor.target.getContent();
-
-    handleChange((c) => ({
-      ...c,
-      [v]: { ...c[v], [lang]: curContent },
-    }));
-  };
-
-  const LocalizationInput = ({ val }) => (
-    <Box display='flex' width='100%' flexDirection='column'>
-      <Box width='100%' px={4} mb={4}>
-        <TinyEditor
-          initialValue={data[val][lang] || ''}
-          placeholder={localization.t(`forms.inputs.localizedContent.${[val]}`)}
-          onChange={(editor) => updateNewData(editor, val)}
-        />
-      </Box>
-    </Box>
-  );
-
-  LocalizationInput.propTypes = {
-    val: PropTypes.string,
+    handleChange(lang, curContent, inputKey);
   };
 
   return (
     <Box display='flex' width='100%' flexDirection='column'>
-      <Box width='100%' px={4} mb={4}>
-        <LocalizationInput val='localizedShortDesc' />
-        <LocalizationInput val='localizedLongDesc' />
-      </Box>
+      {Object.keys(data).map((itemKey) => (
+        <Box width='100%' px={4} mb={4} key={itemKey}>
+          <Typography color='secondary'>{localization.t(`forms.inputs.localizedContent.${itemKey}`)}</Typography>
+          <TinyEditor
+            initialValue={data[itemKey] || ''}
+            placeholder=''
+            onChange={(e) => updateNewData(e, itemKey)}
+          />
+        </Box>
+      ))}
     </Box>
   );
 };
@@ -52,7 +37,10 @@ const LocalizationInputs = ({
 LocalizationInputs.propTypes = {
   data: PropTypes.any,
   handleChange: PropTypes.func,
-  lang: PropTypes.string,
+  lang: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
 };
 
 export default LocalizationInputs;
