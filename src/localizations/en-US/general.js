@@ -128,6 +128,7 @@ const general = {
   manualFulfillment: 'Manual fulfillment',
   pleaseEitherDropAKeyfileHere: 'Please either drop a keyfile here',
   validKeyfile: 'Valid keyfile contains a line by license key, with just license key on the line, followed by end-of-line character',
+  abandonedCart: 'Abandoned Cart',
 };
 
 export default general;

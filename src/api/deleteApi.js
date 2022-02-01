@@ -181,6 +181,13 @@ const deleteApi = {
       url,
     });
   },
+  deleteAbandonedCartById(id) {
+    const url = `/campaigns/abandonedcarts/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
 };
 
 export default deleteApi;
