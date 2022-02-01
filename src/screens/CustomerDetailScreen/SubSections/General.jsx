@@ -56,7 +56,7 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
                 name: e.target.value,
               });
             }}
-            idDisabled={!!currentCustomer.id}
+            isDisabled={!!currentCustomer.id}
           />
         </Box>
         {currentCustomer.id
@@ -84,7 +84,7 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
                 iamClient: { ...currentCustomer.iamClient, realmName: e.target.value },
               });
             }}
-            idDisabled={!!currentCustomer.id}
+            isDisabled={!!currentCustomer.id}
           />
         </Box>
         <Box p={2}>
@@ -113,7 +113,6 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
                 email: e.target.value,
               });
             }}
-            idDisabled={!!currentCustomer.id}
           />
         </Box>
       </Grid>
