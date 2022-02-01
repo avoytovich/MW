@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import Subscriptions from './SubSections/Subscriptions';
 import Products from './SubSections/Products';
@@ -44,4 +44,4 @@ OrderDetailsView.propTypes = {
   subscriptions: PropTypes.array,
   setUpdate: PropTypes.func,
 };
-export default OrderDetailsView;
+export default memo(OrderDetailsView);
