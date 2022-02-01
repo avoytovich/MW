@@ -53,7 +53,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
           <Grid item md={7}>
             <PlusMinusInput
               data-test='maxPaymentsParts'
-              value={currentCustomer.paymentServiceConfiguration.maxPaymentsParts}
+              value={currentCustomer?.paymentServiceConfiguration?.maxPaymentsParts}
               handleUpdate={(value) => setCurrentCustomer({
                 ...currentCustomer,
                 paymentServiceConfiguration: {
@@ -77,7 +77,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
           <Grid item md={7}>
             <PlusMinusInput
               data-test='minPaymentAmountInPercent'
-              value={currentCustomer.paymentServiceConfiguration.minPaymentAmountInPercent}
+              value={currentCustomer?.paymentServiceConfiguration?.minPaymentAmountInPercent}
               handleUpdate={(value) => setCurrentCustomer({
                 ...currentCustomer,
                 paymentServiceConfiguration: {
@@ -106,7 +106,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
               },
             });
           }}
-          isChecked={currentCustomer.paymentServiceConfiguration.signedPartialAmountRequired}
+          isChecked={currentCustomer?.paymentServiceConfiguration?.signedPartialAmountRequired}
         />
       </Box>
       <Box p={2}>
@@ -114,7 +114,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
           data-test='availableAdditionalPaymentTypes'
           label='availableAdditionalPaymentTypes'
           selectOptions={selectOptions?.additionalPaymentTypes}
-          value={currentCustomer.paymentServiceConfiguration.availableAdditionalPaymentTypes}
+          value={currentCustomer?.paymentServiceConfiguration?.availableAdditionalPaymentTypes}
           onChangeSelect={(e) => setCurrentCustomer({
             ...currentCustomer,
             paymentServiceConfiguration: {
@@ -143,7 +143,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
           data-test='blackListedPaymentTypes'
           label='blackListedPaymentTypes'
           selectOptions={selectOptions.blackPaymentTypes}
-          value={currentCustomer.paymentServiceConfiguration.blackListedPaymentTypes}
+          value={currentCustomer?.paymentServiceConfiguration?.blackListedPaymentTypes}
           onChangeSelect={(e) => setCurrentCustomer({
             ...currentCustomer,
             paymentServiceConfiguration: {
@@ -172,7 +172,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
           data-test='forcedPaymentMethods'
           selectOptions={selectOptions.forcedPaymentTypes}
           label='forcedPaymentMethods'
-          value={currentCustomer.paymentServiceConfiguration.forcedPaymentTypes}
+          value={currentCustomer?.paymentServiceConfiguration?.forcedPaymentTypes}
           onChangeSelect={(e) => setCurrentCustomer({
             ...currentCustomer,
             paymentServiceConfiguration: {
