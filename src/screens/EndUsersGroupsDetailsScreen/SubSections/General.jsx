@@ -33,6 +33,23 @@ const General = ({ setData, data }) => {
 
   return (
     <>
+      {
+        data.customerId && (
+          <Box px={1} display='flex' justifyContent='space-between' width='50%' mb='27px'>
+            <Typography variant='h5'>{localization.t('labels.customer')}</Typography>
+
+            <Box display='flex'>
+              <Typography>{customerName}</Typography>
+              <FileCopy
+                color='secondary'
+                style={{ cursor: 'pointer', marginLeft: '10px' }}
+                onClick={(e) => { e.stopPropagation(); copyData(data.customerId); }}
+              />
+            </Box>
+          </Box>
+        )
+      }
+
       <Box display="flex" pb={2}>
         <Box px={1} width="50%">
           <TextField
@@ -63,27 +80,10 @@ const General = ({ setData, data }) => {
       </Box>
 
       {
-        data.customerId && (
-          <Box px={1} display='flex' justifyContent='space-between' width='50%' my='15px'>
-            <Typography variant='h5'>{localization.t('labels.customer')}</Typography>
-
-            <Box display='flex'>
-              <Typography>{customerName}</Typography>
-              <FileCopy
-                color='secondary'
-                style={{ cursor: 'pointer', marginLeft: '10px' }}
-                onClick={(e) => { e.stopPropagation(); copyData(data.customerId); }}
-              />
-            </Box>
-          </Box>
-        )
-      }
-
-      {
         data.id && (
           <Box px={1} display='flex' justifyContent='space-between' width='50%' my='15px'>
             <Typography variant='h5'>{localization.t('labels.endUserGroupId')}</Typography>
-
+            
             <Box display='flex'>
               <Typography>{data.id}</Typography>
               <FileCopy
