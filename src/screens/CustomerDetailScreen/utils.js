@@ -20,6 +20,15 @@ const defCustomerObj = {
     usingSubscriptionV1: false,
   },
   iamClient: { realmName: '' },
+  paymentServiceConfiguration: {
+    availableAdditionalPaymentTypes: [],
+    blackListedPaymentTypes: [],
+    forcedPaymentTypes: [],
+    maxPaymentsParts: 1,
+    minPaymentAmountInPercent: 10,
+    signedPartialAmountRequired: false,
+    promoteOneClickPayment: false,
+  },
 };
 
 const editCustomerDefObj = {
