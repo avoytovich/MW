@@ -10,7 +10,7 @@ const generateFilterUrl = (filters, availableFilters) => {
     const subFilter = `&${key}=`;
 
     if (typeof val !== 'object') {
-      if (filterConfig[0].exactSearch) {
+      if (filterConfig[0]?.exactSearch) {
         url += `${subFilter}${val}`;
       } else if (['id', 'productId'].includes(key)) {
         url += `${subFilter}${val}`;

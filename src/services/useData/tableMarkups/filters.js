@@ -149,7 +149,7 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'payment.transactionId',
+      id: 'payments.transactionId',
       label: localization.t('labels.transactionId'),
       type: 'text',
     },
