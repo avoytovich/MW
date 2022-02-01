@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 import TableComponent from '../../../../components/TableComponent';
 
@@ -13,6 +14,7 @@ import {
   saveSortParams,
   sortKeys,
 } from '../../../../services/sorting';
+import localization from '../../../../localization';
 
 const AbandonedScreen = () => {
   const scope = 'marketingAbandoned';
@@ -21,6 +23,8 @@ const AbandonedScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.abandoned),
   );
+  const [makeUpdate, setMakeUpdate] = useState(0);
+
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getAbandoned({
@@ -36,17 +40,27 @@ const AbandonedScreen = () => {
 
   const abandoned = useTableData(
     setLoading,
-    false,
+    makeUpdate,
     scope,
     requests,
     sortParams,
   );
+
+  const handleDeleteAbandonedCart = (id) => api.deleteAbandonedCartById(id).then(() => {
+    setMakeUpdate((v) => v + 1);
+    toast(
+      `${localization.t('general.abandonedCart')} ${id} ${localization.t(
+        'general.hasBeenSuccessfullyDeleted',
+      )}`,
+    );
+  });
 
   return (
     <TableComponent
       scope={scope}
       defaultShowColumn={defaultShow}
       sortParams={sortParams}
+      handleDeleteItem={handleDeleteAbandonedCart}
       setSortParams={handleSetSortParams}
       tableData={abandoned}
       isLoading={isLoading}
