@@ -446,6 +446,7 @@ const labels = {
   orderLineId: 'Order line ID',
   locale: 'Locale',
   licenseProviderDefinition: 'License provider definition ID',
+  validationNumber: 'Please put only numbers',
   publisherProductId: 'Publisher product ID',
   creationInProgress: 'Creation In Progress',
   creationFailed: 'Creation Failed',
