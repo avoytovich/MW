@@ -2,6 +2,7 @@ import {
   SET_TABLE_SCOPE,
   REFRESH_TABLE,
   SET_TABLE_FILTERS,
+  SET_TABLE_SEARCH,
   RESET_TABLE_FILTERS,
   SET_TABLE_FILTER_VIEWS,
   RESET_TABLE_SEARCH,
@@ -39,6 +40,8 @@ const setFilters = (filters) => {
   return ({ type: SET_TABLE_FILTERS, payload: { filters } });
 };
 
+const setSearch = (search) => ({ type: SET_TABLE_SEARCH, payload: { search } });
+
 const setFilterViews = (views) => {
   localStorage.setItem('filter-views', JSON.stringify(views));
 
@@ -68,6 +71,7 @@ export {
   setTableScope,
   refreshTable,
   setFilters,
+  setSearch,
   setFilterViews,
   resetFilters,
   resetSearch,

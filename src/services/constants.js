@@ -67,4 +67,23 @@ const VALID_FILTER_SCOPES = [
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];
 
-export { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES, KNOWN_REALMS };
+const VALID_SEARCH_SCOPES = [
+  'orderlist',
+  'subscriptions',
+  'licenses',
+  'carts',
+  'stores',
+  'productlist',
+  'prices',
+  'recommendations',
+  'discountrules',
+  'marketingCampaigns',
+  'marketingAbandoned',
+  'enduserlist',
+  'endusergroups',
+  'resellers',
+];
+
+export {
+  VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES, KNOWN_REALMS, VALID_SEARCH_SCOPES,
+};

@@ -8,7 +8,9 @@ import Close from '@mui/icons-material/Close';
 
 import FilterBlockInputs from './FilterBlockInputs';
 
-const FilterBlock = ({ data, curData, updateConfig }) => {
+const FilterBlock = ({
+  data, curData, updateConfig, size, myBox, search,
+}) => {
   const [curVal, setCurVal] = useState('');
 
   useEffect(() => {
@@ -16,12 +18,14 @@ const FilterBlock = ({ data, curData, updateConfig }) => {
   }, [curData]);
 
   return (
-    <Box display='flex' alignItems='center' my='10px'>
+    <Box display='flex' alignItems='center' my={myBox || '10px'}>
       <Box minWidth='115px'>
         <Typography variant='h6'>{data?.label}</Typography>
       </Box>
 
       <FilterBlockInputs
+        search={search}
+        size={size}
         type={data?.type}
         curData={curVal}
         updateConfig={updateConfig}
@@ -41,6 +45,9 @@ FilterBlock.propTypes = {
   data: PropTypes.object,
   curData: PropTypes.any,
   updateConfig: PropTypes.func,
+  size: PropTypes.string,
+  myBox: PropTypes.string,
+  search: PropTypes.bool,
 };
 
 export default FilterBlock;
