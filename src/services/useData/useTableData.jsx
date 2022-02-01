@@ -17,6 +17,7 @@ const useTableData = (
   const reduxWasUpdated = useSelector(({ tableData: { wasUpdated } }) => wasUpdated);
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
+  const activeSearch = useSelector(({ tableData: { search } }) => search);
   const customerScope = useSelector(({
     account: { nexwayState },
   }) => nexwayState?.selectedCustomer?.id);
@@ -24,6 +25,11 @@ const useTableData = (
   useEffect(() => {
     let isCancelled = false;
     if (tableScope === dataScope || dataScope === 'generateCodes') {
+      let searchRequest = activeSearch && activeSearch[dataScope]
+        && (() => {
+          const [key, val] = Object.entries(activeSearch[dataScope])[0];
+          return `&${key}=${val}`;
+        })();
       let filtersUrl = activeFilters && activeFilters[dataScope]
         && Object.values(activeFilters[dataScope]).length ? generateFilterUrl(activeFilters[dataScope], availableFilters[dataScope]) : '';
 
@@ -32,9 +38,52 @@ const useTableData = (
       }
 
       setLoading(true);
-      requests(reduxRowPerPage, reduxCurrentPage - 1, filtersUrl)
+      requests(
+        reduxRowPerPage,
+        reduxCurrentPage - 1,
+        !searchRequest || searchRequest[searchRequest.length - 1] === '='
+          ? filtersUrl : searchRequest,
+      )
         .then((payload) => {
           if (!isCancelled) {
+            if (searchRequest && !payload.values.length) {
+              searchRequest = (() => {
+                const [key, val] = Object.entries(activeSearch[dataScope])[1];
+                return `&${key}=*${val}*`;
+              })();
+              return requests(
+                reduxRowPerPage,
+                reduxCurrentPage - 1,
+                !searchRequest || searchRequest[searchRequest.length - 1] === '='
+                  ? filtersUrl : searchRequest,
+              )
+                .then((data) => {
+                  if (!isCancelled) {
+                    if (searchRequest.search('productGenericName') !== -1 && activeSearch[dataScope].genericName !== '') {
+                      const searchPayload = {
+                        headers: data.headers,
+                        meta: {
+                          totalPages: Math.ceil(
+                            data.values.filter(
+                              (each) => each.genericName === searchRequest.slice(searchRequest.indexOf('*') + 1, searchRequest.lastIndexOf('*')),
+                            ).length / reduxRowPerPage,
+                          ),
+                        },
+                        values: data.values.filter((each) => each.genericName.includes(searchRequest.slice(searchRequest.indexOf('*') + 1, searchRequest.lastIndexOf('*')))),
+                      };
+                      setFetchedData(searchPayload);
+                    } else {
+                      setFetchedData(data);
+                    }
+                  }
+                  setLoading(false);
+                })
+                .catch(() => {
+                  if (!isCancelled) {
+                    setLoading(false);
+                  }
+                });
+            }
             setFetchedData(payload);
             setLoading(false);
           }
@@ -53,6 +102,7 @@ const useTableData = (
     makeUpdate,
     tableScope,
     activeFilters,
+    activeSearch,
     customerScope,
     sortParams,
     reduxRowPerPage,

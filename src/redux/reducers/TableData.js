@@ -1,6 +1,7 @@
 import {
   REFRESH_TABLE,
   SET_TABLE_FILTERS,
+  SET_TABLE_SEARCH,
   SET_TABLE_SCOPE,
   RESET_TABLE_FILTERS,
   RESET_TABLE_SEARCH,
@@ -34,6 +35,7 @@ const TableData = (state = initialState, { type, payload }) => {
     case SET_TABLE_ROWS_PER_PAGE:
     case SET_TABLE_CURRENT_PAGE:
     case SET_TABLE_FILTERS:
+    case SET_TABLE_SEARCH:
     case SET_TABLE_FILTER_VIEWS:
       return { ...state, ...payload };
     case SET_WAS_UPDATED:

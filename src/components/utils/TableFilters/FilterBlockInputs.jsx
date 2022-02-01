@@ -16,15 +16,18 @@ import { SelectWithChip } from '../../Inputs';
 import localization from '../../../localization';
 
 const FilterBlockInputs = ({
-  type, curData, updateConfig, data,
+  type, curData, updateConfig, data, size, search,
 }) => {
   const TextSubFilter = () => (
     <TextField
       label={data.label}
       value={curData || ''}
+      size={size || 'medium'}
       fullWidth
       variant='outlined'
-      onChange={(e) => updateConfig(data.id, e.target.value)}
+      onChange={
+        (e) => (search ? updateConfig(data, e.target.value) : updateConfig(data.id, e.target.value))
+      }
       InputProps={{
         endAdornment: <InputAdornment position='end'><SearchIcon color='secondary' /></InputAdornment>,
       }}

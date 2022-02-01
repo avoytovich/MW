@@ -32,15 +32,19 @@ import {
   setCheckedItems,
   refreshTable,
   setWasUpdated,
+  setSearch,
 } from '../../redux/actions/TableData';
 
 import localization from '../../localization';
 import ShowColumnPopper from './ShowColumnPopper';
-import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES } from '../../services/constants';
+import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES, VALID_SEARCH_SCOPES } from '../../services/constants';
 import defPath from '../../services/helpers/routingHelper';
+import { searchData } from './helper';
+
 import DeletePopup from '../Popup/DeletePopup';
 import TableFilters from '../utils/TableFilters';
 import CustomBreadcrumbs from '../utils/CustomBreadcrumbs';
+import FilterBlockInputs from '../utils/TableFilters/FilterBlock';
 
 const useStyles = makeStyles({
   button: {
@@ -70,6 +74,7 @@ const TableActionsBar = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showFilters, setShowFilters] = useState(null);
+  const [curVal, setCurVal] = useState('');
   const classes = useStyles();
   const csvLink = useRef();
   const dispatch = useDispatch();
@@ -219,6 +224,27 @@ const TableActionsBar = ({
                           </Tooltip>
                         )}
                     </Box>
+
+                    {VALID_SEARCH_SCOPES.includes(scope) && (
+                    <Box display='flex' alignItems='center'>
+                      <FilterBlockInputs
+                        search
+                        myBox='0px'
+                        size='small'
+                        curData={curVal}
+                        updateConfig={(data, val) => {
+                          setCurVal(val);
+                          dispatch(setSearch({
+                            [scope]: {
+                              [data.id]: val,
+                              [data.name ? data.name : data.id]: val,
+                            },
+                          }));
+                        }}
+                        data={searchData(scope)}
+                      />
+                    </Box>
+                    )}
 
                     <Box>
                       <Tooltip disableInteractive arrow title="Show Columns" placement="top">
