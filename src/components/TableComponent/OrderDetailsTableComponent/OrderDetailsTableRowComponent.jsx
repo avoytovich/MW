@@ -119,6 +119,20 @@ const TableRowComponent = ({
             />
           </>
         );
+      } else if (item.id === 'emailId') {
+        valueToShow = (
+          <>
+            {rowItem[item.id]}
+            {rowItem[item.id] && (
+              <FileCopyIcon
+                className='id-copy'
+                style={{ marginLeft: '5px' }}
+                onClick={() => makeCopy(rowItem[item.id])}
+                color="secondary"
+              />
+            )}
+          </>
+        );
       } else {
         valueToShow = rowItem[item.id];
       }
