@@ -25,15 +25,16 @@ const CatalogsDetailsView = ({
   id,
   customer,
   curCatalogs,
+  curCatalogs: { startDate, endDate },
   setCurCatalogs,
   catalogs,
 }) => {
   const history = useHistory();
   const { id: param } = useParams();
 
-  const [runningDate, setRunningDate] = useState('');
-  const [showAfter, setShowAfter] = useState(false);
-  const [showBetween, setShowBetween] = useState(false);
+  const [runningDate, setRunningDate] = useState((startDate && endDate && 'BETWEEN') || (startDate && 'AFTER') || '');
+  const [showAfter, setShowAfter] = useState(runningDate === 'AFTER');
+  const [showBetween, setShowBetween] = useState(runningDate === 'BETWEEN');
 
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
@@ -46,6 +47,10 @@ const CatalogsDetailsView = ({
         setRunningDate('AFTER');
         setShowBetween(false);
         setShowAfter(true);
+        setCurCatalogs({
+          ...curCatalogs,
+          endDate: null,
+        });
         break;
       case 'BETWEEN':
         setRunningDate('BETWEEN');
