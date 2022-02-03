@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect, forwardRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
   Box, Tabs, Tab, LinearProgress,
 } from '@mui/material';
-import { useSelector } from 'react-redux';
+
 import { toast } from 'react-toastify';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -17,25 +18,27 @@ import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/Op
 import {
   backToFront, localizedValues, createInheritableValue,
 } from '../../../services/helpers/dataStructuring';
+import { setTempProductLocales, setTempProductDescription } from '../../../redux/actions/TempData';
 
 const LocalizedContent = ({
-  setNewData, currentProductData, parentId, storeLanguages,
+  setHasNewData, currentProductData, parentId, storeLanguages,
 }) => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState(0);
   const [availLocales, setAvailLocales] = useState([]);
   const [curData, setCurData] = useState(null);
-  const [initData, setInitData] = useState({});
-  const [curTabValues, setCurTabValues] = useState({});
   const [newTabValues, setNewTabValues] = useState({});
   const [newLangValue, setNewLangValue] = useState('');
   const availableLocales = getLanguagesOptions();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+
   const makeNewData = (locale) => {
     const dataToSave = { ...curData };
     dataToSave.i18nFields[value || locale] = { ...newTabValues };
     setCurData({ ...dataToSave });
-    setNewData({ ...dataToSave });
+    setHasNewData(true);
   };
+
   const getValues = () => {
     const inputValues = !value
       ? localizedValues.reduce(
@@ -50,14 +53,11 @@ const LocalizedContent = ({
             : '',
         }),
         {},
-      )
-      : { ...curData.i18nFields[value] };
+      ) : { ...curData.i18nFields[value] };
 
-    setCurTabValues({ ...inputValues });
     setNewTabValues({ ...inputValues });
   };
 
-  const handleChange = (name, val) => setNewTabValues((c) => ({ ...c, [name]: val }));
   const removeLocale = (e, locale) => {
     e.stopPropagation();
 
@@ -67,12 +67,13 @@ const LocalizedContent = ({
 
     setAvailLocales((c) => c.filter((l) => l !== locale));
     setCurData({ ...dataToSave });
-    setNewData({ ...dataToSave });
+    setHasNewData({ ...dataToSave });
 
     if (value === locale) {
       setValue(0);
     }
   };
+
   const addLocale = (defLanguage) => {
     if (newLangValue) {
       if (availLocales.indexOf(newLangValue) < 0) {
@@ -93,20 +94,32 @@ const LocalizedContent = ({
       }
     }
   };
+
   const handleChangeDefaultLanguage = (defLanguage) => {
     if (typeof defLanguage === 'string') {
       addLocale(defLanguage);
+
       setCurData({ ...curData, fallbackLocale: defLanguage });
-      setAvailLocales((avail) => [defLanguage, ...avail.filter((localLanguage) => localLanguage !== defLanguage )]);
+
+      setAvailLocales((avail) => [
+        defLanguage,
+        ...avail.filter((localLanguage) => localLanguage !== defLanguage),
+      ]);
+
       if (curData.i18nFields[value]?.localizedMarketingName) {
-        setNewData({ ...curData, fallbackLocale: defLanguage });
+        setHasNewData(true);
       }
     } else {
       const curLocale = defLanguage.fallbackLocale.state === 'inherits' ? defLanguage.fallbackLocale.parentValue : defLanguage.fallbackLocale.value;
       addLocale(curLocale);
       setCurData({ ...defLanguage });
-      setNewData({ ...defLanguage });
+      setHasNewData(true);
     }
+
+    dispatch(setTempProductDescription({
+      ...curData,
+      fallbackLocale: typeof defLanguage === 'string' ? defLanguage : { ...defLanguage },
+    }));
   };
 
   useEffect(() => {
@@ -158,12 +171,15 @@ const LocalizedContent = ({
         localizedValues.forEach((item) => delete productDescrData[item]);
         productDescrData.i18nFields = i18nFields;
         productDescrData.fallbackLocale = inheritedFallbackLocale;
-        setInitData(JSON.stringify({ ...productDescrData }));
         setCurData({ ...productDescrData });
         setAvailLocales(avail);
+
+        dispatch(setTempProductLocales({ ...i18nFields }));
+        dispatch(setTempProductDescription({ ...productDescrData }));
       });
       return;
     }
+
     const productDescriptionRequest = !currentProductData.descriptionId
       ? Promise.resolve({
         data: {
@@ -197,26 +213,19 @@ const LocalizedContent = ({
           [current]: childLocalizedValues,
         };
       }, {});
+
       const productDescrData = { ...data };
       localizedValues.forEach((item) => delete productDescrData[item]);
       productDescrData.i18nFields = i18nFields;
-      setInitData(JSON.stringify({ ...productDescrData }));
 
       setCurData({ ...productDescrData });
       setAvailLocales(avail);
+      dispatch(setTempProductLocales({ ...i18nFields }));
+      dispatch(setTempProductDescription({ ...productDescrData }));
     });
   }, [currentProductData.descriptionId]);
 
   useEffect(() => getValues(), [value]);
-  useEffect(() => {
-    const hasChanges = JSON.stringify(curTabValues) !== JSON.stringify(newTabValues) && !!value;
-
-    if (hasChanges) {
-      makeNewData();
-    } else if (JSON.stringify(curData) === initData) {
-      setNewData(false);
-    }
-  }, [newTabValues]);
 
   if (!curData) return <LinearProgress />;
 
@@ -289,13 +298,12 @@ const LocalizedContent = ({
         <Box display='flex' flexDirection='row' alignItems='baseline' width='80%'>
           {!!value && (
             <LocalizationInputs
-              handleChange={handleChange}
-              setNewTabValues={setNewTabValues}
-              data={newTabValues}
-              isDefault={
-                value === curData?.fallbackLocale || value === curData?.fallbackLocale?.value
-              }
+              data={curData?.i18nFields}
+              isDefault={value === curData?.fallbackLocale
+                || value === curData?.fallbackLocale?.value}
               parentId={parentId}
+              curLocal={value}
+              setHasLocalizationChanges={setHasNewData}
             />
           )}
         </Box>
@@ -305,7 +313,7 @@ const LocalizedContent = ({
 };
 
 LocalizedContent.propTypes = {
-  setNewData: PropTypes.func,
+  setHasNewData: PropTypes.func,
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
   storeLanguages: PropTypes.array,

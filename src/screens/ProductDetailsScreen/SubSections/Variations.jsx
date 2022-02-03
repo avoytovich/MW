@@ -150,7 +150,7 @@ const Variations = ({
                         {variations?.availableVariables?.map(
                           ({ fieldValue, field, localizedValue }) => (
                             <TableCell key={field} align='center'>
-                              {localizedValue[fieldValue][defaultLocale]}
+                              {localizedValue && localizedValue[fieldValue][defaultLocale]}
                             </TableCell>
                           ),
                         )}

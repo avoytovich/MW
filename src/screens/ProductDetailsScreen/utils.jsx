@@ -11,7 +11,6 @@ const handleGetOptions = (
   setLoading,
   customerId,
   id,
-  descriptionId,
   isCancelled,
   setSelectOptions,
   selectOptions,
@@ -27,7 +26,6 @@ const handleGetOptions = (
     api.getCatalogsByCustomerId(customerId),
     api.getPriceFunctionsCustomerByIds(customerId),
     id ? api.getSubProductsById(id) : null,
-    descriptionId ? api.getProductDescriptionById(descriptionId) : null,
   ];
 
   api.getCustomerById(customerId).then(({ data: curCustomer }) => {
@@ -39,6 +37,7 @@ const handleGetOptions = (
         value: item,
       }));
     }
+
     Promise.all(promiseArray).then(
       ([
         sellingStores,
@@ -48,17 +47,16 @@ const handleGetOptions = (
         priceFunctionsOptions,
         subProducts,
         subscriptions,
-        // productDetails,
       ]) => {
         if (!subscriptionOptions) {
           subscriptionOptions = structureSelectOptions({ options: subscriptions?.data?.items, optionValue: 'name' });
         }
+
         setSubProductVariations({
           bundledProducts: subProducts?.data?.items,
           variations: productsVariations(renewingProducts?.data?.items, id),
         });
 
-        // setProductDetails(productDetails?.data);
         if (!isCancelled) {
           setSelectOptions({
             ...selectOptions,
@@ -134,14 +132,17 @@ const handleGetProductDetails = (
       if (dataParent?.variableDescriptions) {
         setVariablesDescriptions(dataParent?.variableDescriptions);
       }
+
       setProductDetails(productDescrData);
 
       result.avail = avail;
     });
     return;
   }
+
   api.getProductDescriptionById(descriptionId).then(({ data }) => {
     const avail = [];
+
     localizedValues.forEach((it) => {
       if (data[it]) {
         Object.keys(data[it]).forEach((loc) => {

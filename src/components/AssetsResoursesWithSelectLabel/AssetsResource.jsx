@@ -7,7 +7,15 @@ import localization from '../../localization';
 import FileBlock from './FileBlock';
 
 const AssetsResource = ({
-  resources, setResources, maxPayloadFiles, labelOptions, label, withSelect = true, isFile,
+  resources,
+  setResources,
+  maxPayloadFiles,
+  labelOptions,
+  label,
+  withSelect = true,
+  isFile,
+  containerStyles,
+  isDisabled,
 }) => {
   const deleteItem = (key) => {
     const newResources = resources.filter((item) => item.key !== key);
@@ -28,17 +36,16 @@ const AssetsResource = ({
   };
 
   return (
-    <>
+    <Box width={1} {...containerStyles}>
       <Box width={1} p={2}>
-        <Typography variant="h6">
-          {label || localization.t('general.selectFiles')}
-        </Typography>
+        <Typography variant="h6">{label || localization.t('general.selectFiles')}</Typography>
       </Box>
+
       <Box display="flex" flexDirection="column" alignItems="center" width={1}>
         {!!resources.length
           && resources.map((content, index) => (
             <Box key={content.key} width={1} p={2}>
-              <Box width={1} pb={4}>
+              <Box width={1}>
                 <FileBlock
                   labelOptions={labelOptions}
                   deleteItem={deleteItem}
@@ -49,6 +56,7 @@ const AssetsResource = ({
                   withSelect={withSelect}
                   isFile={isFile}
                   type="file"
+                  isDisabled={isDisabled}
                 />
               </Box>
               {(index !== resources.length - 1) && <Divider light />}
@@ -57,7 +65,8 @@ const AssetsResource = ({
         {(!maxPayloadFiles || resources.length < maxPayloadFiles) && (
           <Box alignSelf='flex-start' px={2} minWidth={220}>
             <Button
-              disabled={resources.filter((i) => !i.label || (!i.url && !i.file)).length}
+              disabled={resources.filter((i) => !i.label
+                || (!i.url && !i.file)).length || isDisabled}
               style={{ width: '100%' }}
               onClick={addItem}
               variant="outlined"
@@ -68,7 +77,7 @@ const AssetsResource = ({
           </Box>
         )}
       </Box>
-    </>
+    </Box>
   );
 };
 
@@ -80,6 +89,8 @@ AssetsResource.propTypes = {
   label: PropTypes.string,
   withSelect: PropTypes.bool,
   isFile: PropTypes.bool,
+  containerStyles: PropTypes.object,
+  isDisabled: PropTypes.bool,
 };
 
 export default AssetsResource;

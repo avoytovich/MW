@@ -23,18 +23,16 @@ const AddParameterFirstStep = ({
     <>
       <ClearIcon onClick={onClose} className='closeModal' />
 
-      <Typography variant='h2' className='header'>
-        New Parameter
-      </Typography>
+      <Typography variant='h2' className='header'>New Parameter</Typography>
+
       <Typography variant='h4' className='title'>
         First pick a name for this new parameter. This name will be used in price functions
         definitions.
       </Typography>
-      <Typography variant='h6' className='label'>
-        Allowed: alphanumeric characters and underscore
-      </Typography>
+
+      <Typography variant='h6' className='label'>Allowed: alphanumeric characters and underscore</Typography>
+
       <InputCustom
-        // label="some"
         onChangeInput={(e) => setModalState({
           ...modalState,
           field: e.target.value,
@@ -42,20 +40,18 @@ const AddParameterFirstStep = ({
         value={modalState?.field || ''}
         isRequired
       />
-      <Typography variant='h4' className='title'>
-        Give a display string for this parameter, in language 'en-US'.
-      </Typography>
-      <Typography variant='h6' className='label'>
-        The label dasplayed to the buyer when ferering to this parameter
-      </Typography>
+
+      <Typography variant='h4' className='title'>Give a display string for this parameter, in language 'en-US'.</Typography>
+
+      <Typography variant='h6' className='label'>The label dasplayed to the buyer when ferering to this parameter</Typography>
+
       <InputCustom
-        // label="some"
         onChangeInput={(e) => setModalState({ ...modalState, label: e.target.value })}
         value={modalState?.label || ''}
       />
-      <Typography variant='h4' className='title'>
-        Now choose the type of the parameter:
-      </Typography>
+
+      <Typography variant='h4' className='title'>Now choose the type of the parameter:</Typography>
+
       <RadioGroup
         aria-label='type'
         name='type'
@@ -91,6 +87,7 @@ const AddParameterFirstStep = ({
           </Typography>
         </Box>
       </RadioGroup>
+
       <Box display='flex' justifyContent='flex-end' marginTop='40px'>
         <Button variant='outlined' color='secondary' onClick={onClose}>
           cancel

@@ -1,22 +1,19 @@
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import * as R from 'ramda';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
-import {
-  Box,
-  Tabs,
-  Tab,
-} from '@mui/material';
-import ArrowBack from '@mui/icons-material/ArrowBack';
-import localization from '../../localization';
-import parentPaths from '../../services/paths';
+import store from '../../redux/store';
+
+import ProductDetailsTabs from './ProductDetailsTabs';
+import ProductDetailsView from './ProductDetailsView';
 import CheckoutMenu from './CheckoutMenu';
+
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
-import ProductDetailsView from './ProductDetailsView';
-import { handleGetOptions, handleGetProductDetails } from './utils';
+
+import parentPaths from '../../services/paths';
 import {
   defaultProduct,
   productRequiredFields,
@@ -24,51 +21,71 @@ import {
   frontToBack,
   localizedValues,
 } from '../../services/helpers/dataStructuring';
+import { handleGetOptions, handleGetProductDetails } from './utils';
+import { setTempProductDescription, setTempProductLocales } from '../../redux/actions/TempData';
+
+import localization from '../../localization';
 import api from '../../api';
+
+const defaultSelectOptions = {
+  sellingStores: null,
+  renewingProducts: null,
+  subscriptionModels: null,
+  catalogs: null,
+  priceFunctions: null,
+};
 
 const ProductDetailsScreen = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
 
-  const parentId = history?.location?.state?.parentId;
   const [isLoading, setLoading] = useState(true);
-  const [customer, setCustomer] = useState(null);
-  const [needDefault, setNeedDefault] = useState(null);
-  const [curTab, setCurTab] = useState(0);
   const [upd, setUpd] = useState(0);
+
+  const [customer, setCustomer] = useState(null);
+  const [curTab, setCurTab] = useState(0);
+
   const [saveDisabled, setSaveDisabled] = useState(false);
-  const [productHasChanges, setProductChanges] = useState(false);
   const [tabsDisabled, setTabsDisabled] = useState(true);
-  const [selectOptions, setSelectOptions] = useState({
-    sellingStores: null,
-    renewingProducts: null,
-    subscriptionModels: null,
-    catalogs: null,
-    priceFunctions: null,
-  });
+
+  const [productHasChanges, setProductChanges] = useState(false);
+  const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
+
   const [productData, setProductData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(defaultProduct);
-  const [checkOutStores, setCheckOutStores] = useState([]);
-  const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
-  const [productVariations, setSubProductVariations] = useState({});
   const [productDetails, setProductDetails] = useState(null);
+  const [currentProductDetails, setCurrentProductDetails] = useState(null);
   const [variablesDescriptions, setVariablesDescriptions] = useState([]);
+  const [productVariations, setSubProductVariations] = useState({});
+  const [checkOutStores, setCheckOutStores] = useState([]);
   const [storeLanguages, setStoreLanguages] = useState([]);
+  const [selectOptions, setSelectOptions] = useState({ ...defaultSelectOptions });
 
+  const parentId = history?.location?.state?.parentId;
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  const handleChangeTab = (tab) => (id && tab === 7 ? history.push(`${parentPaths.productlist}/${currentProductData?.parentId || parentId}`) : setCurTab(tab));
+  const handleChangeTab = (tab) => {
+    if (tab === 7) {
+      setLoading(true);
+      history.push(`${parentPaths.productlist}/${currentProductData?.parentId || parentId}`);
+    } else {
+      setCurTab(tab);
+    }
+  };
 
   const filterCheckoutStores = () => {
     let newLanguages = [];
     const res = [];
+
     const storesList = currentProductData?.sellingStores?.state // eslint-disable-line
       ? currentProductData?.sellingStores?.state === 'inherits'
         ? currentProductData?.sellingStores?.parentValue
         : currentProductData?.sellingStores?.value : currentProductData?.sellingStores;
 
     storesList?.forEach((item) => {
-      const selectedStore = selectOptions?.sellingStores?.filter((store) => store.id === item);
+      const selectedStore = selectOptions?.sellingStores?.filter((store_) => store_.id === item);
 
       if (selectedStore[0]) {
         const languages = selectedStore[0].saleLocales ? [...selectedStore[0].saleLocales] : [];
@@ -85,8 +102,53 @@ const ProductDetailsScreen = () => {
     setCheckOutStores(res);
   };
 
-  // ToDo simplify saveDetails/saveProduct if possible
-  const saveDetails = () => {
+  const saveLocalizatoinDetails = () => {
+    const { tempData } = store.getState();
+    const {
+      i18nFields: i18nFields_ = {},
+      description: description_ = {},
+    } = tempData;
+
+    const frontToBackObj = frontToBack({
+      ...description_,
+      ...i18nFields_[description_?.fallbackLocale || 'en-US'],
+      i18nFields: i18nFields_,
+    });
+
+    const i18nFields = Object.entries(frontToBackObj.i18nFields).reduce(
+      (accumulator, [key, value]) => ({ ...accumulator, [key]: frontToBack(value || {}) }),
+      {},
+    );
+
+    const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
+      const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
+        if (i18nFields[key][cur]) {
+          return { ...ac, [key]: value[cur] };
+        }
+        return ac;
+      }, {});
+      return {
+        ...acc,
+        [cur]: localizedValue || {},
+      };
+    }, {});
+
+    if (frontToBackObj.i18nFields) {
+      delete frontToBackObj.i18nFields;
+    }
+
+    const dataToSave = R.mergeRight(frontToBackObj, localizedValuesToSave);
+
+    if (!frontToBackObj?.customerId) {
+      frontToBackObj.customerId = currentProductData?.customerId?.state
+        ? currentProductData?.customerId?.value
+        : currentProductData?.customerId;
+    }
+
+    return dataToSave;
+  };
+
+  const saveDetails = async () => {
     if (productHasChanges) {
       const sendObj = currentProductData?.parentId || parentId
         ? frontToBack(currentProductData)
@@ -99,39 +161,17 @@ const ProductDetailsScreen = () => {
       }
 
       api.updateProductById(currentProductData.id, sendObj).then(() => {
-        toast(localization.t('general.updatesHaveBeenSaved'));
-        setLoading(true);
-        setUpd((c) => c + 1);
+        if (!productHasLocalizationChanges && !currentProductDetails) {
+          toast(localization.t('general.updatesHaveBeenSaved'));
+          setLoading(true);
+          setUpd((c) => c + 1);
+        }
       });
     }
 
-    if (productHasLocalizationChanges) {
-      const frontToBackObj = frontToBack(productHasLocalizationChanges);
-      const i18nFields = Object.entries(frontToBackObj.i18nFields).reduce(
-        (accumulator, [key, value]) => ({ ...accumulator, [key]: frontToBack(value || {}) }),
-        {},
-      );
-      const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
-        const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
-          if (i18nFields[key][cur]) {
-            return { ...ac, [key]: value[cur] };
-          }
-          return ac;
-        }, {});
-        return {
-          ...acc,
-          [cur]: localizedValue || {},
-        };
-      }, {});
-      if (frontToBackObj.i18nFields) {
-        delete frontToBackObj.i18nFields;
-      }
-      const dataToSave = R.mergeRight(frontToBackObj, localizedValuesToSave);
-      if (!frontToBackObj?.customerId) {
-        frontToBackObj.customerId = currentProductData?.customerId?.state
-          ? currentProductData?.customerId?.value
-          : currentProductData?.customerId;
-      }
+    if (productHasLocalizationChanges || currentProductDetails) {
+      const dataToSave = saveLocalizatoinDetails();
+
       api
         .updateProductLocalsById(
           currentProductData?.descriptionId?.state
@@ -142,6 +182,7 @@ const ProductDetailsScreen = () => {
         .then(() => {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLoading(true);
+          setProductLocalizationChanges(false);
           setUpd((c) => c + 1);
         });
     }
@@ -151,53 +192,30 @@ const ProductDetailsScreen = () => {
     if (!currentProductData.businessSegment) {
       delete currentProductData.businessSegment;
     }
+
     const dataToSave = frontToBack(currentProductData);
+
     if (!dataToSave?.customerId) {
       dataToSave.customerId = currentProductData?.customerId?.state
         ? currentProductData?.customerId?.value
         : currentProductData?.customerId;
     }
+
     if (productData?.parentId || parentId) {
-      delete dataToSave.id;
+      delete dataToSave?.id;
+      delete dataToSave?.descriptionId;
       dataToSave.parentId = productData?.parentId || parentId;
     }
 
     api.addNewProduct(dataToSave).then((res) => {
-      const location = res.headers.location.split('/');
+      const loc = res.headers.location.split('/');
       // eslint-disable-next-line no-underscore-dangle
-      const id_ = location[location.length - 1];
+      const id_ = loc[loc.length - 1];
 
       api.getProductById(id_).then(({ data }) => {
-        if (productHasLocalizationChanges) {
-          const frontToBackObj = frontToBack(productHasLocalizationChanges);
-          const i18nFields = Object.entries(frontToBackObj.i18nFields).reduce(
-            (accumulator, [key, value]) => ({ ...accumulator, [key]: frontToBack(value || {}) }),
-            {},
-          );
-          const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
-            const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
-              if (i18nFields[key][cur]) {
-                return { ...ac, [key]: value[cur] };
-              }
-              return ac;
-            }, {});
-            return {
-              ...acc,
-              [cur]: localizedValue || {},
-            };
-          }, {});
+        if (productHasLocalizationChanges || (id === 'add' && parentId)) {
+          const localizationChangesToSave = saveLocalizatoinDetails();
 
-          if (frontToBackObj.i18nFields) {
-            delete frontToBackObj.i18nFields;
-          }
-          const localizationChangesToSave = R.mergeRight(
-            frontToBackObj, localizedValuesToSave,
-          );
-          if (!frontToBackObj?.customerId) {
-            frontToBackObj.customerId = currentProductData?.customerId?.state
-              ? currentProductData?.customerId?.value
-              : currentProductData?.customerId;
-          }
           api
             .updateProductLocalsById(
               data.descriptionId,
@@ -223,19 +241,93 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => {
     let isCancelled = false;
-    let request;
+    const productId = id === 'add' ? parentId : id;
 
-    setCurTab(0);
+    if (id !== 'add' || (parentId && !productData)) {
+      api.getProductById(productId).then(({ data: product }) => {
+        if (!isCancelled) {
+          if (product?.parentId) {
+            api.getProductById(product.parentId).then(({ data }) => {
+              const result = backToFront(productRequiredFields(data), product);
+              const initData = JSON.parse(JSON.stringify(result));
 
-    if (parentId) {
-      request = api.getProductById(parentId);
-    } else if (id === 'add') {
+              handleGetProductDetails(
+                result?.descriptionId,
+                setVariablesDescriptions,
+                setProductDetails,
+              );
+
+              setProductData(initData);
+              setCurrentProductData(result);
+              setLoading(false);
+            });
+          } else {
+            const checkedProduct = productRequiredFields(product);
+            const newHashes = JSON.parse(JSON.stringify(checkedProduct));
+
+            if (id === 'add') {
+              const result = backToFront(productRequiredFields(checkedProduct), checkedProduct);
+              const initData = JSON.parse(JSON.stringify(result));
+
+              setProductData(initData);
+              setCurrentProductData(result);
+            } else {
+              handleGetProductDetails(
+                product?.descriptionId,
+                setVariablesDescriptions,
+                setProductDetails,
+              );
+
+              setProductData(checkedProduct);
+              setCurrentProductData(newHashes);
+            }
+
+            setLoading(false);
+          }
+        }
+
+        if (id === 'add') {
+          const customerId = nxState?.selectedCustomer?.id;
+
+          return handleGetOptions(
+            setLoading,
+            customerId,
+            null,
+            isCancelled,
+            setSelectOptions,
+            selectOptions,
+            setSubProductVariations,
+            (catalogId) => setProductDetails((c) => ({ ...c, catalogId })),
+          );
+        }
+
+        const { customerId, id: _id } = product;
+
+        handleGetOptions(
+          setLoading,
+          customerId,
+          _id,
+          isCancelled,
+          setSelectOptions,
+          selectOptions,
+          setSubProductVariations,
+          (catalogId) => setProductDetails((c) => ({ ...c, catalogId })),
+        );
+      }).catch(() => setLoading(false));
+    } else {
       const customerId = nxState?.selectedCustomer?.id;
+
+      if (parentId) {
+        const result = backToFront(productRequiredFields(currentProductData), productData);
+        const initData = JSON.parse(JSON.stringify(result));
+
+        setProductData(initData);
+        setCurrentProductData(result);
+      }
 
       return handleGetOptions(
         setLoading,
         customerId,
-        null,
         null,
         isCancelled,
         setSelectOptions,
@@ -245,56 +337,22 @@ const ProductDetailsScreen = () => {
           setCurrentProductData((c) => ({ ...c, customerId, catalogId }));
         },
       );
-    } else {
-      request = api.getProductById(id);
     }
 
-    request.then(({ data: product }) => {
-      if (!isCancelled) {
-        if (product?.parentId) {
-          api.getProductById(product.parentId).then(({ data }) => {
-            const result = backToFront(productRequiredFields(data), product);
-            const initData = JSON.parse(JSON.stringify(result));
-
-            handleGetProductDetails(
-              result?.descriptionId,
-              setVariablesDescriptions,
-              setProductDetails,
-            );
-
-            setProductData(initData);
-            setCurrentProductData(result);
-            setLoading(false);
-          });
-        } else {
-          const checkedProduct = productRequiredFields(product);
-          setProductData(checkedProduct);
-          const newHashes = JSON.stringify(checkedProduct);
-          setCurrentProductData(JSON.parse(newHashes));
-          setLoading(false);
-        }
-      }
-
-      const { customerId, id: _id, descriptionId } = product;
-
-      handleGetOptions(
-        setLoading,
-        customerId,
-        _id,
-        descriptionId,
-        isCancelled,
-        setSelectOptions,
-        selectOptions,
-        setSubProductVariations,
-        setProductDetails,
-      );
-    }).catch(() => setLoading(false));
-
-    return () => { isCancelled = true; };
+    return () => {
+      isCancelled = true;
+      dispatch(setTempProductLocales({}));
+      dispatch(setTempProductDescription({}));
+    };
   }, [id, upd, history?.state]);
 
   useEffect(() => {
-    if (productData?.customerId) {
+    setLoading(true);
+    setCurTab(0);
+  }, [location?.pathname]);
+
+  useEffect(() => {
+    if (productData?.customerId && customer?.id !== productData?.customerId) {
       api
         .getCustomerById(productData?.customerId)
         .then((res) => setCustomer(res.data));
@@ -320,75 +378,52 @@ const ProductDetailsScreen = () => {
     }
   }, [selectOptions?.sellingStores]);
 
+  useEffect(() => {
+    dispatch(setTempProductDescription({ ...productDetails }));
+  }, [productDetails]);
+
+  useEffect(() => setProductDetails({ ...currentProductDetails }), [currentProductDetails]);
+
   return (
     <DetailPageWrapper
       nxState={nxState}
       id={id}
-      name={id === 'add' ? localization.t('labels.newProduct') : `${productData?.genericName?.value || productData?.genericName} - ${id}`}
-      saveIsDisabled={saveDisabled || tabsDisabled || Boolean(needDefault)}
+      name={
+        id === 'add'
+          ? localization.t('labels.newProduct')
+          : `${productData?.genericName?.value || productData?.genericName} - ${id}`
+      }
+      saveIsDisabled={saveDisabled || tabsDisabled}
       hasChanges={productHasChanges || productHasLocalizationChanges || !productData?.id}
       isLoading={isLoading}
+      setUpdate={setUpd}
       curParentPath={parentPaths.productlist}
       curData={currentProductData}
       addFunc={api.addNewProduct}
       updateFunc={api.updateProductById}
-      setUpdate={setUpd}
-      extraHeader={<CustomerStatusLabel customer={customer} />}
       customSave={id === 'add' ? saveProduct : saveDetails}
+      extraHeader={<CustomerStatusLabel customer={customer} />}
+      headerTitleCopy={productData?.id}
       extraActions={
-        id && (
-          <Box data-test='checkoutMenu' ml={2}>
-            {selectOptions?.sellingStores && (
-              <CheckoutMenu
-                checkOutStores={checkOutStores}
-                currentProductData={currentProductData}
-                sellingStores={selectOptions?.sellingStores}
-              />
-            )}
-          </Box>
+        id && selectOptions?.sellingStores && (
+          <CheckoutMenu
+            checkOutStores={checkOutStores}
+            currentProductData={currentProductData}
+            sellingStores={selectOptions?.sellingStores}
+          />
         )
       }
       customTabs={(
-        <Tabs
-          value={curTab}
-          data-test='productTabs'
-          indicatorColor='primary'
-          textColor='primary'
-          onChange={(e, tab) => handleChangeTab(tab)}
-        >
-          {(currentProductData?.parentId || parentId) && (
-            <Tab
-              style={{ color: 'white', backgroundColor: '#9ec5ec' }}
-              label={(
-                <Box display='flex' alignItems='center'>
-                  <ArrowBack color='white' />
-                  {localization.t('labels.backToParent')}
-                </Box>
-              )}
-              value={7}
-            />
-          )}
-          <Tab label={localization.t('labels.general')} value={0} />
-          <Tab
-            label={localization.t('labels.fulfillmentAndSubscription')}
-            value={1}
-            disabled={!selectOptions?.sellingStores}
-          />
-          <Tab
-            label={localization.t('labels.localizedContent')}
-            value={2}
-            disabled={!selectOptions?.sellingStores}
-          />
-          <Tab label={localization.t('labels.prices')} value={3} />
-          <Tab label={localization.t('labels.productVariations')} value={4} />
-          <Tab label={localization.t('labels.productFiles')} value={5} />
-        </Tabs>
+        <ProductDetailsTabs
+          curTab={curTab}
+          handleChangeTab={handleChangeTab}
+          currentProductData={currentProductData}
+          parentId={parentId || currentProductData?.parentId}
+          selectOptions={selectOptions}
+        />
       )}
-      headerTitleCopy={productData?.id}
     >
       <ProductDetailsView
-        needDefault={needDefault}
-        setNeedDefault={setNeedDefault}
         productData={productData}
         setCurProductData={setCurrentProductData}
         curProductData={currentProductData}
@@ -398,10 +433,12 @@ const ProductDetailsScreen = () => {
         productVariations={productVariations}
         setProductLocalizationChanges={setProductLocalizationChanges}
         productDetails={productDetails}
+        setProductDetails={setCurrentProductDetails}
         variablesDescriptions={variablesDescriptions}
         storeLanguages={storeLanguages}
         setSaveDisabled={setSaveDisabled}
         setTabsDisabled={setTabsDisabled}
+        parentId={parentId || currentProductData?.parentId}
       />
     </DetailPageWrapper>
   );

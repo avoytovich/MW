@@ -12,7 +12,15 @@ import localization from '../../localization';
 import './AssetsResource.scss';
 
 const FileBlock = ({
-  item, updateResources, deleteItem, index, labelOptions, data, withSelect, isFile,
+  item,
+  updateResources,
+  deleteItem,
+  index,
+  labelOptions,
+  data,
+  withSelect,
+  isFile,
+  isDisabled,
 }) => {
   const [urlLoading, setUrlLoading] = useState(true);
 
@@ -47,7 +55,7 @@ const FileBlock = ({
       display="flex"
       flexWrap="wrap"
       className={`product-files ${
-        urlFetching ? 'disable-block' : ''
+        urlFetching || isDisabled ? 'disable-block' : ''
       } existing-item`}
     >
       <Box minWidth="250px">
@@ -73,6 +81,7 @@ const FileBlock = ({
                     label="label"
                     value={selectedLabel}
                     selectOptions={labelOptions}
+                    isDisabled={isDisabled}
                     usedOptions={
                       labelOptions.filter((l) => data.filter((r) => r.label === l.id).length)
                     }
@@ -103,6 +112,7 @@ const FileBlock = ({
                     <InputCustom
                       label='freeLabel'
                       isRequired
+                      isDisabled={isDisabled}
                       value={item.label === '_free' ? '' : item.label}
                       onChangeInput={(e) => updateResources(index, 'label', e.target.value)}
                     />
@@ -117,6 +127,7 @@ const FileBlock = ({
           <Grid item md={11} sm={11}>
             <InputCustom
               label="url"
+              isDisabled={isDisabled}
               value={isFile ? item.file : item.url}
               onChangeInput={(e) => updateResources(index, isFile ? 'file' : 'url', e.target.value)}
             />
@@ -128,12 +139,17 @@ const FileBlock = ({
               </Box>
             )}
           </Grid>
-          <Grid item md={1} sm={1} className="iconWrapper">
-            <ClearIcon
-              color="secondary"
-              onClick={() => deleteItem(item.key)}
-            />
-          </Grid>
+
+          {
+            !isDisabled && (
+              <Grid item md={1} sm={1} className="iconWrapper">
+                <ClearIcon
+                  color="secondary"
+                  onClick={() => deleteItem(item.key)}
+                />
+              </Grid>
+            )
+          }
         </Grid>
       </Box>
     </Box>
@@ -149,6 +165,7 @@ FileBlock.propTypes = {
   labelOptions: PropTypes.array,
   withSelect: PropTypes.bool,
   isFile: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };
 
 export default FileBlock;

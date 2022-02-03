@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Menu, MenuItem } from '@mui/material';
+import {
+  Box, Button, Menu, MenuItem,
+} from '@mui/material';
+
 import localization from '../../../localization';
 
 import './CheckoutMenu.scss';
@@ -12,7 +15,7 @@ const CheckoutMenu = ({ checkOutStores, currentProductData }) => {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
   return (
-    <>
+    <Box data-test='checkoutMenu' ml={2}>
       <Button
         disabled={checkOutStores.length <= 0}
         aria-haspopup="true"
@@ -54,7 +57,7 @@ const CheckoutMenu = ({ checkOutStores, currentProductData }) => {
             </MenuItem>
           ))}
       </Menu>
-    </>
+    </Box>
   );
 };
 

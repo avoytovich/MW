@@ -1,76 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import PropTypes from 'prop-types';
 
 import { Box } from '@mui/material';
-import { SelectCustom } from '../../../components/Inputs';
 
 import InheritanceField from '../InheritanceField';
+
+import TinyEditor from '../../../components/TinyEditor';
+import { SelectCustom } from '../../../components/Inputs';
+
 import { checkValue } from '../../../services/helpers/dataStructuring';
 
 import localization from '../../../localization';
 
 import './localizations.scss';
-import TinyEditor from '../../../components/TinyEditor';
 
 const LocalizationInputs = ({
   data = {},
-  handleChange,
   isDefault,
   parentId,
-  setNewTabValues,
+  setHasLocalizationChanges,
+  curLocal,
 }) => {
-  const [newData, setNewData] = useState({ ...data });
-
-  useEffect(() => {
-    if (JSON.stringify(data) !== JSON.stringify(newData)) {
-      setNewData(() => ({ ...data }));
-    }
-  }, [data]);
-
-  useEffect(() => {
-    const hasChanges = JSON.stringify(data) !== JSON.stringify(newData);
-
-    if (hasChanges) {
-      setNewTabValues({ ...newData });
-    }
-
-    return () => {};
-  }, [newData]);
-
-  const updateNewData = (e, name) => {
-    const curContent = e.target.getContent();
-    if (!name
-        || (!curContent && !checkValue(newData[name], newData[name]?.state))
-        || (JSON.stringify(curContent) === JSON.stringify(
-          checkValue(newData[name], newData[name]?.state),
-        ))) return;
-
-    newData[name]?.state
-      ? handleChange(
-        name,
-        {
-          ...newData[name],
-          value: curContent,
-        },
-      )
-      : handleChange(name, curContent);
-  };
-
   const LocalizationInput = ({ val }) => (
-    <InheritanceField
-      field={val}
-      onChange={setNewData}
-      value={newData[val] || ''}
+    <TinyEditor
+      val={val}
+      data={data}
       parentId={parentId}
-      currentProductData={newData}
-    >
-      <TinyEditor
-        initialValue={newData[val] ? (checkValue(newData[val], newData[val]?.state) || '') : ''}
-        placeholder={localization.t(`labels.${val}`)}
-        onChange={(e) => updateNewData(e, val)}
-      />
-    </InheritanceField>
+      curLocal={curLocal}
+      placeholder={localization.t(`labels.${val}`)}
+      setHasLocalizationChanges={setHasLocalizationChanges}
+    />
   );
 
   LocalizationInput.propTypes = {
@@ -84,10 +44,10 @@ const LocalizationInputs = ({
 
   return (
     <Box display='flex' width='100%' flexDirection='column'>
-      <Box width='50%' px={4} mb={4} position='relative' {...stylesForVariations}>
+      <Box width='60%' px={4} mb={4} position='relative' {...stylesForVariations}>
         <LocalizationInput val='localizedMarketingName' />
 
-        {isDefault && !data?.localizedMarketingName && (
+        {isDefault && !data[curLocal]?.localizedMarketingName && (
           <div className='error-message'>
             {localization.t('general.marketingNameMandatory')}
           </div>
@@ -119,10 +79,10 @@ const LocalizationInputs = ({
 
 LocalizationInputs.propTypes = {
   data: PropTypes.object,
-  handleChange: PropTypes.func,
   parentId: PropTypes.string,
   isDefault: PropTypes.bool,
-  setNewTabValues: PropTypes.func,
+  setHasLocalizationChanges: PropTypes.func,
+  curLocal: PropTypes.string,
 };
 
 const DefaultLanguage = ({
@@ -153,4 +113,5 @@ DefaultLanguage.propTypes = {
   onChange: PropTypes.func,
   parentId: PropTypes.string,
 };
+
 export { LocalizationInputs, DefaultLanguage };

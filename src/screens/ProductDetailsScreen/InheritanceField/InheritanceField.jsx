@@ -1,12 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Tooltip } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
 
 const InheritanceField = (props) => {
   const {
-    children: Children, value, parentId, currentProductData, field, onChange,
+    children: Children,
+    value,
+    parentId,
+    currentProductData,
+    field,
+    onChange,
+    containerStyles,
+    buttonStyles,
+    buttonAction,
+    isTinymce,
   } = props;
 
   if (!Children) return null;
@@ -25,7 +34,7 @@ const InheritanceField = (props) => {
     });
   };
 
-  const handleChange = (value) => {
+  const handleChange = (val) => {
     const { value: inheritanceValue } = props;
 
     if (field === 'status') {
@@ -33,11 +42,12 @@ const InheritanceField = (props) => {
         ...currentProductData,
         [field]: {
           ...inheritanceValue,
-          value: value?.target?.value === 'ENABLED' ? 'DISABLED' : 'ENABLED',
+          value: val?.target?.value === 'ENABLED' ? 'DISABLED' : 'ENABLED',
         },
       });
       return;
     }
+
     if (field === 'physical') {
       onChange({
         ...currentProductData,
@@ -48,6 +58,7 @@ const InheritanceField = (props) => {
       });
       return;
     }
+
     if (field === 'defaultCurrency') {
       onChange({
         ...currentProductData,
@@ -55,17 +66,22 @@ const InheritanceField = (props) => {
           ...inheritanceValue,
           value: {
             ...inheritanceValue.value,
-            [field]: value.target.value,
+            [field]: val?.target?.value,
           },
         },
       });
       return;
     }
+
+    if (field === 'blackListedCountries' && typeof val?.target?.value === 'string') {
+      return;
+    }
+
     onChange({
       ...currentProductData,
       [field]: {
         ...inheritanceValue,
-        value: typeof value === 'object' ? value?.target?.value : value,
+        value: typeof val === 'object' ? val?.target?.value : val,
       },
     });
   };
@@ -84,7 +100,7 @@ const InheritanceField = (props) => {
     onChangeInput: handleChange, // overrides the one in wrappedProps, to allow proxying
     onChangeSelect: handleChange, // overrides the one in wrappedProps, to allow proxying
     onClickDelIcon: handleOnClickDelIcon,
-    onBlur: () => null,
+    onBlur: Children?.props?.onBlur || (() => null),
     onDragStart: () => null,
     onDrop: () => null,
     onFocus: () => null,
@@ -96,6 +112,10 @@ const InheritanceField = (props) => {
 
   if (field === 'physical') {
     inputProps.checked = inputValue;
+  }
+
+  if (isTinymce) {
+    delete inputProps.disabled;
   }
 
   const newChildren = {
@@ -114,20 +134,29 @@ const InheritanceField = (props) => {
         state: value.state === 'inherits' ? 'overrides' : 'inherits',
       },
     });
+
+    buttonAction && buttonAction();
   };
 
   if (field === 'defaultCurrency') {
     return newChildren;
   }
 
+  const stylesForTinymce = isTinymce && newChildren.props.isDisabled ? {
+    opacity: '0.5',
+  } : {};
+
   return (
-    <>
-      {newChildren}
+    <Box display='flex' width={1} {...containerStyles}>
+      <Box flexGrow={1} maxWidth='calc(100% - 64px)' display='flex' style={stylesForTinymce}>
+        {newChildren}
+      </Box>
+
       <Tooltip
         disableInteractive
         title={
           value.state === 'inherits'
-            ? 'Click this buuton to override value'
+            ? 'Click this button to override value'
             : 'Click this button to inherit value from the parent product'
         }
       >
@@ -135,11 +164,12 @@ const InheritanceField = (props) => {
           size='small'
           color={value.state === 'inherits' ? 'secondary' : 'primary'}
           onClick={() => onClickInheritanceButton()}
+          style={buttonStyles}
         >
           {value.state === 'inherits' ? <LinkOffIcon /> : <InsertLinkIcon />}
         </Button>
       </Tooltip>
-    </>
+    </Box>
   );
 };
 
@@ -150,6 +180,10 @@ InheritanceField.propTypes = {
   parentId: PropTypes.string,
   currentProductData: PropTypes.object,
   field: PropTypes.string,
+  containerStyles: PropTypes.object,
+  buttonStyles: PropTypes.object,
+  buttonAction: PropTypes.func,
+  isTinymce: PropTypes.bool,
 };
 
 export default InheritanceField;
