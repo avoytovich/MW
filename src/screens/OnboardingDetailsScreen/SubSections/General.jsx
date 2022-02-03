@@ -208,10 +208,10 @@ const General = ({
                     });
                   }}
                   color="primary"
-                  checked={curOnboarding.onboardingProperties[field]}
+                  checked={curOnboarding.onboardingProperties?.[field]}
                 />
               )}
-              label={curOnboarding.onboardingProperties[field]
+              label={curOnboarding.onboardingProperties?.[field]
                 ? localization.t('labels.yes') : localization.t('labels.no')}
             />
           </Typography>
