@@ -42,9 +42,8 @@ const Prices = ({
   setProductData,
   setSaveDisabled,
   parentId,
-  needDefault,
-  setNeedDefault,
 }) => {
+  const [needDefault, setNeedDefault] = useState(null);
   const [prices, setPrices] = useState([]);
   const [scheduledPrices, setScheduledPrices] = useState([]);
 
@@ -79,15 +78,17 @@ const Prices = ({
         });
       });
 
+      setPrices([...pricesArr]);
+
       const needsDefault = pricesList.filter((it) => !priceByCountryByCurrency[it].default);
 
       if (needsDefault.length) {
         setSaveDisabled(true);
+        setNeedDefault(needsDefault);
       } else {
         setSaveDisabled(false);
+        setNeedDefault(null);
       }
-      setNeedDefault(needsDefault.length ? needsDefault : null);
-      setPrices([...pricesArr]);
     }
   }, [currentProductData.prices]);
 
@@ -281,7 +282,7 @@ const Prices = ({
                             <Typography variant='subtitle1'>
                               <span
                                 className="price-value"
-                                onClick={() => history.push(`${parentPaths.pricemodels.pricesTab}/${price.id}`)} // ToDo: should be replaced with new customer route
+                                onClick={() => history.push(`${parentPaths.pricemodels.pricesTab}/${price.id}`)}
                               >
                                 {price.id}
                               </span>
@@ -347,14 +348,13 @@ const Prices = ({
     </>
   );
 };
+
 Prices.propTypes = {
   selectOptions: PropTypes.object,
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
   setSaveDisabled: PropTypes.func,
-  needDefault: PropTypes.array,
-  setNeedDefault: PropTypes.func,
 };
 
 export default Prices;

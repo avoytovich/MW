@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 import {
   Box,
@@ -11,28 +10,31 @@ import {
   InputAdornment,
   Autocomplete,
 } from '@mui/material';
+import CancelIcon from '@mui/icons-material/Cancel';
+
+import InheritanceField from '../InheritanceField';
 
 import { NumberInput, SelectWithDeleteIcon } from '../../../components/Inputs';
+import { checkValue } from '../../../services/helpers/dataStructuring';
 import localization from '../../../localization';
 
 import './FulfillmentAndSubscription.scss';
 
-const FulfillmentAndSubscription = ({ setProductData, currentProductData, selectOptions }) => {
+const FulfillmentAndSubscription = ({
+  setProductData,
+  currentProductData,
+  selectOptions,
+  parentId,
+}) => {
   const [searchVal, setSearchVal] = useState('');
 
   const changeProducts = (e, newProduct) => {
-    setProductData({
-      ...currentProductData,
-      nextGenerationOf: [newProduct?.id || ''],
-    });
+    setProductData({ ...currentProductData, nextGenerationOf: [newProduct?.id || ''] });
   };
 
   const toFilter = (arr) => {
     const newArr = [...arr.reduce((acc, each) => (
-      [...acc, {
-        id: each.id,
-        name: each.value,
-      }]
+      [...acc, { id: each.id, name: each.value }]
     ), [])];
 
     return newArr.filter(
@@ -49,8 +51,9 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
 
   const resolveValue = () => {
     const resolveArr = autoOptions.filter(
-      (item) => item.id === currentProductData.nextGenerationOf[0],
+      (item) => item.id === checkValue(currentProductData.nextGenerationOf[0]),
     );
+
     return resolveArr[0];
   };
 
@@ -60,82 +63,103 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
         <Box p={2}>
           <Typography color="secondary">{localization.t('labels.allowTrial')}</Typography>
         </Box>
+
         <Box p={2}>
-          <Switch
-            disabled={!currentProductData.subscriptionTemplate}
-            name="allowTrial"
-            onChange={(e) => {
-              setProductData({
-                ...currentProductData,
-                trialAllowed: e.target.checked,
-              });
-            }}
-            color="primary"
-            checked={currentProductData?.trialAllowed || false}
-          />
+          <InheritanceField
+            field='trialAllowed'
+            onChange={setProductData}
+            value={currentProductData?.trialAllowed}
+            parentId={parentId}
+            currentProductData={currentProductData}
+          >
+            <Switch
+              disabled={!checkValue(currentProductData?.subscriptionTemplate)}
+              name="allowTrial"
+              onChange={(e) => {
+                setProductData({ ...currentProductData, trialAllowed: e.target.checked });
+              }}
+              color="primary"
+              checked={checkValue(currentProductData?.trialAllowed) || false}
+            />
+          </InheritanceField>
         </Box>
       </Box>
+
       <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2} width="50%">
-          <SelectWithDeleteIcon
-            label="subscriptionModel"
-            value={currentProductData.subscriptionTemplate}
-            selectOptions={selectOptions.subscriptionModels}
-            onChangeSelect={(e) => {
-              setProductData({
-                ...currentProductData,
-                subscriptionTemplate: e.target.value,
-              });
-            }}
-            onClickDelIcon={() => setProductData({
-              ...currentProductData,
-              subscriptionTemplate: '',
-            })}
-          />
+          <InheritanceField
+            field='subscriptionTemplate'
+            onChange={setProductData}
+            value={currentProductData?.subscriptionTemplate}
+            parentId={parentId}
+            currentProductData={currentProductData}
+          >
+            <SelectWithDeleteIcon
+              label="subscriptionModel"
+              value={checkValue(currentProductData.subscriptionTemplate)}
+              selectOptions={selectOptions.subscriptionModels}
+              onChangeSelect={(e) => {
+                setProductData({ ...currentProductData, subscriptionTemplate: e.target.value });
+              }}
+              onClickDelIcon={() => setProductData({ ...currentProductData, subscriptionTemplate: '' })}
+            />
+          </InheritanceField>
         </Box>
+
         <Box p={2}>
-          <NumberInput
-            isDisabled={!currentProductData.trialAllowed}
-            label="trialDuration"
-            value={currentProductData.trialDuration}
-            onChangeInput={(e) => {
-              setProductData({
-                ...currentProductData,
-                trialDuration: e.target.value,
-              });
-            }}
-            minMAx={{ min: 0 }}
-          />
+          <InheritanceField
+            field='trialDuration'
+            onChange={setProductData}
+            value={currentProductData?.trialDuration}
+            parentId={parentId}
+            currentProductData={currentProductData}
+          >
+            <NumberInput
+              isDisabled={!checkValue(currentProductData.trialAllowed)}
+              label="trialDuration"
+              value={checkValue(currentProductData.trialDuration)}
+              onChangeInput={(e) => {
+                setProductData({ ...currentProductData, trialDuration: e.target.value });
+              }}
+              minMAx={{ min: 0 }}
+            />
+          </InheritanceField>
         </Box>
       </Box>
+
       <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2} width="50%">
-          <SelectWithDeleteIcon
-            label="fulfillmentTemplate"
-            value={currentProductData.fulfillmentTemplate}
-            selectOptions={selectOptions.fulfillmentTemplates}
-            onChangeSelect={(e) => {
-              setProductData({
+          <InheritanceField
+            field='fulfillmentTemplate'
+            onChange={setProductData}
+            value={currentProductData?.fulfillmentTemplate}
+            parentId={parentId}
+            currentProductData={currentProductData}
+          >
+            <SelectWithDeleteIcon
+              label="fulfillmentTemplate"
+              value={checkValue(currentProductData.fulfillmentTemplate)}
+              selectOptions={selectOptions.fulfillmentTemplates}
+              onChangeSelect={(e) => {
+                setProductData({ ...currentProductData, fulfillmentTemplate: e.target.value });
+              }}
+              onClickDelIcon={() => setProductData({
                 ...currentProductData,
-                fulfillmentTemplate: e.target.value,
-              });
-            }}
-            onClickDelIcon={() => setProductData({
-              ...currentProductData,
-              fulfillmentTemplate: '',
-              releaseDate: '',
-            })}
-          />
+                fulfillmentTemplate: '',
+                releaseDate: '',
+              })}
+            />
+          </InheritanceField>
         </Box>
+
         <Box p={2} width="50%">
           <form noValidate>
             <TextField
-              disabled={!currentProductData.fulfillmentTemplate}
+              disabled={!checkValue(currentProductData.fulfillmentTemplate)}
               name="datetime"
               value={
                 currentProductData?.releaseDate
-                  ? moment(currentProductData.releaseDate).format('YYYY-MM-DD')
-                  : ''
+                  ? moment(checkValue(currentProductData.releaseDate)).format('YYYY-MM-DD') : ''
               }
               label={localization.t('labels.preorderReleaseDate')}
               type="date"
@@ -148,10 +172,7 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
                       fontSize="small"
                       color="secondary"
                       onClick={() => {
-                        setProductData({
-                          ...currentProductData,
-                          releaseDate: '',
-                        });
+                        setProductData({ ...currentProductData, releaseDate: '' });
                       }}
                       onMouseDown={(e) => {
                         e.stopPropagation();
@@ -160,19 +181,15 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
                   </InputAdornment>
                 ),
               }}
-              InputLabelProps={{
-                shrink: true,
-              }}
+              InputLabelProps={{ shrink: true }}
               onChange={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  releaseDate: e.target.value,
-                });
+                setProductData({ ...currentProductData, releaseDate: e.target.value });
               }}
             />
           </form>
         </Box>
       </Box>
+
       <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2} width="50%">
           <Autocomplete
@@ -197,15 +214,13 @@ const FulfillmentAndSubscription = ({ setProductData, currentProductData, select
             )}
           />
         </Box>
+
         <Box width="50%" display="flex" flexDirection="row" alignItems="baseline">
           <Box p={2}>
-            <Typography color="secondary">
-              {localization.t('labels.licenseKeyPackages')}
-            </Typography>
+            <Typography color="secondary">{localization.t('labels.licenseKeyPackages')}</Typography>
           </Box>
-          <Box p={2}>
-            <Typography>{localization.t('general.noPackagesFound')}</Typography>
-          </Box>
+
+          <Box p={2}><Typography>{localization.t('general.noPackagesFound')}</Typography></Box>
         </Box>
       </Box>
     </>
@@ -216,6 +231,7 @@ FulfillmentAndSubscription.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
+  parentId: PropTypes.string,
 };
 
 export default FulfillmentAndSubscription;

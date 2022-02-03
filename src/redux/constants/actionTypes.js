@@ -19,8 +19,12 @@ export const SET_TABLE_ROWS_PER_PAGE = 'table/setRowsPerPage';
 export const SET_TABLE_CHECKED_ITEMS = 'table/setCheckedItems';
 export const SET_WAS_UPDATED = 'table/setWasUpdated';
 export const SET_TABLE_CURRENT_PAGE = 'table/setCurrentPage';
+
 // Show Columns
 export const SET_TABLE_SHOW_COLUMNS = 'showColumns/setShowColumns';
 
 // SessionData
 export const UPDATE_SESSION_STATE = 'session/updateSessionState';
+
+// TempData
+export const UPDATE_TEMP_STATE = 'data/updateTempState';

@@ -10,6 +10,7 @@ import SectionLayout from '../../components/SectionLayout';
 import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
 import SubProductVariations from './SubSections/SubProductVariations';
+import { checkValue } from '../../services/helpers/dataStructuring';
 
 const ProductDetailsView = ({
   selectOptions,
@@ -26,20 +27,21 @@ const ProductDetailsView = ({
   setSaveDisabled,
   setTabsDisabled,
   curTab,
-  needDefault,
-  setNeedDefault,
 }) => {
   const checkSaveDisable = () => {
     let disableSave = false;
     const { relatedContents, resources } = curProductData;
 
-    if (relatedContents?.value?.length) {
-      const [hasInvalid] = relatedContents.value.filter((v) => !v.label || !v.url);
+    const rcChecked = checkValue(relatedContents);
+    const resourceChecked = checkValue(resources);
+
+    if (rcChecked?.value?.length) {
+      const [hasInvalid] = rcChecked.value.filter((v) => !v.label || !v.url);
       disableSave = disableSave || !!hasInvalid;
     }
 
-    if (resources?.length) {
-      const [hasInvalid] = resources.filter((v) => !v.label || !v.url);
+    if (resourceChecked?.length) {
+      const [hasInvalid] = resourceChecked.filter((v) => !v.label || !v.url);
       disableSave = disableSave || !!hasInvalid;
     }
 
@@ -80,15 +82,18 @@ const ProductDetailsView = ({
           />
         </SectionLayout>
       )}
+
       {curTab === 1 && (
         <SectionLayout dataTest='fulfillmentAndSubscription' label='fulfillmentAndSubscription'>
           <FulfillmentAndSubscription
             selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={curProductData}
+            parentId={parentId}
           />
         </SectionLayout>
       )}
+
       {curTab === 2 && (
         <SectionLayout dataTest='localizedContent' label='localizedContent'>
           <LocalizedContent
@@ -96,16 +101,15 @@ const ProductDetailsView = ({
             setProductData={setProductData}
             currentProductData={curProductData}
             productData={productData}
-            setNewData={setProductLocalizationChanges}
+            setHasNewData={setProductLocalizationChanges}
             parentId={parentId}
           />
         </SectionLayout>
       )}
+
       {curTab === 3 && (
         <SectionLayout dataTest='prices' label='prices'>
           <Prices
-            needDefault={needDefault}
-            setNeedDefault={setNeedDefault}
             selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={curProductData}
@@ -116,7 +120,8 @@ const ProductDetailsView = ({
           />
         </SectionLayout>
       )}
-      {curTab === 4 ? ( // eslint-disable-line
+
+      {curTab === 4 && ( // eslint-disable-line
         parentId ? (
           <SubProductVariations
             setProductData={setProductData}
@@ -138,7 +143,8 @@ const ProductDetailsView = ({
             productDetails={productDetails}
           />
         )
-      ) : null}
+      )}
+
       {curTab === 5 && (
         <SectionLayout dataTest='productFiles' label='productFiles'>
           <ProductFiles
@@ -146,6 +152,7 @@ const ProductDetailsView = ({
             currentProductData={curProductData}
             setProductData={setProductData}
             setSaveDisabled={setSaveDisabled}
+            parentId={parentId}
           />
         </SectionLayout>
       )}
@@ -168,8 +175,6 @@ ProductDetailsView.propTypes = {
   curTab: PropTypes.number,
   setSaveDisabled: PropTypes.func,
   setTabsDisabled: PropTypes.func,
-  needDefault: PropTypes.array,
-  setNeedDefault: PropTypes.func,
 };
 
 export default ProductDetailsView;

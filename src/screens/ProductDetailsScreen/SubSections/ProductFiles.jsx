@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, Typography, Divider } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
 
+import { checkValue } from '../../../services/helpers/dataStructuring';
 import localization from '../../../localization';
 
 import './productFile.scss';
+import InheritanceField from '../InheritanceField';
 
 const resourceLabels = [
   { id: '_free', value: localization.t('labels.freeLabel') },
@@ -19,7 +21,7 @@ const resourceLabels = [
 
 const defaultFiles = { key: 0, label: null, url: null };
 
-const ProductFiles = ({ currentProductData, setProductData }) => {
+const ProductFiles = ({ currentProductData, setProductData, parentId }) => {
   const [contents, setContents] = useState([{ ...defaultFiles }]);
   const [resources, setResources] = useState([{ ...defaultFiles }]);
 
@@ -28,11 +30,21 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
   };
 
   const updateContents = (newData) => {
-    setProductData((c) => ({ ...c, relatedContents: [...newData] }));
+    if (parentId) {
+      setProductData((c) => ({
+        ...c,
+        relatedContents: {
+          ...currentProductData?.relatedContents,
+          value: [...newData],
+        },
+      }));
+    } else {
+      setProductData((c) => ({ ...c, relatedContents: [...newData] }));
+    }
   };
 
   useEffect(() => {
-    let toSetData = currentProductData?.relatedContents || [];
+    let toSetData = checkValue(currentProductData?.relatedContents) || [];
 
     if (!toSetData.length) {
       toSetData = [{ ...defaultFiles }];
@@ -57,30 +69,46 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
         {localization.t('labels.dropFileOrSelect')}
       </Typography>
 
-      <AssetsResource
-        label={localization.t('labels.resources')}
-        labelOptions={resourceLabels}
-        resources={[...resources]}
-        setResources={updateResources}
-        currentStoreData={currentProductData}
-        setCurrentStoreData={setProductData}
-      />
+      <InheritanceField
+        field='resources'
+        onChange={setProductData}
+        value={currentProductData?.resources || []}
+        selectOptions={resourceLabels || []}
+        parentId={parentId}
+        currentProductData={currentProductData}
+      >
+        <AssetsResource
+          label={localization.t('labels.resources')}
+          labelOptions={resourceLabels}
+          resources={[...checkValue(resources)]}
+          setResources={updateResources}
+          currentStoreData={currentProductData}
+          setCurrentStoreData={setProductData}
+        />
+      </InheritanceField>
 
-      <AssetsResource
-        isFile
-        label={localization.t('labels.relatedContents')}
-        labelOptions={[]}
-        resources={[...contents]}
-        setResources={updateContents}
-        currentStoreData={currentProductData}
-        setCurrentStoreData={setProductData}
-        withSelect={false}
-      />
-
-      <Box mt={4}>
-        <Divider light />
-      </Box>
-
+      <InheritanceField
+        field='relatedContents'
+        onChange={setProductData}
+        value={currentProductData?.relatedContents || []}
+        parentId={parentId}
+        currentProductData={currentProductData}
+        buttonStyles={{ top: '26px' }}
+        containerStyles={{ alignItems: 'flex-start' }}
+      >
+        <AssetsResource
+          isFile
+          containerStyles={{ marginTop: '20px' }}
+          label={localization.t('labels.relatedContents')}
+          labelOptions={[]}
+          resources={[...contents]}
+          setResources={updateContents}
+          currentStoreData={currentProductData}
+          setCurrentStoreData={setProductData}
+          withSelect={false}
+          isDisabled={currentProductData?.relatedContents?.state === 'inherits'}
+        />
+      </InheritanceField>
     </Box>
   );
 };
@@ -88,6 +116,7 @@ const ProductFiles = ({ currentProductData, setProductData }) => {
 ProductFiles.propTypes = {
   currentProductData: PropTypes.object,
   setProductData: PropTypes.func,
+  parentId: PropTypes.string,
 };
 
 export default ProductFiles;

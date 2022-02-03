@@ -16,15 +16,8 @@ import {
   RadioGroup,
   FormControlLabel,
 } from '@mui/material';
-import {
-  lifeTime,
-  type,
-  businessSegment,
-} from '../../../services/selectOptions/selectOptions';
-import { checkValue } from '../../../services/helpers/dataStructuring';
-import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
-import localization from '../../../localization';
-import Popup from '../../../components/Popup';
+
+import InheritanceField from '../InheritanceField';
 
 import {
   SelectWithChip,
@@ -33,62 +26,63 @@ import {
   InputCustom,
   SelectWithDeleteIcon,
 } from '../../../components/Inputs';
-import InheritanceField from '../InheritanceField';
+import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
+import Popup from '../../../components/Popup';
+
+import {
+  lifeTime,
+  type,
+  businessSegment,
+} from '../../../services/selectOptions/selectOptions';
+import { checkValue } from '../../../services/helpers/dataStructuring';
+
+import localization from '../../../localization';
 
 const General = ({
   setProductData, currentProductData, selectOptions, parentId,
 }) => {
-  const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({
-    number: 1,
-    value: '',
-  });
-
+  const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({ number: 1, value: '' });
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
   const [countrySelection, setCountrySelection] = useState('blocked');
-
-  const defaultBlacklisted = parentId
-    ? currentProductData?.blackListedCountries?.value : currentProductData?.blackListedCountries;
-  const [selectedCountries, setSelectedCountries] = useState(defaultBlacklisted || []);
-
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
+  const [updSelectedCountries, setUpdSelectedCountries] = useState(0);
+
+  const defaultBlacklisted = currentProductData?.blackListedCountries || [];
+  const [selectedCountries, setSelectedCountries] = useState(defaultBlacklisted);
 
   const counts = {};
-  const subProductsList = currentProductData?.subProducts || [];
+  const subProductsList = checkValue(currentProductData?.subProducts) || [];
 
-  subProductsList.forEach((x) => {
-    counts[x] = (counts[x] || 0) + 1;
-  });
+  subProductsList.forEach((x) => { counts[x] = (counts[x] || 0) + 1; });
 
   const countriesOptions = getCountriesOptions();
 
   useEffect(() => {
     let LifeTimeNumber = false;
-    const lT = checkValue(currentProductData?.lifeTime, currentProductData?.lifeTime?.state);
+    const lT = checkValue(currentProductData?.lifeTime);
 
     const res = lT.match(/[a-zA-Z]+|[0-9]+/g);
 
     if (res && res.length > 1 && res[1]) {
       setLifeTimeUpdateValue({ number: res[0], value: res[1] });
+
       LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR' || res[1] === 'DAY';
     } else if (res) {
-      setLifeTimeUpdateValue({
-        ...lifeTimeUpdateValue,
-        value: lT,
-      });
+      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: lT });
+
       LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR' || res[0] === 'DAY';
     } else {
       setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: '' });
     }
+
     setShowLifeTimeNumber(LifeTimeNumber);
-    return () => { };
   }, [currentProductData?.lifeTime?.state]);
 
   useEffect(() => {
-    const newLifeTime = showLifeTimeNumber
-      ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}`
-      : lifeTimeUpdateValue.value;
+    const newLifeTime = showLifeTimeNumber ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}` : lifeTimeUpdateValue.value;
 
-    currentProductData?.lifeTime?.state // eslint-disable-line
+    // eslint-disable-next-line no-nested-ternary
+    currentProductData?.lifeTime?.state
       ? currentProductData?.lifeTime?.state === 'inherits'
         ? setProductData({
           ...currentProductData,
@@ -96,27 +90,38 @@ const General = ({
             ...currentProductData.lifeTime,
             parentValue: newLifeTime,
           },
-        })
-        : setProductData({
+        }) : setProductData({
           ...currentProductData,
           lifeTime: {
             ...currentProductData.lifeTime,
             value: newLifeTime,
           },
-        })
-      : setProductData({ ...currentProductData, lifeTime: newLifeTime });
+        }) : setProductData({ ...currentProductData, lifeTime: newLifeTime });
   }, [lifeTimeUpdateValue]);
 
   useEffect(() => {
-    const newCountries = countrySelection === 'blocked'
-      ? [...selectedCountries]
-      : [...countriesOptions.map((l) => l.id).filter((c) => selectedCountries?.indexOf(c) < 0)];
+    if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number === '7') {
+      setShowLifeTimeNumber(false);
+      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, number: 1, value: '7DAY' });
+    } else if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number >= 8) {
+      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, number: 1 });
+    } else if (lifeTimeUpdateValue.value === 'MONTH' && lifeTimeUpdateValue.number > 24) {
+      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, number: 24 });
+    }
+  }, [lifeTimeUpdateValue.value, lifeTimeUpdateValue.number]);
+
+  useEffect(() => {
+    const checkedSelected = checkValue(selectedCountries) || [];
+    const checkedDefault = checkValue(defaultBlacklisted) || [];
+
+    const newCountries = countrySelection === 'blocked' ? [...checkedSelected]
+      : [...countriesOptions.map((l) => l.id).filter((c) => checkedSelected?.indexOf(c) < 0)];
 
     const [hasChanges] = newCountries
-      ? newCountries?.filter((itm) => defaultBlacklisted?.indexOf(itm) < 0) : [];
+      ? newCountries?.filter((itm) => checkedDefault?.indexOf(itm) < 0) : [];
 
-    const [hasReverseChanges] = defaultBlacklisted
-      ? defaultBlacklisted?.filter((itm) => newCountries?.indexOf(itm) < 0) : [];
+    const [hasReverseChanges] = checkedDefault?.length
+      ? checkedDefault?.filter((itm) => newCountries?.indexOf(itm) < 0) : [];
 
     if (hasChanges || hasReverseChanges) {
       if (parentId) {
@@ -137,60 +142,25 @@ const General = ({
   }, [selectedCountries]);
 
   useEffect(() => {
-    if (!countriesOptions?.length && defaultBlacklisted?.length) return;
+    const checkedDefault = checkValue(defaultBlacklisted) || [];
+
+    if (!countriesOptions?.length && checkedDefault?.length) return;
 
     if (countrySelection === 'blocked') {
-      const newCountries = defaultBlacklisted?.length ? countriesOptions
+      const newCountries = checkedDefault?.length ? countriesOptions
         .map((l) => l.id)
-        .filter((c) => defaultBlacklisted?.indexOf(c) >= 0) : [];
+        .filter((c) => checkedDefault?.indexOf(c) >= 0) : [];
 
       setSelectedCountries([...newCountries]);
     } else {
-      const newCountries = defaultBlacklisted?.length ? countriesOptions
+      const newCountries = checkedDefault?.length ? countriesOptions
         .map((l) => l.id)
-        .filter((c) => defaultBlacklisted?.indexOf(c) < 0)
+        .filter((c) => checkedDefault?.indexOf(c) < 0)
         : countriesOptions.map((l) => l.id);
 
       setSelectedCountries([...newCountries]);
     }
-  }, [countrySelection]);
-
-  const stylesForVariations = parentId
-    ? {
-      display: 'grid',
-      gridTemplateColumns: '1fr 60px',
-    }
-    : {};
-
-  useEffect(() => {
-    if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number === '7') {
-      setShowLifeTimeNumber(false);
-      setLifeTimeUpdateValue({
-        ...lifeTimeUpdateValue,
-        number: 1,
-        value: '7DAY',
-      });
-    } else if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number >= 8) {
-      setLifeTimeUpdateValue({
-        ...lifeTimeUpdateValue,
-        number: 1,
-      });
-    } else if (lifeTimeUpdateValue.value === 'MONTH' && lifeTimeUpdateValue.number > 24) {
-      setLifeTimeUpdateValue({
-        ...lifeTimeUpdateValue,
-        number: 24,
-      });
-    }
-  }, [lifeTimeUpdateValue.value, lifeTimeUpdateValue.number]);
-
-  // const stylesForVariationsLifeTime = parentId
-  //   ? {
-  //       display: 'grid',
-  //       gridTemplateAreas: 'lifeTime count inheritButton',
-  //       gridTemplateColumns: '1fr 1fr 50px',
-  //       gridTemplateRows: '1fr',
-  //     }
-  //   : {};
+  }, [countrySelection, updSelectedCountries]);
 
   return (
     <>
@@ -223,14 +193,14 @@ const General = ({
           <InheritanceField
             field='genericName'
             onChange={setProductData}
-            value={currentProductData.genericName}
+            value={currentProductData?.genericName}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <InputCustom
               label='name'
               isRequired
-              value={currentProductData.genericName}
+              value={checkValue(currentProductData.genericName)}
               onChangeInput={(e) => {
                 setProductData({
                   ...currentProductData,
@@ -254,8 +224,6 @@ const General = ({
               parentId={parentId}
               currentProductData={currentProductData}
             >
-              {/* <FormControlLabel
-                control={ */}
               <Switch
                 name='status'
                 onChange={(e) => {
@@ -267,11 +235,6 @@ const General = ({
                 color='primary'
                 checked={currentProductData?.status === 'ENABLED'}
               />
-              {/* }
-                label={localization.t(
-                  `labels.${currentProductData.status === 'ENABLED' ? 'enabled' : 'disabled'}`,
-                )}
-              /> */}
             </InheritanceField>
           </Box>
         </Box>
@@ -282,7 +245,7 @@ const General = ({
           <InheritanceField
             field='type'
             onChange={setProductData}
-            value={currentProductData.type}
+            value={currentProductData?.type}
             selectOptions={type || []}
             parentId={parentId}
             currentProductData={currentProductData}
@@ -290,7 +253,7 @@ const General = ({
             <SelectCustom
               label='type'
               isRequired
-              value={currentProductData.type}
+              value={currentProductData?.type}
               selectOptions={type}
               onChangeSelect={(e) => {
                 setProductData({
@@ -301,6 +264,7 @@ const General = ({
             />
           </InheritanceField>
         </Box>
+
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field='publisherRefId'
@@ -313,7 +277,7 @@ const General = ({
               isRequired
               tooltip={localization.t('tooltips.publisherRefId')}
               label='publisherRefId'
-              value={currentProductData.publisherRefId}
+              value={checkValue(currentProductData?.publisherRefId)}
               onChangeInput={(e) => setProductData({
                 ...currentProductData,
                 publisherRefId: e.target.value,
@@ -322,86 +286,82 @@ const General = ({
           </InheritanceField>
         </Box>
       </Box>
+
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field='businessSegment'
             onChange={setProductData}
-            value={currentProductData.businessSegment}
+            value={currentProductData?.businessSegment}
             selectOptions={businessSegment || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectWithDeleteIcon
               label='businessSegment'
-              value={currentProductData.businessSegment}
+              value={checkValue(currentProductData?.businessSegment)}
               selectOptions={businessSegment || []}
               onChangeSelect={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  businessSegment: e.target.value,
-                });
+                setProductData({ ...currentProductData, businessSegment: e.target.value });
               }}
-              onClickDelIcon={() => {
-                setProductData({
-                  ...currentProductData,
-                  businessSegment: '',
-                });
-              }}
+              onClickDelIcon={() => setProductData({ ...currentProductData, businessSegment: '' })}
             />
           </InheritanceField>
         </Box>
+
         <Box display='flex'>
           <Box p={2} minWidth='170px' display='flex'>
             <InheritanceField
               field='lifeTime'
               onChange={setProductData}
-              value={currentProductData.lifeTime}
+              value={currentProductData?.lifeTime}
               selectOptions={lifeTime || []}
               parentId={parentId}
               currentProductData={currentProductData}
             >
-              <SelectCustom
-                label='lifeTime'
-                gridArea='lifeTime'
-                value={currentProductData?.lifeTime === '7DAY' ? currentProductData?.lifeTime : currentProductData?.lifeTime?.replace(/[0-9]/g, '')}
-                selectOptions={lifeTime}
-                onChangeSelect={(e) => {
-                  setShowLifeTimeNumber(
-                    e.target.value === 'MONTH' || e.target.value === 'YEAR' || e.target.value === 'DAY',
-                  );
-                  setLifeTimeUpdateValue({
-                    ...lifeTimeUpdateValue,
-                    value: e.target.value,
-                  });
-                }}
-              />
+              <Box display='flex'>
+                <SelectCustom
+                  label='lifeTime'
+                  gridArea='lifeTime'
+                  isDisabled={currentProductData?.lifeTime?.state === 'inherits'}
+                  value={checkValue(lifeTimeUpdateValue?.value)}
+                  selectOptions={lifeTime}
+                  onChangeSelect={(e) => {
+                    setShowLifeTimeNumber(e.target.value === 'MONTH' || e.target.value === 'YEAR' || e.target.value === 'DAY');
+                    setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: e.target.value });
+                  }}
+                />
+
+                {showLifeTimeNumber && (
+                  <Box minWidth='165px' p={2} gridArea='count'>
+                    <NumberInput
+                      isDisabled={currentProductData?.lifeTime?.state === 'inherits'}
+                      label='maxPaymentsPart'
+                      value={lifeTimeUpdateValue.number}
+                      onChangeInput={(e) => {
+                        setLifeTimeUpdateValue({
+                          ...lifeTimeUpdateValue,
+                          // eslint-disable-next-line no-nested-ternary
+                          number: e.target.value > 99
+                            ? 99 : e.target.value < 1 ? 1 : e.target.value,
+                        });
+                      }}
+                      minMAx={{ min: 1, max: 99 }}
+                    />
+                  </Box>
+                )}
+              </Box>
             </InheritanceField>
           </Box>
-          {showLifeTimeNumber && (
-            <Box minWidth='165px' p={2} gridArea='count'>
-              <NumberInput
-                isDisabled={currentProductData?.lifeTime?.state === 'inherits'}
-                label='maxPaymentsPart'
-                value={lifeTimeUpdateValue.number}
-                onChangeInput={(e) => {
-                  setLifeTimeUpdateValue({
-                    ...lifeTimeUpdateValue,
-                    number: e.target.value > 99 ? 99 : e.target.value < 1 ? 1 : e.target.value,
-                  });
-                }}
-                minMAx={{ min: 1, max: 99 }}
-              />
-            </Box>
-          )}
         </Box>
       </Box>
+
       <Box display='flex' flexDirection='row' alignItems='center'>
         <Box width='25%'>
           <Box p={2} gridArea='count'>
             <NumberInput
               label='priority'
-              value={currentProductData?.priority}
+              value={checkValue(currentProductData?.priority)}
               onChangeInput={(e) => {
                 setProductData({
                   ...currentProductData,
@@ -411,43 +371,37 @@ const General = ({
             />
           </Box>
         </Box>
+
         <Box display='flex' flexDirection='row' alignItems='baseline' width='25%' pr={2}>
-          <Box p={2}>
-            <Typography color='secondary'>
-              {localization.t('labels.physicalProduct')}
-            </Typography>
+          <Box p={2} minWidth='146px'>
+            <Typography color='secondary'>{localization.t('labels.physicalProduct')}</Typography>
           </Box>
-          <Box p={2}>
+
+          <Box py={2} flexGrow={1}>
             <InheritanceField
               field='physical'
               onChange={setProductData}
-              value={currentProductData.physical}
+              value={currentProductData?.physical}
               parentId={parentId}
               currentProductData={currentProductData}
             >
-              {/* <FormControlLabel
-                control={ */}
               <Switch
                 name='physicalProduct'
                 onChange={(e) => {
-                  setProductData({
-                    ...currentProductData,
-                    physical: e.target.checked,
-                  });
+                  setProductData({ ...currentProductData, physical: e.target.checked });
                 }}
                 color='primary'
-                checked={currentProductData.physical}
+                checked={checkValue(currentProductData?.physical)}
               />
-              {/* }
-              /> */}
             </InheritanceField>
           </Box>
         </Box>
+
         <Box p={2} width='50%'>
           <InheritanceField
             field='externalContext'
             onChange={setProductData}
-            value={currentProductData.externalContext}
+            value={currentProductData?.externalContext}
             parentId={parentId}
             currentProductData={currentProductData}
           >
@@ -455,7 +409,7 @@ const General = ({
               isMultiline
               tooltip={localization.t('tooltips.externalContext')}
               label='externalContext'
-              value={currentProductData?.externalContext}
+              value={checkValue(currentProductData?.externalContext)}
               onChangeInput={(e) => setProductData({
                 ...currentProductData,
                 externalContext: e.target.value,
@@ -464,49 +418,48 @@ const General = ({
           </InheritanceField>
         </Box>
       </Box>
+
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box p={2} width='50%' {...stylesForVariations}>
+        <Box p={2} width='50%'>
           <InheritanceField
             field='sellingStores'
             onChange={setProductData}
-            value={currentProductData.sellingStores}
+            value={currentProductData?.sellingStores}
             selectOptions={selectOptions.sellingStores || []}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <SelectWithChip
               label='sellingStores'
-              value={currentProductData.sellingStores}
+              value={checkValue(currentProductData?.sellingStores)}
               selectOptions={selectOptions.sellingStores}
               onChangeSelect={(e) => setProductData({
                 ...currentProductData,
                 sellingStores: e.target.value,
               })}
               onClickDelIcon={(chip) => {
-                const newValue = [...currentProductData?.sellingStores].filter(
+                const newValue = [...checkValue(currentProductData?.sellingStores)].filter(
                   (val) => val !== chip,
                 );
-                setProductData({
-                  ...currentProductData,
-                  sellingStores: newValue,
-                });
+                setProductData({ ...currentProductData, sellingStores: newValue });
               }}
               redirectTo='store'
             />
           </InheritanceField>
         </Box>
+
         <Box p={2} width='50%'>
           <InheritanceField
             field='productFamily'
             onChange={setProductData}
-            value={currentProductData.productFamily}
+            value={currentProductData?.productFamily}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <InputCustom
               label='family'
               tooltip={localization.t('tooltips.family')}
-              value={currentProductData.productFamily}
+              value={checkValue(currentProductData?.productFamily)}
               onChangeInput={(e) => setProductData({
                 ...currentProductData,
                 productFamily: e.target.value,
@@ -515,69 +468,93 @@ const General = ({
           </InheritanceField>
         </Box>
       </Box>
+
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box p={2} width='50%'>
+        <Box width='100%'>
           <InheritanceField
             field='blackListedCountries'
             onChange={setProductData}
-            value={defaultBlacklisted || []}
+            value={currentProductData?.blackListedCountries || []}
             selectOptions={countriesOptions || []}
             parentId={parentId}
             currentProductData={currentProductData}
+            containerStyles={{ alignItems: 'flex-start' }}
+            buttonStyles={{ top: '20px', right: '12px' }}
+            buttonAction={() => setUpdSelectedCountries((c) => c + 1)}
           >
-            <Box p={2} height={74} alignItems='center' display='flex'>
-              <Typography variant='h4'>{localization.t('labels.allowedBlockedCountries')}</Typography>
+            <Box width='100%'>
+              <Box p={2} height={74} alignItems='center' display='flex'>
+                <Typography variant='h4'>{localization.t('labels.allowedBlockedCountries')}</Typography>
 
-              <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={() => setSelectedCountries(countriesOptions.map((l) => l.id))}>
-                {localization.t('labels.selectAll')}
-              </Button>
-              <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={() => setSelectedCountries([])}>
-                {localization.t('labels.removeAll')}
-              </Button>
-            </Box>
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  style={{ marginLeft: '15px' }}
+                  onClick={() => setSelectedCountries(countriesOptions.map((l) => l.id))}
+                  disabled={currentProductData?.blackListedCountries?.state === 'inherits'}
+                >
+                  {localization.t('labels.selectAll')}
+                </Button>
 
-            <Box p={2}>
-              <RadioGroup
-                row
-                value={countrySelection}
-                onChange={(e) => setCountrySelection(e.target.value)}
-              >
-                <FormControlLabel
-                  value='blocked'
-                  control={<Radio color="primary" />}
-                  label={localization.t('labels.blocked')}
+                <Button
+                  variant='outlined'
+                  color='primary'
+                  style={{ marginLeft: '15px' }}
+                  onClick={() => setSelectedCountries([])}
+                  disabled={currentProductData?.blackListedCountries?.state === 'inherits'}
+                >
+                  {localization.t('labels.removeAll')}
+                </Button>
+              </Box>
+
+              <Box p={2}>
+                <RadioGroup
+                  row
+                  value={countrySelection}
+                  onChange={(e) => setCountrySelection(e.target.value)}
+                >
+                  <FormControlLabel
+                    value='blocked'
+                    control={<Radio color="primary" />}
+                    label={localization.t('labels.blocked')}
+                    disabled={currentProductData?.blackListedCountries?.state === 'inherits'}
+                  />
+                  <FormControlLabel
+                    value='allowed'
+                    control={<Radio color="primary" />}
+                    label={localization.t('labels.allowed')}
+                    disabled={currentProductData?.blackListedCountries?.state === 'inherits'}
+                  />
+                </RadioGroup>
+              </Box>
+
+              <Box p={2}>
+                <SelectWithChip
+                  label={countrySelection === 'blocked' ? 'blockedCountries' : 'allowedCountries'}
+                  value={checkValue(selectedCountries)}
+                  selectOptions={countriesOptions}
+                  onChangeSelect={(e) => setSelectedCountries(e.target.value)}
+                  isDisabled={currentProductData?.blackListedCountries?.state === 'inherits'}
+                  onClickDelIcon={(chip) => {
+                    const newValue = [...checkValue(selectedCountries)]
+                      .filter((val) => val !== chip);
+                    setSelectedCountries(newValue);
+                  }}
                 />
-                <FormControlLabel
-                  value='allowed'
-                  control={<Radio color="primary" />}
-                  label={localization.t('labels.allowed')}
-                />
-              </RadioGroup>
-            </Box>
-
-            <Box p={2}>
-              <SelectWithChip
-                label={countrySelection === 'blocked' ? 'blockedCountries' : 'allowedCountries'}
-                value={selectedCountries}
-                selectOptions={countriesOptions}
-                onChangeSelect={(e) => setSelectedCountries(e.target.value)}
-                onClickDelIcon={(chip) => {
-                  const newValue = [...selectedCountries].filter((val) => val !== chip);
-                  setSelectedCountries(newValue);
-                }}
-              />
+              </Box>
             </Box>
           </InheritanceField>
         </Box>
       </Box>
+
       <Box p={2}>
-        <Box py={4}>
-          <Typography gutterBottom variant='h4'>
-            {localization.t('labels.bundledProducts')}
-          </Typography>
+        <Box py={2}>
+          <Typography gutterBottom variant='h4'>{localization.t('labels.bundledProducts')}</Typography>
         </Box>
+
         {Object.entries(counts).map(([key, value]) => {
           const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
+
           return (
             <Box
               key={key}
@@ -604,6 +581,7 @@ const General = ({
                   />
                 )}
               />
+
               <Box marginLeft='17px' height='inherit'>
                 <ButtonGroup
                   size='large'
@@ -613,28 +591,26 @@ const General = ({
                   <Button
                     data-test='decrementSubProduct'
                     onClick={() => {
-                      const index = currentProductData?.subProducts?.findIndex(
+                      const index = checkValue(currentProductData?.subProducts)?.findIndex(
                         (item) => item === selectValue.id,
                       );
-                      const newSubProducts = [...currentProductData.subProducts];
+                      const newSubProducts = [...checkValue(currentProductData.subProducts)];
                       newSubProducts.splice(index, 1);
-                      setProductData({
-                        ...currentProductData,
-                        subProducts: newSubProducts,
-                      });
+                      setProductData({ ...currentProductData, subProducts: newSubProducts });
                     }}
                   >
                     -
                   </Button>
-                  <Button data-test='subProductCount' disabled>
-                    {value}
-                  </Button>
+                  <Button data-test='subProductCount' disabled>{value}</Button>
                   <Button
                     data-test='incrementSubProduct'
                     onClick={() => {
                       setProductData({
                         ...currentProductData,
-                        subProducts: [...currentProductData.subProducts, selectValue.id],
+                        subProducts: [
+                          ...checkValue(currentProductData?.subProducts),
+                          selectValue.id,
+                        ],
                       });
                     }}
                   >
@@ -642,6 +618,7 @@ const General = ({
                   </Button>
                 </ButtonGroup>
               </Box>
+
               <Box marginLeft='20px'>
                 <IconButton
                   color='secondary'
@@ -649,7 +626,7 @@ const General = ({
                   onClick={() => {
                     setProductData({
                       ...currentProductData,
-                      subProducts: currentProductData.subProducts.filter(
+                      subProducts: checkValue(currentProductData.subProducts).filter(
                         (item) => item !== selectValue.id,
                       ),
                     });
@@ -662,40 +639,66 @@ const General = ({
             </Box>
           );
         })}
+
         <Box
           display='flex'
           justifyContent='space-between'
           alignItems='center'
-          marginBottom='30px'
-          marginRight='30px'
         >
-          <SelectCustom
-            label='nameOrId'
-            value={selectedBundledProduct || ''}
+          <InheritanceField
+            field='subProducts'
+            onChange={setProductData}
+            value={currentProductData?.subProducts || []}
             selectOptions={selectOptions?.renewingProducts || []}
-            onChangeSelect={(e) => {
-              setSelectedBundledProduct(e.target.value);
-            }}
-          />
-          <Box marginLeft='20px'>
-            <IconButton
-              color={selectedBundledProduct ? 'primary' : 'secondary'}
-              aria-label='add to shopping cart'
-              disabled={!selectedBundledProduct}
-              onClick={() => {
-                setProductData({
-                  ...currentProductData,
-                  subProducts: currentProductData?.subProducts
-                    ? [...currentProductData.subProducts, selectedBundledProduct]
-                    : [selectedBundledProduct],
-                });
-                setSelectedBundledProduct(null);
-              }}
-              size='large'
-            >
-              <AddCircleOutlineIcon size='medium' color='primary' />
-            </IconButton>
-          </Box>
+            parentId={parentId}
+            currentProductData={currentProductData}
+            containerStyles={{ alignItems: 'flex-start' }}
+            buttonStyles={{ top: '6px' }}
+          >
+            <>
+              <SelectCustom
+                label='nameOrId'
+                value={checkValue(selectedBundledProduct) || ''}
+                selectOptions={selectOptions?.renewingProducts || []}
+                onChangeSelect={(e) => setSelectedBundledProduct(e.target.value)}
+                isDisabled={currentProductData?.subProducts?.state === 'inherits'}
+              />
+
+              <Box marginLeft='5px'>
+                <IconButton
+                  color={selectedBundledProduct && currentProductData?.subProducts?.state !== 'inherits' ? 'primary' : 'secondary'}
+                  aria-label='add to shopping cart'
+                  disabled={!selectedBundledProduct || currentProductData?.subProducts?.state === 'inherits'}
+                  onClick={() => {
+                    if (parentId) {
+                      setProductData({
+                        ...currentProductData,
+                        subProducts: {
+                          ...currentProductData?.subProducts,
+                          value: currentProductData?.subProducts ? [
+                            ...checkValue(currentProductData.subProducts),
+                            checkValue(selectedBundledProduct),
+                          ] : [checkValue(selectedBundledProduct)],
+                        },
+                      });
+                    } else {
+                      setProductData({
+                        ...currentProductData,
+                        subProducts: currentProductData?.subProducts ? [
+                          ...currentProductData.subProducts, selectedBundledProduct,
+                        ] : [selectedBundledProduct],
+                      });
+                    }
+
+                    setSelectedBundledProduct(null);
+                  }}
+                  size='large'
+                >
+                  <AddCircleOutlineIcon size='medium' color='inherit' />
+                </IconButton>
+              </Box>
+            </>
+          </InheritanceField>
         </Box>
       </Box>
     </>

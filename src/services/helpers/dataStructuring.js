@@ -92,6 +92,23 @@ const localizedValues = [
   'localizedThankYouDesc',
 ];
 
+const defaultIndependentFields = [
+  'fulfillmentTemplate',
+  'releaseDate',
+  'nextGenerationOf',
+  'id',
+  'parentId',
+  'resources',
+  // 'externalContext',
+  // 'productFamily',
+  // 'priceFunction',
+  // 'trialAllowed',
+  // 'subscriptionTemplate',
+  // 'trialDuration',
+];
+
+const unchangableInheritedFields = ['customerId', 'status'];
+
 const productRequiredFields = (product) => {
   let resourcesKeys = null;
 
@@ -233,10 +250,13 @@ const createStandaloneValue = (value) => {
   return value?.state === 'inherits' ? types[valueType] : value.value;
 };
 
+const createUnchangableInheritedValue = (value) => (value?.parentValue ? value.parentValue : (value || ''));
+
 const createInheritableValue = (value, parentValue) => {
   const state = R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue)
     ? 'inherits'
     : 'overrides'; // initial state, user can force after
+
   return {
     parentValue,
     state,
@@ -247,20 +267,7 @@ const createInheritableValue = (value, parentValue) => {
 const backToFront = (
   parent,
   resource = defaultProduct,
-  independentFields = [
-    'externalContext',
-    'productFamily',
-    'priceFunction',
-    'trialAllowed',
-    'subscriptionTemplate',
-    'trialDuration',
-    'fulfillmentTemplate',
-    'releaseDate',
-    'nextGenerationOf',
-    'id',
-    'parentId',
-    'resources',
-  ],
+  independentFields = defaultIndependentFields,
 ) => {
   // if field in both parent and variant, associate fieldName with properly set inheritable
   if (!parent) resource;
@@ -268,20 +275,28 @@ const backToFront = (
   const handler = (resourceOwn, parentOwn) => createInheritableValue(
     resourceOwn.value, parentOwn.parentValue,
   );
+
   const inputA = R.mapObjIndexed(
     (value) => createInheritableValue(value, undefined),
     resource,
   );
+
   const inputB = R.mapObjIndexed(
     (value) => createInheritableValue(undefined, value),
     parent || {},
   );
+
   let iResource = R.mergeWith(handler, inputA, inputB);
   // managing fields which cannot inherit
   iResource = R.mapObjIndexed((value, key) => {
-    if ((independentFields || []).includes(key)) {
+    if (independentFields.includes(key)) {
       return createStandaloneValue(value);
     }
+
+    if (unchangableInheritedFields.includes(key)) {
+      return createUnchangableInheritedValue(value);
+    }
+
     return value;
   }, iResource);
 
@@ -299,6 +314,7 @@ const frontToBack = (data) =>
       : value?.state === 'overrides'
         ? value?.value
         : undefined;
+
     if (mandatoryFields.includes(key) && !newValue) {
       newValue = value?.parentValue;
     }
@@ -312,8 +328,8 @@ const frontToBack = (data) =>
     return accumulator;
   }, {});
 
-const checkValue = (data, state) =>
-  (!state ? data : state === 'inherits' ? data.parentValue : data.value); // eslint-disable-line
+// eslint-disable-next-line no-nested-ternary
+const checkValue = (data) => (!data?.state ? data : data.state === 'inherits' ? data.parentValue : data.value);
 
 const identityRequiredFields = (identity) => {
   const defaultIdentity = {

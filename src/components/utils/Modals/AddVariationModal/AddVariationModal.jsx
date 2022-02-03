@@ -91,6 +91,7 @@ const AddVariationModal = ({
         labels: { 'en-US': frontToBack.label },
       };
     }
+
     dataForProductRquest = {
       defaultValue:
         modalState.type === 'LIST' ? 'val1' : variableValueDescription?.valueForProduct[0],
@@ -102,16 +103,19 @@ const AddVariationModal = ({
     };
 
     newAvailableVariables.push(dataForProductRquest);
+
     setProductData({
       ...currentProductData,
       availableVariables: newAvailableVariables,
     });
+
     setProductDetails({
       ...productDetails,
       variableDescriptions: productDetails?.variableDescriptions
         ? [...productDetails.variableDescriptions, dataForProductDescriptionRequest]
         : [dataForProductDescriptionRequest],
     });
+
     handleClose();
   };
 
@@ -122,29 +126,24 @@ const AddVariationModal = ({
         setModalState={setModalState}
         onClose={handleClose}
         modalState={modalState}
-        currentProductData={currentProductData}
       />
     ),
     LIST: (
       <AddParameterSecondStepList
-        setProductData={setProductData}
         setStep={setStep}
         setModalState={setModalState}
         onClose={handleClose}
         onSubmit={handleCreateParameter}
         modalState={modalState}
-        currentProductData={currentProductData}
       />
     ),
     RANGE: (
       <AddParameterSecondStepRange
-        setProductData={setProductData}
         setStep={setStep}
         setModalState={setModalState}
         onClose={handleClose}
         onSubmit={handleCreateParameter}
         modalState={modalState}
-        currentProductData={currentProductData}
       />
     ),
   };
