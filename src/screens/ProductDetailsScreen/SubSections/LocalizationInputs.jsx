@@ -6,7 +6,7 @@ import { Box } from '@mui/material';
 
 import InheritanceField from '../InheritanceField';
 
-import TinyEditor from '../../../components/TinyEditor';
+import TinyEditor from '../../../components/TinyEditor/TinyProductEditor';
 import { SelectCustom } from '../../../components/Inputs';
 
 import { checkValue } from '../../../services/helpers/dataStructuring';

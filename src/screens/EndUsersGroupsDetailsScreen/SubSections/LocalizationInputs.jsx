@@ -1,10 +1,11 @@
 import React from 'react';
 
 import PropTypes from 'prop-types';
-
-import { Box, Typography } from '@mui/material';
+import { TextField, Box, Typography } from '@mui/material';
+import { urlIsValid } from '../../../services/helpers/inputValidators';
 
 import localization from '../../../localization';
+import { tinyInputs } from '../utils';
 import TinyEditor from '../../../components/TinyEditor';
 import './localizations.scss';
 
@@ -23,11 +24,25 @@ const LocalizationInputs = ({
       {Object.keys(data).map((itemKey) => (
         <Box width='100%' px={4} mb={4} key={itemKey}>
           <Typography color='secondary'>{localization.t(`forms.inputs.localizedContent.${itemKey}`)}</Typography>
-          <TinyEditor
-            initialValue={data[itemKey] || ''}
-            placeholder=''
-            onChange={(e) => updateNewData(e, itemKey)}
-          />
+          {tinyInputs.includes(itemKey) ? (
+            <TinyEditor
+              initialValue={data[itemKey] || ''}
+              placeholder=''
+              onChange={(e) => updateNewData(e, itemKey)}
+            />
+          ) : (
+            <TextField
+              error={data[itemKey] ? !urlIsValid(data[itemKey]) : false}
+              value={data[itemKey] || ''}
+              fullWidth
+              type='text'
+              InputProps={{
+                form: { autocomplete: 'off' },
+              }}
+              onChange={(e) => handleChange(lang, e.target.value, itemKey)}
+              variant='outlined'
+            />
+          )}
         </Box>
       ))}
     </Box>

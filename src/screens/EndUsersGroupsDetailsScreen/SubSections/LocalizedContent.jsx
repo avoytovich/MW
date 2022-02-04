@@ -5,18 +5,17 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Box, Tabs, Tab, Typography,
+  Box, Tabs, Tab,
 } from '@mui/material';
 
 import { toast } from 'react-toastify';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import LocalizedErrorMessages from './LocalizedErrorMessages';
 import { SelectCustom } from '../../../components/Inputs';
 import LocalizationInputs from './LocalizationInputs';
-import { defInputs } from '../utils';
-import localization from '../../../localization';
+import { defInputs, validateFields } from '../utils';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
 const LocalizedContent = ({
@@ -70,37 +69,7 @@ const LocalizedContent = ({
   }, [defaultLocale]);
 
   useEffect(() => {
-    const notValidFields = Object.keys(currentData).filter((item) => {
-      if (currentData[item].localizedShortDesc === '' && defaultLocale !== item) {
-        return item;
-      }
-    });
-
-    const notValidRequiredFields = [];
-
-    Object.keys(currentData).forEach((it) => {
-      Object.keys(currentData[it]).forEach((u) => {
-        if (currentData[it][u] && !currentData[defaultLocale][u]
-          && !notValidRequiredFields.includes(localization.t(`forms.inputs.localizedContent.${u}`))) {
-          notValidRequiredFields.push(localization.t(`forms.inputs.localizedContent.${u}`));
-        }
-      });
-    });
-    if (currentData[defaultLocale].localizedShortDesc === '' && !notValidRequiredFields.includes(localization.t('forms.inputs.localizedContent.localizedShortDesc'))) {
-      notValidRequiredFields.push(localization.t('forms.inputs.localizedContent.localizedShortDesc'));
-    }
-    const newErrors = { ...errors };
-    if (notValidFields.length > 0) {
-      newErrors.localizedContent = [...notValidFields];
-    } else {
-      delete newErrors.localizedContent;
-    }
-
-    if (notValidRequiredFields.length > 0) {
-      newErrors.defaultLocalizedContent = [...notValidRequiredFields];
-    } else {
-      delete newErrors.defaultLocalizedContent;
-    }
+    const newErrors = validateFields(currentData, errors, defaultLocale);
     setErrors({ ...newErrors });
   }, [currentData]);
   return (
@@ -120,7 +89,11 @@ const LocalizedContent = ({
             {availLocales.map((locale) => (
               <Tab
                 style={(locale === defaultLocale && errors.defaultLocalizedContent)
-                  || (locale !== defaultLocale && errors.localizedContent?.includes(locale)) ? { border: '1px solid #FF0000' } : {}}
+                  || (locale !== defaultLocale && errors.localizedContent?.includes(locale))
+                  || errors.bannerImageUrl?.includes(locale)
+                  || errors.localizedLogo?.includes(locale)
+                  || errors.bannerLinkUrl?.includes(locale)
+                  ? { border: '1px solid #FF0000' } : {}}
                 label={locale === defaultLocale ? `${locale} (default)` : locale}
                 key={locale}
                 value={locale}
@@ -134,16 +107,18 @@ const LocalizedContent = ({
               />
             ))}
             <Tab
+              style={{ minWidth: '100%' }}
               label='Add Language'
               value={0}
               component={forwardRef(({ children, ...props }, ref) => (
-                <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
+                <div role='button' {...props} ref={ref}>
                   <SelectCustom
                     label='addLanguage'
                     value={newLangValue}
                     selectOptions={availableLocales}
                     onChangeSelect={(e) => setNewLangValue(e.target.value)}
                   />
+                  <div hidden>{children}</div>
                   <AddCircleIcon
                     color='primary'
                     style={{ marginLeft: 15 }}
@@ -168,22 +143,7 @@ const LocalizedContent = ({
         </Box>
 
       </Box>
-      <Box pl='20%'>
-        {errors.defaultLocalizedContent && (
-          <Box px={4} py={2}>
-            <Typography style={{ fontStyle: 'italic', color: '#ff0202' }}>
-              {`${errors.defaultLocalizedContent.length > 1 ? localization.t('labels.fields') : localization.t('labels.field')} ${errors.defaultLocalizedContent.join(', ')} ${localization.t('errorNotifications.forDefaultLanguageCanNotBeEmpty')}`}
-            </Typography>
-          </Box>
-        )}
-        {errors.localizedContent && (
-          <Box px={4} py={2}>
-            <Typography style={{ fontStyle: 'italic', color: '#ff0202' }}>
-              {`Field Short Description for ${errors.localizedContent.join(', ')} is required`}
-            </Typography>
-          </Box>
-        )}
-      </Box>
+      <LocalizedErrorMessages errors={errors} />
     </>
   );
 };
