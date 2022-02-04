@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 
 import FileCopy from '@mui/icons-material/FileCopyOutlined';
-
+import { localizedContentDefObject } from '../utils';
 import { SelectCustom } from '../../../components/Inputs';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { getCustomerName } from '../../../services/helpers/customersHelper';
@@ -69,7 +69,13 @@ const General = ({ setData, data }) => {
             label='fallbackLocale'
             onChangeSelect={(e) => {
               if (!data.localizedContent[e.target.value]) {
-                setData((c) => ({ ...c, localizedContent: { ...c.localizedContent, [e.target.value]: { localizedShortDesc: '', localizedLongDesc: '' } } }));
+                setData((c) => ({
+                  ...c,
+                  localizedContent: {
+                    ...c.localizedContent,
+                    [e.target.value]: { ...localizedContentDefObject },
+                  },
+                }));
               }
               setData((c) => ({ ...c, fallbackLocale: e.target.value }));
             }}

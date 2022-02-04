@@ -55,8 +55,9 @@ const Forms = {
       deliveryRemark: 'Delivery remark',
       localizedShortDesc: 'Short Description',
       localizedLongDesc: 'Long Description',
-      localizedBanner: 'Banner Image URL',
+      bannerImageUrl: 'Banner Image URL',
       localizedLogo: 'Logo URL',
+      bannerLinkUrl: 'Banner Link URL',
     },
     allowOrderDetailsOnCheckoutConfirmation:
       'Display product delivery on checkout confirmation',

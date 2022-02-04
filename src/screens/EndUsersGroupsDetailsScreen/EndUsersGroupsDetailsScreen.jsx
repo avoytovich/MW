@@ -42,7 +42,12 @@ const EndUsersGroupsDetailsScreen = () => {
       .then(({ data }) => {
         const newData = {
           ...data,
-          localizedContent: generateLocals(data.localizedLongDesc, data.localizedShortDesc),
+          localizedContent: generateLocals(
+            data.localizedLongDesc,
+            data.localizedShortDesc,
+            data.localizedLogo,
+            data.localizedBanner,
+          ),
         };
         setInitData({ ...newData });
         setCurData({ ...JSON.parse(JSON.stringify(newData)) });
