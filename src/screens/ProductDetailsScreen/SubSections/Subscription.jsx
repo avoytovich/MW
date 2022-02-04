@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import {
   Box,
   Switch,
   Typography,
   TextField,
-  InputAdornment,
   Autocomplete,
 } from '@mui/material';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 import InheritanceField from '../InheritanceField';
 
@@ -20,7 +17,7 @@ import localization from '../../../localization';
 
 import './FulfillmentAndSubscription.scss';
 
-const FulfillmentAndSubscription = ({
+const Subscription = ({
   setProductData,
   currentProductData,
   selectOptions,
@@ -60,32 +57,6 @@ const FulfillmentAndSubscription = ({
   return (
     <>
       <Box display="flex" flexDirection="row" alignItems="baseline">
-        <Box p={2}>
-          <Typography color="secondary">{localization.t('labels.allowTrial')}</Typography>
-        </Box>
-
-        <Box p={2}>
-          <InheritanceField
-            field='trialAllowed'
-            onChange={setProductData}
-            value={currentProductData?.trialAllowed}
-            parentId={parentId}
-            currentProductData={currentProductData}
-          >
-            <Switch
-              disabled={!checkValue(currentProductData?.subscriptionTemplate)}
-              name="allowTrial"
-              onChange={(e) => {
-                setProductData({ ...currentProductData, trialAllowed: e.target.checked });
-              }}
-              color="primary"
-              checked={checkValue(currentProductData?.trialAllowed) || false}
-            />
-          </InheritanceField>
-        </Box>
-      </Box>
-
-      <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2} width="50%">
           <InheritanceField
             field='subscriptionTemplate'
@@ -105,8 +76,36 @@ const FulfillmentAndSubscription = ({
             />
           </InheritanceField>
         </Box>
+      </Box>
 
-        <Box p={2}>
+      <Box display="flex" flexDirection="row" alignItems="center" width="50%">
+        <Box p={2} width="50%" display="flex" flexDirection="row" alignItems="center">
+          <Box p={2}>
+            <Typography color="secondary">{localization.t('labels.allowTrial')}</Typography>
+          </Box>
+
+          <Box p={2}>
+            <InheritanceField
+              field='trialAllowed'
+              onChange={setProductData}
+              value={currentProductData?.trialAllowed}
+              parentId={parentId}
+              currentProductData={currentProductData}
+            >
+              <Switch
+                disabled={!checkValue(currentProductData?.subscriptionTemplate)}
+                name="allowTrial"
+                onChange={(e) => {
+                  setProductData({ ...currentProductData, trialAllowed: e.target.checked });
+                }}
+                color="primary"
+                checked={checkValue(currentProductData?.trialAllowed) || false}
+              />
+            </InheritanceField>
+          </Box>
+        </Box>
+
+        <Box p={2} width="50%">
           <InheritanceField
             field='trialDuration'
             onChange={setProductData}
@@ -124,69 +123,6 @@ const FulfillmentAndSubscription = ({
               minMAx={{ min: 0 }}
             />
           </InheritanceField>
-        </Box>
-      </Box>
-
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2} width="50%">
-          <InheritanceField
-            field='fulfillmentTemplate'
-            onChange={setProductData}
-            value={currentProductData?.fulfillmentTemplate}
-            parentId={parentId}
-            currentProductData={currentProductData}
-          >
-            <SelectWithDeleteIcon
-              label="fulfillmentTemplate"
-              value={checkValue(currentProductData.fulfillmentTemplate)}
-              selectOptions={selectOptions.fulfillmentTemplates}
-              onChangeSelect={(e) => {
-                setProductData({ ...currentProductData, fulfillmentTemplate: e.target.value });
-              }}
-              onClickDelIcon={() => setProductData({
-                ...currentProductData,
-                fulfillmentTemplate: '',
-                releaseDate: '',
-              })}
-            />
-          </InheritanceField>
-        </Box>
-
-        <Box p={2} width="50%">
-          <form noValidate>
-            <TextField
-              disabled={!checkValue(currentProductData.fulfillmentTemplate)}
-              name="datetime"
-              value={
-                currentProductData?.releaseDate
-                  ? moment(checkValue(currentProductData.releaseDate)).format('YYYY-MM-DD') : ''
-              }
-              label={localization.t('labels.preorderReleaseDate')}
-              type="date"
-              variant="outlined"
-              InputProps={{
-                endAdornment: currentProductData.releaseDate && (
-                  <InputAdornment position='end'>
-                    <CancelIcon
-                      className="cancelDateIcon"
-                      fontSize="small"
-                      color="secondary"
-                      onClick={() => {
-                        setProductData({ ...currentProductData, releaseDate: '' });
-                      }}
-                      onMouseDown={(e) => {
-                        e.stopPropagation();
-                      }}
-                    />
-                  </InputAdornment>
-                ),
-              }}
-              InputLabelProps={{ shrink: true }}
-              onChange={(e) => {
-                setProductData({ ...currentProductData, releaseDate: e.target.value });
-              }}
-            />
-          </form>
         </Box>
       </Box>
 
@@ -214,24 +150,16 @@ const FulfillmentAndSubscription = ({
             )}
           />
         </Box>
-
-        <Box width="50%" display="flex" flexDirection="row" alignItems="baseline">
-          <Box p={2}>
-            <Typography color="secondary">{localization.t('labels.licenseKeyPackages')}</Typography>
-          </Box>
-
-          <Box p={2}><Typography>{localization.t('general.noPackagesFound')}</Typography></Box>
-        </Box>
       </Box>
     </>
   );
 };
 
-FulfillmentAndSubscription.propTypes = {
+Subscription.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
 };
 
-export default FulfillmentAndSubscription;
+export default Subscription;

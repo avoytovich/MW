@@ -19,6 +19,7 @@ import {
   backToFront, localizedValues, createInheritableValue,
 } from '../../../services/helpers/dataStructuring';
 import { setTempProductLocales, setTempProductDescription } from '../../../redux/actions/TempData';
+import store from '../../../redux/store';
 
 const LocalizedContent = ({
   setHasNewData, currentProductData, parentId, storeLanguages,
@@ -33,9 +34,19 @@ const LocalizedContent = ({
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
   const makeNewData = (locale) => {
-    const dataToSave = { ...curData };
+    const { tempData } = store.getState();
+    const dataToSave = {
+      ...tempData?.description,
+      ...curData,
+      i18nFields: {
+        ...tempData?.i18nFields,
+        ...curData?.i18nFields,
+      },
+    };
     dataToSave.i18nFields[value || locale] = { ...newTabValues };
     setCurData({ ...dataToSave });
+    setAvailLocales(() => [...Object.keys(dataToSave?.i18nFields)]);
+    dispatch(setTempProductLocales({ ...dataToSave.i18nFields }));
     setHasNewData(true);
   };
 
@@ -61,13 +72,23 @@ const LocalizedContent = ({
   const removeLocale = (e, locale) => {
     e.stopPropagation();
 
-    const dataToSave = { ...curData };
+    const { tempData } = store.getState();
+
+    const dataToSave = {
+      ...tempData?.description,
+      ...curData,
+      i18nFields: {
+        ...tempData?.i18nFields,
+        ...curData?.i18nFields,
+      },
+    };
 
     delete dataToSave.i18nFields[locale];
 
-    setAvailLocales((c) => c.filter((l) => l !== locale));
+    setAvailLocales(() => Object.keys(dataToSave.i18nFields).filter((l) => l !== locale));
     setCurData({ ...dataToSave });
-    setHasNewData({ ...dataToSave });
+    dispatch(setTempProductLocales({ ...dataToSave.i18nFields }));
+    setHasNewData(true);
 
     if (value === locale) {
       setValue(0);
@@ -79,7 +100,6 @@ const LocalizedContent = ({
       if (availLocales.indexOf(newLangValue) < 0) {
         makeNewData(newLangValue);
         setNewLangValue('');
-        setAvailLocales((c) => [...c, newLangValue]);
       } else {
         toast.error('Locale already exists!');
       }
@@ -87,7 +107,6 @@ const LocalizedContent = ({
       const languageIndex = availLocales.indexOf(defLanguage);
       if (languageIndex < 0) {
         makeNewData(defLanguage);
-        setAvailLocales((c) => [defLanguage, ...c]);
         setValue(defLanguage);
       } else {
         setValue(defLanguage);
@@ -167,15 +186,20 @@ const LocalizedContent = ({
           };
         }, {});
 
+        const { tempData } = store.getState();
         const productDescrData = { ...productDescr?.data };
+
         localizedValues.forEach((item) => delete productDescrData[item]);
+        const newi18n = { ...i18nFields, ...tempData.i18nFields };
+        const newDescr = { ...productDescrData, ...tempData.description };
+
         productDescrData.i18nFields = i18nFields;
         productDescrData.fallbackLocale = inheritedFallbackLocale;
         setCurData({ ...productDescrData });
-        setAvailLocales(avail);
+        setAvailLocales([...new Set(Object.keys(newi18n), ...avail)]);
 
-        dispatch(setTempProductLocales({ ...i18nFields }));
-        dispatch(setTempProductDescription({ ...productDescrData }));
+        dispatch(setTempProductLocales({ ...newi18n }));
+        dispatch(setTempProductDescription({ ...newDescr }));
       });
       return;
     }
@@ -214,14 +238,33 @@ const LocalizedContent = ({
         };
       }, {});
 
+      const { tempData } = store.getState();
       const productDescrData = { ...data };
-      localizedValues.forEach((item) => delete productDescrData[item]);
-      productDescrData.i18nFields = i18nFields;
 
-      setCurData({ ...productDescrData });
-      setAvailLocales(avail);
-      dispatch(setTempProductLocales({ ...i18nFields }));
-      dispatch(setTempProductDescription({ ...productDescrData }));
+      localizedValues.forEach((item) => delete productDescrData[item]);
+      const newi18n = { ...i18nFields, ...tempData?.i18nFields };
+      const newDescr = { ...productDescrData, ...tempData.description };
+
+      if (!newDescr?.fallbackLocale) {
+        newDescr.fallbackLocale = 'en-US';
+      }
+
+      let defI18nFields = {};
+      if (!newi18n[newDescr?.fallbackLocale]) {
+        defI18nFields = {
+          'en-US': localizedValues.reduce((acc, curr) => ({ ...acc, [curr]: '' }), {}),
+        };
+      }
+
+      setCurData({ ...newDescr, i18nFields: { ...i18nFields, ...defI18nFields } });
+
+      const locales = Object.keys(newi18n).length
+        ? [...new Set(Object.keys(newi18n), avail)]
+        : [...avail, newDescr?.fallbackLocale];
+      setAvailLocales(locales);
+
+      dispatch(setTempProductLocales({ ...newi18n, ...defI18nFields }));
+      dispatch(setTempProductDescription({ ...newDescr }));
     });
   }, [currentProductData.descriptionId]);
 

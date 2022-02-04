@@ -19,6 +19,7 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 
 import ClearIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
 
 import PriceNumberFormat from '../../../components/PriceNumberFormat';
 
@@ -45,6 +46,7 @@ const Prices = ({
 }) => {
   const [needDefault, setNeedDefault] = useState(null);
   const [prices, setPrices] = useState([]);
+  const [editingCell, setEditingRow] = useState(false);
   const [scheduledPrices, setScheduledPrices] = useState([]);
 
   const history = useHistory();
@@ -163,34 +165,57 @@ const Prices = ({
             </TableHead>
 
             <TableBody>
-              {prices.map((pr) => (
-                <TableRow key={pr.currency + pr.country}>
-                  <TableCell align='center'>{pr.country || '-'}</TableCell>
-                  <TableCell align='center'>{pr.currency || '-'}</TableCell>
-                  <TableCell align='center'>
-                    {<PriceNumberFormat number={pr.price} currency={pr.currency} /> || '-'}
-                  </TableCell>
-                  <TableCell align='center'>{pr.msrp || '-'}</TableCell>
-                  <TableCell align='center'>{pr.upSell || '-'}</TableCell>
-                  <TableCell align='center'>{pr.crossSell || '-'}</TableCell>
-                  <TableCell align='center' style={{ minWidth: '120px', padding: 0 }}>
-                    <Checkbox
-                      disabled
-                      checked={pr.vatIncluded}
-                      name='checkedB'
-                      color='primary'
-                    />
-                  </TableCell>
-                  <TableCell align='center' className='transparent-cell'>
-                    <Button
-                      disabled={currentProductData?.prices?.state === 'inherits'}
-                      onClick={() => deleteRow(pr)}
-                    >
-                      <ClearIcon />
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {prices.map((pr) => {
+                const isEditing = editingCell?.country === pr.country
+                  && editingCell?.currency === pr.currency;
+
+                return isEditing ? (
+                  <ProductPriceRow
+                    setProductData={setProductData}
+                    currentProductData={currentProductData}
+                    parentId={parentId}
+                    editingRow={pr}
+                    setEditingRow={setEditingRow}
+                  />
+                ) : (
+                  <TableRow key={pr.currency + pr.country}>
+                    <TableCell align='center'>
+                      {isEditing ? '' : (pr.country || '-')}
+                    </TableCell>
+                    <TableCell align='center'>{pr.currency || '-'}</TableCell>
+                    <TableCell align='center'>
+                      {<PriceNumberFormat number={pr.price} currency={pr.currency} /> || '-'}
+                    </TableCell>
+                    <TableCell align='center'>{pr.msrp || '-'}</TableCell>
+                    <TableCell align='center'>{pr.upSell || '-'}</TableCell>
+                    <TableCell align='center'>{pr.crossSell || '-'}</TableCell>
+                    <TableCell align='center' style={{ minWidth: '120px', padding: 0 }}>
+                      <Checkbox
+                        disabled
+                        checked={pr.vatIncluded}
+                        name='checkedB'
+                        color='primary'
+                      />
+                    </TableCell>
+                    <TableCell align='center' className='transparent-cell'>
+                      <Button
+                        className='edit-button'
+                        disabled={currentProductData?.prices?.state === 'inherits'}
+                        onClick={() => setEditingRow(pr)}
+                      >
+                        <EditIcon />
+                      </Button>
+
+                      <Button
+                        disabled={currentProductData?.prices?.state === 'inherits'}
+                        onClick={() => deleteRow(pr)}
+                      >
+                        <ClearIcon />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
 
               {currentProductData?.prices?.state !== 'inherits' && (
                 <ProductPriceRow

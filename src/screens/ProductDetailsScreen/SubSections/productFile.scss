@@ -70,6 +70,10 @@
       &:hover{
         color: $deleteIcon;
       }
+
+      &.edit-button:hover{
+        color: $navItemButtonActive;
+      }
     }
   }
 

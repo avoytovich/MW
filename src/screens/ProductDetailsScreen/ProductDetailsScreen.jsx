@@ -99,7 +99,7 @@ const ProductDetailsScreen = () => {
     });
 
     setStoreLanguages(newLanguages);
-    setCheckOutStores(res);
+    setCheckOutStores([...res]);
   };
 
   const saveLocalizatoinDetails = () => {

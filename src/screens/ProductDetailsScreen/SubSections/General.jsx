@@ -15,7 +15,12 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  InputAdornment,
 } from '@mui/material';
+
+import CancelIcon from '@mui/icons-material/Cancel';
+
+import moment from 'moment';
 
 import InheritanceField from '../InheritanceField';
 
@@ -26,6 +31,7 @@ import {
   InputCustom,
   SelectWithDeleteIcon,
 } from '../../../components/Inputs';
+
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import Popup from '../../../components/Popup';
 
@@ -398,24 +404,40 @@ const General = ({
         </Box>
 
         <Box p={2} width='50%'>
-          <InheritanceField
-            field='externalContext'
-            onChange={setProductData}
-            value={currentProductData?.externalContext}
-            parentId={parentId}
-            currentProductData={currentProductData}
-          >
-            <InputCustom
-              isMultiline
-              tooltip={localization.t('tooltips.externalContext')}
-              label='externalContext'
-              value={checkValue(currentProductData?.externalContext)}
-              onChangeInput={(e) => setProductData({
-                ...currentProductData,
-                externalContext: e.target.value,
-              })}
+          <form noValidate>
+            <TextField
+              disabled={!checkValue(currentProductData.fulfillmentTemplate)}
+              name="datetime"
+              value={
+                currentProductData?.releaseDate
+                  ? moment(checkValue(currentProductData.releaseDate)).format('YYYY-MM-DD') : ''
+              }
+              label={localization.t('labels.preorderReleaseDate')}
+              type="date"
+              variant="outlined"
+              InputProps={{
+                endAdornment: currentProductData.releaseDate && (
+                  <InputAdornment position='end'>
+                    <CancelIcon
+                      className="cancelDateIcon"
+                      fontSize="small"
+                      color="secondary"
+                      onClick={() => {
+                        setProductData({ ...currentProductData, releaseDate: '' });
+                      }}
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                      }}
+                    />
+                  </InputAdornment>
+                ),
+              }}
+              InputLabelProps={{ shrink: true }}
+              onChange={(e) => {
+                setProductData({ ...currentProductData, releaseDate: e.target.value });
+              }}
             />
-          </InheritanceField>
+          </form>
         </Box>
       </Box>
 
