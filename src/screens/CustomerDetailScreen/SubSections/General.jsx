@@ -73,20 +73,36 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
               </Box>
             </Box>
           )}
-        <Box p={2}>
-          <InputCustom
-            data-test='realmName'
-            label='realmName'
-            value={currentCustomer.iamClient.realmName}
-            onChangeInput={(e) => {
-              setCurrentCustomer({
-                ...currentCustomer,
-                iamClient: { ...currentCustomer.iamClient, realmName: e.target.value },
-              });
-            }}
-            isDisabled={!!currentCustomer.id}
-          />
-        </Box>
+        {!currentCustomer.id
+          && (
+            <Box p={2}>
+              <InputCustom
+                data-test='realmName'
+                label='realmName'
+                value={currentCustomer.iamClient.realmName}
+                onChangeInput={(e) => {
+                  setCurrentCustomer({
+                    ...currentCustomer,
+                    iamClient: { ...currentCustomer.iamClient, realmName: e.target.value },
+                  });
+                }}
+              />
+            </Box>
+          )}
+        {currentCustomer.id && currentCustomer.iamClient.realmName
+          && (
+            <Box p={2}>
+              <Box pb={1}>
+                <Typography color="secondary">
+                  {localization.t('labels.realmName')}
+                </Typography>
+              </Box>
+              <Box display='flex'>
+                <Typography data-test='customerId'>{currentCustomer.iamClient.realmName}</Typography>
+                <Box px={1}><FileCopy color='secondary' onClick={() => makeCopy(currentCustomer.iamClient.realmName)} /></Box>
+              </Box>
+            </Box>
+          )}
         <Box p={2}>
           <Box pb={1}>
             <Typography color="secondary">
