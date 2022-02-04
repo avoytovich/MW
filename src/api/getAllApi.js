@@ -220,7 +220,7 @@ const getAllApi = {
     });
   },
   getSellingStoreOptions(customerId) {
-    const url = `/stores?format=short&customerId=${customerId}&size=30&page=0`;
+    const url = `/stores?format=short&customerId=${customerId}&size=200&page=0`;
     return axiosInstance({
       method: 'get',
       url,

@@ -5,7 +5,8 @@ import ProductFiles from './SubSections/ProductFiles';
 
 import General from './SubSections/General';
 import Prices from './SubSections/Prices';
-import FulfillmentAndSubscription from './SubSections/FulfillmentAndSubscription';
+import Fulfillment from './SubSections/Fulfillment';
+import Subscription from './SubSections/Subscription';
 import SectionLayout from '../../components/SectionLayout';
 import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
@@ -84,8 +85,8 @@ const ProductDetailsView = ({
       )}
 
       {curTab === 1 && (
-        <SectionLayout dataTest='fulfillmentAndSubscription' label='fulfillmentAndSubscription'>
-          <FulfillmentAndSubscription
+        <SectionLayout dataTest='fulfillment' label='fulfillment'>
+          <Fulfillment
             selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={curProductData}
@@ -95,6 +96,17 @@ const ProductDetailsView = ({
       )}
 
       {curTab === 2 && (
+        <SectionLayout dataTest='subscription' label='subscription'>
+          <Subscription
+            selectOptions={selectOptions}
+            setProductData={setProductData}
+            currentProductData={curProductData}
+            parentId={parentId}
+          />
+        </SectionLayout>
+      )}
+
+      {curTab === 3 && (
         <SectionLayout dataTest='localizedContent' label='localizedContent'>
           <LocalizedContent
             storeLanguages={storeLanguages}
@@ -107,7 +119,7 @@ const ProductDetailsView = ({
         </SectionLayout>
       )}
 
-      {curTab === 3 && (
+      {curTab === 4 && (
         <SectionLayout dataTest='prices' label='prices'>
           <Prices
             selectOptions={selectOptions}
@@ -121,7 +133,7 @@ const ProductDetailsView = ({
         </SectionLayout>
       )}
 
-      {curTab === 4 && ( // eslint-disable-line
+      {curTab === 5 && ( // eslint-disable-line
         parentId ? (
           <SubProductVariations
             setProductData={setProductData}
@@ -145,7 +157,7 @@ const ProductDetailsView = ({
         )
       )}
 
-      {curTab === 5 && (
+      {curTab === 6 && (
         <SectionLayout dataTest='productFiles' label='productFiles'>
           <ProductFiles
             productData={productData}

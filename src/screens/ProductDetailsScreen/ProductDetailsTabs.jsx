@@ -39,18 +39,23 @@ const ProductDetailsTabs = ({
     )}
     <Tab label={localization.t('labels.general')} value={0} />
     <Tab
-      label={localization.t('labels.fulfillmentAndSubscription')}
+      label={localization.t('labels.fulfillment')}
       value={1}
       disabled={!selectOptions?.sellingStores}
     />
     <Tab
-      label={localization.t('labels.localizedContent')}
+      label={localization.t('labels.subscription')}
       value={2}
       disabled={!selectOptions?.sellingStores}
     />
-    <Tab label={localization.t('labels.prices')} value={3} />
-    <Tab label={localization.t('labels.productVariations')} value={4} />
-    <Tab label={localization.t('labels.productFiles')} value={5} />
+    <Tab
+      label={localization.t('labels.localizedContent')}
+      value={3}
+      disabled={!selectOptions?.sellingStores}
+    />
+    <Tab label={localization.t('labels.prices')} value={4} />
+    <Tab label={localization.t('labels.productVariations')} value={5} />
+    <Tab label={localization.t('labels.productFiles')} value={6} />
   </Tabs>
 );
 

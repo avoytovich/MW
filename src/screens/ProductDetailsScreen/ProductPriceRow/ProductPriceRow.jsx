@@ -9,21 +9,28 @@ import {
   Checkbox,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import SaveIcon from '@mui/icons-material/Save';
 
 import { SelectCustom } from '../../../components/Inputs';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 
-const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
-  const [currency, setCurrency] = useState('');
-  const [country, setCountry] = useState('');
+const ProductPriceRow = ({
+  setProductData,
+  currentProductData,
+  parentId,
+  editingRow,
+  setEditingRow,
+}) => {
+  const [currency, setCurrency] = useState(editingRow?.currency || '');
+  const [country, setCountry] = useState(editingRow?.country || '');
   const countryOptions = getCountriesOptions();
   const [newRow, setNewRow] = useState({
-    value: '',
-    msrp: '',
-    upSell: '',
-    crossSell: '',
-    vatIncluded: false,
+    value: editingRow?.value || '',
+    msrp: (editingRow && editingRow?.msrp !== '-') ? editingRow?.msrp : '',
+    upSell: (editingRow && editingRow?.upSell !== '-') ? editingRow?.upSell : '',
+    crossSell: (editingRow && editingRow?.crossSell !== '-') ? editingRow?.crossSell : '',
+    vatIncluded: editingRow?.vatIncluded || false,
   });
 
   const addRow = () => {
@@ -43,7 +50,7 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
       ...currentProductData,
       prices: parentId
         ? {
-          ...currentProductData.prices,
+          ...currentProductData?.prices,
           value: {
             ...currentProductData.prices.value,
             priceByCountryByCurrency: {
@@ -69,6 +76,8 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
 
     setCurrency('');
     setCountry('');
+
+    editingRow && setEditingRow(false);
 
     return setNewRow(newState);
   };
@@ -104,6 +113,7 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
               value={country}
               selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
               onChangeSelect={handleCountry}
+              isDisabled={!!editingRow}
             />
           </Box>
         </TableCell>
@@ -115,6 +125,7 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
               value={currency}
               selectOptions={priceCurrency}
               onChangeSelect={handleCurrency}
+              isDisabled={!!editingRow}
             />
           </Box>
         </TableCell>
@@ -181,12 +192,18 @@ const ProductPriceRow = ({ setProductData, currentProductData, parentId }) => {
         </TableCell>
 
         <TableCell align='center' className='transparent-cell' style={{ minWidth: '50px' }}>
-          <Button onClick={addRow} disabled={!country || !currency}>
-            <AddCircleIcon
-              color='primary'
-              style={{ opacity: !country || !currency ? 0.5 : 1 }}
-            />
-          </Button>
+          {
+            editingRow ? (
+              <Button className='edit-button' onClick={addRow}><SaveIcon /></Button>
+            ) : (
+              <Button onClick={addRow} disabled={!country || !currency}>
+                <AddCircleIcon
+                  color='primary'
+                  style={{ opacity: !country || !currency ? 0.5 : 1 }}
+                />
+              </Button>
+            )
+          }
         </TableCell>
       </TableRow>
     </>
@@ -197,6 +214,8 @@ ProductPriceRow.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
+  editingRow: PropTypes.object,
+  setEditingRow: PropTypes.func,
 };
 
 export default ProductPriceRow;
