@@ -27,7 +27,7 @@ const StripedRow = ({
       </Grid>
       <Grid item md={6} xs={6}>
         <Box display="flex">
-          {(!item.link || item.value === emptyValue) ? (
+          {(!item.link || item.value === emptyValue || item.value === localization.t('labels.customerNotFound')) ? (
             <Box p={2} style={item.color ? { color: item.color } : {}}>
               {item.value}
             </Box>
@@ -46,7 +46,7 @@ const StripedRow = ({
                   )}
               </Box>
             )}
-          {item.value !== emptyValue
+          {(item.value !== emptyValue && item.value !== localization.t('labels.customerNotFound'))
             && (
               <Box display='flex' p={2}>
                 {item.downloadFunc && (
