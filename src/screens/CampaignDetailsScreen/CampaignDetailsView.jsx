@@ -108,6 +108,7 @@ const CampaignDetailsView = ({
         <CustomCard title="Products Price Table">
           <Box pt={4}>
             <TableComponent
+              isAutoHeight
               defaultShowColumn={defaultShow}
               tableData={pricesData}
               isLoading={pricesData === null}
