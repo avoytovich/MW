@@ -20,6 +20,8 @@ import {
   backToFront,
   frontToBack,
   localizedValues,
+  checkValue,
+  defaultProductLocales,
 } from '../../services/helpers/dataStructuring';
 import { handleGetOptions, handleGetProductDetails } from './utils';
 import { setTempProductDescription, setTempProductLocales } from '../../redux/actions/TempData';
@@ -103,11 +105,19 @@ const ProductDetailsScreen = () => {
   };
 
   const saveLocalizatoinDetails = () => {
+    // eslint-disable-next-line no-underscore-dangle
+    let i18nFields_ = {};
     const { tempData } = store.getState();
     const {
-      i18nFields: i18nFields_ = {},
       description: description_ = {},
+      i18nFields: i18nTemp,
     } = tempData;
+
+    if (!Object.keys(i18nTemp).length) {
+      i18nFields_ = { ...description_?.i18nFields };
+    } else {
+      i18nFields_ = i18nTemp;
+    }
 
     const frontToBackObj = frontToBack({
       ...description_,
@@ -143,6 +153,10 @@ const ProductDetailsScreen = () => {
       frontToBackObj.customerId = currentProductData?.customerId?.state
         ? currentProductData?.customerId?.value
         : currentProductData?.customerId;
+    }
+
+    if (!Object.keys(dataToSave?.localizedMarketingName)?.length) {
+      dataToSave.localizedMarketingName = { 'en-US': '' };
     }
 
     return dataToSave;
@@ -221,7 +235,7 @@ const ProductDetailsScreen = () => {
               data.descriptionId,
               {
                 ...localizationChangesToSave,
-                description: `description of product ${currentProductData.genericName}`,
+                description: `description of product ${checkValue(currentProductData?.genericName)}`,
                 catalogId: data.catalogId,
               },
             )
@@ -297,7 +311,12 @@ const ProductDetailsScreen = () => {
             setSelectOptions,
             selectOptions,
             setSubProductVariations,
-            (catalogId) => setProductDetails((c) => ({ ...c, catalogId })),
+            (catalogId) => setProductDetails((c) => ({
+              i18nFields: { ...defaultProductLocales },
+              ...c,
+              customerId,
+              catalogId,
+            })),
           );
         }
 
