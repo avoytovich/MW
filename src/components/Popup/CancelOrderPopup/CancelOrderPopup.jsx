@@ -18,7 +18,7 @@ import api from '../../../api';
 
 const CancelOrderPopup = ({ currentOrderData }) => {
   const [open, setOpen] = useState(false);
-  const [cancelOrderReason, setCancelOrderReason] = useState('');
+  const [cancelOrderReason, setCancelOrderReason] = useState(orderCancelAction[6].id);
 
   const cancelOrder = () => {
     api
