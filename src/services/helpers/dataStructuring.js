@@ -83,6 +83,15 @@ const defaultStore = {
   },
 };
 
+const defaultProductLocales = {
+  localizedLongDesc: {},
+  localizedManualRenewalEmailDesc: {},
+  localizedPurchaseEmailDesc: {},
+  localizedMarketingName: { 'en-US': '' },
+  localizedShortDesc: {},
+  localizedThankYouDesc: {},
+};
+
 const localizedValues = [
   'localizedLongDesc',
   'localizedManualRenewalEmailDesc',
@@ -277,7 +286,7 @@ const backToFront = (
   );
 
   const inputA = R.mapObjIndexed(
-    (value) => createInheritableValue(value, undefined),
+    (value, key) => createInheritableValue(value, undefined, key),
     resource,
   );
 
@@ -432,4 +441,5 @@ export {
   formatePaymentGroups,
   createInheritableValue,
   defaultManualFulfillment,
+  defaultProductLocales,
 };
