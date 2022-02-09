@@ -53,7 +53,7 @@ const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
         <SelectWithChip
           isRequired
           label='products'
-          value={curFulfillment.nexwayProductId}
+          value={curFulfillment.nexwayProductId || []}
           selectOptions={selectOptions.products}
           onChangeSelect={(e) => setCurFulfillment({
             ...curFulfillment,
@@ -73,7 +73,7 @@ const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
       <Box p={2}>
         <SelectWithChip
           label='productByReference'
-          value={curFulfillment.publisherProductId}
+          value={curFulfillment.publisherProductId || []}
           selectOptions={selectOptions.productByReference}
           onChangeSelect={(e) => setCurFulfillment({
             ...curFulfillment,
