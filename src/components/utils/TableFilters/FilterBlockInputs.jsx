@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
 
 import {
   TextField,
@@ -11,13 +12,31 @@ import {
 } from '@mui/material';
 
 import SearchIcon from '@mui/icons-material/Search';
+
+import { setSearch, resetFilters } from '../../../redux/actions/TableData';
 import { SelectWithChip } from '../../Inputs';
 
 import localization from '../../../localization';
+import { placeholderData } from './helper';
 
 const FilterBlockInputs = ({
-  type, curData, updateConfig, data, size, search,
+  type, curData, updateConfig, data, size, search, scope,
 }) => {
+  const dispatch = useDispatch();
+
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      dispatch(setSearch({
+        [scope]: {
+          [data.id]: event.target.value,
+          [data.name ? data.name : data.id]: event.target.value,
+        },
+      }));
+      dispatch(resetFilters());
+    }
+  };
+
   const TextSubFilter = () => (
     <TextField
       label={data.label}
@@ -25,9 +44,13 @@ const FilterBlockInputs = ({
       size={size || 'medium'}
       fullWidth
       variant='outlined'
+      placeholder={search ? placeholderData(scope) : ''}
+      InputLabelProps={!data.label && { shrink: false }}
       onChange={
-        (e) => (search ? updateConfig(data, e.target.value) : updateConfig(data.id, e.target.value))
+        (e) => (
+          search ? updateConfig(data, e.target.value) : updateConfig(data.id, e.target.value))
       }
+      onKeyDown={search ? handleKeyDown : () => {}}
       InputProps={{
         endAdornment: <InputAdornment position='end'><SearchIcon color='secondary' /></InputAdornment>,
       }}

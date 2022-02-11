@@ -32,7 +32,6 @@ import {
   setCheckedItems,
   refreshTable,
   setWasUpdated,
-  setSearch,
 } from '../../redux/actions/TableData';
 
 import localization from '../../localization';
@@ -229,18 +228,11 @@ const TableActionsBar = ({
                     <Box display='flex' alignItems='center'>
                       <FilterBlockInputs
                         search
+                        scope={scope}
                         myBox='0px'
                         size='small'
                         curData={curVal}
-                        updateConfig={(data, val) => {
-                          setCurVal(val);
-                          dispatch(setSearch({
-                            [scope]: {
-                              [data.id]: val,
-                              [data.name ? data.name : data.id]: val,
-                            },
-                          }));
-                        }}
+                        updateConfig={(data, val) => setCurVal(val)}
                         data={searchData(scope)}
                       />
                     </Box>

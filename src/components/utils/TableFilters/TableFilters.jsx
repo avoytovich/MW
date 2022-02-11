@@ -25,7 +25,9 @@ import {
 
 import FilterBlock from './FilterBlock';
 
-import { setFilters, setFilterViews } from '../../../redux/actions/TableData';
+import {
+  resetSearch, setFilters, setFilterViews,
+} from '../../../redux/actions/TableData';
 
 import availableFilters from '../../../services/useData/tableMarkups/filters';
 import localization from '../../../localization';
@@ -84,7 +86,18 @@ const Filters = ({ scope, onClose }) => {
 
   const applyFilters = () => {
     onClose();
-    dispatch(setFilters({ [scope]: newFiltersConfig }));
+    dispatch(resetSearch());
+    if (Object.keys(newFiltersConfig).length === 0
+      && Object.getPrototypeOf(newFiltersConfig) === Object.prototype) {
+      dispatch(setFilters({ [scope]: newFiltersConfig }));
+    } else {
+      dispatch(setFilters({
+        [scope]: {
+          ...JSON.parse(localStorage.getItem('filters'))?.[scope],
+          ...newFiltersConfig,
+        },
+      }));
+    }
   };
 
   const clearFilters = () => {
@@ -240,6 +253,7 @@ const Filters = ({ scope, onClose }) => {
           <Box className='filters-inputs-container' display='flex' flexDirection='column' flexGrow='1' py='10px' pr='25px'>
             {availableFilters[scope].map((filter) => (
               <FilterBlock
+                scope={scope}
                 data={filter}
                 curData={newFiltersConfig[filter.id]}
                 updateConfig={updateFiltersConfig}

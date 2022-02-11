@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,11 +8,23 @@ import Typography from '@mui/material/Typography';
 import Close from '@mui/icons-material/Close';
 
 import FilterBlockInputs from './FilterBlockInputs';
+import { resetSearch } from '../../../redux/actions/TableData';
 
 const FilterBlock = ({
-  data, curData, updateConfig, size, myBox, search,
+  data, curData, updateConfig, size, myBox, search, scope,
 }) => {
+  const dispatch = useDispatch();
   const [curVal, setCurVal] = useState('');
+
+  const onClose = () => {
+    const filtersObj = {
+      [scope]: { ...JSON.parse(localStorage.getItem('filters'))[scope] },
+    };
+    delete filtersObj[scope][data.id];
+    localStorage.setItem('filters', JSON.stringify(filtersObj));
+    dispatch(resetSearch());
+    updateConfig(search ? data : data?.id, '');
+  };
 
   useEffect(() => {
     setCurVal(curData);
@@ -25,6 +38,7 @@ const FilterBlock = ({
 
       <FilterBlockInputs
         search={search}
+        scope={scope}
         size={size}
         type={data?.type}
         curData={curVal}
@@ -34,7 +48,10 @@ const FilterBlock = ({
 
       <Box minWidth='25px' textAlign='center'>
         {curVal && (
-          <Close style={{ fill: '#d0caca', cursor: 'pointer' }} onClick={() => updateConfig(data?.id, '')} />
+          <Close
+            style={{ fill: '#d0caca', cursor: 'pointer' }}
+            onClick={onClose}
+          />
         )}
       </Box>
     </Box>
@@ -48,6 +65,7 @@ FilterBlock.propTypes = {
   size: PropTypes.string,
   myBox: PropTypes.string,
   search: PropTypes.bool,
+  scope: PropTypes.string,
 };
 
 export default FilterBlock;
