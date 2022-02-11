@@ -28,6 +28,12 @@ const useTableData = (
       let searchRequest = activeSearch && activeSearch[dataScope]
         && (() => {
           const [key, val] = Object.entries(activeSearch[dataScope])[0];
+          localStorage.setItem('filters', JSON.stringify({
+            [dataScope]: {
+              ...JSON.parse(localStorage.getItem('filters'))?.[dataScope],
+              [key]: val,
+            },
+          }));
           return `&${key}=${val}`;
         })();
       let filtersUrl = activeFilters && activeFilters[dataScope]
@@ -37,10 +43,24 @@ const useTableData = (
         filtersUrl += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
       }
 
+      const resolveCurrentPage = () => {
+        if (searchRequest) {
+          if (searchRequest[searchRequest.length - 1] === '=') {
+            if (Object.keys(((activeFilters[dataScope])?.length !== 0
+              && activeFilters[dataScope]?.constructor === Object) || {})) {
+              return 0;
+            }
+            return reduxCurrentPage - 1;
+          }
+          return 0;
+        }
+        return reduxCurrentPage - 1;
+      };
+
       setLoading(true);
       requests(
         reduxRowPerPage,
-        reduxCurrentPage - 1,
+        resolveCurrentPage(),
         !searchRequest || searchRequest[searchRequest.length - 1] === '='
           ? filtersUrl : searchRequest,
       )
@@ -49,6 +69,14 @@ const useTableData = (
             if (searchRequest && !payload.values.length) {
               searchRequest = (() => {
                 const [key, val] = Object.entries(activeSearch[dataScope])[1];
+                const filtersObj = {
+                  [dataScope]: {
+                    ...JSON.parse(localStorage.getItem('filters'))[dataScope],
+                    [key]: val,
+                  },
+                };
+                delete filtersObj[dataScope].id;
+                localStorage.setItem('filters', JSON.stringify(filtersObj));
                 return `&${key}=*${val}*`;
               })();
               return requests(

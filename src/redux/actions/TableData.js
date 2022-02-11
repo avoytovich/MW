@@ -48,7 +48,10 @@ const setFilterViews = (views) => {
   return ({ type: SET_TABLE_FILTER_VIEWS, payload: { filterViews: views } });
 };
 
-const resetFilters = () => ({ type: RESET_TABLE_FILTERS, payload: { filters: {} } });
+const resetFilters = () => {
+  localStorage.setItem('filters', JSON.stringify({}));
+  return ({ type: RESET_TABLE_FILTERS, payload: { filters: {} } });
+};
 
 const resetSearch = () => ({ type: RESET_TABLE_SEARCH, payload: { search: '' } });
 
