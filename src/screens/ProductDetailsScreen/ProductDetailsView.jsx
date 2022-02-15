@@ -28,6 +28,7 @@ const ProductDetailsView = ({
   setSaveDisabled,
   setTabsDisabled,
   curTab,
+  setDisabledWithMandLocal,
 }) => {
   const checkSaveDisable = () => {
     let disableSave = false;
@@ -56,10 +57,11 @@ const ProductDetailsView = ({
 
     const currency = prices?.state // eslint-disable-line
       ? prices?.state === 'inherits'
-        ? prices?.parentValue?.priceByCountryByCurrency[prices?.parentValue?.defaultCurrency]
-          ?.default?.value
-        : prices?.value?.priceByCountryByCurrency[prices?.value?.defaultCurrency]?.default
-          ?.value
+        ? prices?.parentValue?.priceByCountryByCurrency
+          && prices?.parentValue?.priceByCountryByCurrency[prices?.parentValue?.defaultCurrency]
+            ?.default?.value
+        : prices?.value?.priceByCountryByCurrency
+          && prices?.value?.priceByCountryByCurrency[prices?.value?.defaultCurrency]?.default?.value
       : prices?.defaultCurrency;
 
     if (catalogId && publisherRefId && genericName && type && currency) {
@@ -115,6 +117,7 @@ const ProductDetailsView = ({
             productData={productData}
             setHasNewData={setProductLocalizationChanges}
             parentId={parentId}
+            setDisabledWithMandLocal={setDisabledWithMandLocal}
           />
         </SectionLayout>
       )}
@@ -187,6 +190,7 @@ ProductDetailsView.propTypes = {
   curTab: PropTypes.number,
   setSaveDisabled: PropTypes.func,
   setTabsDisabled: PropTypes.func,
+  setDisabledWithMandLocal: PropTypes.func,
 };
 
 export default ProductDetailsView;

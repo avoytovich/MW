@@ -21,6 +21,8 @@ const LocalizationInputs = ({
   parentId,
   setHasLocalizationChanges,
   curLocal,
+  setDisabledWithMandLocal,
+  defaultLocale,
 }) => {
   const LocalizationInput = ({ val }) => (
     <TinyEditor
@@ -30,6 +32,9 @@ const LocalizationInputs = ({
       curLocal={curLocal}
       placeholder={localization.t(`labels.${val}`)}
       setHasLocalizationChanges={setHasLocalizationChanges}
+      setDisabledWithMandLocal={setDisabledWithMandLocal}
+      isDefault={isDefault}
+      defaultLocale={defaultLocale}
     />
   );
 
@@ -46,12 +51,6 @@ const LocalizationInputs = ({
     <Box display='flex' width='100%' flexDirection='column'>
       <Box width='60%' px={4} mb={4} position='relative' {...stylesForVariations}>
         <LocalizationInput val='localizedMarketingName' />
-
-        {isDefault && !data[curLocal]?.localizedMarketingName && (
-          <div className='error-message'>
-            {localization.t('general.marketingNameMandatory')}
-          </div>
-        )}
       </Box>
 
       <Box width='100%' px={4} mb={4} {...stylesForVariations}>
@@ -83,6 +82,8 @@ LocalizationInputs.propTypes = {
   isDefault: PropTypes.bool,
   setHasLocalizationChanges: PropTypes.func,
   curLocal: PropTypes.string,
+  setDisabledWithMandLocal: PropTypes.func,
+  defaultLocale: PropTypes.string,
 };
 
 const DefaultLanguage = ({

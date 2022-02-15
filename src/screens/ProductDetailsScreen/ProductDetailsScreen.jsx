@@ -49,6 +49,7 @@ const ProductDetailsScreen = () => {
   const [customer, setCustomer] = useState(null);
   const [curTab, setCurTab] = useState(0);
 
+  const [disabledWithMandLocal, setDisabledWithMandLocal] = useState(false);
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [tabsDisabled, setTabsDisabled] = useState(true);
 
@@ -354,6 +355,12 @@ const ProductDetailsScreen = () => {
         setSubProductVariations,
         (catalogId) => {
           setCurrentProductData((c) => ({ ...c, customerId, catalogId }));
+          setDisabledWithMandLocal(
+            productDetails && productDetails?.i18nFields
+            && productDetails?.i18nFields[productDetails.fallbackLocale]
+              ? !productDetails?.i18nFields[productDetails.fallbackLocale]?.localizedMarketingName
+              : true,
+          );
         },
       );
     }
@@ -412,7 +419,7 @@ const ProductDetailsScreen = () => {
           ? localization.t('labels.newProduct')
           : `${productData?.genericName?.value || productData?.genericName} - ${id}`
       }
-      saveIsDisabled={saveDisabled || tabsDisabled}
+      saveIsDisabled={saveDisabled || tabsDisabled || disabledWithMandLocal}
       hasChanges={productHasChanges || productHasLocalizationChanges || !productData?.id}
       isLoading={isLoading}
       setUpdate={setUpd}
@@ -458,6 +465,7 @@ const ProductDetailsScreen = () => {
         setSaveDisabled={setSaveDisabled}
         setTabsDisabled={setTabsDisabled}
         parentId={parentId || currentProductData?.parentId}
+        setDisabledWithMandLocal={setDisabledWithMandLocal}
       />
     </DetailPageWrapper>
   );
