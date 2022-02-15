@@ -51,11 +51,16 @@ const JsonEditor = ({
 
     const reader = new FileReader();
     reader.readAsText(e.target.files[0]);
-
-    reader.onload = () => setCurrentData({
-      ...currentData,
-      data: reader.result,
-    });
+    reader.onload = () => {
+      if (jsonKey) {
+        setCurrentData({
+          ...currentData,
+          [jsonKey]: reader.result,
+        });
+      } else {
+        setCurrentData(reader.result);
+      }
+    };
   };
   return (
     <>
