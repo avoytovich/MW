@@ -141,7 +141,6 @@ const AddCart = () => {
             hasChanges
             isLoading={isLoading}
             curParentPath={parentPaths.carts}
-            addFunc={handleSubmit}
             curData={values}
             saveIsDisabled={values.buyerDetails.includes('Fill-in_details_directly') ? !values.phone : false}
           >

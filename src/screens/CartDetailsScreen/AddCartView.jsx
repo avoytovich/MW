@@ -20,7 +20,7 @@ import {
   Switch,
 } from 'formik-mui';
 import { DateTimePicker } from 'formik-mui-lab';
-import DateFnsUtils from '@mui/lab/AdapterDateFns';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Form, Field } from 'formik';
 
 import localization from '../../localization';
@@ -180,7 +180,7 @@ const AddCartView = ({
               </Box>
               <Box p={2}>
                 <FormControl className="spread">
-                  <LocalizationProvider utils={DateFnsUtils}>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <Field
                       component={DateTimePicker}
                       label={localization.t('labels.applicableUntil')}
@@ -209,7 +209,6 @@ const AddCartView = ({
           </Box>
           <Box p={2}>
             <FormControl className="spread">
-              <InputLabel htmlFor="select-store" className='select-label'>{localization.t('labels.store')}</InputLabel>
               <Field
                 component={Select}
                 type="text"
@@ -232,14 +231,12 @@ const AddCartView = ({
                   </MenuItem>
                 ))}
               </Field>
-              {touched.store && errors.store && validation}
             </FormControl>
           </Box>
           {values.store && (
             <>
               <Box p={2}>
                 <FormControl className="spread">
-                  <InputLabel htmlFor="select-store-hostname" className='select-label'>{localization.t('labels.storeHostname')}</InputLabel>
                   <Field
                     component={Select}
                     type="text"
@@ -264,12 +261,10 @@ const AddCartView = ({
                       ))
                     ))}
                   </Field>
-                  {touched.storeHostname && errors.storeHostname && validation}
                 </FormControl>
               </Box>
               <Box p={2}>
                 <FormControl className="spread">
-                  <InputLabel htmlFor="select-product" className='select-label'>{localization.t('labels.product')}</InputLabel>
                   <Field
                     component={Select}
                     type="text"
@@ -289,12 +284,10 @@ const AddCartView = ({
                       </MenuItem>
                     ))}
                   </Field>
-                  {touched.product && errors.product && validation}
                 </FormControl>
               </Box>
               <Box p={2}>
                 <FormControl className="spread">
-                  <InputLabel htmlFor="select-locale" className='select-label'>{localization.t('labels.locale')}</InputLabel>
                   <Field
                     component={Select}
                     type="text"
@@ -316,12 +309,10 @@ const AddCartView = ({
                       ))
                     ))}
                   </Field>
-                  {touched.locale && errors.locale && validation}
                 </FormControl>
               </Box>
               <Box p={2}>
                 <FormControl className="spread">
-                  <InputLabel htmlFor="select-country" className='select-label'>{localization.t('labels.country')}</InputLabel>
                   <Field
                     component={Select}
                     type="text"
@@ -341,7 +332,6 @@ const AddCartView = ({
                       </MenuItem>
                     ))}
                   </Field>
-                  {touched.country && errors.country && validation}
                 </FormControl>
               </Box>
             </>
@@ -505,7 +495,6 @@ const AddCartView = ({
               {selectedStore && (
                 <Box p={2}>
                   <FormControl className="spread">
-                    <InputLabel htmlFor="select-country" className='select-label'>{localization.t('labels.country')}</InputLabel>
                     <Field
                       component={Select}
                       type="text"
@@ -525,7 +514,6 @@ const AddCartView = ({
                         </MenuItem>
                       ))}
                     </Field>
-                    {touched.country && errors.country && validation}
                   </FormControl>
                 </Box>
               )}
@@ -542,7 +530,6 @@ const AddCartView = ({
               {selectedStore && (
                 <Box p={2}>
                   <FormControl className="spread">
-                    <InputLabel htmlFor="select-locale" className='select-label'>{localization.t('labels.locale')}</InputLabel>
                     <Field
                       component={Select}
                       type="text"
@@ -564,7 +551,6 @@ const AddCartView = ({
                         ))
                       ))}
                     </Field>
-                    {touched.locale && errors.locale && validation}
                   </FormControl>
                 </Box>
               )}
