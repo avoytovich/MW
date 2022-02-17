@@ -58,7 +58,7 @@ const CustomerDetailScreen = () => {
       tabs={{
         curTab,
         setCurTab,
-        tabLabels: ['general', 'features', 'paymentServiceConfiguration', 'reports', 'assets'],
+        tabLabels: ['general', 'features', 'paymentServiceConfiguration', 'reports', 'assets', 'localizedContactPageUrl'],
       }}
     >
       <CustomerDetailsView

@@ -10,6 +10,7 @@ import General from './SubSections/General';
 import Features from './SubSections/Features';
 import AssetsResource from '../../components/AssetsResoursesWithSelectLabel';
 import PaymentServiceConfiguration from './SubSections/PaymentServiceConfiguration';
+import LocalizedContactPageUrl from './SubSections/LocalizedContactPageUrl';
 
 import './CustomerDetailScreen.scss';
 
@@ -59,6 +60,14 @@ const CustomerDetailsView = ({
           setResources={(newValue) => {
             setCurrentCustomer({ ...currentCustomer, assets: newValue });
           }}
+        />
+      </TabSection>
+    )}
+    {curTab === 5 && currentCustomer && (
+      <TabSection label='localizedContactPageUrl'>
+        <LocalizedContactPageUrl
+          currentCustomer={currentCustomer}
+          setCurrentCustomer={setCurrentCustomer}
         />
       </TabSection>
     )}

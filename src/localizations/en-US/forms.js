@@ -53,6 +53,7 @@ const Forms = {
       remark: 'Product delivery remark',
       defaultLanguage: 'Default language',
       deliveryRemark: 'Delivery remark',
+      localizedZendeskGuideUrls: 'Localized Zendesk Guide Urls',
       localizedShortDesc: 'Short Description',
       localizedLongDesc: 'Long Description',
       bannerImageUrl: 'Banner Image URL',
