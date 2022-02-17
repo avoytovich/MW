@@ -360,6 +360,7 @@ const labels = {
   numDaysBeforeAnniversary: 'Number of days before anniversary',
   nextBillingDate: 'Next billing date',
   paymentServiceConfiguration: 'Payment Service Configuration',
+  localizedContactPageUrl: 'Localized contact page URL\'s',
   assets: 'Assets',
   cancelPeriod: 'Cancel period (in days, 0 or empty = no cancel period)',
   authenticationRealm: 'Authentication Realm',
