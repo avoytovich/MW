@@ -38,6 +38,7 @@ const AddParameterFirstStep = ({
           field: e.target.value,
         })}
         value={modalState?.field || ''}
+        label='parameterName'
         isRequired
       />
 
@@ -47,10 +48,13 @@ const AddParameterFirstStep = ({
 
       <InputCustom
         onChangeInput={(e) => setModalState({ ...modalState, label: e.target.value })}
+        label='displayString'
         value={modalState?.label || ''}
       />
 
-      <Typography variant='h4' className='title'>Now choose the type of the parameter:</Typography>
+      <Typography variant='h4' className='title' style={{ marginBottom: '15px' }}>
+        Now choose the type of the parameter:
+      </Typography>
 
       <RadioGroup
         aria-label='type'
@@ -58,7 +62,7 @@ const AddParameterFirstStep = ({
         value={value}
         onChange={(e) => setValue(e.target.value)}
       >
-        <Box>
+        <Box mb='15px'>
           <FormControlLabel
             className='radio'
             value='LIST'
@@ -66,10 +70,9 @@ const AddParameterFirstStep = ({
             label='LIST'
           />
           <Typography variant='h6' className='radioLabel'>
-            Buyer will select a value amongst a set of predefined values. For instance (s)he
-            could select a tee-shirt size amongst
-            {' '}
-            {('S', 'M', 'L', 'XL')}
+            Buyer will select a value amongst a set of predefined values.
+            For instance (s)he could select a tee-shirt size amongst
+            {' { "S", "M", "L", "XL" } '}
           </Typography>
         </Box>
         <Box>
@@ -80,10 +83,9 @@ const AddParameterFirstStep = ({
             label='RANGE'
           />
           <Typography variant='h6' className='radioLabel'>
-            Buyer will select a range amongst a set of predefined ranges. For instance (s)he
-            could select a number of licenses amongst
-            {' '}
-            {('1-10 license(s)', '11-50 licenses', '51-100 licenses')}
+            Buyer will select a range amongst a set of predefined ranges.
+            For instance (s)he could select a number of licenses amongst
+            {' { "1-10 license(s)", "11-50 licenses", "51-100 licenses" } '}
           </Typography>
         </Box>
       </RadioGroup>

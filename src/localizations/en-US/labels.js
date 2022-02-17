@@ -753,6 +753,8 @@ const labels = {
   batchId: 'Batch ID',
   uploadedAt: 'Uploaded at',
   fields: 'Fields',
+  parameterName: 'Parameter Name',
+  displayString: 'Display String',
 };
 
 export default labels;

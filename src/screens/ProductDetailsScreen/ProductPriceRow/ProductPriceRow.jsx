@@ -126,6 +126,7 @@ const ProductPriceRow = ({
               selectOptions={priceCurrency}
               onChangeSelect={handleCurrency}
               isDisabled={!!editingRow}
+              withDots
             />
           </Box>
         </TableCell>

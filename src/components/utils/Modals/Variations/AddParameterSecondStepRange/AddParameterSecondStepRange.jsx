@@ -116,7 +116,6 @@ const AddParameterSecondStepRange = ({ onClose, onSubmit, modalState, setModalSt
           </Box>
           <Box width='100%' marginRight='10px'>
             <TextField
-              name=''
               type='text'
               disabled
               value={label}
