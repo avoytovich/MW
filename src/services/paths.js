@@ -75,7 +75,8 @@ const parentPaths = {
   remittables: `${defPath}/customermanagement/remittables`,
   audits: `${defPath}/customermanagement/audits`,
 
-  productdocumentation: `${defPath}/product-documentation`,
+  productdocumentation: 'https://www.nexway.com/',
+  apidocumentation: 'https://apidoc.nexway.store',
 };
 
 export default parentPaths;
