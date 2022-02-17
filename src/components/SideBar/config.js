@@ -242,13 +242,14 @@ const navConfig = [
       {
         id: 'api',
         title: localization.t('sideBar.titles.apiDocumentation'),
-        href: process?.env?.ENV_MODE === 'production' ? 'https://apidoc.nexway.store' : 'https://api-doc.staging.nexway.build',
+        href: parentPaths.apidocumentation,
         external: true,
       },
       {
         id: 'product-documentation',
         title: sideBarTitle['product-documentation'],
         href: parentPaths.productdocumentation,
+        external: true,
       },
     ],
   },
