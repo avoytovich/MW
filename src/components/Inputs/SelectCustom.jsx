@@ -21,9 +21,11 @@ const SelectCustom = ({
   isRequired,
   isDisabled,
   name,
+  withDots,
 }) => {
   const noRepeatingOptions = selectOptions
     .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
+
   return (
     <Box display='flex' alignItems='center' flexGrow='1'>
       <TextField
@@ -50,7 +52,12 @@ const SelectCustom = ({
 
             if (selectOptions) {
               return (
-                <Box display='flex' alignItems='center' flexDirection='row' flexWrap='wrap'>
+                <Box
+                  display={withDots ? 'unset' : 'flex'}
+                  alignItems='center'
+                  flexDirection='row'
+                  flexWrap='wrap'
+                >
                   {selectedItem?.value || selected}
                 </Box>
               );
@@ -107,6 +114,7 @@ SelectCustom.propTypes = {
   isRequired: PropTypes.bool,
   isDisabled: PropTypes.bool,
   name: PropTypes.string,
+  withDots: PropTypes.bool,
 };
 
 export default SelectCustom;
