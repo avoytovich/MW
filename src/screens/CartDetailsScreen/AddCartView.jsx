@@ -57,7 +57,7 @@ const AddCartView = ({
     if (selectedStore) {
       const getSelectedStoreById = storeOpt.items.filter((item) => item.id === selectedStore);
       return countriesOpt?.items.filter((item) => (
-        !getSelectedStoreById[0].blackListedCountries.includes(item.alpha2Code)
+        !getSelectedStoreById[0].blackListedCountries?.includes(item.alpha2Code)
       ));
     }
     return null;
