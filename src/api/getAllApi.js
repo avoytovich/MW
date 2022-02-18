@@ -532,6 +532,14 @@ const getAllApi = {
       url,
     });
   },
+  getManualFulfillmentsForProduct(productId, publisherProductId, publisherId) {
+    const url = `/license-keys-provider/packages?format=short&nexwayProductId=${productId}&publisherProductId=${publisherProductId}&publisherId=${publisherId}&page=${defaultRequestedPage}&size=${defaultRequestedSize}`;
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getLicenseProviderDefinitions({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
