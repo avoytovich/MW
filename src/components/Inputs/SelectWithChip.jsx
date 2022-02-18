@@ -86,6 +86,7 @@ const SelectWithChip = ({
           </InputAdornment>
         ),
       }}
+      InputLabelProps={!curLabel && { shrink: false }}
     >
       {selectOptions?.length ? (
         selectOptions.map((item) => (

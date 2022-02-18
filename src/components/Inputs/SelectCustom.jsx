@@ -43,6 +43,7 @@ const SelectCustom = ({
             </InputAdornment>
           ),
         }}
+        InputLabelProps={!label && { shrink: false }}
         SelectProps={{
           value: value || '',
           onChange: onChangeSelect,
