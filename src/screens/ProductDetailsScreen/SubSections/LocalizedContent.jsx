@@ -22,7 +22,11 @@ import { setTempProductLocales, setTempProductDescription } from '../../../redux
 import store from '../../../redux/store';
 
 const LocalizedContent = ({
-  setHasNewData, currentProductData, parentId, storeLanguages,
+  setHasNewData,
+  currentProductData,
+  parentId,
+  storeLanguages,
+  setDisabledWithMandLocal,
 }) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
@@ -345,8 +349,10 @@ const LocalizedContent = ({
               isDefault={value === curData?.fallbackLocale
                 || value === curData?.fallbackLocale?.value}
               parentId={parentId}
+              defaultLocale={curData?.fallbackLocale?.value || curData?.fallbackLocale}
               curLocal={value}
               setHasLocalizationChanges={setHasNewData}
+              setDisabledWithMandLocal={setDisabledWithMandLocal}
             />
           )}
         </Box>
@@ -360,6 +366,7 @@ LocalizedContent.propTypes = {
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
   storeLanguages: PropTypes.array,
+  setDisabledWithMandLocal: PropTypes.func,
 };
 
 export default LocalizedContent;

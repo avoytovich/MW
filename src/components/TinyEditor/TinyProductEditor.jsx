@@ -12,6 +12,8 @@ import { setTempProductLocales } from '../../redux/actions/TempData';
 import { checkValue } from '../../services/helpers/dataStructuring';
 import InheritanceField from '../../screens/ProductDetailsScreen/InheritanceField';
 
+import localization from '../../localization';
+
 import './tinyEditor.scss';
 
 const tinyApiKey = 'se7x7gpvgb27p864drb8azmziv0pjikrjogirc7hqcsd5fng';
@@ -23,6 +25,9 @@ const TinyEditor = ({
   parentId,
   placeholder,
   setHasLocalizationChanges,
+  setDisabledWithMandLocal,
+  isDefault,
+  defaultLocale,
 }) => {
   const dispatch = useDispatch();
   const [editorLoading, setEditorLoading] = useState(true);
@@ -33,6 +38,7 @@ const TinyEditor = ({
   const settleUpdates = (newData) => {
     const hasChanges = JSON.stringify(data) !== JSON.stringify(newData);
 
+    setDisabledWithMandLocal(!newData[defaultLocale]?.localizedMarketingName);
     setHasLocalizationChanges(hasChanges);
   };
 
@@ -45,6 +51,7 @@ const TinyEditor = ({
     if (parentId) {
       generatedData = {
         ...data,
+        ...i18nFields,
         [curLocal]: {
           ...i18nFields[curLocal],
           [val]: {
@@ -56,6 +63,7 @@ const TinyEditor = ({
     } else {
       generatedData = {
         ...data,
+        ...i18nFields,
         [curLocal]: {
           ...i18nFields[curLocal],
           [val]: correctContent,
@@ -139,6 +147,12 @@ const TinyEditor = ({
           />
         </InheritanceField>
       </Box>
+
+      {val === 'localizedMarketingName' && isDefault && !i18nFields[curLocal]?.localizedMarketingName && (
+        <div className='error-message'>
+          {localization.t('general.marketingNameMandatory')}
+        </div>
+      )}
     </Box>
   );
 };
@@ -150,6 +164,9 @@ TinyEditor.propTypes = {
   parentId: PropTypes.string,
   data: PropTypes.object,
   setHasLocalizationChanges: PropTypes.func,
+  isDefault: PropTypes.bool,
+  setDisabledWithMandLocal: PropTypes.func,
+  defaultLocale: PropTypes.string,
 };
 
 export default TinyEditor;
