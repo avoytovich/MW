@@ -81,7 +81,7 @@ RecoDetailsView.propTypes = {
   setCurReco: PropTypes.func,
   curReco: PropTypes.object,
   selectOptions: PropTypes.object,
-  curTab: PropTypes.bool,
+  curTab: PropTypes.number,
 };
 
 export default RecoDetailsView;

@@ -57,6 +57,7 @@ const PricesDetailsScreen = () => {
       crossSell: '',
       vatIncluded: false,
       startDate: new Date(),
+      productId: '',
     };
 
     if (id === 'add') {
@@ -64,7 +65,7 @@ const PricesDetailsScreen = () => {
         api
           .getProducts({ filters: `&customerId=${selectedCustomer?.id}&status=ENABLED` })
           .then(({ data: { items } }) => {
-            const products = items.map((it) => ({ id: it.id, value: it.genericName }));
+            const products = items.map((it) => ({ id: it.id, value: `${it.genericName} (${it.id})` }));
             setAvailProducts(products);
           });
       }
@@ -84,7 +85,7 @@ const PricesDetailsScreen = () => {
         });
     }
   }, [update]);
-
+  
   const beforeSend = () => {
     const res = { ...curPrice };
     if (res.country === 'default') {

@@ -38,7 +38,8 @@ const fromObjectToArray = (object, keyName) => {
 const fromArrayToObj = (array) => {
   const resObject = {};
   array.forEach((item) => {
-    resObject[item.keyValue] = item.value;
+    const value = item.value.map((u) => u.id);
+    resObject[item.keyValue] = value;
   });
   return resObject;
 };
@@ -67,7 +68,7 @@ const formateProductOptions = (options) => {
     res = options.map((option) => {
       const resObj = {
         id: option.id,
-        value: `${option.genericName}- ${option.publisherRefId}`,
+        value: `${option.genericName}- ${option.publisherRefId} (${option.id})`,
       };
       return resObj;
     });

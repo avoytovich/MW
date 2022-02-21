@@ -1,6 +1,5 @@
 // ToDo: consider making a common layout for such type of settings screens + refactor
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import moment from 'moment';
@@ -15,12 +14,9 @@ import {
 
 import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import { getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
-import { SelectCustom } from '../../components/Inputs';
+import { SelectCustom, AutocompleteCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
-import parentPaths from '../../services/paths';
-import {
-  priceCurrency,
-} from '../../services/selectOptions/selectOptions';
+import { priceCurrency } from '../../services/selectOptions/selectOptions';
 import { copyText } from '../../services/helpers/utils';
 import localization from '../../localization';
 
@@ -30,7 +26,6 @@ const PricesDetailsView = ({
   price, availProducts, setCurPrice, curPrice,
 }) => {
   const countriesOptions = getCountriesOptions();
-  const history = useHistory();
   const [validPeriod, setValidPeriod] = useState('between');
 
   const handleChange = (e) => {
@@ -104,12 +99,13 @@ const PricesDetailsView = ({
             </Box>
           ) : (
             <Box width='50%' pr={4}>
-              <SelectCustom
-                label="productId"
-                value={curPrice?.productId}
+              <AutocompleteCustom
                 isRequired
-                selectOptions={availProducts}
-                onChangeSelect={(e) => setCurPrice((c) => ({ ...c, productId: e.target.value }))}
+                optionLabelKey='value'
+                label='productId'
+                onSelect={(newValue) => setCurPrice((c) => ({ ...c, productId: newValue }))}
+                selectOptions={availProducts || []}
+                curValue={curPrice?.productId}
               />
             </Box>
           )

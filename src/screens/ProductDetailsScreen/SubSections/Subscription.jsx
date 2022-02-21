@@ -5,13 +5,11 @@ import {
   Box,
   Switch,
   Typography,
-  TextField,
-  Autocomplete,
 } from '@mui/material';
 
 import InheritanceField from '../InheritanceField';
 
-import { NumberInput, SelectWithDeleteIcon } from '../../../components/Inputs';
+import { NumberInput, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import localization from '../../../localization';
 
@@ -25,8 +23,8 @@ const Subscription = ({
 }) => {
   const [searchVal, setSearchVal] = useState('');
 
-  const changeProducts = (e, newProduct) => {
-    setProductData({ ...currentProductData, nextGenerationOf: [newProduct?.id || ''] });
+  const changeProducts = (newProduct) => {
+    setProductData({ ...currentProductData, nextGenerationOf: [newProduct] });
   };
 
   const toFilter = (arr) => {
@@ -41,18 +39,6 @@ const Subscription = ({
 
   const filteredArr = toFilter(selectOptions.renewingProducts)
     .filter((i) => i.id !== currentProductData?.id);
-
-  const autoOptions = filteredArr.length
-    ? [...filteredArr]
-    : [{ id: 'none', name: 'No Results' }];
-
-  const resolveValue = () => {
-    const resolveArr = autoOptions.filter(
-      (item) => item.id === checkValue(currentProductData.nextGenerationOf[0]),
-    );
-
-    return resolveArr[0];
-  };
 
   return (
     <>
@@ -125,29 +111,15 @@ const Subscription = ({
           </InheritanceField>
         </Box>
       </Box>
-
       <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2} width="50%">
-          <Autocomplete
-            data-test='renewingProducts'
-            id="products-select"
-            options={autoOptions}
-            value={resolveValue() || ''}
-            onChange={changeProducts}
-            filterOptions={(opts) => opts}
-            getOptionLabel={(option) => option.name || ''}
-            fullWidth
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                id="outlined-search"
-                label="Renewing Products"
-                type="search"
-                variant="outlined"
-                onChange={(e) => setSearchVal(e.target.value)}
-              />
-            )}
+          <AutocompleteCustom
+            optionLabelKey='name'
+            label='renewingProducts'
+            onSelect={changeProducts}
+            selectOptions={filteredArr || []}
+            curValue={checkValue(currentProductData?.nextGenerationOf[0])}
+            isDisabled={currentProductData?.subProducts?.state === 'inherits'}
           />
         </Box>
       </Box>

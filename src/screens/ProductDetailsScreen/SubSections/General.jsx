@@ -30,6 +30,7 @@ import {
   NumberInput,
   InputCustom,
   SelectWithDeleteIcon,
+  AutocompleteCustom,
 } from '../../../components/Inputs';
 
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
@@ -593,7 +594,7 @@ const General = ({
                     aria-owns={props.open ? `mouse-over-popover ${key}` : undefined}
                     aria-haspopup='true'
                     disabled
-                    value={selectValue.value || ''}
+                    value={selectValue.value?.split('(')[0]?.trim() || ''}
                     fullWidth
                     label='Name or Id'
                     type='text'
@@ -678,14 +679,14 @@ const General = ({
             buttonStyles={{ top: '6px' }}
           >
             <>
-              <SelectCustom
+              <AutocompleteCustom
+                optionLabelKey='value'
                 label='nameOrId'
-                value={checkValue(selectedBundledProduct) || ''}
+                onSelect={setSelectedBundledProduct}
                 selectOptions={selectOptions?.renewingProducts || []}
-                onChangeSelect={(e) => setSelectedBundledProduct(e.target.value)}
+                curValue={checkValue(selectedBundledProduct) || ''}
                 isDisabled={currentProductData?.subProducts?.state === 'inherits'}
               />
-
               <Box marginLeft='5px'>
                 <IconButton
                   color={selectedBundledProduct && currentProductData?.subProducts?.state !== 'inherits' ? 'primary' : 'secondary'}

@@ -174,6 +174,9 @@ const ProductDetailsScreen = () => {
       if (!sendObj.businessSegment) {
         delete sendObj.businessSegment;
       }
+      if (sendObj.nextGenerationOf[0] === '') {
+        delete sendObj.nextGenerationOf;
+      }
 
       api.updateProductById(currentProductData.id, sendObj).then(() => {
         if (!productHasLocalizationChanges && !currentProductDetails) {
@@ -207,7 +210,9 @@ const ProductDetailsScreen = () => {
     if (!currentProductData.businessSegment) {
       delete currentProductData.businessSegment;
     }
-
+    if (currentProductData.nextGenerationOf[0] === '') {
+      delete currentProductData.nextGenerationOf;
+    }
     const dataToSave = frontToBack(currentProductData);
 
     if (!dataToSave?.customerId) {

@@ -45,8 +45,16 @@ const RecoDetailsScreen = () => {
       objToSend.byParentProductIds = fromArrayToObj(curReco.byParentProductIds);
       objToSend.byProductIds = fromArrayToObj(curReco.byProductIds);
     } else {
+      objToSend.productIds = curReco.productIds.map((u) => u.id);
       delete objToSend.byParentProductIds;
       delete objToSend.byProductIds;
+    }
+    if (objToSend.eligibleProductIds.length) {
+      objToSend.eligibleProductIds = [...objToSend.eligibleProductIds].map((item) => item.id);
+    }
+    if (objToSend.eligibleParentProductIds.length) {
+      objToSend.eligibleParentProductIds = [...objToSend.eligibleParentProductIds]
+        .map((item) => item.id);
     }
     return objToSend;
   };
@@ -69,9 +77,6 @@ const RecoDetailsScreen = () => {
     }
     recoRequest.then(({ data }) => {
       const checkedReco = recoRequiredFields(data);
-      setReco(JSON.parse(JSON.stringify(checkedReco)));
-      setCurReco(JSON.parse(JSON.stringify(checkedReco)));
-      setLoading(false);
       Promise.allSettled([
         api.getStores({ filters: `&customerId=${data.customerId}` }),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}` }),
@@ -88,27 +93,82 @@ const RecoDetailsScreen = () => {
           parentProductOptions,
           recoByProductOptions,
           recoByParentOptions,
-        ]) => setSelectOptions({
-          ...selectOptions,
-          stores:
-            structureSelectOptions(
-              {
-                options: storeOptions.value?.data.items,
-                optionValue: 'displayName',
-              },
-            ) || [],
-          products:
-            formateProductOptions(productOptions.value?.data?.items) || [],
-          productsByParent:
-            formateProductOptions(parentProductOptions.value?.data?.items)
-            || [],
-          recoByProduct:
-            formateProductOptions(recoByProductOptions.value?.data?.items)
-            || [],
-          recoByParent:
-            formateProductOptions(recoByParentOptions.value?.data?.items)
-            || [],
-        }),
+        ]) => {
+          const products = formateProductOptions(productOptions.value?.data?.items) || [];
+          const productsByParent = formateProductOptions(parentProductOptions.value?.data?.items)
+            || [];
+          const recoByProduct = formateProductOptions(recoByProductOptions.value?.data?.items)
+            || [];
+          const recoByParent = formateProductOptions(recoByParentOptions.value?.data?.items)
+            || [];
+
+          let eligibleProductIds = [...checkedReco.eligibleProductIds];
+          let eligibleParentProductIds = [...checkedReco.eligibleParentProductIds];
+          const productIds = [];
+
+          const byProductIds = checkedReco.byProductIds.map((item) => {
+            const value = recoByProduct.filter((obj) => item.value.includes(obj.id));
+            return ({ ...item, value });
+          });
+          const byParentProductIds = checkedReco.byParentProductIds.map((item) => {
+            const value = recoByParent.filter((obj) => item.value.includes(obj.id));
+            return ({ ...item, value });
+          });
+          if (checkedReco.productIds.length) {
+            checkedReco.productIds.forEach((u) => {
+              const res = products.find((el) => el.id === u);
+              if (res) {
+                productIds.push(res);
+              } else {
+                productIds.push({ id: u, value: u });
+              }
+            });
+          }
+          if (eligibleProductIds.length) {
+            eligibleProductIds = products.filter((obj) => (
+              checkedReco.eligibleProductIds.includes(obj.id)
+            ));
+          }
+          if (eligibleParentProductIds.length) {
+            eligibleParentProductIds = productsByParent.filter((obj) => (
+              checkedReco.eligibleParentProductIds.includes(obj.id)
+            ));
+          }
+          setReco(JSON.parse(JSON.stringify({
+            ...checkedReco,
+            eligibleProductIds,
+            eligibleParentProductIds,
+            productIds,
+            byProductIds,
+            byParentProductIds,
+          })));
+          setCurReco(JSON.parse(JSON.stringify({
+            ...checkedReco,
+            eligibleProductIds,
+            eligibleParentProductIds,
+            productIds,
+            byProductIds,
+            byParentProductIds,
+          })));
+          setLoading(false);
+
+          setSelectOptions({
+            ...selectOptions,
+            stores:
+              structureSelectOptions(
+                {
+                  options: storeOptions.value?.data.items,
+                  optionValue: 'displayName',
+                },
+              ) || [],
+            products,
+            productsByParent,
+            recoByProduct,
+
+            recoByParent,
+
+          });
+        },
       );
     }).catch(() => setLoading(false));
   }, [update]);

@@ -129,7 +129,7 @@ const themeConfig = {
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
-            color: colors.buttonDisabled,
+            // color: colors.buttonDisabled,
           },
         },
       },
@@ -138,7 +138,7 @@ const themeConfig = {
       styleOverrides: {
         root: {
           '&.Mui-disabled': {
-            color: colors.buttonDisabled,
+            // color: colors.buttonDisabled,
           },
           '&.MuiTab-root': {
             flexDirection: 'row',
@@ -222,7 +222,7 @@ const themeConfig = {
     secondary: { main: colors.textPrimaryGray, dark: colors.textPrimaryDark },
     text: {
       primary: colors.textPrimaryDark,
-      secondary: colors.mainBackground,
+      // secondary: colors.mainBackground,
     },
     error: {
       main: colors.errorText,
