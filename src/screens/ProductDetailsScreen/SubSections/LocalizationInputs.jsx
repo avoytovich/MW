@@ -100,7 +100,7 @@ const DefaultLanguage = ({
     >
       <SelectCustom
         label='defaultLanguage'
-        value={checkValue(curData.fallbackLocale, curData.fallbackLocale?.state)}
+        value={checkValue(curData.fallbackLocale)}
         selectOptions={selectOptions}
         onChangeSelect={(e) => onChange(e.target.value)}
       />
