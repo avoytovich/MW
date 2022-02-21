@@ -122,7 +122,7 @@ const ProductDetailsScreen = () => {
 
     const frontToBackObj = frontToBack({
       ...description_,
-      ...i18nFields_[description_?.fallbackLocale || 'en-US'],
+      fallbackLocale: checkValue(i18nFields_[description_?.fallbackLocale]) || 'en-US',
       i18nFields: i18nFields_,
     });
 
@@ -153,7 +153,7 @@ const ProductDetailsScreen = () => {
     if (!frontToBackObj?.customerId) {
       frontToBackObj.customerId = currentProductData?.customerId?.state
         ? currentProductData?.customerId?.value
-        : currentProductData?.customerId;
+        : (currentProductData?.customerId || nxState?.selectedCustomer?.id);
     }
 
     if (!Object.keys(dataToSave?.localizedMarketingName)?.length) {
@@ -212,8 +212,8 @@ const ProductDetailsScreen = () => {
 
     if (!dataToSave?.customerId) {
       dataToSave.customerId = currentProductData?.customerId?.state
-        ? currentProductData?.customerId?.value
-        : currentProductData?.customerId;
+        ? (currentProductData?.customerId?.value || currentProductData?.customerId?.parentValue)
+        : (currentProductData?.customerId || nxState?.selectedCustomer?.id);
     }
 
     if (productData?.parentId || parentId) {
@@ -238,6 +238,7 @@ const ProductDetailsScreen = () => {
                 ...localizationChangesToSave,
                 description: `description of product ${checkValue(currentProductData?.genericName)}`,
                 catalogId: data.catalogId,
+                customerId: data?.customerId || nxState?.selectedCustomer?.id,
               },
             )
             .then(() => {

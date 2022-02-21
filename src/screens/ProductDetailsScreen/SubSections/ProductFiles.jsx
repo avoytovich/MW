@@ -54,7 +54,7 @@ const ProductFiles = ({ currentProductData, setProductData, parentId }) => {
   }, [currentProductData.relatedContents]);
 
   useEffect(() => {
-    let toSetData = currentProductData?.resources || [];
+    let toSetData = checkValue(currentProductData?.resources) || [];
 
     if (!toSetData.length) {
       toSetData = [{ ...defaultFiles }];
@@ -80,7 +80,7 @@ const ProductFiles = ({ currentProductData, setProductData, parentId }) => {
         <AssetsResource
           label={localization.t('labels.resources')}
           labelOptions={resourceLabels}
-          resources={[...checkValue(resources)]}
+          resources={[...resources]}
           setResources={updateResources}
           currentStoreData={currentProductData}
           setCurrentStoreData={setProductData}

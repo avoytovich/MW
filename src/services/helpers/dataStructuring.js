@@ -107,7 +107,7 @@ const defaultIndependentFields = [
   'nextGenerationOf',
   'id',
   'parentId',
-  'resources',
+  // 'resources',
   // 'externalContext',
   // 'productFamily',
   // 'priceFunction',
