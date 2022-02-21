@@ -38,10 +38,9 @@ const TabTable = ({ tabObject }) => {
   const handleDelete = (id) => {
     if (deleteFunc) {
       deleteFunc(id).then(() => {
-        const localizedLabel = `labels.${label}`;
         setMakeUpdate((v) => v + 1);
         toast(
-          `${localization.t(localizedLabel)} ${id} ${localization.t(
+          `${localization.t('general.translation')} ${id} ${localization.t(
             'general.hasBeenSuccessfullyDeleted',
           )}`,
         );
