@@ -29,7 +29,6 @@ const DiscountDetailsScreen = () => {
     selectOptions,
     setUpdate,
   } = useDiscountDetails(id, nxState);
-
   const beforeSend = () => {
     const res = { ...curDiscount };
     res.thresholds = fromArrayToObject(curDiscount.thresholds, 'key');
@@ -48,6 +47,18 @@ const DiscountDetailsScreen = () => {
     }
     if (curDiscount.endDate) {
       res.endDate = moment.utc(curDiscount.endDate).utc().format();
+    }
+    if (res.productIds.length) {
+      res.productIds = [...curDiscount.productIds]
+        .map((item) => item.id);
+    }
+    if (res.parentProductIds.length) {
+      res.parentProductIds = [...curDiscount.parentProductIds]
+        .map((item) => item.id);
+    }
+    if (res.publisherRefIds.length) {
+      res.publisherRefIds = [...curDiscount.publisherRefIds]
+        .map((item) => item.id);
     }
     return removeEmptyPropsInObject(res);
   };

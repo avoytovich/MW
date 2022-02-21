@@ -9,7 +9,7 @@ import {
   Switch,
 } from '@mui/material';
 import localization from '../../../localization';
-import { InputCustom, NumberInput, SelectWithChip } from '../../../components/Inputs';
+import { InputCustom, NumberInput, AutocompleteWithChips } from '../../../components/Inputs';
 
 const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
   <Grid container>
@@ -50,44 +50,25 @@ const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
         </Box>
       </Box>
       <Box p={2}>
-        <SelectWithChip
-          isRequired
+        <AutocompleteWithChips
           label='products'
-          value={curFulfillment.nexwayProductId || []}
+          arrayValue={curFulfillment.nexwayProductId}
           selectOptions={selectOptions.products}
-          onChangeSelect={(e) => setCurFulfillment({
+          onChange={(newValue) => setCurFulfillment({
             ...curFulfillment,
-            nexwayProductId: e.target.value,
+            nexwayProductId: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curFulfillment.nexwayProductId].filter(
-              (val) => val !== chip,
-            );
-            setCurFulfillment({
-              ...curFulfillment,
-              nexwayProductId: newValue,
-            });
-          }}
         />
       </Box>
       <Box p={2}>
-        <SelectWithChip
+        <AutocompleteWithChips
           label='productByReference'
-          value={curFulfillment.publisherProductId || []}
+          arrayValue={curFulfillment.publisherProductId}
           selectOptions={selectOptions.productByReference}
-          onChangeSelect={(e) => setCurFulfillment({
+          onChange={(newValue) => setCurFulfillment({
             ...curFulfillment,
-            publisherProductId: e.target.value,
+            publisherProductId: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curFulfillment.publisherProductId].filter(
-              (val) => val !== chip,
-            );
-            setCurFulfillment({
-              ...curFulfillment,
-              publisherProductId: newValue,
-            });
-          }}
         />
       </Box>
       <Box p={2}>

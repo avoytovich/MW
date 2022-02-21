@@ -129,6 +129,27 @@ const productRequiredFields = (product) => {
   }
   return { ...defaultProduct, ...product, resources: resourcesKeys || [] };
 };
+const structureProdAutocompleteSelectOptions = ({
+  options, optionValue, otherOptions, optionId,
+}) => {
+  const res = [];
+  if (options) {
+    options.forEach((option) => {
+      const id = optionId ? option[optionId] : option.id || option[optionValue];
+      if (!res.find((u) => u.id === id)) {
+        const newObj = { id, value: `${option[optionValue]} (${option.id})` || id };
+        if (otherOptions) {
+          otherOptions.forEach((element) => {
+            newObj[element] = option[element];
+          });
+        }
+        res.push(newObj);
+      }
+    });
+  }
+  return res;
+};
+
 
 const structureSelectOptions = ({
   options, optionValue, otherOptions, optionId,
@@ -138,7 +159,7 @@ const structureSelectOptions = ({
     options.forEach((option) => {
       const id = optionId ? option[optionId] : option.id || option[optionValue];
       if (!res.find((u) => u.id === id)) {
-        const newObj = { id, value: option[optionValue] };
+        const newObj = { id, value: option[optionValue] || id };
         if (otherOptions) {
           otherOptions.forEach((element) => {
             newObj[element] = option[element];
@@ -161,7 +182,7 @@ const groupBy = (objectArray, property) => objectArray.reduce((acc, obj) => {
 }, {});
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName
-    ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}${item.subscriptionTemplate || ''})`
+    ? `${item.genericName} (${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}${item.subscriptionTemplate || ''}) (${item?.id})`
     : item?.id;
 
   return { id: item.id, value };
@@ -442,4 +463,5 @@ export {
   createInheritableValue,
   defaultManualFulfillment,
   defaultProductLocales,
+  structureProdAutocompleteSelectOptions,
 };

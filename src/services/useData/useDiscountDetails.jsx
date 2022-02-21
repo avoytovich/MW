@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { discountRequiredFields } from '../../screens/DiscountDetailsScreen/utils';
 import {
-  structureSelectOptions,
+  structureSelectOptions, structureProdAutocompleteSelectOptions,
 } from '../helpers/dataStructuring';
 import api from '../../api';
 
@@ -39,12 +39,9 @@ const useDiscountDetails = (id, nxState) => {
     discountRequest.then(({ data }) => {
       const checkedData = discountRequiredFields(data);
       setAmountType(data.discountRate ? 'byPercentage' : 'byCurrency');
-      setDiscount(JSON.parse(JSON.stringify(checkedData)));
-      setCurDiscount(JSON.parse(JSON.stringify(checkedData)));
       // const parentIds = data.parentProductIds?.length
       //   ? data.parentProductIds.join('&')
       //   : null;
-      setLoading(false);
 
       const { customerId } = data;
       Promise.allSettled([
@@ -57,13 +54,13 @@ const useDiscountDetails = (id, nxState) => {
         ([
           endUsers,
           stores,
-          discountProducts,
-          parentProducts,
+          discountProductsData,
+          parentProductsData,
           endUsersGroups,
         ]) => {
           const refDiscountProductsObjs = [];
 
-          discountProducts.value?.data.items.forEach((product) => {
+          discountProductsData.value?.data.items.forEach((product) => {
             if (
               product.publisherRefId
               && !refDiscountProductsObjs.filter(
@@ -72,34 +69,56 @@ const useDiscountDetails = (id, nxState) => {
             ) {
               refDiscountProductsObjs.push({
                 id: product.publisherRefId,
-                value: product.publisherRefId,
+                value: `${product.publisherRefId} (${product.id})`,
               });
             }
           });
+          const discountProducts = structureProdAutocompleteSelectOptions(
+            {
+              options: discountProductsData.value?.data.items,
+              optionValue: 'genericName',
+            },
+          ) || [];
+          const parentProducts = structureProdAutocompleteSelectOptions(
+            {
+              options: parentProductsData.value?.data.items,
+              optionValue: 'genericName',
+            },
+          ) || [];
+          const refProducts = refDiscountProductsObjs || [];
+          const productIds = discountProducts
+            .filter((obj) => checkedData.productIds.includes(obj?.id));
+
+          const parentProductIds = parentProducts
+            .filter((obj) => checkedData.parentProductIds.includes(obj?.id));
+          const publisherRefIds = refProducts
+            .filter((obj) => checkedData.publisherRefIds.includes(obj?.id));
+
+          setDiscount(JSON.parse(JSON.stringify({
+            ...checkedData,
+            productIds,
+            parentProductIds,
+            publisherRefIds,
+          })));
+          setCurDiscount(JSON.parse(JSON.stringify({
+            ...checkedData,
+            productIds,
+            parentProductIds,
+            publisherRefIds,
+          })));
           setSelectOptions({
             ...selectOptions,
             endUsers:
               structureSelectOptions({ options: endUsers.value.data?.items, optionValue: 'fullName' }) || [],
-            refProducts: refDiscountProductsObjs || [],
+            refProducts,
             endUserGroups:
               structureSelectOptions({ options: endUsersGroups.value.data?.items, optionValue: 'name' }) || [],
             stores:
               structureSelectOptions({ options: stores.value?.data.items, optionValue: 'name' }) || [],
-            parentProducts:
-              structureSelectOptions(
-                {
-                  options: parentProducts.value?.data.items,
-                  optionValue: 'genericName',
-                },
-              ) || [],
-            discountProducts:
-              structureSelectOptions(
-                {
-                  options: discountProducts.value?.data.items,
-                  optionValue: 'genericName',
-                },
-              ) || [],
+            parentProducts,
+            discountProducts,
           });
+          setLoading(false);
         },
       );
     })

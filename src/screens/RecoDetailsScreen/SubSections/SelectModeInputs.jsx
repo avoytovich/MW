@@ -10,7 +10,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { filterOptions } from '../utils';
 import localization from '../../../localization';
 
-import { SelectCustom, SelectWithChip } from '../../../components/Inputs';
+import { AutocompleteCustom, AutocompleteWithChips } from '../../../components/Inputs';
 
 const SelectModeInputs = ({
   curValue,
@@ -44,8 +44,7 @@ const SelectModeInputs = ({
       curValue[curValue.length - 1].keyValue !== ''
       && curValue[curValue.length - 1].value.length > 0
     ) {
-      const key = `${
-        Number(curValue[curValue.length - 1].key.split('_')[0]) + 1
+      const key = `${Number(curValue[curValue.length - 1].key.split('_')[0]) + 1
       }_${curKey}`;
 
       setCurReco({
@@ -60,44 +59,33 @@ const SelectModeInputs = ({
         <Fragment key={item.key}>
           <Grid item xs={4}>
             <Box py={2} pl={2}>
-              <SelectCustom
+              <AutocompleteCustom
+                optionLabelKey='value'
                 label={labels[0]}
-                value={item.keyValue}
+                onSelect={(val) => {
+                  const newValue = [...curValue];
+                  newValue[index].keyValue = val;
+                  setCurReco({ ...curReco, [curKey]: newValue });
+                }}
                 selectOptions={filterOptions(
                   selectOptions,
                   curValue.map((item_) => item_.keyValue),
                   item.keyValue,
                 )}
-                onChangeSelect={(e) => {
-                  const newValue = [...curValue];
-                  newValue[index].keyValue = e.target.value;
-                  setCurReco({ ...curReco, [curKey]: newValue });
-                }}
+                curValue={item.keyValue}
               />
             </Box>
           </Grid>
           <Grid item xs={6}>
             <Box p={2}>
-              <SelectWithChip
+              <AutocompleteWithChips
                 label={labels[1]}
-                value={item.value}
+                arrayValue={item.value}
                 selectOptions={selectOptions}
-                onChangeSelect={(e) => {
+                onChange={(val) => {
                   const newValue = [...curValue];
-                  newValue[index].value = e.target.value;
+                  newValue[index].value = val;
                   setCurReco({ ...curReco, [curKey]: newValue });
-                }}
-                onClickDelIcon={(chip) => {
-                  const newValue = [...curValue];
-
-                  const newArray = [...item.value].filter(
-                    (val) => val !== chip,
-                  );
-                  newValue[index].value = newArray;
-                  setCurReco({
-                    ...curReco,
-                    [curKey]: newValue,
-                  });
                 }}
               />
             </Box>

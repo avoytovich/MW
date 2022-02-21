@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import ManualFulfillmentDetailView from './ManualFulfillmentDetailView';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
-import { structureSelectOptions, defaultManualFulfillment } from '../../services/helpers/dataStructuring';
+import { structureProdAutocompleteSelectOptions, defaultManualFulfillment } from '../../services/helpers/dataStructuring';
 import parentPaths from '../../services/paths';
 
 import localization from '../../localization';
@@ -23,6 +23,17 @@ const ManualFulfillmentDetailsScreen = () => {
   const [selectOptions, setSelectOptions] = useState({ products: null, productByReference: null });
   const [hasChanges, setHasChanges] = useState(false);
 
+  const beforeSend = () => {
+    const objToSend = { ...curFulfillment };
+    if (objToSend.publisherProductId.length) {
+      objToSend.publisherProductId = [...objToSend.publisherProductId].map((item) => item.id);
+    }
+    if (objToSend.nexwayProductId.length) {
+      objToSend.nexwayProductId = [...objToSend.nexwayProductId].map((item) => item.id);
+    }
+    return objToSend;
+  };
+
   useEffect(() => {
     let isCancelled = false;
     setLoading(true);
@@ -39,13 +50,27 @@ const ManualFulfillmentDetailsScreen = () => {
     fulfillmentData
       .then(({ data }) => {
         if (!isCancelled) {
-          setFulfillment({ ...data });
-          setCurFulfillment(JSON.parse(JSON.stringify(data)));
           api.getProducts({ filters: `&customerId=${data.publisherId}&status=ENABLED` }).then((res) => {
+            const products = structureProdAutocompleteSelectOptions({ options: res?.data?.items, optionValue: 'genericName' }) || [];
+            const productByReference = structureProdAutocompleteSelectOptions({ options: res?.data.items, optionValue: 'publisherRefId', optionId: 'publisherRefId' }) || [];
+            const nexwayProductId = products.filter((obj) => data.nexwayProductId.includes(obj.id));
+            if (nexwayProductId.length < data.nexwayProductId.length) {
+              data.nexwayProductId.forEach((u) => {
+                if (!nexwayProductId.find((prodId) => prodId.id === u)) {
+                  nexwayProductId.push({ id: u, value: u });
+                }
+              });
+            }
+            const publisherProductId = productByReference
+              .filter((obj) => data.publisherProductId.includes(obj.id));
+            setFulfillment({ ...data, publisherProductId, nexwayProductId });
+            setCurFulfillment(JSON.parse(JSON.stringify(
+              { ...data, publisherProductId, nexwayProductId },
+            )));
             setSelectOptions({
               ...selectOptions,
-              products: structureSelectOptions({ options: res?.data?.items, optionValue: 'genericName' }) || [],
-              productByReference: structureSelectOptions({ options: res?.data.items, optionValue: 'publisherRefId', optionId: 'publisherRefId' }) || [],
+              products,
+              productByReference,
             });
             setLoading(false);
           });
@@ -80,7 +105,7 @@ const ManualFulfillmentDetailsScreen = () => {
       curData={curFulfillment}
       addFunc={api.addManualFulfillment}
       updateFunc={api.updateManualFulfillmentById}
-      beforeSend={(data) => data}
+      beforeSend={beforeSend}
       setUpdate={setUpdate}
       tabs={{
         curTab,

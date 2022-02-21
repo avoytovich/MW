@@ -8,6 +8,8 @@ import SwitchInput from './SwitchInput';
 import PlusMinusInput from './PlusMinusInput';
 import SelectWithChipImages from './SelectWithChipImages';
 import DroppableSelectWithChip from './DroppableSelectWithChip';
+import AutocompleteCustom from './AutocompleteCustom';
+import AutocompleteWithChips from './AutocompleteWithChips';
 
 export {
   SelectWithChip,
@@ -20,4 +22,6 @@ export {
   PlusMinusInput,
   SelectWithChipImages,
   DroppableSelectWithChip,
+  AutocompleteCustom,
+  AutocompleteWithChips,
 };

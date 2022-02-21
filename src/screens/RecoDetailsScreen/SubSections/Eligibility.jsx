@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Box } from '@mui/material';
-import { SelectWithChip } from '../../../components/Inputs';
+import { SelectWithChip, AutocompleteWithChips } from '../../../components/Inputs';
 
 import CustomCard from '../../../components/utils/CustomCard';
 
@@ -30,44 +30,26 @@ const Eligibility = ({ curReco, setCurReco, selectOptions }) => (
         />
       </Box>
       <Box width='100%' my={2} mt={4}>
-        <SelectWithChip
+        <AutocompleteWithChips
           label='byProduct'
-          value={curReco.eligibleProductIds}
+          arrayValue={curReco.eligibleProductIds}
           selectOptions={selectOptions.products}
-          onChangeSelect={(e) => setCurReco({
+          onChange={(newValue) => setCurReco({
             ...curReco,
-            eligibleProductIds: e.target.value,
+            eligibleProductIds: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curReco.eligibleProductIds].filter(
-              (val) => val !== chip,
-            );
-            setCurReco({
-              ...curReco,
-              eligibleProductIds: newValue,
-            });
-          }}
         />
       </Box>
 
       <Box width='100%' my={2} mt={4}>
-        <SelectWithChip
+        <AutocompleteWithChips
           label='byParentProducts'
-          value={curReco.eligibleParentProductIds}
+          arrayValue={curReco.eligibleParentProductIds}
           selectOptions={selectOptions.productsByParent}
-          onChangeSelect={(e) => setCurReco({
+          onChange={(newValue) => setCurReco({
             ...curReco,
-            eligibleParentProductIds: e.target.value,
+            eligibleParentProductIds: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curReco.eligibleParentProductIds].filter(
-              (val) => val !== chip,
-            );
-            setCurReco({
-              ...curReco,
-              eligibleParentProductIds: newValue,
-            });
-          }}
         />
       </Box>
     </Box>

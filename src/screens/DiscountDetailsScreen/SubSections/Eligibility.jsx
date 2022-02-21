@@ -15,7 +15,7 @@ import { email } from '../../../services/helpers/inputValidators';
 
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
-import { SelectWithChip, SelectWithDeleteIcon } from '../../../components/Inputs';
+import { SelectWithChip, SelectWithDeleteIcon, AutocompleteWithChips } from '../../../components/Inputs';
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
@@ -255,63 +255,36 @@ const Eligibility = ({
           />
         </Box>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
             label='products'
-            value={curDiscount.productIds}
+            arrayValue={curDiscount.productIds}
             selectOptions={selectOptions.discountProducts}
-            onChangeSelect={(e) => setCurDiscount({
+            onChange={(newValue) => setCurDiscount({
               ...curDiscount,
-              productIds: e.target.value,
+              productIds: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.productIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                productIds: newValue,
-              });
-            }}
           />
         </Box>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
             label='productsByParent'
-            value={curDiscount.parentProductIds}
+            arrayValue={curDiscount.parentProductIds}
             selectOptions={selectOptions.parentProducts}
-            onChangeSelect={(e) => setCurDiscount({
+            onChange={(newValue) => setCurDiscount({
               ...curDiscount,
-              parentProductIds: e.target.value,
+              parentProductIds: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.parentProductIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                parentProductIds: newValue,
-              });
-            }}
           />
         </Box>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
             label='productsByReference'
-            value={curDiscount.publisherRefIds}
+            arrayValue={curDiscount.publisherRefIds}
             selectOptions={selectOptions.refProducts}
-            onChangeSelect={(e) => setCurDiscount({
+            onChange={(newValue) => setCurDiscount({
               ...curDiscount,
-              publisherRefIds: e.target.value,
+              publisherRefIds: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.publisherRefIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                publisherRefIds: newValue,
-              });
-            }}
           />
         </Box>
       </Grid>

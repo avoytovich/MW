@@ -8,7 +8,7 @@ import {
   FormControlLabel,
   Radio,
 } from '@mui/material';
-import { SelectWithChip } from '../../../components/Inputs';
+import { AutocompleteWithChips } from '../../../components/Inputs';
 import SelectModeInputs from './SelectModeInputs';
 import CustomCard from '../../../components/utils/CustomCard';
 import localization from '../../../localization';
@@ -44,23 +44,14 @@ const Recommendations = ({ curReco, selectOptions, setCurReco }) => (
     </Box>
     {curReco.function === 'predefinedIdsRecoRule' ? (
       <Box py={2} mx={2} className='outlined-products'>
-        <SelectWithChip
+        <AutocompleteWithChips
           label='product'
-          value={curReco.productIds}
+          arrayValue={curReco.productIds}
           selectOptions={selectOptions.products}
-          onChangeSelect={(e) => setCurReco({
+          onChange={(newValue) => setCurReco({
             ...curReco,
-            productIds: e.target.value,
+            productIds: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curReco.productIds].filter(
-              (val) => val !== chip,
-            );
-            setCurReco({
-              ...curReco,
-              productIds: newValue,
-            });
-          }}
         />
       </Box>
     ) : (
