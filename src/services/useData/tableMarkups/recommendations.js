@@ -17,15 +17,15 @@ const defaultShow = {
 
 const markUp = {
   headers: [
-    { value: localization.t('labels.creationDate'), id: 'creationDate' },
-    { value: localization.t('labels.lastUpdate'), id: 'lastUpdate' },
+    { value: localization.t('labels.creationDate'), id: 'creationDate', sortParam: 'creationDate' },
+    { value: localization.t('labels.lastUpdate'), id: 'lastUpdate', sortParam: 'lastUpdate' },
     { value: localization.t('labels.customer'), id: 'customer' },
-    { value: localization.t('labels.ruleName'), id: 'ruleName' },
-    { value: localization.t('labels.status'), id: 'status' },
-    { value: localization.t('labels.type'), id: 'type' },
+    { value: localization.t('labels.ruleName'), id: 'ruleName', sortParam: 'name' },
+    { value: localization.t('labels.status'), id: 'status', sortParam: 'status' },
+    { value: localization.t('labels.type'), id: 'type', sortParam: 'type' },
     { value: localization.t('labels.levels'), id: 'levels' },
     { value: localization.t('labels.sources'), id: 'sources' },
-    { value: localization.t('labels.weight'), id: 'weight' },
+    { value: localization.t('labels.weight'), id: 'weight', sortParam: 'weight' },
   ],
 };
 

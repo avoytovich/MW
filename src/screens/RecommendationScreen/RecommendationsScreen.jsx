@@ -15,6 +15,11 @@ import {
 import { useTableData } from '../../services/useData';
 import localization from '../../localization';
 import api from '../../api';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 
 const RecommendationsScreen = () => {
   const scope = 'recommendations';
@@ -22,11 +27,20 @@ const RecommendationsScreen = () => {
   const [isLoading, setLoading] = useState(false);
   const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.recommendations),
+  );
+
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getRecommendations({
-      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
     return generateData(res.data);
+  };
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.recommendations, params);
   };
 
   const campaigns = useTableData(
@@ -34,6 +48,7 @@ const RecommendationsScreen = () => {
     makeUpdate,
     scope,
     requests,
+    sortParams,
   );
 
   const handleDeleteRecommendation = (id) => api.deleteRecommendationById(id).then(() => {
@@ -66,10 +81,12 @@ const RecommendationsScreen = () => {
       <TableComponent
         allCheckedItems={allCheckedItems}
         scope={scope}
+        sortParams={sortParams}
         handleDeleteItem={handleDeleteRecommendation}
         defaultShowColumn={defaultShow}
         tableData={campaigns}
         isLoading={isLoading}
+        setSortParams={handleSetSortParams}
       />
     </>
   );
