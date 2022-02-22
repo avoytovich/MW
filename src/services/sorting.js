@@ -33,6 +33,7 @@ export const sortKeys = {
   audits: 'auditsSortParams',
   onboarding: 'onboarding',
   crudHelper: 'crudHelper',
+  recommendations: 'recommendationsSortParams',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));

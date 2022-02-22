@@ -175,10 +175,12 @@ const getAllApi = {
     });
   },
   getRecommendations({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
-    let url = `/product-recommendations?format=short&sort=name,asc&size=${size}&page=${page}`;
-
+    let url = `/product-recommendations?format=short&size=${size}&page=${page}`;
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
     if (filters) {
       url += filters;
     }
