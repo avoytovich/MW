@@ -41,6 +41,7 @@ const useTableData = (
 
       if (customerScope) {
         filtersUrl += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
+        searchRequest += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
       }
 
       const resolveCurrentPage = () => {
@@ -79,6 +80,9 @@ const useTableData = (
                 localStorage.setItem('filters', JSON.stringify(filtersObj));
                 return `&${key}=*${val}*`;
               })();
+              if (customerScope) {
+                searchRequest += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
+              }
               return requests(
                 reduxRowPerPage,
                 reduxCurrentPage - 1,
