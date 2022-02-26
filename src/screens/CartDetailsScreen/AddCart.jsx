@@ -21,7 +21,7 @@ const AddCart = () => {
   const [isLoading, setLoading] = useState(true);
   const [storeOpt, setStoreOpt] = useState(null);
   const [prefillOpt, setPrefillOpt] = useState(null);
-  const [selectedEndUser, setSelectedEndUser] = useState(null);
+  const [selectedEndUser, setSelectedEndUser] = useState({});
   const [selectedStore, setSelectedStore] = useState(null);
   const [productOpt, setProductOpt] = useState(null);
   const [countriesOpt, setCountriesOpt] = useState(null);
