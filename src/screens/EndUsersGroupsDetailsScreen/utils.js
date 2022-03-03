@@ -12,7 +12,7 @@ const localizedContentDefObject = {
 };
 const defInputs = ['localizedShortDesc', 'localizedLongDesc', 'localizedLogo', 'bannerImageUrl', 'bannerLinkUrl'];
 const tinyInputs = ['localizedShortDesc', 'localizedLongDesc'];
-const generateLocals = (longDesc, shortDesc, locLogo, locBanner) => {
+const generateLocals = (longDesc = {}, shortDesc = {}, locLogo = {}, locBanner = {}) => {
   const res = {};
   Object.keys(shortDesc).forEach((shortKey) => {
     res[shortKey] = { ...localizedContentDefObject, localizedShortDesc: shortDesc[shortKey] };

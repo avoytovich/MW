@@ -57,6 +57,7 @@ const EndUsersGroupsDetailsScreen = () => {
         setIsLoading(false);
       });
   }, [upd]);
+
   return (
     <DetailPageWrapper
       nxState={nxState}
