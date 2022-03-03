@@ -8,6 +8,7 @@ import {
   InputLabel,
   CircularProgress,
   InputAdornment,
+  FormHelperText,
 } from '@mui/material';
 import localization from '../../localization';
 import './Inputs.scss';
@@ -19,8 +20,10 @@ const SelectWithDeleteIcon = ({
   selectOptions,
   onChangeSelect,
   onClickDelIcon,
+  hasError = false,
+  helperText = '',
 }) => (
-  <FormControl fullWidth>
+  <FormControl fullWidth error={hasError}>
     <InputLabel htmlFor={label}>{localization.t(`labels.${label}`)}</InputLabel>
     <Select
       value={selectOptions && value ? value : ''}
@@ -66,6 +69,7 @@ const SelectWithDeleteIcon = ({
         <MenuItem disabled>{localization.t('general.noAvailableOptions')}</MenuItem>
       )}
     </Select>
+    <FormHelperText>{helperText}</FormHelperText>
   </FormControl>
 );
 
@@ -76,6 +80,8 @@ SelectWithDeleteIcon.propTypes = {
   selectOptions: PropTypes.array,
   onChangeSelect: PropTypes.func,
   onClickDelIcon: PropTypes.func,
+  hasError: PropTypes.bool,
+  helperText: PropTypes.string,
 };
 
 export default SelectWithDeleteIcon;

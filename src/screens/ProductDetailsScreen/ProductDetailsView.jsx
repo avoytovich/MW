@@ -31,8 +31,11 @@ const ProductDetailsView = ({
   setDisabledWithMandLocal,
 }) => {
   const checkSaveDisable = () => {
-    let disableSave = false;
-    const { relatedContents, resources } = curProductData;
+    const {
+      relatedContents, resources, lifeTime, subscriptionTemplate,
+    } = curProductData;
+
+    let disableSave = !!(lifeTime === 'PERMANENT' && subscriptionTemplate);
 
     const rcChecked = checkValue(relatedContents);
     const resourceChecked = checkValue(resources);
