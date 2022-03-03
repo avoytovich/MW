@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -22,6 +22,8 @@ const Subscription = ({
   parentId,
 }) => {
   const [searchVal, setSearchVal] = useState('');
+  const [errorSubscription, setErrorSubscription] = useState(false);
+  const [errorTextSubscription, setErrorTextSubscription] = useState('');
 
   const changeProducts = (newProduct) => {
     setProductData({ ...currentProductData, nextGenerationOf: [newProduct] });
@@ -39,6 +41,17 @@ const Subscription = ({
 
   const filteredArr = toFilter(selectOptions.renewingProducts)
     .filter((i) => i.id !== currentProductData?.id);
+
+  const { lifeTime, subscriptionTemplate } = currentProductData;
+
+  useEffect(() => {
+    if (lifeTime === 'PERMANENT' && subscriptionTemplate) {
+      setErrorSubscription(true);
+      setErrorTextSubscription(localization.t('labels.errorProductPerAndSub'));
+    } else {
+      setErrorSubscription(false);
+    }
+  }, [lifeTime, subscriptionTemplate]);
 
   return (
     <>
@@ -59,6 +72,8 @@ const Subscription = ({
                 setProductData({ ...currentProductData, subscriptionTemplate: e.target.value });
               }}
               onClickDelIcon={() => setProductData({ ...currentProductData, subscriptionTemplate: '' })}
+              hasError={errorSubscription}
+              helperText={errorTextSubscription}
             />
           </InheritanceField>
         </Box>

@@ -574,6 +574,7 @@ const labels = {
   downloadUrl: 'Download URL',
   errorMessage: 'Error Message',
   errorStatusCodesOnePerLine: 'Error status codes (one per line)',
+  errorProductPerAndSub: 'A product cannot have permanent lifetime while being linked to a subscription model',
   contentType: 'Content Type',
   aAuth2_0Configuration: 'OAuth 2.0 configuration',
   tokenUrl: 'Token URL',

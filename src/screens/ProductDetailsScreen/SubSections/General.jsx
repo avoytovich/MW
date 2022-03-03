@@ -53,6 +53,8 @@ const General = ({
   const [countrySelection, setCountrySelection] = useState('blocked');
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
   const [updSelectedCountries, setUpdSelectedCountries] = useState(0);
+  const [errorLifetime, setErrorLifetime] = useState(false);
+  const [errorTextLifetime, setErrorTextLifetime] = useState('');
 
   const defaultBlacklisted = currentProductData?.blackListedCountries || [];
   const [selectedCountries, setSelectedCountries] = useState(defaultBlacklisted);
@@ -63,6 +65,17 @@ const General = ({
   subProductsList.forEach((x) => { counts[x] = (counts[x] || 0) + 1; });
 
   const countriesOptions = getCountriesOptions();
+
+  const { lifeTime: lifetime, subscriptionTemplate } = currentProductData;
+
+  useEffect(() => {
+    if (lifetime === 'PERMANENT' && subscriptionTemplate) {
+      setErrorLifetime(true);
+      setErrorTextLifetime(localization.t('labels.errorProductPerAndSub'));
+    } else {
+      setErrorLifetime(false);
+    }
+  }, [lifetime, subscriptionTemplate]);
 
   useEffect(() => {
     let LifeTimeNumber = false;
@@ -337,6 +350,8 @@ const General = ({
                     setShowLifeTimeNumber(e.target.value === 'MONTH' || e.target.value === 'YEAR' || e.target.value === 'DAY');
                     setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: e.target.value });
                   }}
+                  hasError={errorLifetime}
+                  helperText={errorTextLifetime}
                 />
 
                 {showLifeTimeNumber && (

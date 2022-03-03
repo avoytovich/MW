@@ -22,6 +22,8 @@ const SelectCustom = ({
   isDisabled,
   name,
   withDots,
+  hasError = false,
+  helperText = '',
 }) => {
   const noRepeatingOptions = selectOptions
     .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
@@ -71,6 +73,8 @@ const SelectCustom = ({
         }}
         label={localization.t(`labels.${label}`)}
         onChange={onChangeSelect}
+        error={hasError}
+        helperText={helperText}
       >
         {noRepeatingOptions?.length ? (
           noRepeatingOptions
@@ -116,6 +120,8 @@ SelectCustom.propTypes = {
   isDisabled: PropTypes.bool,
   name: PropTypes.string,
   withDots: PropTypes.bool,
+  hasError: PropTypes.bool,
+  helperText: PropTypes.string,
 };
 
 export default SelectCustom;
