@@ -1,5 +1,4 @@
 /* eslint-disable consistent-return */
-import * as R from 'ramda';
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,11 +18,10 @@ import {
   productRequiredFields,
   backToFront,
   frontToBack,
-  localizedValues,
   checkValue,
   defaultProductLocales,
 } from '../../services/helpers/dataStructuring';
-import { handleGetOptions, handleGetProductDetails } from './utils';
+import { handleGetOptions, handleGetProductDetails, saveLocalizationDetails } from './utils';
 import { setTempProductDescription, setTempProductLocales } from '../../redux/actions/TempData';
 
 import localization from '../../localization';
@@ -64,6 +62,8 @@ const ProductDetailsScreen = () => {
   const [productVariations, setSubProductVariations] = useState({});
   const [checkOutStores, setCheckOutStores] = useState([]);
   const [storeLanguages, setStoreLanguages] = useState([]);
+  const [codeMode, setCodeMode] = useState(false);
+  const [jsonIsValid, setJsonIsValid] = useState(true);
   const [selectOptions, setSelectOptions] = useState({ ...defaultSelectOptions });
 
   const parentId = history?.location?.state?.parentId;
@@ -105,64 +105,6 @@ const ProductDetailsScreen = () => {
     setCheckOutStores([...res]);
   };
 
-  const saveLocalizatoinDetails = () => {
-    // eslint-disable-next-line no-underscore-dangle
-    let i18nFields_ = {};
-    const { tempData } = store.getState();
-    const {
-      description: description_ = {},
-      i18nFields: i18nTemp,
-    } = tempData;
-
-    if (!Object.keys(i18nTemp).length) {
-      i18nFields_ = { ...description_?.i18nFields };
-    } else {
-      i18nFields_ = i18nTemp;
-    }
-
-    const frontToBackObj = frontToBack({
-      ...description_,
-      fallbackLocale: checkValue(i18nFields_[description_?.fallbackLocale]) || 'en-US',
-      i18nFields: i18nFields_,
-    });
-
-    const i18nFields = Object.entries(frontToBackObj.i18nFields).reduce(
-      (accumulator, [key, value]) => ({ ...accumulator, [key]: frontToBack(value || {}) }),
-      {},
-    );
-
-    const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
-      const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
-        if (i18nFields[key][cur]) {
-          return { ...ac, [key]: value[cur] };
-        }
-        return ac;
-      }, {});
-      return {
-        ...acc,
-        [cur]: localizedValue || {},
-      };
-    }, {});
-
-    if (frontToBackObj.i18nFields) {
-      delete frontToBackObj.i18nFields;
-    }
-
-    const dataToSave = R.mergeRight(frontToBackObj, localizedValuesToSave);
-
-    if (!frontToBackObj?.customerId) {
-      frontToBackObj.customerId = currentProductData?.customerId?.state
-        ? currentProductData?.customerId?.value
-        : (currentProductData?.customerId || nxState?.selectedCustomer?.id);
-    }
-
-    if (!Object.keys(dataToSave?.localizedMarketingName)?.length) {
-      dataToSave.localizedMarketingName = { 'en-US': '' };
-    }
-
-    return dataToSave;
-  };
-
   const saveDetails = async () => {
     if (productHasChanges) {
       const sendObj = currentProductData?.parentId || parentId
@@ -188,7 +130,9 @@ const ProductDetailsScreen = () => {
     }
 
     if (productHasLocalizationChanges || currentProductDetails) {
-      const dataToSave = saveLocalizatoinDetails();
+      const { tempData } = store.getState();
+
+      const dataToSave = saveLocalizationDetails(tempData, currentProductData, nxState);
 
       api
         .updateProductLocalsById(
@@ -234,7 +178,7 @@ const ProductDetailsScreen = () => {
 
       api.getProductById(id_).then(({ data }) => {
         if (productHasLocalizationChanges || (id === 'add' && parentId)) {
-          const localizationChangesToSave = saveLocalizatoinDetails();
+          const localizationChangesToSave = saveLocalizationDetails();
 
           api
             .updateProductLocalsById(
@@ -425,7 +369,7 @@ const ProductDetailsScreen = () => {
           ? localization.t('labels.newProduct')
           : `${productData?.genericName?.value || productData?.genericName} - ${id}`
       }
-      saveIsDisabled={saveDisabled || tabsDisabled || disabledWithMandLocal}
+      saveIsDisabled={saveDisabled || tabsDisabled || disabledWithMandLocal || !jsonIsValid}
       hasChanges={productHasChanges || productHasLocalizationChanges || !productData?.id}
       isLoading={isLoading}
       setUpdate={setUpd}
@@ -454,6 +398,7 @@ const ProductDetailsScreen = () => {
           selectOptions={selectOptions}
         />
       )}
+      flexWrapper={codeMode && curTab === 3}
     >
       <ProductDetailsView
         productData={productData}
@@ -472,6 +417,10 @@ const ProductDetailsScreen = () => {
         setTabsDisabled={setTabsDisabled}
         parentId={parentId || currentProductData?.parentId}
         setDisabledWithMandLocal={setDisabledWithMandLocal}
+        setCodeMode={setCodeMode}
+        codeMode={codeMode}
+        jsonIsValid={jsonIsValid}
+        setJsonIsValid={setJsonIsValid}
       />
     </DetailPageWrapper>
   );

@@ -25,9 +25,12 @@ const JsonEditor = ({
   showUploadButton,
 }) => {
   const handleChange = (newValue) => {
-    if (jsonKey) { setCurrentData({ ...currentData, [jsonKey]: newValue }); } else {
+    if (jsonKey) {
+      setCurrentData({ ...currentData, [jsonKey]: newValue });
+    } else {
       setCurrentData(newValue);
     }
+
     try {
       if (newValue !== '') {
         JSON.parse(newValue);
@@ -62,6 +65,7 @@ const JsonEditor = ({
       }
     };
   };
+
   return (
     <>
       {!isReadOnly

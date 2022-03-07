@@ -3,23 +3,36 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  Box, Tabs, Tab, LinearProgress,
+  Box,
+  Tabs,
+  Tab,
+  LinearProgress,
+  Button,
 } from '@mui/material';
 
 import { toast } from 'react-toastify';
 import ClearIcon from '@mui/icons-material/Clear';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import CodeIcon from '@mui/icons-material/Code';
+import CodeOffIcon from '@mui/icons-material/CodeOff';
 
 import api from '../../../api';
 import { LocalizationInputs, DefaultLanguage } from './LocalizationInputs';
-import { SelectCustom } from '../../../components/Inputs';
 
+import { SelectCustom } from '../../../components/Inputs';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
+import JsonEditor from '../../../components/JsonEditor';
+
 import {
-  backToFront, localizedValues, createInheritableValue,
+  backToFront,
+  localizedValues,
+  createInheritableValue,
 } from '../../../services/helpers/dataStructuring';
+
 import { setTempProductLocales, setTempProductDescription } from '../../../redux/actions/TempData';
 import store from '../../../redux/store';
+
+import { saveLocalizationDetails } from '../utils';
 
 const LocalizedContent = ({
   setHasNewData,
@@ -27,6 +40,10 @@ const LocalizedContent = ({
   parentId,
   storeLanguages,
   setDisabledWithMandLocal,
+  setCodeMode,
+  codeMode,
+  jsonIsValid,
+  setJsonIsValid,
 }) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState(0);
@@ -34,6 +51,8 @@ const LocalizedContent = ({
   const [curData, setCurData] = useState(null);
   const [newTabValues, setNewTabValues] = useState({});
   const [newLangValue, setNewLangValue] = useState('');
+  const [descrRequestData, setDescrRequestData] = useState(null);
+  const [descrRequestUpd, setDescrRequestUpd] = useState(0);
   const availableLocales = getLanguagesOptions();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -143,6 +162,55 @@ const LocalizedContent = ({
       ...curData,
       fallbackLocale: typeof defLanguage === 'string' ? defLanguage : { ...defLanguage },
     }));
+  };
+
+  const updateContentByEditor = (content) => {
+    if (descrRequestData !== content) {
+      try {
+        const data = JSON.parse(content);
+        const avail = [];
+
+        localizedValues.forEach((it) => {
+          if (data[it]) {
+            Object.keys(data[it]).forEach((loc) => {
+              if (avail.indexOf(loc) < 0) {
+                avail.push(loc);
+              }
+            });
+          }
+        });
+
+        const i18nFields = avail.reduce((accumulator, current) => {
+          const childLocalizedValues = localizedValues.reduce(
+            (acc, curr) => ({ ...acc, [curr]: data[curr] ? data[curr][current] : '' }),
+            {},
+          );
+
+          return {
+            ...accumulator,
+            [current]: childLocalizedValues,
+          };
+        }, {});
+
+        const newDescr = saveLocalizationDetails({
+          description: { ...data },
+          i18nFields,
+        }, currentProductData, nxState);
+
+        setCurData({ ...newDescr, i18nFields });
+        setAvailLocales([...new Set(Object.keys(i18nFields), ...avail)]);
+
+        dispatch(setTempProductLocales({ ...i18nFields }));
+        dispatch(setTempProductDescription({ ...newDescr }));
+
+        setDescrRequestData(content);
+        setDescrRequestUpd((c) => c + 1);
+        setHasNewData(true);
+      } catch (e) {
+        setDescrRequestData(content);
+        setDescrRequestUpd((c) => c + 1);
+      }
+    }
   };
 
   useEffect(() => {
@@ -265,7 +333,10 @@ const LocalizedContent = ({
       const locales = Object.keys(newi18n).length
         ? [...new Set(Object.keys(newi18n), avail)]
         : [...avail, newDescr?.fallbackLocale];
+
       setAvailLocales(locales);
+      setDescrRequestData({ ...data });
+      setDescrRequestUpd((c) => c + 1);
 
       dispatch(setTempProductLocales({ ...newi18n, ...defI18nFields }));
       dispatch(setTempProductDescription({ ...newDescr }));
@@ -274,89 +345,115 @@ const LocalizedContent = ({
 
   useEffect(() => getValues(), [value]);
 
+  useEffect(() => {
+    const savedData = descrRequestData || {};
+
+    const stringifyCustomSample = typeof savedData === 'object' ? JSON.stringify(savedData, 0, 4) : savedData;
+    setDescrRequestData(stringifyCustomSample);
+  }, [descrRequestUpd]);
+
   if (!curData) return <LinearProgress />;
 
   return (
     <>
-      <DefaultLanguage
-        curData={curData}
-        selectOptions={availableLocales}
-        onChange={handleChangeDefaultLanguage}
-        parentId={parentId}
-      />
-      <Box display='flex' width='100%'>
-        <Box width='20%'>
-          <Tabs
-            orientation='vertical'
-            indicatorColor='primary'
-            variant='scrollable'
-            value={value}
-            style={{ borderRight: '1px solid #e2e2e2', height: '100%' }}
-            onChange={(e, newTab) => setValue(newTab)}
-            aria-label='Localizations'
-          >
-            {availLocales.map((locale) => (
-              <Tab
-                label={`${locale}${locale === curData?.fallbackLocale || (curData?.fallbackLocale?.state === 'inherits' ? locale === curData?.fallbackLocale?.parentValue : locale === curData?.fallbackLocale?.value)
-                  ? ' (default)'
-                  : ''
-                }`}
-                key={locale}
-                value={locale}
-                component={forwardRef(({ children, ...props }, ref) => (
-                  <div role='button' {...props} ref={ref}>
-                    <span className='localization-label'>{children}</span>
-                    {(locale !== curData?.fallbackLocale && (curData?.fallbackLocale?.state === 'inherits' ? locale !== curData?.fallbackLocale?.parentValue : locale !== curData?.fallbackLocale?.value)) && (
-                      <ClearIcon onClick={(e) => removeLocale(e, locale)} />
-                    )}
-                  </div>
-                ))}
-              />
-            ))}
-
-            <Tab
-              label='Add Language'
-              value={0}
-              component={forwardRef(({ children, ...props }, ref) => (
-                <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
-                  <SelectCustom
-                    label='addLanguage'
-                    value={newLangValue}
-                    selectOptions={availableLocales}
-                    onChangeSelect={(e) => setNewLangValue(e.target.value)}
-                  />
-
-                  <div hidden>{children}</div>
-                  <AddCircleIcon
-                    color='primary'
-                    style={{
-                      marginLeft: 15,
-                      opacity: !newLangValue ? 0.3 : 1,
-                      pointerEvents: !newLangValue ? 'none' : 'auto',
-                    }}
-                    onClick={addLocale}
-                  />
-                </div>
-              ))}
-            />
-          </Tabs>
-        </Box>
-
-        <Box display='flex' flexDirection='row' alignItems='baseline' width='80%'>
-          {!!value && (
-            <LocalizationInputs
-              data={curData?.i18nFields}
-              isDefault={value === curData?.fallbackLocale
-                || value === curData?.fallbackLocale?.value}
-              parentId={parentId}
-              defaultLocale={curData?.fallbackLocale?.value || curData?.fallbackLocale}
-              curLocal={value}
-              setHasLocalizationChanges={setHasNewData}
-              setDisabledWithMandLocal={setDisabledWithMandLocal}
-            />
-          )}
-        </Box>
+      <Box position='absolute' right='15px' top='20px'>
+        <Button onClick={() => setCodeMode((c) => !c)}>
+          {codeMode ? <CodeOffIcon /> : <CodeIcon />}
+        </Button>
       </Box>
+
+      {
+        !codeMode ? (
+          <>
+            <DefaultLanguage
+              curData={curData}
+              selectOptions={availableLocales}
+              onChange={handleChangeDefaultLanguage}
+              parentId={parentId}
+            />
+            <Box display='flex' width='100%'>
+              <Box width='20%'>
+                <Tabs
+                  orientation='vertical'
+                  indicatorColor='primary'
+                  variant='scrollable'
+                  value={value}
+                  style={{ borderRight: '1px solid #e2e2e2', height: '100%' }}
+                  onChange={(e, newTab) => setValue(newTab)}
+                  aria-label='Localizations'
+                >
+                  {availLocales.map((locale) => (
+                    <Tab
+                      label={`${locale}${locale === curData?.fallbackLocale || (curData?.fallbackLocale?.state === 'inherits' ? locale === curData?.fallbackLocale?.parentValue : locale === curData?.fallbackLocale?.value)
+                        ? ' (default)'
+                        : ''
+                      }`}
+                      key={locale}
+                      value={locale}
+                      component={forwardRef(({ children, ...props }, ref) => (
+                        <div role='button' {...props} ref={ref}>
+                          <span className='localization-label'>{children}</span>
+                          {(locale !== curData?.fallbackLocale && (curData?.fallbackLocale?.state === 'inherits' ? locale !== curData?.fallbackLocale?.parentValue : locale !== curData?.fallbackLocale?.value)) && (
+                            <ClearIcon onClick={(e) => removeLocale(e, locale)} />
+                          )}
+                        </div>
+                      ))}
+                    />
+                  ))}
+
+                  <Tab
+                    label='Add Language'
+                    value={0}
+                    component={forwardRef(({ children, ...props }, ref) => (
+                      <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
+                        <SelectCustom
+                          label='addLanguage'
+                          value={newLangValue}
+                          selectOptions={availableLocales}
+                          onChangeSelect={(e) => setNewLangValue(e.target.value)}
+                        />
+
+                        <div hidden>{children}</div>
+                        <AddCircleIcon
+                          color='primary'
+                          style={{
+                            marginLeft: 15,
+                            opacity: !newLangValue ? 0.3 : 1,
+                            pointerEvents: !newLangValue ? 'none' : 'auto',
+                          }}
+                          onClick={addLocale}
+                        />
+                      </div>
+                    ))}
+                  />
+                </Tabs>
+              </Box>
+
+              <Box display='flex' flexDirection='row' alignItems='baseline' width='80%'>
+                {!!value && (
+                  <LocalizationInputs
+                    data={curData?.i18nFields}
+                    isDefault={value === curData?.fallbackLocale
+                      || value === curData?.fallbackLocale?.value}
+                    parentId={parentId}
+                    defaultLocale={curData?.fallbackLocale?.value || curData?.fallbackLocale}
+                    curLocal={value}
+                    setHasLocalizationChanges={setHasNewData}
+                    setDisabledWithMandLocal={setDisabledWithMandLocal}
+                  />
+                )}
+              </Box>
+            </Box>
+          </>
+        ) : (
+          <JsonEditor
+            currentData={typeof descrRequestData === 'object' ? JSON.stringify(descrRequestData, 0, 4) : descrRequestData}
+            setCurrentData={(content) => updateContentByEditor(content)}
+            jsonIsValid={jsonIsValid}
+            setJsonIsValid={setJsonIsValid}
+          />
+        )
+      }
     </>
   );
 };
@@ -367,6 +464,10 @@ LocalizedContent.propTypes = {
   parentId: PropTypes.string,
   storeLanguages: PropTypes.array,
   setDisabledWithMandLocal: PropTypes.func,
+  setCodeMode: PropTypes.func,
+  codeMode: PropTypes.bool,
+  jsonIsValid: PropTypes.bool,
+  setJsonIsValid: PropTypes.func,
 };
 
 export default LocalizedContent;

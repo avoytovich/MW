@@ -59,6 +59,7 @@ const EmailBuilderDetailsScreen = () => {
       setHasChanges(JSON.stringify(curTemplateData) !== JSON.stringify(templateData));
     }
   }, [curTemplateData]);
+
   useEffect(() => {
     const savedCustomSample = nxState?.customSample || {};
 

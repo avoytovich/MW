@@ -45,6 +45,7 @@ const DetailPageWrapper = ({
   customSave,
   headerTitleCopy,
   tabs,
+  flexWrapper,
 }) => {
   const location = useLocation();
   const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
@@ -148,7 +149,7 @@ const DetailPageWrapper = ({
         )}
       </Box>
 
-      <Box overflow='auto' mt={noTabsMargin ? 0 : 4} p='2px' flexGrow={1}>
+      <Box overflow='auto' mt={noTabsMargin ? 0 : 4} p='2px' flexGrow={1} display={flexWrapper ? 'flex' : 'block'}>
         {children}
       </Box>
     </>
