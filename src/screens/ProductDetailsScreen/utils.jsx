@@ -1,10 +1,15 @@
+import * as R from 'ramda';
+
 import {
   structureSelectOptions,
   renewingProductsOptions,
   productsVariations,
   localizedValues,
   backToFront,
+  frontToBack,
+  checkValue,
 } from '../../services/helpers/dataStructuring';
+
 import api from '../../api';
 
 const handleGetOptions = (
@@ -177,4 +182,66 @@ const handleGetProductDetails = (
   });
 };
 
-export { handleGetOptions, handleGetProductDetails };
+const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
+  // eslint-disable-next-line no-underscore-dangle
+  let i18nFields_ = {};
+
+  const {
+    description: description_ = {},
+    i18nFields: i18nTemp,
+  } = tempData;
+
+  if (!Object.keys(i18nTemp).length) {
+    i18nFields_ = { ...description_?.i18nFields };
+  } else {
+    i18nFields_ = i18nTemp;
+  }
+
+  const frontToBackObj = frontToBack({
+    ...description_,
+    fallbackLocale: checkValue(description_?.fallbackLocale) || 'en-US',
+    i18nFields: i18nFields_,
+  });
+
+  const i18nFields = Object.entries(frontToBackObj.i18nFields).reduce(
+    (accumulator, [key, value]) => ({ ...accumulator, [key]: frontToBack(value || {}) }),
+    {},
+  );
+
+  const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
+    const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
+      if (i18nFields[key][cur]) {
+        return { ...ac, [key]: value[cur] };
+      }
+      return ac;
+    }, {});
+    return {
+      ...acc,
+      [cur]: localizedValue || {},
+    };
+  }, {});
+
+  if (frontToBackObj.i18nFields) {
+    delete frontToBackObj.i18nFields;
+  }
+
+  const dataToSave = R.mergeRight(frontToBackObj, localizedValuesToSave);
+
+  if (!frontToBackObj?.customerId) {
+    frontToBackObj.customerId = currentProductData?.customerId?.state
+      ? currentProductData?.customerId?.value
+      : (currentProductData?.customerId || nxState?.selectedCustomer?.id);
+  }
+
+  if (!Object.keys(dataToSave?.localizedMarketingName)?.length) {
+    dataToSave.localizedMarketingName = { 'en-US': '' };
+  }
+
+  return dataToSave;
+};
+
+export {
+  handleGetOptions,
+  handleGetProductDetails,
+  saveLocalizationDetails,
+};

@@ -29,6 +29,10 @@ const ProductDetailsView = ({
   setTabsDisabled,
   curTab,
   setDisabledWithMandLocal,
+  setCodeMode,
+  codeMode,
+  jsonIsValid,
+  setJsonIsValid,
 }) => {
   const checkSaveDisable = () => {
     const {
@@ -121,6 +125,10 @@ const ProductDetailsView = ({
             setHasNewData={setProductLocalizationChanges}
             parentId={parentId}
             setDisabledWithMandLocal={setDisabledWithMandLocal}
+            setCodeMode={setCodeMode}
+            codeMode={codeMode}
+            jsonIsValid={jsonIsValid}
+            setJsonIsValid={setJsonIsValid}
           />
         </SectionLayout>
       )}
@@ -194,6 +202,10 @@ ProductDetailsView.propTypes = {
   setSaveDisabled: PropTypes.func,
   setTabsDisabled: PropTypes.func,
   setDisabledWithMandLocal: PropTypes.func,
+  setCodeMode: PropTypes.func,
+  codeMode: PropTypes.bool,
+  jsonIsValid: PropTypes.bool,
+  setJsonIsValid: PropTypes.func,
 };
 
 export default ProductDetailsView;
