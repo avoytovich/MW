@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .font-screen {
   position: relative;
 
@@ -6,4 +8,8 @@
     top: 0;
     right: 0;
   }
+}
+
+.link-to-customer{
+  color: $currentPageText;
 }

@@ -10,11 +10,15 @@ import {
 } from '@mui/material';
 
 import { FileCopy } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 import localization from '../../../localization';
+import parentPaths from '../../../services/paths';
 import { InputCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
 
 import api from '../../../api';
+
+import '../emailBuilderDetailsScreen.scss';
 
 const General = ({
   data,
@@ -48,7 +52,9 @@ const General = ({
           <Box display='flex'>
             <Typography>{customer}</Typography>
             <Box px={1}><FileCopy color='secondary' onClick={() => makeCopy(data.customerId)} /></Box>
-            <Typography color='primary' data-test='customerId'>{data.customerId}</Typography>
+            <Link to={`${parentPaths.customers}/${data.customerId}`} className='link-to-customer'>
+              <Typography>{data.customerId}</Typography>
+            </Link>
           </Box>
         </Box>
       </Box>

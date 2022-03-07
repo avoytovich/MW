@@ -4,6 +4,11 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
+import { FileCopy } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
+
+import parentPaths from '../../services/paths';
+import { copyText } from '../../services/helpers/utils';
 import localization from '../../localization';
 
 import './FontLayout.scss';
@@ -32,8 +37,12 @@ const FontLayout = ({
           {localization.t('labels.customer')}
         </Typography>
       </Box>
-      <Box pr={4} pt="7px" pl="4px">
+      <Box pr={4} pt="7px" pl="4px" display="flex">
         <Typography>{customer}</Typography>
+        <Box px={1}><FileCopy color='secondary' onClick={() => copyText(currentFont.customerId)} /></Box>
+        <Link to={`${parentPaths.customers}/${currentFont.customerId}`} className='link-to-customer'>
+          <Typography>{currentFont.customerId}</Typography>
+        </Link>
       </Box>
     </Box>
     <Box py={5} pb={2} width="50%">
