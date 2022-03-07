@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 
 import api from '../../api';
-import CustomBreadcrumbs from '../../components/utils/CustomBreadcrumbs';
 import { setNexwayState } from '../../redux/actions/Account';
 import CustomCard from '../../components/utils/CustomCard';
 import ToastWithAction from '../../components/utils/ToastWithAction/ToastWithAction';
@@ -138,10 +137,6 @@ const MyAccountScreen = () => {
 
   return (
     <>
-      <CustomBreadcrumbs
-        sections={sections}
-      />
-
       <div className='my-account-screen-header'>
         <Tabs value={0} indicatorColor="primary" textColor="primary">
           <Tab label="My Account" />
