@@ -77,7 +77,7 @@ const ThemeDetailsScreen = () => {
       setUpdate={setUpdate}
     >
       <ThemeLayout
-        customer={nxState?.selectedCustomer?.name}
+        customer={currentCustomer}
         currentTheme={currentTheme}
         setCurrentTheme={setCurrentTheme}
       />

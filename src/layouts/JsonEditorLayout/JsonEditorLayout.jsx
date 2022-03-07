@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import {
   Box, Typography, TextField,
 } from '@mui/material';
@@ -9,6 +10,7 @@ import CustomCard from '../../components/utils/CustomCard';
 import JsonEditor from '../../components/JsonEditor';
 import localization from '../../localization';
 import parentPaths from '../../services/paths';
+import { copyText } from '../../services/helpers/utils';
 import './jsonEditorLayout.scss';
 
 const JsonEditorLayout = ({
@@ -62,9 +64,11 @@ const JsonEditorLayout = ({
                   </Typography>
                 </Box>
 
-                <Box pr={4} pt="7px" pl={2}>
+                <Box pr={4} pt="7px" pl={2} display="flex">
+                  <Typography>{customer}</Typography>
+                  <Box px={1}><FileCopyIcon color='secondary' onClick={() => copyText(customer)} /></Box>
                   <Link to={`${parentPaths.customers}/${currentData.customerId}`} className='link-to-customer'>
-                    <Typography>{customer}</Typography>
+                    <Typography>{currentData.customerId}</Typography>
                   </Link>
                 </Box>
               </Box>

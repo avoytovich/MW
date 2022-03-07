@@ -2,9 +2,13 @@ import React from 'react';
 import {
   Box, Typography, TextField,
 } from '@mui/material';
+import { FileCopy as FileCopyIcon } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CodeEditor from '../../components/CodeEditor';
 import localization from '../../localization';
+import parentPaths from '../../services/paths';
+import { copyText } from '../../services/helpers/utils';
 
 import './ThemeLayout.scss';
 
@@ -32,8 +36,12 @@ const ThemeLayout = ({
           {localization.t('labels.customer')}
         </Typography>
       </Box>
-      <Box pr={4} pt="7px" pl="4px">
+      <Box pr={4} pt="7px" pl="4px" display="flex">
         <Typography>{customer}</Typography>
+        <Box px={1}><FileCopyIcon color='secondary' onClick={() => copyText(currentTheme.customerId)} /></Box>
+        <Link to={`${parentPaths.customers}/${currentTheme.customerId}`} className='link-to-customer'>
+          <Typography>{currentTheme.customerId}</Typography>
+        </Link>
       </Box>
     </Box>
     <Box py={5} pb={2} width="50%">
