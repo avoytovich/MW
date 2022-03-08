@@ -24,7 +24,6 @@ const sideBarTitle = {
   resellers: localization.t('sideBar.titles.resellers'),
   reports: localization.t('sideBar.titles.reports'),
   users: localization.t('sideBar.titles.users'),
-  userprivileges: localization.t('sideBar.titles.userPrivileges'),
   userroles: localization.t('sideBar.titles.userRolesProfiles'),
   notifications: localization.t('sideBar.titles.eventNotifications'),
   myaccount: localization.t('sideBar.titles.myAccount'),

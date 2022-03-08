@@ -39,7 +39,6 @@ const sections = {
   reports: 'Reports',
   settings: 'Settings',
   users: 'Users',
-  userprivileges: 'User Privileges',
   userroles: 'User Roles & Profiles',
   roles: 'Roles',
   metaRoles: 'Meta Roles',

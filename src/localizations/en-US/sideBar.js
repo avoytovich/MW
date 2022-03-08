@@ -44,7 +44,6 @@ const sideBar = {
     discountRules: 'Discount rules',
     campaigns: 'Campaigns',
     users: 'Users',
-    userPrivileges: 'User Privileges',
     userRolesProfiles: 'User Roles & Profiles',
     eventNotifications: 'Event Notifications',
     onboarding: 'Onboarding',
