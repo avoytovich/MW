@@ -50,7 +50,6 @@ const parentPaths = {
   reports: `${defPath}/reports`,
 
   users: `${defPath}/settings/users`,
-  userprivileges: `${defPath}/settings/userprivileges`,
   userroles: {
     main: `${defPath}/settings/userroles`,
     roles: `${defPath}/settings/userroles/roles`,

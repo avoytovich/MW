@@ -178,11 +178,6 @@ const navConfig = [
         href: parentPaths.users,
       },
       {
-        id: 'user-privileges',
-        title: sideBarTitle.userprivileges,
-        href: parentPaths.userprivileges,
-      },
-      {
         id: 'user-roles-profiles',
         title: sideBarTitle.userroles,
         href: parentPaths.userroles.main,
