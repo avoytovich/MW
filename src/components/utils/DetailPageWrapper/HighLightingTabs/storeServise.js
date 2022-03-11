@@ -46,7 +46,14 @@ const storeHightLightTabs = (curData, isRankingOpen) => {
   );
 };
 
-const storeHightLight = (curData, isRankingOpen, errors, setErrors, tabs, paramsId) => {
+const storeHightLight = (
+  curData,
+  isRankingOpen,
+  errors = {},
+  setErrors = () => {},
+  tabs,
+  paramsId,
+) => {
   if (!Object.keys(errors).length) {
     if (tabs?.tabLabels?.[tabs.curTab] === 'payment') {
       setErrors({
