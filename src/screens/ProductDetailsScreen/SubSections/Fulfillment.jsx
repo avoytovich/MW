@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -11,12 +12,17 @@ import {
   TableHead,
   TableRow,
   Paper,
+  TableFooter,
 } from '@mui/material';
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import InheritanceField from '../InheritanceField';
 
 import { InputCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
 import { checkValue } from '../../../services/helpers/dataStructuring';
+import { copyText } from '../../../services/helpers/utils';
+import parentPaths from '../../../services/paths';
 import localization from '../../../localization';
 import api from '../../../api';
 
@@ -28,7 +34,22 @@ const Fulfillment = ({
   selectOptions,
   parentId,
 }) => {
+  const history = useHistory();
   const [packages, setPackages] = useState([]);
+
+  const getTotal = (val1, val2) => {
+    let total = 0;
+
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i <= packages.length; i++) {
+      if (packages && packages[i]) {
+        const val = val2 ? packages[i][val1][val2] : packages[i][val1];
+        total += val || 0;
+      }
+    }
+
+    return total;
+  };
 
   useEffect(() => {
     const { id, publisherRefId, customerId } = currentProductData;
@@ -97,8 +118,27 @@ const Fulfillment = ({
 
                   <TableBody>
                     {packages.map((pckg) => (
-                      <TableRow key={pckg.id}>
-                        <TableCell align='center'>{pckg.id}</TableCell>
+                      <TableRow
+                        key={pckg.id}
+                        onClick={() => history.push(`${parentPaths.fulfillment.manualFulfillmentsTab}/${pckg.id}`)}
+                        style={{
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <TableCell align='center'>
+                          {pckg.id}
+                          <ContentCopyIcon
+                            onClick={(e) => { e.stopPropagation(); copyText(pckg.id); }}
+                            color='secondary'
+                            style={{
+                              position: 'relative',
+                              top: '4px',
+                              marginLeft: '7px',
+                              fontSize: '18px',
+                            }}
+                            className='copyIcon'
+                          />
+                        </TableCell>
                         <TableCell align='center'>{pckg.name}</TableCell>
                         <TableCell align='center'>{pckg.status}</TableCell>
                         <TableCell align='center'>{pckg?.stock?.available || 0}</TableCell>
@@ -110,6 +150,20 @@ const Fulfillment = ({
                       </TableRow>
                     ))}
                   </TableBody>
+
+                  <TableFooter>
+                    <TableRow>
+                      <TableCell />
+                      <TableCell />
+                      <TableCell align='center'>{localization.t('labels.total')}</TableCell>
+                      <TableCell align='center'>{getTotal('stock', 'available')}</TableCell>
+                      <TableCell align='center'>{getTotal('threshold')}</TableCell>
+                      <TableCell align='center'>{getTotal('stock', 'blacklisted')}</TableCell>
+                      <TableCell align='center'>{getTotal('stock', 'canceled')}</TableCell>
+                      <TableCell align='center'>{getTotal('stock', 'occupied')}</TableCell>
+                      <TableCell align='center'>{getTotal('stock', 'renewed')}</TableCell>
+                    </TableRow>
+                  </TableFooter>
                 </Table>
               </TableContainer>
             </Box>

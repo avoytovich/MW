@@ -3,6 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
+
+import { LinearProgress } from '@mui/material';
+
 import store from '../../redux/store';
 
 import ProductDetailsTabs from './ProductDetailsTabs';
@@ -178,7 +181,11 @@ const ProductDetailsScreen = () => {
 
       api.getProductById(id_).then(({ data }) => {
         if (productHasLocalizationChanges || (id === 'add' && parentId)) {
-          const localizationChangesToSave = saveLocalizationDetails();
+          const { tempData } = store.getState();
+
+          const localizationChangesToSave = saveLocalizationDetails(
+            tempData, currentProductData, nxState,
+          );
 
           api
             .updateProductLocalsById(
@@ -359,6 +366,10 @@ const ProductDetailsScreen = () => {
   }, [productDetails]);
 
   useEffect(() => setProductDetails({ ...currentProductDetails }), [currentProductDetails]);
+
+  if (!parentId
+      && !currentProductData?.parentId
+      && currentProductData?.createDate?.parentValue) return <LinearProgress />;
 
   return (
     <DetailPageWrapper

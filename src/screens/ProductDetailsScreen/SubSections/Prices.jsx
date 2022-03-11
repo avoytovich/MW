@@ -51,10 +51,7 @@ const Prices = ({
 
   const history = useHistory();
 
-  const priceByCountryByCurrency = checkValue(
-    currentProductData?.prices,
-    currentProductData?.prices?.state,
-  )?.priceByCountryByCurrency;
+  const priceByCountryByCurrency = checkValue(currentProductData?.prices)?.priceByCountryByCurrency;
 
   const pricesList = Object.keys(priceByCountryByCurrency || {});
 
