@@ -103,7 +103,7 @@ const DetailPageWrapper = ({
         paramsId,
       );
     }
-  }, [tabs.curTab]);
+  }, [tabs?.curTab]);
 
   return curData && (
     <>
