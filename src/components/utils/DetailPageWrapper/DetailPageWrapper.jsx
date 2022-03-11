@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory, useParams } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 
 import {
@@ -13,6 +14,7 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
@@ -22,6 +24,8 @@ import LoadingErrorNotification from '../LoadingErrorNotification';
 import SelectCustomerNotification from '../SelectCustomerNotification';
 import defPath from '../../../services/helpers/routingHelper';
 import { copyText } from '../../../services/helpers/utils';
+import { tabLabels as tabLabelsStore } from '../../../screens/StoreDetailsScreen/utils';
+import storeHightLight from './HighLightingTabs/storeServise';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -45,8 +49,12 @@ const DetailPageWrapper = ({
   customSave,
   headerTitleCopy,
   tabs,
+  errors,
+  setErrors,
+  isRankingOpen,
   flexWrapper,
 }) => {
+  const { id: paramsId } = useParams();
   const location = useLocation();
   const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
   const history = useHistory();
@@ -79,6 +87,24 @@ const DetailPageWrapper = ({
   if (id === 'add' && !nxState?.selectedCustomer?.id && !nxStateNotNeeded) {
     return <SelectCustomerNotification />;
   }
+
+  const CustomizedTab = styled(Tab)`
+    color: red;
+  `;
+
+  useEffect(() => {
+    if (tabLabelsStore.includes(tabs?.tabLabels?.[tabs.curTab])) {
+      storeHightLight(
+        curData,
+        isRankingOpen,
+        errors,
+        setErrors,
+        tabs,
+        paramsId,
+      );
+    }
+  }, [tabs.curTab]);
+
   return curData && (
     <>
       <Box>
@@ -142,9 +168,21 @@ const DetailPageWrapper = ({
             }}
             aria-label='disabled tabs example'
           >
-            {tabs?.tabLabels.map((tab) => (
-              <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-            ))}
+            {tabs?.tabLabels.map((tab) => {
+              let { curTab } = tabs;
+              while (curTab >= 0) {
+                if (Object.values(errors[tab] || {})
+                  .some((item) => item !== null)) {
+                  return (
+                    <CustomizedTab key={tab} label={localization.t(`labels.${tab}`)} />
+                  );
+                }
+                curTab -= 1;
+              }
+              return (
+                <Tab key={tab} label={localization.t(`labels.${tab}`)} />
+              );
+            })}
           </Tabs>
         )}
       </Box>

@@ -20,6 +20,8 @@ const StoreDetailsView = ({
   setCurrentStoreResources,
   errors,
   setErrors,
+  isRankingOpen,
+  setIsRankingOpen,
   curTab,
 }) => (
   <>
@@ -49,6 +51,8 @@ const StoreDetailsView = ({
         <Payment
           errors={errors}
           setErrors={setErrors}
+          isRankingOpen={isRankingOpen}
+          setIsRankingOpen={setIsRankingOpen}
           selectOptions={selectOptions}
           currentStoreData={currentStoreData}
           setCurrentStoreData={setCurrentStoreData}
@@ -76,6 +80,8 @@ StoreDetailsView.propTypes = {
   currentStoreResources: PropTypes.array,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
+  isRankingOpen: PropTypes.bool,
+  setIsRankingOpen: PropTypes.func,
   curTab: PropTypes.number,
 };
 

@@ -75,6 +75,37 @@ const General = ({
     });
   };
 
+  const withValidation = (target) => {
+    if (!target.value) {
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [target.name]: true,
+        },
+      });
+    } else {
+      setErrors({});
+    }
+  };
+
+  const withValidationInputCustom = (target) => {
+    withValidation(target);
+    setCurrentStoreData({
+      ...currentStoreData,
+      [target.name]: target.value,
+    });
+  };
+
+  const withValidationSelectCustom = (target, options) => {
+    withValidation(target);
+    setCurrentStoreData({
+      ...currentStoreData,
+      [target.name]: target.value,
+      options,
+    });
+  };
+
   return (
     <>
       <Grid item md={12} sm={12}>
@@ -124,10 +155,9 @@ const General = ({
             isRequired
             label='name'
             value={currentStoreData.name}
-            onChangeInput={(e) => setCurrentStoreData({
-              ...currentStoreData,
-              name: e.target.value,
-            })}
+            onChangeInput={(e) => withValidationInputCustom(e.target)}
+            hasError={!!errors?.general?.name}
+            helperText={errors?.general?.name && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
@@ -163,6 +193,7 @@ const General = ({
           <SelectCustom
             label='defaultLanguage'
             isRequired
+            name='defaultLocale'
             value={currentStoreData.defaultLocale}
             selectOptions={availableLocales}
             onChangeSelect={(e) => {
@@ -174,12 +205,10 @@ const General = ({
                 && !thankYouDesc[e.target.value]) {
                 thankYouDesc[e.target.value] = '';
               }
-              setCurrentStoreData({
-                ...currentStoreData,
-                defaultLocale: e.target.value,
-                thankYouDesc,
-              });
+              withValidationSelectCustom(e.target, thankYouDesc);
             }}
+            hasError={!!errors?.general?.defaultLocale}
+            helperText={errors?.general?.defaultLocale && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
@@ -264,10 +293,9 @@ const General = ({
             isRequired
             label='displayName'
             value={currentStoreData.displayName}
-            onChangeInput={(e) => setCurrentStoreData({
-              ...currentStoreData,
-              displayName: e.target.value,
-            })}
+            onChangeInput={(e) => withValidationInputCustom(e.target)}
+            hasError={!!errors?.general?.displayName}
+            helperText={errors?.general?.displayName && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
@@ -303,6 +331,7 @@ const General = ({
               if (e.target.value) {
                 res = e.target.value.split(/\r?\n/);
               }
+              withValidation(e.target);
               setCurrentStoreData({
                 ...currentStoreData,
                 routes: res.map((item) => ({
@@ -310,6 +339,8 @@ const General = ({
                 })),
               });
             }}
+            hasError={!!errors?.general?.routes}
+            helperText={errors?.general?.routes && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>

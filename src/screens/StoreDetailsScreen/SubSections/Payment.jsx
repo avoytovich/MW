@@ -17,7 +17,13 @@ import localization from '../../../localization';
 import '../storeDetailsScreen.scss';
 
 const Payment = ({
-  currentStoreData, setCurrentStoreData, selectOptions, errors, setErrors,
+  currentStoreData,
+  setCurrentStoreData,
+  selectOptions,
+  errors,
+  setErrors,
+  isRankingOpen,
+  setIsRankingOpen,
 }) => {
   const allCountries = getCountriesOptions();
   const handleDeleteError = (key, optionKey, onDelete) => {
@@ -122,6 +128,7 @@ const Payment = ({
     });
   };
   const handleAddGroup = () => {
+    setIsRankingOpen(true);
     const keys = Object.keys(currentStoreData.paymentGroups);
     const key = Number(keys[keys.length - 1]) + 1 || 0;
     const newPaymentGroups = {
@@ -397,6 +404,8 @@ Payment.propTypes = {
   selectOptions: PropTypes.object,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
+  isRankingOpen: PropTypes.bool,
+  setIsRankingOpen: PropTypes.func,
 };
 
 export default Payment;
