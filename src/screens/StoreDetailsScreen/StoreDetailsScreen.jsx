@@ -51,6 +51,7 @@ const StoreDetailsScreen = () => {
   const [currentStoreData, setCurrentStoreData] = useState(null);
 
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
+  const [isRankingOpen, setIsRankingOpen] = useState(false);
   const getCustomersIdsArray = (...array) => {
     const res = [];
     array.forEach((item) => {
@@ -67,7 +68,7 @@ const StoreDetailsScreen = () => {
     || !currentStoreData?.defaultLocale
     || !currentStoreData?.displayName
     || !currentStoreData?.routes[0]?.hostname
-    || Object.keys(errors).length > 0
+    || Object.keys(errors).filter((item) => (!tabLabels.includes(item))).length > 0
     || (Object.keys(currentStoreData.thankYouDesc).length > 1 && currentStoreData.thankYouDesc[currentStoreData.defaultLocale] === '');
 
   const beforeSend = () => {
@@ -233,6 +234,9 @@ const StoreDetailsScreen = () => {
         curTab,
         tabLabels,
       }}
+      errors={errors}
+      setErrors={setErrors}
+      isRankingOpen={isRankingOpen}
       extraHeader={(
         <CustomerStatusLabel
           customer={currentCustomerData}
@@ -242,6 +246,8 @@ const StoreDetailsScreen = () => {
       <StoreDetailsView
         errors={errors}
         setErrors={setErrors}
+        isRankingOpen={isRankingOpen}
+        setIsRankingOpen={setIsRankingOpen}
         currentStoreData={currentStoreData}
         selectOptions={selectOptions}
         setCurrentStoreData={setCurrentStoreData}
