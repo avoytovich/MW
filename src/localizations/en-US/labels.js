@@ -756,6 +756,7 @@ const labels = {
   fields: 'Fields',
   parameterName: 'Parameter Name',
   displayString: 'Display String',
+  searchSection: 'Search section...',
 };
 
 export default labels;

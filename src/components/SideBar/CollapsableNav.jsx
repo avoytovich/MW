@@ -7,7 +7,9 @@ import {
 
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-const CollapsableNav = ({ header, icon: Icon, children }) => {
+const CollapsableNav = ({
+  header, icon: Icon, children, openAllSections,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -22,7 +24,7 @@ const CollapsableNav = ({ header, icon: Icon, children }) => {
         </Box>
       </Button>
 
-      <Collapse in={isOpen}>
+      <Collapse in={isOpen || openAllSections}>
         <List>
           {children}
         </List>
@@ -35,6 +37,7 @@ CollapsableNav.propTypes = {
   header: PropTypes.string,
   children: PropTypes.any,
   icon: PropTypes.any,
+  openAllSections: PropTypes.bool,
 };
 
 export default CollapsableNav;

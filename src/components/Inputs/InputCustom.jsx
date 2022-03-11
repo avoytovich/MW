@@ -19,6 +19,11 @@ const InputCustom = ({
 }) => (
   <form autoComplete='off' style={{ width: '100%', position: 'relative' }}>
     <TextField
+      onKeyDown={(e) => {
+        if (e.code === 'Enter') {
+          e.preventDefault();
+        }
+      }}
       maxRows={rowsMax}
       error={hasError}
       data-test={label}

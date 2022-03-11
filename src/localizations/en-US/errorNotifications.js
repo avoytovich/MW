@@ -37,6 +37,7 @@ const errorNotifications = {
   pleaseUploadTheLicenseKeyPackageInCsvFormat: 'Please upload the license key package in CSV format',
   googleTagManagerIdShouldContains: 'Google Tag Manager ID should start with "GTM" prefix and contain only uppercase letters and numbers',
   forDefaultLanguageCanNotBeEmpty: 'for default language can not be empty',
+  nothingFound: 'Nothing found',
 };
 
 export default errorNotifications;
