@@ -171,7 +171,7 @@ const DetailPageWrapper = ({
             {tabs?.tabLabels.map((tab) => {
               let { curTab } = tabs;
               while (curTab >= 0) {
-                if (Object.values(errors[tab] || {})
+                if (Object.values(errors?.[tab] || {})
                   .some((item) => item !== null)) {
                   return (
                     <CustomizedTab key={tab} label={localization.t(`labels.${tab}`)} />
