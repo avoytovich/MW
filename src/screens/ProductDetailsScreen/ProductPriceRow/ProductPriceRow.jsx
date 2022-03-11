@@ -14,6 +14,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import { SelectCustom } from '../../../components/Inputs';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
+import { checkValue } from '../../../services/helpers/dataStructuring';
 
 const ProductPriceRow = ({
   setProductData,
@@ -52,11 +53,11 @@ const ProductPriceRow = ({
         ? {
           ...currentProductData?.prices,
           value: {
-            ...currentProductData.prices.value,
+            ...checkValue(currentProductData.prices),
             priceByCountryByCurrency: {
-              ...currentProductData.prices.value.priceByCountryByCurrency,
+              ...checkValue(currentProductData.prices).priceByCountryByCurrency,
               [currency]: {
-                ...currentProductData?.prices?.priceByCountryByCurrency?.value[currency],
+                ...checkValue(currentProductData?.prices)?.priceByCountryByCurrency[currency],
                 ...countryObj,
               },
             },
