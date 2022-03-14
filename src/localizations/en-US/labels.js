@@ -552,7 +552,7 @@ const labels = {
   wrongProductChoice: 'Wrong Product Choice',
   yes: 'Yes',
   no: 'No',
-  usingLicenseKeyProvider: 'Uses lincense key provider',
+  usingLicenseKeyProvider: 'Using license key provider',
   withFulfillmentSample: 'Fulfillment sample',
   themeRefCheckoutname: 'Checkout theme ref name',
   themeRefCheckoutcustomerId: 'Checkout theme ref customer ID',
