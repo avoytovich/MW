@@ -1,5 +1,5 @@
 include:
   - project: Nexway/cicd_python
     file: /build-gcs-service.yml
-    ref: master
+    ref: func_review_and_slack
 
