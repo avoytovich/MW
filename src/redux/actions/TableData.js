@@ -15,6 +15,7 @@ import {
 const setTableScope = (scope) => {
   const storageFilters = localStorage.getItem('filters');
   const storageFilterViews = localStorage.getItem('filter-views');
+  const storageSearch = localStorage.getItem('search');
 
   return ({
     type: SET_TABLE_SCOPE,
@@ -22,7 +23,7 @@ const setTableScope = (scope) => {
       scope,
       filters: storageFilters ? JSON.parse(storageFilters) : {},
       filterViews: storageFilterViews ? JSON.parse(storageFilterViews) : {},
-      search: '',
+      search: storageSearch ? JSON.parse(storageSearch) : {},
       checkedItems: [],
       currentPage: 1,
     },
@@ -34,13 +35,13 @@ const refreshTable = (scope) => async (dispatch) => {
   dispatch({ type: REFRESH_TABLE, payload: { scope } });
 };
 
-const setFilters = (filters) => {
-  localStorage.setItem('filters', JSON.stringify(filters));
+const setFilters = (filters) => ({ type: SET_TABLE_FILTERS, payload: filters });
 
-  return ({ type: SET_TABLE_FILTERS, payload: { filters } });
+const setSearch = (search) => {
+  localStorage.setItem('search', JSON.stringify(search));
+
+  return ({ type: SET_TABLE_SEARCH, payload: { search } });
 };
-
-const setSearch = (search) => ({ type: SET_TABLE_SEARCH, payload: { search } });
 
 const setFilterViews = (views) => {
   localStorage.setItem('filter-views', JSON.stringify(views));
@@ -48,12 +49,15 @@ const setFilterViews = (views) => {
   return ({ type: SET_TABLE_FILTER_VIEWS, payload: { filterViews: views } });
 };
 
-const resetFilters = () => {
+const resetFilters = (scope) => {
   localStorage.setItem('filters', JSON.stringify({}));
-  return ({ type: RESET_TABLE_FILTERS, payload: { filters: {} } });
+  return ({ type: RESET_TABLE_FILTERS, payload: scope });
 };
 
-const resetSearch = () => ({ type: RESET_TABLE_SEARCH, payload: { search: '' } });
+const resetSearch = () => {
+  localStorage.setItem('search', JSON.stringify({}));
+  return ({ type: RESET_TABLE_SEARCH, payload: { search: {} } });
+};
 
 const setCheckedItems = (checkedItems) => (
   { type: SET_TABLE_CHECKED_ITEMS, payload: { checkedItems } }

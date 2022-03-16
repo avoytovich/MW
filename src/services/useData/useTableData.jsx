@@ -28,12 +28,6 @@ const useTableData = (
       let searchRequest = activeSearch && activeSearch[dataScope]
         && (() => {
           const [key, val] = Object.entries(activeSearch[dataScope])[0];
-          localStorage.setItem('filters', JSON.stringify({
-            [dataScope]: {
-              ...JSON.parse(localStorage.getItem('filters'))?.[dataScope],
-              [key]: val,
-            },
-          }));
           return `&${key}=${val}`;
         })();
       let filtersUrl = activeFilters && activeFilters[dataScope]
@@ -77,7 +71,6 @@ const useTableData = (
                   },
                 };
                 delete filtersObj[dataScope].id;
-                localStorage.setItem('filters', JSON.stringify(filtersObj));
                 return `&${key}=*${val}*`;
               })();
               if (customerScope) {

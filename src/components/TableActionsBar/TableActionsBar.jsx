@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -43,7 +43,7 @@ import { searchData } from './helper';
 import DeletePopup from '../Popup/DeletePopup';
 import TableFilters from '../utils/TableFilters';
 import CustomBreadcrumbs from '../utils/CustomBreadcrumbs';
-import FilterBlockInputs from '../utils/TableFilters/FilterBlock';
+import FilterBlock from '../utils/TableFilters/FilterBlock';
 
 const useStyles = makeStyles({
   button: {
@@ -80,13 +80,17 @@ const TableActionsBar = ({
   const doRefresh = () => dispatch(refreshTable(scope));
   const location = useLocation();
   const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
-
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
+  const tableSearch = useSelector(({ tableData: { search } }) => search[scope]);
   const csvHeaders = headers ? [...headers].map((header) => ({
     label: header.value,
     key: header.id,
   })) : [];
+
+  useEffect(() => {
+    setCurVal(tableSearch?.id || '');
+  }, [tableSearch]);
 
   const handleDeleteItems = () => {
     let promiseArray = [];
@@ -225,17 +229,17 @@ const TableActionsBar = ({
                     </Box>
 
                     {VALID_SEARCH_SCOPES.includes(scope) && (
-                    <Box display='flex' alignItems='center'>
-                      <FilterBlockInputs
-                        search
-                        scope={scope}
-                        myBox='0px'
-                        size='small'
-                        curData={curVal}
-                        updateConfig={(data, val) => setCurVal(val)}
-                        data={searchData(scope)}
-                      />
-                    </Box>
+                      <Box display='flex' alignItems='center'>
+                        <FilterBlock
+                          search
+                          scope={scope}
+                          myBox='0px'
+                          size='small'
+                          curData={curVal}
+                          updateConfig={(data, val) => setCurVal(val)}
+                          data={searchData(scope)}
+                        />
+                      </Box>
                     )}
 
                     <Box>

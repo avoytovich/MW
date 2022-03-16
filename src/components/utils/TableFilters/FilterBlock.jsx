@@ -21,8 +21,9 @@ const FilterBlock = ({
       [scope]: { ...JSON.parse(localStorage.getItem('filters'))[scope] },
     };
     delete filtersObj[scope][data.id];
-    localStorage.setItem('filters', JSON.stringify(filtersObj));
-    dispatch(resetSearch());
+    if (search) {
+      dispatch(resetSearch());
+    }
     updateConfig(search ? data : data?.id, '');
   };
 
@@ -45,7 +46,6 @@ const FilterBlock = ({
         updateConfig={updateConfig}
         data={data}
       />
-
       <Box minWidth='25px' textAlign='center'>
         {curVal && (
           <Close
