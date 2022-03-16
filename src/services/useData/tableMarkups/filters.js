@@ -1440,6 +1440,18 @@ const filters = {
       ],
     },
   ],
+  realms: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'path',
+      label: localization.t('labels.path'),
+      type: 'text',
+    },
+  ],
 };
 
 export default filters;

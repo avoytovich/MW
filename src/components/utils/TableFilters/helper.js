@@ -30,6 +30,8 @@ const placeholderData = (scope) => {
       return localization.t('labels.searchByIdName');
     case 'resellers':
       return localization.t('labels.searchByIdEmail');
+    case 'realms':
+      return localization.t('labels.searchById');
     default:
       return null;
   }

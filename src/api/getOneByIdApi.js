@@ -402,5 +402,12 @@ const getOneByIdApi = {
       url,
     });
   },
+  getRealmById(id) {
+    const url = `/iam/realms/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getOneByIdApi;

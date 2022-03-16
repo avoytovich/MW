@@ -34,6 +34,7 @@ export const sortKeys = {
   onboarding: 'onboarding',
   crudHelper: 'crudHelper',
   recommendations: 'recommendationsSortParams',
+  realms: 'realmsSortParams',
 };
 
 export const getSortParams = (key) => JSON.parse(localStorage.getItem(key));

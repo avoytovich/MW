@@ -76,6 +76,8 @@ const parentPaths = {
 
   productdocumentation: 'https://www.nexway.com/',
   apidocumentation: 'https://apidoc.nexway.store',
+
+  realms: `${defPath}/realms`,
 };
 
 export default parentPaths;

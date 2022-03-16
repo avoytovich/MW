@@ -25,6 +25,7 @@ const VALID_REFRESH_SCOPES = [
   'translations',
   'invoicetranslations',
   'users',
+  'realms',
 ];
 const VALID_FILTER_SCOPES = [
   'productlist',
@@ -63,6 +64,7 @@ const VALID_FILTER_SCOPES = [
   'onboarding',
   'invoicetranslations',
   'users',
+  'realms',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway'];
@@ -82,6 +84,7 @@ const VALID_SEARCH_SCOPES = [
   'enduserlist',
   'endusergroups',
   'resellers',
+  'realms',
 ];
 
 export {

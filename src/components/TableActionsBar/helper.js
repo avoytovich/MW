@@ -95,6 +95,13 @@ const searchData = (scope) => {
         label: '',
         type: 'text',
       };
+    case 'realms':
+      return {
+        id: 'id',
+        name: 'name',
+        label: '',
+        type: 'text',
+      };
     default:
       return null;
   }

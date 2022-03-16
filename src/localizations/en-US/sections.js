@@ -54,6 +54,7 @@ const sections = {
   audits: 'Audits',
   sales: 'Sales',
   businessAnalysis: 'Business Analysis',
+  realms: 'Realms List',
 };
 
 export default sections;
