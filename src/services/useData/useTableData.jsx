@@ -25,7 +25,7 @@ const useTableData = (
   useEffect(() => {
     let isCancelled = false;
     if (tableScope === dataScope || dataScope === 'generateCodes') {
-      let searchRequest = activeSearch && activeSearch[dataScope]
+      let searchRequest = Object.keys(activeSearch).length && activeSearch[dataScope]
         && (() => {
           const [key, val] = Object.entries(activeSearch[dataScope])[0];
           return `&${key}=${val}`;
