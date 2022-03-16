@@ -18,7 +18,7 @@ const initialState = {
   scope: null,
   filters: {},
   filterViews: {},
-  search: '',
+  search: {},
   rowsPerPage,
   currentPage: 1,
   checkedItems: [],
@@ -26,17 +26,28 @@ const initialState = {
 };
 
 const TableData = (state = initialState, { type, payload }) => {
+  let newFilters = {};
   switch (type) {
     case SET_TABLE_SCOPE:
     case REFRESH_TABLE:
-    case RESET_TABLE_FILTERS:
     case RESET_TABLE_SEARCH:
     case SET_TABLE_CHECKED_ITEMS:
     case SET_TABLE_ROWS_PER_PAGE:
     case SET_TABLE_CURRENT_PAGE:
-    case SET_TABLE_FILTERS:
-    case SET_TABLE_SEARCH:
     case SET_TABLE_FILTER_VIEWS:
+      return { ...state, ...payload };
+    case SET_TABLE_FILTERS:
+      localStorage.setItem('filters', JSON.stringify({ ...state.filters, ...payload }));
+      return { ...state, filters: { ...state.filters, ...payload } };
+    case RESET_TABLE_FILTERS:
+      if (payload) {
+        newFilters = { ...state.filters };
+        delete newFilters[payload];
+      }
+      localStorage.setItem('filters', JSON.stringify(newFilters));
+      return { ...state, filters: newFilters };
+    case SET_TABLE_SEARCH:
+      localStorage.setItem('filters', JSON.stringify({ payload }));
       return { ...state, ...payload };
     case SET_WAS_UPDATED:
       return { ...state, wasUpdated: !state.wasUpdated };

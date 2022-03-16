@@ -27,13 +27,14 @@ const FilterBlockInputs = ({
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      dispatch(setSearch({
+      const searchObject = {
         [scope]: {
           [data.id]: event.target.value,
           [data.name ? data.name : data.id]: event.target.value,
         },
-      }));
-      dispatch(resetFilters());
+      };
+      dispatch(setSearch(searchObject));
+      dispatch(resetFilters(scope));
     }
   };
 
