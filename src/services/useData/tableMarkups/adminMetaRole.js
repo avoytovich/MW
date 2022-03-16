@@ -7,6 +7,7 @@ const defaultShow = {
   aggregatedRoles: true,
   createDate: true,
   updateDate: true,
+  description: true,
 };
 
 const markUp = {
@@ -32,6 +33,11 @@ const markUp = {
       id: 'updateDate',
       sortParam: 'updateDate',
     },
+    {
+      value: localization.t('labels.description'),
+      id: 'description',
+      sortParam: 'description',
+    },
   ],
 };
 
@@ -48,6 +54,7 @@ const generateData = (data, customers) => {
       aggregatedRoles: val.roleIds?.length || 0,
       createDate: val.createDate,
       updateDate: val.updateDate,
+      description: val.description || '',
     };
   });
   const meta = {
