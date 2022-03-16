@@ -291,6 +291,14 @@ const SignedRoutes = () => {
         path={`${parentPaths.audits}`}
         component={lazy(() => import('../../screens/AuditsScreen'))}
       />
+      <Route
+        path={`${parentPaths.realms}/:id`}
+        component={lazy(() => import('../../screens/AuthenticationRealmDetailsScreen'))}
+      />
+      <Route
+        path={`${parentPaths.realms}`}
+        component={lazy(() => import('../../screens/AuthenticationRealmsScreen'))}
+      />
       {/*
       <Route
         path={`${parentPaths.crudHelper.main}`}

@@ -376,6 +376,19 @@ const identityRequiredFields = (identity) => {
   return { ...defaultIdentity, ...identity };
 };
 
+const realmRequiredFields = (realm) => {
+  const defaultRealm = {
+    dbVersion: '',
+    id: '',
+    jwtPrivateKey: '',
+    jwtPublicKey: '',
+    lastUpdateReason: '',
+    path: '',
+    authorizedCustomerIds: [],
+  };
+  return { ...defaultRealm, ...realm };
+};
+
 const countriesOptionsFormatting = (array) => array.map((item) => (
   { id: item.alpha2Code, value: item.name }
 ));
@@ -464,4 +477,5 @@ export {
   defaultManualFulfillment,
   defaultProductLocales,
   structureProdAutocompleteSelectOptions,
+  realmRequiredFields,
 };

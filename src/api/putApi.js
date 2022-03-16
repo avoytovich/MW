@@ -233,6 +233,14 @@ const putApi = {
       data,
     });
   },
+  updateRealmsById(id, data) {
+    const url = `/iam/realms/${id}`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
 };
 
 export default putApi;

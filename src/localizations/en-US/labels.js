@@ -756,6 +756,12 @@ const labels = {
   fields: 'Fields',
   parameterName: 'Parameter Name',
   displayString: 'Display String',
+  path: 'Path',
+  associatedCustomer: 'Associated Customer',
+  resetPasswordTokenLifespan: 'Reset password token lifespan (in ms)',
+  jwtPublicKey: 'JWT Public Key',
+  realm: 'Realm',
+  identitiesForRealm: 'Unless overriden at identity level, identities related to this realm will be able to manage these customers, in addition to the customer directly associated to this realm.',
   searchSection: 'Search section...',
 };
 

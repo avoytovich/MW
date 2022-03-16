@@ -717,5 +717,19 @@ const getAllApi = {
       url,
     });
   },
+  getRealms({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+  } = defaultRequestedObject) {
+    let url = `/iam/realms?format=short&size=${size}&page=${page}`;
+
+    if (filters) {
+      const adjustFilters = filters.replace(',', '&status=');
+      url += adjustFilters;
+    }
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
 };
 export default getAllApi;
