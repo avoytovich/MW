@@ -67,7 +67,7 @@ const VALID_FILTER_SCOPES = [
   'realms',
 ];
 
-const KNOWN_REALMS = ['/nexway', '/mynexway'];
+const KNOWN_REALMS = ['/nexway', '/mynexway', '/kasperskyfrance'];
 
 const VALID_SEARCH_SCOPES = [
   'orderlist',

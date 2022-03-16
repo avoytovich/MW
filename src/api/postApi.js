@@ -1,9 +1,9 @@
 import { axiosInstance } from '../axios';
-import { KNOWN_REALMS } from '../services/constants';
+// import { KNOWN_REALMS } from '../services/constants';
 
 const postApi = {
   signIn(data) {
-    let realm = data?.realm;
+    const realm = data?.realm || 'nexway';
     let url = '/iam/tokens';
     const grantType = data?.grantType || 'password';
 
@@ -13,9 +13,9 @@ const postApi = {
       url += `?reason=${reason}`;
     }
 
-    if (KNOWN_REALMS.indexOf(`/${realm}`) < 0) {
+    /*  if (KNOWN_REALMS.indexOf(`/${realm}`) < 0) {
       realm = 'nexway';
-    }
+    } */
 
     return axiosInstance({
       method: 'post',

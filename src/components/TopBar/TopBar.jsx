@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
+
 import { useLocation, NavLink } from 'react-router-dom';
 
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -10,11 +11,16 @@ import {
   Toolbar,
   IconButton,
 } from '@mui/material';
+
 import {
   Menu as MenuIcon,
   ExitToApp as LogoutIcon,
 } from '@mui/icons-material';
+
 import parentPaths from '../../services/paths';
+import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES, VALID_SEARCH_SCOPES } from '../../services/constants';
+
+import store from '../../redux/store';
 import { logout } from '../../redux/actions/Account';
 import { setTableScope } from '../../redux/actions/TableData';
 
@@ -27,10 +33,18 @@ const TopBar = ({ toggleDrawer, drawerOpen }) => {
   const doLogout = () => dispatch(logout());
 
   useEffect(() => {
-    if (scope) {
+    const { tableData } = store.getState();
+
+    if (scope
+        && tableData?.scope !== scope
+        && (VALID_REFRESH_SCOPES.includes(scope)
+          || VALID_FILTER_SCOPES.includes(scope)
+          || VALID_SEARCH_SCOPES.includes(scope)
+        )) {
       dispatch(setTableScope(scope));
     }
   }, [scope]);
+
   return (
     <AppBar position='static' className='top-bar' elevation={1} sx={{ zIndex: 9 }}>
       <Toolbar>
