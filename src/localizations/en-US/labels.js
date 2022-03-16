@@ -763,6 +763,7 @@ const labels = {
   realm: 'Realm',
   identitiesForRealm: 'Unless overriden at identity level, identities related to this realm will be able to manage these customers, in addition to the customer directly associated to this realm.',
   searchSection: 'Search section...',
+  marketingCampaignId: 'Marketing Campaign ID',
 };
 
 export default labels;
