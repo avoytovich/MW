@@ -174,7 +174,9 @@ const DetailPageWrapper = ({
                 if (Object.values(errors?.[tab] || {})
                   .some((item) => item !== null)) {
                   return (
+                    // uncomment CustomizedTab instead of Tab for highlight tabs
                     <CustomizedTab key={tab} label={localization.t(`labels.${tab}`)} />
+                    // <Tab key={tab} label={localization.t(`labels.${tab}`)} />
                   );
                 }
                 curTab -= 1;
