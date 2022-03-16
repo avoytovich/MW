@@ -151,7 +151,36 @@ const General = ({
             )
           )}
         </Box>
+
+        <Box display='flex' p={2} flexDirection='row' alignItems='baseline'>
+          <Box>
+            <Typography>{localization.t('labels.applyOnNetPrice')}</Typography>
+          </Box>
+
+          <Box px={2}>
+            <FormControlLabel
+              data-test='applyOnNetPrice'
+              control={(
+                <Switch
+                  name='applyOnNetPrice'
+                  onChange={(e) => {
+                    setCurDiscount({
+                      ...curDiscount,
+                      applyOnNetPrice: e.target.checked,
+                    });
+                  }}
+                  color='primary'
+                  checked={curDiscount.applyOnNetPrice}
+                />
+              )}
+              label={localization.t(
+                `labels.${curDiscount.applyOnNetPrice ? 'enabled' : 'disabled'}`,
+              )}
+            />
+          </Box>
+        </Box>
       </Grid>
+
       <Grid item md={6} sm={12}>
         <Box p={2}>
           <Typography style={{ lineHeight: '38px' }}>

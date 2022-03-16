@@ -104,6 +104,28 @@ const ProductPriceRow = ({
     });
   };
 
+  const countriesWithDef = [{ id: 'default', value: 'default' }, ...countryOptions];
+  const availCountries = currency ? countriesWithDef.filter((c) => {
+    const curFromData = currentProductData?.prices?.priceByCountryByCurrency[currency];
+    const existingArr = curFromData ? Object.keys(curFromData) : [];
+
+    return existingArr.indexOf(c?.id) < 0;
+  }) : countriesWithDef;
+
+  const availCurrencies = country ? priceCurrency.filter((c) => {
+    const existingArr = [];
+    const pricesArr = currentProductData?.prices?.priceByCountryByCurrency
+      ? Object.entries(currentProductData?.prices?.priceByCountryByCurrency) : [];
+
+    pricesArr?.length && pricesArr.forEach(([cur, pr]) => {
+      if (pr[country] && existingArr.indexOf(cur) < 0) {
+        existingArr.push(cur);
+      }
+    });
+
+    return existingArr.indexOf(c?.id) < 0;
+  }) : priceCurrency;
+
   return (
     <>
       <TableRow className='new-price-row'>
@@ -112,7 +134,7 @@ const ProductPriceRow = ({
             <SelectCustom
               label='priceCountry'
               value={country}
-              selectOptions={[{ id: 'default', value: 'default' }, ...countryOptions]}
+              selectOptions={[...availCountries]}
               onChangeSelect={handleCountry}
               isDisabled={!!editingRow}
             />
@@ -124,7 +146,7 @@ const ProductPriceRow = ({
             <SelectCustom
               label='priceCurrency'
               value={currency}
-              selectOptions={priceCurrency}
+              selectOptions={[...availCurrencies]}
               onChangeSelect={handleCurrency}
               isDisabled={!!editingRow}
               withDots
