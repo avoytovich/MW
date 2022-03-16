@@ -10,8 +10,8 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  InputAdornment,
 } from '@mui/material';
-
 import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import { getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 import { SelectCustom, AutocompleteCustom } from '../../components/Inputs';
@@ -110,6 +110,33 @@ const PricesDetailsView = ({
             </Box>
           )
         }
+
+        <Box width='50%' pr={4}>
+          <TextField
+            fullWidth
+            name="marketingCampaignId"
+            label="Marketing Campaign ID"
+            type="text"
+            value={curPrice.marketingCampaignId}
+            onChange={handleChange}
+            variant="outlined"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <FileCopyIcon
+                    onClick={() => copyText(curPrice.marketingCampaignId)}
+                    color="secondary"
+                    style={{ marginLeft: '5px', cursor: 'pointer' }}
+                    className="copyIcon"
+                    onMouseDown={(e) => {
+                      e.stopPropagation();
+                    }}
+                  />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
 
         <Box display="flex" mb={4}>
           <Box width="50%" mr={4} display='flex'>
