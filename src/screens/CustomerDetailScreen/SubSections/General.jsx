@@ -68,7 +68,9 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
                 </Typography>
               </Box>
               <Box display='flex'>
-                <Typography color='primary' data-test='customerId'>{currentCustomer.id}</Typography>
+                <Link href={`/realms/${currentCustomer.id}`}>
+                  <Typography color='primary'>{currentCustomer.id}</Typography>
+                </Link>
                 <Box px={1}><FileCopy color='secondary' onClick={() => makeCopy(currentCustomer.id)} /></Box>
               </Box>
             </Box>
