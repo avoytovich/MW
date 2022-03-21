@@ -25,11 +25,11 @@ const useTableData = (
   useEffect(() => {
     let isCancelled = false;
     if (tableScope === dataScope || dataScope === 'generateCodes') {
-      let searchRequest = Object.keys(activeSearch).length && activeSearch[dataScope]
-        && (() => {
-          const [key, val] = Object.entries(activeSearch[dataScope])[0];
-          return `&${key}=${val}`;
-        })();
+      let searchRequest = '';
+      if (Object.keys(activeSearch).length && activeSearch[dataScope]) {
+        const [key, val] = Object.entries(activeSearch[dataScope])[0];
+        searchRequest = `&${key}=${val}`;
+      }
       let filtersUrl = activeFilters && activeFilters[dataScope]
         && Object.values(activeFilters[dataScope]).length ? generateFilterUrl(activeFilters[dataScope], availableFilters[dataScope]) : '';
 
