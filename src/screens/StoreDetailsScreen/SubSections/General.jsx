@@ -30,6 +30,7 @@ const checkBoxObj = [
   { name: 'BUYER_AUTHENTICATION_REQUIRED', label: 'buyerAuthentication' },
   { name: 'AUTHENTICATION_NOT_REQUIRED', label: 'noAuthentication' },
 ];
+
 const General = ({
   currentStoreData, setCurrentStoreData, setErrors, errors,
 }) => {
@@ -85,7 +86,13 @@ const General = ({
         },
       });
     } else {
-      setErrors({});
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [target.name]: false,
+        },
+      });
     }
   };
 

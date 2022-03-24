@@ -171,10 +171,9 @@ const DetailPageWrapper = ({
             {tabs?.tabLabels.map((tab) => {
               let { curTab } = tabs;
               while (curTab >= 0) {
-                if (Object.values(errors?.[tab] || {})
-                  .some((item) => item !== null)) {
+                if (errors?.[tab]?.isFulfilled === false) {
                   return (
-                    // uncomment CustomizedTab instead of Tab for highlight tabs
+                    // comment CustomizedTab instead of Tab for unhighlight tabs
                     <CustomizedTab key={tab} label={localization.t(`labels.${tab}`)} />
                     // <Tab key={tab} label={localization.t(`labels.${tab}`)} />
                   );
