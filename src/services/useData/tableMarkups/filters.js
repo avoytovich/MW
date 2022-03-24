@@ -775,7 +775,7 @@ const filters = {
   recommendations: [
     {
       id: 'id',
-      label: localization.t('labels.roleId'),
+      label: localization.t('labels.ruleId'),
       type: 'text',
     },
     {
