@@ -29,6 +29,13 @@ const PaginationComponent = ({
     } else if (toLeft === 0) {
       min = min + currentPagination - 1;
       plus = 3;
+    } else if (totalPages === currentPagination) {
+      min = totalPages - 3;
+      plus = 3;
+    } else if (totalPages < currentPagination) {
+      dispatch(setCurrentPage(1));
+      min = totalPages - 3;
+      plus = 3;
     } else {
       min = min + currentPagination - 2;
       plus = 2;
@@ -39,7 +46,14 @@ const PaginationComponent = ({
     for (let i = min; i <= max; i++) {
       res.push(i);
     }
-    const exitConditin = max - currentPagination;
+
+    let exitConditin = max - currentPagination;
+    if (totalPages === currentPagination) {
+      exitConditin = max - currentPagination + plus;
+    }
+    if (totalPages < currentPagination) {
+      exitConditin = max;
+    }
     return exitConditin < 2 && min > 1 && res.length < 5
       ? calculatePaginationNumbers(exitConditin === 0 && min > 2 ? -2 : -1)
       : res;
