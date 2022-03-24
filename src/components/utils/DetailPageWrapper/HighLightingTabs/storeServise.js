@@ -36,7 +36,7 @@ const validPaymentTypes = (curData, keyPaymentGroups) => {
   return false;
 };
 
-const storeHightLightTabs = (curData, isRankingOpen) => {
+const hightLightPayment = (curData, isRankingOpen) => {
   const keyPaymentGroups = Object.keys(curData?.paymentGroups || {});
   return (
     (curData.designs.paymentComponent.rankedPaymentTabsByCountriesList[0].rankedPaymentTabs[0])
@@ -45,6 +45,12 @@ const storeHightLightTabs = (curData, isRankingOpen) => {
           && validPaymentTypes(curData, keyPaymentGroups))) ? null : false
   );
 };
+
+const hightLightGeneral = (curData) => (
+  (curData.name)
+    && (curData.displayName)
+      && (curData.routes[0]?.hostname) ? null : false
+);
 
 const storeHightLight = (
   curData,
@@ -60,7 +66,7 @@ const storeHightLight = (
         ...errors,
         [tabs?.tabLabels?.[tabs.curTab]]: {
           ...errors?.[tabs?.tabLabels?.[tabs.curTab]],
-          isFulfilled: storeHightLightTabs(curData, isRankingOpen),
+          isFulfilled: hightLightPayment(curData, isRankingOpen),
         },
       });
     } else if (['design', 'localizedContent'].includes(tabs?.tabLabels?.[tabs.curTab])) {
@@ -80,12 +86,30 @@ const storeHightLight = (
         },
       });
     }
-  } else {
+  } else if (tabs?.tabLabels?.[tabs.curTab] !== 'general') {
+    setErrors({
+      ...errors,
+      general: {
+        ...errors?.general,
+        isFulfilled: hightLightGeneral(curData),
+      },
+      payment: {
+        ...errors?.payment,
+        isFulfilled: hightLightPayment(curData, isRankingOpen),
+      },
+    });
+  } else if (tabs?.tabLabels?.[tabs.curTab] !== 'payment') {
     setErrors({
       ...errors,
       payment: {
         ...errors?.payment,
-        isFulfilled: storeHightLightTabs(curData, isRankingOpen),
+        isFulfilled: hightLightPayment(curData, isRankingOpen),
+      },
+      general: {
+        name: !!errors?.general?.name || !curData.name,
+        displayName: !!errors?.general?.displayName || !curData.displayName,
+        routes: !!errors?.general?.routes || !curData.routes
+          ?.map((el) => !el.hostname).some((el) => !el === true),
       },
     });
   }
