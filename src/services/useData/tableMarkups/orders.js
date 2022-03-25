@@ -256,7 +256,7 @@ const generateData = (data, customers, stores) => {
       publisherRefId: val?.lineItems[0]?.publisherRefId,
       transactionId: val?.payment?.transactionId,
       subscriptionStatus: val?.subscriptionStatus,
-      creditNoteId: val?.creditNotes?.id,
+      creditNoteId: val?.creditNotes?.[0]?.id,
       cancelationReasons: val?.creditNotes?.id,
       preorder: val.preorder ? 'Yes' : 'No',
       store,

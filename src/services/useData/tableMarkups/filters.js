@@ -579,6 +579,7 @@ const filters = {
       id: 'lifecycle.id',
       label: localization.t('labels.lifecycleId'),
       type: 'text',
+      exactSearch: true,
     },
     {
       id: 'creationDate',
@@ -599,6 +600,7 @@ const filters = {
       id: 'storeId',
       label: localization.t('labels.storeId'),
       type: 'text',
+      exactSearch: true,
     },
   ],
   themes: [
@@ -719,26 +721,32 @@ const filters = {
       id: 'currency',
       label: localization.t('labels.currency'),
       type: 'text',
+      exactSearch: true,
+      toUpperCase: true,
     },
     {
       id: 'value',
       label: localization.t('labels.value'),
       type: 'text',
+      exactSearch: true,
     },
     {
       id: 'msrp',
       label: localization.t('labels.msrp'),
       type: 'text',
+      exactSearch: true,
     },
     {
       id: 'upSell',
       label: localization.t('labels.upSell'),
       type: 'text',
+      exactSearch: true,
     },
     {
       id: 'crossSell',
       label: localization.t('labels.crossSell'),
       type: 'text',
+      exactSearch: true,
     },
     {
       id: 'vatIncluded',

@@ -41,6 +41,7 @@ const FilterBlock = ({
         search={search}
         scope={scope}
         size={size}
+        toUpperCase={data?.toUpperCase}
         type={data?.type}
         curData={curVal}
         updateConfig={updateConfig}
