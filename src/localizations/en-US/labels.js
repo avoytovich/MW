@@ -261,7 +261,7 @@ const labels = {
   cardBin: 'Card Bin',
   paymentAttempt1_1: 'Payment Attempt 1/1',
   defaultCurrency: 'Default Currency',
-  priceCurrency: 'Price',
+  сurrency: 'Сurrency',
   priceCountry: 'Country',
   cancelOrder: 'Cancel Order',
   upsellPrice: 'Upsell price',
