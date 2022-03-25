@@ -47,8 +47,7 @@ const TableData = (state = initialState, { type, payload }) => {
       localStorage.setItem('filters', JSON.stringify(newFilters));
       return { ...state, filters: newFilters };
     case SET_TABLE_SEARCH:
-      localStorage.setItem('filters', JSON.stringify({ payload }));
-      return { ...state, ...payload };
+      return { ...state, search: { ...payload } };
     case SET_WAS_UPDATED:
       return { ...state, wasUpdated: !state.wasUpdated };
     default:

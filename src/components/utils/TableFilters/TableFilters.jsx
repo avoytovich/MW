@@ -26,7 +26,7 @@ import {
 import FilterBlock from './FilterBlock';
 
 import {
-  resetSearch, setFilters, setFilterViews,
+  setFilters, setFilterViews,
 } from '../../../redux/actions/TableData';
 
 import availableFilters from '../../../services/useData/tableMarkups/filters';
@@ -86,7 +86,6 @@ const Filters = ({ scope, onClose }) => {
 
   const applyFilters = () => {
     onClose();
-    dispatch(resetSearch());
     if (Object.keys(newFiltersConfig).length === 0
       && Object.getPrototypeOf(newFiltersConfig) === Object.prototype) {
       dispatch(setFilters({ [scope]: newFiltersConfig }));

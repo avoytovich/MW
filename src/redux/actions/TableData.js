@@ -40,7 +40,7 @@ const setFilters = (filters) => ({ type: SET_TABLE_FILTERS, payload: filters });
 const setSearch = (search) => {
   localStorage.setItem('search', JSON.stringify(search));
 
-  return ({ type: SET_TABLE_SEARCH, payload: { search } });
+  return ({ type: SET_TABLE_SEARCH, payload: search });
 };
 
 const setFilterViews = (views) => {
