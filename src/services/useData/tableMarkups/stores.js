@@ -1,6 +1,7 @@
 import localization from '../../../localization';
 
 const defaultShow = {
+  id: false,
   customer: true,
   name: true,
   createDate: true,
@@ -11,11 +12,11 @@ const defaultShow = {
   checkoutTheme: true,
   checkoutLayout: true,
   gtmId: false,
-  id: false,
 };
 
 const markUp = {
   headers: [
+    { value: localization.t('labels.storeId'), id: 'id' },
     { value: localization.t('labels.customer'), id: 'customer' },
     { value: localization.t('labels.name'), id: 'name' },
     {
@@ -38,7 +39,6 @@ const markUp = {
     { value: localization.t('labels.checkoutTheme'), id: 'checkoutTheme' },
     { value: localization.t('labels.checkoutLayout'), id: 'checkoutLayout' },
     { value: localization.t('labels.gtmId'), id: 'gtmId' },
-    { value: localization.t('labels.storeId'), id: 'id' },
   ],
 };
 

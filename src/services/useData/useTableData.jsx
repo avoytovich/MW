@@ -18,17 +18,19 @@ const useTableData = (
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
   const activeSearch = useSelector(({ tableData: { search } }) => search);
+
   const customerScope = useSelector(({
     account: { nexwayState },
   }) => nexwayState?.selectedCustomer?.id);
-
   useEffect(() => {
     let isCancelled = false;
     if (tableScope === dataScope || dataScope === 'generateCodes') {
       let searchRequest = '';
-      if (Object.keys(activeSearch).length && activeSearch[dataScope]) {
+      if (Object.keys(activeSearch).length && activeSearch[dataScope] && Object.values(activeSearch[dataScope]).indexOf('') === -1) {
         const [key, val] = Object.entries(activeSearch[dataScope])[0];
-        searchRequest = `&${key}=${val}`;
+        let searchVal = encodeURIComponent(val);
+        searchVal = searchVal.replace(new RegExp("'", 'g'), "''");
+        searchRequest = `&${key}=${searchVal}`;
       }
       let filtersUrl = activeFilters && activeFilters[dataScope]
         && Object.values(activeFilters[dataScope]).length ? generateFilterUrl(activeFilters[dataScope], availableFilters[dataScope]) : '';
@@ -56,31 +58,22 @@ const useTableData = (
       requests(
         reduxRowPerPage,
         resolveCurrentPage(),
-        !searchRequest || searchRequest[searchRequest.length - 1] === '='
-          ? filtersUrl : searchRequest,
+        `${searchRequest}${filtersUrl}`,
       )
         .then((payload) => {
           if (!isCancelled) {
             if (searchRequest && !payload.values.length) {
-              searchRequest = (() => {
-                const [key, val] = Object.entries(activeSearch[dataScope])[1];
-                const filtersObj = {
-                  [dataScope]: {
-                    ...JSON.parse(localStorage.getItem('filters'))[dataScope],
-                    [key]: val,
-                  },
-                };
-                delete filtersObj[dataScope].id;
-                return `&${key}=*${val}*`;
-              })();
+              const [key, val] = Object.entries(activeSearch[dataScope])[1];
+              let searchVal = encodeURIComponent(val);
+              searchVal = searchVal.replace(new RegExp("'", 'g'), "''");
+              searchRequest = `&${key}=*${searchVal}*`;
               if (customerScope) {
                 searchRequest += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
               }
               return requests(
                 reduxRowPerPage,
                 reduxCurrentPage - 1,
-                !searchRequest || searchRequest[searchRequest.length - 1] === '='
-                  ? filtersUrl : searchRequest,
+                `${searchRequest}${filtersUrl}`,
               )
                 .then((data) => {
                   if (!isCancelled) {

@@ -13,7 +13,7 @@ import {
 
 import SearchIcon from '@mui/icons-material/Search';
 
-import { setSearch, resetFilters } from '../../../redux/actions/TableData';
+import { setSearch } from '../../../redux/actions/TableData';
 import { SelectWithChip } from '../../Inputs';
 
 import localization from '../../../localization';
@@ -34,7 +34,6 @@ const FilterBlockInputs = ({
         },
       };
       dispatch(setSearch(searchObject));
-      dispatch(resetFilters(scope));
     }
   };
 

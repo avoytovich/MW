@@ -89,7 +89,7 @@ const TableActionsBar = ({
   })) : [];
 
   useEffect(() => {
-    setCurVal(tableSearch?.id || '');
+    setCurVal(tableSearch?.[Object.keys(tableSearch)?.[0]] || '');
   }, [tableSearch]);
 
   const handleDeleteItems = () => {

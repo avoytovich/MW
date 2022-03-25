@@ -3,12 +3,6 @@ import localization from '../../../localization';
 const filters = {
   productlist: [
     {
-      id: 'id',
-      label: localization.t('labels.productId'),
-      type: 'text',
-      exactSearch: true,
-    },
-    {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
       type: 'date',
@@ -18,7 +12,6 @@ const filters = {
       label: localization.t('labels.lastUpdate'),
       type: 'date',
     },
-    { id: 'genericName', label: localization.t('labels.name'), type: 'text' },
     {
       id: 'publisherRefId',
       label: localization.t('labels.publisherRefId'),
@@ -110,12 +103,6 @@ const filters = {
         { value: localization.t('labels.manualRenewal'), id: 'MANUAL_RENEWAL' },
         { value: localization.t('labels.billingPlan'), id: 'BILLING_PLAN' },
       ],
-    },
-    {
-      id: 'id',
-      label: localization.t('labels.orderId'),
-      type: 'text',
-      exactSearch: true,
     },
     {
       id: 'invoice.id',
@@ -263,8 +250,6 @@ const filters = {
     },
   ],
   stores: [
-    { id: 'name', label: localization.t('labels.name'), type: 'text' },
-    { id: 'id', label: localization.t('labels.storeId'), type: 'text' },
     {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
@@ -366,11 +351,6 @@ const filters = {
 
   licenses: [
     {
-      id: 'id',
-      label: localization.t('labels.licenseId'),
-      type: 'text',
-    },
-    {
       id: 'status',
       label: localization.t('labels.status'),
       type: 'selectWithChip',
@@ -431,11 +411,6 @@ const filters = {
   ],
 
   carts: [
-    {
-      id: 'id',
-      label: localization.t('labels.cartId'),
-      type: 'text',
-    },
     {
       id: 'creationDate',
       label: localization.t('labels.creationDate'),
@@ -571,11 +546,6 @@ const filters = {
   ],
   subscriptions: [
     {
-      id: 'id',
-      label: localization.t('labels.subscriptionId'),
-      type: 'text',
-    },
-    {
       id: 'lifecycle.id',
       label: localization.t('labels.lifecycleId'),
       type: 'text',
@@ -590,11 +560,6 @@ const filters = {
       id: 'updateDate',
       label: localization.t('labels.updateDate'),
       type: 'date',
-    },
-    {
-      id: 'name',
-      label: localization.t('labels.subscriptionName'),
-      type: 'text',
     },
     {
       id: 'storeId',
@@ -703,11 +668,6 @@ const filters = {
       type: 'date',
     },
     {
-      id: 'productId',
-      label: localization.t('labels.productId'),
-      type: 'text',
-    },
-    {
       id: 'marketingCampaignId',
       label: localization.t('labels.marketingId'),
       type: 'text',
@@ -795,11 +755,6 @@ const filters = {
       id: 'updatingDate',
       label: localization.t('labels.updateDate'),
       type: 'date',
-    },
-    {
-      id: 'name',
-      label: localization.t('labels.ruleName'),
-      type: 'text',
     },
     {
       id: 'status',
@@ -963,11 +918,6 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'email',
-      label: localization.t('labels.emailAddress'),
-      type: 'text',
-    },
-    {
       id: 'status',
       label: localization.t('labels.status'),
       type: 'selectWithChip',
@@ -989,11 +939,6 @@ const filters = {
   ],
   resellers: [
     {
-      id: 'id',
-      label: localization.t('labels.endUserId'),
-      type: 'text',
-    },
-    {
       id: 'firstName',
       label: localization.t('labels.firstName'),
       type: 'text',
@@ -1006,11 +951,6 @@ const filters = {
     {
       id: 'company.companyName',
       label: localization.t('labels.companyName'),
-      type: 'text',
-    },
-    {
-      id: 'email',
-      label: localization.t('labels.emailAddress'),
       type: 'text',
     },
     {
@@ -1265,10 +1205,6 @@ const filters = {
       label: localization.t('labels.discountRuleId'),
       type: 'text',
       exactSearch: true,
-    }, {
-      id: 'name',
-      label: localization.t('labels.discountRuleName'),
-      type: 'text',
     },
     {
       id: 'model',
