@@ -15,7 +15,9 @@ const generateFilterUrl = (filters, availableFilters) => {
       } else if (['id', 'productId'].includes(key)) {
         url += `${subFilter}${val}`;
       } else {
-        url += `${subFilter}*${val}*`;
+        let searchVal = encodeURIComponent(val);
+        searchVal = searchVal.replace(new RegExp("'", 'g'), "''");
+        url += `${subFilter}*${searchVal}*`;
       }
     } else if (Array.isArray(val)) {
       if (truthyValue.includes(key)) {

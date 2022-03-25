@@ -20,7 +20,7 @@ import localization from '../../../localization';
 import { placeholderData } from './helper';
 
 const FilterBlockInputs = ({
-  type, curData, updateConfig, data, size, search, scope,
+  type, curData, updateConfig, data, size, search, scope, toUpperCase,
 }) => {
   const dispatch = useDispatch();
 
@@ -48,10 +48,12 @@ const FilterBlockInputs = ({
       placeholder={search ? placeholderData(scope) : ''}
       InputLabelProps={!data.label && { shrink: false }}
       onChange={
-        (e) => (
-          search ? updateConfig(data, e.target.value) : updateConfig(data.id, e.target.value))
+        (e) => {
+          const searchValue = toUpperCase ? e.target.value.toUpperCase() : e.target.value;
+          return search ? updateConfig(data, searchValue) : updateConfig(data.id, searchValue)
+        }
       }
-      onKeyDown={search ? handleKeyDown : () => {}}
+      onKeyDown={search ? handleKeyDown : () => { }}
       InputProps={{
         endAdornment: <InputAdornment position='end'><SearchIcon color='secondary' /></InputAdornment>,
       }}
@@ -181,6 +183,7 @@ FilterBlockInputs.propTypes = {
   curData: PropTypes.any,
   updateConfig: PropTypes.func,
   data: PropTypes.object,
+  toUpperCase: PropTypes.bool,
 };
 
 export default FilterBlockInputs;
