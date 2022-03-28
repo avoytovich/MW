@@ -92,7 +92,6 @@ const Filters = ({ scope, onClose }) => {
     } else {
       dispatch(setFilters({
         [scope]: {
-          ...JSON.parse(localStorage.getItem('filters'))?.[scope],
           ...newFiltersConfig,
         },
       }));
