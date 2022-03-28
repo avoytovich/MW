@@ -937,6 +937,23 @@ const filters = {
       type: 'text',
     },
   ],
+  endusergroups: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.lastUpdate'),
+      type: 'date',
+    },
+  ],
   resellers: [
     {
       id: 'firstName',
