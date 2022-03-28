@@ -150,13 +150,13 @@ const Prices = ({
           <Table aria-label='simple table'>
             <TableHead>
               <TableRow style={{ background: '#eee' }}>
-                <TableCell align='center'>Country</TableCell>
-                <TableCell align='center'>Currency</TableCell>
-                <TableCell align='center'>Price</TableCell>
-                <TableCell align='center'>MSRP</TableCell>
-                <TableCell align='center'>Upsell price</TableCell>
-                <TableCell align='center'>Cross-sell price</TableCell>
-                <TableCell align='center'>VAT included</TableCell>
+                <TableCell align='center'>{localization.t('labels.country')}</TableCell>
+                <TableCell align='center'>{localization.t('labels.currency')}</TableCell>
+                <TableCell align='center'>{localization.t('labels.price')}</TableCell>
+                <TableCell align='center'>{localization.t('labels.msrp')}</TableCell>
+                <TableCell align='center'>{localization.t('labels.upsellPrice')}</TableCell>
+                <TableCell align='center'>{localization.t('labels.crossSellPrice')}</TableCell>
+                <TableCell align='center'>{localization.t('labels.vatIncluded')}</TableCell>
                 <TableCell />
               </TableRow>
             </TableHead>

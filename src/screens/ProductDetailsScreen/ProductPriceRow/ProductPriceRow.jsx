@@ -144,7 +144,7 @@ const ProductPriceRow = ({
         <TableCell align='center'>
           <Box>
             <SelectCustom
-              label='priceCurrency'
+              label='сurrency'
               value={currency}
               selectOptions={[...availCurrencies]}
               onChangeSelect={handleCurrency}
