@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,11 +5,12 @@ import { useSelector } from 'react-redux';
 import parentPaths from '../../services/paths';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import api from '../../api';
+import generateData from './utils';
 import AutoFulfillmentDetailsView from './AutoFulfillmentDetailsView';
+import SectionLayout from '../../components/SectionLayout';
 
 const AutoFulfillmentDetails = () => {
   const [detailsData, setDetailsData] = useState(null);
-  const [customer, setCustomer] = useState({});
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -21,30 +21,44 @@ const AutoFulfillmentDetails = () => {
     setLoading(true);
     api.getFulfillmentsPartnerById(id)
       .then((data) => {
-        setDetailsData(data.data);
+        let generatedData = generateData(data.data);
         if (data.data.customerId) {
           api.getCustomerById(data.data.customerId)
-            .then((res) => setCustomer(res.data));
+            .then((res) => {
+              const customerObj = {
+                value: res.data.name || '',
+                path: `${parentPaths.customers}/${res.data.id}`,
+                copyValue: res.data.id || '',
+              };
+              generatedData = {
+                ...generatedData, customer: { ...customerObj },
+              };
+              setDetailsData(generatedData);
+              setLoading(false);
+            });
+        } else {
+          setDetailsData(generatedData);
+          setLoading(false);
         }
       })
-      .catch((err) => setError(err))
-      .finally(() => setLoading(false));
+      .catch((err) => setError(err));
   }, [id]);
 
   return (
     <DetailPageWrapper
       nxState={nxState}
       id={id}
-      name={detailsData?.name}
+      name={detailsData?.name?.value}
       isLoading={isLoading}
       curParentPath={parentPaths.fulfillment.main}
       curData={detailsData}
       noTabsMargin
     >
-      <AutoFulfillmentDetailsView
-        detailsData={detailsData}
-        customer={customer}
-      />
+      <SectionLayout label='general'>
+        <AutoFulfillmentDetailsView
+          detailsData={detailsData}
+        />
+      </SectionLayout>
     </DetailPageWrapper>
   );
 };
