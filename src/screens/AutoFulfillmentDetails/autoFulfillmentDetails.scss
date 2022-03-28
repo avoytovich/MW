@@ -25,6 +25,14 @@
   }
 }
 
+.customerLink{
+  color: $currentPageText;
+  text-decoration: none;
+}
+.copyIcon:hover{
+  color: $currentPageText;
+  cursor: pointer;
+}
 .wrapper-fulfillment-details .customer .customer-value-name {
   margin-right: 5px;
 }
