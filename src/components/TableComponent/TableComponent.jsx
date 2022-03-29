@@ -15,7 +15,7 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 import PaginationComponent from '../PaginationComponent';
 import localization from '../../localization';
 
-import { setCheckedItems } from '../../redux/actions/TableData';
+import { setCheckedItems, setCurrentPage } from '../../redux/actions/TableData';
 import setShowColumns from '../../redux/actions/ShowColumns';
 
 import { adjustColumnsData, parsePath } from '../../services/helpers/dataGridHelper';
@@ -48,6 +48,8 @@ const TableComponent = ({
   const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
   const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
+  const activeSearch = useSelector(({ tableData: { search } }) => search);
+  const activeFilters = useSelector(({ tableData: { filters } }) => filters[[scope]]) || {};
 
   const [sortModel, setSortModel] = useState(sortParams ? [sortParams] : []);
 
@@ -92,6 +94,11 @@ const TableComponent = ({
 
     dispatch(setCheckedItems(newChecked));
   };
+
+  if ((!tableData?.values?.length && Object.keys(activeSearch).length)
+    || (!tableData?.values?.length && Object.keys(activeFilters).length)) {
+    dispatch(setCurrentPage(1));
+  }
 
   useEffect(() => {
     if (allCheckedItems) {
