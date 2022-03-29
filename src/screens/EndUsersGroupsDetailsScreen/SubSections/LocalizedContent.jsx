@@ -5,13 +5,14 @@ import React, { useState, useEffect, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Box, Tabs, Tab,
+  Box, Tabs, Tab, Typography,
 } from '@mui/material';
 
 import { toast } from 'react-toastify';
 
 import ClearIcon from '@mui/icons-material/Clear';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import localization from '../../../localization';
 import LocalizedErrorMessages from './LocalizedErrorMessages';
 import { SelectCustom } from '../../../components/Inputs';
 import LocalizationInputs from './LocalizationInputs';
@@ -72,6 +73,16 @@ const LocalizedContent = ({
     const newErrors = validateFields(currentData, errors, defaultLocale);
     setErrors({ ...newErrors });
   }, [currentData]);
+
+  if (value === '' || value === undefined) {
+    return (
+      <Box px={2} pb={1}>
+        <Typography style={{ fontStyle: 'italic', color: '#ff0202' }}>
+          {localization.t('general.pleaseSelectFallbackLocale')}
+        </Typography>
+      </Box>
+    );
+  }
   return (
     <>
       <Box display='flex' width='100%'>
