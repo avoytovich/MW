@@ -106,7 +106,7 @@ const ProductPriceRow = ({
 
   const countriesWithDef = [{ id: 'default', value: 'default' }, ...countryOptions];
   const availCountries = currency ? countriesWithDef.filter((c) => {
-    const curFromData = currentProductData?.prices?.priceByCountryByCurrency[currency];
+    const curFromData = currentProductData?.prices?.priceByCountryByCurrency?.[currency];
     const existingArr = curFromData ? Object.keys(curFromData) : [];
 
     return existingArr.indexOf(c?.id) < 0;
