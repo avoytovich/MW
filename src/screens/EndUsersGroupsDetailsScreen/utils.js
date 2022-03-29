@@ -40,7 +40,7 @@ const beforeSend = (data) => {
     if (data.localizedContent[key].localizedLongDesc) {
       localizedLongDesc[key] = data.localizedContent[key].localizedLongDesc;
     }
-    if (data.localizedContent[key].localizedShortDesc) {
+    if (data.localizedContent[key]?.localizedShortDesc) {
       localizedShortDesc[key] = data.localizedContent[key].localizedShortDesc;
     }
     if (data.localizedContent[key].localizedLogo) {
@@ -76,7 +76,7 @@ const validateFields = (currentData, errors, defaultLocale) => {
   const newErrors = { ...errors };
 
   const notValidFields = Object.keys(currentData).filter((item) => {
-    if (currentData[item].localizedShortDesc === '' && defaultLocale !== item) {
+    if (currentData[item]?.localizedShortDesc === '' && defaultLocale !== item) {
       return item;
     }
   });
@@ -97,7 +97,7 @@ const validateFields = (currentData, errors, defaultLocale) => {
   const notValidLinkImageUrl = Object.keys(currentData).filter((item) => (
     !urlIsValid(currentData[item].bannerLinkUrl) && currentData[item].bannerLinkUrl));
 
-  if (currentData[defaultLocale].localizedShortDesc === '' && !notValidRequiredFields.includes(localization.t('forms.inputs.localizedContent.localizedShortDesc'))) {
+  if (currentData[defaultLocale]?.localizedShortDesc === '' && !notValidRequiredFields.includes(localization.t('forms.inputs.localizedContent.localizedShortDesc'))) {
     notValidRequiredFields.push(localization.t('forms.inputs.localizedContent.localizedShortDesc'));
   }
   if (notValidFields.length > 0) {

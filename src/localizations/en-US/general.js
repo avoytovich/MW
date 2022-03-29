@@ -129,6 +129,7 @@ const general = {
   pleaseEitherDropAKeyfileHere: 'Please either drop a keyfile here',
   validKeyfile: 'Valid keyfile contains a line by license key, with just license key on the line, followed by end-of-line character',
   abandonedCart: 'Abandoned Cart',
+  pleaseSelectFallbackLocale: 'Please select a fallback locale',
   realm: 'Realm',
 };
 
