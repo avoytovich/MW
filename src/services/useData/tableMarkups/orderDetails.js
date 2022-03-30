@@ -109,7 +109,7 @@ const generateData = (orderData, paymentData) => {
       {
         key: 'invoiceDate',
         label: localization.t('labels.invoiceDate'),
-        value: moment(orderData?.invoice?.date).format('ll') || emptyValue,
+        value: orderData?.invoice?.date ? moment(orderData?.invoice?.date).format('ll') : emptyValue,
       },
       {
         key: 'numberOfInstallments',

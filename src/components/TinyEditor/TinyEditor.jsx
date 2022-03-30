@@ -19,7 +19,7 @@ const TinyEditor = ({
   const [editorLoading, setEditorLoading] = useState(true);
 
   return (
-    <Box style={{ position: 'relative', height: '56px' }}>
+    <Box style={{ position: 'relative', minHeight: '56px' }}>
       {editorLoading && (
         <CircularProgress
           style={{
