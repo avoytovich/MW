@@ -186,7 +186,7 @@ const Variations = ({
               <TableHead>
                 <TableRow>
                   <TableCell>Parameter Name</TableCell>
-                  <TableCell>Name</TableCell>
+                  <TableCell>Type</TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>

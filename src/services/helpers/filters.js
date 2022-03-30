@@ -12,7 +12,7 @@ const generateFilterUrl = (filters, availableFilters) => {
     if (typeof val !== 'object') {
       if (filterConfig[0]?.exactSearch) {
         url += `${subFilter}${val}`;
-      } else if (['id', 'productId'].includes(key)) {
+      } else if (['id', 'productId', 'marketingCampaignId'].includes(key)) {
         url += `${subFilter}${val}`;
       } else {
         let searchVal = encodeURIComponent(val);

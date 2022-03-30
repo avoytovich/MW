@@ -213,6 +213,13 @@ const LocalizedContent = ({
     }
   };
 
+  const getSortedLocales = () => {
+    const first = curData?.fallbackLocale;
+
+    // eslint-disable-next-line no-nested-ternary
+    return availLocales.sort((x, y) => (x === first ? -1 : y === first ? 1 : 0)) || [];
+  };
+
   useEffect(() => {
     if (currentProductData?.descriptionId?.state) {
       Promise.all([
@@ -272,6 +279,8 @@ const LocalizedContent = ({
 
         dispatch(setTempProductLocales({ ...newi18n }));
         dispatch(setTempProductDescription({ ...newDescr }));
+
+        setValue(productDescrData?.fallbackLocale || 0);
       });
       return;
     }
@@ -340,6 +349,8 @@ const LocalizedContent = ({
 
       dispatch(setTempProductLocales({ ...newi18n, ...defI18nFields }));
       dispatch(setTempProductDescription({ ...newDescr }));
+
+      setValue(newDescr?.fallbackLocale || 0);
     });
   }, [currentProductData.descriptionId]);
 
@@ -382,7 +393,7 @@ const LocalizedContent = ({
                   onChange={(e, newTab) => setValue(newTab)}
                   aria-label='Localizations'
                 >
-                  {availLocales.map((locale) => (
+                  {getSortedLocales().map((locale) => (
                     <Tab
                       label={`${locale}${locale === curData?.fallbackLocale || (curData?.fallbackLocale?.state === 'inherits' ? locale === curData?.fallbackLocale?.parentValue : locale === curData?.fallbackLocale?.value)
                         ? ' (default)'
