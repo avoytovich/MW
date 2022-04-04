@@ -44,7 +44,9 @@ const PaginationComponent = ({
     const max = toRoght < 1 || toRoght === 0 ? totalPages : currentPagination + plus;
     const res = [];
     for (let i = min; i <= max; i++) {
-      res.push(i);
+      if (i > 0) {
+        res.push(i);
+      }
     }
 
     let exitConditin = max - currentPagination;
