@@ -7,7 +7,6 @@ import TableComponent from '../../components/TableComponent';
 import TableActionsBar from '../../components/TableActionsBar';
 
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import {
   getSortParams,
   saveSortParams,
@@ -29,7 +28,6 @@ const StoresScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.stores));
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -102,7 +100,6 @@ const StoresScreen = () => {
         </Box>
       </TableActionsBar>
       <TableComponent
-        allCheckedItems={allCheckedItems}
         scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import {
   generateData,
@@ -27,7 +26,6 @@ const OnboardingScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.onboarding),
   );
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const { selectedCustomer } = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -72,7 +70,6 @@ const OnboardingScreen = () => {
         headers={markUp.headers}
       />
       <TableComponent
-        allCheckedItems={allCheckedItems}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteOnboarding}

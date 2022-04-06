@@ -5,7 +5,6 @@ import localization from '../../localization';
 
 import TableComponent from '../../components/TableComponent';
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import { useTableData } from '../../services/useData';
 import { generateData, defaultShow } from '../../services/useData/tableMarkups/adminMetaRole';
 import {
@@ -20,7 +19,6 @@ const MetaRoles = ({ sortKey, scope, label }) => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys[sortKey]),
   );
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -62,7 +60,6 @@ const MetaRoles = ({ sortKey, scope, label }) => {
 
   return (
     <TableComponent
-      allCheckedItems={allCheckedItems}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}
       handleDeleteItem={handleDelete}

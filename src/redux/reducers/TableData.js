@@ -6,10 +6,11 @@ import {
   RESET_TABLE_FILTERS,
   RESET_TABLE_SEARCH,
   SET_TABLE_ROWS_PER_PAGE,
-  SET_TABLE_CHECKED_ITEMS,
+  SET_TABLE_CHECKED_ITEMS_DATA,
   SET_WAS_UPDATED,
   SET_TABLE_FILTER_VIEWS,
   SET_TABLE_CURRENT_PAGE,
+  SET_TABLE_CUR_CHECKED_ITEMS_DATA,
 } from '../constants/actionTypes';
 
 const rowsPerPage = JSON.parse(localStorage.getItem('rowsPerPage')) || '50';
@@ -21,7 +22,8 @@ const initialState = {
   search: {},
   rowsPerPage,
   currentPage: 1,
-  checkedItems: [],
+  checkedItemsData: [],
+  curCheckedItemsData: [],
   wasUpdated: false,
 };
 
@@ -31,7 +33,8 @@ const TableData = (state = initialState, { type, payload }) => {
     case SET_TABLE_SCOPE:
     case REFRESH_TABLE:
     case RESET_TABLE_SEARCH:
-    case SET_TABLE_CHECKED_ITEMS:
+    case SET_TABLE_CHECKED_ITEMS_DATA:
+    case SET_TABLE_CUR_CHECKED_ITEMS_DATA:
     case SET_TABLE_ROWS_PER_PAGE:
     case SET_TABLE_CURRENT_PAGE:
     case SET_TABLE_FILTER_VIEWS:
