@@ -13,12 +13,16 @@ const NotificationDetailScreenView = ({
   curTab,
   setCurNotification,
   selectOptions,
+  errorMessages,
+  setErrorMessages,
 }) => (
   <>
     {
       curTab === 0 && curNotification && (
         <SectionLayout label='general'>
           <General
+            errorMessages={errorMessages}
+            setErrorMessages={setErrorMessages}
             selectOptions={selectOptions}
             curNotification={curNotification}
             setCurNotification={setCurNotification}
@@ -64,6 +68,8 @@ NotificationDetailScreenView.propTypes = {
   curNotification: PropTypes.object,
   selectOptions: PropTypes.object,
   curTab: PropTypes.bool,
+  errorMessages: PropTypes.object,
+  setErrorMessages: PropTypes.func,
 };
 
 export default NotificationDetailScreenView;

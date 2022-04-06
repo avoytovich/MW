@@ -16,6 +16,7 @@ const NotificationDetailScreen = () => {
   const { id } = useParams();
   const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const [errorMessages, setErrorMessages] = useState({});
 
   const {
     setUpdate,
@@ -31,6 +32,8 @@ const NotificationDetailScreen = () => {
     const sendObj = { ...curData };
     if (sendObj.receiverType === 'email') {
       delete sendObj.url;
+      const emails = sendObj.emails.filter((el) => el);
+      sendObj.emails = emails;
     } else {
       delete sendObj.emails;
     }
@@ -38,6 +41,7 @@ const NotificationDetailScreen = () => {
     if (typeof sendObj !== 'object') {
       return sendObj;
     }
+
     return removeEmptyPropsInObject(sendObj);
   };
 
@@ -48,7 +52,10 @@ const NotificationDetailScreen = () => {
       name={notification?.name || `${localization.t('general.new')} ${localization.t(
         'general.notification',
       )}`}
-      saveIsDisabled={!curNotification?.name || (curNotification?.receiverType === 'email' && curNotification?.emails.length < 1) || (curNotification?.receiverType === 'webhook' && !urlIsValid(curNotification?.url))}
+      saveIsDisabled={!curNotification?.name
+        || (curNotification?.receiverType === 'email' && curNotification?.emails.length < 1)
+        || (curNotification?.receiverType === 'webhook' && !urlIsValid(curNotification?.url))
+        || Object.keys(errorMessages).length > 0}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.notifications.main}
@@ -64,6 +71,8 @@ const NotificationDetailScreen = () => {
       }}
     >
       <NotificationDetailScreenView
+        errorMessages={errorMessages}
+        setErrorMessages={setErrorMessages}
         curNotification={curNotification}
         setCurNotification={setCurNotification}
         selectOptions={selectOptions}
