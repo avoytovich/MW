@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import TableActionsBar from '../../components/TableActionsBar';
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import parentPaths from '../../services/paths';
 import TableComponent from '../../components/TableComponent';
 
@@ -28,7 +27,6 @@ const DiscountsScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.discounts),
   );
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getDiscounts({
@@ -81,7 +79,6 @@ const DiscountsScreen = () => {
       </TableActionsBar>
 
       <TableComponent
-        allCheckedItems={allCheckedItems}
         scope={scope}
         handleDeleteItem={handleDeleteDiscount}
         sortParams={sortParams}

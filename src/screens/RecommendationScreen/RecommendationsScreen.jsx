@@ -5,7 +5,6 @@ import { Button } from '@mui/material';
 import TableComponent from '../../components/TableComponent';
 import TableActionsBar from '../../components/TableActionsBar';
 import parentPaths from '../../services/paths';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import {
   generateData,
@@ -25,7 +24,6 @@ const RecommendationsScreen = () => {
   const scope = 'recommendations';
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(false);
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.recommendations),
@@ -79,7 +77,6 @@ const RecommendationsScreen = () => {
         </Button>
       </TableActionsBar>
       <TableComponent
-        allCheckedItems={allCheckedItems}
         scope={scope}
         sortParams={sortParams}
         handleDeleteItem={handleDeleteRecommendation}

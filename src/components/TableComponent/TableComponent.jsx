@@ -15,7 +15,7 @@ import { DataGridPro } from '@mui/x-data-grid-pro';
 import PaginationComponent from '../PaginationComponent';
 import localization from '../../localization';
 
-import { setCheckedItems, setCurrentPage } from '../../redux/actions/TableData';
+import { setCheckedItemsData, setCurrentPage, setCurCheckedItemsData } from '../../redux/actions/TableData';
 import setShowColumns from '../../redux/actions/ShowColumns';
 
 import { adjustColumnsData, parsePath } from '../../services/helpers/dataGridHelper';
@@ -23,7 +23,6 @@ import { adjustColumnsData, parsePath } from '../../services/helpers/dataGridHel
 import './TableComponent.scss';
 
 const TableComponent = ({
-  allCheckedItems,
   tableData,
   isLoading,
   handleDeleteItem,
@@ -47,53 +46,28 @@ const TableComponent = ({
 
   const reduxCurrentPage = useSelector(({ tableData: { currentPage } }) => currentPage);
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
-  const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
+  const [curChecked, setCurChecked] = useState([]);
+  const [allChecked, setAllChecked] = useState([]);
+
+  const tableCheckedItemsData = useSelector((
+    { tableData: { checkedItemsData } },
+  ) => checkedItemsData);
+  const tableCurCheckedItemsData = useSelector((
+    { tableData: { curCheckedItemsData } },
+  ) => curCheckedItemsData);
+  const tableRowsPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const activeSearch = useSelector(({ tableData: { search } }) => search);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters[[scope]]) || {};
-
   const [sortModel, setSortModel] = useState(sortParams ? [sortParams] : []);
+  const handleCheck = (newSelectionModel) => {
+    const newCurCheckedData = tableData.values?.filter((it) => newSelectionModel.includes(it.id));
+    setCurChecked(newSelectionModel);
+    dispatch(setCurCheckedItemsData(newCurCheckedData));
+  };
 
   if (!showColumn) {
     dispatch(setShowColumns({ [scope]: defaultShowColumn }));
   }
-
-  const handleCheck = (item) => {
-    let newChecked = [];
-
-    const [isChecked] = tableCheckedItems.filter((v) => v.id === item);
-
-    if (isChecked) {
-      newChecked = [...tableCheckedItems].filter((v) => v.id !== item);
-    } else {
-      const [newItem] = tableData?.values?.filter((v) => v.id === item);
-      newChecked = [...tableCheckedItems, newItem];
-    }
-
-    dispatch(setCheckedItems(newChecked));
-  };
-
-  const handleCheckAll = () => {
-    let newChecked = [];
-
-    if (allCheckedItems) {
-      if (!tableCheckedItems.length || allCheckedItems[allCheckedItems.length - 1]) {
-        newChecked = allCheckedItems[allCheckedItems.length - 1];
-        const isTableDataIncludes = allCheckedItems[allCheckedItems.length - 1]
-          .map((each) => each.id)
-          .includes(tableData.values[0].id);
-        if (isTableDataIncludes) {
-          newChecked = allCheckedItems[allCheckedItems.length - 1]
-            .filter((el) => !tableData.values.some((f) => f.id === el.id));
-        } else {
-          newChecked = [...allCheckedItems[allCheckedItems.length - 1], ...tableData?.values];
-        }
-      }
-    } else if (!tableCheckedItems.length) {
-      newChecked = tableData?.values;
-    }
-
-    dispatch(setCheckedItems(newChecked));
-  };
 
   if ((!tableData?.values?.length && Object.keys(activeSearch).length)
     || (!tableData?.values?.length && Object.keys(activeFilters).length)) {
@@ -101,27 +75,53 @@ const TableComponent = ({
   }
 
   useEffect(() => {
-    if (allCheckedItems) {
-      setCheckedItems(allCheckedItems[allCheckedItems.length - 1]);
+    const prevCheckedItems = [];
+    const prevCheckedItemsData = [];
+
+    tableData?.values.forEach((item) => {
+      if (allChecked.includes(item.id)) {
+        prevCheckedItems.push(item.id);
+        prevCheckedItemsData.push(item);
+      }
+    });
+    if (prevCheckedItems.length) {
+      const newAll = allChecked.filter((it) => !prevCheckedItems.includes(it));
+      const newCheckedData = tableCheckedItemsData.filter((
+        (item) => newAll.includes(item.id)));
+      setCurChecked([...prevCheckedItems]);
+      dispatch(setCurCheckedItemsData([...prevCheckedItemsData]));
+      setAllChecked([...newAll]);
+      dispatch(setCheckedItemsData([...newCheckedData]));
     }
-  }, []);
+  }, [tableData?.values]);
 
   useEffect(() => {
-    if (!allCheckedItems) {
-      dispatch(setCheckedItems([]));
-    }
-  }, [reduxCurrentPage]);
+    const res = allChecked.concat(curChecked);
+    const resData = [...tableCheckedItemsData];
+    tableCurCheckedItemsData.forEach((element) => {
+      const sameItem = resData.find((it) => it.id === element.id);
+
+      if (!sameItem) {
+        resData.push(element);
+      }
+    });
+
+    setAllChecked(res);
+    dispatch(setCheckedItemsData(resData));
+    setCurChecked([]);
+    dispatch(setCurCheckedItemsData([]));
+  }, [reduxCurrentPage, tableRowsPerPage]);
+
+  useEffect(() => {
+    setAllChecked([]);
+    dispatch(setCheckedItemsData([]));
+  }, [scope]);
 
   useEffect(() => {
     if (sortParams) {
       setSortModel([{ field: sortParams?.value, sort: sortParams?.type }]);
     }
   }, [sortParams]);
-
-  const curListCheckedItems = tableCheckedItems.length
-    ? tableCheckedItems
-      .filter((v) => !!tableData?.values?.find(({ id }) => id === v.id))
-      .map((v) => v?.id) : [];
 
   if (isLoading || !showColumn) return <LinearProgress />;
 
@@ -137,6 +137,8 @@ const TableComponent = ({
       )}
 
       <DataGridPro
+        onSelectionModelChange={(newSelectionModel) => handleCheck(newSelectionModel)}
+        selectionModel={curChecked}
         autoHeight={isAutoHeight}
         rows={tableData?.values}
         columns={adjustColumnsData(
@@ -164,19 +166,6 @@ const TableComponent = ({
         disableSelectionOnClick
         checkboxSelection={!noActions}
         isRowSelectable={() => !noActions}
-        onSelectionModelChange={(model) => {
-          if (tableData?.values?.length
-            && (!model.length || model.length === tableData?.values?.length)) {
-            handleCheckAll();
-          } else if (model.length < curListCheckedItems.length) {
-            const [changedItem] = curListCheckedItems.filter((it) => model.indexOf(it) < 0);
-
-            handleCheck(changedItem);
-          } else {
-            handleCheck(model.pop());
-          }
-        }}
-        selectionModel={curListCheckedItems}
         onRowClick={({ row }) => customPath !== 'disabled' && !tableCellLinks
           && history.push(customPath ? parsePath(customPath, row) : `${history.location.pathname}/${row.id}`)}
       />
@@ -187,7 +176,6 @@ const TableComponent = ({
 };
 
 TableComponent.propTypes = {
-  allCheckedItems: PropTypes.array,
   withDeletePopup: PropTypes.bool,
   handleDeleteItem: PropTypes.func,
   tableData: PropTypes.object,

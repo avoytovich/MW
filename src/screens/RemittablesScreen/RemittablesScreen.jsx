@@ -20,7 +20,6 @@ import {
 } from '../../services/useData/tableMarkups/remittables';
 import parentPaths from '../../services/paths';
 import useTableData from '../../services/useData/useTableData';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import localization from '../../localization';
 
@@ -29,7 +28,6 @@ const RemittablesScreen = () => {
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(getSortParams(sortKeys.remittables));
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -84,7 +82,6 @@ const RemittablesScreen = () => {
         </Box>
       </TableActionsBar>
       <TableComponent
-        allCheckedItems={allCheckedItems}
         scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

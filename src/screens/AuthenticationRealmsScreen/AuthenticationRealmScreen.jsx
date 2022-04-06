@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 
 import {
   generateData,
@@ -24,7 +23,6 @@ const AuthenticationRealmsScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.realms),
   );
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getRealms({
@@ -53,7 +51,6 @@ const AuthenticationRealmsScreen = () => {
         headers={markUp.headers}
       />
       <TableComponent
-        allCheckedItems={allCheckedItems}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         defaultShowColumn={defaultShow}

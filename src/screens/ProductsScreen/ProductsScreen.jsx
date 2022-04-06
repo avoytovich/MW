@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import {
   generateData,
   defaultShow,
@@ -24,7 +23,6 @@ import parentPaths from '../../services/paths';
 
 const ProductsScreen = () => {
   const scope = 'productlist';
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
   const [makeUpdate, setMakeUpdate] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [sortParams, setSortParams] = useState(
@@ -82,7 +80,6 @@ const ProductsScreen = () => {
       </TableActionsBar>
 
       <TableComponent
-        allCheckedItems={allCheckedItems}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
         handleDeleteItem={handleDeleteProduct}

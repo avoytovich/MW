@@ -29,7 +29,8 @@ import {
 
 import {
   setRowsPerPage,
-  setCheckedItems,
+  setCheckedItemsData,
+  setCurCheckedItemsData,
   refreshTable,
   setWasUpdated,
 } from '../../redux/actions/TableData';
@@ -81,7 +82,12 @@ const TableActionsBar = ({
   const location = useLocation();
   const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
   const reduxRowPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
-  const tableCheckedItems = useSelector(({ tableData: { checkedItems } }) => checkedItems);
+  const tableCheckedItemsData = useSelector((
+    { tableData: { checkedItemsData } },
+  ) => checkedItemsData);
+  const tableCurCheckedItemsData = useSelector((
+    { tableData: { curCheckedItemsData } },
+  ) => curCheckedItemsData);
   const tableSearch = useSelector(({ tableData: { search } }) => search[scope]);
   const csvHeaders = headers ? [...headers].map((header) => ({
     label: header.value,
@@ -94,16 +100,19 @@ const TableActionsBar = ({
 
   const handleDeleteItems = () => {
     let promiseArray = [];
+    const checkedItemsArray = [...tableCheckedItemsData, ...tableCurCheckedItemsData];
     if (handleDeleteItem) {
-      promiseArray = tableCheckedItems.map((item) => handleDeleteItem(item.id));
+      promiseArray = checkedItemsArray.map((item) => handleDeleteItem(item.id));
     } else {
-      promiseArray = tableCheckedItems.map((item) => deleteFunc(item.id));
+      promiseArray = checkedItemsArray.map((item) => deleteFunc(item.id));
     }
     Promise.allSettled(promiseArray).then((res) => {
       if (res[0].status !== 'rejected') {
         toast(localization.t('general.updatesHaveBeenSaved'));
       }
-      dispatch(setCheckedItems([]));
+      dispatch(setCheckedItemsData([]));
+      dispatch(setCurCheckedItemsData([]));
+
       dispatch(setWasUpdated());
     });
   };
@@ -166,10 +175,12 @@ const TableActionsBar = ({
                         <TableFilters scope={scope} onClose={() => setShowFilters(null)} />
                       </Popover>
                       <CSVLink
-                        onClick={(!headers || tableCheckedItems.length === 0)
+                        onClick={(!headers
+                          || (tableCurCheckedItemsData.length === 0
+                            && tableCheckedItemsData.length === 0))
                           ? (e) => e.preventDefault() : () => { }}
                         className="CSVLinkBlock"
-                        data={formateData(tableCheckedItems)}
+                        data={formateData([...tableCurCheckedItemsData, ...tableCheckedItemsData])}
                         headers={csvHeaders}
                         ref={csvLink}
                         filename="table-export.csv"
@@ -178,7 +189,8 @@ const TableActionsBar = ({
                       <Tooltip disableInteractive arrow title="Export" placement="top">
                         <IconButton
                           onClick={() => csvLink.current.link.click()}
-                          disabled={!headers || tableCheckedItems.length === 0}
+                          disabled={!headers || (tableCurCheckedItemsData.length === 0
+                            && tableCheckedItemsData.length === 0)}
                           className={classes.button}
                           edge='start'
                           color='secondary'
@@ -190,7 +202,8 @@ const TableActionsBar = ({
                       {!withDeletePopup
                         && (
                           <IconButton
-                            disabled={!deleteFunc || tableCheckedItems.length === 0}
+                            disabled={!deleteFunc || (tableCurCheckedItemsData.length === 0
+                              && tableCheckedItemsData.length === 0)}
                             onClick={handleDeleteItems}
                             className={classes.button}
                             edge='start'
@@ -203,7 +216,8 @@ const TableActionsBar = ({
                       {withDeletePopup
                         && (
                           <IconButton
-                            disabled={!deleteFunc || tableCheckedItems.length === 0}
+                            disabled={!deleteFunc || (tableCurCheckedItemsData.length === 0
+                              && tableCheckedItemsData.length === 0)}
                             className={classes.button}
                             edge='start'
                             color='secondary'

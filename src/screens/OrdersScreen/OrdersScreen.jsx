@@ -6,7 +6,6 @@ import TableComponent from '../../components/TableComponent';
 import useTableData from '../../services/useData/useTableData';
 import localization from '../../localization';
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import {
   generateData,
   defaultShow,
@@ -29,7 +28,6 @@ const OrdersScreen = () => {
     setSortParams(params);
     saveSortParams(sortKeys.orders, params);
   };
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const requests = async (rowPerPage, reduxCurrentPage, filtersUrl) => {
     const costumersIds = [];
@@ -81,7 +79,6 @@ const OrdersScreen = () => {
       />
 
       <TableComponent
-        allCheckedItems={allCheckedItems}
         scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}

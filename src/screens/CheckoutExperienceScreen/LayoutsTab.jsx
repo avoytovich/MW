@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import {
   generateData,
   defaultShow,
@@ -18,7 +17,6 @@ const LayoutsTab = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.layoutsTab),
   );
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -59,7 +57,6 @@ const LayoutsTab = () => {
 
   return (
     <TableComponent
-      allCheckedItems={allCheckedItems}
       scope={scope}
       sortParams={sortParams}
       setSortParams={handleSetSortParams}

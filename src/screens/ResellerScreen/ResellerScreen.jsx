@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import {
-  Tabs, Tab, Box,
+  Tabs, Tab,
 } from '@mui/material';
 import api from '../../api';
 import localization from '../../localization';
@@ -9,7 +8,6 @@ import localization from '../../localization';
 import {
   generateData, defaultShow, secondaryRequest, markUp,
 } from './utils';
-import { setCheckedItems } from '../../redux/actions/TableData';
 import TableActionsBar from '../../components/TableActionsBar';
 import TabTable from '../../components/TabTable';
 
@@ -54,7 +52,6 @@ const tabsData = [
 
 const ResellerScreen = () => {
   const [curTab, setCurTab] = useState(0);
-  const dispatch = useDispatch();
 
   return (
     <>
@@ -68,7 +65,6 @@ const ResellerScreen = () => {
         value={curTab}
         onChange={(e, newTab) => {
           setCurTab(newTab);
-          dispatch(setCheckedItems([]));
         }}
         indicatorColor='primary'
         textColor='primary'

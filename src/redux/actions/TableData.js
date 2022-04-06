@@ -7,9 +7,10 @@ import {
   SET_TABLE_FILTER_VIEWS,
   RESET_TABLE_SEARCH,
   SET_TABLE_ROWS_PER_PAGE,
-  SET_TABLE_CHECKED_ITEMS,
+  SET_TABLE_CHECKED_ITEMS_DATA,
   SET_WAS_UPDATED,
   SET_TABLE_CURRENT_PAGE,
+  SET_TABLE_CUR_CHECKED_ITEMS_DATA,
 } from '../constants/actionTypes';
 
 const setTableScope = (scope) => {
@@ -59,8 +60,12 @@ const resetSearch = () => {
   return ({ type: RESET_TABLE_SEARCH, payload: { search: {} } });
 };
 
-const setCheckedItems = (checkedItems) => (
-  { type: SET_TABLE_CHECKED_ITEMS, payload: { checkedItems } }
+const setCheckedItemsData = (checkedItemsData) => (
+  { type: SET_TABLE_CHECKED_ITEMS_DATA, payload: { checkedItemsData } }
+);
+
+const setCurCheckedItemsData = (curCheckedItemsData) => (
+  { type: SET_TABLE_CUR_CHECKED_ITEMS_DATA, payload: { curCheckedItemsData } }
 );
 
 const setRowsPerPage = (rowsPerPage) => {
@@ -83,7 +88,8 @@ export {
   resetFilters,
   resetSearch,
   setRowsPerPage,
-  setCheckedItems,
+  setCheckedItemsData,
   setWasUpdated,
   setCurrentPage,
+  setCurCheckedItemsData,
 };

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import { toast } from 'react-toastify';
 import api from '../../api';
-import useAllTablesItems from '../../services/customHooks/useAllTablesItems';
 import {
   generateData,
   defaultShow,
@@ -27,7 +26,6 @@ const IdentitiesScreen = () => {
   const [sortParams, setSortParams] = useState(
     getSortParams(sortKeys.identities),
   );
-  const [allCheckedItems, setAllCheckedItems] = useAllTablesItems();
 
   const handleSetSortParams = (params) => {
     setSortParams(params);
@@ -99,7 +97,6 @@ const IdentitiesScreen = () => {
       </TableActionsBar>
 
       <TableComponent
-        allCheckedItems={allCheckedItems}
         scope={scope}
         sortParams={sortParams}
         setSortParams={handleSetSortParams}
