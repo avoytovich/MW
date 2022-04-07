@@ -33,7 +33,7 @@ const FilterBlock = ({
 
   return (
     <Box display='flex' alignItems='center' my={myBox || '10px'}>
-      <Box minWidth='115px'>
+      <Box minWidth={data?.label ? '115px' : '0px'}>
         <Typography variant='h6'>{data?.label}</Typography>
       </Box>
 

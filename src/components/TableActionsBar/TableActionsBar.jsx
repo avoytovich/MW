@@ -160,7 +160,7 @@ const TableActionsBar = ({
               </Box>
               {!positionBottom
                 && (
-                  <Box display='flex' flexGrow={1} justifyContent='space-between'>
+                  <Box display='flex' flexGrow={1} justifyContent='space-between' alignItems='center'>
                     <Box>
                       <Popover
                         open={!!showFilters}
@@ -242,19 +242,21 @@ const TableActionsBar = ({
                         )}
                     </Box>
 
-                    {VALID_SEARCH_SCOPES.includes(scope) && (
-                      <Box display='flex' alignItems='center'>
-                        <FilterBlock
-                          search
-                          scope={scope}
-                          myBox='0px'
-                          size='small'
-                          curData={curVal}
-                          updateConfig={(data, val) => setCurVal(val)}
-                          data={searchData(scope)}
-                        />
-                      </Box>
-                    )}
+                    <Box>
+                      {VALID_SEARCH_SCOPES.includes(scope) && (
+                        <Box display='flex' alignItems='center'>
+                          <FilterBlock
+                            search
+                            scope={scope}
+                            myBox='0px'
+                            size='small'
+                            curData={curVal}
+                            updateConfig={(data, val) => setCurVal(val)}
+                            data={searchData(scope)}
+                          />
+                        </Box>
+                      )}
+                    </Box>
 
                     <Box>
                       <Tooltip disableInteractive arrow title="Show Columns" placement="top">
