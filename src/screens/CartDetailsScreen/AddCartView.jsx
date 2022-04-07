@@ -356,7 +356,8 @@ const AddCartView = ({
                   name="buyerDetails"
                   key={opt.value}
                   value={opt.value}
-                  disabled={values.buyerDetails.length && !values.buyerDetails.includes(opt.value)}
+                  checked={values.buyerDetails.includes(opt.value)}
+                  onChange={() => setFieldValue('buyerDetails', opt.value)}
                   Label={{ label: opt.label }}
                 />
               ))}
@@ -562,6 +563,36 @@ const AddCartView = ({
                     name="streetAddress"
                     variant="outlined"
                   />
+                </FormControl>
+              </Box>
+            </Grid>
+          </Grid>
+        </>
+      )}
+      {values.buyerDetails.includes('Refer_to_an_existing_end-user_(private cart)') && (
+        <>
+          <Grid container spacing={0} justifyContent="left">
+            <Grid item xs={6} sm={6}>
+              <Box p={2}>
+                <FormControl className="spread">
+                  <Field
+                    component={Select}
+                    type="text"
+                    name="endUserEmail"
+                    label={localization.t('labels.email')}
+                    variant="outlined"
+                    value={values.endUserEmail}
+                    inputProps={{
+                      id: 'select-end-user-email',
+                    }}
+                    onChange={handleChange}
+                  >
+                    {prefillOpt.items.map((option) => (
+                      <MenuItem key={option.id} value={option.email}>
+                        {option.email}
+                      </MenuItem>
+                    ))}
+                  </Field>
                 </FormControl>
               </Box>
             </Grid>

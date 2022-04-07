@@ -36,7 +36,6 @@ const EndUsersGroupsScreen = () => {
     const costumersIds = [];
 
     const customers = await api.getCustomersByIds(costumersIds.join('&'));
-
     const res = await api.getEndUsersGroups({
       page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
