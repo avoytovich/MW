@@ -34,6 +34,7 @@ const AddCart = () => {
     salesFlags: '',
     buyerDetails: [],
     discountApply: false,
+    endUserEmail: '',
     prefillWith: {},
     storeHostname: '',
     product: '',
