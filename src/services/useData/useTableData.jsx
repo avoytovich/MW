@@ -40,24 +40,10 @@ const useTableData = (
         searchRequest += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
       }
 
-      const resolveCurrentPage = () => {
-        if (searchRequest) {
-          if (searchRequest[searchRequest.length - 1] === '=') {
-            if (Object.keys(((activeFilters[dataScope])?.length !== 0
-              && activeFilters[dataScope]?.constructor === Object) || {})) {
-              return 0;
-            }
-            return reduxCurrentPage - 1;
-          }
-          return 0;
-        }
-        return reduxCurrentPage - 1;
-      };
-
       setLoading(true);
       requests(
         reduxRowPerPage,
-        resolveCurrentPage(),
+        reduxCurrentPage - 1,
         `${searchRequest}${filtersUrl}`,
       )
         .then((payload) => {
