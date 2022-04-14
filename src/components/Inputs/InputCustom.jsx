@@ -16,6 +16,7 @@ const InputCustom = ({
   rowsMax,
   tooltip,
   onBlur,
+  testing,
 }) => (
   <form autoComplete='off' style={{ width: '100%', position: 'relative' }}>
     <TextField
@@ -29,7 +30,7 @@ const InputCustom = ({
       data-test={label}
       helperText={helperText}
       disabled={isDisabled}
-      multiline={isMultiline}
+      multiline={testing ? false : isMultiline}
       required={isRequired}
       name={label}
       value={value || ''}
@@ -72,6 +73,7 @@ InputCustom.propTypes = {
   helperText: PropTypes.string,
   rowsMax: PropTypes.number,
   tooltip: PropTypes.string,
+  testing: PropTypes.bool,
 };
 
 export default InputCustom;
