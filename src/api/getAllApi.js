@@ -50,9 +50,9 @@ const getAllApi = {
   },
 
   getProducts({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams, parentId = null,
   } = defaultRequestedObject) {
-    let url = `/products?format=short&size=${size}&page=${page}&parentId=null`;
+    let url = `/products?format=short&size=${size}&page=${page}&parentId=${parentId}`;
 
     if (filters) {
       url += filters;

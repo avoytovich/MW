@@ -8,9 +8,19 @@ import {
   Typography,
   Box,
   LinearProgress,
+  Button,
 } from '@mui/material';
 
-import { DataGridPro } from '@mui/x-data-grid-pro';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+import {
+  DataGridPro,
+  useGridApiContext,
+  useGridSelector,
+  GridEvents,
+  gridFilteredDescendantCountLookupSelector,
+} from '@mui/x-data-grid-pro';
 
 import PaginationComponent from '../PaginationComponent';
 import localization from '../../localization';
@@ -23,6 +33,7 @@ import { adjustColumnsData, parsePath } from '../../services/helpers/dataGridHel
 import './TableComponent.scss';
 
 const TableComponent = ({
+  allCheckedItems,
   tableData,
   isLoading,
   handleDeleteItem,
@@ -39,7 +50,6 @@ const TableComponent = ({
   orderData,
   wrapperStyles,
   tableCellLinks,
-  isAutoHeight,
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -123,6 +133,70 @@ const TableComponent = ({
     }
   }, [sortParams]);
 
+  const CustomGridTreeDataGroupingCell = (props) => {
+    const isNavigationKey = (key) => key === 'Home'
+      || key === 'End'
+      || key.indexOf('Arrow') === 0
+      || key.indexOf('Page') === 0
+      || key === ' ';
+
+    const { id, field, rowNode } = props;
+    const apiRef = useGridApiContext();
+    const filteredDescendantCountLookup = useGridSelector(
+      apiRef,
+      gridFilteredDescendantCountLookupSelector,
+    );
+
+    const filteredDescendantCount = filteredDescendantCountLookup[rowNode.id] ?? 0;
+
+    const handleKeyDown = (event) => {
+      if (event.key === ' ') {
+        event.stopPropagation();
+      }
+      if (isNavigationKey(event.key) && !event.shiftKey) {
+        apiRef.current.publishEvent(GridEvents.cellNavigationKeyDown, props, event);
+      }
+    };
+
+    const handleClick = (event) => {
+      apiRef.current.setRowChildrenExpansion(id, !rowNode.childrenExpanded);
+      apiRef.current.setCellFocus(id, field);
+      event.stopPropagation();
+    };
+
+    return (
+      <div>
+        {filteredDescendantCount > 0 ? (
+          <Button
+            onClick={handleClick}
+            onKeyDown={handleKeyDown}
+            tabIndex={-1}
+            size="small"
+          >
+            {!rowNode.childrenExpanded ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
+            {filteredDescendantCount}
+            {' '}
+            {localization.t('labels.subProducts')}
+            {filteredDescendantCount > 1 ? 's' : ''}
+          </Button>
+        ) : (
+          <span />
+        )}
+      </div>
+    );
+  };
+
+  CustomGridTreeDataGroupingCell.propTypes = {
+    field: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    rowNode: PropTypes.any,
+  };
+
+  /* const curListCheckedItems = tableCheckedItems.length
+    ? tableCheckedItems
+      .filter((v) => !!tableData?.values?.find(({ id }) => id === v.id))
+      .map((v) => v?.id) : []; */
+
   if (isLoading || !showColumn) return <LinearProgress />;
   return tableData?.values?.length ? (
     <Box display='flex' flexDirection='column' flexGrow='1' pb={4} height={1} sx={wrapperStyles}>
@@ -136,9 +210,15 @@ const TableComponent = ({
       )}
 
       <DataGridPro
-        onSelectionModelChange={(newSelectionModel) => handleCheck(newSelectionModel)}
-        selectionModel={curChecked}
-        autoHeight={isAutoHeight}
+        // defaultGroupingExpansionDepth={-1} - expand group items
+        groupingColDef={{
+          headerName: '',
+          field: 'hierarchy',
+          renderCell: (params) => <CustomGridTreeDataGroupingCell {...params} />,
+          hide: !showColumn.hierarchy,
+        }}
+        treeData
+        getTreeDataPath={(row) => row.hierarchy}
         rows={tableData?.values}
         columns={adjustColumnsData(
           tableData?.headers,
@@ -158,13 +238,17 @@ const TableComponent = ({
         sortingOrder={['asc', 'desc']}
         sortModel={sortModel}
         onSortModelChange={([col]) => {
-          if (col?.field && col?.sort) {
-            setSortParams({ value: col?.field, type: col?.sort });
+          const colField = col?.field;
+
+          if (colField && col?.sort) {
+            setSortParams({ value: colField, type: col?.sort });
           }
         }}
         disableSelectionOnClick
         checkboxSelection={!noActions}
-        isRowSelectable={() => !noActions}
+        isRowSelectable={({ row }) => !noActions && row?.hierarchy?.length <= 1}
+        onSelectionModelChange={(newSelectionModel) => handleCheck(newSelectionModel)}
+        selectionModel={curChecked}
         onRowClick={({ row }) => customPath !== 'disabled' && !tableCellLinks
           && history.push(customPath ? parsePath(customPath, row) : `${history.location.pathname}/${row.id}`)}
       />
@@ -175,6 +259,7 @@ const TableComponent = ({
 };
 
 TableComponent.propTypes = {
+  allCheckedItems: PropTypes.array,
   withDeletePopup: PropTypes.bool,
   handleDeleteItem: PropTypes.func,
   tableData: PropTypes.object,
@@ -191,7 +276,6 @@ TableComponent.propTypes = {
   orderData: PropTypes.array,
   wrapperStyles: PropTypes.any,
   tableCellLinks: PropTypes.array,
-  isAutoHeight: PropTypes.bool,
 };
 
 export default TableComponent;

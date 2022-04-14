@@ -10,3 +10,9 @@
   text-decoration: none;
   color: #4791dc;
 }
+
+.MuiDataGrid-cellCheckbox {
+  .Mui-disabled {
+    display: none;
+  }
+}

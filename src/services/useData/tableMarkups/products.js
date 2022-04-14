@@ -2,6 +2,7 @@ import { getCustomerName } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
+  hierarchy: true,
   id: false,
   createDate: true,
   updateDate: true,
@@ -56,14 +57,29 @@ const markUp = {
   ],
 };
 
-const generateData = (data) => {
-  const values = data.items.map(async (val) => {
+const generateData = (data, children) => {
+  const ch = [];
+  children.forEach((element) => {
+    ch.push(...element);
+  });
+  const newData = [...data.items, ...ch];
+
+  const values = newData.map(async (val) => {
+    let hierarchy = [val.genericName || val.id];
+
+    if (val.parentId) {
+      const parent = data.items.find((el) => el.id === val.parentId);
+      const childName = parent.genericName === val.genericName ? val.id : val.genericName || val.id;
+      hierarchy = [parent.genericName || parent.id, childName];
+    }
+
     const returnData = {
       id: val.id,
+      hierarchy,
       createDate: val.createDate,
       updateDate: val.updateDate,
       customer: val.customerId,
-      genericName: val.genericName,
+      genericName: val.genericName || val.id,
       publisherRefId: val.publisherRefId,
       type: val.type,
       lifeTime: val.lifeTime,

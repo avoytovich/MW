@@ -10,7 +10,7 @@ import {
   markUp,
 } from '../../services/useData/tableMarkups/products';
 import useTableData from '../../services/useData/useTableData';
-import TableComponent from '../../components/TableComponent';
+import TableComponent from '../../components/TableComponent/TreeTable';
 
 import localization from '../../localization';
 import TableActionsBar from '../../components/TableActionsBar';
@@ -30,10 +30,20 @@ const ProductsScreen = () => {
   );
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
-    const res = await api.getProducts({
-      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
+    const productData = await api.getProducts({
+      page: reduxCurrentPage,
+      size: rowsPerPage,
+      filters: filtersUrl,
+      sortParams,
     });
-    return generateData(res.data);
+    const childRequests = productData.data.items.map((item) => api.getProducts({
+      parentId: item.id,
+    }));
+    const childrenData = await Promise.allSettled(childRequests);
+
+    const resData = childrenData.filter((e) => e.value?.data?.items?.length > 0);
+    const childItems = resData.map((el) => el.value?.data?.items);
+    return generateData(productData.data, childItems);
   };
 
   const handleSetSortParams = (params) => {
