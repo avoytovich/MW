@@ -194,12 +194,22 @@ const themeConfig = {
               },
               '& .MuiIconButton-root': {
                 color: colors.textPrimaryGray,
-                opacity: 0,
+                // opacity: 0,
 
                 '&:hover': {
                   color: 'inherit',
                 },
               },
+              // '& .MuiDataGrid-treeDataGroupingCellToggle': {
+              //   '& .MuiIconButton-root': {
+              //     color: colors.textPrimaryGray,
+              //     opacity: 1,
+
+              //     '&:hover': {
+              //       color: 'inherit',
+              //     },
+              //   },
+              // },
             },
           },
         },

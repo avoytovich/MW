@@ -748,6 +748,8 @@ const labels = {
   expirationDate: 'Expiration date',
   suspend: 'Suspend',
   resume: 'Resume',
+  hierarchy: 'Hierarchy',
+  subProducts: 'Sub Product',
   inactive: 'Inactive',
   active: 'Active',
   batches: 'Batches',

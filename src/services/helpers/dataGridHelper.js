@@ -14,7 +14,10 @@ import {
   ContentCopy as ContentCopyIcon,
 } from '@mui/icons-material';
 
-import { GridActionsCellItem, LicenseInfo } from '@mui/x-data-grid-pro';
+import {
+  GridActionsCellItem,
+  LicenseInfo,
+} from '@mui/x-data-grid-pro';
 
 import moment from 'moment';
 
@@ -71,6 +74,7 @@ export const parsePath = (path, rowItem) => {
   }
   return newPath;
 };
+
 export const adjustColumnsData = (
   headers,
   showColumn,
@@ -88,6 +92,7 @@ export const adjustColumnsData = (
     if (tableCellLinks) {
       tableLink = tableCellLinks.filter((item) => item.id === header.id)?.[0];
     }
+
     if (tableLink) {
       customConfigs.renderCell = ({ row }) => (tableLink.internal
         ? row[header?.id] ? (
