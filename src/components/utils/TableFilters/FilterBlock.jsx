@@ -17,12 +17,14 @@ const FilterBlock = ({
   const [curVal, setCurVal] = useState('');
 
   const onClose = () => {
-    const filtersObj = {
-      [scope]: { ...JSON.parse(localStorage.getItem('filters'))[scope] },
-    };
-    delete filtersObj[scope][data.id];
+    const filters = JSON.parse(localStorage.getItem('filters'))?.[scope];
     if (search) {
       dispatch(resetSearch());
+    } else if (filters) {
+      const filtersObj = {
+        [scope]: { ...JSON.parse(localStorage.getItem('filters'))[scope] },
+      };
+      delete filtersObj[scope][data.id];
     }
     updateConfig(search ? data : data?.id, '');
   };
