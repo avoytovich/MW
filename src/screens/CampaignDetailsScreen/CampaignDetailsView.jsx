@@ -22,7 +22,7 @@ import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
 import './campaignDetailsScreen.scss';
 
 const CampaignDetailsView = ({
-  curCampaign, updateReco, pricesData, id, handleSelectDate, handleChange, customerName,
+  curCampaign, updateReco, pricesData, id, handleSelectDate, handleChange, customerName, testing,
 }) => {
   const selectionRange = {
     startDate: new Date(curCampaign?.startDate),
@@ -58,6 +58,7 @@ const CampaignDetailsView = ({
           </Box>
           <Box px={1} width='100%'>
             <InputCustom
+              testing={testing}
               data-test='description'
               label='description'
               isMultiline
@@ -129,6 +130,7 @@ CampaignDetailsView.propTypes = {
   id: PropTypes.string,
   handleChange: PropTypes.func,
   customerName: PropTypes.string,
+  testing: PropTypes.bool,
 };
 
 export default CampaignDetailsView;
