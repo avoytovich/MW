@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import {
   Tabs, Tab,
 } from '@mui/material';
+import { useDispatch } from 'react-redux';
+
 import api from '../../api';
 import localization from '../../localization';
 
 import {
   generateData, defaultShow, secondaryRequest, markUp,
 } from './utils';
+import { setCurrentPage } from '../../redux/actions/TableData';
 import TableActionsBar from '../../components/TableActionsBar';
 import TabTable from '../../components/TabTable';
 
@@ -52,6 +55,7 @@ const tabsData = [
 
 const ResellerScreen = () => {
   const [curTab, setCurTab] = useState(0);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -65,6 +69,7 @@ const ResellerScreen = () => {
         value={curTab}
         onChange={(e, newTab) => {
           setCurTab(newTab);
+          dispatch(setCurrentPage(1));
         }}
         indicatorColor='primary'
         textColor='primary'
