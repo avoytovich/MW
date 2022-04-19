@@ -12,6 +12,7 @@ import { AutocompleteWithChips } from '../../../components/Inputs';
 import SelectModeInputs from './SelectModeInputs';
 import CustomCard from '../../../components/utils/CustomCard';
 import localization from '../../../localization';
+import { sortByAlphabetical } from '../../../services/helpers/utils';
 
 const Recommendations = ({ curReco, selectOptions, setCurReco }) => (
   <CustomCard mt={0}>
@@ -65,10 +66,10 @@ const Recommendations = ({ curReco, selectOptions, setCurReco }) => (
           <SelectModeInputs
             curReco={curReco}
             curKey='byProductIds'
-            labels={['sourceProduct', 'targetProducts']}
+            labels={['sourceNameOrId', 'targetNameOrId']}
             curValue={curReco.byProductIds}
             setCurReco={setCurReco}
-            selectOptions={selectOptions.recoByProduct}
+            selectOptions={selectOptions.recoByProduct?.sort(sortByAlphabetical)}
           />
         </Box>
         <Box>
@@ -80,10 +81,10 @@ const Recommendations = ({ curReco, selectOptions, setCurReco }) => (
           <SelectModeInputs
             curReco={curReco}
             curKey='byParentProductIds'
-            labels={['sourceProduct', 'targetProducts']}
+            labels={['sourceNameOrId', 'targetNameOrId']}
             curValue={curReco.byParentProductIds}
             setCurReco={setCurReco}
-            selectOptions={selectOptions.recoByParent}
+            selectOptions={selectOptions.recoByParent?.sort(sortByAlphabetical)}
           />
         </Box>
       </Box>
