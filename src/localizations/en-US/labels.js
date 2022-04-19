@@ -773,6 +773,7 @@ const labels = {
   searchSection: 'Search section...',
   applyOnNetPrice: 'Apply on Net Price',
   marketingCampaignId: 'Marketing Campaign ID',
+  relatedProduct: 'Related product',
 };
 
 export default labels;

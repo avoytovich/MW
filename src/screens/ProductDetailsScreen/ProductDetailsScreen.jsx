@@ -68,6 +68,7 @@ const ProductDetailsScreen = () => {
   const [codeMode, setCodeMode] = useState(false);
   const [jsonIsValid, setJsonIsValid] = useState(true);
   const [selectOptions, setSelectOptions] = useState({ ...defaultSelectOptions });
+  const [relatedProduct, setRelatedProduct] = useState(null);
 
   const parentId = history?.location?.state?.parentId;
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
@@ -367,6 +368,14 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => setProductDetails({ ...currentProductDetails }), [currentProductDetails]);
 
+  useEffect(() => {
+    api.getNextGenerationByProductId(id).then(
+      ({ data: { genericName, id: relatedProductId } }) => {
+        setRelatedProduct({ genericName, id: relatedProductId });
+      },
+    );
+  }, [id]);
+
   if (!parentId
       && !currentProductData?.parentId
       && currentProductData?.createDate?.parentValue) return <LinearProgress />;
@@ -415,6 +424,7 @@ const ProductDetailsScreen = () => {
         productData={productData}
         setCurProductData={setCurrentProductData}
         curProductData={currentProductData}
+        relatedProduct={relatedProduct}
         selectOptions={selectOptions}
         setProductData={setCurrentProductData}
         curTab={curTab}
