@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 
 import { email } from '../../../services/helpers/inputValidators';
+import { sortByAlphabetical } from '../../../services/helpers/utils';
 
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
@@ -256,9 +257,9 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <AutocompleteWithChips
-            label='products'
+            label='productNameOrId'
             arrayValue={curDiscount.productIds}
-            selectOptions={selectOptions.discountProducts}
+            selectOptions={selectOptions.discountProducts?.sort(sortByAlphabetical)}
             onChange={(newValue) => setCurDiscount({
               ...curDiscount,
               productIds: newValue,
@@ -267,9 +268,9 @@ const Eligibility = ({
         </Box>
         <Box p={2}>
           <AutocompleteWithChips
-            label='productsByParent'
+            label='parentNameOrId'
             arrayValue={curDiscount.parentProductIds}
-            selectOptions={selectOptions.parentProducts}
+            selectOptions={selectOptions.parentProducts?.sort(sortByAlphabetical)}
             onChange={(newValue) => setCurDiscount({
               ...curDiscount,
               parentProductIds: newValue,

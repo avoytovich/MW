@@ -43,6 +43,8 @@ import {
 } from '../../../services/selectOptions/selectOptions';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 
+import { sortByAlphabetical } from '../../../services/helpers/utils';
+
 import localization from '../../../localization';
 
 const General = ({
@@ -696,9 +698,9 @@ const General = ({
             <>
               <AutocompleteCustom
                 optionLabelKey='value'
-                label='nameOrId'
+                label='productNameOrId'
                 onSelect={setSelectedBundledProduct}
-                selectOptions={selectOptions?.renewingProducts || []}
+                selectOptions={selectOptions?.renewingProducts?.sort(sortByAlphabetical) || []}
                 curValue={checkValue(selectedBundledProduct) || ''}
                 isDisabled={currentProductData?.subProducts?.state === 'inherits'}
               />

@@ -11,6 +11,7 @@ import InheritanceField from '../InheritanceField';
 
 import { NumberInput, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
 import { checkValue } from '../../../services/helpers/dataStructuring';
+import { sortByAlphabetical } from '../../../services/helpers/utils';
 import localization from '../../../localization';
 
 import './FulfillmentAndSubscription.scss';
@@ -130,9 +131,9 @@ const Subscription = ({
         <Box p={2} width="50%">
           <AutocompleteCustom
             optionLabelKey='name'
-            label='renewingProducts'
+            label='renewingNameOrId'
             onSelect={changeProducts}
-            selectOptions={filteredArr || []}
+            selectOptions={filteredArr?.sort(sortByAlphabetical) || []}
             curValue={checkValue(currentProductData?.nextGenerationOf[0])}
             isDisabled={currentProductData?.subProducts?.state === 'inherits'}
           />

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import { SelectWithChip, AutocompleteWithChips } from '../../../components/Inputs';
 
+import { sortByAlphabetical } from '../../../services/helpers/utils';
+
 import CustomCard from '../../../components/utils/CustomCard';
 
 const Eligibility = ({ curReco, setCurReco, selectOptions }) => (
@@ -31,9 +33,9 @@ const Eligibility = ({ curReco, setCurReco, selectOptions }) => (
       </Box>
       <Box width='100%' my={2} mt={4}>
         <AutocompleteWithChips
-          label='byProduct'
+          label='productNameOrId'
           arrayValue={curReco.eligibleProductIds}
-          selectOptions={selectOptions.products}
+          selectOptions={selectOptions.products?.sort(sortByAlphabetical)}
           onChange={(newValue) => setCurReco({
             ...curReco,
             eligibleProductIds: newValue,
@@ -43,9 +45,9 @@ const Eligibility = ({ curReco, setCurReco, selectOptions }) => (
 
       <Box width='100%' my={2} mt={4}>
         <AutocompleteWithChips
-          label='byParentProducts'
+          label='parentNameOrId'
           arrayValue={curReco.eligibleParentProductIds}
-          selectOptions={selectOptions.productsByParent}
+          selectOptions={selectOptions.productsByParent?.sort(sortByAlphabetical)}
           onChange={(newValue) => setCurReco({
             ...curReco,
             eligibleParentProductIds: newValue,

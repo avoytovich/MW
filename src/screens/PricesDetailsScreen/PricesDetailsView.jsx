@@ -17,7 +17,7 @@ import { getCountriesOptions } from '../../components/utils/OptionsFetcher/Optio
 import { SelectCustom, AutocompleteCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
 import { priceCurrency } from '../../services/selectOptions/selectOptions';
-import { copyText } from '../../services/helpers/utils';
+import { copyText, sortByAlphabetical } from '../../services/helpers/utils';
 import localization from '../../localization';
 
 import './pricesDetailsScreen.scss';
@@ -102,9 +102,9 @@ const PricesDetailsView = ({
               <AutocompleteCustom
                 isRequired
                 optionLabelKey='value'
-                label='productId'
+                label='productNameOrId'
                 onSelect={(newValue) => setCurPrice((c) => ({ ...c, productId: newValue }))}
-                selectOptions={availProducts || []}
+                selectOptions={availProducts?.sort(sortByAlphabetical) || []}
                 curValue={curPrice?.productId}
               />
             </Box>

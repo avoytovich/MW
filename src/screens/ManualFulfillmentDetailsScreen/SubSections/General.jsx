@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import localization from '../../../localization';
 import { InputCustom, NumberInput, AutocompleteWithChips } from '../../../components/Inputs';
+import { sortByAlphabetical } from '../../../services/helpers/utils';
 
 const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
   <Grid container>
@@ -51,9 +52,9 @@ const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
       </Box>
       <Box p={2}>
         <AutocompleteWithChips
-          label='products'
+          label='productNameOrId'
           arrayValue={curFulfillment.nexwayProductId}
-          selectOptions={selectOptions.products}
+          selectOptions={selectOptions.products?.sort(sortByAlphabetical)}
           onChange={(newValue) => setCurFulfillment({
             ...curFulfillment,
             nexwayProductId: newValue,
