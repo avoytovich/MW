@@ -1,30 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { makeStyles } from '@mui/styles';
 
 import {
   Box,
   Switch,
   Typography,
 } from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import InheritanceField from '../InheritanceField';
 
 import { NumberInput, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
 import { checkValue } from '../../../services/helpers/dataStructuring';
+import parentPaths from '../../../services/paths';
 import { sortByAlphabetical } from '../../../services/helpers/utils';
 import localization from '../../../localization';
 
 import './FulfillmentAndSubscription.scss';
+
+const useStyles = makeStyles({
+  copyRelatedProductId: {
+    color: '#4791db',
+    '&:hover': {
+      cursor: 'pointer',
+      textDecoration: 'underline',
+    },
+  },
+});
 
 const Subscription = ({
   setProductData,
   currentProductData,
   selectOptions,
   parentId,
+  relatedProduct,
 }) => {
   const [searchVal, setSearchVal] = useState('');
   const [errorSubscription, setErrorSubscription] = useState(false);
   const [errorTextSubscription, setErrorTextSubscription] = useState('');
+
+  const history = useHistory();
+  const classes = useStyles();
+
+  const makeCopy = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
+  };
 
   const changeProducts = (newProduct) => {
     setProductData({ ...currentProductData, nextGenerationOf: [newProduct] });
@@ -139,6 +163,35 @@ const Subscription = ({
           />
         </Box>
       </Box>
+      {relatedProduct && (
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Box p={2}>
+            <Typography variant='h6' color="secondary">
+              {localization.t('labels.relatedProduct')}
+            </Typography>
+          </Box>
+          <Box pl={2}>
+            <Typography variant='subtitle1' color="secondary">
+              {`${relatedProduct.genericName},`}
+            </Typography>
+          </Box>
+          <Box pl={1}>
+            <Typography variant='subtitle1' className={classes.copyRelatedProductId}>
+              <span
+                onClick={() => history.push(`${parentPaths.productlist}/${relatedProduct.id}}`)}
+              >
+                {relatedProduct.id}
+              </span>
+            </Typography>
+          </Box>
+          <Box p={1}>
+            <FileCopyIcon
+              onClick={() => makeCopy(relatedProduct.id)}
+              color="secondary"
+            />
+          </Box>
+        </Box>
+      )}
     </>
   );
 };
@@ -148,6 +201,7 @@ Subscription.propTypes = {
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
+  relatedProduct: PropTypes.object,
 };
 
 export default Subscription;

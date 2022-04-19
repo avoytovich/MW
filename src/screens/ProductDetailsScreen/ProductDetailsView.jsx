@@ -18,6 +18,7 @@ const ProductDetailsView = ({
   setProductData,
   curProductData,
   productData,
+  relatedProduct,
   setProductLocalizationChanges,
   productVariations,
   setProductDetails,
@@ -111,6 +112,7 @@ const ProductDetailsView = ({
             setProductData={setProductData}
             currentProductData={curProductData}
             parentId={parentId}
+            relatedProduct={relatedProduct}
           />
         </SectionLayout>
       )}
@@ -206,6 +208,7 @@ ProductDetailsView.propTypes = {
   codeMode: PropTypes.bool,
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
+  relatedProduct: PropTypes.object,
 };
 
 export default ProductDetailsView;

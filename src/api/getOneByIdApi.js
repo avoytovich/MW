@@ -29,6 +29,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getNextGenerationByProductId(id) {
+    const url = `/products/${id}/nextgeneration`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getStoreById(id) {
     const url = `/stores/${id}`;
     return axiosInstance({
