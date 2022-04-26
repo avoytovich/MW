@@ -15,6 +15,7 @@ import {
   Delete as DeleteIcon,
   Refresh as RefreshIcon,
   CreditCard as CreditCardIcon,
+  ContentCopy as ContentCopyIcon,
 } from '@mui/icons-material';
 
 import {
@@ -37,7 +38,12 @@ import {
 
 import localization from '../../localization';
 import ShowColumnPopper from './ShowColumnPopper';
-import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES, VALID_SEARCH_SCOPES } from '../../services/constants';
+import {
+  VALID_REFRESH_SCOPES,
+  VALID_FILTER_SCOPES,
+  VALID_SEARCH_SCOPES,
+  VALID_DUPLICATE_SCOPES,
+} from '../../services/constants';
 import defPath from '../../services/helpers/routingHelper';
 import { searchData } from './helper';
 
@@ -45,6 +51,7 @@ import DeletePopup from '../Popup/DeletePopup';
 import TableFilters from '../utils/TableFilters';
 import CustomBreadcrumbs from '../utils/CustomBreadcrumbs';
 import FilterBlock from '../utils/TableFilters/FilterBlock';
+import DuplicatePopup from '../Popup/DuplicatePopup';
 
 const useStyles = makeStyles({
   button: {
@@ -74,6 +81,7 @@ const TableActionsBar = ({
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [showFilters, setShowFilters] = useState(null);
+  const [openDuplicate, setOpenDuplicate] = useState(false);
   const [curVal, setCurVal] = useState('');
   const classes = useStyles();
   const csvLink = useRef();
@@ -226,6 +234,25 @@ const TableActionsBar = ({
                             <DeletePopup deleteFunc={handleDeleteItems} />
                           </IconButton>
                         )}
+                      <Tooltip disableInteractive arrow title="Duplicate" placement="top">
+                        <IconButton
+                          disabled={tableCurCheckedItemsData.length !== 1
+                            || (VALID_DUPLICATE_SCOPES.indexOf(scope) < 0
+                              && tableCurCheckedItemsData.length === 1)}
+                          className={classes.button}
+                          edge='start'
+                          color='secondary'
+                          size='large'
+                        >
+                          <ContentCopyIcon className="deleteIcon icons" onClick={() => setOpenDuplicate(true)} />
+                        </IconButton>
+                      </Tooltip>
+                      <DuplicatePopup
+                        setOpen={setOpenDuplicate}
+                        open={openDuplicate}
+                        duplicatedData={tableCurCheckedItemsData[0]}
+                        scope={scope}
+                      />
                       {findByCC
                         && (
                           <Tooltip disableInteractive arrow title="Find by CC" placement="top">
