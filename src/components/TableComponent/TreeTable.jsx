@@ -33,7 +33,6 @@ import { adjustColumnsData, parsePath } from '../../services/helpers/dataGridHel
 import './TableComponent.scss';
 
 const TableComponent = ({
-  allCheckedItems,
   tableData,
   isLoading,
   handleDeleteItem,
@@ -83,7 +82,11 @@ const TableComponent = ({
     || (!tableData?.values?.length && Object.keys(activeFilters).length)) {
     dispatch(setCurrentPage(1));
   }
-
+  useEffect(() => {
+    if (tableCheckedItemsData.length === 0) {
+      setCurChecked([]);
+    }
+  }, [tableCheckedItemsData]);
   useEffect(() => {
     const prevCheckedItems = [];
     const prevCheckedItemsData = [];
@@ -259,7 +262,6 @@ const TableComponent = ({
 };
 
 TableComponent.propTypes = {
-  allCheckedItems: PropTypes.array,
   withDeletePopup: PropTypes.bool,
   handleDeleteItem: PropTypes.func,
   tableData: PropTypes.object,

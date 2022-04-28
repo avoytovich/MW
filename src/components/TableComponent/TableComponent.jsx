@@ -73,6 +73,11 @@ const TableComponent = ({
     || (!tableData?.values?.length && Object.keys(activeFilters).length)) {
     dispatch(setCurrentPage(1));
   }
+  useEffect(() => {
+    if (tableCheckedItemsData.length === 0) {
+      setCurChecked([]);
+    }
+  }, [tableCheckedItemsData]);
 
   useEffect(() => {
     const prevCheckedItems = [];
