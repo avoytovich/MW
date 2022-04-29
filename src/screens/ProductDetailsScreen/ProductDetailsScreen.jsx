@@ -24,7 +24,9 @@ import {
   checkValue,
   defaultProductLocales,
 } from '../../services/helpers/dataStructuring';
-import { handleGetOptions, handleGetProductDetails, saveLocalizationDetails, beforeSend } from './utils';
+import {
+  handleGetOptions, handleGetProductDetails, saveLocalizationDetails, beforeSend,
+} from './utils';
 import { setTempProductDescription, setTempProductLocales } from '../../redux/actions/TempData';
 
 import localization from '../../localization';
@@ -373,15 +375,15 @@ const ProductDetailsScreen = () => {
   useEffect(() => setProductDetails({ ...currentProductDetails }), [currentProductDetails]);
 
   useEffect(() => {
-    api.getNextGenerationByProductId(id).then(
-      ({ data: { nextGenerationOf, genericName, id: relatedProductId } }) => {
-        const isRelatedProduct = !!nextGenerationOf?.filter((item) => item === id).length;
-        if (isRelatedProduct) {
+    if (id !== 'add') {
+      api.getNextGenerationByProductId(id).then(
+        ({ data: { genericName, id: relatedProductId } }) => {
           setRelatedProduct({ genericName, id: relatedProductId });
-        }
-      },
-    );
+        },
+      );
+    }
   }, [id]);
+
   if (!parentId
     && !currentProductData?.parentId
     && currentProductData?.createDate?.parentValue) return <LinearProgress />;
