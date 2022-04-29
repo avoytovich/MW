@@ -68,6 +68,8 @@ const StoreDetailsScreen = () => {
     || !currentStoreData?.defaultLocale
     || !currentStoreData?.displayName
     || !currentStoreData?.routes[0]?.hostname
+    || (!currentStoreData?.emailSenderOverride.startsWith(`${currentCustomerData?.iamClient?.realmName}-`)
+      && currentStoreData?.emailSenderOverride !== currentCustomerData?.iamClient?.realmName)
     || Object.keys(errors).filter((item) => (!tabLabels.includes(item))).length > 0
     || (Object.keys(currentStoreData.thankYouDesc).length > 1 && currentStoreData.thankYouDesc[currentStoreData.defaultLocale] === '');
 
@@ -242,6 +244,7 @@ const StoreDetailsScreen = () => {
           customer={currentCustomerData}
         />
       )}
+      customer={currentCustomerData}
     >
       <StoreDetailsView
         errors={errors}
@@ -254,6 +257,7 @@ const StoreDetailsScreen = () => {
         currentStoreResources={currentStoreResources}
         setCurrentStoreResources={setCurrentStoreResources}
         curTab={curTab}
+        customer={currentCustomerData}
       />
     </DetailPageWrapper>
   );
