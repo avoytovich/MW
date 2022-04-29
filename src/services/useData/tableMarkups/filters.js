@@ -146,7 +146,7 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'creationDate',
+      id: 'invoiceDate',
       label: localization.t('labels.invoiceDate'),
       type: 'date',
     },
