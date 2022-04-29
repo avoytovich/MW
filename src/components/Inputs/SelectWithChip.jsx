@@ -27,6 +27,7 @@ const SelectWithChip = ({
   name,
   noTranslate,
   hasError,
+  noDeletableChipId,
 }) => {
   const handleClick = (condition, id) => {
     switch (condition) {
@@ -58,7 +59,8 @@ const SelectWithChip = ({
                 <Box mb='2px' mr='2px' key={chip}>
                   <Chip
                     variant='outlined'
-                    onDelete={() => onClickDelIcon(chip)}
+                    onDelete={(noDeletableChipId && noDeletableChipId === chip)
+                      ? null : () => onClickDelIcon(chip)}
                     onMouseDown={(e) => {
                       e.stopPropagation();
                     }}
@@ -115,6 +117,7 @@ SelectWithChip.propTypes = {
   name: PropTypes.string,
   noTranslate: PropTypes.bool,
   hasError: PropTypes.bool,
+  noDeletableChipId: PropTypes.string,
 };
 
 export default SelectWithChip;

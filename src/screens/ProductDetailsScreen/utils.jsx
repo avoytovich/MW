@@ -239,9 +239,54 @@ const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
 
   return dataToSave;
 };
+const createKey = (obj, newCurrency) => {
+  let keyNumber = 0;
+
+  if (obj.priceByCountryByCurrency[newCurrency]) {
+    keyNumber = Number(
+      obj.priceByCountryByCurrency[newCurrency][
+        obj.priceByCountryByCurrency[newCurrency].length - 1
+      ].key.split('_')[1],
+    ) + 1;
+  }
+  return `${newCurrency}_${keyNumber}`;
+};
+
+const beforeSend = (data) => {
+  const res = { ...data };
+  const { state } = data.priceByCountryByCurrency;
+  const priceByCountryByCurrency = {};
+  const mapData = state ? data.priceByCountryByCurrency.value : data.priceByCountryByCurrency;
+  Object.keys(mapData).forEach((el) => {
+    priceByCountryByCurrency[el] = {};
+    mapData[el].forEach((item) => {
+      item.countries.forEach((country) => {
+        const countryData = { ...item };
+        delete countryData.countries;
+        delete countryData.key;
+        priceByCountryByCurrency[el][country] = countryData;
+      });
+    });
+  });
+  delete res.priceByCountryByCurrency;
+
+  res.prices = state
+    ? { ...res.prices, value: { ...res.prices.value, priceByCountryByCurrency } }
+    : { ...res.prices, priceByCountryByCurrency };
+  return res;
+};
+const handleFilterOptions = (allOptions, selected, current) => {
+  const allCountries = [];
+  selected.forEach((it) => allCountries.push(...it.countries));
+  const res = allOptions.filter((el) => !allCountries.includes(el.id) || current.includes(el.id));
+  return res;
+};
 
 export {
   handleGetOptions,
   handleGetProductDetails,
   saveLocalizationDetails,
+  createKey,
+  beforeSend,
+  handleFilterOptions,
 };
