@@ -163,35 +163,37 @@ const Subscription = ({
           />
         </Box>
       </Box>
-      {relatedProduct && (
-        <Box display="flex" flexDirection="row" alignItems="center">
-          <Box p={2}>
-            <Typography variant='h6' color="secondary">
-              {localization.t('labels.relatedProduct')}
-            </Typography>
-          </Box>
-          <Box pl={2}>
-            <Typography variant='subtitle1' color="secondary">
-              {`${relatedProduct.genericName},`}
-            </Typography>
-          </Box>
-          <Box pl={1}>
-            <Typography variant='subtitle1' className={classes.copyRelatedProductId}>
-              <span
-                onClick={() => history.push(`${parentPaths.productlist}/${relatedProduct.id}}`)}
-              >
-                {relatedProduct.id}
-              </span>
-            </Typography>
-          </Box>
-          <Box p={1}>
-            <FileCopyIcon
-              onClick={() => makeCopy(relatedProduct.id)}
-              color="secondary"
-            />
-          </Box>
+      <Box display="flex" flexDirection="row" alignItems="center">
+        <Box p={2}>
+          <Typography variant='h6' color="secondary">
+            {localization.t('labels.relatedProduct')}
+          </Typography>
         </Box>
-      )}
+        {relatedProduct && (
+          <>
+            <Box pl={2}>
+              <Typography variant='subtitle1' color="secondary">
+                {`${relatedProduct.genericName},`}
+              </Typography>
+            </Box>
+            <Box pl={1}>
+              <Typography variant='subtitle1' className={classes.copyRelatedProductId}>
+                <span
+                  onClick={() => history.push(`${parentPaths.productlist}/${relatedProduct.id}`)}
+                >
+                  {relatedProduct.id}
+                </span>
+              </Typography>
+            </Box>
+            <Box p={1}>
+              <FileCopyIcon
+                onClick={() => makeCopy(relatedProduct.id)}
+                color="secondary"
+              />
+            </Box>
+          </>
+        )}
+      </Box>
     </>
   );
 };
