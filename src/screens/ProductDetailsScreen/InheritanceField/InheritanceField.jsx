@@ -8,9 +8,11 @@ const InheritanceField = (props) => {
   const {
     children: Children,
     value,
+    additionalValue,
     parentId,
     currentProductData,
     field,
+    additionalField,
     onChange,
     containerStyles,
     buttonStyles,
@@ -127,11 +129,16 @@ const InheritanceField = (props) => {
   };
 
   const onClickInheritanceButton = () => {
+    const isInherits = value.state === 'inherits' ? 'overrides' : 'inherits';
     onChange({
       ...currentProductData,
       [field]: {
         ...value,
-        state: value.state === 'inherits' ? 'overrides' : 'inherits',
+        state: isInherits,
+      },
+      [additionalField]: {
+        ...additionalValue,
+        state: isInherits,
       },
     });
 
@@ -176,10 +183,12 @@ const InheritanceField = (props) => {
 InheritanceField.propTypes = {
   onChange: PropTypes.func,
   value: PropTypes.any,
+  additionalValue: PropTypes.any,
   children: PropTypes.node,
   parentId: PropTypes.string,
   currentProductData: PropTypes.object,
   field: PropTypes.string,
+  additionalField: PropTypes.string,
   containerStyles: PropTypes.object,
   buttonStyles: PropTypes.object,
   buttonAction: PropTypes.func,

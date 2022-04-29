@@ -1,9 +1,9 @@
+/* eslint-disable no-lonely-if */
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -12,22 +12,13 @@ import {
   TableRow,
   Paper,
   Typography,
-  Checkbox,
 } from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { toast } from 'react-toastify';
 import moment from 'moment';
-
-import ClearIcon from '@mui/icons-material/Clear';
-import EditIcon from '@mui/icons-material/Edit';
-
-import PriceNumberFormat from '../../../components/PriceNumberFormat';
-
-import ProductPriceRow from '../ProductPriceRow';
-
+import PricesTable from './PricesTable';
 import InheritanceField from '../InheritanceField';
 import { SelectCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
-
 import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import parentPaths from '../../../services/paths';
@@ -41,200 +32,78 @@ const Prices = ({
   selectOptions,
   currentProductData,
   setProductData,
-  setSaveDisabled,
   parentId,
 }) => {
-  const [needDefault, setNeedDefault] = useState(null);
-  const [prices, setPrices] = useState([]);
-  const [editingCell, setEditingRow] = useState(false);
   const [scheduledPrices, setScheduledPrices] = useState([]);
-
   const history = useHistory();
 
-  const priceByCountryByCurrency = checkValue(currentProductData?.prices)?.priceByCountryByCurrency;
-
-  const pricesList = Object.keys(priceByCountryByCurrency || {});
-
   useEffect(() => {
-    const pricesData = priceByCountryByCurrency;
-
-    if (pricesData) {
-      const pricesArr = [];
-
-      Object.entries(pricesData).forEach(([key, val]) => {
-        // eslint-disable-next-line
-        Object.entries(val).map(([k, v]) => {
-          pricesArr.push({
-            currency: key,
-            country: k,
-            price: `${v.value}`,
-            vatIncluded: v.vatIncluded,
-            crossSell: v.crossSell || '-',
-            msrp: v.msrp || '-',
-            upSell: v.upSell || '-',
-            value: v.value || '-',
-          });
-        });
-      });
-
-      setPrices([...pricesArr]);
-
-      const needsDefault = pricesList.filter((it) => !priceByCountryByCurrency[it].default);
-
-      if (needsDefault.length) {
-        setSaveDisabled(true);
-        setNeedDefault(needsDefault);
-      } else {
-        setSaveDisabled(false);
-        setNeedDefault(null);
+    let prices;
+    if (currentProductData.priceByCountryByCurrency.value) {
+      if (Object.keys(currentProductData.priceByCountryByCurrency.value).length
+        && currentProductData.prices.value.defaultCurrency
+        && !Object.keys(currentProductData.priceByCountryByCurrency.value)
+          .includes(currentProductData.prices.value.defaultCurrency)) {
+        prices = { ...currentProductData.prices, value: { ...currentProductData.prices.value, defaultCurrency: '' } };
+      }
+    } else {
+      if (Object.keys(currentProductData.priceByCountryByCurrency).length
+        && currentProductData.prices.defaultCurrency
+        && !Object.keys(currentProductData.priceByCountryByCurrency)
+          .includes(currentProductData.prices.defaultCurrency)) {
+        prices = { ...currentProductData.prices, defaultCurrency: '' };
       }
     }
-  }, [currentProductData.prices]);
+    if (prices) {
+      setProductData({ ...currentProductData, prices })
+    }
+  }, [currentProductData]);
 
   useEffect(() => {
     api
       .getPricesByProductId(parentId || currentProductData.id)
       .then(({ data }) => setScheduledPrices(data?.items || []));
-
     return () => setScheduledPrices([]);
   }, []);
-
-  const deleteRow = (item) => {
-    const pricesData = { ...priceByCountryByCurrency };
-
-    if (Object.keys(pricesData[item.currency]).length > 1) {
-      delete pricesData[item.currency][item.country];
-    } else {
-      delete pricesData[item.currency];
-    }
-
-    setProductData((c) => ({
-      ...c,
-      prices: c.prices?.state
-        ? {
-          ...c.prices,
-          value: {
-            ...c.prices.value,
-            priceByCountryByCurrency: pricesData,
-          },
-          defaultCurrency:
-            c?.prices?.defaultCurrency === item.currency ? null : c.prices.defaultCurrency,
-        }
-        : {
-          ...c.prices,
-          priceByCountryByCurrency: pricesData,
-          defaultCurrency:
-            c?.prices?.defaultCurrency === item.currency ? null : c.prices.defaultCurrency,
-        },
-    }));
-  };
 
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
       .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
+  const defCurrencyOptions = () => {
+    const selectedCurrency = !currentProductData.priceByCountryByCurrency.state
+      ? Object.keys(currentProductData.priceByCountryByCurrency).map((it) => it)
+      : Object.keys(currentProductData.priceByCountryByCurrency.value).map((it) => it);
 
+    return priceCurrency.filter((el) => selectedCurrency.includes(el.id)) || [];
+  };
   return (
     <>
       <Box px={2} className='product-prices'>
         <TableContainer component={Paper}>
           <InheritanceField
-            field='prices'
+            additionalField='prices'
+            field='priceByCountryByCurrency'
             onChange={setProductData}
-            value={currentProductData?.prices}
+            additionalValue={currentProductData?.prices}
+            value={currentProductData?.priceByCountryByCurrency}
             parentId={parentId}
             currentProductData={currentProductData}
           >
             <></>
           </InheritanceField>
-          <Table aria-label='simple table'>
-            <TableHead>
-              <TableRow style={{ background: '#eee' }}>
-                <TableCell align='center'>{localization.t('labels.country')}</TableCell>
-                <TableCell align='center'>{localization.t('labels.currency')}</TableCell>
-                <TableCell align='center'>{localization.t('labels.price')}</TableCell>
-                <TableCell align='center'>{localization.t('labels.msrp')}</TableCell>
-                <TableCell align='center'>{localization.t('labels.upsellPrice')}</TableCell>
-                <TableCell align='center'>{localization.t('labels.crossSellPrice')}</TableCell>
-                <TableCell align='center'>{localization.t('labels.vatIncluded')}</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
-
-            <TableBody>
-              {prices.map((pr) => {
-                const isEditing = editingCell?.country === pr.country
-                  && editingCell?.currency === pr.currency;
-
-                return isEditing ? (
-                  <ProductPriceRow
-                    setProductData={setProductData}
-                    currentProductData={currentProductData}
-                    parentId={parentId}
-                    editingRow={pr}
-                    setEditingRow={setEditingRow}
-                  />
-                ) : (
-                  <TableRow key={pr.currency + pr.country}>
-                    <TableCell align='center'>
-                      {isEditing ? '' : (pr.country || '-')}
-                    </TableCell>
-                    <TableCell align='center'>{pr.currency || '-'}</TableCell>
-                    <TableCell align='center'>
-                      {<PriceNumberFormat number={pr.price} currency={pr.currency} /> || '-'}
-                    </TableCell>
-                    <TableCell align='center'>{pr.msrp || '-'}</TableCell>
-                    <TableCell align='center'>{pr.upSell || '-'}</TableCell>
-                    <TableCell align='center'>{pr.crossSell || '-'}</TableCell>
-                    <TableCell align='center' style={{ minWidth: '120px', padding: 0 }}>
-                      <Checkbox
-                        disabled
-                        checked={pr.vatIncluded}
-                        name='checkedB'
-                        color='primary'
-                      />
-                    </TableCell>
-                    <TableCell align='center' className='transparent-cell'>
-                      <Button
-                        className='edit-button'
-                        disabled={currentProductData?.prices?.state === 'inherits'}
-                        onClick={() => setEditingRow(pr)}
-                      >
-                        <EditIcon />
-                      </Button>
-
-                      <Button
-                        disabled={currentProductData?.prices?.state === 'inherits'}
-                        onClick={() => deleteRow(pr)}
-                      >
-                        <ClearIcon />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-
-              {currentProductData?.prices?.state !== 'inherits' && (
-                <ProductPriceRow
-                  setProductData={setProductData}
-                  currentProductData={currentProductData}
-                  parentId={parentId}
-                />
-              )}
-            </TableBody>
-          </Table>
+          <PricesTable
+            selectOptions={selectOptions}
+            currentProductData={currentProductData}
+            setProductData={setProductData}
+            priceByCountryByCurrency={checkValue(currentProductData.priceByCountryByCurrency)}
+          />
         </TableContainer>
       </Box>
-      {
-        needDefault && needDefault.length > 0 && (
-          <Box p={2}>
-            <Typography variant='h5' style={{ color: '#fd8e8d', fontStyle: 'italic' }}>
-              {`You have to provide a default value for ${needDefault.join(', ')}`}
-            </Typography>
-          </Box>
-        )
-      }
-      {[...priceCurrency.filter((pr) => pricesList.includes(pr.id))].length !== 0
+      {((!currentProductData.priceByCountryByCurrency.value
+        && Object.keys(currentProductData.priceByCountryByCurrency)?.length > 0)
+        || (currentProductData.priceByCountryByCurrency.value
+          && Object.keys(currentProductData.priceByCountryByCurrency.value)?.length > 0))
         && (
           <Box width={245} py={4} px={2}>
             <InheritanceField
@@ -247,7 +116,7 @@ const Prices = ({
               <SelectCustom
                 label='defaultCurrency'
                 value={currentProductData?.prices?.defaultCurrency}
-                selectOptions={[...priceCurrency.filter((pr) => pricesList.includes(pr.id))]}
+                selectOptions={defCurrencyOptions()}
                 onChangeSelect={(e) => {
                   setProductData({
                     ...currentProductData,
@@ -261,6 +130,7 @@ const Prices = ({
             </InheritanceField>
           </Box>
         )}
+
       {
         scheduledPrices.length > 0 && (
           <>
@@ -376,7 +246,6 @@ Prices.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
-  setSaveDisabled: PropTypes.func,
 };
 
 export default Prices;
