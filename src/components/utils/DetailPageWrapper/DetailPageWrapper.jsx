@@ -53,6 +53,7 @@ const DetailPageWrapper = ({
   setErrors,
   isRankingOpen,
   flexWrapper,
+  customer,
 }) => {
   const { id: paramsId } = useParams();
   const location = useLocation();
@@ -101,6 +102,7 @@ const DetailPageWrapper = ({
         setErrors,
         tabs,
         paramsId,
+        customer,
       );
     }
   }, [tabs?.curTab]);

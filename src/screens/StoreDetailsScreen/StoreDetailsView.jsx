@@ -23,6 +23,7 @@ const StoreDetailsView = ({
   isRankingOpen,
   setIsRankingOpen,
   curTab,
+  customer,
 }) => (
   <>
     {curTab === 0 && (
@@ -31,6 +32,7 @@ const StoreDetailsView = ({
           errors={errors}
           setErrors={setErrors}
           currentStoreData={currentStoreData}
+          customer={customer}
           setCurrentStoreData={setCurrentStoreData}
           selectOptions={selectOptions}
         />
@@ -83,6 +85,7 @@ StoreDetailsView.propTypes = {
   isRankingOpen: PropTypes.bool,
   setIsRankingOpen: PropTypes.func,
   curTab: PropTypes.number,
+  customer: PropTypes.object,
 };
 
 export default StoreDetailsView;

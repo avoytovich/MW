@@ -38,6 +38,9 @@ const errorNotifications = {
   googleTagManagerIdShouldContains: 'Google Tag Manager ID should start with "GTM" prefix and contain only uppercase letters and numbers',
   forDefaultLanguageCanNotBeEmpty: 'for default language can not be empty',
   nothingFound: 'Nothing found',
+  senderNameExactly: 'Must be exactly as: ',
+  senderNameStartWith: 'or start with: ',
+  senderNameEnd: 'and contain only email-friendly characters.',
 };
 
 export default errorNotifications;

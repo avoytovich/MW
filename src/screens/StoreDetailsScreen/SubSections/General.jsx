@@ -32,7 +32,7 @@ const checkBoxObj = [
 ];
 
 const General = ({
-  currentStoreData, setCurrentStoreData, setErrors, errors,
+  currentStoreData, setCurrentStoreData, customer, setErrors, errors,
 }) => {
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
@@ -77,31 +77,51 @@ const General = ({
   };
 
   const withValidation = (target) => {
-    if (!target.value) {
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.general,
-          [target.name]: true,
-        },
-      });
+    if (target.name !== 'senderName') {
+      if (!target.value) {
+        setErrors({
+          ...errors,
+          general: {
+            ...errors?.general,
+            [target.name]: true,
+          },
+        });
+      } else {
+        setErrors({
+          ...errors,
+          general: {
+            ...errors?.general,
+            [target.name]: false,
+          },
+        });
+      }
     } else {
+      const isValidSenderName = () => target.value.startsWith(`${customer?.iamClient?.realmName}-`)
+        || target.value === customer?.iamClient?.realmName;
       setErrors({
         ...errors,
         general: {
-          ...errors?.general,
-          [target.name]: false,
+          ...errors?.senderName,
+          [target.name]: !isValidSenderName(),
         },
       });
     }
   };
 
   const withValidationInputCustom = (target) => {
-    withValidation(target);
-    setCurrentStoreData({
-      ...currentStoreData,
-      [target.name]: target.value,
-    });
+    if (target.name !== 'senderName') {
+      withValidation(target);
+      setCurrentStoreData({
+        ...currentStoreData,
+        [target.name]: target.value,
+      });
+    } else {
+      withValidation(target);
+      setCurrentStoreData({
+        ...currentStoreData,
+        emailSenderOverride: target.value,
+      });
+    }
   };
 
   const withValidationSelectCustom = (target, options) => {
@@ -183,10 +203,19 @@ const General = ({
                   <InputCustom
                     label='senderName'
                     value={currentStoreData.emailSenderOverride}
-                    onChangeInput={(e) => setCurrentStoreData({
-                      ...currentStoreData,
-                      emailSenderOverride: e.target.value,
-                    })}
+                    onChangeInput={(e) => withValidationInputCustom(e.target)}
+                    hasError={!!errors?.general?.senderName
+                      || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
+                      && (currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName)
+                      )}
+                    helperText={(errors?.general?.senderName
+                      || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
+                        && (
+                          currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName
+                        )))
+                      && (`${localization.t('errorNotifications.senderNameExactly')}
+                        "${customer?.iamClient?.realmName}" ${localization.t('errorNotifications.senderNameStartWith')}
+                        "${customer?.iamClient?.realmName}-" ${localization.t('errorNotifications.senderNameEnd')}`)}
                   />
                 </Box>
                 <Button variant='contained' disabled>
@@ -520,6 +549,7 @@ General.propTypes = {
   setCurrentStoreData: PropTypes.func,
   setErrors: PropTypes.func,
   errors: PropTypes.object,
+  customer: PropTypes.object,
 };
 
 export default General;
