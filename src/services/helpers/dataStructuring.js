@@ -6,6 +6,7 @@ const defaultProduct = {
   genericName: '',
   catalogId: '',
   publisherRefId: '',
+  priceByCountryByCurrency: {},
   lifeTime: 'PERMANENT',
   physical: false,
   sellingStores: [],
@@ -121,13 +122,57 @@ const unchangableInheritedFields = ['customerId', 'status'];
 const productRequiredFields = (product) => {
   let resourcesKeys = null;
 
+  const priceByCountryByCurrency = {};
+
+  Object.keys(product.prices.priceByCountryByCurrency).forEach((item) => {
+    priceByCountryByCurrency[item] = [];
+    Object.keys(product.prices.priceByCountryByCurrency[item]).forEach((itemChild, index) => {
+      if (Object.keys(priceByCountryByCurrency[item]).length === 0) {
+        priceByCountryByCurrency[item].push({
+          key: `${item}_${index}`,
+          countries: [itemChild],
+          value: product.prices.priceByCountryByCurrency[item][itemChild].value,
+          crossSell: product.prices.priceByCountryByCurrency[item][itemChild].crossSell,
+          msrp: product.prices.priceByCountryByCurrency[item][itemChild].msrp,
+          upSell: product.prices.priceByCountryByCurrency[item][itemChild].upSell,
+          vatIncluded: product.prices.priceByCountryByCurrency[item][itemChild].vatIncluded,
+        });
+      } else {
+        const isTheSame = (element) => element.value
+          === product.prices.priceByCountryByCurrency[item][itemChild].value
+          && element.vatIncluded
+          === product.prices.priceByCountryByCurrency[item][itemChild].vatIncluded
+          && element.crossSell
+          === product.prices.priceByCountryByCurrency[item][itemChild].crossSell
+          && element.msrp
+          === product.prices.priceByCountryByCurrency[item][itemChild].msrp
+          && element.upSell
+          === product.prices.priceByCountryByCurrency[item][itemChild].upSell;
+
+        const existedIndex = priceByCountryByCurrency[item].findIndex(isTheSame);
+        if (existedIndex >= 0) {
+          priceByCountryByCurrency[item][existedIndex].countries.push(itemChild)
+        } else {
+          priceByCountryByCurrency[item].push({
+            key: `${item}_${index}`,
+            countries: [itemChild],
+            value: product.prices.priceByCountryByCurrency[item][itemChild].value,
+            crossSell: product.prices.priceByCountryByCurrency[item][itemChild].crossSell,
+            msrp: product.prices.priceByCountryByCurrency[item][itemChild].msrp,
+            upSell: product.prices.priceByCountryByCurrency[item][itemChild].upSell,
+            vatIncluded: product.prices.priceByCountryByCurrency[item][itemChild].vatIncluded,
+          });
+        }
+      }
+    })
+  })
   if (product.resources) {
     resourcesKeys = [...product.resources].map((resource, index) => ({
       ...resource,
       index,
     }));
   }
-  return { ...defaultProduct, ...product, resources: resourcesKeys || [] };
+  return { ...defaultProduct, ...product, resources: resourcesKeys || [], priceByCountryByCurrency };
 };
 const structureProdAutocompleteSelectOptions = ({
   options, optionValue, otherOptions, optionId,

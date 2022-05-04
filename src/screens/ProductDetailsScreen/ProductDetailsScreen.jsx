@@ -24,7 +24,9 @@ import {
   checkValue,
   defaultProductLocales,
 } from '../../services/helpers/dataStructuring';
-import { handleGetOptions, handleGetProductDetails, saveLocalizationDetails } from './utils';
+import {
+  handleGetOptions, handleGetProductDetails, saveLocalizationDetails, beforeSend,
+} from './utils';
 import { setTempProductDescription, setTempProductLocales } from '../../redux/actions/TempData';
 
 import localization from '../../localization';
@@ -110,10 +112,12 @@ const ProductDetailsScreen = () => {
   };
 
   const saveDetails = async () => {
+    const formatePrices = beforeSend(currentProductData);
+
     if (productHasChanges) {
       const sendObj = currentProductData?.parentId || parentId
-        ? frontToBack(currentProductData)
-        : { ...currentProductData };
+        ? frontToBack(formatePrices)
+        : { ...formatePrices };
 
       sendObj.lifeTime = sendObj.lifeTime.toUpperCase();
 
@@ -161,7 +165,9 @@ const ProductDetailsScreen = () => {
     if (currentProductData.nextGenerationOf[0] === '') {
       delete currentProductData.nextGenerationOf;
     }
-    const dataToSave = frontToBack(currentProductData);
+
+    const formateObj = beforeSend(currentProductData);
+    const dataToSave = frontToBack(formateObj);
 
     if (!dataToSave?.customerId) {
       dataToSave.customerId = currentProductData?.customerId?.state
@@ -315,7 +321,7 @@ const ProductDetailsScreen = () => {
           setCurrentProductData((c) => ({ ...c, customerId, catalogId }));
           setDisabledWithMandLocal(
             productDetails && productDetails?.i18nFields
-            && productDetails?.i18nFields[productDetails.fallbackLocale]
+              && productDetails?.i18nFields[productDetails.fallbackLocale]
               ? !productDetails?.i18nFields[productDetails.fallbackLocale]?.localizedMarketingName
               : true,
           );
@@ -369,16 +375,18 @@ const ProductDetailsScreen = () => {
   useEffect(() => setProductDetails({ ...currentProductDetails }), [currentProductDetails]);
 
   useEffect(() => {
-    api.getNextGenerationByProductId(id).then(
-      ({ data: { genericName, id: relatedProductId } }) => {
-        setRelatedProduct({ genericName, id: relatedProductId });
-      },
-    );
+    if (id !== 'add') {
+      api.getNextGenerationByProductId(id).then(
+        ({ data: { genericName, id: relatedProductId } }) => {
+          setRelatedProduct({ genericName, id: relatedProductId });
+        },
+      );
+    }
   }, [id]);
 
   if (!parentId
-      && !currentProductData?.parentId
-      && currentProductData?.createDate?.parentValue) return <LinearProgress />;
+    && !currentProductData?.parentId
+    && currentProductData?.createDate?.parentValue) return <LinearProgress />;
 
   return (
     <DetailPageWrapper
@@ -401,7 +409,7 @@ const ProductDetailsScreen = () => {
       extraHeader={<CustomerStatusLabel customer={customer} />}
       headerTitleCopy={productData?.id}
       extraActions={
-        id && selectOptions?.sellingStores && (
+        id !== 'add' && !!currentProductData.sellingStores.length && selectOptions?.sellingStores && (
           <CheckoutMenu
             checkOutStores={checkOutStores}
             currentProductData={currentProductData}

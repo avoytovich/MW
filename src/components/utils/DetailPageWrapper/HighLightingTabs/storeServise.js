@@ -46,10 +46,12 @@ const hightLightPayment = (curData, isRankingOpen) => {
   );
 };
 
-const hightLightGeneral = (curData) => (
+const hightLightGeneral = (curData, customer) => (
   (curData.name)
     && (curData.displayName)
-      && (curData.routes[0]?.hostname) ? null : false
+      && (curData.routes[0]?.hostname)
+        && ((curData.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`))
+          || (curData.emailSenderOverride === customer?.iamClient?.realmName)) ? null : false
 );
 
 const storeHightLight = (
@@ -59,6 +61,7 @@ const storeHightLight = (
   setErrors = () => {},
   tabs,
   paramsId,
+  customer,
 ) => {
   if (!Object.keys(errors).length) {
     if (tabs?.tabLabels?.[tabs.curTab] === 'payment') {
@@ -91,7 +94,7 @@ const storeHightLight = (
       ...errors,
       general: {
         ...errors?.general,
-        isFulfilled: hightLightGeneral(curData),
+        isFulfilled: hightLightGeneral(curData, customer),
       },
       payment: {
         ...errors?.payment,

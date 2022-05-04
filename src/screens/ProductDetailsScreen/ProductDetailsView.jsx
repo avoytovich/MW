@@ -60,19 +60,19 @@ const ProductDetailsView = ({
 
   useEffect(() => {
     const {
-      catalogId, publisherRefId, genericName, type, prices,
+      catalogId, publisherRefId, genericName, type, prices, priceByCountryByCurrency
     } = curProductData;
+    const currency = prices?.state ? prices.value.defaultCurrency !== '' : prices.defaultCurrency !== '';
 
-    const currency = prices?.state // eslint-disable-line
-      ? prices?.state === 'inherits'
-        ? prices?.parentValue?.priceByCountryByCurrency
-          && prices?.parentValue?.priceByCountryByCurrency[prices?.parentValue?.defaultCurrency]
-            ?.default?.value
-        : prices?.value?.priceByCountryByCurrency
-          && prices?.value?.priceByCountryByCurrency[prices?.value?.defaultCurrency]?.default?.value
-      : prices?.defaultCurrency;
+    const byCountryByCurrency = priceByCountryByCurrency.state
+      ? Object.keys(priceByCountryByCurrency.value).length > 0
+      : Object.keys(priceByCountryByCurrency).length > 0;
 
-    if (catalogId && publisherRefId && genericName && type && currency) {
+    if (catalogId
+      && publisherRefId
+      && genericName
+      && type
+      && byCountryByCurrency && currency) {
       setTabsDisabled(false);
     } else {
       setTabsDisabled(true);
