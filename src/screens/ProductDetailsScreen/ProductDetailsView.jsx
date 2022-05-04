@@ -89,6 +89,7 @@ const ProductDetailsView = ({
             selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={curProductData}
+            setSaveDisabled={setSaveDisabled}
             parentId={parentId}
           />
         </SectionLayout>
