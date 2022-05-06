@@ -156,7 +156,7 @@ const generateData = (orderData, paymentData) => {
       {
         key: 'streetAddress',
         label: localization.t('labels.streetAddress'),
-        value: orderData?.endUser?.street || emptyValue,
+        value: orderData?.endUser?.streetAddress || emptyValue,
       },
       {
         key: 'city',
