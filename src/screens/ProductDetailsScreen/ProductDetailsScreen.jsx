@@ -297,7 +297,10 @@ const ProductDetailsScreen = () => {
           setSubProductVariations,
           (catalogId) => setProductDetails((c) => ({ ...c, catalogId })),
         );
-      }).catch(() => setLoading(false));
+      }).catch(() => {
+        setCurrentProductData(null);
+        setLoading(false);
+      });
     } else {
       const customerId = nxState?.selectedCustomer?.id;
 
@@ -409,7 +412,7 @@ const ProductDetailsScreen = () => {
       extraHeader={<CustomerStatusLabel customer={customer} />}
       headerTitleCopy={productData?.id}
       extraActions={
-        id !== 'add' && !!currentProductData.sellingStores.length && selectOptions?.sellingStores && (
+        id !== 'add' && !!currentProductData?.sellingStores.length && selectOptions?.sellingStores && (
           <CheckoutMenu
             checkOutStores={checkOutStores}
             currentProductData={currentProductData}
