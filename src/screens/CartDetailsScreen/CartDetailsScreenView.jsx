@@ -28,7 +28,7 @@ import OrderDetailsTableComponent from '../../components/TableComponent/OrderDet
 
 import './cartDetailsScreeen.scss';
 
-const CartDetailsScreenView = ({ detailsData, customer, curTab }) => {
+const CartDetailsScreenView = ({ detailsData, customer, curTab, store }) => {
   const { id } = useParams();
   const history = useHistory();
 
@@ -139,7 +139,7 @@ const CartDetailsScreenView = ({ detailsData, customer, curTab }) => {
       <Grid item md={9} xs={12}>
         <Box className='store'>
           <Typography variant='subtitle1' className='store-value-name'>
-            {`${each.field} store, (`}
+            {`${each.field}, (`}
           </Typography>
           <span
             className="store-value-id"
@@ -177,7 +177,7 @@ const CartDetailsScreenView = ({ detailsData, customer, curTab }) => {
 
   const renderGeneral = () => (
     <CustomCard width={1}>
-      {structureGeneral(detailsData, customer).map((each) => (
+      {structureGeneral(detailsData, customer, store).map((each) => (
         <Grid container spacing={2} key={each.label}>
           {renderGeneralFields(each)}
         </Grid>
@@ -279,7 +279,8 @@ const CartDetailsScreenView = ({ detailsData, customer, curTab }) => {
 
 CartDetailsScreenView.propTypes = {
   detailsData: PropTypes.object,
-  customer: PropTypes.string,
+  customer: PropTypes.object,
+  store: PropTypes.object,
   curTab: PropTypes.number,
 };
 

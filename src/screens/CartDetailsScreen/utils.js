@@ -3,7 +3,7 @@ import moment from 'moment';
 const tabLabelsView = ['general', 'endUser', 'products', 'emails'];
 const tabLabelsAdd = ['general', 'endUser'];
 
-const structureGeneral = (cartData, customer) => ([
+const structureGeneral = (cartData, customer, store) => ([
   {
     label: 'cartId',
     field: cartData?.id || '-',
@@ -34,7 +34,7 @@ const structureGeneral = (cartData, customer) => ([
   },
   {
     label: 'store',
-    field: customer?.name || '-',
+    field: store?.name || '-',
   },
   {
     label: 'amount',
