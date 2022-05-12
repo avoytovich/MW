@@ -48,6 +48,7 @@ const general = {
   font: 'Font',
   layout: 'Layout',
   checkout: 'Checkout',
+  checkoutWithTrial: 'Checkout with trial',
   save: 'Save',
   add: 'Add',
   noPackagesFound: 'No packages found',

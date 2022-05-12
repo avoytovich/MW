@@ -11,6 +11,7 @@ import store from '../../redux/store';
 import ProductDetailsTabs from './ProductDetailsTabs';
 import ProductDetailsView from './ProductDetailsView';
 import CheckoutMenu from './CheckoutMenu';
+import CheckoutWithTrial from './CheckoutWithTrial';
 
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
@@ -412,12 +413,20 @@ const ProductDetailsScreen = () => {
       extraHeader={<CustomerStatusLabel customer={customer} />}
       headerTitleCopy={productData?.id}
       extraActions={
-        id !== 'add' && !!currentProductData?.sellingStores.length && selectOptions?.sellingStores && (
-          <CheckoutMenu
-            checkOutStores={checkOutStores}
-            currentProductData={currentProductData}
-            sellingStores={selectOptions?.sellingStores}
-          />
+        id !== 'add' && !!currentProductData.sellingStores.length && selectOptions?.sellingStores && (
+          <>
+            <CheckoutMenu
+              checkOutStores={checkOutStores}
+              currentProductData={currentProductData}
+              sellingStores={selectOptions?.sellingStores}
+            />
+            {currentProductData?.trialAllowed && (
+              <CheckoutWithTrial
+                currentProductData={currentProductData}
+                sellingStores={selectOptions?.sellingStores}
+              />
+            )}
+          </>
         )
       }
       customTabs={(
