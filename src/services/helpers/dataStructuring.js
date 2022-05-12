@@ -195,7 +195,6 @@ const structureProdAutocompleteSelectOptions = ({
   return res;
 };
 
-
 const structureSelectOptions = ({
   options, optionValue, otherOptions, optionId,
 }) => {
@@ -325,7 +324,7 @@ const createStandaloneValue = (value) => {
   return value?.state === 'inherits' ? types[valueType] : value.value;
 };
 
-const createUnchangableInheritedValue = (value) => (value?.parentValue ? value.parentValue : (value || ''));
+const createUnchangableInheritedValue = (value, key) => (value?.parentValue && key !== 'status' ? value.parentValue : (value || ''));
 
 const createInheritableValue = (value, parentValue) => {
   const state = R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue)
@@ -369,7 +368,7 @@ const backToFront = (
     }
 
     if (unchangableInheritedFields.includes(key)) {
-      return createUnchangableInheritedValue(value);
+      return createUnchangableInheritedValue(value, key);
     }
 
     return value;

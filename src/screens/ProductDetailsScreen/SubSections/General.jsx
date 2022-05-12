@@ -48,7 +48,7 @@ import { sortByAlphabetical } from '../../../services/helpers/utils';
 import localization from '../../../localization';
 
 const General = ({
-  setProductData, currentProductData, selectOptions, parentId,
+  setProductData, currentProductData, selectOptions, parentId, setSaveDisabled,
 }) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({ number: 1, value: '' });
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
@@ -68,7 +68,11 @@ const General = ({
 
   const countriesOptions = getCountriesOptions();
 
-  const { lifeTime: lifetime, subscriptionTemplate } = currentProductData;
+  const { lifeTime: lifetime, subscriptionTemplate, fulfillmentTemplate } = currentProductData;
+
+  useEffect(() => {
+    setSaveDisabled(!!(fulfillmentTemplate && selectedBundledProduct));
+  }, [fulfillmentTemplate, selectedBundledProduct]);
 
   useEffect(() => {
     if (lifetime === 'PERMANENT' && subscriptionTemplate) {
@@ -703,6 +707,8 @@ const General = ({
                 selectOptions={selectOptions?.renewingProducts?.sort(sortByAlphabetical) || []}
                 curValue={checkValue(selectedBundledProduct) || ''}
                 isDisabled={currentProductData?.subProducts?.state === 'inherits'}
+                error={!!(fulfillmentTemplate && selectedBundledProduct)}
+                helperText={localization.t('labels.errorProductFulAndBun')}
               />
               <Box marginLeft='5px'>
                 <IconButton
@@ -747,6 +753,7 @@ const General = ({
 
 General.propTypes = {
   setProductData: PropTypes.func,
+  setSaveDisabled: PropTypes.bool,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,

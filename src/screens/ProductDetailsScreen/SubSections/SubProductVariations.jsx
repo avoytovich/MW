@@ -65,10 +65,9 @@ const SubProductVariations = ({
     });
   };
 
-  const bundledDisabled = currentProductData?.subProducts?.state === 'inherits';
   return (
     <Box display='flex' width='100%'>
-      <SectionLayout label='bundledProducts' contentWidth='100%'>
+      {/* <SectionLayout label='bundledProducts' contentWidth='100%'>
         {Object.entries(counts).map(([key, value]) => {
           const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
@@ -199,7 +198,7 @@ const SubProductVariations = ({
             <Box style={{ display: 'none' }} />
           </InheritanceField>
         </Box>
-      </SectionLayout>
+      </SectionLayout> */}
       <SectionLayout label='variationParameters' width='100%'>
         <Box display='flex' flexDirection='column'>
           {variablesDescriptions?.map(

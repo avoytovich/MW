@@ -11,6 +11,8 @@ const AutocompleteCustom = ({
   isDisabled,
   optionLabelKey,
   isRequired,
+  error,
+  helperText,
 }) => {
   const [curOption, setCurOption] = useState(null);
   const [search, setSearch] = useState('');
@@ -49,6 +51,8 @@ const AutocompleteCustom = ({
           }}
           variant="outlined"
           label={localization.t(`labels.${label}`)}
+          error={error}
+          helperText={error && helperText}
         />
       )}
     />
@@ -63,6 +67,8 @@ AutocompleteCustom.propTypes = {
   onSelect: PropTypes.func,
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
+  error: PropTypes.bool,
+  helperText: PropTypes.string,
 };
 
 export default AutocompleteCustom;
