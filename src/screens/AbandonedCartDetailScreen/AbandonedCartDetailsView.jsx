@@ -16,7 +16,7 @@ import localization from '../../localization';
 import { InputCustom, NumberInput, SelectCustom } from '../../components/Inputs';
 
 const AbandonedCartDetailsView = ({
-  setCurAbandonedCart, curAbandonedCart, hasError, setHasError,
+  setCurAbandonedCart, curAbandonedCart, hasError, setHasError, testing,
 }) => (
 
   <Box my={3} bgcolor='#fff' boxShadow={2} width='100%' pb={4}>
@@ -50,6 +50,7 @@ const AbandonedCartDetailsView = ({
       </Box>
       <Box p={2} width='60%'>
         <InputCustom
+          testing={testing}
           data-test='name'
           label='name'
           value={curAbandonedCart.name}
@@ -63,6 +64,7 @@ const AbandonedCartDetailsView = ({
         <Grid item md={3} sm={6}>
           <Box p={2}>
             <SelectCustom
+              testing={testing}
               data-test='date'
               label='date'
               value={curAbandonedCart.validPeriod}
@@ -179,6 +181,7 @@ AbandonedCartDetailsView.propTypes = {
   curAbandonedCart: PropTypes.object,
   hasError: PropTypes.bool,
   setHasError: PropTypes.func,
+  testing: PropTypes.bool,
 };
 
 export default AbandonedCartDetailsView;
