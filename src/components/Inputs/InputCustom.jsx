@@ -41,7 +41,7 @@ const InputCustom = ({
       InputProps={{
         form: { autocomplete: 'off' },
       }}
-      InputLabelProps={!label && { shrink: false }}
+      InputLabelProps={testing ? null : !label && { shrink: false }}
       onChange={onChangeInput}
       variant='outlined'
     />

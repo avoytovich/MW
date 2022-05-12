@@ -24,6 +24,7 @@ const SelectCustom = ({
   withDots,
   hasError = false,
   helperText = '',
+  testing,
 }) => {
   const noRepeatingOptions = selectOptions
     .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
@@ -45,7 +46,7 @@ const SelectCustom = ({
             </InputAdornment>
           ),
         }}
-        InputLabelProps={!label && { shrink: false }}
+        InputLabelProps={testing ? null : !label && { shrink: false }}
         SelectProps={{
           value: value || '',
           onChange: onChangeSelect,
@@ -122,6 +123,7 @@ SelectCustom.propTypes = {
   withDots: PropTypes.bool,
   hasError: PropTypes.bool,
   helperText: PropTypes.string,
+  testing: PropTypes.bool,
 };
 
 export default SelectCustom;
