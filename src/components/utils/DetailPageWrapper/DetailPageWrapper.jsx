@@ -122,6 +122,7 @@ const DetailPageWrapper = ({
           flexDirection='row'
           m={2}
           justifyContent='space-between'
+          alignItems='center'
         >
           <Box alignSelf='center'>
             <Typography data-test='notificationName' gutterBottom variant='h3'>
