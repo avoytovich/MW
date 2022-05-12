@@ -281,7 +281,7 @@ const LocalizedContent = ({
         dispatch(setTempProductLocales({ ...newi18n }));
         dispatch(setTempProductDescription({ ...newDescr }));
 
-        setValue(productDescrData?.fallbackLocale || 0);
+        setValue(checkValue(productDescrData?.fallbackLocale) || 0);
       });
       return;
     }
@@ -399,7 +399,7 @@ const LocalizedContent = ({
                       label={`${locale}${locale === curData?.fallbackLocale || (curData?.fallbackLocale?.state === 'inherits' ? locale === curData?.fallbackLocale?.parentValue : locale === curData?.fallbackLocale?.value)
                         ? ' (default)'
                         : ''
-                        }`}
+                      }`}
                       key={locale}
                       value={locale}
                       component={forwardRef(({ children, ...props }, ref) => (
