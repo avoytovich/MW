@@ -84,7 +84,7 @@ const generateData = (data, children) => {
       type: val.type,
       lifeTime: val.lifeTime,
       status: val.status,
-      family: val.family,
+      family: val.productFamily || '-',
       subscriptionModel: val?.subscriptionTemplate,
       priceFunction: val.priceFunction || '-',
     };

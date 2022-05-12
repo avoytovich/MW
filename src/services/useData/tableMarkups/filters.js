@@ -944,11 +944,6 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'name',
-      label: localization.t('labels.name'),
-      type: 'text',
-    },
-    {
       id: 'updatingDate',
       label: localization.t('labels.lastUpdate'),
       type: 'date',

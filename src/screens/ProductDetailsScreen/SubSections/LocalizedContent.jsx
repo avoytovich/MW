@@ -27,6 +27,7 @@ import {
   backToFront,
   localizedValues,
   createInheritableValue,
+  checkValue,
 } from '../../../services/helpers/dataStructuring';
 
 import { setTempProductLocales, setTempProductDescription } from '../../../redux/actions/TempData';
@@ -214,7 +215,7 @@ const LocalizedContent = ({
   };
 
   const getSortedLocales = () => {
-    const first = curData?.fallbackLocale;
+    const first = checkValue(curData?.fallbackLocale);
 
     // eslint-disable-next-line no-nested-ternary
     return availLocales.sort((x, y) => (x === first ? -1 : y === first ? 1 : 0)) || [];
@@ -280,7 +281,7 @@ const LocalizedContent = ({
         dispatch(setTempProductLocales({ ...newi18n }));
         dispatch(setTempProductDescription({ ...newDescr }));
 
-        setValue(productDescrData?.fallbackLocale || 0);
+        setValue(checkValue(productDescrData?.fallbackLocale) || 0);
       });
       return;
     }

@@ -15,7 +15,9 @@ import {
 import { toast } from 'react-toastify';
 
 import PropTypes from 'prop-types';
-import { duplicateParamsByScope, sections, beforeSendFormate } from './utils';
+import {
+  duplicateParamsByScope, sections, beforeSendFormate, keyName,
+} from './utils';
 import localization from '../../../localization';
 import { InputCustom } from '../../Inputs';
 import '../../TableComponent/TableComponent.scss';
@@ -28,9 +30,9 @@ const DuplicatePopup = ({
   const [inputValue, setInputValue] = useState('');
   const [attributes, setAttributes] = useState({});
   useEffect(() => {
-    setInputValue(`Copy of ${duplicatedData?.discountRuleName}`);
+    setInputValue(`Copy of ${duplicatedData?.[keyName[scope]]}`);
     setAttributes({ ...sections[scope] });
-  }, [duplicatedData]);
+  }, [duplicatedData, scope]);
   const handleChange = (event) => {
     setAttributes({
       ...attributes,
@@ -67,7 +69,7 @@ const DuplicatePopup = ({
         });
       });
   };
-  const contentHeader = `${localization.t('labels.duplicate')} ${duplicatedData?.discountRuleName}?`;
+  const contentHeader = `${localization.t('labels.duplicate')} ${duplicatedData?.[keyName[scope]]}?`;
   return (
     <>
       <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby="form-dialog-title">
