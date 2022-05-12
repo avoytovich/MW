@@ -137,7 +137,7 @@ const TinyEditor = ({
               setEditorLoading(false);
               setEditorRef(ref);
 
-              if (i18nFields[curLocal][val]?.state === 'inherits') {
+              if (i18nFields[curLocal] && i18nFields[curLocal][val]?.state === 'inherits') {
                 setTimeout(() => {
                   ref.target.getBody().setAttribute('class', 'mce-content-body mce-content-readonly');
                   ref.target.getBody().setAttribute('contenteditable', false);

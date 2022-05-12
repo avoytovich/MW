@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Box } from '@mui/material';
+import { Dialog } from '@mui/material';
 
 import {
   AddParameterFirstStep,
@@ -149,9 +149,21 @@ const AddVariationModal = ({
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
-      <Box className='container'>{modalBody[step]}</Box>
-    </Modal>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      PaperProps={{
+        style: {
+          width: '700px',
+          maxWidth: '700px',
+          overflowX: 'visible',
+        },
+      }}
+      fullWidth
+      closeAfterTransition
+    >
+      {modalBody[step]}
+    </Dialog>
   );
 };
 

@@ -15,10 +15,12 @@ import {
   Typography,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
+import EditIcon from '@mui/icons-material/Edit';
 import parentPaths from '../../../services/paths';
 import SectionLayout from '../../../components/SectionLayout';
 
 import AddVariationModal from '../../../components/utils/Modals/AddVariationModal';
+import EditVariationModal from '../../../components/utils/Modals/EditVariationModal';
 
 import './productFile.scss';
 
@@ -36,6 +38,7 @@ const Variations = ({
   const { id: productId } = useParams();
 
   const [open, setOpen] = useState(false);
+  const [editableVariation, setEditableVariation] = useState(null);
 
   const counts = {};
   const subProductsList = currentProductData?.subProducts || [];
@@ -191,15 +194,24 @@ const Variations = ({
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currentProductData?.availableVariables?.map(({ field, type }) => (
-                  <TableRow key={field}>
-                    <TableCell>{field}</TableCell>
-                    <TableCell>{type}</TableCell>
-                    <TableCell>
+                {currentProductData?.availableVariables?.map((variation) => (
+                  <TableRow key={variation?.field}>
+                    <TableCell width='40%'>{variation?.field}</TableCell>
+                    <TableCell width='40%'>{variation?.type}</TableCell>
+                    <TableCell align='center'>
+                      <IconButton
+                        color='secondary'
+                        aria-label='edit'
+                        onClick={() => setEditableVariation(variation)}
+                        size='large'
+                      >
+                        <EditIcon />
+                      </IconButton>
+
                       <IconButton
                         color='secondary'
                         aria-label='clear'
-                        onClick={() => handleDeleteVariable(field)}
+                        onClick={() => handleDeleteVariable(variation?.field)}
                         size='large'
                       >
                         <ClearIcon />
@@ -215,6 +227,7 @@ const Variations = ({
               Add Variation
             </Button>
           </Box>
+
           <AddVariationModal
             open={open}
             onClose={handleClose}
@@ -224,6 +237,16 @@ const Variations = ({
             productDetails={productDetails}
           />
         </SectionLayout>
+
+        <EditVariationModal
+          open={!!editableVariation}
+          curVariation={editableVariation}
+          onClose={() => setEditableVariation(null)}
+          setProductData={setProductData}
+          currentProductData={currentProductData}
+          setProductDetails={setProductDetails}
+          productDetails={productDetails}
+        />
       </Box>
     </Box>
   );

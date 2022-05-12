@@ -130,7 +130,7 @@ const ProductDetailsScreen = () => {
       }
 
       api.updateProductById(currentProductData.id, sendObj).then(() => {
-        if (!productHasLocalizationChanges && !currentProductDetails) {
+        if (!productHasLocalizationChanges) {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLoading(true);
           setUpd((c) => c + 1);
