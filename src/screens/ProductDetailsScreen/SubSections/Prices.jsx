@@ -55,7 +55,7 @@ const Prices = ({
       }
     }
     if (prices) {
-      setProductData({ ...currentProductData, prices })
+      setProductData({ ...currentProductData, prices });
     }
   }, [currentProductData]);
 
@@ -92,6 +92,7 @@ const Prices = ({
           >
             <></>
           </InheritanceField>
+
           <PricesTable
             selectOptions={selectOptions}
             currentProductData={currentProductData}

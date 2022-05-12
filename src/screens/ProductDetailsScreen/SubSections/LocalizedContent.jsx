@@ -24,10 +24,10 @@ import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/Op
 import JsonEditor from '../../../components/JsonEditor';
 
 import {
+  checkValue,
   backToFront,
   localizedValues,
   createInheritableValue,
-  checkValue,
 } from '../../../services/helpers/dataStructuring';
 
 import { setTempProductLocales, setTempProductDescription } from '../../../redux/actions/TempData';
@@ -67,7 +67,8 @@ const LocalizedContent = ({
         ...curData?.i18nFields,
       },
     };
-    dataToSave.i18nFields[value || locale] = { ...newTabValues };
+    dataToSave.i18nFields[locale || value] = { ...newTabValues };
+
     setCurData({ ...dataToSave });
     setAvailLocales(() => [...Object.keys(dataToSave?.i18nFields)]);
     dispatch(setTempProductLocales({ ...dataToSave.i18nFields }));
@@ -129,6 +130,7 @@ const LocalizedContent = ({
       }
     } else if (defLanguage) {
       const languageIndex = availLocales.indexOf(defLanguage);
+
       if (languageIndex < 0) {
         makeNewData(defLanguage);
         setValue(defLanguage);
@@ -351,7 +353,7 @@ const LocalizedContent = ({
       dispatch(setTempProductLocales({ ...newi18n, ...defI18nFields }));
       dispatch(setTempProductDescription({ ...newDescr }));
 
-      setValue(newDescr?.fallbackLocale || 0);
+      setValue(checkValue(newDescr?.fallbackLocale) || 0);
     });
   }, [currentProductData.descriptionId]);
 
