@@ -67,7 +67,7 @@ NotificationDetailScreenView.propTypes = {
   setCurNotification: PropTypes.func,
   curNotification: PropTypes.object,
   selectOptions: PropTypes.object,
-  curTab: PropTypes.bool,
+  curTab: PropTypes.number,
   errorMessages: PropTypes.object,
   setErrorMessages: PropTypes.func,
 };

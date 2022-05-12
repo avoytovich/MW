@@ -151,12 +151,12 @@ const General = ({
         ? (
           <Box p={2}>
             <InputCustom
-              hasError={!!errorMessages.email}
-              helperText={errorMessages.email}
-              data-test='externalContext'
+              hasError={!!errorMessages?.email}
+              helperText={errorMessages?.email}
+              data-test='emailInput'
               isMultiline
               label="emailsOneByLine"
-              value={curNotification.emails.join('\r\n')}
+              value={curNotification.emails?.join('\r\n')}
               onChangeInput={(e) => {
                 let res = [];
                 if (e.target.value) {
