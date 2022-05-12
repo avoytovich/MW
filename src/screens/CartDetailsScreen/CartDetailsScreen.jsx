@@ -23,6 +23,8 @@ import { tabLabelsView } from './utils';
 const CartDetailsScreen = () => {
   const [detailsData, setDetailsData] = useState(null);
   const [customer, setCustomer] = useState(null);
+  const [store, setStore] = useState(null);
+
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -46,10 +48,12 @@ const CartDetailsScreen = () => {
   useEffect(() => {
     setLoading(true);
     api.getCartById(id)
-      .then((data) => {
-        setDetailsData(data.data);
-        api.getCustomerById(data.data.customerId)
+      .then(({ data }) => {
+        setDetailsData(data);
+        api.getCustomerById(data.customerId)
           .then((res) => setCustomer(res.data));
+        api.getStoreById(data.storeId)
+          .then((res) => setStore(res.data));
       })
       .catch((err) => setError(err))
       .finally(() => setLoading(false));
@@ -120,6 +124,7 @@ const CartDetailsScreen = () => {
       <CartDetailsScreenView
         detailsData={detailsData}
         customer={customer}
+        store={store}
         curTab={curTab}
       />
     </DetailPageWrapper>
