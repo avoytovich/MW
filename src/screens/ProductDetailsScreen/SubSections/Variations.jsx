@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import {
   Box,
   Button,
@@ -14,11 +16,18 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
+
 import ClearIcon from '@mui/icons-material/Clear';
 import EditIcon from '@mui/icons-material/Edit';
-import parentPaths from '../../../services/paths';
-import SectionLayout from '../../../components/SectionLayout';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
+import api from '../../../api';
+import localization from '../../../localization';
+
+import parentPaths from '../../../services/paths';
+import { copyText } from '../../../services/helpers/utils';
+
+import SectionLayout from '../../../components/SectionLayout';
 import AddVariationModal from '../../../components/utils/Modals/AddVariationModal';
 import EditVariationModal from '../../../components/utils/Modals/EditVariationModal';
 
@@ -27,7 +36,7 @@ import './productFile.scss';
 const Variations = ({
   setProductData,
   currentProductData,
-  productVariations: { bundledProducts = [], variations },
+  productVariations: { bundledProducts = [] },
   setProductDetails,
   productDetails,
 }) => {
@@ -72,6 +81,22 @@ const Variations = ({
     });
   };
 
+  const getSeatsText = (seat) => {
+    if (!seat) return '';
+
+    const seatNum = seat.replace('val', '');
+
+    return `${seatNum} PC${seatNum > 1 && 's'}`;
+  };
+
+  const deleteSubProduct = (id) => {
+    api
+      .deleteProductById(id)
+      .then(() => {
+        toast(localization.t('general.hasBeenSuccessfullyDeleted'));
+      });
+  };
+
   return (
     <Box display='flex' flexDirection='column' width='100%'>
       {currentProductData.id && (
@@ -90,11 +115,8 @@ const Variations = ({
                     <TableCell align='center'>Lifetime</TableCell>
                     <TableCell align='center'>Fulfillment Model</TableCell>
                     <TableCell align='center'>Subscription Model</TableCell>
-                    {variations?.availableVariables?.map(({ field }) => (
-                      <TableCell key={field} align='center'>
-                        {field}
-                      </TableCell>
-                    ))}
+                    <TableCell align='center'>Seats</TableCell>
+                    <TableCell align='center' width='75px' />
                   </TableRow>
                 </TableHead>
                 <TableBody data-test='productVariants'>
@@ -106,7 +128,9 @@ const Variations = ({
                       lifeTime,
                       fulfillmentTemplate,
                       subscriptionTemplate,
+                      seats,
                     } = item;
+
                     return (
                       <TableRow
                         key={id}
@@ -118,6 +142,14 @@ const Variations = ({
                         }}
                       >
                         <TableCell component='th' scope='row'>
+                          <ContentCopyIcon
+                            onClick={(e) => { e.stopPropagation(); copyText(id); }}
+                            color="secondary"
+                            style={{
+                              marginRight: '5px', fontSize: '16px', position: 'relative', top: '2px',
+                            }}
+                            className="copyIcon"
+                          />
                           {id}
                         </TableCell>
                         <TableCell
@@ -138,11 +170,8 @@ const Variations = ({
                         >
                           {lifeTime || ''}
                         </TableCell>
-                        <TableCell
-                          align='center'
-                          style={{ color: currentProductData.fulfillmentTemplate !== fulfillmentTemplate && '#719ded' }}
-                        >
-                          {fulfillmentTemplate || ''}
+                        <TableCell align='center'>
+                          {(fulfillmentTemplate === undefined ? currentProductData?.fulfillmentTemplateName : fulfillmentTemplate) || ''}
                         </TableCell>
                         <TableCell
                           align='center'
@@ -150,13 +179,19 @@ const Variations = ({
                         >
                           {subscriptionTemplate || ''}
                         </TableCell>
-                        {variations?.availableVariables?.map(
-                          ({ fieldValue, field, localizedValue }) => (
-                            <TableCell key={field} align='center'>
-                              {localizedValue && localizedValue[fieldValue][defaultLocale]}
-                            </TableCell>
-                          ),
-                        )}
+
+                        <TableCell align='center' style={{ color: '#719ded' }}>
+                          {getSeatsText(seats || currentProductData?.seats)}
+                        </TableCell>
+
+                        <TableCell align='center'>
+                          <IconButton
+                            color='secondary'
+                            onClick={(e) => { e.stopPropagation(); deleteSubProduct(id); }}
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        </TableCell>
                       </TableRow>
                     );
                   })}
