@@ -86,7 +86,7 @@ const Variations = ({
 
     const seatNum = seat.replace('val', '');
 
-    return `${seatNum} PC${seatNum > 1 && 's'}`;
+    return `${seatNum} PC${seatNum > 1 ? 's' : ''}`;
   };
 
   const deleteSubProduct = (id) => {
