@@ -59,7 +59,7 @@ const AssetsResource = ({
                   isDisabled={isDisabled}
                 />
               </Box>
-              {(index !== resources.length - 1) && <Divider light />}
+              {(index !== resources.length - 1) && <Divider light style={{ marginTop: '25px' }} />}
             </Box>
           ))}
         {(!maxPayloadFiles || resources.length < maxPayloadFiles) && (

@@ -118,6 +118,7 @@ const StoreDetailsScreen = () => {
         }
 
         Promise.allSettled([
+          api.getCustomers(),
           api.getDesignsThemes(),
           api.getDesignsFonts(),
           api.getDesignsLayouts(),
@@ -125,6 +126,7 @@ const StoreDetailsScreen = () => {
           api.getPaymentMethodsOptions(),
         ]).then(
           ([
+            customersList,
             themeOptions,
             fontOptions,
             layoutOptions,
@@ -138,11 +140,38 @@ const StoreDetailsScreen = () => {
               ...translationOptions?.value?.data?.items || [],
             );
 
+            const customersListArr = [...customersList?.value?.data?.items] || [];
+
+            if (store?.designs?.endUserPortal?.i18nRef?.customerId) {
+              const [hasSelectedI18nCustomer] = customersListArr
+                .filter((c) => c.id === store?.designs?.endUserPortal?.i18nRef?.customerId);
+
+              if (!hasSelectedI18nCustomer) {
+                customersIds.push(`id=${store?.designs?.endUserPortal?.i18nRef?.customerId}`);
+              }
+            }
+
+            if (store?.designs?.checkout?.i18nRef?.customerId) {
+              const [hasSelectedI18nCustomer] = customersListArr
+                .filter((c) => c.id === store?.designs?.checkout?.i18nRef?.customerId);
+
+              if (!hasSelectedI18nCustomer) {
+                customersIds.push(`id=${store?.designs?.checkout?.i18nRef?.customerId}`);
+              }
+            }
+
             api
               .getCustomersByIds(customersIds.join('&'))
               .then(({ data: customers }) => {
                 setSelectOptions({
                   ...selectOptions,
+                  customersList: [
+                    ...customersList?.value?.data?.items,
+                    ...customers?.items?.filter(
+                      (c) => c.id === store?.designs?.endUserPortal?.i18nRef?.customerId
+                        || c.id === store?.designs?.checkout?.i18nRef?.customerId,
+                    ),
+                  ] || [],
                   customers: customers.items,
                   font: formDesignOptions(
                     fontOptions.value?.data.items,
