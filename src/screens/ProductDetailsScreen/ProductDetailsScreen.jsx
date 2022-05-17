@@ -381,8 +381,11 @@ const ProductDetailsScreen = () => {
   useEffect(() => {
     if (id !== 'add') {
       api.getNextGenerationByProductId(id).then(
-        ({ data: { genericName, id: relatedProductId } }) => {
-          setRelatedProduct({ genericName, id: relatedProductId });
+        ({ data: { nextGenerationOf, genericName, id: relatedProductId } }) => {
+          const isRelatedProduct = !!nextGenerationOf?.filter((item) => item === id).length;
+          if (isRelatedProduct) {
+            setRelatedProduct({ genericName, id: relatedProductId });
+          }
         },
       );
     }
