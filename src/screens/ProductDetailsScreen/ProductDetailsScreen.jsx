@@ -413,7 +413,7 @@ const ProductDetailsScreen = () => {
       extraHeader={<CustomerStatusLabel customer={customer} />}
       headerTitleCopy={productData?.id}
       extraActions={
-        id !== 'add' && !!currentProductData.sellingStores.length && selectOptions?.sellingStores && (
+        id !== 'add' && !!currentProductData?.sellingStores.length && selectOptions?.sellingStores && (
           <>
             <CheckoutMenu
               checkOutStores={checkOutStores}
