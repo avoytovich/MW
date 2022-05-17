@@ -23,7 +23,7 @@ const useIdentityDetails = (id, nxState) => {
       ? api.getIdentityById(id)
       : Promise.resolve({
         data: {
-          customerId: nxState.selectedCustomer.id,
+          customerId: nxState.selectedCustomer?.id,
         },
       });
     identityData.then(({ data }) => {
