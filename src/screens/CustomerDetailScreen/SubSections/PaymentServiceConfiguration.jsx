@@ -117,6 +117,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
           value={currentCustomer?.paymentServiceConfiguration?.availableAdditionalPaymentTypes}
           onChangeSelect={(e) => setCurrentCustomer({
             ...currentCustomer,
+            availableAdditionalPaymentTypes: e.target.value,
             paymentServiceConfiguration: {
               ...currentCustomer.paymentServiceConfiguration,
               availableAdditionalPaymentTypes: e.target.value,
@@ -146,6 +147,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
           value={currentCustomer?.paymentServiceConfiguration?.blackListedPaymentTypes}
           onChangeSelect={(e) => setCurrentCustomer({
             ...currentCustomer,
+            blackListedPaymentTypes: e.target.value,
             paymentServiceConfiguration: {
               ...currentCustomer.paymentServiceConfiguration,
               blackListedPaymentTypes: e.target.value,

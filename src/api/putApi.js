@@ -2,7 +2,7 @@ import { axiosInstance } from '../axios';
 
 const putApi = {
   updateCustomerById(id, data) {
-    const url = `/customers/${id}`;
+    const url = `/customers/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
     return axiosInstance({
       method: 'put',
       url,
