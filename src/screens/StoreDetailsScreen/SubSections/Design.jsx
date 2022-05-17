@@ -20,10 +20,17 @@ const Design = ({
   const [curTab, setCurTab] = useState(0);
   const handleUpdateDesign = (parent, updateParam, value) => {
     let resObj = {};
+
     if (value) {
       const valueArray = value.split(':');
-      resObj = { customerId: valueArray[0], name: valueArray[1].trim() };
+
+      if (valueArray?.length >= 2) {
+        resObj = { customerId: valueArray[0], name: valueArray[1].trim() };
+      } else {
+        resObj = { customerId: value };
+      }
     }
+
     setCurrentStoreData({
       ...currentStoreData,
       designs: {
@@ -77,7 +84,10 @@ const Design = ({
                   value={
                     Object.keys(currentStoreData.designs.endUserPortal.themeRef)
                       .length !== 0
-                      ? `${currentStoreData.designs.endUserPortal.themeRef.customerId}: ${currentStoreData.designs.endUserPortal.themeRef.name}`
+                      ? `${
+                        currentStoreData?.designs?.endUserPortal?.themeRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.endUserPortal?.themeRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.theme}
@@ -93,10 +103,12 @@ const Design = ({
                 <SelectWithDeleteIcon
                   label="layout"
                   value={
-                    Object.keys(
-                      currentStoreData.designs.endUserPortal.layoutRef,
-                    ).length !== 0
-                      ? `${currentStoreData.designs.endUserPortal.layoutRef.customerId}: ${currentStoreData.designs.endUserPortal.layoutRef.name}`
+                    Object.keys(currentStoreData.designs.endUserPortal.layoutRef)
+                      .length !== 0
+                      ? `${
+                        currentStoreData?.designs?.endUserPortal?.layoutRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.endUserPortal?.layoutRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.layout}
@@ -114,7 +126,10 @@ const Design = ({
                   value={
                     Object.keys(currentStoreData.designs.endUserPortal.fontRef)
                       .length !== 0
-                      ? `${currentStoreData.designs.endUserPortal.fontRef.customerId}: ${currentStoreData.designs.endUserPortal.fontRef.name}`
+                      ? `${
+                        currentStoreData?.designs?.endUserPortal?.fontRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.endUserPortal?.fontRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.font}
@@ -129,13 +144,10 @@ const Design = ({
               <Box p={2}>
                 <SelectWithDeleteIcon
                   label="i18n"
-                  value={
-                    Object.keys(currentStoreData.designs.endUserPortal.i18nRef)
-                      .length !== 0
-                      ? `${currentStoreData.designs.endUserPortal.i18nRef.customerId}: ${currentStoreData.designs.endUserPortal.i18nRef.name}`
-                      : ''
+                  value={currentStoreData?.designs?.endUserPortal?.i18nRef?.customerId || ''}
+                  selectOptions={
+                    selectOptions?.customersList?.sort((a, b) => ((a.name > b.name) ? 1 : -1))
                   }
-                  selectOptions={selectOptions.translation}
                   onChangeSelect={(e) => handleUpdateDesign(
                     'endUserPortal',
                     'i18nRef',
@@ -154,7 +166,10 @@ const Design = ({
                   value={
                     Object.keys(currentStoreData.designs.checkout.themeRef)
                       .length !== 0
-                      ? `${currentStoreData.designs.checkout.themeRef.customerId}: ${currentStoreData.designs.checkout.themeRef.name}`
+                      ? `${
+                        currentStoreData?.designs?.checkout?.themeRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.checkout?.themeRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.theme}
@@ -168,7 +183,10 @@ const Design = ({
                   value={
                     Object.keys(currentStoreData.designs.checkout.layoutRef)
                       .length !== 0
-                      ? `${currentStoreData.designs.checkout.layoutRef.customerId}: ${currentStoreData.designs.checkout.layoutRef.name}`
+                      ? `${
+                        currentStoreData?.designs?.checkout?.layoutRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.checkout?.layoutRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.layout}
@@ -182,7 +200,10 @@ const Design = ({
                   value={
                     Object.keys(currentStoreData.designs.checkout.fontRef)
                       .length !== 0
-                      ? `${currentStoreData.designs.checkout.fontRef.customerId}: ${currentStoreData.designs.checkout.fontRef.name}`
+                      ? `${
+                        currentStoreData?.designs?.checkout?.fontRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.checkout?.fontRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.font}
@@ -193,13 +214,8 @@ const Design = ({
               <Box p={2}>
                 <SelectWithDeleteIcon
                   label="i18n"
-                  value={
-                    Object.keys(currentStoreData.designs.checkout.i18nRef)
-                      .length !== 0
-                      ? `${currentStoreData.designs.checkout.i18nRef.customerId}: ${currentStoreData.designs.checkout.i18nRef.name}`
-                      : ''
-                  }
-                  selectOptions={selectOptions.translation}
+                  value={currentStoreData?.designs?.checkout?.i18nRef?.customerId || ''}
+                  selectOptions={selectOptions?.customersList}
                   onChangeSelect={(e) => handleUpdateDesign('checkout', 'i18nRef', e.target.value)}
                   onClickDelIcon={() => handleUpdateDesign('checkout', 'i18nRef')}
                 />
@@ -210,7 +226,10 @@ const Design = ({
                   value={
                     Object.keys(currentStoreData.designs.checkout.dpThemeRef)
                       .length !== 0
-                      ? `${currentStoreData.designs.checkout.dpThemeRef.customerId}: ${currentStoreData.designs.checkout.dpThemeRef.name}`
+                      ? `${
+                        currentStoreData?.designs?.checkout?.dpThemeRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.checkout?.dpThemeRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.theme}
@@ -226,10 +245,12 @@ const Design = ({
                 <SelectWithDeleteIcon
                   label="theme"
                   value={
-                    Object.keys(
-                      currentStoreData.designs.resellerCheckout.themeRef,
-                    ).length !== 0
-                      ? `${currentStoreData.designs.resellerCheckout.themeRef.customerId}: ${currentStoreData.designs.resellerCheckout.themeRef.name}`
+                    Object.keys(currentStoreData.designs.resellerCheckout.themeRef)
+                      .length !== 0
+                      ? `${
+                        currentStoreData?.designs?.resellerCheckout?.themeRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.resellerCheckout?.themeRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.theme}
@@ -245,10 +266,12 @@ const Design = ({
                 <SelectWithDeleteIcon
                   label="layout"
                   value={
-                    Object.keys(
-                      currentStoreData.designs.resellerCheckout.layoutRef,
-                    ).length !== 0
-                      ? `${currentStoreData.designs.resellerCheckout.layoutRef.customerId}: ${currentStoreData.designs.resellerCheckout.layoutRef.name}`
+                    Object.keys(currentStoreData.designs.resellerCheckout.layoutRef)
+                      .length !== 0
+                      ? `${
+                        currentStoreData?.designs?.resellerCheckout?.layoutRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.resellerCheckout?.layoutRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.layout}
@@ -264,10 +287,12 @@ const Design = ({
                 <SelectWithDeleteIcon
                   label="font"
                   value={
-                    Object.keys(
-                      currentStoreData.designs.resellerCheckout.fontRef,
-                    ).length !== 0
-                      ? `${currentStoreData.designs.resellerCheckout.fontRef.customerId}: ${currentStoreData.designs.resellerCheckout.fontRef.name}`
+                    Object.keys(currentStoreData.designs.resellerCheckout.fontRef)
+                      .length !== 0
+                      ? `${
+                        currentStoreData?.designs?.resellerCheckout?.fontRef?.customerId
+                        || currentStoreData?.customerId
+                      }: ${currentStoreData?.designs?.resellerCheckout?.fontRef?.name || ''}`
                       : ''
                   }
                   selectOptions={selectOptions.font}
@@ -282,14 +307,8 @@ const Design = ({
               <Box p={2}>
                 <SelectWithDeleteIcon
                   label="i18n"
-                  value={
-                    Object.keys(
-                      currentStoreData.designs.resellerCheckout.i18nRef,
-                    ).length !== 0
-                      ? `${currentStoreData.designs.resellerCheckout.i18nRef.customerId}: ${currentStoreData.designs.resellerCheckout.i18nRef.name}`
-                      : ''
-                  }
-                  selectOptions={selectOptions.translation}
+                  value={currentStoreData?.designs?.resellerCheckout?.i18nRef?.customerId || ''}
+                  selectOptions={selectOptions?.customersList}
                   onChangeSelect={(e) => handleUpdateDesign(
                     'resellerCheckout',
                     'i18nRef',
