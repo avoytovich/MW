@@ -25,7 +25,17 @@ const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurre
   const countryOptions = getCountriesOptions();
   const [variation, setVariation] = useState('');
   const [newCurrency, setNewCurrency] = useState('');
+
+  const checkIfAllChecked = (data) => {
+    const allItems = [];
+    Object.keys(data).forEach((it) => { allItems.push(...data[it]); });
+    const allCheckedItems = allItems.filter((el) => el.vatIncluded);
+    return allCheckedItems.length === allItems.length;
+  };
+
+  const [checkAll, setCheckAll] = useState(checkIfAllChecked(priceByCountryByCurrency));
   const handleSetProductData = (newData) => {
+    setCheckAll(checkIfAllChecked(newData));
     let prices = { ...currentProductData.prices };
     if (variation) {
       if (Object.keys(priceByCountryByCurrency).length
@@ -55,6 +65,16 @@ const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurre
         priceByCountryByCurrency: newData,
       });
     }
+  };
+
+  const handleCheckAll = (e) => {
+    const newData = { ...priceByCountryByCurrency };
+    Object.keys(newData).forEach((it) => {
+      const newArray = newData[it].map((el) => ({ ...el, vatIncluded: e.target.checked }));
+      newData[it] = newArray;
+    });
+    setCheckAll(e.target.checked);
+    handleSetProductData(newData);
   };
   const handleRemove = (key, index) => {
     const newPrices = { ...priceByCountryByCurrency };
@@ -108,13 +128,30 @@ const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurre
             <Table>
               <TableHead>
                 <TableRow style={{ background: '#eee' }}>
-                  <TableCell align='center'>{localization.t('labels.currency')}</TableCell>
-                  <TableCell align='center'>{localization.t('labels.country')}</TableCell>
-                  <TableCell align='center'>{localization.t('labels.price')}</TableCell>
-                  <TableCell align='center'>{localization.t('labels.msrp')}</TableCell>
-                  <TableCell align='center'>{localization.t('labels.upsellPrice')}</TableCell>
-                  <TableCell align='center'>{localization.t('labels.crossSellPrice')}</TableCell>
-                  <TableCell align='center'>{localization.t('labels.vatIncluded')}</TableCell>
+                  <TableCell align='center'><Box pb='42px'>{localization.t('labels.currency')}</Box></TableCell>
+                  <TableCell align='center'><Box pb='42px'>{localization.t('labels.country')}</Box></TableCell>
+                  <TableCell align='center'><Box pb='42px'>{localization.t('labels.price')}</Box></TableCell>
+                  <TableCell align='center'><Box pb='42px'>{localization.t('labels.msrp')}</Box></TableCell>
+                  <TableCell align='center'>
+                    <Box pb='42px'>{localization.t('labels.upsellPrice')}</Box>
+                  </TableCell>
+                  <TableCell align='center'>
+                    <Box pb='42px'>
+                      {localization.t('labels.crossSellPrice')}
+                    </Box>
+                  </TableCell>
+                  <TableCell align='center'>
+                    <Box display='flex' flexDirection='column'>
+                      {localization.t('labels.vatIncluded')}
+                      <Checkbox
+                        disabled={variation === 'inherits'}
+                        checked={checkAll}
+                        onChange={handleCheckAll}
+                        name='vatIncluded'
+                        color='primary'
+                      />
+                    </Box>
+                  </TableCell>
                   <TableCell align="right" />
                 </TableRow>
               </TableHead>
