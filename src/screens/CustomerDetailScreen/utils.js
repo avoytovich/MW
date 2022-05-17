@@ -85,7 +85,16 @@ const checkRequiredFields = (data, createCustomer) => {
     ...defCustomerObj, ...data,
   };
   if (!createCustomer) {
-    res = { ...res, ...editCustomerDefObj };
+    const handlerProxy = {
+      get(target, prop) {
+        if (res[prop]) {
+          return res[prop];
+        }
+        return Reflect.get(...arguments);
+      },
+    };
+    const proxy = new Proxy(editCustomerDefObj, handlerProxy);
+    res = { ...res, ...proxy };
     const fulfillments = data.fulfillments ? fromObjToArray(data.fulfillments) : [];
     const subscriptions = data.subscriptions ? fromObjToArray(data.subscriptions) : [];
     const paymentServiceConfiguration = {
