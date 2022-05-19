@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CancelIcon from '@mui/icons-material/Cancel';
+import ClearIcon from '@mui/icons-material/Clear';
 import {
   MenuItem,
   Select,
@@ -46,10 +46,9 @@ const SelectWithDeleteIcon = ({
       endAdornment={
         value && (
           <InputAdornment position='end'>
-            <CancelIcon
+            <ClearIcon
               className='cancelSelectIcon'
               fontSize='small'
-              color='secondary'
               onClick={isDisabled ? () => null : onClickDelIcon}
               onMouseDown={(e) => {
                 e.stopPropagation();
