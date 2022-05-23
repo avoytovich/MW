@@ -194,6 +194,7 @@ const General = ({
           selectOptions={availableLocales}
           additionalOption={{ value: 'neutral', id: 'neutral' }}
           labels={['language', 'discountLabel']}
+          tooltip='discountLabel'
         />
         <Box p={2}>
           <InputCustom

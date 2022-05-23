@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-  Box, Typography, Grid, IconButton,
+  Box, Typography, Grid, IconButton, FormHelperText,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -25,6 +25,7 @@ const EditKeyValueInputs = ({
   labels,
   helperText,
   hasError,
+  tooltip,
 }) => {
   const optionsArray = [...selectOptions];
   if (additionalOption) {
@@ -90,22 +91,30 @@ const EditKeyValueInputs = ({
                     minMAx={{ min: 1, step: 1 }}
                   />
                 ) : (
-                  <InputCustom
-                    helperText={hasError && index === 0 ? helperText : ''}
-                    hasError={hasError}
-                    label={labels[1]}
-                    value={item.value}
-                    onChangeInput={(e) => {
-                      const newValue = [...curValue];
-                      newValue.map((el) => {
-                        if (el.key === item.key) {
-                          el.value = e.target.value;
-                        }
-                        return el;
-                      });
-                      setCurValue(newValue);
-                    }}
-                  />
+                  <>
+                    <InputCustom
+                      id="component-helper-text"
+                      helperText={hasError && index === 0 ? helperText : ''}
+                      hasError={hasError}
+                      label={labels[1]}
+                      value={item.value}
+                      onChangeInput={(e) => {
+                        const newValue = [...curValue];
+                        newValue.map((el) => {
+                          if (el.key === item.key) {
+                            el.value = e.target.value;
+                          }
+                          return el;
+                        });
+                        setCurValue(newValue);
+                      }}
+                    />
+                    {tooltip && (
+                      <FormHelperText id="component-helper-text">
+                        {localization.t(`tooltips.${tooltip}`)}
+                      </FormHelperText>
+                    )}
+                  </>
                 )}
               </Box>
             </Grid>
@@ -156,4 +165,5 @@ EditKeyValueInputs.propTypes = {
   selectOptions: PropTypes.array,
   helperText: PropTypes.string,
   hasError: PropTypes.bool,
+  tooltip: PropTypes.string,
 };
