@@ -51,6 +51,7 @@ const ProductDetailsScreen = () => {
   const [upd, setUpd] = useState(0);
 
   const [customer, setCustomer] = useState(null);
+  const [backToParent, setBackToParent] = useState(false);
   const [curTab, setCurTab] = useState(0);
 
   const [disabledWithMandLocal, setDisabledWithMandLocal] = useState(false);
@@ -394,6 +395,13 @@ const ProductDetailsScreen = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (backToParent) {
+      setCurTab(5);
+      setBackToParent(false);
+    }
+  });
+
   if (!parentId
     && !currentProductData?.parentId
     && currentProductData?.createDate?.parentValue) return <LinearProgress />;
@@ -442,6 +450,8 @@ const ProductDetailsScreen = () => {
           currentProductData={currentProductData}
           parentId={parentId || currentProductData?.parentId}
           selectOptions={selectOptions}
+          backToParent={backToParent}
+          setBackToParent={setBackToParent}
         />
       )}
       flexWrapper={codeMode && curTab === 3}

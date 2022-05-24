@@ -17,13 +17,20 @@ const ProductDetailsTabs = ({
   currentProductData,
   parentId,
   selectOptions,
+  backToParent,
+  setBackToParent,
 }) => (
   <Tabs
     value={curTab}
     data-test='productTabs'
     indicatorColor='primary'
     textColor='primary'
-    onChange={(e, tab) => handleChangeTab(tab)}
+    onChange={(e, tab) => {
+      if (tab === 7 && !backToParent) {
+        setBackToParent(true);
+      }
+      handleChangeTab(tab);
+    }}
   >
     {(currentProductData?.parentId || parentId) && (
       <Tab
@@ -65,6 +72,8 @@ ProductDetailsTabs.propTypes = {
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
   selectOptions: PropTypes.object,
+  backToParent: PropTypes.bool,
+  setBackToParent: PropTypes.func,
 };
 
 export default ProductDetailsTabs;
