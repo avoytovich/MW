@@ -139,7 +139,7 @@ const ProductDetailsScreen = () => {
       });
     }
 
-    if (productHasLocalizationChanges || currentProductDetails) {
+    if (productHasLocalizationChanges) {
       const { tempData } = store.getState();
 
       const dataToSave = saveLocalizationDetails(tempData, currentProductData, nxState);
