@@ -30,6 +30,7 @@ import './prices.scss';
 
 const Prices = ({
   selectOptions,
+  productData,
   currentProductData,
   setProductData,
   parentId,
@@ -94,6 +95,7 @@ const Prices = ({
           </InheritanceField>
 
           <PricesTable
+            productData={checkValue(productData.priceByCountryByCurrency)}
             selectOptions={selectOptions}
             currentProductData={currentProductData}
             setProductData={setProductData}
@@ -247,6 +249,7 @@ Prices.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
+  productData: PropTypes.object,
 };
 
 export default Prices;
