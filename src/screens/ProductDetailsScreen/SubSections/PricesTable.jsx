@@ -21,7 +21,9 @@ import { priceCurrency } from '../../../services/selectOptions/selectOptions';
 import { SelectWithChip, SelectCustom, NumberInput } from '../../../components/Inputs';
 // import './ClearancesInputs.scss';
 
-const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurrency }) => {
+const PricesTable = ({
+  currentProductData, setProductData, priceByCountryByCurrency, productData,
+}) => {
   const countryOptions = getCountriesOptions();
   const [variation, setVariation] = useState('');
   const [newCurrency, setNewCurrency] = useState('');
@@ -87,7 +89,7 @@ const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurre
   };
   const handleUpdate = (e, inputName, langName, index) => {
     const newArray = [...priceByCountryByCurrency[langName]];
-    newArray[index][inputName] = e.target.value;
+    newArray[index][inputName] = e.target.value !== '' ? Number(e.target.value) : '';
     handleSetProductData({ ...priceByCountryByCurrency, [langName]: newArray });
   };
   useEffect(() => {
@@ -203,8 +205,9 @@ const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurre
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
+                          hasBeenChanged={item.value !== productData?.[el]?.[index]?.value}
                           isDisabled={variation === 'inherits'}
-                          minMAx={{ min: 1 }}
+                          minMAx={{ min: 0 }}
                           label='price'
                           value={item.value}
                           onChangeInput={(e) => handleUpdate(e, 'value', el, index)}
@@ -213,29 +216,31 @@ const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurre
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
+                          hasBeenChanged={item.msrp !== productData?.[el]?.[index]?.msrp}
                           isDisabled={variation === 'inherits'}
                           label='msrp'
-                          minMAx={{ min: 1 }}
-                          value={item.msrp || ''}
+                          minMAx={{ min: 0 }}
+                          value={item.msrp}
                           onChangeInput={(e) => handleUpdate(e, 'msrp', el, index)}
                         />
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
+                          hasBeenChanged={item.upSell !== productData?.[el]?.[index]?.upSell}
                           isDisabled={variation === 'inherits'}
                           label='upsellPrice'
-                          minMAx={{ min: 1 }}
-                          value={item.upSell || ''}
+                          minMAx={{ min: 0 }}
+                          value={item.upSell}
                           onChangeInput={(e) => handleUpdate(e, 'upSell', el, index)}
                         />
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
                           isDisabled={variation === 'inherits'}
-
-                          minMAx={{ min: 1 }}
+                          hasBeenChanged={item.crossSell !== productData?.[el]?.[index]?.crossSell}
+                          minMAx={{ min: 0 }}
                           label='crossSellPrice'
-                          value={item.crossSell || ''}
+                          value={item.crossSell}
                           onChangeInput={(e) => handleUpdate(e, 'crossSell', el, index)}
                         />
                       </TableCell>
@@ -262,7 +267,6 @@ const PricesTable = ({ currentProductData, setProductData, priceByCountryByCurre
                             <Box>
                               <IconButton
                                 disabled={variation === 'inherits'}
-
                                 color='secondary'
                                 onClick={() => handleRemove(el, index)}
                                 size='large'
@@ -296,6 +300,7 @@ PricesTable.propTypes = {
   currentProductData: PropTypes.object,
   setProductData: PropTypes.func,
   priceByCountryByCurrency: PropTypes.object,
+  productData: PropTypes.object,
 };
 
 export default PricesTable;
