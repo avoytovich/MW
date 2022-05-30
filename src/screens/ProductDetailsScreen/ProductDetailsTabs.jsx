@@ -61,8 +61,13 @@ const ProductDetailsTabs = ({
       disabled={!selectOptions?.sellingStores}
     />
     <Tab label={localization.t('labels.prices')} value={4} />
-    <Tab label={localization.t('labels.productVariations')} value={5} />
-    <Tab label={localization.t('labels.productFiles')} value={6} />
+    <Tab label={localization.t('labels.productFiles')} value={5} />
+    {(!parentId) && (
+      <Tab
+        label={localization.t('labels.productVariations')}
+        value={6}
+      />
+    )}
   </Tabs>
 );
 
