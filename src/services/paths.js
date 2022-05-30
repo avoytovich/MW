@@ -57,10 +57,10 @@ const parentPaths = {
     privileges: `${defPath}/settings/userroles/privileges`,
   },
   notifications: {
-    main: `${defPath}/settings/notifications`,
-    notificationTab: `${defPath}/settings/notifications/notifications`,
-    notificationDefinitionTab: `${defPath}/settings/notifications/notification-definition`,
-    notificationHistoryTab: `${defPath}/settings/notifications/notification-history`,
+    main: `${defPath}/customermanagement/notifications`,
+    notificationTab: `${defPath}/customermanagement/notifications/notifications`,
+    notificationDefinitionTab: `${defPath}/customermanagement/notifications/notification-definition`,
+    notificationHistoryTab: `${defPath}/customermanagement/notifications/notification-history`,
   },
   myaccount: `${defPath}/myaccount`,
   crudHelper: {
