@@ -33,11 +33,11 @@ const ServiceConfigScreen = () => {
 
   return (
     <Box overflow='auto' p='2px'>
-      <Typography style={{ marginLeft: 10 }} variant='h3'>Service Configuration</Typography>
-      <div className="service-config-screen">
+      <Box display='flex' flexDirection='row' justifyContent='space-between' alignItems='center'>
+        <Typography style={{ marginLeft: 10 }} variant='h3'>Service Configuration</Typography>
         <Zoom in={serviceDataName}>
           <Button
-            id="save-account-button"
+            style={{ marginRight: 10 }}
             color="primary"
             size="large"
             type="submit"
@@ -47,7 +47,7 @@ const ServiceConfigScreen = () => {
             Save
           </Button>
         </Zoom>
-      </div>
+      </Box>
       <Box p={2} mt={2} pr={0}>
         <SelectCustom
           label='serviceConfiguration'
