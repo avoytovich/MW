@@ -91,6 +91,7 @@ const ProductDetailsView = ({
             currentProductData={curProductData}
             setSaveDisabled={setSaveDisabled}
             parentId={parentId}
+            variablesDescriptions={variablesDescriptions}
           />
         </SectionLayout>
       )}
@@ -151,6 +152,18 @@ const ProductDetailsView = ({
       )}
 
       {curTab === 5 && ( // eslint-disable-line
+        <SectionLayout dataTest='productFiles' label='productFiles'>
+          <ProductFiles
+            productData={productData}
+            currentProductData={curProductData}
+            setProductData={setProductData}
+            setSaveDisabled={setSaveDisabled}
+            parentId={parentId}
+          />
+        </SectionLayout>
+      )}
+
+      {curTab === 6 && (
         parentId ? (
           <SubProductVariations
             setProductData={setProductData}
@@ -172,18 +185,6 @@ const ProductDetailsView = ({
             productDetails={productDetails}
           />
         )
-      )}
-
-      {curTab === 6 && (
-        <SectionLayout dataTest='productFiles' label='productFiles'>
-          <ProductFiles
-            productData={productData}
-            currentProductData={curProductData}
-            setProductData={setProductData}
-            setSaveDisabled={setSaveDisabled}
-            parentId={parentId}
-          />
-        </SectionLayout>
       )}
     </>
   );

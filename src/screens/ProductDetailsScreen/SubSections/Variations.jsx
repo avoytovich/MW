@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import {
@@ -150,7 +150,7 @@ const Variations = ({
                             }}
                             className="copyIcon"
                           />
-                          {id}
+                          <Link to={`${parentPaths.productlist}/${id}`} className='link-to-variation'>{id}</Link>
                         </TableCell>
                         <TableCell
                           align='center'
@@ -259,7 +259,7 @@ const Variations = ({
           </TableContainer>
           <Box marginTop='30px'>
             <Button variant='outlined' color='primary' onClick={handleOpen}>
-              Add Variation
+              Add Parameter
             </Button>
           </Box>
 

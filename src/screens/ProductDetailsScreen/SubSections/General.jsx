@@ -48,7 +48,12 @@ import { sortByAlphabetical } from '../../../services/helpers/utils';
 import localization from '../../../localization';
 
 const General = ({
-  setProductData, currentProductData, selectOptions, parentId, setSaveDisabled,
+  setProductData,
+  currentProductData,
+  selectOptions,
+  parentId,
+  setSaveDisabled,
+  variablesDescriptions,
 }) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({ number: 1, value: '' });
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
@@ -746,6 +751,62 @@ const General = ({
             </>
           </InheritanceField>
         </Box>
+        {parentId ? (
+          <Box display='flex' width='100%' flexDirection='column'>
+            <Box py={4}>
+              <Typography gutterBottom variant='h4'>{localization.t('labels.variationParameters')}</Typography>
+            </Box>
+            <Box display='flex' flexDirection='column'>
+              {variablesDescriptions?.map(
+                ({ label, description, variableValueDescriptions }, i) => {
+                  const disabled = currentProductData[description]?.state === 'inherits';
+                  return (
+                    <Box display='flex' alignItems='center' key={label || description}>
+                      <Typography>{label || description}</Typography>
+                      <Box
+                        display='flex'
+                        justifyContent='space-between'
+                        alignItems='center'
+                        marginLeft='20px'
+                        width='100%'
+                      >
+                        <InheritanceField
+                          field={description}
+                          valuePath={i}
+                          onChange={setProductData}
+                          value={currentProductData[description]}
+                          parentId={parentId}
+                          currentProductData={currentProductData}
+                        >
+                          <RadioGroup
+                            aria-label={description}
+                            name={description}
+                            data-test='variationParameter'
+                          >
+                            <Box display='flex'>
+                              {variableValueDescriptions?.map(
+                                ({ descValue, description: _description }) => (
+                                  <FormControlLabel
+                                    key={_description}
+                                    className='radio'
+                                    value={_description}
+                                    disabled={disabled}
+                                    control={<Radio color='primary' />}
+                                    label={descValue || '?'}
+                                  />
+                                ),
+                              )}
+                            </Box>
+                          </RadioGroup>
+                        </InheritanceField>
+                      </Box>
+                    </Box>
+                  );
+                },
+              )}
+            </Box>
+          </Box>
+        ) : '' }
       </Box>
     </>
   );
@@ -760,6 +821,7 @@ General.propTypes = {
   open: PropTypes.bool,
   handlePopoverClose: PropTypes.func,
   handlePopoverOpen: PropTypes.func,
+  variablesDescriptions: PropTypes.array,
 };
 
 export default General;
