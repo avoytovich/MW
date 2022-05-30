@@ -131,6 +131,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
               );
             setCurrentCustomer({
               ...currentCustomer,
+              availableAdditionalPaymentTypes: newValue,
               paymentServiceConfiguration: {
                 ...currentCustomer.paymentServiceConfiguration,
                 availableAdditionalPaymentTypes: newValue,
@@ -161,6 +162,7 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
               );
             setCurrentCustomer({
               ...currentCustomer,
+              blackListedPaymentTypes: newValue,
               paymentServiceConfiguration: {
                 ...currentCustomer.paymentServiceConfiguration,
                 blackListedPaymentTypes: newValue,
