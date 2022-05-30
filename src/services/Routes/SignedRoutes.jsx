@@ -10,16 +10,16 @@ import {
 import defPath from '../helpers/routingHelper';
 import parentPaths from '../paths';
 import Session from '../session';
-import { KNOWN_REALMS } from '../constants';
 
 const SignedRoutes = () => {
   const history = useHistory();
 
   useEffect(() => {
     const redirect = Session.getRedirect();
+    const realm = Session.getRealm();
     Session.clearRedirect();
 
-    if (redirect && redirect !== '/' && KNOWN_REALMS.indexOf(redirect) < 0) {
+    if (redirect && redirect !== `/${realm}`) {
       history.push(redirect);
     }
 
@@ -310,7 +310,7 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/CrudHelperRequestScreen'))}
       /> */}
 
-      <Redirect to='/' />
+      <Redirect to={`${defPath}/`} />
     </Switch>
   );
 };

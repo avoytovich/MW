@@ -1,5 +1,7 @@
 import { toast } from 'react-toastify';
 import auth from '../../services/auth';
+import Session from '../../services/session';
+
 import {
   LOGIN_SUCCESS, SILENT_LOGIN, UPDATE_NEXWAY_STATE, LOGOUT,
 } from '../constants/actionTypes';
@@ -10,6 +12,8 @@ const login = (username, password, realm) => async (dispatch) => {
   // eslint-disable-next-line camelcase
   const { access_token } = result;
   const user = { access_token, ...auth.decodeToken(access_token) };
+
+  Session.setRealm(realm);
 
   dispatch({
     type: LOGIN_SUCCESS,

@@ -28,6 +28,14 @@ html, body {
         background: transparent;
         color: #f3f3f3;
       }
+
+      .customers-select-disabled{
+        pointer-events: none;
+        
+        .MuiAutocomplete-endAdornment{
+          display: none;
+        }
+      }
     }
     .searchSection-handling{
       .MuiInput-input {

@@ -80,7 +80,7 @@ const Prices = ({
   };
   return (
     <>
-      <Box px={2} className='product-prices'>
+      <Box px={2} className='product-prices' mb={2}>
         <TableContainer component={Paper}>
           <InheritanceField
             additionalField='prices'
@@ -95,20 +95,20 @@ const Prices = ({
           </InheritanceField>
 
           <PricesTable
-            productData={checkValue(productData.priceByCountryByCurrency)}
+            productData={checkValue(productData?.priceByCountryByCurrency)}
             selectOptions={selectOptions}
             currentProductData={currentProductData}
             setProductData={setProductData}
-            priceByCountryByCurrency={checkValue(currentProductData.priceByCountryByCurrency)}
+            priceByCountryByCurrency={checkValue(currentProductData?.priceByCountryByCurrency)}
           />
         </TableContainer>
       </Box>
-      {((!currentProductData.priceByCountryByCurrency.value
-        && Object.keys(currentProductData.priceByCountryByCurrency)?.length > 0)
-        || (currentProductData.priceByCountryByCurrency.value
-          && Object.keys(currentProductData.priceByCountryByCurrency.value)?.length > 0))
+      {((!currentProductData?.priceByCountryByCurrency?.value
+        && Object.keys(currentProductData?.priceByCountryByCurrency)?.length > 0)
+        || (currentProductData?.priceByCountryByCurrency?.value
+          && Object.keys(currentProductData?.priceByCountryByCurrency.value)?.length > 0))
         && (
-          <Box width={245} py={4} px={2}>
+          <Box width={300} pt={4} px={2}>
             <InheritanceField
               field='defaultCurrency'
               onChange={setProductData}
@@ -133,6 +133,35 @@ const Prices = ({
             </InheritanceField>
           </Box>
         )}
+
+      <Box width={300} p={2} pt={4}>
+        <InheritanceField
+          field='priceFunction'
+          onChange={setProductData}
+          value={currentProductData.priceFunction}
+          selectOptions={selectOptions.priceFunctions || []}
+          parentId={parentId}
+          currentProductData={currentProductData}
+        >
+          <SelectWithDeleteIcon
+            label='priceFunction'
+            value={currentProductData.priceFunction}
+            selectOptions={selectOptions.priceFunctions || []}
+            onChangeSelect={(e) => {
+              setProductData({
+                ...currentProductData,
+                priceFunction: e.target.value,
+              });
+            }}
+            onClickDelIcon={() => {
+              setProductData({
+                ...currentProductData,
+                priceFunction: '',
+              });
+            }}
+          />
+        </InheritanceField>
+      </Box>
 
       {
         scheduledPrices.length > 0 && (
@@ -207,35 +236,6 @@ const Prices = ({
                   </TableBody>
                 </Table>
               </TableContainer>
-            </Box>
-
-            <Box p={2} mt={2} width='50%'>
-              <InheritanceField
-                field='priceFunction'
-                onChange={setProductData}
-                value={currentProductData.priceFunction}
-                selectOptions={selectOptions.priceFunctions || []}
-                parentId={parentId}
-                currentProductData={currentProductData}
-              >
-                <SelectWithDeleteIcon
-                  label='priceFunction'
-                  value={currentProductData.priceFunction}
-                  selectOptions={selectOptions.priceFunctions || []}
-                  onChangeSelect={(e) => {
-                    setProductData({
-                      ...currentProductData,
-                      priceFunction: e.target.value,
-                    });
-                  }}
-                  onClickDelIcon={() => {
-                    setProductData({
-                      ...currentProductData,
-                      priceFunction: '',
-                    });
-                  }}
-                />
-              </InheritanceField>
             </Box>
           </>
         )

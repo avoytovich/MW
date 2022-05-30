@@ -283,7 +283,7 @@ const PricesTable = ({
             </Table>
           </TableContainer>
         )}
-      <Box py={3} width='25%'>
+      <Box width='25%' p={3}>
         <SelectCustom
           isDisabled={variation === 'inherits'}
           label='currency'

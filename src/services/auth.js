@@ -100,6 +100,7 @@ class Auth {
     }
 
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('realm');
     return localStorage.removeItem('accessToken');
   }
 
