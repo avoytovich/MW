@@ -391,11 +391,10 @@ const mandatoryFields = ['lifeTime', 'publisherRefId', 'salesMode'];
 const frontToBack = (data) =>
   // eslint-disable-next-line
   Object.entries(data).reduce((accumulator, [key, value]) => {
-    let newValue = !value?.state // eslint-disable-line
+    let newValue = (!value?.state && !value?.value) // eslint-disable-line
       ? value
-      : value?.state === 'overrides'
-        ? value?.value
-        : undefined;
+      : (value?.state === 'overrides' || (!value?.state && value?.value))
+        ? value?.value : undefined;
 
     if (mandatoryFields.includes(key) && !newValue) {
       newValue = value?.parentValue;
@@ -411,7 +410,7 @@ const frontToBack = (data) =>
   }, {});
 
 // eslint-disable-next-line no-nested-ternary
-const checkValue = (data) => (!data?.state ? data : data.state === 'inherits' ? data.parentValue : data.value);
+const checkValue = (data) => ((!data?.state && !data?.value) ? data : data.state === 'inherits' ? data.parentValue : data.value);
 
 const identityRequiredFields = (identity) => {
   const defaultIdentity = {

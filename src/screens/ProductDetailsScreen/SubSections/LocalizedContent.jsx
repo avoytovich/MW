@@ -57,7 +57,7 @@ const LocalizedContent = ({
   const availableLocales = getLanguagesOptions();
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  const makeNewData = (locale) => {
+  const makeNewData = (locale, newDef) => {
     const { tempData } = store.getState();
     const dataToSave = {
       ...tempData?.description,
@@ -67,7 +67,20 @@ const LocalizedContent = ({
         ...curData?.i18nFields,
       },
     };
-    dataToSave.i18nFields[locale || value] = { ...newTabValues };
+
+    if (!dataToSave.i18nFields[locale || value]) {
+      dataToSave.i18nFields[locale || value] = newDef ? {} : { ...newTabValues };
+    }
+
+    if (newDef) {
+      if (!curData?.i18nFields[locale] || !curData?.i18nFields[locale]?.localizedMarketingName) {
+        setDisabledWithMandLocal(true);
+      } else {
+        setDisabledWithMandLocal(false);
+      }
+
+      dataToSave.fallbackLocale = locale;
+    }
 
     setCurData({ ...dataToSave });
     setAvailLocales(() => [...Object.keys(dataToSave?.i18nFields)]);
@@ -75,21 +88,24 @@ const LocalizedContent = ({
     setHasNewData(true);
   };
 
-  const getValues = () => {
-    const inputValues = !value
-      ? localizedValues.reduce(
-        (acc, cur) => ({
-          ...acc,
-          [cur]: parentId
-            ? {
-              value: '',
-              state: 'overrides',
-              parentValue: '',
-            }
-            : '',
-        }),
-        {},
-      ) : { ...curData.i18nFields[value] };
+  const getValues = (val = value) => {
+    const defValues = localizedValues.reduce(
+      (acc, cur) => ({
+        ...acc,
+        [cur]: parentId
+          ? {
+            value: '',
+            state: 'overrides',
+            parentValue: '',
+          }
+          : '',
+      }),
+      {},
+    );
+
+    const inputValues = !checkValue(val)
+      ? { ...defValues }
+      : { ...defValues, ...curData.i18nFields[checkValue(val)] };
 
     setNewTabValues({ ...inputValues });
   };
@@ -129,22 +145,14 @@ const LocalizedContent = ({
         toast.error('Locale already exists!');
       }
     } else if (defLanguage) {
-      const languageIndex = availLocales.indexOf(defLanguage);
-
-      if (languageIndex < 0) {
-        makeNewData(defLanguage);
-        setValue(defLanguage);
-      } else {
-        setValue(defLanguage);
-      }
+      makeNewData(defLanguage, true);
+      setValue(defLanguage);
     }
   };
 
   const handleChangeDefaultLanguage = (defLanguage) => {
     if (typeof defLanguage === 'string') {
       addLocale(defLanguage);
-
-      setCurData({ ...curData, fallbackLocale: defLanguage });
 
       setAvailLocales((avail) => [
         defLanguage,
@@ -163,7 +171,7 @@ const LocalizedContent = ({
 
     dispatch(setTempProductDescription({
       ...curData,
-      fallbackLocale: typeof defLanguage === 'string' ? defLanguage : { ...defLanguage },
+      fallbackLocale: typeof defLanguage === 'string' ? defLanguage : { ...defLanguage?.fallbackLocale },
     }));
   };
 

@@ -19,6 +19,21 @@ const CustomerHandling = () => {
   useEffect(() => {
     api.getCustomers().then(({ data: { items } }) => {
       setCustomers([...items]);
+
+      if (accountId !== 'Nexway' && nxState?.selectedCustomer?.id !== accountId) {
+        const [curCustomer] = items?.filter((i) => i?.id === accountId);
+
+        const newState = {
+          ...nxState,
+          selectedCustomer: {
+            id: curCustomer?.id,
+            name: curCustomer?.name,
+            group_type: 'Current',
+          },
+        };
+
+        dispatch(setNexwayState(newState));
+      }
     });
   }, []);
 
@@ -97,7 +112,7 @@ const CustomerHandling = () => {
     ? [...filteredArr]
     : [{ id: 'none', name: 'No Results' }];
 
-  if (nxState?.recentCustomers) {
+  if (nxState?.recentCustomers && accountId === 'Nexway') {
     autoOptions.unshift(...nxState.recentCustomers);
   }
 
@@ -116,6 +131,7 @@ const CustomerHandling = () => {
 
         <Autocomplete
           id="customers-select"
+          className={accountId !== 'Nexway' ? 'customers-select-disabled' : ''}
           options={autoOptions}
           inputValue={search}
           value={nxState?.selectedCustomer?.id || null}

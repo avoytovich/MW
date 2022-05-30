@@ -13,10 +13,6 @@ const postApi = {
       url += `?reason=${reason}`;
     }
 
-    /*  if (KNOWN_REALMS.indexOf(`/${realm}`) < 0) {
-      realm = 'nexway';
-    } */
-
     return axiosInstance({
       method: 'post',
       url,
