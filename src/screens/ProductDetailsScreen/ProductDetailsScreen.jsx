@@ -386,6 +386,9 @@ const ProductDetailsScreen = () => {
           if (isRelatedProduct) {
             setRelatedProduct({ genericName, id: relatedProductId });
           }
+          if (!isRelatedProduct && relatedProduct) {
+            setRelatedProduct(null);
+          }
         },
       );
     }
