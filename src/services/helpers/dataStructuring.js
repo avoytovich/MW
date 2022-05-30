@@ -104,7 +104,7 @@ const localizedValues = [
 ];
 
 const defaultIndependentFields = [
-  'fulfillmentTemplate',
+  // 'fulfillmentTemplate',
   'releaseDate',
   'nextGenerationOf',
   'id',
