@@ -46,11 +46,19 @@ const ProductFiles = ({ currentProductData, setProductData, parentId }) => {
   useEffect(() => {
     let toSetData = checkValue(currentProductData?.relatedContents) || [];
 
-    if (!toSetData.length) {
-      toSetData = [{ ...defaultFiles }];
+    if (Array.isArray(toSetData)) {
+      if (!toSetData.length) {
+        toSetData = [{ ...defaultFiles }];
+      }
+      setContents([...toSetData]);
     }
 
-    setContents([...toSetData]);
+    if (toSetData.value) {
+      if (!toSetData?.value?.length) {
+        toSetData = [{ ...defaultFiles }];
+      }
+      setContents([...toSetData.value]);
+    }
   }, [currentProductData.relatedContents]);
 
   useEffect(() => {
