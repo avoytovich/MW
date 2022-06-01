@@ -59,12 +59,13 @@ const LocalizedContent = ({
 
   const makeNewData = (locale, newDef) => {
     const { tempData } = store.getState();
+
     const dataToSave = {
-      ...tempData?.description,
       ...curData,
+      ...tempData?.description,
       i18nFields: {
-        ...tempData?.i18nFields,
         ...curData?.i18nFields,
+        ...tempData?.i18nFields,
       },
     };
 
@@ -287,7 +288,6 @@ const LocalizedContent = ({
         productDescrData.fallbackLocale = inheritedFallbackLocale;
         setCurData({ ...productDescrData });
         setAvailLocales([...new Set(Object.keys(newi18n), ...avail)]);
-
         dispatch(setTempProductLocales({ ...newi18n }));
         dispatch(setTempProductDescription({ ...newDescr }));
 

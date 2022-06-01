@@ -26,9 +26,7 @@ module.exports = (env) => ({
     publicPath: (env.ENV_MODE === 'staging' && env.branch && env.branch !== 'master') ? `/${env.branch}/` : '/',
   },
   devServer: {
-    historyApiFallback: {
-      index: 'dist/index.html',
-    },
+    historyApiFallback: true,
   },
   module: {
     rules: [
