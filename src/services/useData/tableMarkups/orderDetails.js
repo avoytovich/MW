@@ -184,6 +184,16 @@ const generateData = (orderData, paymentData) => {
         value: orderData?.endUserIp || emptyValue,
         shouldCopy: orderData?.endUserIp,
       },
+      {
+        key: ' companyName',
+        label: localization.t('labels.companyName'),
+        value: orderData?.endUser?.company?.companyName || emptyValue,
+      },
+      {
+        key: ' vatNumber',
+        label: localization.t('labels.vatNumber'),
+        value: orderData?.endUser?.company?.vatNumber || emptyValue,
+      },
     ],
     paymentAttempt: [
       {
