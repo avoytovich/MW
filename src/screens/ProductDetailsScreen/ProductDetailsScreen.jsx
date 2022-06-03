@@ -229,7 +229,10 @@ const ProductDetailsScreen = () => {
         if (!isCancelled) {
           if (product?.parentId) {
             api.getProductById(product.parentId).then(({ data }) => {
-              const result = backToFront(productRequiredFields(data), product);
+              const result = backToFront(
+                productRequiredFields(data),
+                productRequiredFields(product),
+              );
               const initData = JSON.parse(JSON.stringify(result));
 
               handleGetProductDetails(
