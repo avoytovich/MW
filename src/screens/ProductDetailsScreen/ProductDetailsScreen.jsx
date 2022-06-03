@@ -400,7 +400,7 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => {
     if (backToParent) {
-      setCurTab(5);
+      setCurTab(6);
       setBackToParent(false);
     }
   });
