@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useParams, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import moment from 'moment';
 
 import {
   Box,
@@ -9,6 +10,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableSortLabel,
   TableContainer,
   TableHead,
   TableRow,
@@ -48,6 +50,10 @@ const Variations = ({
 
   const [open, setOpen] = useState(false);
   const [editableVariation, setEditableVariation] = useState(null);
+
+  const [order, setOrder] = React.useState('desc');
+  const [orderBy, setOrderBy] = React.useState('updateLast');
+  const [sortedBundledProducts, setSortedBundledProducts] = React.useState(bundledProducts);
 
   const counts = {};
   const subProductsList = currentProductData?.subProducts || [];
@@ -97,6 +103,23 @@ const Variations = ({
       });
   };
 
+  const onRequestSort = (event, property) => {
+    setOrder(order === 'asc' ? 'desc' : 'asc');
+    setOrderBy(property);
+    let compareFn = () => {};
+    if (order === 'asc') {
+      compareFn = (a, b) => b.updateDate - a.updateDate;
+    }
+    if (order === 'desc') {
+      compareFn = (a, b) => a.updateDate - b.updateDate;
+    }
+    setSortedBundledProducts(bundledProducts.sort(compareFn));
+  };
+
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
   return (
     <Box display='flex' flexDirection='column' width='100%'>
       {currentProductData.id && (
@@ -110,6 +133,15 @@ const Variations = ({
                 <TableHead>
                   <TableRow>
                     <TableCell>Id</TableCell>
+                    <TableCell align='center' sortDirection='asc'>
+                      <TableSortLabel
+                        active
+                        direction={order}
+                        onClick={createSortHandler('updateLast')}
+                      >
+                        Last Update
+                      </TableSortLabel>
+                    </TableCell>
                     <TableCell align='center'>Status</TableCell>
                     <TableCell align='center'>Publisher reference</TableCell>
                     <TableCell align='center'>Lifetime</TableCell>
@@ -120,9 +152,10 @@ const Variations = ({
                   </TableRow>
                 </TableHead>
                 <TableBody data-test='productVariants'>
-                  {bundledProducts?.map((item) => {
+                  {sortedBundledProducts?.map((item) => {
                     const {
                       id,
+                      updateDate,
                       status,
                       publisherRefId,
                       lifeTime,
@@ -151,6 +184,11 @@ const Variations = ({
                             className="copyIcon"
                           />
                           <Link to={`${parentPaths.productlist}/${id}`} className='link-to-variation'>{id}</Link>
+                        </TableCell>
+                        <TableCell
+                          align='center'
+                        >
+                          {moment(updateDate).format('D MMM YYYY hh:mm:ss') || ''}
                         </TableCell>
                         <TableCell
                           align='center'
