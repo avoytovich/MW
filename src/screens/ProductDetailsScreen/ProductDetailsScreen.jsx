@@ -430,14 +430,14 @@ const ProductDetailsScreen = () => {
       extraHeader={<CustomerStatusLabel customer={customer} />}
       headerTitleCopy={productData?.id}
       extraActions={
-        id !== 'add' && !!currentProductData?.sellingStores.length && selectOptions?.sellingStores && (
+        id !== 'add' && !!checkValue(currentProductData?.sellingStores).length && selectOptions?.sellingStores && (
           <>
             <CheckoutMenu
               checkOutStores={checkOutStores}
               currentProductData={currentProductData}
               sellingStores={selectOptions?.sellingStores}
             />
-            {currentProductData?.trialAllowed && (
+            {checkValue(currentProductData?.trialAllowed) && (
               <CheckoutWithTrial
                 currentProductData={currentProductData}
                 sellingStores={selectOptions?.sellingStores}
