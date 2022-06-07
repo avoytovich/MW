@@ -29,6 +29,7 @@ import localization from '../../../localization';
 import parentPaths from '../../../services/paths';
 import { copyText } from '../../../services/helpers/utils';
 
+import DeletePopup from '../../../components/Popup/DeletePopup';
 import SectionLayout from '../../../components/SectionLayout';
 import AddVariationModal from '../../../components/utils/Modals/AddVariationModal';
 import EditVariationModal from '../../../components/utils/Modals/EditVariationModal';
@@ -99,7 +100,11 @@ const Variations = ({
     api
       .deleteProductById(id)
       .then(() => {
-        toast(localization.t('general.hasBeenSuccessfullyDeleted'));
+        setSortedBundledProducts((c) => [...c.filter((i) => i?.id !== id)]);
+
+        toast(`${localization.t('labels.variation')} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`);
       });
   };
 
@@ -223,12 +228,14 @@ const Variations = ({
                         </TableCell>
 
                         <TableCell align='center'>
-                          <IconButton
-                            color='secondary'
-                            onClick={(e) => { e.stopPropagation(); deleteSubProduct(id); }}
-                          >
-                            <ClearIcon />
-                          </IconButton>
+                          <Box onClick={(e) => { e.stopPropagation(); }}>
+                            <DeletePopup
+                              id={id}
+                              deleteFunc={deleteSubProduct}
+                              deleteIcon={<ClearIcon />}
+                              title={`${localization.t('labels.areYouSureYouWantToDeleteTheVariation')}`}
+                            />
+                          </Box>
                         </TableCell>
                       </TableRow>
                     );
