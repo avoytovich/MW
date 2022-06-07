@@ -54,8 +54,10 @@ const Fulfillment = ({
   useEffect(() => {
     const { id, publisherRefId, customerId } = currentProductData;
 
+    const productId = id || parentId;
+
     api
-      .getManualFulfillmentsForProduct(id, publisherRefId, customerId)
+      .getManualFulfillmentsForProduct(productId, checkValue(publisherRefId), customerId)
       .then(({ data }) => {
         setPackages(data?.items || []);
       });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Button, Box, Dialog, DialogActions, DialogContent, DialogContentText,
+  Button, Dialog, DialogActions, DialogContent, DialogContentText, IconButton,
 } from '@mui/material';
 
 import {
@@ -12,7 +12,12 @@ import localization from '../../../localization';
 
 import '../../TableComponent/TableComponent.scss';
 
-const DeletePopup = ({ id, deleteFunc }) => {
+const DeletePopup = ({
+  id,
+  deleteFunc,
+  deleteIcon,
+  title,
+}) => {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -25,12 +30,21 @@ const DeletePopup = ({ id, deleteFunc }) => {
 
   return (
     <>
-      <DeleteIcon className="deleteIcon icons" onClick={handleClickOpen} />
+      {
+        deleteIcon ? (
+          <IconButton
+            color='secondary'
+            onClick={handleClickOpen}
+          >
+            {deleteIcon}
+          </IconButton>
+        ) : <DeleteIcon className="deleteIcon icons" onClick={handleClickOpen} />
+      }
 
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogContent>
           <DialogContentText color="inherit">
-            {localization.t('labels.areYouSureYouWantToDeleteTheStore')}
+            {title || localization.t('labels.areYouSureYouWantToDeleteTheStore')}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -49,6 +63,8 @@ const DeletePopup = ({ id, deleteFunc }) => {
 DeletePopup.propTypes = {
   id: PropTypes.string,
   deleteFunc: PropTypes.func,
+  deleteIcon: PropTypes.any,
+  title: PropTypes.string,
 };
 
 export default DeletePopup;
