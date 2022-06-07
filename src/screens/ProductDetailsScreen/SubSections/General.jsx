@@ -63,8 +63,8 @@ const General = ({
   const [errorLifetime, setErrorLifetime] = useState(false);
   const [errorTextLifetime, setErrorTextLifetime] = useState('');
 
-  const defaultBlacklisted = currentProductData?.blackListedCountries || [];
-  const [selectedCountries, setSelectedCountries] = useState(defaultBlacklisted);
+  const defaultBlacklisted = checkValue(currentProductData?.blackListedCountries) || [];
+  const [selectedCountries, setSelectedCountries] = useState([...defaultBlacklisted]);
 
   const counts = {};
   const subProductsList = checkValue(currentProductData?.subProducts) || [];
@@ -78,6 +78,12 @@ const General = ({
   useEffect(() => {
     setSaveDisabled(!!(fulfillmentTemplate && selectedBundledProduct));
   }, [fulfillmentTemplate, selectedBundledProduct]);
+
+  useEffect(() => {
+    if (selectedCountries?.length !== defaultBlacklisted?.length) {
+      setSelectedCountries([...defaultBlacklisted]);
+    }
+  }, [currentProductData?.blackListedCountries]);
 
   useEffect(() => {
     if (lifetime === 'PERMANENT' && subscriptionTemplate) {
@@ -523,7 +529,7 @@ const General = ({
           <InheritanceField
             field='blackListedCountries'
             onChange={setProductData}
-            value={currentProductData?.blackListedCountries || []}
+            value={selectedCountries}
             selectOptions={countriesOptions || []}
             parentId={parentId}
             currentProductData={currentProductData}
