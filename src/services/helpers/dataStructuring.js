@@ -335,7 +335,7 @@ const createStandaloneValue = (value) => {
 const createUnchangableInheritedValue = (value, key) => (value?.parentValue && key !== 'status' ? value.parentValue : (value || ''));
 
 const createInheritableValue = (value, parentValue) => {
-  const state = R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue)
+  const state = R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue) || (parentValue?.defaultCurrency && !value?.defaultCurrency)
     ? 'inherits'
     : 'overrides'; // initial state, user can force after
 
