@@ -9,7 +9,7 @@ import localization from '../../../localization';
 
 import './CheckoutMenu.scss';
 
-const CheckoutMenu = ({ checkOutStores, currentProductData }) => {
+const CheckoutMenu = ({ checkOutStores, currentProductData, withTrail }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => setAnchorEl(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -21,11 +21,11 @@ const CheckoutMenu = ({ checkOutStores, currentProductData }) => {
         aria-haspopup="true"
         variant="contained"
         color="primary"
-        aria-controls="checkoutMenu"
+        aria-controls={withTrail ? 'checkoutWithTrial' : 'checkoutMenu'}
         onClick={handleClick}
         size="large"
       >
-        {localization.t('general.checkout')}
+        {localization.t(`general.${withTrail ? 'checkoutWithTrial' : 'checkout'}`)}
       </Button>
       <Menu
         getContentAnchorEl={null}
@@ -43,19 +43,25 @@ const CheckoutMenu = ({ checkOutStores, currentProductData }) => {
         onClose={handleClose}
       >
         {checkOutStores.length
-          && checkOutStores.map((obj) => (
-            <MenuItem key={obj.hostname} onClick={handleClose}>
-              <a
-                data-test="checkoutLink"
-                className="storeHostLink"
-                target="_blank"
-                rel="noreferrer"
-                href={` http://${obj.hostname}/checkout/add?products=${currentProductData.id}`}
-              >
-                {`Store '${obj.value}' (${obj.hostname})`}
-              </a>
-            </MenuItem>
-          ))}
+          && checkOutStores.map((obj) => {
+            let href = ` http://${obj.hostname}/checkout/add?products=${currentProductData.id}`;
+            if (withTrail) {
+              href += '&layout=trial&theme=trial';
+            }
+            return (
+              <MenuItem key={obj.hostname} onClick={handleClose}>
+                <a
+                  data-test="checkoutLink"
+                  className="storeHostLink"
+                  target="_blank"
+                  rel="noreferrer"
+                  href={href}
+                >
+                  {`Store '${obj.value}' (${obj.hostname})`}
+                </a>
+              </MenuItem>
+            );
+          })}
       </Menu>
     </Box>
   );
@@ -64,6 +70,7 @@ const CheckoutMenu = ({ checkOutStores, currentProductData }) => {
 CheckoutMenu.propTypes = {
   checkOutStores: PropTypes.array,
   currentProductData: PropTypes.object,
+  withTrail: PropTypes.bool,
 };
 
 export default CheckoutMenu;

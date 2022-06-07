@@ -11,7 +11,6 @@ import store from '../../redux/store';
 import ProductDetailsTabs from './ProductDetailsTabs';
 import ProductDetailsView from './ProductDetailsView';
 import CheckoutMenu from './CheckoutMenu';
-import CheckoutWithTrial from './CheckoutWithTrial';
 
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
@@ -438,9 +437,11 @@ const ProductDetailsScreen = () => {
               sellingStores={selectOptions?.sellingStores}
             />
             {checkValue(currentProductData?.trialAllowed) && (
-              <CheckoutWithTrial
+              <CheckoutMenu
+                checkOutStores={checkOutStores}
                 currentProductData={currentProductData}
                 sellingStores={selectOptions?.sellingStores}
+                withTrail
               />
             )}
           </>
