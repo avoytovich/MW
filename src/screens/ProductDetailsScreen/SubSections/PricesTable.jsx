@@ -38,17 +38,32 @@ const PricesTable = ({
   const [checkAll, setCheckAll] = useState(checkIfAllChecked(priceByCountryByCurrency));
   const handleSetProductData = (newData) => {
     setCheckAll(checkIfAllChecked(newData));
+
     let prices = { ...currentProductData.prices };
+
     if (variation) {
-      if (Object.keys(priceByCountryByCurrency).length
+      if (!Object.keys(newData).length || (Object.keys(priceByCountryByCurrency).length
         && currentProductData.prices.value.defaultCurrency
         && !Object.keys(priceByCountryByCurrency)
-          .includes(currentProductData.prices.value.defaultCurrency)) {
+          .includes(currentProductData.prices.value.defaultCurrency))) {
         prices = { ...currentProductData.prices, value: { ...currentProductData.prices.value, defaultCurrency: '' } };
       }
+
+      if (!currentProductData?.prices.value.defaultCurrency
+          && Object.keys(prices.value.priceByCountryByCurrency).indexOf(Object.keys(newData)[0]) < 0
+          && Object.keys(newData)?.length === 1) {
+        [prices.value.defaultCurrency] = Object.keys(newData);
+      }
+
       setProductData({
         ...currentProductData,
-        prices,
+        prices: {
+          ...prices,
+          value: {
+            ...prices.value,
+            priceByCountryByCurrency: newData,
+          },
+        },
         priceByCountryByCurrency: {
           ...currentProductData.priceByCountryByCurrency,
           value: newData,
@@ -61,9 +76,23 @@ const PricesTable = ({
           .includes(currentProductData.prices.defaultCurrency)) {
         prices = { ...currentProductData.prices, defaultCurrency: '' };
       }
+
+      if (!Object.keys(newData).length) {
+        prices.defaultCurrency = '';
+      }
+
+      if (!currentProductData?.prices.defaultCurrency
+          && Object.keys(prices.priceByCountryByCurrency).indexOf(Object.keys(newData)[0]) < 0
+          && Object.keys(newData)?.length === 1) {
+        [prices.defaultCurrency] = Object.keys(newData);
+      }
+
       setProductData({
         ...currentProductData,
-        prices,
+        prices: {
+          ...prices,
+          priceByCountryByCurrency: newData,
+        },
         priceByCountryByCurrency: newData,
       });
     }
