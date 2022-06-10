@@ -1,3 +1,4 @@
+import api from '../../../api';
 import localization from '../../../localization';
 import parentPaths from '../../paths';
 
@@ -13,6 +14,9 @@ const defaultShow = {
   netPrice: true,
   grossPrice: true,
   vatAmount: true,
+  netDiscountPrice: true,
+  grossDiscountPrice: true,
+  vatDiscountAmount: true,
   details: true,
 };
 
@@ -29,7 +33,6 @@ const markUp = {
     { value: localization.t('labels.name'), id: 'name' },
     { value: localization.t('labels.activationCodeKey'), id: 'activationCode' },
     { value: localization.t('general.subscription'), id: 'subscription' },
-    { value: localization.t('general.discount'), id: 'discount' },
     { value: localization.t('labels.net'), id: 'netPrice' },
     { value: localization.t('labels.gross'), id: 'grossPrice' },
     { value: localization.t('labels.vat'), id: 'vatAmount' },
@@ -38,10 +41,10 @@ const markUp = {
 };
 
 const generateData = (data, subscriptions) => {
-  const values = data.map((val) => {
+  const values = data.map(async (val) => {
     const subscription = subscriptions ? subscriptions.filter((item) => item.id === val.subscriptionId)[0]?.lifecycle?.id : '';
 
-    return ({
+    const returnData = {
       id: val.id,
       publisherRefId: val.publisherRefId,
       quantity: 1,
@@ -53,21 +56,55 @@ const generateData = (data, subscriptions) => {
       netPrice: `${val?.price?.netPrice || 0} ${val?.price?.currency || 'USD'}`,
       grossPrice: `${val?.price?.grossPrice || 0} ${val?.price?.currency || 'USD'}`,
       vatAmount: `${val?.price?.vatAmount || 0} ${val?.price?.currency || 'USD'}`,
-      discountedNet: '-',
-      discountedGross: '-',
-      discountedVat: '-',
+      netDiscountPrice: `${val?.price?.discountedPrice?.discountedNetPrice || 0} ${val?.price?.currency || 'USD'}`,
+      grossDiscountPrice: `${val?.price?.discountedPrice?.discountedGrossPrice || 0} ${val?.price?.currency || 'USD'}`,
+      vatDiscountAmount: `${val?.price?.discountedPrice?.vatDiscountAmount || 0} ${val?.price?.currency || 'USD'}`,
       processingError: val.processingStatus === 'FAILURE',
       details: val.processingEvent?.some((obj) => obj.status === 'Failed') ? 'failed_event' : undefined,
       productId: val.productId,
-    });
+    };
+
+    const discountId = val?.price?.discountedPrice?.discountId;
+
+    if (discountId) {
+      const discountName = await api.getDiscountById(discountId).then(({ data: data_ }) => data_?.name || '-');
+
+      links.push({
+        id: 'discount', path: `${parentPaths.discountrules}/:discountId`, internal: true,
+      });
+
+      markUp.headers.splice(
+        9,
+        0,
+        ...[
+          { value: localization.t('general.discount'), id: 'discount' },
+          { value: localization.t('labels.discountedNetPrice'), id: 'netDiscountPrice' },
+          { value: localization.t('labels.discountedGrossPrice'), id: 'grossDiscountPrice' },
+          { value: localization.t('labels.vatDiscountAmount'), id: 'vatDiscountAmount' },
+        ],
+      );
+
+      return { ...returnData, discount: discountName, discountId };
+    }
+
+    const discountRelatedKeys = ['discount', 'netDiscountPrice', 'grossDiscountPrice', 'vatDiscountAmount'];
+
+    markUp.headers = markUp.headers.filter((i) => discountRelatedKeys.indexOf(i.id) < 0);
+
+    return returnData;
   });
 
   const meta = {
     totalPages: data.totalPages,
   };
 
-  Object.assign(markUp, { values, meta });
-  return markUp;
+  return Promise
+    .all(values)
+    .then((resp) => {
+      Object.assign(markUp, { values: resp, meta });
+
+      return markUp;
+    });
 };
 
 export {

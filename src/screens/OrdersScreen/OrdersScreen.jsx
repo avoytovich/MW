@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Box from '@mui/material/Box';
 import { toast } from 'react-toastify';
 import FindByCC from './FindByCC';
 import TableComponent from '../../components/TableComponent';

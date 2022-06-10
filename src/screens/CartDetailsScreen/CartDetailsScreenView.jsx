@@ -257,18 +257,24 @@ const CartDetailsScreenView = ({ detailsData, customer, curTab, store }) => {
   };
 
   useEffect(() => {
-    const productsTableData = generateDataCart(detailsData?.products || []);
-    setProducts(productsTableData || []);
+    if (detailsData?.products) {
+      generateDataCart(detailsData?.products)
+        .then((resp) => {
+          setProducts(resp || []);
+        });
+    } else {
+      setProducts([]);
+    }
 
     return () => setProducts(null);
-  });
+  }, []);
 
   useEffect(() => {
     const emailsTableData = generateDataEmails(detailsData?.sentEmails || []);
     setEmails(emailsTableData || []);
 
     return () => setEmails(null);
-  });
+  }, []);
 
   return (
     <>
