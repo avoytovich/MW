@@ -14,12 +14,18 @@ const Products = ({ orderData, subscriptions }) => {
   const scope = 'orderProducts';
 
   useEffect(() => {
-    const productsTableData = orderData?.lineItems
-      ? generateData(orderData?.lineItems, subscriptions) : [];
-    setProducts(productsTableData);
+    if (orderData?.lineItems) {
+      generateData(orderData?.lineItems, subscriptions)
+        .then((resp) => {
+          setProducts(resp || []);
+        });
+    } else {
+      setProducts([]);
+    }
 
     return () => setProducts(null);
   }, []);
+
   return (
     <>
       <TableComponent

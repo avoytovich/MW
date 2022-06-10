@@ -508,7 +508,7 @@ const labels = {
   vatAmount: 'Vat amount',
   discountedNetPrice: 'Net price discounted',
   discountedGrossPrice: 'Gross price discounted',
-  vatDiscountAmount: 'Vat amount discounted',
+  vatDiscountAmount: 'VAT amount discounted',
   transactionId: 'Transaction ID',
   subscriptionStatus: 'Subscription Status',
   creditNoteId: 'Credit Note ID',
