@@ -8,7 +8,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import contentCss from 'tinymce/skins/content/default/content.min.css';
 import contentUiCss from 'tinymce/skins/ui/oxide/content.min.css';
 
-import { setTempProductLocales } from '../../redux/actions/TempData';
+import { setTempProductLocales, setTempRecoLocales } from '../../redux/actions/TempData';
 import { checkValue } from '../../services/helpers/dataStructuring';
 import InheritanceField from '../../screens/ProductDetailsScreen/InheritanceField';
 
@@ -28,12 +28,22 @@ const TinyEditor = ({
   setDisabledWithMandLocal,
   isDefault,
   defaultLocale,
+  reco = false,
 }) => {
   const dispatch = useDispatch();
   const [editorLoading, setEditorLoading] = useState(true);
   const [editorRef, setEditorRef] = useState(false);
   const { i18nFields = {} } = useSelector(({ tempData }) => tempData);
-  const initValue = i18nFields[curLocal] ? i18nFields[curLocal][val] : '';
+  const i18nFieldsReco = useSelector(({ tempData }) => tempData.i18nFieldsReco) || data;
+  let i18n;
+  let initValue;
+  if (reco) {
+    i18n = i18nFieldsReco;
+    initValue = i18n?.[curLocal] ? i18n?.[curLocal] : '';
+  } else {
+    i18n = i18nFields;
+    initValue = i18n?.[curLocal] ? i18n?.[curLocal][val] : '';
+  }
 
   const settleUpdates = (newData) => {
     const hasChanges = JSON.stringify(data) !== JSON.stringify(newData);
@@ -51,28 +61,38 @@ const TinyEditor = ({
     if (parentId) {
       generatedData = {
         ...data,
-        ...i18nFields,
+        ...i18n,
         [curLocal]: {
-          ...i18nFields[curLocal],
+          ...i18n?.[curLocal],
           [val]: {
-            ...i18nFields[curLocal][val],
+            ...i18n?.[curLocal][val],
             value: correctContent,
           },
         },
       };
+    } else if (reco) {
+      generatedData = {
+        ...data,
+        ...i18n,
+        [curLocal]: correctContent,
+      };
     } else {
       generatedData = {
         ...data,
-        ...i18nFields,
+        ...i18n,
         [curLocal]: {
-          ...i18nFields[curLocal],
+          ...i18n?.[curLocal],
           [val]: correctContent,
         },
       };
     }
 
-    dispatch(setTempProductLocales(generatedData));
-    settleUpdates(generatedData);
+    if (reco) {
+      dispatch(setTempRecoLocales(generatedData));
+    } else {
+      dispatch(setTempProductLocales(generatedData));
+      settleUpdates(generatedData);
+    }
   };
 
   const makeNewInheritanceData = (inheritanceData) => {
@@ -107,7 +127,7 @@ const TinyEditor = ({
           onChange={(inheritanceData) => makeNewInheritanceData(inheritanceData)}
           value={initValue}
           parentId={parentId}
-          currentProductData={i18nFields[curLocal]}
+          currentProductData={i18n?.[curLocal]}
           isTinymce
         >
           <Editor
@@ -128,7 +148,7 @@ const TinyEditor = ({
               setEditorLoading(false);
               setEditorRef(ref);
 
-              if (i18nFields[curLocal] && i18nFields[curLocal][val]?.state === 'inherits') {
+              if (i18n?.[curLocal] && i18n?.[curLocal][val]?.state === 'inherits') {
                 setTimeout(() => {
                   ref.target.getBody().setAttribute('class', 'mce-content-body mce-content-readonly');
                   ref.target.getBody().setAttribute('contenteditable', false);
@@ -139,7 +159,7 @@ const TinyEditor = ({
         </InheritanceField>
       </Box>
 
-      {val === 'localizedMarketingName' && isDefault && !i18nFields[curLocal]?.localizedMarketingName && (
+      {val === 'localizedMarketingName' && isDefault && !i18n?.[curLocal]?.localizedMarketingName && (
         <div className='error-message'>
           {localization.t('general.marketingNameMandatory')}
         </div>
@@ -158,6 +178,7 @@ TinyEditor.propTypes = {
   isDefault: PropTypes.bool,
   setDisabledWithMandLocal: PropTypes.func,
   defaultLocale: PropTypes.string,
+  reco: PropTypes.bool,
 };
 
 export default TinyEditor;
