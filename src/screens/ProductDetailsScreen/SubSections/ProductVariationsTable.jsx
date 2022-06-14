@@ -132,7 +132,7 @@ const ProductVariationsTable = ({
                     <TableCell
                       align='center'
                     >
-                      {moment(updateDate).format('D MMM YYYY hh:mm:ss') || ''}
+                      {moment(updateDate).format('D MMM YYYY HH:mm:ss') || ''}
                     </TableCell>
                     <TableCell
                       align='center'
