@@ -111,7 +111,16 @@ const ProductDetailsScreen = () => {
     setStoreLanguages(newLanguages);
     setCheckOutStores([...res]);
   };
-
+  const handleDeleteVariation = (variationId) => {
+    api
+      .deleteProductById(variationId)
+      .then(() => {
+        setUpd((c) => c + 1);
+        toast(`${localization.t('labels.variation')} ${id} ${localization.t(
+          'general.hasBeenSuccessfullyDeleted',
+        )}`);
+      });
+  };
   const saveDetails = async () => {
     const formatePrices = beforeSend(currentProductData);
 
@@ -286,11 +295,11 @@ const ProductDetailsScreen = () => {
               customerId,
               catalogId,
             })),
+            product.parentId,
           );
         }
 
         const { customerId, id: _id } = product;
-
         handleGetOptions(
           setLoading,
           customerId,
@@ -300,6 +309,7 @@ const ProductDetailsScreen = () => {
           selectOptions,
           setSubProductVariations,
           (catalogId) => setProductDetails((c) => ({ ...c, catalogId })),
+          product.parentId,
         );
       }).catch(() => {
         setCurrentProductData(null);
@@ -333,11 +343,13 @@ const ProductDetailsScreen = () => {
               : true,
           );
         },
+        true,
       );
     }
 
     return () => {
       isCancelled = true;
+      setSubProductVariations({});
       dispatch(setTempProductLocales({}));
       dispatch(setTempProductDescription({}));
     };
@@ -346,6 +358,9 @@ const ProductDetailsScreen = () => {
   useEffect(() => {
     setLoading(true);
     setCurTab(0);
+    return () => {
+      setSubProductVariations({});
+    };
   }, [location?.pathname]);
 
   useEffect(() => {
@@ -461,6 +476,7 @@ const ProductDetailsScreen = () => {
       flexWrapper={codeMode && curTab === 3}
     >
       <ProductDetailsView
+        handleDeleteVariation={handleDeleteVariation}
         productData={productData}
         setCurProductData={setCurrentProductData}
         curProductData={currentProductData}

@@ -16,4 +16,15 @@ const setTempProductDescription = (newState) => (dispatch) => {
   });
 };
 
-export { setTempProductLocales, setTempProductDescription };
+const setTempRecoLocales = (newState) => (dispatch) => {
+  dispatch({
+    type: UPDATE_TEMP_STATE,
+    payload: { i18nFieldsReco: { ...newState } },
+  });
+};
+
+export {
+  setTempProductLocales,
+  setTempProductDescription,
+  setTempRecoLocales,
+};

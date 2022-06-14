@@ -21,6 +21,7 @@ const handleGetOptions = (
   selectOptions,
   setSubProductVariations,
   setCatalog,
+  hasParent,
 ) => {
   let subscriptionOptions = null;
 
@@ -30,7 +31,7 @@ const handleGetOptions = (
     api.getFulfillmentTemplateByCustomerId(customerId),
     api.getCatalogsByCustomerId(customerId),
     api.getPriceFunctionsCustomerByIds(customerId),
-    id ? api.getSubProductsById(id) : null,
+    (id && !hasParent) ? api.getSubProductsById(id) : null,
   ];
 
   api.getCustomerById(customerId).then(({ data: curCustomer }) => {
@@ -56,9 +57,9 @@ const handleGetOptions = (
         if (!subscriptionOptions) {
           subscriptionOptions = structureSelectOptions({ options: subscriptions?.data?.items, optionValue: 'name' });
         }
-
+        
         setSubProductVariations({
-          bundledProducts: subProducts?.data?.items,
+          bundledProducts: id === null ? [] : subProducts?.data?.items,
           variations: productsVariations(renewingProducts?.data?.items, id),
         });
 
@@ -66,13 +67,13 @@ const handleGetOptions = (
           setSelectOptions({
             ...selectOptions,
             sellingStores:
-              structureSelectOptions({ options: sellingStores.data?.items, optionValue: 'name', otherOptions: ['hostnames', 'saleLocales', 'defaultLocale'] }) || [],
-            renewingProducts: renewingProductsOptions(renewingProducts.data?.items) || [],
+              structureSelectOptions({ options: sellingStores?.data?.items, optionValue: 'name', otherOptions: ['hostnames', 'saleLocales', 'defaultLocale'] }) || [],
+            renewingProducts: renewingProductsOptions(renewingProducts?.data?.items) || [],
             fulfillmentTemplates:
-              structureSelectOptions({ options: fulfillmentTemplates.data?.items, optionValue: 'name' }) || [],
-            catalogs: structureSelectOptions({ options: catalogs.data?.items, optionValue: 'name' }) || [],
+              structureSelectOptions({ options: fulfillmentTemplates?.data?.items, optionValue: 'name' }) || [],
+            catalogs: structureSelectOptions({ options: catalogs?.data?.items, optionValue: 'name' }) || [],
             priceFunctions:
-              structureSelectOptions({ options: priceFunctionsOptions.data?.items, optionValue: 'name' }) || [],
+              structureSelectOptions({ options: priceFunctionsOptions?.data?.items, optionValue: 'name' }) || [],
             subscriptionModels: subscriptionOptions || [],
           });
 

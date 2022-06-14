@@ -53,7 +53,7 @@ const ManualFulfillmentDetailsScreen = () => {
           api.getProducts({ filters: `&customerId=${data.publisherId}&status=ENABLED` }).then((res) => {
             const products = structureProdAutocompleteSelectOptions({ options: res?.data?.items, optionValue: 'genericName' }) || [];
             const productByReference = structureProdAutocompleteSelectOptions({ options: res?.data.items, optionValue: 'publisherRefId', optionId: 'publisherRefId' }) || [];
-            const nexwayProductId = products.filter((obj) => data.nexwayProductId.includes(obj.id));
+            const nexwayProductId = products.filter((obj) => data.nexwayProductId?.includes(obj.id));
             if (nexwayProductId.length < data.nexwayProductId.length) {
               data.nexwayProductId.forEach((u) => {
                 if (!nexwayProductId.find((prodId) => prodId.id === u)) {
@@ -62,7 +62,7 @@ const ManualFulfillmentDetailsScreen = () => {
               });
             }
             const publisherProductId = productByReference
-              .filter((obj) => data.publisherProductId.includes(obj.id));
+              .filter((obj) => data.publisherProductId?.includes(obj.id));
             setFulfillment({ ...data, publisherProductId, nexwayProductId });
             setCurFulfillment(JSON.parse(JSON.stringify(
               { ...data, publisherProductId, nexwayProductId },

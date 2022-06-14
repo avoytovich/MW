@@ -21,6 +21,7 @@ const ProductDetailsView = ({
   relatedProduct,
   setProductLocalizationChanges,
   productVariations,
+  setSubProductVariations,
   setProductDetails,
   productDetails,
   parentId,
@@ -34,6 +35,7 @@ const ProductDetailsView = ({
   codeMode,
   jsonIsValid,
   setJsonIsValid,
+  handleDeleteVariation,
 }) => {
   const checkSaveDisable = () => {
     const {
@@ -170,13 +172,16 @@ const ProductDetailsView = ({
             setProductDetails={setProductDetails}
             currentProductData={curProductData}
             productDetails={productDetails}
-            productVariations={productVariations}
+            setSubProductVariations={setSubProductVariations}
+            // productVariations={productVariations}
             parentId={parentId}
             selectOptions={selectOptions}
             variablesDescriptions={variablesDescriptions}
           />
         ) : (
           <Variations
+            handleDeleteVariation={handleDeleteVariation}
+            setSubProductVariations={setSubProductVariations}
             selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={curProductData}
@@ -196,6 +201,7 @@ ProductDetailsView.propTypes = {
   selectOptions: PropTypes.object,
   setProductLocalizationChanges: PropTypes.func,
   productVariations: PropTypes.object,
+  setSubProductVariations: PropTypes.func,
   setProductDetails: PropTypes.func,
   productDetails: PropTypes.object,
   parentId: PropTypes.string,
@@ -211,6 +217,7 @@ ProductDetailsView.propTypes = {
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
   relatedProduct: PropTypes.object,
+  handleDeleteVariation: PropTypes.func,
 };
 
 export default ProductDetailsView;
