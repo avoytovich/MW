@@ -35,6 +35,8 @@ const ProductDetailsView = ({
   codeMode,
   jsonIsValid,
   setJsonIsValid,
+  setPriceTableError,
+  priceTableError,
   handleDeleteVariation,
 }) => {
   const checkSaveDisable = () => {
@@ -62,7 +64,7 @@ const ProductDetailsView = ({
 
   useEffect(() => {
     const {
-      catalogId, publisherRefId, genericName, type, prices, priceByCountryByCurrency
+      catalogId, publisherRefId, genericName, type, prices, priceByCountryByCurrency,
     } = curProductData;
     const currency = prices?.state ? prices.value.defaultCurrency !== '' : prices.defaultCurrency !== '';
 
@@ -142,12 +144,13 @@ const ProductDetailsView = ({
       {curTab === 4 && (
         <SectionLayout dataTest='prices' label='prices'>
           <Prices
+            priceTableError={priceTableError}
+            setPriceTableError={setPriceTableError}
             selectOptions={selectOptions}
             setProductData={setProductData}
             currentProductData={curProductData}
             productData={productData}
             setNewData={setProductLocalizationChanges}
-            setSaveDisabled={setSaveDisabled}
             parentId={parentId}
           />
         </SectionLayout>
@@ -217,6 +220,8 @@ ProductDetailsView.propTypes = {
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
   relatedProduct: PropTypes.object,
+  setPriceTableError: PropTypes.func,
+  priceTableError: PropTypes.array,
   handleDeleteVariation: PropTypes.func,
 };
 

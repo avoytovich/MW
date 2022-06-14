@@ -12,9 +12,19 @@ const ValidationTextField = styled(TextField)({
 
 });
 const NumberInput = ({
-  label, value, onChangeInput, minMAx, isDisabled, isRequired, helperText, hasError, hasBeenChanged,
-}) => (!hasBeenChanged ? (
+  label,
+  value,
+  onChangeInput,
+  minMAx,
+  isDisabled,
+  isRequired,
+  helperText,
+  hasError,
+  hasNoChanges,
+  inputRefFunc,
+}) => (hasNoChanges ? (
   <TextField
+    inputRef={inputRefFunc}
     error={hasError}
     helperText={helperText}
     required={isRequired}
@@ -35,6 +45,7 @@ const NumberInput = ({
 )
   : (
     <ValidationTextField
+      inputRef={inputRefFunc}
       error={hasError}
       autoFocus
       helperText={helperText}
@@ -64,7 +75,8 @@ NumberInput.propTypes = {
   isRequired: PropTypes.bool,
   helperText: PropTypes.string,
   hasError: PropTypes.bool,
-  hasBeenChanged: PropTypes.bool,
+  hasNoChanges: PropTypes.bool,
+  inputRefFunc: PropTypes.func,
 };
 
 export default NumberInput;

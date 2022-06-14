@@ -72,7 +72,7 @@ const ProductDetailsScreen = () => {
   const [jsonIsValid, setJsonIsValid] = useState(true);
   const [selectOptions, setSelectOptions] = useState({ ...defaultSelectOptions });
   const [relatedProduct, setRelatedProduct] = useState(null);
-
+  const [priceTableError, setPriceTableError] = useState([]);
   const parentId = history?.location?.state?.parentId;
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -432,7 +432,8 @@ const ProductDetailsScreen = () => {
           ? localization.t('labels.newProduct')
           : `${productData?.genericName?.value || productData?.genericName} - ${id}`
       }
-      saveIsDisabled={saveDisabled || tabsDisabled || disabledWithMandLocal || !jsonIsValid}
+      saveIsDisabled={saveDisabled || tabsDisabled || disabledWithMandLocal
+        || !jsonIsValid || priceTableError.length > 0}
       hasChanges={productHasChanges || productHasLocalizationChanges || !productData?.id}
       isLoading={isLoading}
       setUpdate={setUpd}
@@ -476,6 +477,8 @@ const ProductDetailsScreen = () => {
       flexWrapper={codeMode && curTab === 3}
     >
       <ProductDetailsView
+        priceTableError={priceTableError}
+        setPriceTableError={setPriceTableError}
         handleDeleteVariation={handleDeleteVariation}
         productData={productData}
         setCurProductData={setCurrentProductData}

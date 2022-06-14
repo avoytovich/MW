@@ -33,7 +33,9 @@ const Prices = ({
   productData,
   currentProductData,
   setProductData,
+  setPriceTableError,
   parentId,
+  priceTableError,
 }) => {
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const history = useHistory();
@@ -95,6 +97,8 @@ const Prices = ({
           </InheritanceField>
 
           <PricesTable
+            priceTableError={priceTableError}
+            setPriceTableError={setPriceTableError}
             productData={checkValue(productData?.priceByCountryByCurrency)}
             selectOptions={selectOptions}
             currentProductData={currentProductData}
@@ -250,6 +254,8 @@ Prices.propTypes = {
   currentProductData: PropTypes.object,
   parentId: PropTypes.string,
   productData: PropTypes.object,
+  setPriceTableError: PropTypes.func,
+  priceTableError: PropTypes.array,
 };
 
 export default Prices;
