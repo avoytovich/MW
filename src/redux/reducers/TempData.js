@@ -6,6 +6,8 @@ import {
 const initialState = {
   i18nFields: {},
   description: {},
+  i18nFieldsReco: null,
+  descriptionReco: null,
 };
 
 const TempData = (state = initialState, {

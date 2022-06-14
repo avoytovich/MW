@@ -8,6 +8,7 @@ const labels = {
   name: 'Name',
   publisherRefId: 'Publisher Ref ID',
   type: 'Type',
+  recomendationDescription: 'Product recommendation description',
   software: 'Software',
   games: 'Games',
   casual: 'Casual',
