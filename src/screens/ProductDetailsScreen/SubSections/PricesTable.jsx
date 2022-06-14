@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Box,
   IconButton,
@@ -22,11 +22,20 @@ import { SelectWithChip, SelectCustom, NumberInput } from '../../../components/I
 // import './ClearancesInputs.scss';
 
 const PricesTable = ({
-  currentProductData, setProductData, priceByCountryByCurrency, productData,
+  currentProductData,
+  setProductData,
+  priceByCountryByCurrency,
+  productData,
+  setPriceTableError,
+  priceTableError,
 }) => {
   const countryOptions = getCountriesOptions();
   const [variation, setVariation] = useState('');
   const [newCurrency, setNewCurrency] = useState('');
+  const [upd, setUpd] = useState(0);
+  const [lastAddedKey, setLastAddedKey] = useState('');
+
+  const priceTableRef = useRef({});
 
   const checkIfAllChecked = (data) => {
     const allItems = [];
@@ -107,7 +116,13 @@ const PricesTable = ({
     setCheckAll(e.target.checked);
     handleSetProductData(newData);
   };
-  const handleRemove = (key, index) => {
+  const handleRemove = (key, index, itemKey) => {
+    if (priceTableError.includes(itemKey)) {
+      const newErrors = priceTableError.filter(
+        (element) => element !== itemKey,
+      );
+      setPriceTableError(newErrors);
+    }
     const newPrices = { ...priceByCountryByCurrency };
     if (priceByCountryByCurrency[key].length < 2) {
       delete newPrices[key];
@@ -130,10 +145,11 @@ const PricesTable = ({
   useEffect(() => {
     if (newCurrency !== '') {
       let newArray = [];
+      const key = createKey(currentProductData, newCurrency);
       const newObj = {
-        key: createKey(currentProductData, newCurrency),
+        key,
         countries: priceByCountryByCurrency[newCurrency] ? [] : ['default'],
-        value: '1',
+        value: '',
         crossSell: '',
         msrp: '',
         upSell: '',
@@ -144,12 +160,19 @@ const PricesTable = ({
       } else {
         newArray = [newObj];
       }
+      setPriceTableError((er) => [...er, key]);
+      setLastAddedKey(key);
       handleSetProductData({
         ...priceByCountryByCurrency, [newCurrency]: newArray,
       });
+      setUpd((u) => u + 1);
     }
+
     return () => setNewCurrency('');
   }, [newCurrency]);
+  useEffect(() => {
+    priceTableRef.current[lastAddedKey]?.focus();
+  }, [upd]);
 
   return (
     <>
@@ -234,18 +257,38 @@ const PricesTable = ({
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
-                          hasBeenChanged={item.value !== productData?.[el]?.[index]?.value}
+                          isRequired
+                          hasError={!item.value}
+                          inputRefFunc={(element) => {
+                            if (!item.value) {
+                              priceTableRef.current[item.key] = element;
+                            } else {
+                              delete priceTableRef.current[item.key];
+                            }
+                          }}
+                          hasNoChanges={(item.value === productData?.[el]?.[index]?.value)
+                            || (item.value === '' && !productData?.[el]?.[index])}
                           isDisabled={variation === 'inherits'}
                           minMAx={{ min: 0 }}
                           label='price'
                           value={item.value}
-                          onChangeInput={(e) => handleUpdate(e, 'value', el, index)}
+                          onChangeInput={(e) => {
+                            if (e.target.value === '') {
+                              setPriceTableError((er) => [...er, item.key]);
+                            } else if (priceTableError.includes(item.key)) {
+                              const newErrors = priceTableError.filter(
+                                (element) => element !== item.key,
+                              );
+                              setPriceTableError(newErrors);
+                            }
+                            handleUpdate(e, 'value', el, index);
+                          }}
                         />
-
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
-                          hasBeenChanged={item.msrp !== productData?.[el]?.[index]?.msrp}
+                          hasNoChanges={(item.msrp === productData?.[el]?.[index]?.msrp)
+                            || (item.msrp === '' && !productData?.[el]?.[index])}
                           isDisabled={variation === 'inherits'}
                           label='msrp'
                           minMAx={{ min: 0 }}
@@ -255,7 +298,8 @@ const PricesTable = ({
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
-                          hasBeenChanged={item.upSell !== productData?.[el]?.[index]?.upSell}
+                          hasNoChanges={(item.upSell === productData?.[el]?.[index]?.upSell)
+                            || (item.upSell === '' && !productData?.[el]?.[index])}
                           isDisabled={variation === 'inherits'}
                           label='upsellPrice'
                           minMAx={{ min: 0 }}
@@ -265,8 +309,9 @@ const PricesTable = ({
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
+                          hasNoChanges={(item.crossSell === productData?.[el]?.[index]?.crossSell)
+                            || (item.crossSell === '' && !productData?.[el]?.[index])}
                           isDisabled={variation === 'inherits'}
-                          hasBeenChanged={item.crossSell !== productData?.[el]?.[index]?.crossSell}
                           minMAx={{ min: 0 }}
                           label='crossSellPrice'
                           value={item.crossSell}
@@ -297,7 +342,7 @@ const PricesTable = ({
                               <IconButton
                                 disabled={variation === 'inherits'}
                                 color='secondary'
-                                onClick={() => handleRemove(el, index)}
+                                onClick={() => handleRemove(el, index, item.key)}
                                 size='large'
                               >
                                 <ClearIcon />
@@ -330,6 +375,8 @@ PricesTable.propTypes = {
   setProductData: PropTypes.func,
   priceByCountryByCurrency: PropTypes.object,
   productData: PropTypes.object,
+  setPriceTableError: PropTypes.func,
+  priceTableError: PropTypes.array,
 };
 
 export default PricesTable;
