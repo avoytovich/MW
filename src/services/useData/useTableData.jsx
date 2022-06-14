@@ -37,7 +37,7 @@ const useTableData = (
 
       if (customerScope) {
         filtersUrl += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
-        searchRequest += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
+        searchRequest += dataScope !== 'manualFulfillments' ? '' : `&publisherId=${customerScope}`;
       }
 
       setLoading(true);
