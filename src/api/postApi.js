@@ -370,6 +370,14 @@ const postApi = {
       data,
     });
   },
+  addProductLocalsById(data) {
+    const url = '/products/descriptions';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
 };
 
 export default postApi;

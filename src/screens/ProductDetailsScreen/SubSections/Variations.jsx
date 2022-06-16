@@ -33,6 +33,7 @@ const Variations = ({
   setProductDetails,
   productDetails,
   handleDeleteVariation,
+  setProductLocalizationChanges,
 }) => {
   const history = useHistory();
   const { id: productId } = useParams();
@@ -72,6 +73,7 @@ const Variations = ({
       ...productDetails,
       variableDescriptions: newVariableDescriptions,
     });
+    setProductLocalizationChanges(true);
   };
   useEffect(() => {
     setSortedBundledProducts(productVariations?.bundledProducts);
@@ -144,6 +146,7 @@ const Variations = ({
             currentProductData={currentProductData}
             setProductDetails={setProductDetails}
             productDetails={productDetails}
+            setProductLocalizationChanges={setProductLocalizationChanges}
           />
         </SectionLayout>
 
@@ -155,6 +158,7 @@ const Variations = ({
           currentProductData={currentProductData}
           setProductDetails={setProductDetails}
           productDetails={productDetails}
+          setProductLocalizationChanges={setProductLocalizationChanges}
         />
       </Box>
     </Box>
@@ -168,6 +172,7 @@ Variations.propTypes = {
     variations: PropTypes.object,
   }),
   setProductDetails: PropTypes.func,
+  setProductLocalizationChanges: PropTypes.func,
   productDetails: PropTypes.object,
   handleDeleteVariation: PropTypes.func,
 };

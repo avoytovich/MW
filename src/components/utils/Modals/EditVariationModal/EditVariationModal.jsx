@@ -38,6 +38,7 @@ const EditVariationModal = ({
   setProductDetails,
   productDetails,
   curVariation,
+  setProductLocalizationChanges,
 }) => {
   const [curDescription, setCurDescriptions] = useState({});
   const [initDescription, setInitDescriptions] = useState({});
@@ -53,7 +54,7 @@ const EditVariationModal = ({
     if (curVariation) {
       const [current] = productDetails?.variableDescriptions?.filter(
         (variation) => variation?.description === curVariation?.field,
-      );
+      ) || [];
 
       setCurDescriptions({ ...current });
       setInitDescriptions({ ...current });
@@ -88,6 +89,7 @@ const EditVariationModal = ({
       availableVariables: newProductAvailVariables,
     });
 
+    setProductLocalizationChanges(true);
     onClose();
   };
 
@@ -316,6 +318,7 @@ EditVariationModal.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   setProductDetails: PropTypes.func,
+  setProductLocalizationChanges: PropTypes.func,
   productDetails: PropTypes.object,
   curVariation: PropTypes.object,
 };

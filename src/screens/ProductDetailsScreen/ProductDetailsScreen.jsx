@@ -124,7 +124,27 @@ const ProductDetailsScreen = () => {
   const saveDetails = async () => {
     const formatePrices = beforeSend(currentProductData);
 
-    if (productHasChanges) {
+    if (productHasLocalizationChanges) {
+      const { tempData } = store.getState();
+
+      const dataToSave = saveLocalizationDetails(tempData, currentProductData, nxState);
+
+      api
+        .updateProductLocalsById(
+          currentProductData?.descriptionId?.state
+            ? currentProductData.descriptionId.value
+            : currentProductData.descriptionId,
+          dataToSave,
+        )
+        .then(() => {
+          toast(localization.t('general.updatesHaveBeenSaved'));
+          setLoading(true);
+          setProductLocalizationChanges(false);
+          setUpd((c) => c + 1);
+        });
+    }
+
+    if (productHasChanges || productHasLocalizationChanges) {
       const sendObj = currentProductData?.parentId || parentId
         ? frontToBack(formatePrices)
         : { ...formatePrices };
@@ -146,29 +166,9 @@ const ProductDetailsScreen = () => {
         }
       });
     }
-
-    if (productHasLocalizationChanges) {
-      const { tempData } = store.getState();
-
-      const dataToSave = saveLocalizationDetails(tempData, currentProductData, nxState);
-
-      api
-        .updateProductLocalsById(
-          currentProductData?.descriptionId?.state
-            ? currentProductData.descriptionId.value
-            : currentProductData.descriptionId,
-          dataToSave,
-        )
-        .then(() => {
-          toast(localization.t('general.updatesHaveBeenSaved'));
-          setLoading(true);
-          setProductLocalizationChanges(false);
-          setUpd((c) => c + 1);
-        });
-    }
   };
 
-  const saveProduct = () => {
+  const saveProduct = async () => {
     if (!currentProductData.businessSegment) {
       delete currentProductData.businessSegment;
     }
@@ -191,13 +191,48 @@ const ProductDetailsScreen = () => {
       dataToSave.parentId = productData?.parentId || parentId;
     }
 
+    if (id === 'add' && (productData?.parentId || parentId)) {
+      const { tempData } = store.getState();
+
+      const localizationChangesToSave = saveLocalizationDetails(
+        tempData, currentProductData, nxState,
+      );
+
+      const {
+        localizedLongDesc,
+        localizedManualRenewalEmailDesc,
+        localizedMarketingName,
+        localizedPurchaseEmailDesc,
+        localizedShortDesc,
+        localizedThankYouDesc,
+        fallbackLocale,
+      } = localizationChangesToSave;
+
+      dataToSave.descriptionId = await api.addProductLocalsById({
+        customerId: dataToSave?.customerId,
+        description: '-',
+        fallbackLocale: fallbackLocale || productDetails?.fallbackLocale,
+        localizedLongDesc,
+        localizedManualRenewalEmailDesc,
+        localizedMarketingName,
+        localizedPurchaseEmailDesc,
+        localizedShortDesc,
+        localizedThankYouDesc,
+      }).then((res) => {
+        const headersLocation = res.headers.location.split('/');
+        const newId = headersLocation[headersLocation.length - 1];
+
+        return newId || '';
+      });
+    }
+
     api.addNewProduct(dataToSave).then((res) => {
       const loc = res.headers.location.split('/');
       // eslint-disable-next-line no-underscore-dangle
       const id_ = loc[loc.length - 1];
 
       api.getProductById(id_).then(({ data }) => {
-        if (productHasLocalizationChanges || (id === 'add' && parentId)) {
+        if (productHasLocalizationChanges && !parentId && productData?.parentId) {
           const { tempData } = store.getState();
 
           const localizationChangesToSave = saveLocalizationDetails(
@@ -221,6 +256,7 @@ const ProductDetailsScreen = () => {
             });
         } else {
           toast(localization.t('general.updatesHaveBeenSaved'));
+          setProductLocalizationChanges(false);
           setLoading(true);
           history.push(`${parentPaths.productlist}/${id_}`);
         }
