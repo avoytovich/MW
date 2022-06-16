@@ -191,6 +191,7 @@ const ProductDetailsView = ({
             productVariations={productVariations}
             setProductDetails={setProductDetails}
             productDetails={productDetails}
+            setProductLocalizationChanges={setProductLocalizationChanges}
           />
         )
       )}

@@ -133,7 +133,7 @@ const LocalizedContent = ({
     setHasNewData(true);
 
     if (value === locale) {
-      setValue(0);
+      setValue(curData?.fallbackLocale?.value || curData?.fallbackLocale || 0);
     }
   };
 
@@ -428,13 +428,16 @@ const LocalizedContent = ({
                     label='Add Language'
                     value={0}
                     component={forwardRef(({ children, ...props }, ref) => (
-                      <div role='button' {...props} style={{ minWidth: '100%' }} ref={ref}>
-                        <SelectCustom
-                          label='addLanguage'
-                          value={newLangValue}
-                          selectOptions={availableLocales}
-                          onChangeSelect={(e) => setNewLangValue(e.target.value)}
-                        />
+                      <div role='button' {...props} ref={ref}>
+                        <Box minWidth='175px'>
+                          <SelectCustom
+                            label='addLanguage'
+                            value={newLangValue}
+                            selectOptions={availableLocales}
+                            onChangeSelect={(e) => setNewLangValue(e.target.value)}
+                            withDots
+                          />
+                        </Box>
 
                         <div hidden>{children}</div>
                         <AddCircleIcon

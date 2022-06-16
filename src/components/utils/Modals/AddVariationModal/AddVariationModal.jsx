@@ -17,6 +17,7 @@ const AddVariationModal = ({
   currentProductData,
   setProductDetails,
   productDetails,
+  setProductLocalizationChanges,
 }) => {
   const [step, setStep] = useState('firstStep');
   const [modalState, setModalState] = useState({});
@@ -47,7 +48,7 @@ const AddVariationModal = ({
               descValue: cur,
               description: `val${i + 1}`,
               localizedValue: {
-                'en-US': cur,
+                [productDetails?.fallbackLocale || 'en-US']: cur,
               },
             };
             const value2 = `val${i + 1}`;
@@ -65,7 +66,7 @@ const AddVariationModal = ({
           const value1 = {
             description: `${from}-${to}`,
             localizedValue: {
-              'en-US': label,
+              [productDetails?.fallbackLocale || 'en-US']: label,
             },
           };
           const value2 = `${from}-${to}`;
@@ -88,7 +89,7 @@ const AddVariationModal = ({
       dataForProductDescriptionRequest = {
         ...dataForProductDescriptionRequest,
         label: frontToBack.label,
-        labels: { 'en-US': frontToBack.label },
+        labels: { [productDetails?.fallbackLocale || 'en-US']: frontToBack.label },
       };
     }
 
@@ -116,6 +117,7 @@ const AddVariationModal = ({
         : [dataForProductDescriptionRequest],
     });
 
+    setProductLocalizationChanges(true);
     handleClose();
   };
 
@@ -173,6 +175,7 @@ AddVariationModal.propTypes = {
   setProductData: PropTypes.func,
   currentProductData: PropTypes.object,
   setProductDetails: PropTypes.func,
+  setProductLocalizationChanges: PropTypes.func,
   productDetails: PropTypes.object,
 };
 

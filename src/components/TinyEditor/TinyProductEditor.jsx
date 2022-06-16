@@ -98,6 +98,18 @@ const TinyEditor = ({
   const makeNewInheritanceData = (inheritanceData) => {
     if (!parentId) return;
 
+    if (inheritanceData[val]?.state !== i18nFields[val]?.state) {
+      const newData = {
+        ...data,
+        ...i18nFields,
+        [curLocal]: { ...inheritanceData },
+      };
+
+      dispatch(setTempProductLocales(newData));
+
+      settleUpdates(newData);
+    }
+
     if (inheritanceData[val]?.state === 'inherits') {
       editorRef.target.setContent(inheritanceData[val]?.parentValue || '');
       editorRef.target.getBody().setAttribute('class', 'mce-content-body mce-content-readonly');

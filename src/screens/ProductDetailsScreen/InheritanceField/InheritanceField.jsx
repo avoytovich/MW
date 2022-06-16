@@ -130,17 +130,23 @@ const InheritanceField = (props) => {
 
   const onClickInheritanceButton = () => {
     const isInherits = value.state === 'inherits' ? 'overrides' : 'inherits';
-    onChange({
+
+    const newData = {
       ...currentProductData,
       [field]: {
         ...value,
         state: isInherits,
       },
-      [additionalField]: {
+    };
+
+    if (additionalField) {
+      newData[additionalField] = {
         ...additionalValue,
         state: isInherits,
-      },
-    });
+      };
+    }
+
+    onChange(newData);
 
     buttonAction && buttonAction();
   };
