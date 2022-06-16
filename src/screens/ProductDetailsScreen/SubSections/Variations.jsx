@@ -91,6 +91,7 @@ const Variations = ({
             history={history}
             productId={productId}
             sortedBundledProducts={sortedBundledProducts}
+            productDetails={productDetails}
           />
         )}
       <Box display='flex'>

@@ -38,17 +38,11 @@ const ProductVariationsTable = ({
   history,
   productId,
   sortedBundledProducts,
+  productDetails,
 }) => {
   const [orderBy, setOrderBy] = useState('updateLast');
   const [order, setOrder] = useState('desc');
 
-  const getSeatsText = (seat) => {
-    if (!seat) return '';
-
-    const seatNum = seat.replace('val', '');
-
-    return `${seatNum} PC${seatNum > 1 ? 's' : ''}`;
-  };
   const onRequestSort = (event, property) => {
     setOrder(order === 'asc' ? 'desc' : 'asc');
     setOrderBy(property);
@@ -91,7 +85,10 @@ const ProductVariationsTable = ({
                 <TableCell align='center'>Lifetime</TableCell>
                 <TableCell align='center'>Fulfillment Model</TableCell>
                 <TableCell align='center'>Subscription Model</TableCell>
-                <TableCell align='center'>Seats</TableCell>
+                {currentProductData?.availableVariables
+                  && currentProductData?.availableVariables.map((v) => (
+                    <TableCell align='center'>{v?.field || ''}</TableCell>
+                  ))}
                 <TableCell align='center' width='75px' />
               </TableRow>
             </TableHead>
@@ -105,8 +102,43 @@ const ProductVariationsTable = ({
                   lifeTime,
                   fulfillmentTemplate,
                   subscriptionTemplate,
-                  seats,
+                  ...params
                 } = item;
+
+                const getItemParamValue = (variant) => {
+                  const isDefault = !params[variant?.field]
+                    || (params[variant?.field] === variant?.defaultValue);
+                  const varValue = isDefault ? variant?.defaultValue : params[variant?.field];
+                  let varLabel = variant?.defaultValue;
+
+                  if (productDetails?.variableDescriptions) {
+                    const [curDescription] = productDetails.variableDescriptions
+                      .filter((d) => d.description === variant?.field);
+
+                    if (curDescription && curDescription?.variableValueDescriptions) {
+                      const [curValValueDescr] = curDescription?.variableValueDescriptions
+                        .filter((d) => d.description === varValue) || [];
+
+                      if (curValValueDescr) {
+                        const availDescriptions = Object.entries(curValValueDescr?.localizedValue)
+                          .filter(([, v]) => !!v) || [];
+
+                        if (availDescriptions?.length) {
+                          const [enDescr] = availDescriptions.filter((v) => v.indexOf('en-US') >= 0);
+                          const [firstLang] = availDescriptions[0];
+
+                          varLabel = (enDescr ? curValValueDescr?.localizedValue['en-US'] : curValValueDescr?.localizedValue[firstLang])
+                            || curValValueDescr?.descValue;
+                        }
+                      }
+                    }
+                  }
+
+                  return {
+                    isDefault,
+                    varLabel,
+                  };
+                };
 
                 return (
                   <TableRow
@@ -162,9 +194,12 @@ const ProductVariationsTable = ({
                       {subscriptionTemplate || ''}
                     </TableCell>
 
-                    <TableCell align='center' style={{ color: '#719ded' }}>
-                      {getSeatsText(seats || currentProductData?.seats)}
-                    </TableCell>
+                    {currentProductData?.availableVariables
+                      && currentProductData?.availableVariables.map((v) => {
+                        const { isDefault, varLabel } = getItemParamValue(v);
+
+                        return <TableCell align='center' style={{ color: isDefault ? '' : '#719ded' }}>{varLabel}</TableCell>;
+                      })}
 
                     <TableCell align='center'>
                       <Box onClick={(e) => { e.stopPropagation(); }}>
@@ -214,6 +249,7 @@ ProductVariationsTable.propTypes = {
   history: PropTypes.object,
   productId: PropTypes.string,
   sortedBundledProducts: PropTypes.array,
+  productDetails: PropTypes.object,
 };
 
 export default ProductVariationsTable;
