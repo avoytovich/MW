@@ -38,7 +38,7 @@ const AuditDetailsScreenView = ({
 AuditDetailsScreenView.propTypes = {
   audit: PropTypes.object,
   details: PropTypes.object,
-  curTab: PropTypes.bool,
+  curTab: PropTypes.number,
 };
 
 export default AuditDetailsScreenView;

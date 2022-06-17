@@ -199,7 +199,7 @@ const DetailPageWrapper = ({
 };
 DetailPageWrapper.propTypes = {
   children: PropTypes.node,
-  nxState: PropTypes.object,
+  nxState: PropTypes.array,
   id: PropTypes.string,
   saveIsDisabled: PropTypes.bool,
   hasChanges: PropTypes.bool,
