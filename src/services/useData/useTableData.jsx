@@ -45,6 +45,7 @@ const useTableData = (
         reduxRowPerPage,
         reduxCurrentPage - 1,
         `${searchRequest}${filtersUrl}`,
+        !!searchRequest,
       )
         .then((payload) => {
           if (!isCancelled) {

@@ -29,12 +29,18 @@ const ProductsScreen = () => {
     getSortParams(sortKeys.products),
   );
 
-  const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
+  const requests = async (
+    rowsPerPage,
+    reduxCurrentPage,
+    filtersUrl,
+    searchRequest,
+  ) => {
     const productData = await api.getProducts({
       page: reduxCurrentPage,
       size: rowsPerPage,
       filters: filtersUrl,
       sortParams,
+      notAddParentId: searchRequest,
     });
     const childRequests = productData.data.items.map((item) => api.getProducts({
       parentId: item.id,

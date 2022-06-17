@@ -50,10 +50,18 @@ const getAllApi = {
   },
 
   getProducts({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams, parentId = null,
+    page = defaultRequestedPage,
+    size = defaultRequestedSize,
+    filters,
+    sortParams,
+    parentId = null,
+    notAddParentId,
   } = defaultRequestedObject) {
-    let url = `/products?format=short&size=${size}&page=${page}&parentId=${parentId}`;
+    let url = `/products?format=short&size=${size}&page=${page}`;
 
+    if (!notAddParentId) {
+      url += `&parentId=${parentId}`;
+    }
     if (filters) {
       url += filters;
     }
