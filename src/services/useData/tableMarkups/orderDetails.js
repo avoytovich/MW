@@ -219,7 +219,7 @@ const generateData = (orderData, paymentData) => {
         label: localization.t('labels.transactionID'),
         value: paymentData?.transactionId || emptyValue,
         link: 'external',
-        path: 'https://directpayment.nexway.com/bo/user/login/tf',
+        path: 'https://stagingpayment.nexway.com/bo/user/login/tf',
         shouldCopy: paymentData?.transactionId,
       },
       {
