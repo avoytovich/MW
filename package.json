@@ -72,6 +72,7 @@
     "browser-locale": "1.0.3",
     "chart.js": "2.9.4",
     "css-loader": "4.3.0",
+    "currency-codes": "^2.1.0",
     "date-fns": "2.27.0",
     "favicons-webpack-plugin": "4.2.0",
     "file-loader": "6.1.0",
