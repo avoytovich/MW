@@ -1,3 +1,5 @@
+import currencies from 'currency-codes';
+
 const status = [
   { id: 'ENABLED', value: 'ENABLED' },
   { id: 'DISABLED', value: 'DISABLED' },
@@ -85,6 +87,8 @@ const priceCurrency = [
   { value: 'QAR (Qatari Rial)', id: 'QAR' },
   { value: 'USD (US Dollar)', id: 'USD' },
 ];
+const getCurrency = () => priceCurrency.map((currency) => (
+  { ...currency, digits: currencies.code(currency.id).digits }));
 
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
@@ -194,4 +198,5 @@ export {
   paymentDefaults,
   paymentImages,
   serviceConfigs,
+  getCurrency,
 };

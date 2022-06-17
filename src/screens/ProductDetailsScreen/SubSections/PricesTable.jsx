@@ -10,13 +10,14 @@ import {
   TableCell,
   Paper,
   Checkbox,
+  FormHelperText,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
 import { createKey, handleFilterOptions } from '../utils';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
-import { priceCurrency } from '../../../services/selectOptions/selectOptions';
+import { getCurrency } from '../../../services/selectOptions/selectOptions';
 
 import { SelectWithChip, SelectCustom, NumberInput } from '../../../components/Inputs';
 // import './ClearancesInputs.scss';
@@ -29,12 +30,13 @@ const PricesTable = ({
   setPriceTableError,
   priceTableError,
 }) => {
+  const currencyOptions = getCurrency();
   const countryOptions = getCountriesOptions();
   const [variation, setVariation] = useState('');
   const [newCurrency, setNewCurrency] = useState('');
   const [upd, setUpd] = useState(0);
   const [lastAddedKey, setLastAddedKey] = useState('');
-
+  const [digitsErrors, setDigitsErrors] = useState({});
   const priceTableRef = useRef({});
 
   const checkIfAllChecked = (data) => {
@@ -59,8 +61,8 @@ const PricesTable = ({
       }
 
       if (!currentProductData?.prices.value.defaultCurrency
-          && Object.keys(prices.value.priceByCountryByCurrency).indexOf(Object.keys(newData)[0]) < 0
-          && Object.keys(newData)?.length === 1) {
+        && Object.keys(prices.value.priceByCountryByCurrency).indexOf(Object.keys(newData)[0]) < 0
+        && Object.keys(newData)?.length === 1) {
         [prices.value.defaultCurrency] = Object.keys(newData);
       }
 
@@ -91,8 +93,8 @@ const PricesTable = ({
       }
 
       if (!currentProductData?.prices.defaultCurrency
-          && Object.keys(prices.priceByCountryByCurrency).indexOf(Object.keys(newData)[0]) < 0
-          && Object.keys(newData)?.length === 1) {
+        && Object.keys(prices.priceByCountryByCurrency).indexOf(Object.keys(newData)[0]) < 0
+        && Object.keys(newData)?.length === 1) {
         [prices.defaultCurrency] = Object.keys(newData);
       }
 
@@ -123,6 +125,11 @@ const PricesTable = ({
       );
       setPriceTableError(newErrors);
     }
+    if (digitsErrors[itemKey]) {
+      const errorsObj = { ...digitsErrors };
+      delete errorsObj[itemKey];
+      setDigitsErrors(errorsObj);
+    }
     const newPrices = { ...priceByCountryByCurrency };
     if (priceByCountryByCurrency[key].length < 2) {
       delete newPrices[key];
@@ -133,7 +140,7 @@ const PricesTable = ({
   };
   const handleUpdate = (e, inputName, langName, index) => {
     const newArray = [...priceByCountryByCurrency[langName]];
-    newArray[index][inputName] = e.target.value !== '' ? Number(e.target.value) : '';
+    newArray[index][inputName] = e.target.value !== '' ? Number(e.target.value) : e.target.value;
     handleSetProductData({ ...priceByCountryByCurrency, [langName]: newArray });
   };
   useEffect(() => {
@@ -258,7 +265,7 @@ const PricesTable = ({
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
                           isRequired
-                          hasError={!item.value}
+                          hasError={!item.value || priceTableError.includes(item.key)}
                           inputRefFunc={(element) => {
                             if (!item.value) {
                               priceTableRef.current[item.key] = element;
@@ -273,13 +280,29 @@ const PricesTable = ({
                           label='price'
                           value={item.value}
                           onChangeInput={(e) => {
-                            if (e.target.value === '') {
-                              setPriceTableError((er) => [...er, item.key]);
+                            const currentDigits = currencyOptions.filter(
+                              (option) => option.id === el,
+                            )?.[0].digits;
+                            if (!e.target.value || e.target.value === '0' || (e.target.value.includes('.') && e.target.value.split('.')?.[1]?.length > currentDigits)) {
+                              if (!priceTableError.includes(item.key)) {
+                                setPriceTableError((er) => [...er, item.key]);
+                              }
                             } else if (priceTableError.includes(item.key)) {
                               const newErrors = priceTableError.filter(
                                 (element) => element !== item.key,
                               );
                               setPriceTableError(newErrors);
+                            }
+
+                            if (e.target.value.includes('.') && e.target.value.split('.')?.[1]?.length > currentDigits) {
+                              const newError = {
+                                value: e.target.value, digits: currentDigits, currency: el,
+                              };
+                              setDigitsErrors((er) => ({ ...er, [item.key]: newError }));
+                            } else if (digitsErrors[item.key]) {
+                              const errorsObj = { ...digitsErrors };
+                              delete errorsObj[item.key];
+                              setDigitsErrors(errorsObj);
                             }
                             handleUpdate(e, 'value', el, index);
                           }}
@@ -357,12 +380,17 @@ const PricesTable = ({
             </Table>
           </TableContainer>
         )}
+      {Object.keys(digitsErrors).length > 0 && (
+        <Box p={2}>
+          {Object.keys(digitsErrors).map((error) => <FormHelperText error>{`Price ${digitsErrors[error].value} for currency ${digitsErrors[error].currency} do not respect the number of decimal digits for this currency (${digitsErrors[error].digits} decimal digits)`}</FormHelperText>)}
+        </Box>
+      )}
       <Box width='25%' p={3}>
         <SelectCustom
           isDisabled={variation === 'inherits'}
           label='currency'
           value={newCurrency}
-          selectOptions={priceCurrency}
+          selectOptions={currencyOptions}
           onChangeSelect={(e) => setNewCurrency(e.target.value)}
         />
       </Box>
