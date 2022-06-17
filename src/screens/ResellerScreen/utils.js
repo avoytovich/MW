@@ -4,6 +4,7 @@ import api from '../../api';
 const defaultShow = {
   endUserId: true,
   type: true,
+  createDate: true,
   customer: true,
   group: true,
   firstName: true,
@@ -51,6 +52,10 @@ const markUp = {
     {
       value: localization.t('labels.type'),
       id: 'type',
+    },
+    {
+      value: localization.t('labels.createDate'),
+      id: 'createDate',
     },
     {
       value: localization.t('labels.customer'),
@@ -114,6 +119,7 @@ const generateData = (data, additionalData) => {
       id: val.id,
       endUserId: val.id,
       type: val.type,
+      createDate: val.createDate,
       customer: customer || '-',
       group,
       firstName: val.firstName,
