@@ -57,7 +57,7 @@ const handleGetOptions = (
         if (!subscriptionOptions) {
           subscriptionOptions = structureSelectOptions({ options: subscriptions?.data?.items, optionValue: 'name' });
         }
-        
+
         setSubProductVariations({
           bundledProducts: id === null ? [] : subProducts?.data?.items,
           variations: productsVariations(renewingProducts?.data?.items, id),
@@ -103,6 +103,14 @@ const handleGetProductDetails = (
       localizedValues.forEach((it) => {
         if (productDescr?.data[it]) {
           Object.keys(productDescr?.data[it]).forEach((loc) => {
+            if (avail.indexOf(loc) < 0) {
+              avail.push(loc);
+            }
+          });
+        }
+
+        if (parentDescr?.data[it]) {
+          Object.keys(parentDescr?.data[it]).forEach((loc) => {
             if (avail.indexOf(loc) < 0) {
               avail.push(loc);
             }

@@ -249,6 +249,14 @@ const LocalizedContent = ({
               }
             });
           }
+
+          if (parentDescr?.data[it]) {
+            Object.keys(parentDescr?.data[it]).forEach((loc) => {
+              if (avail.indexOf(loc) < 0) {
+                avail.push(loc);
+              }
+            });
+          }
         });
         const { data } = productDescr;
         const { data: dataParent } = parentDescr;
