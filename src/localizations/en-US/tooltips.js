@@ -4,6 +4,7 @@ const tooltip = {
   family: 'Group products that belong in the same category — for example, you can create a family of “desktop publishing” software, a family of “fantasy” games, and so on.',
   paymentTabsRanking: 'Declare here the payment tabs order depending on the buyer country. The order of the payment tabs is relevant and will be used in your checkout page.',
   discountLabel: 'If left empty the label will not be displayed on the checkout',
+  permissionsCanBeDefinedAfterTheCreationOfTheIdentity: 'Permissions can be defined after the creation of the identity.',
 };
 
 export default tooltip;
