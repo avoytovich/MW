@@ -140,6 +140,7 @@ const General = ({
           ) : (
             curDiscount.amountByCurrency && (
               <EditKeyValueInputs
+                firstCanBeDeleted
                 data-test='amountByCurrency'
                 curValue={curDiscount.amountByCurrency}
                 setCurValue={(value) => setCurDiscount(

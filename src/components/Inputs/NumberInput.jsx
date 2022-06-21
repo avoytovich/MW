@@ -20,9 +20,9 @@ const NumberInput = ({
   isRequired,
   helperText,
   hasError,
-  hasNoChanges,
+  hasChanges,
   inputRefFunc,
-}) => (hasNoChanges ? (
+}) => (!hasChanges ? (
   <TextField
     inputRef={inputRefFunc}
     error={hasError}
@@ -75,7 +75,7 @@ NumberInput.propTypes = {
   isRequired: PropTypes.bool,
   helperText: PropTypes.string,
   hasError: PropTypes.bool,
-  hasNoChanges: PropTypes.bool,
+  hasChanges: PropTypes.bool,
   inputRefFunc: PropTypes.func,
 };
 
