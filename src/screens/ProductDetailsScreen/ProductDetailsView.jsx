@@ -38,6 +38,8 @@ const ProductDetailsView = ({
   setPriceTableError,
   priceTableError,
   handleDeleteVariation,
+  digitsErrors,
+  setDigitsErrors,
 }) => {
   const checkSaveDisable = () => {
     const {
@@ -144,6 +146,8 @@ const ProductDetailsView = ({
       {curTab === 4 && (
         <SectionLayout dataTest='prices' label='prices'>
           <Prices
+            digitsErrors={digitsErrors}
+            setDigitsErrors={setDigitsErrors}
             priceTableError={priceTableError}
             setPriceTableError={setPriceTableError}
             selectOptions={selectOptions}
@@ -224,6 +228,8 @@ ProductDetailsView.propTypes = {
   setPriceTableError: PropTypes.func,
   priceTableError: PropTypes.array,
   handleDeleteVariation: PropTypes.func,
+  digitsErrors: PropTypes.object,
+  setDigitsErrors: PropTypes.func,
 };
 
 export default ProductDetailsView;

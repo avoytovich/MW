@@ -29,6 +29,8 @@ const PricesTable = ({
   productData,
   setPriceTableError,
   priceTableError,
+  digitsErrors,
+  setDigitsErrors,
 }) => {
   const currencyOptions = getCurrency();
   const countryOptions = getCountriesOptions();
@@ -36,7 +38,6 @@ const PricesTable = ({
   const [newCurrency, setNewCurrency] = useState('');
   const [upd, setUpd] = useState(0);
   const [lastAddedKey, setLastAddedKey] = useState('');
-  const [digitsErrors, setDigitsErrors] = useState({});
   const priceTableRef = useRef({});
 
   const checkIfAllChecked = (data) => {
@@ -405,6 +406,8 @@ PricesTable.propTypes = {
   productData: PropTypes.object,
   setPriceTableError: PropTypes.func,
   priceTableError: PropTypes.array,
+  digitsErrors: PropTypes.object,
+  setDigitsErrors: PropTypes.func,
 };
 
 export default PricesTable;

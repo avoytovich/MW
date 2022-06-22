@@ -75,6 +75,7 @@ const ProductDetailsScreen = () => {
   const [priceTableError, setPriceTableError] = useState([]);
   const parentId = history?.location?.state?.parentId;
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const [digitsErrors, setDigitsErrors] = useState({});
 
   const handleChangeTab = (tab) => {
     if (tab === 7) {
@@ -513,6 +514,8 @@ const ProductDetailsScreen = () => {
       flexWrapper={codeMode && curTab === 3}
     >
       <ProductDetailsView
+        digitsErrors={digitsErrors}
+        setDigitsErrors={setDigitsErrors}
         priceTableError={priceTableError}
         setPriceTableError={setPriceTableError}
         handleDeleteVariation={handleDeleteVariation}
