@@ -208,6 +208,7 @@ const Eligibility = ({
           <Typography>{localization.t('labels.minimumCartAmount')}</Typography>
         </Box>
         <EditKeyValueInputs
+          firstCanBeDeleted
           curValue={curDiscount.thresholds}
           setCurValue={(value) => setCurDiscount({ ...curDiscount, thresholds: value })}
           selectOptions={priceCurrency}

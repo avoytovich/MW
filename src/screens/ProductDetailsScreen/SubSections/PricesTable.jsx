@@ -15,7 +15,7 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
-import { createKey, handleFilterOptions } from '../utils';
+import { createKey, handleFilterOptions, validateNumberInput } from '../utils';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { getCurrency } from '../../../services/selectOptions/selectOptions';
 
@@ -274,8 +274,10 @@ const PricesTable = ({
                               delete priceTableRef.current[item.key];
                             }
                           }}
-                          hasNoChanges={(item.value === productData?.[el]?.[index]?.value)
-                            || (item.value === '' && !productData?.[el]?.[index])}
+
+                          hasChanges={validateNumberInput(
+                            item.value, productData?.[el]?.[index]?.value,
+                          )}
                           isDisabled={variation === 'inherits'}
                           minMAx={{ min: 0 }}
                           label='price'
@@ -311,8 +313,9 @@ const PricesTable = ({
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
-                          hasNoChanges={(item.msrp === productData?.[el]?.[index]?.msrp)
-                            || (item.msrp === '' && !productData?.[el]?.[index])}
+                          hasChanges={validateNumberInput(
+                            item.msrp, productData?.[el]?.[index]?.msrp,
+                          )}
                           isDisabled={variation === 'inherits'}
                           label='msrp'
                           minMAx={{ min: 0 }}
@@ -322,8 +325,9 @@ const PricesTable = ({
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
-                          hasNoChanges={(item.upSell === productData?.[el]?.[index]?.upSell)
-                            || (item.upSell === '' && !productData?.[el]?.[index])}
+                          hasChanges={validateNumberInput(
+                            item.upSell, productData?.[el]?.[index]?.upSell,
+                          )}
                           isDisabled={variation === 'inherits'}
                           label='upsellPrice'
                           minMAx={{ min: 0 }}
@@ -333,8 +337,9 @@ const PricesTable = ({
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
-                          hasNoChanges={(item.crossSell === productData?.[el]?.[index]?.crossSell)
-                            || (item.crossSell === '' && !productData?.[el]?.[index])}
+                          hasChanges={validateNumberInput(
+                            item.crossSell, productData?.[el]?.[index]?.crossSell,
+                          )}
                           isDisabled={variation === 'inherits'}
                           minMAx={{ min: 0 }}
                           label='crossSellPrice'

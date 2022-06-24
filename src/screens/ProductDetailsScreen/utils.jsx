@@ -291,6 +291,16 @@ const handleFilterOptions = (allOptions, selected, current) => {
   return res;
 };
 
+const validateNumberInput = (curVal, prevVal) => {
+  let res = true;
+  if (
+    (curVal === prevVal)
+    || (curVal === '' && prevVal === undefined)) {
+    res = false;
+  }
+  return res;
+};
+
 export {
   handleGetOptions,
   handleGetProductDetails,
@@ -298,4 +308,5 @@ export {
   createKey,
   beforeSend,
   handleFilterOptions,
+  validateNumberInput,
 };

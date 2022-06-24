@@ -26,6 +26,7 @@ const EditKeyValueInputs = ({
   helperText,
   hasError,
   tooltip,
+  firstCanBeDeleted,
 }) => {
   const optionsArray = [...selectOptions];
   if (additionalOption) {
@@ -74,7 +75,7 @@ const EditKeyValueInputs = ({
               </Box>
             </Grid>
             <Grid item xs={7}>
-              <Box p={2}>
+              <Box py={2} pl={2}>
                 {labels[1] === 'amount' ? (
                   <NumberInput
                     label={labels[1]}
@@ -119,25 +120,46 @@ const EditKeyValueInputs = ({
               </Box>
             </Grid>
             <Grid item xs={1}>
-              <Box pt={3}>
-                {index === 0 ? (
-                  <IconButton
-                    disabled={hasError}
-                    onClick={handleAdd}
-                    color='primary'
-                  >
-                    <AddCircleIcon />
-                  </IconButton>
+              {firstCanBeDeleted && index === 0
+                ? (
+                  <Box display='flex' pt={3}>
+                    <IconButton
+                      onClick={() => handleRemove(item.key)}
+                      color='secondary'
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                    <IconButton
+                      disabled={hasError}
+                      onClick={handleAdd}
+                      color='primary'
+                    >
+                      <AddCircleIcon />
+                    </IconButton>
 
-                ) : (
-                  <IconButton
-                    onClick={() => handleRemove(item.key)}
-                    color='secondary'
-                  >
-                    <ClearIcon />
-                  </IconButton>
+                  </Box>
+                )
+                : (
+                  <Box pt={3}>
+                    {index === 0 ? (
+                      <IconButton
+                        disabled={hasError}
+                        onClick={handleAdd}
+                        color='primary'
+                      >
+                        <AddCircleIcon />
+                      </IconButton>
+
+                    ) : (
+                      <IconButton
+                        onClick={() => handleRemove(item.key)}
+                        color='secondary'
+                      >
+                        <ClearIcon />
+                      </IconButton>
+                    )}
+                  </Box>
                 )}
-              </Box>
             </Grid>
           </Fragment>
         ))
@@ -166,4 +188,5 @@ EditKeyValueInputs.propTypes = {
   helperText: PropTypes.string,
   hasError: PropTypes.bool,
   tooltip: PropTypes.string,
+  firstCanBeDeleted: PropTypes.bool,
 };
