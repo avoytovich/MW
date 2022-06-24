@@ -766,15 +766,20 @@ const General = ({
               {variablesDescriptions?.map(
                 ({ label, description, variableValueDescriptions }, i) => {
                   const disabled = currentProductData[description]?.state === 'inherits';
+
                   return (
                     <Box display='flex' alignItems='center' key={label || description}>
-                      <Typography>{label || description}</Typography>
+                      <Box width='250px'>
+                        <Typography>{description || label}</Typography>
+                      </Box>
+
                       <Box
                         display='flex'
                         justifyContent='space-between'
                         alignItems='center'
                         marginLeft='20px'
                         width='100%'
+                        my={1}
                       >
                         <InheritanceField
                           field={description}
@@ -784,26 +789,40 @@ const General = ({
                           parentId={parentId}
                           currentProductData={currentProductData}
                         >
-                          <RadioGroup
-                            aria-label={description}
-                            name={description}
-                            data-test='variationParameter'
-                          >
-                            <Box display='flex'>
-                              {variableValueDescriptions?.map(
-                                ({ descValue, description: _description }) => (
-                                  <FormControlLabel
-                                    key={_description}
-                                    className='radio'
-                                    value={_description}
-                                    disabled={disabled}
-                                    control={<Radio color='primary' />}
-                                    label={descValue || '?'}
-                                  />
-                                ),
-                              )}
-                            </Box>
-                          </RadioGroup>
+                          {
+                            variableValueDescriptions.length <= 5 ? (
+                              <RadioGroup
+                                aria-label={description}
+                                name={description}
+                                data-test='variationParameter'
+                              >
+                                <Box display='flex'>
+                                  {variableValueDescriptions?.map(
+                                    ({ descValue, description: _description }) => (
+                                      <FormControlLabel
+                                        key={_description}
+                                        className='radio'
+                                        value={_description}
+                                        disabled={disabled}
+                                        control={<Radio color='primary' />}
+                                        label={descValue || '?'}
+                                      />
+                                    ),
+                                  )}
+                                </Box>
+                              </RadioGroup>
+                            ) : (
+                              <SelectCustom
+                                gridArea='variationParameter'
+                                isDisabled={disabled}
+                                value={checkValue(currentProductData[description])}
+                                selectOptions={variableValueDescriptions
+                                  .map(({ descValue, description: _description }) => ({
+                                    value: descValue, id: _description,
+                                  }))}
+                              />
+                            )
+                          }
                         </InheritanceField>
                       </Box>
                     </Box>

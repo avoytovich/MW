@@ -61,13 +61,20 @@ const LocalizedContent = ({
     const { tempData } = store.getState();
 
     const dataToSave = {
+      ...tempData?.description,
+      i18nFields: {
+        ...tempData?.i18nFields,
+      },
+    };
+
+    /* const dataToSave = {
       ...curData,
       ...tempData?.description,
       i18nFields: {
         ...curData?.i18nFields,
         ...tempData?.i18nFields,
       },
-    };
+    }; */
 
     if (!dataToSave.i18nFields[locale || value]) {
       dataToSave.i18nFields[locale || value] = newDef ? {} : { ...newTabValues };
@@ -118,10 +125,10 @@ const LocalizedContent = ({
 
     const dataToSave = {
       ...tempData?.description,
-      ...curData,
+      // ...curData,
       i18nFields: {
         ...tempData?.i18nFields,
-        ...curData?.i18nFields,
+        // ...curData?.i18nFields,
       },
     };
 
@@ -265,9 +272,6 @@ const LocalizedContent = ({
             avail.push(language);
           }
         });
-        const inheritedFallbackLocale = createInheritableValue(
-          data.fallbackLocale, dataParent.fallbackLocale,
-        );
         const i18nFields = avail.reduce((accumulator, current) => {
           const childLocalizedValues = localizedValues.reduce(
             (acc, curr) => ({ ...acc, [curr]: data[curr] ? data[curr][current] : '' }),
@@ -290,8 +294,22 @@ const LocalizedContent = ({
         const productDescrData = { ...productDescr?.data };
 
         localizedValues.forEach((item) => delete productDescrData[item]);
-        const newi18n = { ...i18nFields, ...tempData.i18nFields };
-        const newDescr = { ...productDescrData, ...tempData.description };
+
+        const inheritedFallbackLocale = createInheritableValue(
+          checkValue(tempData?.description?.fallbackLocale) || data.fallbackLocale,
+          dataParent.fallbackLocale,
+        );
+
+        let newi18n = {};
+        let newDescr = {};
+
+        if (Object.keys(tempData?.i18nFields).length) {
+          newi18n = { ...tempData.i18nFields };
+          newDescr = { ...tempData.description };
+        } else {
+          newi18n = { ...i18nFields, ...tempData.i18nFields };
+          newDescr = { ...productDescrData, ...tempData.description };
+        }
 
         productDescrData.i18nFields = i18nFields;
         productDescrData.fallbackLocale = inheritedFallbackLocale;
@@ -343,8 +361,17 @@ const LocalizedContent = ({
       const productDescrData = { ...data };
 
       localizedValues.forEach((item) => delete productDescrData[item]);
-      const newi18n = { ...i18nFields, ...tempData?.i18nFields };
-      const newDescr = { ...productDescrData, ...tempData.description };
+
+      let newi18n = {};
+      let newDescr = {};
+
+      if (Object.keys(tempData?.i18nFields).length) {
+        newi18n = { ...tempData.i18nFields };
+        newDescr = { ...tempData.description };
+      } else {
+        newi18n = { ...i18nFields, ...tempData?.i18nFields };
+        newDescr = { ...productDescrData, ...tempData.description };
+      }
 
       if (!newDescr?.fallbackLocale) {
         newDescr.fallbackLocale = 'en-US';

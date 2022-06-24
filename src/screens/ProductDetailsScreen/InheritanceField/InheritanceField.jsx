@@ -118,6 +118,8 @@ const InheritanceField = (props) => {
 
   if (isTinymce) {
     delete inputProps.disabled;
+    delete inputProps.value;
+    delete inputProps.onChange;
   }
 
   const newChildren = {

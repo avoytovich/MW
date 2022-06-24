@@ -72,7 +72,7 @@ const SelectCustom = ({
             transformOrigin: { vertical: 'top', horizontal: 'center' },
           },
         }}
-        label={localization.t(`labels.${label}`)}
+        label={label && localization.t(`labels.${label}`)}
         onChange={onChangeSelect}
         error={hasError}
         helperText={helperText}
