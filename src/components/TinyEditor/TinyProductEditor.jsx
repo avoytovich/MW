@@ -11,6 +11,7 @@ import contentUiCss from 'tinymce/skins/ui/oxide/content.min.css';
 import { setTempProductLocales, setTempRecoLocales } from '../../redux/actions/TempData';
 import { checkValue } from '../../services/helpers/dataStructuring';
 import InheritanceField from '../../screens/ProductDetailsScreen/InheritanceField';
+import store from '../../redux/store';
 
 import localization from '../../localization';
 
@@ -47,25 +48,28 @@ const TinyEditor = ({
 
   const settleUpdates = (newData) => {
     const hasChanges = JSON.stringify(data) !== JSON.stringify(newData);
-
-    setDisabledWithMandLocal(!newData[defaultLocale]?.localizedMarketingName);
+    setDisabledWithMandLocal(!checkValue(newData[defaultLocale]?.localizedMarketingName));
     setHasLocalizationChanges(hasChanges);
   };
 
   const makeNewData = (e) => {
+    e.stopImmediatePropagation();
+    const { tempData } = store.getState();
     const curContent = e.target.getContent();
     const correctContent = curContent === '<p></p>' ? undefined : curContent;
 
     let generatedData = {};
 
+    const i18ns = tempData?.i18nFields || {};
+
     if (parentId) {
       generatedData = {
-        ...data,
-        ...i18n,
+        // ..data,
+        ...i18ns,
         [curLocal]: {
-          ...i18n?.[curLocal],
+          ...i18ns?.[curLocal],
           [val]: {
-            ...i18n?.[curLocal][val],
+            ...i18ns?.[curLocal][val],
             value: correctContent,
           },
         },
@@ -78,10 +82,10 @@ const TinyEditor = ({
       };
     } else {
       generatedData = {
-        ...data,
-        ...i18n,
+        // ...data,
+        ...i18ns,
         [curLocal]: {
-          ...i18n?.[curLocal],
+          ...i18ns?.[curLocal],
           [val]: correctContent,
         },
       };
@@ -98,9 +102,9 @@ const TinyEditor = ({
   const makeNewInheritanceData = (inheritanceData) => {
     if (!parentId) return;
 
-    if (inheritanceData[val]?.state !== i18nFields[val]?.state) {
+    if (inheritanceData[val]?.state !== i18nFields[curLocal][val]?.state) {
       const newData = {
-        ...data,
+        // ...data,
         ...i18nFields,
         [curLocal]: { ...inheritanceData },
       };
@@ -155,23 +159,28 @@ const TinyEditor = ({
               content_style: [contentCss, contentUiCss].join('\n'),
             }}
             initialValue={checkValue(initValue)}
-            onBlur={makeNewData}
             onInit={(ref) => {
               setEditorLoading(false);
               setEditorRef(ref);
 
               if (i18n?.[curLocal] && i18n?.[curLocal][val]?.state === 'inherits') {
                 setTimeout(() => {
-                  ref.target.getBody().setAttribute('class', 'mce-content-body mce-content-readonly');
-                  ref.target.getBody().setAttribute('contenteditable', false);
+                  if (ref.target) {
+                    ref.target.getBody().setAttribute('class', 'mce-content-body mce-content-readonly');
+                    ref.target.getBody().setAttribute('contenteditable', false);
+                  }
                 }, 100);
+              }
+
+              if (ref.target) {
+                ref.target.on('blur', makeNewData);
               }
             }}
           />
         </InheritanceField>
       </Box>
 
-      {val === 'localizedMarketingName' && isDefault && !i18n?.[curLocal]?.localizedMarketingName && (
+      {val === 'localizedMarketingName' && isDefault && !checkValue(i18n?.[curLocal]?.localizedMarketingName) && (
         <div className='error-message'>
           {localization.t('general.marketingNameMandatory')}
         </div>

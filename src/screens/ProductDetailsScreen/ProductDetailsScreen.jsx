@@ -117,7 +117,7 @@ const ProductDetailsScreen = () => {
       .deleteProductById(variationId)
       .then(() => {
         setUpd((c) => c + 1);
-        toast(`${localization.t('labels.variation')} ${id} ${localization.t(
+        toast(`${localization.t('labels.variation')} ${variationId} ${localization.t(
           'general.hasBeenSuccessfullyDeleted',
         )}`);
       });

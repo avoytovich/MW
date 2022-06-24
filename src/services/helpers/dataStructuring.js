@@ -410,7 +410,7 @@ const frontToBack = (data) =>
   }, {});
 
 // eslint-disable-next-line no-nested-ternary
-const checkValue = (data) => ((!data?.state && !data?.value) ? data : data.state === 'inherits' ? data.parentValue : data.value);
+const checkValue = (data) => ((!data?.state && !data?.value && data?.value !== '') ? data : data.state === 'inherits' ? data.parentValue : data.value);
 
 const identityRequiredFields = (identity) => {
   const defaultIdentity = {
