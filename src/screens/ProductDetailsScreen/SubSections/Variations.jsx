@@ -59,10 +59,10 @@ const Variations = ({
   };
 
   const handleDeleteVariable = (field) => {
-    const newAvailableVariables = currentProductData.availableVariables.filter(
+    const newAvailableVariables = currentProductData?.availableVariables?.filter(
       (item) => item.field !== field,
     );
-    const newVariableDescriptions = productDetails.variableDescriptions.filter(
+    const newVariableDescriptions = productDetails?.variableDescriptions?.filter(
       ({ description }) => description !== field,
     );
     setProductData({

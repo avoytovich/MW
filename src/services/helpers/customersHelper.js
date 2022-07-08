@@ -27,3 +27,10 @@ export const getCustomerName = async (id) => {
 
   return name || id;
 };
+
+export const getCustomerNameSync = (id) => {
+  const loadedCustomers = JSON.parse(sessionStorage.getItem('customersData')) || [];
+  const [existing] = loadedCustomers.filter((c) => c.id === id);
+
+  return existing.name || id || localization.t('labels.customerNotFound');
+};

@@ -787,6 +787,7 @@ const labels = {
   duplicate: 'Duplicate',
   attributes: 'attributes',
   relatedProduct: 'Related product',
+  formatError: 'Can only be letters, digits and underscores',
 };
 
 export default labels;

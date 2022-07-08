@@ -72,7 +72,10 @@ const getOneByIdApi = {
     });
   },
   getCustomerById(id) {
+    if (!id) return Promise.reject();
+
     const url = `/customers/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+
     return axiosInstance({
       method: 'get',
       url,
