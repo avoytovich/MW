@@ -308,7 +308,7 @@ const ProductDetailsScreen = () => {
               );
 
               setProductData(checkedProduct);
-              setCurrentProductData(newHashes);
+              setCurrentProductData({ ...newHashes });
             }
 
             setLoading(false);
@@ -316,7 +316,7 @@ const ProductDetailsScreen = () => {
         }
 
         if (id === 'add') {
-          const customerId = nxState?.selectedCustomer?.id;
+          const customerId = nxState?.selectedCustomer?.id || product?.customerId;
 
           return handleGetOptions(
             setLoading,
@@ -337,7 +337,7 @@ const ProductDetailsScreen = () => {
         }
 
         const { customerId, id: _id } = product;
-        handleGetOptions(
+        return handleGetOptions(
           setLoading,
           customerId,
           _id,
@@ -353,7 +353,7 @@ const ProductDetailsScreen = () => {
         setLoading(false);
       });
     } else {
-      const customerId = nxState?.selectedCustomer?.id;
+      const customerId = nxState?.selectedCustomer?.id || productData?.customerId;
 
       if (parentId) {
         const result = backToFront(productRequiredFields(currentProductData), productData);
@@ -460,6 +460,10 @@ const ProductDetailsScreen = () => {
     && !currentProductData?.parentId
     && currentProductData?.createDate?.parentValue) return <LinearProgress />;
 
+  const lifetimeSaveDisabled = currentProductData?.parentId
+    && checkValue(currentProductData?.lifeTime) === 'PERMANENT'
+    && checkValue(currentProductData?.subscriptionTemplate);
+
   return (
     <DetailPageWrapper
       nxState={nxState}
@@ -470,7 +474,7 @@ const ProductDetailsScreen = () => {
           : `${productData?.genericName?.value || productData?.genericName} - ${id}`
       }
       saveIsDisabled={saveDisabled || tabsDisabled || disabledWithMandLocal
-        || !jsonIsValid || priceTableError.length > 0}
+        || !jsonIsValid || priceTableError.length > 0 || lifetimeSaveDisabled}
       hasChanges={productHasChanges || productHasLocalizationChanges || !productData?.id}
       isLoading={isLoading}
       setUpdate={setUpd}
@@ -478,6 +482,7 @@ const ProductDetailsScreen = () => {
       curData={currentProductData}
       addFunc={api.addNewProduct}
       updateFunc={api.updateProductById}
+      nxStateNotNeeded={parentId || currentProductData?.parentId}
       customSave={id === 'add' ? saveProduct : saveDetails}
       extraHeader={<CustomerStatusLabel customer={customer} />}
       headerTitleCopy={productData?.id}

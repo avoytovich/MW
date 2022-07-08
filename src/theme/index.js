@@ -78,6 +78,11 @@ const themeConfig = {
         root: {
           '&.Mui-disabled': {
             opacity: 0.6,
+            '&.Mui-error': {
+              'input:disabled, .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#FF6341',
+              },
+            },
           },
         },
       },

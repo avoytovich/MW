@@ -86,11 +86,12 @@ const General = ({
   }, [currentProductData?.blackListedCountries]);
 
   useEffect(() => {
-    if (lifetime === 'PERMANENT' && subscriptionTemplate) {
+    if (checkValue(lifetime) === 'PERMANENT' && checkValue(subscriptionTemplate)) {
       setErrorLifetime(true);
       setErrorTextLifetime(localization.t('labels.errorProductPerAndSub'));
     } else {
       setErrorLifetime(false);
+      setErrorTextLifetime(false);
     }
   }, [lifetime, subscriptionTemplate]);
 
@@ -350,6 +351,7 @@ const General = ({
           <Box p={2} minWidth='170px' display='flex'>
             <InheritanceField
               field='lifeTime'
+              buttonStyles={{ maxHeight: errorLifetime ? '56px' : 'unset' }}
               onChange={setProductData}
               value={currentProductData?.lifeTime}
               selectOptions={lifeTime || []}

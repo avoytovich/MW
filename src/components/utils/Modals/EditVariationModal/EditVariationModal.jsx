@@ -65,11 +65,13 @@ const EditVariationModal = ({
   }, [curVariation]);
 
   const saveUpdates = () => {
+    const filteredDescr = productDetails
+      .variableDescriptions?.filter((d) => d.description !== curVariation?.field) || [];
+
     setProductDetails({
       ...productDetails,
       variableDescriptions: [
-        ...productDetails?.variableDescriptions
-          .filter((d) => d.description !== curVariation?.field),
+        ...filteredDescr,
         curDescription,
       ],
     });
@@ -127,6 +129,8 @@ const EditVariationModal = ({
             onChangeInput={(e) => setCurDescriptions((c) => ({
               ...c, description: e.target.value,
             }))}
+            hasError={!/^$|^\w+$/.test(curDescription?.description)}
+            helperText={/^$|^\w+$/.test(curDescription?.description) ? false : localization.t('labels.formatError')}
           />
         </Box>
 
@@ -270,10 +274,10 @@ const EditVariationModal = ({
                             setCurDescriptions((c) => ({
                               ...c,
                               variableValueDescriptions: [
-                                ...c.variableValueDescriptions,
+                                ...c?.variableValueDescriptions || [],
                                 {
                                   descValue: newValueLabel,
-                                  description: `val${c.variableValueDescriptions.length + 1}`,
+                                  description: `val${(c?.variableValueDescriptions?.length || 0) + 1}`,
                                   localizedValue: { 'en-US': newValueLabel },
                                 },
                               ],
@@ -303,7 +307,7 @@ const EditVariationModal = ({
           variant="contained"
           color="primary"
           onClick={saveUpdates}
-          disabled={JSON.stringify(initDescription) === JSON.stringify(curDescription)}
+          disabled={JSON.stringify(initDescription) === JSON.stringify(curDescription) || !/^$|^\w+$/.test(curDescription?.description)}
         >
           {localization.t('labels.save')}
         </Button>

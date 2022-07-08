@@ -147,7 +147,7 @@ const Forms = {
     newParamFirstTip: 'First pick a name for this new parameter. This name will be used in price functions definitions.',
     newParamFirstExtraTip: 'Allowed: alphanumeric characters and underscore',
     newParamSecondTip: "Give a display string for this parameter, in language 'en-US'.",
-    newParamSecondExtraTip: 'The label dasplayed to the buyer when ferering to this parameter',
+    newParamSecondExtraTip: 'The label displayed to the buyer when refering to this parameter',
     newParamThirdTip: 'Now choose the type of the parameter:',
     parametersNameTip: 'The name of parameters are referenced by product price functions, it can contain any alphanumeric characters and underscores.',
     parametersStringTip: 'The parameter display string is displayed in checkout page to your buyer. You can define it for every needed language.',
