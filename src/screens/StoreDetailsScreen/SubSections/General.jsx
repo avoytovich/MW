@@ -8,9 +8,11 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
+  DialogContentText,
+  Dialog,
+  DialogContent,
 } from '@mui/material';
 import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
 import { getCountriesOptions, getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { urlIsValid } from '../../../services/helpers/inputValidators';
 
@@ -146,17 +148,17 @@ const General = ({
               timeout: 500,
             }}
           >
-            <Fade in={open}>
-              <Box className='paper'>
-                <Typography variant="h4" color="textPrimary">
+            <Dialog open={open} aria-labelledby='form-dialog-title'>
+              <DialogContent>
+                <DialogContentText variant="h4" color="textPrimary" pt={2}>
                   {localization.t('general.disableStore')}
-                </Typography>
-                <Box display='flex' justifyContent='space-around' pt={4}>
+                </DialogContentText>
+                <Box display='flex' justifyContent='space-around' pt={4} pb={2}>
                   <Button variant="outlined" onClick={() => setOpen(false)}>Cancel</Button>
                   <Button variant="contained" color="primary" onClick={confirmModal}>Confirm</Button>
                 </Box>
-              </Box>
-            </Fade>
+              </DialogContent>
+            </Dialog>
           </Modal>
           <SwitchInput
             label='status'
