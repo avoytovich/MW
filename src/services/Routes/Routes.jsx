@@ -10,12 +10,14 @@ import SignedRoutes from './SignedRoutes';
 import GuestRoutes from './GuestRoutes';
 
 import LoadingScreen from '../../screens/LoadingScreen';
+import { getLanguagesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 
 import MainLayout from '../../layouts/MainLayout';
 import AuthorizationLayout from '../../layouts/AuthorizationLayout';
 
 const Routes = () => {
   const account = useSelector(({ account: acc }) => acc);
+  getLanguagesOptions();
 
   return (
     <Suspense fallback={<LoadingScreen />}>

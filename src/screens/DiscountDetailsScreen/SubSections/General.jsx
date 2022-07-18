@@ -12,6 +12,7 @@ import {
 import {
   priceCurrency,
 } from '../../../services/selectOptions/selectOptions';
+import LocalizedContent from '../../../components/utils/LocalizedContent';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
@@ -20,6 +21,7 @@ import {
   InputCustom,
 } from '../../../components/Inputs';
 import api from '../../../api';
+import '../discountDetailsScreen.scss';
 
 const General = ({
   id,
@@ -30,6 +32,8 @@ const General = ({
   setCheckedSingleUseCode,
   setPrevSaveSingleUseCode,
   setUsedDiscounts,
+  localizedErrors,
+  setLocalizedErrors,
 }) => {
   const handleUpdateAmount = (e) => {
     if (e.target.value === 'byPercentage' && !curDiscount.discountRate) {
@@ -57,7 +61,7 @@ const General = ({
 
   return (
     <>
-      <Grid item md={6} sm={12}>
+      <Grid item md={12} sm={12}>
         <Box display="flex" p={2} flexDirection="row" alignItems="baseline">
           <Box>
             <Typography>{localization.t('labels.status')}</Typography>
@@ -85,6 +89,8 @@ const General = ({
             />
           </Box>
         </Box>
+      </Grid>
+      <Grid item md={6} sm={12}>
         <Box p={2}>
           <InputCustom
             data-test='discountRuleName'
@@ -184,20 +190,6 @@ const General = ({
 
       <Grid item md={6} sm={12}>
         <Box p={2}>
-          <Typography style={{ lineHeight: '38px' }}>
-            {localization.t('labels.discountLabels')}
-          </Typography>
-        </Box>
-        <EditKeyValueInputs
-          data-test='localizedLabels'
-          curValue={curDiscount.localizedLabels}
-          setCurValue={(value) => setCurDiscount({ ...curDiscount, localizedLabels: value })}
-          selectOptions={availableLocales}
-          additionalOption={{ value: 'neutral', id: 'neutral' }}
-          labels={['language', 'discountLabel']}
-          tooltip='discountLabel'
-        />
-        <Box p={2}>
           <InputCustom
             data-test='externalContext'
             isMultiline
@@ -251,6 +243,27 @@ const General = ({
           />
         )}
       </Grid>
+      <Grid item md={12} sm={12}>
+        <Box px={2} pt={2}>
+          <Typography style={{ lineHeight: '38px' }}>
+            {localization.t('labels.discountLabels')}
+          </Typography>
+        </Box>
+        <Box>
+          <LocalizedContent
+            defaultLocale='neutral'
+            setLocalizedData={(newValue) => {
+              setCurDiscount((c) => ({
+                ...c,
+                localizedLabels: newValue,
+              }));
+            }}
+            errors={localizedErrors}
+            setErrors={setLocalizedErrors}
+            localizedData={curDiscount.localizedLabels}
+          />
+        </Box>
+      </Grid>
     </>
   );
 };
@@ -264,6 +277,8 @@ General.propTypes = {
   setCheckedSingleUseCode: PropTypes.func,
   setPrevSaveSingleUseCode: PropTypes.func,
   setUsedDiscounts: PropTypes.func,
+  localizedErrors: PropTypes.object,
+  setLocalizedErrors: PropTypes.func,
 };
 
 export default General;

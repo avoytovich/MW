@@ -17,6 +17,7 @@ const DiscountDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const { id } = useParams();
+  const [localizedErrors, setLocalizedErrors] = useState({});
 
   const {
     isLoading,
@@ -30,9 +31,13 @@ const DiscountDetailsScreen = () => {
     setUpdate,
   } = useDiscountDetails(id, nxState);
   const beforeSend = () => {
-    const res = { ...curDiscount };
+    const localizedLabels = {};
+
+    Object.keys(curDiscount.localizedLabels)?.forEach((lab) => {
+      localizedLabels[lab] = curDiscount.localizedLabels[lab].discountLabel;
+    });
+    const res = { ...curDiscount, localizedLabels };
     res.thresholds = fromArrayToObject(curDiscount.thresholds, 'key');
-    res.localizedLabels = fromArrayToObject(curDiscount.localizedLabels, 'key');
     if (amountType === 'byCurrency') {
       res.amountByCurrency = fromArrayToObject(curDiscount.amountByCurrency, 'key');
       delete res.discountRate;
@@ -70,7 +75,8 @@ const DiscountDetailsScreen = () => {
       name={discount?.name || `${localization.t('general.new')} ${localization.t(
         'general.discount',
       )}`}
-      saveIsDisabled={!curDiscount?.name || (curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === '')}
+      saveIsDisabled={!curDiscount?.name || (curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === '')
+        || Object.keys(localizedErrors).length}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.discountrules}
@@ -87,6 +93,8 @@ const DiscountDetailsScreen = () => {
       }}
     >
       <DiscountDetailsView
+        localizedErrors={localizedErrors}
+        setLocalizedErrors={setLocalizedErrors}
         curDiscount={curDiscount}
         setCurDiscount={setCurDiscount}
         discount={discount}

@@ -20,17 +20,15 @@ const EndUsersGroupsDetailsScreen = () => {
   const [selectedLang, setSelectedLang] = useState(0);
   const [curTab, setCurTab] = useState(0);
   const [errors, setErrors] = useState({});
+  const [localizedErrors, setLocalizedErrors] = useState({});
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
-
   useEffect(() => {
     setHasChanges(JSON.stringify(curData) !== JSON.stringify(initData));
 
     return () => setHasChanges(false);
   }, [curData]);
-
   useEffect(() => {
     setIsLoading(true);
-
     const request = id !== 'add' ? api.getEndUsersGroupsById(id) : Promise.resolve({
       data: {
         customerId: nxState?.selectedCustomer?.id,
@@ -66,6 +64,7 @@ const EndUsersGroupsDetailsScreen = () => {
         'labels.endUserGroup',
       )}`}
       saveIsDisabled={!curData?.name || Object.keys(errors).length > 0
+        || Object.keys(localizedErrors).length > 0
         || (curData?.fallbackLocale
           && (!curData?.localizedShortDesc
             || !curData?.localizedContent[curData.fallbackLocale]?.localizedShortDesc))}
@@ -91,6 +90,8 @@ const EndUsersGroupsDetailsScreen = () => {
         selectedLang={selectedLang}
         setSelectedLang={setSelectedLang}
         curTab={curTab}
+        localizedErrors={localizedErrors}
+        setLocalizedErrors={setLocalizedErrors}
       />
     </DetailPageWrapper>
   );

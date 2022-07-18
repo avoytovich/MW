@@ -18,8 +18,8 @@ const InheritanceField = (props) => {
     buttonStyles,
     buttonAction,
     isTinymce,
+    localizedLang,
   } = props;
-
   if (!Children) return null;
   if (!parentId || !value?.state) return Children;
 
@@ -132,20 +132,31 @@ const InheritanceField = (props) => {
 
   const onClickInheritanceButton = () => {
     const isInherits = value.state === 'inherits' ? 'overrides' : 'inherits';
-
-    const newData = {
-      ...currentProductData,
-      [field]: {
-        ...value,
-        state: isInherits,
-      },
-    };
-
-    if (additionalField) {
-      newData[additionalField] = {
-        ...additionalValue,
-        state: isInherits,
+    let newData = {};
+    if (localizedLang) {
+      newData = {
+        ...currentProductData,
+        [localizedLang]: {
+          ...currentProductData[localizedLang],
+          [field]: {
+            ...value, state: isInherits,
+          },
+        },
       };
+    } else {
+      newData = {
+        ...currentProductData,
+        [field]: {
+          ...value,
+          state: isInherits,
+        },
+      };
+      if (additionalField) {
+        newData[additionalField] = {
+          ...additionalValue,
+          state: isInherits,
+        };
+      }
     }
 
     onChange(newData);
@@ -201,6 +212,7 @@ InheritanceField.propTypes = {
   buttonStyles: PropTypes.object,
   buttonAction: PropTypes.func,
   isTinymce: PropTypes.bool,
+  localizedLang: PropTypes.string,
 };
 
 export default InheritanceField;

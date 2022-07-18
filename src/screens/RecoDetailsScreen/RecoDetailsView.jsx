@@ -14,6 +14,8 @@ const RecoDetailsView = ({
   curTab,
   setCurReco,
   selectOptions,
+  localizedErrors,
+  setLocalizedErrors,
 }) => {
   const updateReco = (type, value, selections) => {
     let setValue = value;
@@ -48,6 +50,8 @@ const RecoDetailsView = ({
     <div className='reco-details-screen'>
       {curTab === 0 && (
         <Basic
+          localizedErrors={localizedErrors}
+          setLocalizedErrors={setLocalizedErrors}
           curReco={curReco}
           updateReco={updateReco}
           handleChange={handleChange}
@@ -82,6 +86,8 @@ RecoDetailsView.propTypes = {
   curReco: PropTypes.object,
   selectOptions: PropTypes.object,
   curTab: PropTypes.number,
+  localizedErrors: PropTypes.object,
+  setLocalizedErrors: PropTypes.func,
 };
 
 export default RecoDetailsView;

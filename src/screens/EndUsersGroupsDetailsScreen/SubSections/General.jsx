@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 import {
   Box,
@@ -9,9 +10,7 @@ import {
 } from '@mui/material';
 
 import FileCopy from '@mui/icons-material/FileCopyOutlined';
-import { localizedContentDefObject } from '../utils';
 import { SelectCustom } from '../../../components/Inputs';
-import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import { getCustomerName } from '../../../services/helpers/customersHelper';
 
 import localization from '../../../localization';
@@ -24,8 +23,7 @@ const General = ({ setData, data }) => {
       getCustomerName(data?.customerId).then((name) => setCustomerName(name));
     }
   }, []);
-
-  const availableLocales = getLanguagesOptions();
+  const languagesOptions = useSelector(({ sessionData: { languages } }) => languages);
 
   const copyData = (text) => {
     navigator.clipboard.writeText(text).then(() => toast(localization.t('general.itemHasBeenCopied')));
@@ -67,19 +65,8 @@ const General = ({ setData, data }) => {
         <Box px={1} width="50%">
           <SelectCustom
             label='fallbackLocale'
-            onChangeSelect={(e) => {
-              if (!data.localizedContent[e.target.value]) {
-                setData((c) => ({
-                  ...c,
-                  localizedContent: {
-                    ...c.localizedContent,
-                    [e.target.value]: { ...localizedContentDefObject },
-                  },
-                }));
-              }
-              setData((c) => ({ ...c, fallbackLocale: e.target.value }));
-            }}
-            selectOptions={availableLocales}
+            onChangeSelect={(e) => setData((c) => ({ ...c, fallbackLocale: e.target.value }))}
+            selectOptions={languagesOptions}
             value={data?.fallbackLocale || ''}
           />
         </Box>
@@ -89,7 +76,7 @@ const General = ({ setData, data }) => {
         data.id && (
           <Box px={1} display='flex' justifyContent='space-between' width='50%' my='15px'>
             <Typography variant='h5'>{localization.t('labels.endUserGroupId')}</Typography>
-            
+
             <Box display='flex'>
               <Typography>{data.id}</Typography>
               <FileCopy

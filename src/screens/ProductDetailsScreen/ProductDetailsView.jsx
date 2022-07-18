@@ -30,7 +30,6 @@ const ProductDetailsView = ({
   setSaveDisabled,
   setTabsDisabled,
   curTab,
-  setDisabledWithMandLocal,
   setCodeMode,
   codeMode,
   jsonIsValid,
@@ -40,6 +39,10 @@ const ProductDetailsView = ({
   handleDeleteVariation,
   digitsErrors,
   setDigitsErrors,
+  curLocalizedData,
+  setCurLocalizedData,
+  localizedErrors,
+  setLocalizedErrors,
 }) => {
   const checkSaveDisable = () => {
     const {
@@ -128,13 +131,15 @@ const ProductDetailsView = ({
       {curTab === 3 && (
         <SectionLayout dataTest='localizedContent' label='localizedContent'>
           <LocalizedContent
+            localizedErrors={localizedErrors}
+            setLocalizedErrors={setLocalizedErrors}
+            curLocalizedData={curLocalizedData}
+            setCurLocalizedData={setCurLocalizedData}
             storeLanguages={storeLanguages}
             setProductData={setProductData}
             currentProductData={curProductData}
             productData={productData}
-            setHasNewData={setProductLocalizationChanges}
             parentId={parentId}
-            setDisabledWithMandLocal={setDisabledWithMandLocal}
             setCodeMode={setCodeMode}
             codeMode={codeMode}
             jsonIsValid={jsonIsValid}
@@ -219,7 +224,6 @@ ProductDetailsView.propTypes = {
   curTab: PropTypes.number,
   setSaveDisabled: PropTypes.func,
   setTabsDisabled: PropTypes.func,
-  setDisabledWithMandLocal: PropTypes.func,
   setCodeMode: PropTypes.func,
   codeMode: PropTypes.bool,
   jsonIsValid: PropTypes.bool,
@@ -230,6 +234,10 @@ ProductDetailsView.propTypes = {
   handleDeleteVariation: PropTypes.func,
   digitsErrors: PropTypes.object,
   setDigitsErrors: PropTypes.func,
+  curLocalizedData: PropTypes.object,
+  setCurLocalizedData: PropTypes.func,
+  localizedErrors: PropTypes.object,
+  setLocalizedErrors: PropTypes.func,
 };
 
 export default ProductDetailsView;

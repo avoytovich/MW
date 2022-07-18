@@ -124,12 +124,12 @@ const General = ({
     }
   };
 
-  const withValidationSelectCustom = (target, options) => {
+  const withValidationSelectCustom = (target, options = {}) => {
     withValidation(target);
     setCurrentStoreData({
       ...currentStoreData,
       [target.name]: target.value,
-      options,
+      ...options,
     });
   };
 
@@ -206,7 +206,7 @@ const General = ({
                     onChangeInput={(e) => withValidationInputCustom(e.target)}
                     hasError={!!errors?.general?.senderName
                       || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
-                      && (currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName)
+                        && (currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName)
                       )}
                     helperText={(errors?.general?.senderName
                       || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
@@ -232,17 +232,7 @@ const General = ({
             name='defaultLocale'
             value={currentStoreData.defaultLocale}
             selectOptions={availableLocales}
-            onChangeSelect={(e) => {
-              const thankYouDesc = { ...currentStoreData.thankYouDesc };
-              if (currentStoreData.defaultLocale !== e.target.value && currentStoreData.thankYouDesc[currentStoreData.defaultLocale] === '') {
-                delete thankYouDesc[currentStoreData.defaultLocale];
-              } else if (currentStoreData.defaultLocale !== e.target.value
-                && currentStoreData.thankYouDesc[currentStoreData.defaultLocale]
-                && !thankYouDesc[e.target.value]) {
-                thankYouDesc[e.target.value] = '';
-              }
-              withValidationSelectCustom(e.target, thankYouDesc);
-            }}
+            onChangeSelect={(e) => withValidationSelectCustom(e.target)}
             hasError={!!errors?.general?.defaultLocale}
             helperText={errors?.general?.defaultLocale && localization.t('errorNotifications.required')}
           />

@@ -7,19 +7,19 @@
     min-height: 56px;
     border-radius: 4px;
     width: 100%;
-  
+
     &.mce-edit-focus {
       border-color: $navItemButtonActive;
     }
-  
+
     &:focus-visible {
       outline: none;
     }
-  
+
     &:hover {
       border-color: $darkGray;
     }
-  
+
     &:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before {
       color: $discountInputText;
       left: 10px;

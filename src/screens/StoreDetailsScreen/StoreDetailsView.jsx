@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import Payment from './SubSections/Payment';
 import General from './SubSections/General';
 import Design from './SubSections/Design';
-import LocalizedContent from './SubSections/LocalizedContent';
+import LocalizedContent from '../../components/utils/LocalizedContent';
 import StoreSection from './StoreSection';
-
 import {
   tabLabels,
   resourceLabel,
@@ -24,6 +23,8 @@ const StoreDetailsView = ({
   setIsRankingOpen,
   curTab,
   customer,
+  localizedErrors,
+  setLocalizedErrors,
 }) => (
   <>
     {curTab === 0 && (
@@ -64,10 +65,17 @@ const StoreDetailsView = ({
     {curTab === 3 && (
       <StoreSection label={tabLabels[3]}>
         <LocalizedContent
-          errors={errors}
-          setErrors={setErrors}
-          currentStoreData={currentStoreData}
-          setCurrentStoreData={setCurrentStoreData}
+          isVertical
+          setLocalizedData={(newValue) => {
+            setCurrentStoreData((c) => ({
+              ...c,
+              thankYouDesc: newValue,
+            }));
+          }}
+          errors={localizedErrors}
+          setErrors={setLocalizedErrors}
+          defaultLocale={currentStoreData.defaultLocale}
+          localizedData={currentStoreData.thankYouDesc}
         />
       </StoreSection>
     )}
@@ -81,6 +89,8 @@ StoreDetailsView.propTypes = {
   setCurrentStoreResources: PropTypes.func,
   currentStoreResources: PropTypes.array,
   errors: PropTypes.object,
+  localizedErrors: PropTypes.object,
+  setLocalizedErrors: PropTypes.func,
   setErrors: PropTypes.func,
   isRankingOpen: PropTypes.bool,
   setIsRankingOpen: PropTypes.func,

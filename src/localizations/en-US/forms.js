@@ -59,6 +59,12 @@ const Forms = {
       bannerImageUrl: 'Banner Image URL',
       localizedLogo: 'Logo URL',
       bannerLinkUrl: 'Banner Link URL',
+      discountLabel: 'Discount Label',
+      recommendationDescription: 'Recommendation description',
+      localizedManualRenewalEmailDesc: 'Manual renewal description',
+      localizedMarketingName: 'Marketing name',
+      localizedPurchaseEmailDesc: 'Order confirmation email description',
+      localizedThankYouDesc: 'Thank you description',
     },
     allowOrderDetailsOnCheckoutConfirmation:
       'Display product delivery on checkout confirmation',

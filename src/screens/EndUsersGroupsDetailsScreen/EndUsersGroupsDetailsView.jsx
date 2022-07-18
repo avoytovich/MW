@@ -4,16 +4,15 @@ import PropTypes from 'prop-types';
 import SectionLayout from '../../components/SectionLayout';
 
 import General from './SubSections/General';
-import LocalizedContent from './SubSections/LocalizedContent';
-
+import LocalizedContent from '../../components/utils/LocalizedContent';
 import './endUsersGroupsDetailsScreen.scss';
 
 const EndUsersGroupsDetailsView = ({
   curData,
   setCurData,
   curTab,
-  errors,
-  setErrors,
+  localizedErrors,
+  setLocalizedErrors,
 }) => (
   <>
     {curTab === 0 && (
@@ -25,11 +24,12 @@ const EndUsersGroupsDetailsView = ({
     {curTab === 1 && (
       <SectionLayout label='localizedContent'>
         <LocalizedContent
-          currentData={curData.localizedContent}
-          handleSaveLocale={(newValue) => setCurData({ ...curData, localizedContent: newValue })}
+          isVertical
+          localizedData={curData.localizedContent}
+          setLocalizedData={(newValue) => setCurData({ ...curData, localizedContent: newValue })}
           defaultLocale={curData.fallbackLocale}
-          errors={errors}
-          setErrors={setErrors}
+          errors={localizedErrors}
+          setErrors={setLocalizedErrors}
         />
       </SectionLayout>
     )}
@@ -40,7 +40,7 @@ EndUsersGroupsDetailsView.propTypes = {
   curData: PropTypes.object,
   setCurData: PropTypes.func,
   curTab: PropTypes.number,
-  errors: PropTypes.object,
-  setErrors: PropTypes.func,
+  localizedErrors: PropTypes.object,
+  setLocalizedErrors: PropTypes.func,
 };
 export default EndUsersGroupsDetailsView;

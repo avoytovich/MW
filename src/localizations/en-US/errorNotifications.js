@@ -41,6 +41,10 @@ const errorNotifications = {
   senderNameExactly: 'Must be exactly as: ',
   senderNameStartWith: 'or start with: ',
   senderNameEnd: 'and contain only email-friendly characters.',
+  urlIsNotValid: 'url is not valid',
+  isNotValid: 'is not valid',
+  isMandatoryForTheDefaultLanguage: 'is mandatory for the default language, as soon as it is set for some language.',
+  isRequired: 'is required',
 };
 
 export default errorNotifications;
