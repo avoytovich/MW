@@ -36,6 +36,7 @@ import { setTempProductDescription } from '../../redux/actions/TempData';
 
 import localization from '../../localization';
 import api from '../../api';
+import { setHeaderCustomerName } from '../../redux/actions/TableData';
 
 const defaultSelectOptions = {
   sellingStores: null,
@@ -580,6 +581,10 @@ const ProductDetailsScreen = () => {
   if (!parentId
     && !currentProductData?.parentId
     && currentProductData?.createDate?.parentValue) return <LinearProgress />;
+
+  useEffect(() => {
+    dispatch(setHeaderCustomerName({ ...customer }));
+  }, [customer]);
 
   const lifetimeSaveDisabled = currentProductData?.parentId
     && checkValue(currentProductData?.lifeTime) === 'PERMANENT'

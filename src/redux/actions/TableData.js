@@ -8,6 +8,7 @@ import {
   RESET_TABLE_SEARCH,
   SET_TABLE_ROWS_PER_PAGE,
   SET_TABLE_CHECKED_ITEMS_DATA,
+  SET_HEADER_CUSTOMER_NAME,
   SET_WAS_UPDATED,
   SET_TABLE_CURRENT_PAGE,
   SET_TABLE_CUR_CHECKED_ITEMS_DATA,
@@ -68,6 +69,10 @@ const setCurCheckedItemsData = (curCheckedItemsData) => (
   { type: SET_TABLE_CUR_CHECKED_ITEMS_DATA, payload: { curCheckedItemsData } }
 );
 
+const setHeaderCustomerName = (customerName) => (
+  { type: SET_HEADER_CUSTOMER_NAME, payload: { customerName } }
+);
+
 const setRowsPerPage = (rowsPerPage) => {
   localStorage.setItem('rowsPerPage', JSON.stringify(rowsPerPage));
   return ({ type: SET_TABLE_ROWS_PER_PAGE, payload: { rowsPerPage, currentPage: 1 } }
@@ -89,6 +94,7 @@ export {
   resetSearch,
   setRowsPerPage,
   setCheckedItemsData,
+  setHeaderCustomerName,
   setWasUpdated,
   setCurrentPage,
   setCurCheckedItemsData,

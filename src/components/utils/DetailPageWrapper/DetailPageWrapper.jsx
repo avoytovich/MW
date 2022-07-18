@@ -120,12 +120,12 @@ const DetailPageWrapper = ({
         <Box
           display='flex'
           flexDirection='row'
-          m={2}
+          ml={2}
           justifyContent='space-between'
           alignItems='center'
         >
           <Box alignSelf='center'>
-            <Typography data-test='notificationName' gutterBottom variant='h3'>
+            <Typography data-test='notificationName' gutterBottom variant='h3' style={{fontSize: '20px'}} mb={0}>
               {name}
               {headerTitleCopy && (
                 <ContentCopyIcon
@@ -156,9 +156,6 @@ const DetailPageWrapper = ({
             {extraActions}
           </Box>
         </Box>
-
-        {extraHeader}
-
         {customTabs}
 
         {tabs?.tabLabels && (

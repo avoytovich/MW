@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useLocation, NavLink } from 'react-router-dom';
 
@@ -22,11 +22,14 @@ import { VALID_REFRESH_SCOPES, VALID_FILTER_SCOPES, VALID_SEARCH_SCOPES } from '
 
 import store from '../../redux/store';
 import { logout } from '../../redux/actions/Account';
-import { setTableScope } from '../../redux/actions/TableData';
+import { setHeaderCustomerName, setTableScope } from '../../redux/actions/TableData';
+import CustomerStatusLabel from '../utils/CustomerStatusLabel';
 
 const TopBar = ({ toggleDrawer, drawerOpen }) => {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  const customerData = useSelector(({ tableData: { customerName } }) => customerName);
 
   const scope = location.pathname.split('/').pop();
 
@@ -43,12 +46,16 @@ const TopBar = ({ toggleDrawer, drawerOpen }) => {
         )) {
       dispatch(setTableScope(scope));
     }
+    dispatch(setHeaderCustomerName(''));
   }, [scope]);
 
   return (
-    <AppBar position='static' className='top-bar' elevation={1} sx={{ zIndex: 9 }}>
+    <AppBar position='static' className='top-bar' elevation={1} sx={{ zIndex: 9 }} style={{ height: '45px' }}>
       <Toolbar>
-        <Box display='flex' width={1} justifyContent='space-between'>
+        <Box width={1} pb={3}>
+          <CustomerStatusLabel customer={customerData} />
+        </Box>
+        <Box display='flex' width={1} justifyContent='space-between' pb={3}>
           {drawerOpen
             ? <Box />
             : (

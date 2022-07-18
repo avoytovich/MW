@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import StoreDetailsView from './StoreDetailsView';
 import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
@@ -25,6 +25,7 @@ import {
 } from './utils';
 
 import api from '../../api';
+import { setHeaderCustomerName } from '../../redux/actions/TableData';
 
 const StoreDetailsScreen = () => {
   // eslint-disable-next-line no-unused-vars
@@ -54,6 +55,9 @@ const StoreDetailsScreen = () => {
 
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
   const getCustomersIdsArray = (...array) => {
     const res = [];
     array.forEach((item) => {
@@ -250,6 +254,10 @@ const StoreDetailsScreen = () => {
     }
     return true;
   };
+
+  useEffect(() => {
+    dispatch(setHeaderCustomerName({ ...currentCustomerData }));
+  }, [currentCustomerData]);
 
   return (
     <DetailPageWrapper
