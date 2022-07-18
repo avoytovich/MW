@@ -105,7 +105,6 @@ const ProductFiles = ({ currentProductData, setProductData, parentId }) => {
         containerStyles={{ alignItems: 'flex-start' }}
       >
         <AssetsResource
-          isFile
           containerStyles={{ marginTop: '20px' }}
           label={localization.t('labels.relatedContents')}
           labelOptions={[]}
