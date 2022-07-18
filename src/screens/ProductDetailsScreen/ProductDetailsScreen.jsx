@@ -6,8 +6,6 @@ import { toast } from 'react-toastify';
 
 import { LinearProgress } from '@mui/material';
 
-import store from '../../redux/store';
-
 import ProductDetailsTabs from './ProductDetailsTabs';
 import ProductDetailsView from './ProductDetailsView';
 import CheckoutMenu from './CheckoutMenu';
@@ -23,11 +21,18 @@ import {
   frontToBack,
   checkValue,
   defaultProductLocales,
+  createInheritableValue,
+  localizedValues,
 } from '../../services/helpers/dataStructuring';
 import {
-  handleGetOptions, handleGetProductDetails, saveLocalizationDetails, beforeSend,
+  handleGetOptions,
+  handleGetProductDetails,
+  saveLocalizationDetails,
+  beforeSend,
+  defLocalizationObj,
+  defProductVariationObj,
 } from './utils';
-import { setTempProductDescription, setTempProductLocales } from '../../redux/actions/TempData';
+import { setTempProductDescription } from '../../redux/actions/TempData';
 
 import localization from '../../localization';
 import api from '../../api';
@@ -53,7 +58,12 @@ const ProductDetailsScreen = () => {
   const [backToParent, setBackToParent] = useState(false);
   const [curTab, setCurTab] = useState(0);
 
-  const [disabledWithMandLocal, setDisabledWithMandLocal] = useState(false);
+  const [localizedContentHasChanges, setLocalizedContentHasChanges] = useState(false);
+  const [curLocalizedData, setCurLocalizedData] = useState(null);
+  const [localizedData, setLocalizedData] = useState(null);
+  const [storeLanguages, setStoreLanguages] = useState(null);
+  const [localizedErrors, setLocalizedErrors] = useState({});
+
   const [saveDisabled, setSaveDisabled] = useState(false);
   const [tabsDisabled, setTabsDisabled] = useState(true);
 
@@ -67,7 +77,6 @@ const ProductDetailsScreen = () => {
   const [variablesDescriptions, setVariablesDescriptions] = useState([]);
   const [productVariations, setSubProductVariations] = useState({});
   const [checkOutStores, setCheckOutStores] = useState([]);
-  const [storeLanguages, setStoreLanguages] = useState([]);
   const [codeMode, setCodeMode] = useState(false);
   const [jsonIsValid, setJsonIsValid] = useState(true);
   const [selectOptions, setSelectOptions] = useState({ ...defaultSelectOptions });
@@ -75,6 +84,7 @@ const ProductDetailsScreen = () => {
   const [priceTableError, setPriceTableError] = useState([]);
   const parentId = history?.location?.state?.parentId;
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+
   const [digitsErrors, setDigitsErrors] = useState({});
 
   const handleChangeTab = (tab) => {
@@ -125,10 +135,8 @@ const ProductDetailsScreen = () => {
   const saveDetails = async () => {
     const formatePrices = beforeSend(currentProductData);
 
-    if (productHasLocalizationChanges) {
-      const { tempData } = store.getState();
-
-      const dataToSave = saveLocalizationDetails(tempData, currentProductData, nxState);
+    if (localizedContentHasChanges) {
+      const dataToSave = saveLocalizationDetails(curLocalizedData, currentProductData, nxState);
 
       api
         .updateProductLocalsById(
@@ -140,12 +148,12 @@ const ProductDetailsScreen = () => {
         .then(() => {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLoading(true);
-          setProductLocalizationChanges(false);
+          setLocalizedContentHasChanges(false);
           setUpd((c) => c + 1);
         });
     }
 
-    if (productHasChanges || productHasLocalizationChanges) {
+    if (productHasChanges) {
       const sendObj = currentProductData?.parentId || parentId
         ? frontToBack(formatePrices)
         : { ...formatePrices };
@@ -160,7 +168,7 @@ const ProductDetailsScreen = () => {
       }
 
       api.updateProductById(currentProductData.id, sendObj).then(() => {
-        if (!productHasLocalizationChanges) {
+        if (!localizedContentHasChanges) {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLoading(true);
           setUpd((c) => c + 1);
@@ -168,6 +176,124 @@ const ProductDetailsScreen = () => {
       });
     }
   };
+  useEffect(() => {
+    if (currentProductData?.descriptionId?.state) {
+      Promise.all([
+        api.getProductDescriptionById(currentProductData?.descriptionId?.value),
+        api.getProductDescriptionById(currentProductData?.descriptionId?.parentValue),
+      ]).then(([productDescr, parentDescr]) => {
+        const avail = [];
+
+        localizedValues.forEach((it) => {
+          if (productDescr?.data[it]) {
+            Object.keys(productDescr?.data[it]).forEach((loc) => {
+              if (avail.indexOf(loc) < 0) {
+                avail.push(loc);
+              }
+            });
+          }
+
+          if (parentDescr?.data[it]) {
+            Object.keys(parentDescr?.data[it]).forEach((loc) => {
+              if (avail.indexOf(loc) < 0) {
+                avail.push(loc);
+              }
+            });
+          }
+        });
+        const { data } = productDescr;
+        const { data: dataParent } = parentDescr;
+        const i18nFields = avail.reduce((accumulator, current) => {
+          const childLocalizedValues = localizedValues.reduce(
+            (acc, curr) => ({ ...acc, [curr]: data[curr]?.[current] }),
+            {},
+          );
+          const parentLocalizedValues = localizedValues.reduce(
+            (acc, curr) => ({
+              ...acc,
+              [curr]: dataParent[curr] ? dataParent[curr][current] : '',
+            }),
+            {},
+          );
+          return {
+            ...accumulator,
+            [current]: backToFront(parentLocalizedValues, childLocalizedValues),
+          };
+        }, {});
+
+        const productDescrData = { ...productDescr?.data };
+
+        localizedValues.forEach((item) => delete productDescrData[item]);
+
+        const inheritedFallbackLocale = createInheritableValue(
+          data.fallbackLocale,
+          dataParent.fallbackLocale,
+        );
+        productDescrData.i18nFields = i18nFields;
+        productDescrData.fallbackLocale = inheritedFallbackLocale;
+
+        setLocalizedData({ ...productDescrData });
+        setCurLocalizedData({ ...productDescrData });
+      });
+      return;
+    }
+    if (!curLocalizedData || (curLocalizedData && currentProductData?.descriptionId)) {
+      const productDescriptionRequest = !currentProductData.descriptionId
+        ? Promise.resolve({
+          data: {
+            customerId: nxState?.selectedCustomer?.id,
+          },
+        }) : api.getProductDescriptionById(currentProductData.descriptionId);
+
+      productDescriptionRequest.then(({ data }) => {
+        const avail = [];
+        localizedValues.forEach((it) => {
+          if (data[it]) {
+            Object.keys(data[it]).forEach((loc) => {
+              if (avail.indexOf(loc) < 0) {
+                avail.unshift(loc);
+              }
+            });
+          }
+        });
+
+        const i18nFields = avail.reduce((accumulator, current) => {
+          const childLocalizedValues = localizedValues.reduce(
+            (acc, curr) => ({ ...acc, [curr]: data[curr]?.[current] ? data[curr][current] : '' }),
+            {},
+          );
+          return {
+            ...accumulator,
+            [current]: childLocalizedValues,
+          };
+        }, {});
+
+        const productDescrData = { ...data };
+
+        localizedValues.forEach((item) => delete productDescrData[item]);
+        if (!productDescrData?.fallbackLocale) {
+          productDescrData.fallbackLocale = 'en-US';
+        }
+        setLocalizedData({ ...productDescrData, i18nFields: { ...i18nFields } });
+
+        setCurLocalizedData({ ...productDescrData, i18nFields: { ...i18nFields } });
+      });
+    }
+  }, [currentProductData?.descriptionId]);
+  useEffect(() => {
+    if (storeLanguages?.length && !currentProductData?.parentId && !parentId) {
+      const i18nFields = { ...curLocalizedData.i18nFields };
+      storeLanguages.forEach((language) => {
+        if (!i18nFields[language]) {
+          i18nFields[language] = !currentProductData?.parentId
+            ? { ...defLocalizationObj } : { ...defProductVariationObj };
+        }
+      });
+      setLocalizedData({ ...localizedData, i18nFields: { ...i18nFields } });
+
+      setCurLocalizedData({ ...curLocalizedData, i18nFields: { ...i18nFields } });
+    }
+  }, [storeLanguages]);
 
   const saveProduct = async () => {
     if (!currentProductData.businessSegment) {
@@ -193,10 +319,8 @@ const ProductDetailsScreen = () => {
     }
 
     if (id === 'add' && (productData?.parentId || parentId)) {
-      const { tempData } = store.getState();
-
       const localizationChangesToSave = saveLocalizationDetails(
-        tempData, currentProductData, nxState,
+        curLocalizedData, currentProductData, nxState,
       );
 
       const {
@@ -233,11 +357,9 @@ const ProductDetailsScreen = () => {
       const id_ = loc[loc.length - 1];
 
       api.getProductById(id_).then(({ data }) => {
-        if (productHasLocalizationChanges && !parentId && productData?.parentId) {
-          const { tempData } = store.getState();
-
+        if (localizedContentHasChanges && !parentId && !productData?.parentId) {
           const localizationChangesToSave = saveLocalizationDetails(
-            tempData, currentProductData, nxState,
+            curLocalizedData, currentProductData, nxState,
           );
 
           api
@@ -257,7 +379,7 @@ const ProductDetailsScreen = () => {
             });
         } else {
           toast(localization.t('general.updatesHaveBeenSaved'));
-          setProductLocalizationChanges(false);
+          setLocalizedContentHasChanges(false);
           setLoading(true);
           history.push(`${parentPaths.productlist}/${id_}`);
         }
@@ -373,12 +495,6 @@ const ProductDetailsScreen = () => {
         setSubProductVariations,
         (catalogId) => {
           setCurrentProductData((c) => ({ ...c, customerId, catalogId }));
-          setDisabledWithMandLocal(
-            productDetails && productDetails?.i18nFields
-              && productDetails?.i18nFields[productDetails.fallbackLocale]
-              ? !productDetails?.i18nFields[productDetails.fallbackLocale]?.localizedMarketingName
-              : true,
-          );
         },
         true,
       );
@@ -386,12 +502,11 @@ const ProductDetailsScreen = () => {
 
     return () => {
       isCancelled = true;
+      setCurrentProductData(defaultProduct);
       setSubProductVariations({});
-      dispatch(setTempProductLocales({}));
       dispatch(setTempProductDescription({}));
     };
   }, [id, upd, history?.state]);
-
   useEffect(() => {
     setLoading(true);
     setCurTab(0);
@@ -420,6 +535,12 @@ const ProductDetailsScreen = () => {
 
     return () => setProductChanges(false);
   }, [currentProductData]);
+
+  useEffect(() => {
+    setLocalizedContentHasChanges(JSON.stringify(curLocalizedData)
+      !== JSON.stringify(localizedData));
+    return () => setLocalizedContentHasChanges(false);
+  }, [curLocalizedData]);
 
   useEffect(() => {
     if (selectOptions.sellingStores) {
@@ -463,7 +584,6 @@ const ProductDetailsScreen = () => {
   const lifetimeSaveDisabled = currentProductData?.parentId
     && checkValue(currentProductData?.lifeTime) === 'PERMANENT'
     && checkValue(currentProductData?.subscriptionTemplate);
-
   return (
     <DetailPageWrapper
       nxState={nxState}
@@ -473,9 +593,10 @@ const ProductDetailsScreen = () => {
           ? localization.t('labels.newProduct')
           : `${productData?.genericName?.value || productData?.genericName} - ${id}`
       }
-      saveIsDisabled={saveDisabled || tabsDisabled || disabledWithMandLocal
-        || !jsonIsValid || priceTableError.length > 0 || lifetimeSaveDisabled}
-      hasChanges={productHasChanges || productHasLocalizationChanges || !productData?.id}
+      saveIsDisabled={saveDisabled || tabsDisabled || lifetimeSaveDisabled
+        || !jsonIsValid || priceTableError.length > 0 || Object.keys(localizedErrors).length}
+      hasChanges={productHasChanges || !productData?.id
+        || localizedContentHasChanges}
       isLoading={isLoading}
       setUpdate={setUpd}
       curParentPath={parentPaths.productlist}
@@ -519,6 +640,10 @@ const ProductDetailsScreen = () => {
       flexWrapper={codeMode && curTab === 3}
     >
       <ProductDetailsView
+        localizedErrors={localizedErrors}
+        setLocalizedErrors={setLocalizedErrors}
+        curLocalizedData={curLocalizedData}
+        setCurLocalizedData={setCurLocalizedData}
         digitsErrors={digitsErrors}
         setDigitsErrors={setDigitsErrors}
         priceTableError={priceTableError}
@@ -540,7 +665,6 @@ const ProductDetailsScreen = () => {
         setSaveDisabled={setSaveDisabled}
         setTabsDisabled={setTabsDisabled}
         parentId={parentId || currentProductData?.parentId}
-        setDisabledWithMandLocal={setDisabledWithMandLocal}
         setCodeMode={setCodeMode}
         codeMode={codeMode}
         jsonIsValid={jsonIsValid}

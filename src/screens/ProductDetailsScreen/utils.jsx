@@ -122,7 +122,7 @@ const handleGetProductDetails = (
       const { data: dataParent } = parentDescr;
       const i18nFields = avail.reduce((accumulator, current) => {
         const childLocalizedValues = localizedValues.reduce(
-          (acc, curr) => ({ ...acc, [curr]: data[curr] ? data[curr][current] : '' }),
+          (acc, curr) => ({ ...acc, [curr]: data[curr]?.[current] }),
           {},
         );
         const parentLocalizedValues = localizedValues.reduce(
@@ -192,24 +192,10 @@ const handleGetProductDetails = (
 };
 
 const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
-  // eslint-disable-next-line no-underscore-dangle
-  let i18nFields_ = {};
-
-  const {
-    description: description_ = {},
-    i18nFields: i18nTemp,
-  } = tempData;
-
-  if (!Object.keys(i18nTemp).length) {
-    i18nFields_ = { ...description_?.i18nFields };
-  } else {
-    i18nFields_ = i18nTemp;
-  }
-
   const frontToBackObj = frontToBack({
-    ...description_,
-    fallbackLocale: checkValue(description_?.fallbackLocale) || 'en-US',
-    i18nFields: i18nFields_,
+    ...tempData,
+    fallbackLocale: checkValue(tempData?.fallbackLocale) || 'en-US',
+    i18nFields: tempData.i18nFields,
   });
 
   const i18nFields = Object.entries(frontToBackObj.i18nFields).reduce(
@@ -243,7 +229,7 @@ const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
   }
 
   if (!Object.keys(dataToSave?.localizedMarketingName)?.length) {
-    dataToSave.localizedMarketingName = { 'en-US': '' };
+    dataToSave.localizedMarketingName = { [dataToSave.fallbackLocale]: '' };
   }
 
   return dataToSave;
@@ -300,6 +286,22 @@ const validateNumberInput = (curVal, prevVal) => {
   }
   return res;
 };
+const defLocalizationObj = {
+  localizedLongDesc: '',
+  localizedManualRenewalEmailDesc: '',
+  localizedMarketingName: '',
+  localizedPurchaseEmailDesc: '',
+  localizedShortDesc: '',
+  localizedThankYouDesc: '',
+};
+const defProductVariationObj = {
+  localizedLongDesc: { parentValue: '', state: 'inherits', value: '' },
+  localizedManualRenewalEmailDesc: { parentValue: '', state: 'inherits', value: '' },
+  localizedMarketingName: { parentValue: '', state: 'inherits', value: '' },
+  localizedPurchaseEmailDesc: { parentValue: '', state: 'inherits', value: '' },
+  localizedShortDesc: { parentValue: '', state: 'inherits', value: '' },
+  localizedThankYouDesc: { parentValue: '', state: 'inherits', value: '' },
+};
 
 export {
   handleGetOptions,
@@ -309,4 +311,6 @@ export {
   beforeSend,
   handleFilterOptions,
   validateNumberInput,
+  defLocalizationObj,
+  defProductVariationObj,
 };

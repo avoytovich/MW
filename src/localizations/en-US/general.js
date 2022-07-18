@@ -132,6 +132,10 @@ const general = {
   abandonedCart: 'Abandoned Cart',
   pleaseSelectFallbackLocale: 'Please select a fallback locale',
   realm: 'Realm',
+  input: 'input',
+  addLanguage: 'Add Language',
+  needsToBeSelected: 'needs to be selected',
+  forAdding: 'For adding',
 };
 
 export default general;

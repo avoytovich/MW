@@ -12,6 +12,7 @@ const localizedContentDefObject = {
 };
 const defInputs = ['localizedShortDesc', 'localizedLongDesc', 'localizedLogo', 'bannerImageUrl', 'bannerLinkUrl'];
 const tinyInputs = ['localizedShortDesc', 'localizedLongDesc'];
+const requiredFields = ['localizedShortDesc'];
 const generateLocals = (longDesc = {}, shortDesc = {}, locLogo = {}, locBanner = {}) => {
   const res = {};
   Object.keys(shortDesc).forEach((shortKey) => {
@@ -137,4 +138,5 @@ export {
   tinyInputs,
   validateFields,
   localizedContentDefObject,
+  requiredFields,
 };

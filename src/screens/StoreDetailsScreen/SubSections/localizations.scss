@@ -11,18 +11,18 @@
     justify-content: center;
     padding: 15px;
     padding-right: 30px;
-  
+
     & > * {
       margin: 5px 0;
     }
-  
+
     ul{
       margin-left: 30px;
     }
-  
-  
+
+
   }
-  
+
   .localization-text-legend{
     display: inline-block;
     padding: 0 10px;
@@ -31,14 +31,14 @@
     left: -12px;
     background: #fff;
     transform: scale(0.75);
-  
+
     &.empty {
       top: 22px;
       left: 5px;
       transform: scale(1);
     }
   }
-  
+
   .edit-loc-field{
     opacity: 0;
   }
@@ -74,11 +74,4 @@
     color: $navItemButtonHover;
     cursor: pointer;
   }
-}
-
-.error-message{
-  font-size: 12px;
-  position: absolute;
-  color: #ff0202;
-  font-style: italic;
 }

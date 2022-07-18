@@ -107,12 +107,12 @@ const discountRequiredFields = (discount) => {
     key: 'default',
     value: '',
   });
-  const localizedLabels = fromObjectToArray(
-    discount.localizedLabels,
-    'key',
-    { key: 'neutral', value: '' },
-  );
-
+  const localizedLabels = {};
+  if (discount?.localizedLabels) {
+    Object.keys(discount?.localizedLabels)?.forEach(((labKey) => {
+      localizedLabels[labKey] = { discountLabel: discount.localizedLabels[labKey] };
+    }));
+  }
   const resObj = {
     ...defDiscount,
     ...discount,

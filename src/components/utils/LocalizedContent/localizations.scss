@@ -15,12 +15,9 @@
     & > * {
       margin: 5px 0;
     }
-
     ul{
       margin-left: 30px;
     }
-
-
   }
 
   .localization-text-legend{
@@ -74,4 +71,60 @@
     color: $navItemButtonHover;
     cursor: pointer;
   }
+}
+.errorText{
+  font-size: 12px;
+  position: absolute;
+  color: #ff0202;
+  font-style: italic;
+  bottom: 0;
+  padding-bottom: 5px;
+}
+.inputsWrapper{
+  position:relative;
+}
+.countryListItem{
+
+  &:hover{
+    background-color: #4791db21;
+    cursor: pointer;
+  }
+}
+#root {
+  .mce-content-body {
+    border: 1px solid $disabledGray;
+    padding: 17px 10px;
+    min-height: 56px;
+    border-radius: 4px;
+    width: 100%;
+
+    &.mce-edit-focus {
+      border-color: $navItemButtonActive;
+    }
+
+    &:focus-visible {
+      outline: none;
+    }
+
+    &:hover {
+      border-color: $darkGray;
+    }
+
+    &:not([dir=rtl])[data-mce-placeholder]:not(.mce-visualblocks)::before {
+      color: $discountInputText;
+      left: 10px;
+    }
+
+    ul, ol{
+      padding-left: 20px;
+    }
+  }
+}
+.notificationText{
+  position: absolute;
+  bottom: -33px;
+  padding-bottom: 20px;
+  font-size: 12px;
+  font-style: italic;
+  color: #b9b1b1,
 }

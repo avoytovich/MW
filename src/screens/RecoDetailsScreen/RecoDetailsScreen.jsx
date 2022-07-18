@@ -22,6 +22,7 @@ const RecoDetailsScreen = () => {
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const { id } = useParams();
   const [isLoading, setLoading] = useState(true);
+  const [localizedErrors, setLocalizedErrors] = useState({});
 
   const [customerName, setCustomerName] = useState(null);
   const [reco, setReco] = useState(null);
@@ -39,7 +40,12 @@ const RecoDetailsScreen = () => {
   });
 
   const beforeSend = () => {
-    const objToSend = { ...curReco };
+    const localizedDesc = {};
+    Object.keys(curReco.localizedDesc).forEach((lang) => {
+      localizedDesc[lang] = curReco.localizedDesc[lang].recommendationDescription;
+    });
+    const objToSend = { ...curReco, localizedDesc };
+
     if (curReco.function === 'idToIdsRecoRule') {
       delete objToSend.productIds;
       objToSend.byParentProductIds = fromArrayToObj(curReco.byParentProductIds);
@@ -186,7 +192,7 @@ const RecoDetailsScreen = () => {
       name={curReco?.name || `${localization.t('general.new')} ${localization.t(
         'general.recommendation',
       )}`}
-      saveIsDisabled={curReco?.name === '' || curReco?.errors?.endDate}
+      saveIsDisabled={curReco?.name === '' || curReco?.errors?.endDate || Object.keys(localizedErrors).length}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.recommendations}
@@ -202,6 +208,8 @@ const RecoDetailsScreen = () => {
       }}
     >
       <RecoDetailsView
+        localizedErrors={localizedErrors}
+        setLocalizedErrors={setLocalizedErrors}
         curReco={curReco}
         curTab={curTab}
         setCurReco={setCurReco}

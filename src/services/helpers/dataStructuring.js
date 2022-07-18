@@ -276,7 +276,7 @@ const formatePaymentGroups = (array) => {
   });
   return newParams;
 };
-
+const defaultStoreLocalObj = { deliveryRemark: '' };
 const storeRequiredFields = (store) => {
   const res = { ...defaultStore, ...store };
 
@@ -308,7 +308,13 @@ const storeRequiredFields = (store) => {
     res.paymentGroups = nwePaymentGroups;
   }
   if (Object.keys(res.thankYouDesc).length === 0 && res.defaultLocale) {
-    res.thankYouDesc = { [res.defaultLocale]: '' };
+    res.thankYouDesc = { [res.defaultLocale]: defaultStoreLocalObj };
+  } else {
+    const newThankYouDesc = {};
+    Object.keys(res.thankYouDesc).forEach((elKey) => {
+      newThankYouDesc[elKey] = { deliveryRemark: res.thankYouDesc[elKey] };
+    });
+    res.thankYouDesc = { ...newThankYouDesc };
   }
 
   return res;

@@ -55,9 +55,15 @@ const recoRequiredFields = (reco) => {
     resObj.byParentProductIds,
     'byParentProductIds',
   );
-
+  const localizedDesc = {};
+  if (reco.localizedDesc) {
+    Object.keys(reco.localizedDesc)?.forEach((lang) => {
+      localizedDesc[lang] = { recommendationDescription: reco.localizedDesc[lang] };
+    });
+  }
   return {
     ...resObj,
+    localizedDesc,
     byParentProductIds: newByParentProductIds,
     byProductIds: newByProductIds,
   };

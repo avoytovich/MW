@@ -132,6 +132,18 @@ const formatBeforeSending = (currentStoreData, currentStoreResources, resourcesH
     },
   };
   delete updatedData.paymentGroups;
+  const formattedThankYouDesc = {};
+  if (updatedData.thankYouDesc) {
+    Object.keys(updatedData.thankYouDesc).forEach((it) => {
+      if (updatedData.thankYouDesc?.[it].deliveryRemark) {
+        formattedThankYouDesc[it] = updatedData.thankYouDesc[it].deliveryRemark;
+      }
+    });
+    delete updatedData.thankYouDesc;
+    if (Object.keys(formattedThankYouDesc).length) {
+      updatedData.thankYouDesc = { ...formattedThankYouDesc };
+    }
+  }
   return updatedData;
 };
 const customerTypeOptions = [{ id: 'PERSONAL', value: 'Personal' }, { id: 'COMPANY', value: 'Company' }];

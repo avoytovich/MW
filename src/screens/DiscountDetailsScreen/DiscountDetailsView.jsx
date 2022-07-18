@@ -11,7 +11,15 @@ import DiscountSection from './DiscountSection';
 import './discountDetailsScreen.scss';
 
 const DiscountDetailsView = ({
-  curDiscount, curTab, setCurDiscount, discount, setAmountType, amountType, selectOptions,
+  curDiscount,
+  curTab,
+  setCurDiscount,
+  discount,
+  setAmountType,
+  amountType,
+  selectOptions,
+  localizedErrors,
+  setLocalizedErrors,
 }) => {
   const [checkedSingleUseCode, setCheckedSingleUseCode] = useState(false);
   const [prevSaveSingleUseCode, setPrevSaveSingleUseCode] = useState(false);
@@ -44,6 +52,8 @@ const DiscountDetailsView = ({
       {curTab === 0 && (
         <DiscountSection label='general'>
           <General
+            localizedErrors={localizedErrors}
+            setLocalizedErrors={setLocalizedErrors}
             id={discount.id}
             amountType={amountType}
             setAmountType={setAmountType}
@@ -94,6 +104,8 @@ DiscountDetailsView.propTypes = {
   setAmountType: PropTypes.func,
   amountType: PropTypes.string,
   curTab: PropTypes.number,
+  localizedErrors: PropTypes.object,
+  setLocalizedErrors: PropTypes.func,
 };
 
 export default DiscountDetailsView;

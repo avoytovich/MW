@@ -13,6 +13,7 @@ import {
 import { getCustomerName } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 import parentPaths from '../../services/paths';
+
 import {
   formDesignOptions,
   structureResources,
@@ -29,6 +30,7 @@ const StoreDetailsScreen = () => {
   // eslint-disable-next-line no-unused-vars
   const [customerName, setCustomerName] = useState(null);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const [localizedErrors, setLocalizedErrors] = useState({});
 
   const [currentStoreResources, setCurrentStoreResources] = useState([]);
   const [storeResources, setStoreResources] = useState([]);
@@ -62,6 +64,11 @@ const StoreDetailsScreen = () => {
     });
     return res;
   };
+  const checkThankYouDesc = () => {
+    const res = Object.keys(currentStoreData.thankYouDesc)
+      .filter((it) => !!currentStoreData.thankYouDesc[it].deliveryRemark);
+    return res.length > 0 && !currentStoreData.thankYouDesc[currentStoreData.defaultLocale];
+  };
   const handleDisabledSave = (currentStoreData?.externalContextAlias
     && !!currentStoreData?.externalContextGenerationParams.length)
     || !currentStoreData?.name
@@ -71,7 +78,8 @@ const StoreDetailsScreen = () => {
     || (!currentStoreData?.emailSenderOverride.startsWith(`${currentCustomerData?.iamClient?.realmName}-`)
       && currentStoreData?.emailSenderOverride !== currentCustomerData?.iamClient?.realmName)
     || Object.keys(errors).filter((item) => (!tabLabels.includes(item))).length > 0
-    || (Object.keys(currentStoreData.thankYouDesc).length > 1 && currentStoreData.thankYouDesc[currentStoreData.defaultLocale] === '');
+    || checkThankYouDesc()
+    || Object.keys(localizedErrors).length > 0;
 
   const beforeSend = () => {
     const updatedData = formatBeforeSending(
@@ -105,7 +113,7 @@ const StoreDetailsScreen = () => {
         setCurrentStoreResources(
           JSON.parse(JSON.stringify(resourcesArray)),
         );
-        setStoreData(checkedStore);
+        setStoreData(JSON.parse(JSON.stringify(checkedStore)));
         setCurrentStoreData(checkedStore);
         if (store?.customerId) {
           api.getCustomerById(store?.customerId)
@@ -276,6 +284,8 @@ const StoreDetailsScreen = () => {
       customer={currentCustomerData}
     >
       <StoreDetailsView
+        localizedErrors={localizedErrors}
+        setLocalizedErrors={setLocalizedErrors}
         errors={errors}
         setErrors={setErrors}
         isRankingOpen={isRankingOpen}
