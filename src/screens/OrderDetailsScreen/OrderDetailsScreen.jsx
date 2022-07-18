@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import {
   Box,
@@ -19,6 +20,7 @@ import OrderDetailsView from './OrderDetailsView';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import CustomerStatusLabel from '../../components/utils/CustomerStatusLabel';
 import { tabLabels } from './utils';
+import { setHeaderCustomerName } from '../../redux/actions/TableData';
 
 const OrderDetailsScreen = () => {
   const [curLanguage, setCurLanguage] = useState('');
@@ -32,6 +34,9 @@ const OrderDetailsScreen = () => {
   const [orderData, setOrderData] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [subscriptions, setSubscriptions] = useState(null);
+
+  const dispatch = useDispatch();
+
   const handleClose = () => setAnchorEl(null);
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const resyncPayment = () => {
@@ -90,6 +95,10 @@ const OrderDetailsScreen = () => {
       isCancelled = true;
     };
   }, [update]);
+
+  useEffect(() => {
+    dispatch(setHeaderCustomerName({ ...customer }));
+  }, [customer]);
 
   return (
     <DetailPageWrapper

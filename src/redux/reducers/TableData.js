@@ -7,6 +7,7 @@ import {
   RESET_TABLE_SEARCH,
   SET_TABLE_ROWS_PER_PAGE,
   SET_TABLE_CHECKED_ITEMS_DATA,
+  SET_HEADER_CUSTOMER_NAME,
   SET_WAS_UPDATED,
   SET_TABLE_FILTER_VIEWS,
   SET_TABLE_CURRENT_PAGE,
@@ -24,6 +25,7 @@ const initialState = {
   currentPage: 1,
   checkedItemsData: [],
   curCheckedItemsData: [],
+  customerName: {},
   wasUpdated: false,
 };
 
@@ -35,6 +37,7 @@ const TableData = (state = initialState, { type, payload }) => {
     case RESET_TABLE_SEARCH:
     case SET_TABLE_CHECKED_ITEMS_DATA:
     case SET_TABLE_CUR_CHECKED_ITEMS_DATA:
+    case SET_HEADER_CUSTOMER_NAME:
     case SET_TABLE_ROWS_PER_PAGE:
     case SET_TABLE_CURRENT_PAGE:
     case SET_TABLE_FILTER_VIEWS:

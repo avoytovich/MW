@@ -24,7 +24,7 @@ const CustomBreadcrumbs = ({ sections, url, id = null }) => {
     dispatch(resetSearch());
   }
   return (
-    <Box display='flex' flexDirection='row' pb={2}>
+    <Box display='flex' flexDirection='row' pb={1}>
       {filteredSections.map((section, index) => {
         const slash = index !== (filteredSections.length - 1) ? '/' : id ? '/' : '';
         const sectionName = localization.t(`sections.${section}`);

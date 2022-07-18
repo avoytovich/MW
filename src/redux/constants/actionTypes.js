@@ -18,6 +18,7 @@ export const RESET_TABLE_SEARCH = 'table/resetSearch';
 export const SET_TABLE_ROWS_PER_PAGE = 'table/setRowsPerPage';
 export const SET_TABLE_CHECKED_ITEMS_DATA = 'table/setCheckedItemsData';
 export const SET_TABLE_CUR_CHECKED_ITEMS_DATA = 'table/setCurCheckedItemsData';
+export const SET_HEADER_CUSTOMER_NAME = 'table/setHeaderCustomerName';
 
 export const SET_WAS_UPDATED = 'table/setWasUpdated';
 export const SET_TABLE_CURRENT_PAGE = 'table/setCurrentPage';
