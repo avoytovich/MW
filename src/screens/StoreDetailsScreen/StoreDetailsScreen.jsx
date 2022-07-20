@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -56,6 +56,17 @@ const StoreDetailsScreen = () => {
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
 
+  const myRefGeneral = useRef(null);
+  const myRefDesign = useRef(null);
+  const myRefPayment = useRef(null);
+  const myRefLocalizedContent = useRef(null);
+
+  const refScrool = [
+    myRefGeneral,
+    myRefDesign,
+    myRefPayment,
+    myRefLocalizedContent,
+  ];
   const dispatch = useDispatch();
 
   const getCustomersIdsArray = (...array) => {
@@ -92,6 +103,17 @@ const StoreDetailsScreen = () => {
       resourcesHasChanges,
     );
     return updatedData;
+  };
+
+  const validation = () => {
+    if (checkExistingLabelsUrl(currentStoreResources)) {
+      if (!checkLabelDuplicate(currentStoreResources)) {
+        if (!checkGroupFields(currentStoreData)) {
+          return false;
+        }
+      }
+    }
+    return true;
   };
 
   useEffect(() => {
@@ -244,17 +266,6 @@ const StoreDetailsScreen = () => {
     }
   }, [currentCustomerData?.id]);
 
-  const validation = () => {
-    if (checkExistingLabelsUrl(currentStoreResources)) {
-      if (!checkLabelDuplicate(currentStoreResources)) {
-        if (!checkGroupFields(currentStoreData)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
   useEffect(() => {
     dispatch(setHeaderCustomerName({ ...currentCustomerData }));
   }, [currentCustomerData]);
@@ -290,6 +301,7 @@ const StoreDetailsScreen = () => {
         />
       )}
       customer={currentCustomerData}
+      refScrool={refScrool}
     >
       <StoreDetailsView
         localizedErrors={localizedErrors}
@@ -304,7 +316,9 @@ const StoreDetailsScreen = () => {
         currentStoreResources={currentStoreResources}
         setCurrentStoreResources={setCurrentStoreResources}
         curTab={curTab}
+        setCurTab={setCurTab}
         customer={currentCustomerData}
+        refScrool={refScrool}
       />
     </DetailPageWrapper>
   );

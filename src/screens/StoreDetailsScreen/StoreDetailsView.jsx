@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Box } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import Payment from './SubSections/Payment';
 import General from './SubSections/General';
@@ -11,6 +13,10 @@ import {
   resourceLabel,
 } from './utils';
 
+import useScroolWithTabs from '../../services/hooks/useScroolWithTabs';
+
+import './storeDetailsScreen.scss';
+
 const StoreDetailsView = ({
   currentStoreData,
   selectOptions,
@@ -21,14 +27,20 @@ const StoreDetailsView = ({
   setErrors,
   isRankingOpen,
   setIsRankingOpen,
-  curTab,
+  setCurTab,
   customer,
+  refScrool = [],
   localizedErrors,
   setLocalizedErrors,
-}) => (
-  <>
-    {curTab === 0 && (
-      <StoreSection label={tabLabels[0]}>
+}) => {
+  const [showTopBtn, goToTop] = useScroolWithTabs(refScrool, setCurTab);
+
+  return (
+    <>
+      <StoreSection
+        label={tabLabels[0]}
+        myRef={refScrool[0]}
+      >
         <General
           errors={errors}
           setErrors={setErrors}
@@ -38,19 +50,23 @@ const StoreDetailsView = ({
           selectOptions={selectOptions}
         />
       </StoreSection>
-    )}
-    {curTab === 1 && (
-      <Design
-        resourceLabel={resourceLabel}
-        currentStoreResources={currentStoreResources}
-        setCurrentStoreResources={setCurrentStoreResources}
-        selectOptions={selectOptions}
-        currentStoreData={currentStoreData}
-        setCurrentStoreData={setCurrentStoreData}
-      />
-    )}
-    {curTab === 2 && (
-      <StoreSection label={tabLabels[2]}>
+      <StoreSection
+        label={tabLabels[1]}
+        myRef={refScrool[1]}
+      >
+        <Design
+          resourceLabel={resourceLabel}
+          currentStoreResources={currentStoreResources}
+          setCurrentStoreResources={setCurrentStoreResources}
+          selectOptions={selectOptions}
+          currentStoreData={currentStoreData}
+          setCurrentStoreData={setCurrentStoreData}
+        />
+      </StoreSection>
+      <StoreSection
+        label={tabLabels[2]}
+        myRef={refScrool[2]}
+      >
         <Payment
           errors={errors}
           setErrors={setErrors}
@@ -61,9 +77,10 @@ const StoreDetailsView = ({
           setCurrentStoreData={setCurrentStoreData}
         />
       </StoreSection>
-    )}
-    {curTab === 3 && (
-      <StoreSection label={tabLabels[3]}>
+      <StoreSection
+        label={tabLabels[3]}
+        myRef={refScrool[3]}
+      >
         <LocalizedContent
           isVertical
           setLocalizedData={(newValue) => {
@@ -78,9 +95,17 @@ const StoreDetailsView = ({
           localizedData={currentStoreData.thankYouDesc}
         />
       </StoreSection>
-    )}
-  </>
-);
+      <Box m={2} className='top-to-btm'>
+        {showTopBtn && (
+          <ArrowUpwardIcon
+            className='icon-position icon-style'
+            onClick={goToTop}
+          />
+        )}
+      </Box>
+    </>
+  );
+};
 
 StoreDetailsView.propTypes = {
   setCurrentStoreData: PropTypes.func,
@@ -94,8 +119,9 @@ StoreDetailsView.propTypes = {
   setErrors: PropTypes.func,
   isRankingOpen: PropTypes.bool,
   setIsRankingOpen: PropTypes.func,
-  curTab: PropTypes.number,
+  setCurTab: PropTypes.func,
   customer: PropTypes.object,
+  refScrool: PropTypes.array,
 };
 
 export default StoreDetailsView;
