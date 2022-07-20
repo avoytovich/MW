@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-
+import moment from 'moment';
 import {
   Box,
   Button,
@@ -30,6 +30,70 @@ const Subscriptions = ({ subscriptions, setUpdate }) => {
     });
   };
 
+  const renderRowValue = (sub, key) => {
+    switch (key) {
+      case 'subscriptionId':
+        return (
+          <Box display='flex'>
+            <Box className="rowValue">
+              {sub[key]}
+            </Box>
+            <Box ml={2}>
+              <FileCopyIcon
+                onClick={() => makeCopy(sub[key])}
+                style={{ marginLeft: '5px' }}
+                color="secondary"
+                className="actionIcon"
+              />
+            </Box>
+          </Box>
+        );
+      case 'creationDate':
+      case 'expirationDate':
+        return (
+          moment(sub[key]).format('YYYY-MM-DD')
+        );
+      default:
+        return (
+          sub[key]
+        );
+    }
+  };
+
+  const renderRowKey = (data) => (
+    data.map((sub) => (
+      <Grid key={sub.subscriptionId} item md={4} xs={12}>
+        <Box bgcolor='#fff' boxShadow={2} height='100%' py={2}>
+          {Object.keys(sub).map((key) => (
+            <Grid container className="orderDetailsRow" key={`${key}_${sub.subscriptionId}`}>
+              <Grid item md={6} xs={6}>
+                <Box p={2} fontWeight={500}>
+                  {localization.t(`labels.${key}`)}
+                </Box>
+              </Grid>
+              <Grid item md={6} xs={6}>
+                <Box p={2} className="rowValue">
+                  {renderRowValue(sub, key)}
+                </Box>
+              </Grid>
+            </Grid>
+          ))}
+          <Box p={2} style={{ textAlign: 'center' }}>
+            <Button
+              style={sub.status !== 'Active' ? { backgroundColor: '#00A300' } : { backgroundColor: '#FF0000' }}
+              size='large'
+              variant='contained'
+              onClick={() => handleClick(sub.subscriptionId, sub.status)}
+            >
+              {sub.status !== 'Active' ? localization.t('labels.resume') : localization.t('labels.suspend')}
+            </Button>
+          </Box>
+        </Box>
+
+      </Grid>
+    ))
+  );
+
   useEffect(() => {
     const data = (subscriptions && subscriptions.length > 0)
       ? generateSubscriptions(subscriptions) : null;
@@ -40,53 +104,7 @@ const Subscriptions = ({ subscriptions, setUpdate }) => {
 
   return subscriptionsData ? (
     <Grid container spacing={2}>
-      {subscriptionsData.map((sub) => (
-        <Grid key={sub.subscriptionId} item md={4} xs={12}>
-          <Box bgcolor='#fff' boxShadow={2} height='100%' py={2}>
-            {Object.keys(sub).map((key) => (
-              <Grid container className="orderDetailsRow" key={`${key}_${sub.subscriptionId}`}>
-                <Grid item md={6} xs={6}>
-                  <Box p={2} fontWeight={500}>
-                    {localization.t(`labels.${key}`)}
-                  </Box>
-                </Grid>
-                <Grid item md={6} xs={6}>
-                  <Box p={2} className="rowValue">
-                    {key !== 'subscriptionId' ? (
-                      sub[key]
-                    ) : (
-                      <Box display='flex'>
-                        <Box className="rowValue">
-                          {sub[key]}
-                        </Box>
-                        <Box ml={2}>
-                          <FileCopyIcon
-                            onClick={() => makeCopy(sub[key])}
-                            style={{ marginLeft: '5px' }}
-                            color="secondary"
-                            className="actionIcon"
-                          />
-                        </Box>
-                      </Box>
-                    )}
-                  </Box>
-                </Grid>
-              </Grid>
-            ))}
-            <Box p={2} style={{ textAlign: 'center' }}>
-              <Button
-                style={sub.status !== 'Active' ? { backgroundColor: '#00A300' } : { backgroundColor: '#FF0000' }}
-                size='large'
-                variant='contained'
-                onClick={() => handleClick(sub.subscriptionId, sub.status)}
-              >
-                {sub.status !== 'Active' ? localization.t('labels.resume') : localization.t('labels.suspend')}
-              </Button>
-            </Box>
-          </Box>
-
-        </Grid>
-      ))}
+      {renderRowKey(subscriptionsData)}
     </Grid>
   ) : <Box p={2}><Typography>{localization.t('general.noSubscriptions')}</Typography></Box>;
 };
