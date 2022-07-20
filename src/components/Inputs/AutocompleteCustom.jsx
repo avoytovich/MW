@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Autocomplete, TextField } from '@mui/material';
+import {
+  Autocomplete, TextField, Paper,
+} from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../localization';
 
@@ -31,6 +33,9 @@ const AutocompleteCustom = ({
     <Autocomplete
       fullWidth
       disabled={isDisabled}
+      PaperComponent={({ children }) => (
+        <Paper style={{ marginBottom: 10 }}>{children}</Paper>
+      )}
       inputValue={search}
       value={curOption}
       onChange={(event, newValue) => {
