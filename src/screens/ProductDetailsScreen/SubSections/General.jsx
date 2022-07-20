@@ -75,6 +75,10 @@ const General = ({
 
   const { lifeTime: lifetime, subscriptionTemplate, fulfillmentTemplate } = currentProductData;
 
+  const handleSelectOptions = selectOptions?.renewingProducts
+    ?.filter((item) => item.id !== currentProductData.id)
+    ?.sort(sortByAlphabetical) || [];
+
   useEffect(() => {
     setSaveDisabled(!!(fulfillmentTemplate && selectedBundledProduct));
   }, [fulfillmentTemplate, selectedBundledProduct]);
@@ -717,7 +721,7 @@ const General = ({
                 optionLabelKey='value'
                 label='productNameOrId'
                 onSelect={setSelectedBundledProduct}
-                selectOptions={selectOptions?.renewingProducts?.sort(sortByAlphabetical) || []}
+                selectOptions={handleSelectOptions}
                 curValue={checkValue(selectedBundledProduct) || ''}
                 isDisabled={currentProductData?.subProducts?.state === 'inherits'}
                 error={!!(fulfillmentTemplate && selectedBundledProduct)}
