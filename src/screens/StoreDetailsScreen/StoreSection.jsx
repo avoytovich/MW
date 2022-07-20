@@ -4,10 +4,12 @@ import { Box, Typography, Grid } from '@mui/material';
 
 import localization from '../../localization';
 
-const StoreSection = ({ label, children }) => (
+const StoreSection = ({
+  label, myRef, children,
+}) => (
   <Box mb={3} bgcolor="#fff" p={4} boxShadow={2}>
     <Box p={2}>
-      <Typography gutterBottom variant="h4">
+      <Typography gutterBottom variant="h4" id={label} ref={myRef}>
         {localization.t(`labels.${label}`)}
       </Typography>
     </Box>
@@ -16,9 +18,9 @@ const StoreSection = ({ label, children }) => (
     </Grid>
   </Box>
 );
-
 StoreSection.propTypes = {
   label: PropTypes.string,
+  myRef: PropTypes.object,
   children: PropTypes.node,
 };
 

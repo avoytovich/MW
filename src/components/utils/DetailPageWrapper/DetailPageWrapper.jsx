@@ -54,6 +54,7 @@ const DetailPageWrapper = ({
   isRankingOpen,
   flexWrapper,
   customer,
+  refScrool = null,
 }) => {
   const { id: paramsId } = useParams();
   const location = useLocation();
@@ -88,6 +89,11 @@ const DetailPageWrapper = ({
   if (id === 'add' && !nxState?.selectedCustomer?.id && !nxStateNotNeeded) {
     return <SelectCustomerNotification />;
   }
+
+  const handleChange = (event, newValue) => {
+    refScrool[newValue]?.current.scrollIntoView();
+    return tabs?.setCurTab(newValue);
+  };
 
   const CustomizedTab = styled(Tab)`
     color: red;
@@ -163,9 +169,7 @@ const DetailPageWrapper = ({
             value={tabs?.curTab}
             indicatorColor='primary'
             textColor='primary'
-            onChange={(event, newValue) => {
-              tabs?.setCurTab(newValue);
-            }}
+            onChange={handleChange}
             aria-label='disabled tabs example'
           >
             {tabs?.tabLabels.map((tab) => {
