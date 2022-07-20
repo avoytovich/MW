@@ -8,10 +8,23 @@ import {
   generateData,
   defaultShow,
 } from '../../services/useData/tableMarkups/subscriptions';
+import {
+  getSortParams,
+  saveSortParams,
+  sortKeys,
+} from '../../services/sorting';
 
 const SubscriptionsScreen = () => {
   const scope = 'subscriptions';
   const [isLoading, setLoading] = useState(true);
+  const [sortParams, setSortParams] = useState(
+    getSortParams(sortKeys.subscriptions),
+  );
+
+  const handleSetSortParams = (params) => {
+    setSortParams(params);
+    saveSortParams(sortKeys.subscriptions, params);
+  };
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getSubscriptions({
@@ -36,6 +49,8 @@ const SubscriptionsScreen = () => {
       <TableComponent
         scope={scope}
         defaultShowColumn={defaultShow}
+        sortParams={sortParams}
+        setSortParams={handleSetSortParams}
         tableData={subscriptions}
         isLoading={isLoading}
         noActions
