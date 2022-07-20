@@ -302,7 +302,7 @@ const CatalogsDetailsView = ({
               <TextField
                 fullWidth
                 name='afterDate'
-                value={curCatalogs?.startDate ? moment(curCatalogs.startDate).format('YYYY-MM-DD') : ''}
+                value={curCatalogs?.startDate ? moment(curCatalogs.startDate).format('YYYY-MM-DDTkk:mm') : ''}
                 label={localization.t('labels.after')}
                 type='datetime-local'
                 variant='outlined'
@@ -326,9 +326,9 @@ const CatalogsDetailsView = ({
               <TextField
                 fullWidth
                 name='fromDate'
-                value={curCatalogs?.startDate ? moment(curCatalogs.startDate).format('YYYY-MM-DD') : ''}
+                value={curCatalogs?.startDate ? moment(curCatalogs.startDate).format('YYYY-MM-DDTkk:mm') : ''}
                 label={localization.t('labels.from')}
-                type='date'
+                type='datetime-local'
                 variant='outlined'
                 InputLabelProps={{ shrink: true }}
                 inputProps={{
@@ -347,9 +347,9 @@ const CatalogsDetailsView = ({
                 <TextField
                   fullWidth
                   name='toDate'
-                  value={curCatalogs?.endDate ? moment(curCatalogs.endDate).format('YYYY-MM-DD') : ''}
+                  value={curCatalogs?.endDate ? moment(curCatalogs.endDate).format('YYYY-MM-DDTkk:mm') : ''}
                   label={localization.t('labels.to')}
-                  type='date'
+                  type='datetime-local'
                   variant='outlined'
                   InputLabelProps={{ shrink: true }}
                   inputProps={{
