@@ -8,6 +8,7 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { generateSubscriptions } from '../utils';
 import localization from '../../../localization';
 import api from '../../../api';
@@ -15,6 +16,11 @@ import '../orderDetailsScreen.scss';
 
 const Subscriptions = ({ subscriptions, setUpdate }) => {
   const [subscriptionsData, setSubscriptionsData] = useState(null);
+
+  const makeCopy = (value) => {
+    navigator.clipboard.writeText(value)
+      .then(() => toast(localization.t('general.itemHasBeenCopied')));
+  };
 
   const handleClick = (id, status) => {
     const newStatus = status === 'Active' ? 'suspend' : 'reactivate';
@@ -46,8 +52,23 @@ const Subscriptions = ({ subscriptions, setUpdate }) => {
                 </Grid>
                 <Grid item md={6} xs={6}>
                   <Box p={2} className="rowValue">
-                    {sub[key]}
-
+                    {key !== 'subscriptionId' ? (
+                      sub[key]
+                    ) : (
+                      <Box display='flex'>
+                        <Box className="rowValue">
+                          {sub[key]}
+                        </Box>
+                        <Box ml={2}>
+                          <FileCopyIcon
+                            onClick={() => makeCopy(sub[key])}
+                            style={{ marginLeft: '5px' }}
+                            color="secondary"
+                            className="actionIcon"
+                          />
+                        </Box>
+                      </Box>
+                    )}
                   </Box>
                 </Grid>
               </Grid>
