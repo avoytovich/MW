@@ -28,6 +28,7 @@ export const sortKeys = {
   abandoned: 'abandonedSortParams',
   campaigns: 'campaignsSortParams',
   discounts: 'discountsSortParams',
+  subscriptions: 'subscriptionsSortParams',
   emailbuilder: 'emailbuilderSortParams',
   remittables: 'remittables',
   audits: 'auditsSortParams',
