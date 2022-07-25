@@ -582,9 +582,9 @@ const ProductDetailsScreen = () => {
     && !currentProductData?.parentId
     && currentProductData?.createDate?.parentValue) return <LinearProgress />;
 
-  useEffect(() => {
+  if (customer) {
     dispatch(setHeaderCustomerName({ ...customer }));
-  }, [customer]);
+  }
 
   const lifetimeSaveDisabled = currentProductData?.parentId
     && checkValue(currentProductData?.lifeTime) === 'PERMANENT'

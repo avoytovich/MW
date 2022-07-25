@@ -67,6 +67,7 @@ const StoreDetailsScreen = () => {
     myRefPayment,
     myRefLocalizedContent,
   ];
+
   const dispatch = useDispatch();
 
   const getCustomersIdsArray = (...array) => {
@@ -266,9 +267,9 @@ const StoreDetailsScreen = () => {
     }
   }, [currentCustomerData?.id]);
 
-  useEffect(() => {
+  if (currentCustomerData) {
     dispatch(setHeaderCustomerName({ ...currentCustomerData }));
-  }, [currentCustomerData]);
+  }
 
   return (
     <DetailPageWrapper
