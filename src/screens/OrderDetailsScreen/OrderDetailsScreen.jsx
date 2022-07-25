@@ -96,9 +96,9 @@ const OrderDetailsScreen = () => {
     };
   }, [update]);
 
-  useEffect(() => {
+  if (customer) {
     dispatch(setHeaderCustomerName({ ...customer }));
-  }, [customer]);
+  }
 
   return (
     <DetailPageWrapper
