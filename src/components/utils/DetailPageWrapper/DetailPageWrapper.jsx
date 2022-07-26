@@ -91,7 +91,7 @@ const DetailPageWrapper = ({
   }
 
   const handleChange = (event, newValue) => {
-    refScrool[newValue]?.current.scrollIntoView();
+    refScrool?.[newValue]?.current.scrollIntoView();
     return tabs?.setCurTab(newValue);
   };
 
@@ -131,7 +131,7 @@ const DetailPageWrapper = ({
           alignItems='center'
         >
           <Box alignSelf='center'>
-            <Typography data-test='notificationName' gutterBottom variant='h3' style={{fontSize: '20px'}} mb={0}>
+            <Typography data-test='notificationName' gutterBottom variant='h3' style={{ fontSize: '20px' }} mb={0}>
               {name}
               {headerTitleCopy && (
                 <ContentCopyIcon
