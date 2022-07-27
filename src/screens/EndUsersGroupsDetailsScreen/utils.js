@@ -25,8 +25,8 @@ const generateLocals = (longDesc = {}, shortDesc = {}, locLogo = {}, locBanner =
     res[logoKey] = { ...res[logoKey], localizedLogo: locLogo[logoKey].url };
   });
   Object.keys(locBanner).forEach((bannerKey) => {
-    res[bannerKey] = { ...res[bannerKey], bannerImageUrl: locBanner[bannerKey].url };
-    res[bannerKey] = { ...res[bannerKey], bannerLinkUrl: locBanner[bannerKey].href };
+    res[bannerKey] = { ...res[bannerKey], bannerImageUrl: locBanner[bannerKey].url || '' };
+    res[bannerKey] = { ...res[bannerKey], bannerLinkUrl: locBanner[bannerKey].href || '' };
   });
   return res;
 };
@@ -48,14 +48,9 @@ const beforeSend = (data) => {
       localizedLogo[key] = {};
       localizedLogo[key].url = data.localizedContent[key].localizedLogo;
     }
-    if (data.localizedContent[key].bannerImageUrl) {
-      localizedBanner[key] = {};
-      localizedBanner[key].url = data.localizedContent[key].bannerImageUrl;
-    }
-    if (data.localizedContent[key].bannerLinkUrl) {
-      localizedBanner[key] = localizedBanner[key] ? { ...localizedBanner[key] } : {};
-      localizedBanner[key].href = data.localizedContent[key].bannerLinkUrl;
-    }
+    localizedBanner[key] = {};
+    localizedBanner[key].url = data.localizedContent[key].bannerImageUrl;
+    localizedBanner[key].href = data.localizedContent[key].bannerLinkUrl;
   });
   delete res.localizedContent;
   return {

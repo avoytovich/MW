@@ -290,8 +290,9 @@ const ProductDetailsScreen = () => {
             ? { ...defLocalizationObj } : { ...defProductVariationObj };
         }
       });
-      setLocalizedData({ ...localizedData, i18nFields: { ...i18nFields } });
-
+      if (id !== 'add') {
+        setLocalizedData({ ...localizedData, i18nFields: { ...i18nFields } });
+      }
       setCurLocalizedData({ ...curLocalizedData, i18nFields: { ...i18nFields } });
     }
   }, [storeLanguages]);
