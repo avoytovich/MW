@@ -66,13 +66,11 @@ const generateData = (data, children) => {
   const usedCustomers = [];
 
   const values = newData.map(async (val) => {
-    let hierarchy = [val.genericName || val.id];
+    let hierarchy = [val.id];
 
     if (val?.parentId && children.length) {
       const parent = data.items.find((el) => el.id === val.parentId);
-      const childName = parent?.genericName === val.genericName ? val.id
-        : val.genericName || val.id;
-      hierarchy = [parent?.genericName || parent?.id, childName];
+      hierarchy = [parent?.id, val.id];
     }
 
     const returnData = {
