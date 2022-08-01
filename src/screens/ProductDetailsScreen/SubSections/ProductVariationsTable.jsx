@@ -228,7 +228,7 @@ const ProductVariationsTable = ({
                 parentId: productId,
               });
             }}
-            disabled={!currentProductData?.availableVariables?.length}
+            // disabled={!currentProductData?.availableVariables?.length}
           >
             Add variant
           </Button>

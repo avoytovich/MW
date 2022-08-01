@@ -108,7 +108,9 @@ const Fulfillment = ({
                       <TableCell align='center'>ID</TableCell>
                       <TableCell align='center'>Name</TableCell>
                       <TableCell align='center'>Status</TableCell>
-                      <TableCell align='center'>Available</TableCell>
+                      <TableCell align='center' style={{ color: packages.filter((i) => !i?.stock?.available).length ? '#ff0202' : 'inherit' }}>
+                        Available
+                      </TableCell>
                       <TableCell align='center'>Threshold</TableCell>
                       <TableCell align='center'>Blacklisted</TableCell>
                       <TableCell align='center'>Canceled</TableCell>
@@ -143,7 +145,9 @@ const Fulfillment = ({
                         </TableCell>
                         <TableCell align='center'>{pckg.name}</TableCell>
                         <TableCell align='center'>{pckg.status}</TableCell>
-                        <TableCell align='center'>{pckg?.stock?.available || 0}</TableCell>
+                        <TableCell align='center' style={{ color: pckg?.stock?.available ? 'inherit' : '#ff0202' }}>
+                          {pckg?.stock?.available || 0}
+                        </TableCell>
                         <TableCell align='center'>{pckg?.threshold}</TableCell>
                         <TableCell align='center'>{pckg?.stock?.blacklisted || 0}</TableCell>
                         <TableCell align='center'>{pckg?.stock?.canceled || 0}</TableCell>

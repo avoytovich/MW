@@ -151,18 +151,24 @@ const Subscription = ({
           </InheritanceField>
         </Box>
       </Box>
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2} width="50%">
-          <AutocompleteCustom
-            optionLabelKey='name'
-            label='renewingNameOrId'
-            onSelect={changeProducts}
-            selectOptions={filteredArr?.sort(sortByAlphabetical) || []}
-            curValue={checkValue(currentProductData?.nextGenerationOf[0])}
-            isDisabled={currentProductData?.subProducts?.state === 'inherits'}
-          />
-        </Box>
-      </Box>
+
+      {
+        lifeTime !== 'PERMANENT' && subscriptionTemplate && (
+          <Box display="flex" flexDirection="row" alignItems="center">
+            <Box p={2} width="50%">
+              <AutocompleteCustom
+                optionLabelKey='name'
+                label='renewingNameOrId'
+                onSelect={changeProducts}
+                selectOptions={filteredArr?.sort(sortByAlphabetical) || []}
+                curValue={checkValue(currentProductData?.nextGenerationOf[0])}
+                isDisabled={currentProductData?.subProducts?.state === 'inherits'}
+              />
+            </Box>
+          </Box>
+        )
+      }
+
       <Box display="flex" flexDirection="row" alignItems="center">
         <Box p={2}>
           <Typography variant='h6' color="secondary">

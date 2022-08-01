@@ -22,6 +22,7 @@ const NumberInput = ({
   hasError,
   hasChanges,
   inputRefFunc,
+  styles,
 }) => (!hasChanges ? (
   <TextField
     inputRef={inputRefFunc}
@@ -35,6 +36,7 @@ const NumberInput = ({
     fullWidth
     label={label ? localization.t(`labels.${label}`) : ''}
     type="number"
+    style={styles}
     InputProps={{
       inputProps: minMAx,
       form: { autocomplete: 'off' },
@@ -77,6 +79,7 @@ NumberInput.propTypes = {
   hasError: PropTypes.bool,
   hasChanges: PropTypes.bool,
   inputRefFunc: PropTypes.func,
+  styles: PropTypes.any,
 };
 
 export default NumberInput;
