@@ -89,7 +89,7 @@ const VALID_SEARCH_SCOPES = [
   'realms',
 ];
 
-const VALID_DUPLICATE_SCOPES = ['discountrules', 'recommendations'];
+const VALID_DUPLICATE_SCOPES = ['discountrules', 'recommendations', 'productlist'];
 
 export {
   VALID_REFRESH_SCOPES,

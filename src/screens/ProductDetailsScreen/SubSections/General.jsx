@@ -105,7 +105,7 @@ const General = ({
 
     const res = lT.match(/[a-zA-Z]+|[0-9]+/g);
 
-    if (res && res.length > 1 && res[1]) {
+    if (res && res?.length > 1 && res[1]) {
       setLifeTimeUpdateValue({ number: res[0], value: res[1] });
 
       LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR' || res[1] === 'DAY';
@@ -190,7 +190,7 @@ const General = ({
 
     if (countrySelection === 'blocked') {
       const newCountries = checkedDefault?.length ? countriesOptions
-        .map((l) => l.id)
+        ?.map((l) => l.id)
         .filter((c) => checkedDefault?.indexOf(c) >= 0) : [];
 
       setSelectedCountries([...newCountries]);
@@ -801,7 +801,7 @@ const General = ({
                           currentProductData={currentProductData}
                         >
                           {
-                            variableValueDescriptions.length <= 5 ? (
+                            variableValueDescriptions?.length <= 5 ? (
                               <RadioGroup
                                 aria-label={description}
                                 name={description}
@@ -828,9 +828,9 @@ const General = ({
                                 isDisabled={disabled}
                                 value={checkValue(currentProductData[description])}
                                 selectOptions={variableValueDescriptions
-                                  .map(({ descValue, description: _description }) => ({
+                                  ?.map(({ descValue, description: _description }) => ({
                                     value: descValue, id: _description,
-                                  }))}
+                                  })) || []}
                               />
                             )
                           }
@@ -842,7 +842,7 @@ const General = ({
               )}
             </Box>
           </Box>
-        ) : '' }
+        ) : ''}
       </Box>
     </>
   );

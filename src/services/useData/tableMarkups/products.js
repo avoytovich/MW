@@ -72,6 +72,14 @@ const generateData = (data, children) => {
       const parent = data.items.find((el) => el.id === val.parentId);
       hierarchy = [parent?.id, val.id];
     }
+    let hasChildren = false;
+    children.forEach((child) => {
+      child.forEach((i) => {
+        if (i.parentId === val.id) {
+          hasChildren = true;
+        }
+      });
+    });
 
     const returnData = {
       id: val.id,
@@ -87,8 +95,8 @@ const generateData = (data, children) => {
       family: val.productFamily || '-',
       subscriptionModel: val?.subscriptionTemplate,
       priceFunction: val.priceFunction || '-',
+      hasChildren,
     };
-
     if (val?.customerId && usedCustomers.indexOf(val.customerId) < 0) {
       usedCustomers.push(val.customerId);
     }
