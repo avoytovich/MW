@@ -84,7 +84,7 @@ const General = ({
   }, [fulfillmentTemplate, selectedBundledProduct]);
 
   useEffect(() => {
-    if (selectedCountries?.length !== defaultBlacklisted?.length) {
+    if (countrySelection === 'blocked' && selectedCountries?.length !== defaultBlacklisted?.length) {
       setSelectedCountries([...defaultBlacklisted]);
     }
   }, [currentProductData?.blackListedCountries]);

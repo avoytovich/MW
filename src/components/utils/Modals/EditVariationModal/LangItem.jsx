@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -16,8 +16,17 @@ const LangItem = ({
   lang = 'en-US',
   curDescription,
   setCurDescriptions,
+  type,
 }) => {
-  const [labelLangVal, setLabelLangVal] = useState(curDescription?.labels ? curDescription?.labels[lang] : '');
+  const [labelLangVal, setLabelLangVal] = useState('');
+
+  useEffect(() => {
+    if (type === 'params') {
+      setLabelLangVal(curDescription?.localizedValue ? curDescription?.localizedValue[lang] : '');
+    } else {
+      setLabelLangVal(curDescription?.labels ? curDescription?.labels[lang] : '');
+    }
+  }, []);
 
   return (
     <>
@@ -36,13 +45,25 @@ const LangItem = ({
         <InputCustom
           value={labelLangVal}
           onChangeInput={(e) => setLabelLangVal(e.target.value)}
-          onBlur={() => setCurDescriptions((c) => ({
-            ...c,
-            labels: {
-              ...c.labels,
-              [lang]: labelLangVal,
-            },
-          }))}
+          onBlur={() => {
+            if (type === 'params') {
+              setCurDescriptions((c) => ({
+                ...c,
+                localizedValue: {
+                  ...c.localizedValue,
+                  [lang]: labelLangVal,
+                },
+              }));
+            } else {
+              setCurDescriptions((c) => ({
+                ...c,
+                labels: {
+                  ...c.labels,
+                  [lang]: labelLangVal,
+                },
+              }));
+            }
+          }}
         />
 
         {!isDefault && (
@@ -52,13 +73,23 @@ const LangItem = ({
               aria-label='clear'
               size='large'
               onClick={() => {
-                setCurDescriptions((c) => {
-                  const newLabels = { ...c?.labels };
+                if (type === 'params') {
+                  setCurDescriptions((c) => {
+                    const newLabels = { ...c?.localizedValue };
 
-                  delete newLabels[lang];
+                    delete newLabels[lang];
 
-                  return { ...c, labels: { ...newLabels } };
-                });
+                    return { ...c, localizedValue: { ...newLabels } };
+                  });
+                } else {
+                  setCurDescriptions((c) => {
+                    const newLabels = { ...c?.labels };
+
+                    delete newLabels[lang];
+
+                    return { ...c, labels: { ...newLabels } };
+                  });
+                }
               }}
             >
               <ClearIcon />
@@ -75,6 +106,7 @@ LangItem.propTypes = {
   isDefault: PropTypes.bool,
   lang: PropTypes.string,
   setCurDescriptions: PropTypes.func,
+  type: PropTypes.string,
 };
 
 export default LangItem;

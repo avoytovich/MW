@@ -16,15 +16,15 @@ const AutocompleteCustom = ({
   error,
   helperText,
 }) => {
-  const [curOption, setCurOption] = useState(null);
+  const [curOption, setCurOption] = useState('');
   const [search, setSearch] = useState('');
 
   useEffect(() => {
     if (curValue) {
       setCurOption(selectOptions.filter((u) => u.id === curValue)[0]);
-      setSearch(selectOptions.filter((u) => u.id === curValue)[0]?.[optionLabelKey]?.split('(')[0]?.trim());
+      setSearch(selectOptions.filter((u) => u.id === curValue)[0]?.[optionLabelKey]?.split('(')[0]?.trim() || '');
     } else {
-      setCurOption(null);
+      setCurOption('');
       setSearch('');
     }
   }, [curValue]);
@@ -36,7 +36,7 @@ const AutocompleteCustom = ({
       PaperComponent={({ children }) => (
         <Paper style={{ marginBottom: 10 }}>{children}</Paper>
       )}
-      inputValue={search}
+      inputValue={search || ''}
       value={curOption}
       onChange={(event, newValue) => {
         onSelect(newValue?.id || '');

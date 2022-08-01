@@ -29,6 +29,8 @@ const AddParameterSecondStepRange = ({
 }) => {
   const [range, setRange] = useState(defauldRange);
   const [parametersList, setParametersList] = useState([]);
+  const [rangeFromError, setRangeFromError] = useState(false);
+  const [rangeToError, setRangeToError] = useState(false);
   const [max, setMax] = useState(0);
 
   const minParametersCount = parametersList.length < 2;
@@ -47,6 +49,8 @@ const AddParameterSecondStepRange = ({
       ...modalState,
       rangesList: newParametersList,
     });
+
+    setMax(newMax);
     !newParametersList.length && setRange(defauldRange) && setMax(0);
   };
 
@@ -55,27 +59,38 @@ const AddParameterSecondStepRange = ({
   const handleRangeFrom = (value) => {
     const val = value ? toNumber(value) : '';
 
-    if (val !== '' && val <= max) return;
+    if (val === '' || val <= max) {
+      setRangeFromError(true);
+    } else {
+      setRangeFromError(false);
+    }
 
     val >= range.to
-      ? setRange({
+      ? setRange((c) => ({
         from: val,
         to: val + 1,
-      }) : setRange({
+        label: c.label || '',
+      })) : setRange((c) => ({
         from: val,
         to: range.to,
-      });
+        label: c.label || '',
+      }));
   };
 
   const handleRangeTo = (value) => {
     const val = value ? toNumber(value) : '';
 
-    if (val !== '' && val < max + 1) return;
+    if (val === '' || val < max + 1) {
+      setRangeToError(true);
+    } else {
+      setRangeToError(false);
+    }
 
-    setRange({
+    setRange((c) => ({
       from: range.from,
       to: val,
-    });
+      label: c.label || '',
+    }));
   };
 
   const handleAddParameterRow = () => {
@@ -160,6 +175,7 @@ const AddParameterSecondStepRange = ({
                 value={range.from}
                 onChangeInput={(e) => handleRangeFrom(e.target.value)}
                 minMAx={{ min: 1, max: range.from + 1 }}
+                hasError={rangeFromError}
               />
             </Box>
             <Box width='122px' marginRight='20px'>
@@ -168,6 +184,7 @@ const AddParameterSecondStepRange = ({
                 value={range.to}
                 onChangeInput={(e) => handleRangeTo(e.target.value)}
                 minMAx={{ min: range.from + 1, max: Infinity }}
+                hasError={rangeToError}
               />
             </Box>
             <Box width='100%' marginRight='10px'>
@@ -187,13 +204,13 @@ const AddParameterSecondStepRange = ({
             <Box>
               <IconButton
                 aria-label='add to shopping cart'
-                disabled={!range.label}
+                disabled={!range.label || rangeFromError || rangeToError}
                 onClick={handleAddParameterRow}
                 size='large'
               >
                 <AddCircleOutlineIcon
                   size='medium'
-                  color={!range.label ? 'secondary' : 'primary'}
+                  color={!range.label || rangeFromError || rangeToError ? 'secondary' : 'primary'}
                 />
               </IconButton>
             </Box>

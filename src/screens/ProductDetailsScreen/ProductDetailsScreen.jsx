@@ -590,6 +590,7 @@ const ProductDetailsScreen = () => {
   const lifetimeSaveDisabled = currentProductData?.parentId
     && checkValue(currentProductData?.lifeTime) === 'PERMANENT'
     && checkValue(currentProductData?.subscriptionTemplate);
+
   return (
     <DetailPageWrapper
       nxState={nxState}

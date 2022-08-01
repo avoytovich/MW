@@ -43,6 +43,8 @@ const AddParameterFirstStep = ({
               ...modalState,
               field: e.target.value,
             })}
+            hasError={!/^$|^\w+$/.test(modalState?.field)}
+            helperText={/^$|^\w+$/.test(modalState?.field) ? false : localization.t('labels.formatError')}
             isRequired
           />
         </Box>
@@ -103,7 +105,7 @@ const AddParameterFirstStep = ({
         <Button
           variant="contained"
           color='primary'
-          disabled={!modalState?.field}
+          disabled={!modalState?.field || !/^$|^\w+$/.test(modalState?.field)}
           onClick={() => {
             setModalState({ ...modalState, type: value });
             setStep(value);
