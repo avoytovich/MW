@@ -46,7 +46,7 @@ const generateData = (data) => {
       vatDiscountAmount: '-',
     };
 
-    const discountId = val?.price?.discountedPrice.discountId;
+    const discountId = val?.price?.discountedPrice?.discountId;
     if (discountId) {
       const discountName = await api.getDiscountById(discountId).then(({ data: data_ }) => data_?.name || '-');
 
