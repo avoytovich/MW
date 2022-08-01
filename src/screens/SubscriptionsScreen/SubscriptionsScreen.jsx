@@ -7,6 +7,7 @@ import api from '../../api';
 import {
   generateData,
   defaultShow,
+  markUp,
 } from '../../services/useData/tableMarkups/subscriptions';
 import {
   getSortParams,
@@ -28,7 +29,7 @@ const SubscriptionsScreen = () => {
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getSubscriptions({
-      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl,
+      page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,
     });
 
     return generateData(res.data);
@@ -39,12 +40,14 @@ const SubscriptionsScreen = () => {
     false,
     scope,
     requests,
+    sortParams,
   );
 
   return (
     <>
       <TableActionsBar
         scope={scope}
+        headers={markUp.headers}
       />
       <TableComponent
         scope={scope}
