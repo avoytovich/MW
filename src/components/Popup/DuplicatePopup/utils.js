@@ -201,7 +201,7 @@ const duplicateParamsByScope = {
     validation: ({ attributes }) => {
       let errors = null;
       if (!attributes.general && attributes.subscription) {
-        errors = localization.t('errorNotifications.subscriptionCanBeCoppedOnlyWithGeneralSection');
+        errors = localization.t('errorNotifications.subscriptionCanBeCopiedOnlyWithGeneralSection');
       }
       return errors;
     },
