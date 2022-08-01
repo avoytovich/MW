@@ -136,6 +136,7 @@ const general = {
   addLanguage: 'Add Language',
   needsToBeSelected: 'needs to be selected',
   forAdding: 'For adding',
+  duplicateNextSections: 'Duplicate next sections',
 };
 
 export default general;

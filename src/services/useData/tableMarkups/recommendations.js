@@ -38,6 +38,7 @@ const generateData = (data) => {
       lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
       customer: val.customerId,
       ruleName: val.name,
+      name: val.name,
       status: val.status,
       type: val.type.replaceAll('_', ' '),
       levels: val.levels ? val.levels.join(', ') : null,
