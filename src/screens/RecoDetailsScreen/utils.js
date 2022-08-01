@@ -9,7 +9,7 @@ const defRecoObject = {
   levels: ['PRODUCT'],
   name: '',
   sources: ['PURCHASE'],
-  status: 'ENABLED',
+  status: 'DISABLED',
   weight: 0,
   type: 'CROSS_SELL',
 };

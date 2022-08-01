@@ -6,7 +6,7 @@ const useCatalogsDetails = (id, nxState) => {
     running: true,
     salesMode: 'STANDARD',
     singleUse: false,
-    status: 'ENABLED',
+    status: 'DISABLED',
     type: 'INTERNAL',
   };
 

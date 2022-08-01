@@ -28,8 +28,10 @@ const General = ({
         <>
           <Box display="flex" flexDirection="row" alignItems="baseline">
             <Box p={2}>
-              <Typography color="secondary">
-                {localization.t('labels.status')}
+              <Typography color='secondary'>
+                {`${localization.t(
+                  'labels.status',
+                )} *`}
               </Typography>
             </Box>
             <Box p={2}>
@@ -44,7 +46,7 @@ const General = ({
                         inactive: !e.target.checked,
                       });
                     }}
-                    color="primary"
+                    color={curIdentity.inactive === false ? 'success' : 'primary'}
                     checked={!curIdentity.inactive}
                   />
                     )}

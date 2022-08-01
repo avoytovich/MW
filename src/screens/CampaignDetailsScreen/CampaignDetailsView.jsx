@@ -19,6 +19,9 @@ import { InputCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
 import TableComponent from '../../components/TableComponent';
 import DateRangePicker from '../../components/utils/Modals/DateRangePicker';
+
+import localization from '../../localization';
+
 import './campaignDetailsScreen.scss';
 
 const CampaignDetailsView = ({
@@ -82,15 +85,17 @@ const CampaignDetailsView = ({
         </Box>
 
         <Box pb={2}>
-          <Typography gutterBottom variant="h5">
-            Status
+          <Typography color='secondary'>
+            {`${localization.t(
+              'labels.status',
+            )} *`}
           </Typography>
 
           <Box display="flex" alignItems="center">
             <FormControlLabel
               control={(
                 <Switch
-                  color="primary"
+                  color={curCampaign.status === 'ENABLED' ? 'success' : 'primary'}
                   checked={curCampaign.status === 'ENABLED'}
                   name="status"
                 />

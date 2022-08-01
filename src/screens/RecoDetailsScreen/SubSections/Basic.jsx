@@ -51,7 +51,7 @@ const Basic = ({
           <FormControlLabel
             control={(
               <Switch
-                color='primary'
+                color={curReco.status === 'ENABLED' ? 'success' : 'primary'}
                 checked={curReco.status === 'ENABLED'}
                 name='status'
               />

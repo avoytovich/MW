@@ -53,7 +53,11 @@ const General = ({
       <Grid item md={6}>
         <Box display="flex" px={2} py={1} flexDirection="row" alignItems="baseline">
           <Box>
-            <Typography variant='h5'>{localization.t('labels.status')}</Typography>
+            <Typography variant='h5'>
+              {`${localization.t(
+                'labels.status',
+              )} *`}
+            </Typography>
           </Box>
           <Box px={2}>
             <FormControlLabel
@@ -67,7 +71,7 @@ const General = ({
                       status: e.target.checked ? 'ENABLED' : 'DISABLED',
                     });
                   }}
-                  color="primary"
+                  color={curEndUser.status === 'ENABLED' ? 'success' : 'primary'}
                   checked={curEndUser.status === 'ENABLED'}
                 />
               )}

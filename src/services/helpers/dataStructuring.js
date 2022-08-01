@@ -31,14 +31,14 @@ const defaultManualFulfillment = {
   name: '',
   nexwayProductId: [],
   publisherProductId: [],
-  status: 'ENABLED',
+  status: 'DISABLED',
   stock: {
     available: 0, blacklisted: 0, canceled: 0, occupied: 0, renewed: 0,
   },
   threshold: 0,
 };
 const defaultStore = {
-  status: 'ENABLED',
+  status: 'DISABLED',
   name: '',
   emailSenderOverride: '',
   routes: [{ hostname: '' }],
@@ -460,7 +460,7 @@ const notificationRequiredFields = (obj) => {
   const receiverType = obj.emails ? 'email' : 'webhook';
   const defaultObj = {
     name: '',
-    status: 'Active',
+    status: 'Inactive',
     notificationDefinitionIds: [],
     targetedCustomerIds: [],
     emails: [],
