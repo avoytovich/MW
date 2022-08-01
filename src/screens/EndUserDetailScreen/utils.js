@@ -9,7 +9,7 @@ const defaultObject = {
   country: '',
   login: '',
   phone: '',
-  status: 'ENABLED',
+  status: 'DISABLED',
   streetAddress: '',
   taxOffice: '',
   groupId: '',

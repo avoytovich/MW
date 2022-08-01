@@ -11,6 +11,7 @@ import {
   DialogContentText,
   Dialog,
   DialogContent,
+  Switch,
 } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { getCountriesOptions, getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
@@ -160,22 +161,38 @@ const General = ({
               </DialogContent>
             </Dialog>
           </Modal>
-          <SwitchInput
-            label='status'
-            handleChange={(e) => {
-              !e.target.checked
-                ? setOpen(true)
-                : setCurrentStoreData({
-                  ...currentStoreData,
-                  status: e.target.checked ? 'ENABLED' : 'DISABLED',
-                });
-            }}
-            isChecked={currentStoreData.status === 'ENABLED'}
-            switchLabel={localization.t(
-              `labels.${currentStoreData.status === 'ENABLED' ? 'enabled' : 'disabled'
-              }`,
-            )}
-          />
+          <Box display='flex' flexDirection='row' alignItems='baseline' width='50%'>
+            <Box>
+              <Typography color='secondary'>
+                {`${localization.t(
+                  'labels.status',
+                )} *`}
+              </Typography>
+            </Box>
+            <Box p={2}>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    name="status"
+                    onChange={(e) => {
+                      !e.target.checked
+                        ? setOpen(true)
+                        : setCurrentStoreData({
+                          ...currentStoreData,
+                          status: e.target.checked ? 'ENABLED' : 'DISABLED',
+                        });
+                    }}
+                    color={currentStoreData.status === 'ENABLED' ? 'success' : 'primary'}
+                    checked={currentStoreData.status === 'ENABLED'}
+                  />
+                  )}
+                label={localization.t(
+                  `labels.${currentStoreData.status === 'ENABLED' ? 'enabled' : 'disabled'
+                  }`,
+                )}
+              />
+            </Box>
+          </Box>
         </Box>
       </Grid>
       <Grid item md={6} sm={12}>

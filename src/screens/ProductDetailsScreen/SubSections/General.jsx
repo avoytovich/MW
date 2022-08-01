@@ -255,29 +255,34 @@ const General = ({
 
         <Box display='flex' flexDirection='row' alignItems='baseline' width='50%'>
           <Box p={2}>
-            <Typography color='secondary'>{localization.t('labels.status')}</Typography>
+            <Typography color='secondary'>
+              {`${localization.t(
+                'labels.status',
+              )} *`}
+            </Typography>
           </Box>
 
           <Box p={2}>
-            <InheritanceField
-              field='status'
-              onChange={setProductData}
-              value={currentProductData?.status}
-              parentId={parentId}
-              currentProductData={currentProductData}
-            >
-              <Switch
-                name='status'
-                onChange={(e) => {
-                  setProductData({
-                    ...currentProductData,
-                    status: e.target.checked ? 'ENABLED' : 'DISABLED',
-                  });
-                }}
-                color='primary'
-                checked={currentProductData?.status === 'ENABLED'}
-              />
-            </InheritanceField>
+            <FormControlLabel
+              data-test='status'
+              control={(
+                <Switch
+                  name='status'
+                  onChange={(e) => {
+                    setProductData({
+                      ...currentProductData,
+                      status: e.target.checked ? 'ENABLED' : 'DISABLED',
+                    });
+                  }}
+                  color={currentProductData?.status === 'ENABLED' ? 'success' : 'primary'}
+                  checked={currentProductData?.status === 'ENABLED'}
+                />
+              )}
+              label={localization.t(
+                `labels.${currentProductData?.status === 'ENABLED' ? 'enabled' : 'disabled'
+                }`,
+              )}
+            />
           </Box>
         </Box>
       </Box>

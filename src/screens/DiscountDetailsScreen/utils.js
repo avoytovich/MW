@@ -89,7 +89,7 @@ const discountRequiredFields = (discount) => {
     endUserEmails: [],
     level: 'PRODUCT',
     model: 'CAMPAIGN',
-    status: 'ENABLED',
+    status: 'DISABLED',
     endDate: Date.now() + 6.048e8,
     endUserTypes: ['BUYER', 'RESELLER'],
     sources: [],

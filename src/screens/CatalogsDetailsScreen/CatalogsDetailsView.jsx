@@ -206,30 +206,32 @@ const CatalogsDetailsView = ({
           </Box>
           <Box display="flex" alignItems="baseline">
             <Grid item md={3} sm={12}>
-              <Typography variant='h6'>{localization.t('labels.status')}</Typography>
+              <Typography variant='h6'>
+                {`${localization.t(
+                  'labels.status',
+                )} *`}
+              </Typography>
             </Grid>
             <Grid item md={9} sm={12}>
               <FormControlLabel
                 control={(
-                  <Checkbox
-                    name='ENABLED'
-                    color='primary'
-                    checked={curCatalogs?.status?.indexOf('ENABLED') >= 0}
+                  <Switch
+                    color={curCatalogs?.status === 'ENABLED' ? 'success' : 'primary'}
+                    checked={curCatalogs?.status === 'ENABLED'}
+                    name='status'
                   />
-                )}
-                onChange={() => updateCatalogs('status', 'ENABLED')}
-                label='ENABLED'
-              />
-              <FormControlLabel
-                control={(
-                  <Checkbox
-                    name='DISABLED'
-                    color='primary'
-                    checked={curCatalogs?.status?.indexOf('DISABLED') >= 0}
-                  />
-                )}
-                onChange={() => updateCatalogs('status', 'DISABLED')}
-                label='DISABLED'
+                  )}
+                onChange={(e) => {
+                  setCurCatalogs({
+                    ...curCatalogs,
+                    status: e.target.checked ? 'ENABLED' : 'DISABLED',
+                  });
+                }}
+                label={
+                curCatalogs?.status === 'ENABLED'
+                  ? localization.t('labels.enabled')
+                  : localization.t('labels.disabled')
+                }
               />
             </Grid>
           </Box>

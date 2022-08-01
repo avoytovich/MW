@@ -3,7 +3,7 @@ const requiredFields = {
   name: '',
   startDate: new Date(),
   endDate: new Date(),
-  status: 'Active',
+  status: 'Inactive',
   type: 'AbandonedCart',
 
 };

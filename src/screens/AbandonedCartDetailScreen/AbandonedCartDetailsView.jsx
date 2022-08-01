@@ -23,7 +23,11 @@ const AbandonedCartDetailsView = ({
     <Box display='flex' flexDirection='column' width='100%' px={2}>
       <Box display="flex" p={2} pt={4} flexDirection="row" alignItems="baseline">
         <Box>
-          <Typography>{localization.t('labels.status')}</Typography>
+          <Typography color='secondary'>
+            {`${localization.t(
+              'labels.status',
+            )} *`}
+          </Typography>
         </Box>
         <Box px={2}>
           <FormControlLabel
@@ -37,7 +41,7 @@ const AbandonedCartDetailsView = ({
                     status: e.target.checked ? 'Active' : 'Inactive',
                   });
                 }}
-                color="primary"
+                color={curAbandonedCart.status === 'Active' ? 'success' : 'primary'}
                 checked={curAbandonedCart.status === 'Active'}
               />
             )}
