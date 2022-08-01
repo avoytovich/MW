@@ -37,11 +37,14 @@ const getAllApi = {
     });
   },
   getSubscriptions({
-    page = defaultRequestedPage, size = defaultRequestedSize, filters,
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
     let url = `/subscription-manager/subscriptions?format=short&size=${size}&page=${page}`;
     if (filters) {
       url += filters;
+    }
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
     }
     return axiosInstance({
       method: 'get',
