@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import generateFilterUrl from '../helpers/filters';
 import availableFilters from './tableMarkups/filters';
+import {
+  setCheckedItemsData,
+  setCurCheckedItemsData,
+} from '../../redux/actions/TableData';
 
 const useTableData = (
   setLoading,
@@ -18,6 +22,8 @@ const useTableData = (
   const tableScope = useSelector(({ tableData: { scope } }) => scope);
   const activeFilters = useSelector(({ tableData: { filters } }) => filters);
   const activeSearch = useSelector(({ tableData: { search } }) => search);
+
+  const dispatch = useDispatch();
 
   const customerScope = useSelector(({
     account: { nexwayState },
@@ -38,6 +44,11 @@ const useTableData = (
       if (customerScope) {
         filtersUrl += dataScope !== 'manualFulfillments' ? `&customerId=${customerScope}` : `&publisherId=${customerScope}`;
         searchRequest += dataScope !== 'manualFulfillments' ? '' : `&publisherId=${customerScope}`;
+      }
+
+      if (searchRequest) {
+        dispatch(setCheckedItemsData([]));
+        dispatch(setCurCheckedItemsData([]));
       }
 
       setLoading(true);
