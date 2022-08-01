@@ -57,6 +57,7 @@ const TableComponent = ({
   const showColumn = useSelector(({ showColumns }) => showColumns[scope]);
   const [curChecked, setCurChecked] = useState([]);
   const [allChecked, setAllChecked] = useState([]);
+  const [collapse, setCollapse] = useState({});
 
   const tableCheckedItemsData = useSelector((
     { tableData: { checkedItemsData } },
@@ -162,10 +163,17 @@ const TableComponent = ({
     };
 
     const handleClick = (event) => {
-      apiRef.current.setRowChildrenExpansion(id, !rowNode.childrenExpanded);
+      setCollapse({
+        ...collapse,
+        [id]: !rowNode.childrenExpanded,
+      });
       apiRef.current.setCellFocus(id, field);
       event.stopPropagation();
     };
+
+    useEffect(() => {
+      apiRef.current.setRowChildrenExpansion(id, collapse[id]);
+    }, [collapse]);
 
     return (
       <div>
