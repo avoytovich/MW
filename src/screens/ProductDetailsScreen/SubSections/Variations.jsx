@@ -80,7 +80,7 @@ const Variations = ({
   }, [productVariations]);
 
   return productVariations?.bundledProducts ? (
-    <Box display='flex' flexDirection='column' width='100%'>
+    <Box display='flex' flexDirection='column' width='100%' p={2}>
       {currentProductData.id
         && (
           <ProductVariationsTable
@@ -96,59 +96,60 @@ const Variations = ({
         )}
       <Box display='flex'>
         <SectionLayout label='variationParameters' width='100%'>
-          <TableContainer component={Paper}>
-            <Table aria-label='simple table'>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Parameter Name</TableCell>
-                  <TableCell>Type</TableCell>
-                  <TableCell />
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {currentProductData?.availableVariables?.map((variation) => (
-                  <TableRow key={variation?.field}>
-                    <TableCell width='40%'>{variation?.field}</TableCell>
-                    <TableCell width='40%'>{variation?.type}</TableCell>
-                    <TableCell align='center'>
-                      <IconButton
-                        color='secondary'
-                        aria-label='edit'
-                        onClick={() => setEditableVariation(variation)}
-                        size='large'
-                      >
-                        <EditIcon />
-                      </IconButton>
-
-                      <IconButton
-                        color='secondary'
-                        aria-label='clear'
-                        onClick={() => handleDeleteVariable(variation?.field)}
-                        size='large'
-                      >
-                        <ClearIcon />
-                      </IconButton>
-                    </TableCell>
+          <Box px={2}>
+            <Box mb={2}>
+              <Button variant='outlined' color='primary' onClick={handleOpen}>
+                Add Parameter
+              </Button>
+            </Box>
+            <TableContainer component={Paper}>
+              <Table aria-label='simple table'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Parameter Name</TableCell>
+                    <TableCell>Type</TableCell>
+                    <TableCell />
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Box marginTop='30px'>
-            <Button variant='outlined' color='primary' onClick={handleOpen}>
-              Add Parameter
-            </Button>
-          </Box>
+                </TableHead>
+                <TableBody>
+                  {currentProductData?.availableVariables?.map((variation) => (
+                    <TableRow key={variation?.field}>
+                      <TableCell width='40%'>{variation?.field}</TableCell>
+                      <TableCell width='40%'>{variation?.type}</TableCell>
+                      <TableCell align='center'>
+                        <IconButton
+                          color='secondary'
+                          aria-label='edit'
+                          onClick={() => setEditableVariation(variation)}
+                          size='large'
+                        >
+                          <EditIcon />
+                        </IconButton>
 
-          <AddVariationModal
-            open={open}
-            onClose={handleClose}
-            setProductData={setProductData}
-            currentProductData={currentProductData}
-            setProductDetails={setProductDetails}
-            productDetails={productDetails}
-            setProductLocalizationChanges={setProductLocalizationChanges}
-          />
+                        <IconButton
+                          color='secondary'
+                          aria-label='clear'
+                          onClick={() => handleDeleteVariable(variation?.field)}
+                          size='large'
+                        >
+                          <ClearIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <AddVariationModal
+              open={open}
+              onClose={handleClose}
+              setProductData={setProductData}
+              currentProductData={currentProductData}
+              setProductDetails={setProductDetails}
+              productDetails={productDetails}
+              setProductLocalizationChanges={setProductLocalizationChanges}
+            />
+          </Box>
         </SectionLayout>
 
         <EditVariationModal

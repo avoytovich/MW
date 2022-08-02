@@ -139,21 +139,6 @@ const LocalizedContent = ({
                   }}
                   aria-label='Localizations'
                 >
-                  {selectedLocales.map((locale) => (
-                    <Tab
-                      style={errors?.[locale] ? { color: '#ff6341' } : {}}
-                      label={locale === defaultLocale ? `${locale} (default)` : locale}
-                      key={locale}
-                      value={locale}
-                      component={forwardRef(({ children, ...props }, ref) => locale && (
-                        <div role='button' {...props} ref={ref}>
-                          <span className='localization-label'>{children}</span>
-                          {locale !== defaultLocale
-                            && <ClearIcon onClick={(e) => removeLocale(e, locale)} />}
-                        </div>
-                      ))}
-                    />
-                  ))}
                   <Tab
                     ref={addButtonRef}
                     value={0}
@@ -169,6 +154,21 @@ const LocalizedContent = ({
                       </div>
                     ))}
                   />
+                  {selectedLocales.map((locale) => (
+                    <Tab
+                      style={errors?.[locale] ? { color: '#ff6341' } : {}}
+                      label={locale === defaultLocale ? `${locale} (default)` : locale}
+                      key={locale}
+                      value={locale}
+                      component={forwardRef(({ children, ...props }, ref) => locale && (
+                        <div role='button' {...props} ref={ref}>
+                          <span className='localization-label'>{children}</span>
+                          {locale !== defaultLocale
+                            && <ClearIcon onClick={(e) => removeLocale(e, locale)} />}
+                        </div>
+                      ))}
+                    />
+                  ))}
                 </Tabs>
               </Box>
               <Box display='flex' width='100%' flexDirection='column'>
