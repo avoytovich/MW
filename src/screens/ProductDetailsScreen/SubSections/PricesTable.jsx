@@ -184,6 +184,15 @@ const PricesTable = ({
 
   return (
     <>
+      <Box width='25%' pb={3}>
+        <SelectCustom
+          isDisabled={variation === 'inherits'}
+          label='currency'
+          value={newCurrency}
+          selectOptions={currencyOptions}
+          onChangeSelect={(e) => setNewCurrency(e.target.value)}
+        />
+      </Box>
       {Object.keys(priceByCountryByCurrency)?.length > 0
         && (
           <TableContainer component={Paper}>
@@ -391,15 +400,6 @@ const PricesTable = ({
           {Object.keys(digitsErrors).map((error) => <FormHelperText error>{`Price ${digitsErrors[error].value} for currency ${digitsErrors[error].currency} do not respect the number of decimal digits for this currency (${digitsErrors[error].digits} decimal digits)`}</FormHelperText>)}
         </Box>
       )}
-      <Box width='25%' p={3}>
-        <SelectCustom
-          isDisabled={variation === 'inherits'}
-          label='currency'
-          value={newCurrency}
-          selectOptions={currencyOptions}
-          onChangeSelect={(e) => setNewCurrency(e.target.value)}
-        />
-      </Box>
     </>
   );
 };

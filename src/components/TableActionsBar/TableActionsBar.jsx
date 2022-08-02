@@ -247,12 +247,15 @@ const TableActionsBar = ({
                           <ContentCopyIcon className="deleteIcon icons" onClick={() => setOpenDuplicate(true)} />
                         </IconButton>
                       </Tooltip>
-                      <DuplicatePopup
-                        setOpen={setOpenDuplicate}
-                        open={openDuplicate}
-                        duplicatedData={tableCurCheckedItemsData[0]}
-                        scope={scope}
-                      />
+                      {VALID_DUPLICATE_SCOPES.includes(scope)
+                        && (
+                        <DuplicatePopup
+                          setOpen={setOpenDuplicate}
+                          open={openDuplicate}
+                          duplicatedData={tableCurCheckedItemsData[0]}
+                          scope={scope}
+                        />
+                        )}
                       {findByCC
                         && (
                           <Tooltip disableInteractive arrow title="Find by CC" placement="top">
