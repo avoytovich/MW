@@ -294,37 +294,6 @@ const General = ({
             onChangeInput={(e) => handleUpdateGtm('nexwayGtmId', e.target.value)}
           />
         </Box>
-        <Box p={2}>
-          <SwitchInput
-            label='forceEndUserCreation'
-            handleChange={() => { }}
-            isChecked={currentStoreData.forceEndUserCreation}
-          />
-        </Box>
-        <Box p={2}>
-          <SwitchInput
-            label='displayProductDeliveryOnCheckoutConfirmation'
-            handleChange={(e) => {
-              setCurrentStoreData({
-                ...currentStoreData,
-                allowOrderDetailsOnCheckoutConfirmation: e.target.checked,
-              });
-            }}
-            isChecked={currentStoreData.allowOrderDetailsOnCheckoutConfirmation}
-          />
-        </Box>
-        <Box p={2}>
-          <SwitchInput
-            label='enableRecipientCode'
-            handleChange={(e) => {
-              setCurrentStoreData({
-                ...currentStoreData,
-                recipientCodeMandatory: e.target.checked,
-              });
-            }}
-            isChecked={currentStoreData.recipientCodeMandatory}
-          />
-        </Box>
         <CheckboxInput
           currentStoreData={currentStoreData}
           checkBoxData={checkBoxObj}
@@ -400,6 +369,39 @@ const General = ({
             isChecked={currentStoreData.allowSubscriptionUpgrade}
           />
         </Box>
+        <Box p={2}>
+          <SwitchInput
+            label='forceEndUserCreation'
+            handleChange={() => { }}
+            isChecked={currentStoreData.forceEndUserCreation}
+          />
+        </Box>
+        <Box p={2}>
+          <SwitchInput
+            label='displayProductDeliveryOnCheckoutConfirmation'
+            handleChange={(e) => {
+              setCurrentStoreData({
+                ...currentStoreData,
+                allowOrderDetailsOnCheckoutConfirmation: e.target.checked,
+              });
+            }}
+            isChecked={currentStoreData.allowOrderDetailsOnCheckoutConfirmation}
+          />
+        </Box>
+        <Box p={2}>
+          <SwitchInput
+            label='enableRecipientCode'
+            handleChange={(e) => {
+              setCurrentStoreData({
+                ...currentStoreData,
+                recipientCodeMandatory: e.target.checked,
+              });
+            }}
+            isChecked={currentStoreData.recipientCodeMandatory}
+          />
+        </Box>
+      </Grid>
+      <Grid item md={12} sm={12}>
         <Box p={2} height={74} alignItems='center' display='flex'>
           <Typography variant='h4'>{localization.t('labels.allowedBlockedCountries')}</Typography>
 
