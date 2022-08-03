@@ -303,6 +303,16 @@ const defProductVariationObj = {
   localizedThankYouDesc: { parentValue: '', state: 'inherits', value: '' },
 };
 
+const tabLabels = [
+  'general',
+  'fulfillment',
+  'subscription',
+  'localizedContent',
+  'prices',
+  'productFiles',
+  'productVariations',
+];
+
 export {
   handleGetOptions,
   handleGetProductDetails,
@@ -313,4 +323,5 @@ export {
   validateNumberInput,
   defLocalizationObj,
   defProductVariationObj,
+  tabLabels,
 };

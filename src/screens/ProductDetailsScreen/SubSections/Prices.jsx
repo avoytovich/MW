@@ -38,6 +38,8 @@ const Prices = ({
   priceTableError,
   digitsErrors,
   setDigitsErrors,
+  errors,
+  setErrors,
 }) => {
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const history = useHistory();
@@ -108,6 +110,8 @@ const Prices = ({
             currentProductData={currentProductData}
             setProductData={setProductData}
             priceByCountryByCurrency={checkValue(currentProductData?.priceByCountryByCurrency)}
+            errors={errors}
+            setErrors={setErrors}
           />
         </TableContainer>
       </Box>
@@ -262,6 +266,8 @@ Prices.propTypes = {
   priceTableError: PropTypes.array,
   digitsErrors: PropTypes.object,
   setDigitsErrors: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default Prices;

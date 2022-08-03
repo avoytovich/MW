@@ -54,6 +54,8 @@ const General = ({
   parentId,
   setSaveDisabled,
   variablesDescriptions,
+  errors,
+  setErrors,
 }) => {
   const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({ number: 1, value: '' });
   const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
@@ -75,6 +77,49 @@ const General = ({
 
   const { lifeTime: lifetime, subscriptionTemplate, fulfillmentTemplate } = currentProductData;
 
+  const withValidation = (target) => {
+    if (!target.value) {
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [target.name]: true,
+        },
+      });
+    } else {
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [target.name]: false,
+        },
+      });
+    }
+  };
+
+  const withValidationInputCustom = (target) => {
+    if (target.name !== 'name') {
+      withValidation(target);
+      setProductData({
+        ...currentProductData,
+        [target.name]: target.value,
+      });
+    } else {
+      withValidation(target);
+      setProductData({
+        ...currentProductData,
+        genericName: target.value,
+      });
+    }
+  };
+
+  const withValidationSelectCustom = (target, options = {}) => {
+    withValidation(target);
+    setProductData({
+      ...currentProductData,
+      [target.name]: target.value,
+    });
+  };
   const handleSelectOptions = selectOptions?.renewingProducts
     ?.filter((item) => item.id !== currentProductData.id)
     ?.sort(sortByAlphabetical) || [];
@@ -243,12 +288,9 @@ const General = ({
               label='name'
               isRequired
               value={checkValue(currentProductData.genericName)}
-              onChangeInput={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  genericName: e.target.value,
-                });
-              }}
+              onChangeInput={(e) => withValidationInputCustom(e.target)}
+              hasError={!!errors?.general?.name}
+              helperText={errors?.general?.name && localization.t('errorNotifications.required')}
             />
           </InheritanceField>
         </Box>
@@ -298,16 +340,14 @@ const General = ({
             currentProductData={currentProductData}
           >
             <SelectCustom
+              name='type'
               label='type'
               isRequired
               value={currentProductData?.type}
               selectOptions={type}
-              onChangeSelect={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  type: e.target.value,
-                });
-              }}
+              onChangeSelect={(e) => withValidationSelectCustom(e.target)}
+              hasError={!!errors?.general?.type}
+              helperText={errors?.general?.type && localization.t('errorNotifications.required')}
             />
           </InheritanceField>
         </Box>
@@ -325,10 +365,9 @@ const General = ({
               tooltip={localization.t('tooltips.publisherRefId')}
               label='publisherRefId'
               value={checkValue(currentProductData?.publisherRefId)}
-              onChangeInput={(e) => setProductData({
-                ...currentProductData,
-                publisherRefId: e.target.value,
-              })}
+              onChangeInput={(e) => withValidationInputCustom(e.target)}
+              hasError={!!errors?.general?.publisherRefId}
+              helperText={errors?.general?.publisherRefId && localization.t('errorNotifications.required')}
             />
           </InheritanceField>
         </Box>
@@ -858,6 +897,8 @@ General.propTypes = {
   handlePopoverClose: PropTypes.func,
   handlePopoverOpen: PropTypes.func,
   variablesDescriptions: PropTypes.array,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default General;

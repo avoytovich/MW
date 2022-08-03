@@ -25,7 +25,8 @@ import SelectCustomerNotification from '../SelectCustomerNotification';
 import defPath from '../../../services/helpers/routingHelper';
 import { copyText } from '../../../services/helpers/utils';
 import { tabLabels as tabLabelsStore } from '../../../screens/StoreDetailsScreen/utils';
-import storeHightLight from './HighLightingTabs/storeServise';
+import { tabLabels as tabLabelsProduct } from '../../../screens/ProductDetailsScreen/utils';
+import { storeHightLight, productHightLight } from './HighLightingTabs';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -54,6 +55,7 @@ const DetailPageWrapper = ({
   isRankingOpen,
   flexWrapper,
   customer,
+  priceTableError,
   refScrool = null,
 }) => {
   const { id: paramsId } = useParams();
@@ -100,7 +102,7 @@ const DetailPageWrapper = ({
   `;
 
   useEffect(() => {
-    if (tabLabelsStore.includes(tabs?.tabLabels?.[tabs.curTab])) {
+    if (tabs?.scope === 'store' && tabLabelsStore.includes(tabs?.tabLabels?.[tabs.curTab])) {
       storeHightLight(
         curData,
         isRankingOpen,
@@ -111,7 +113,16 @@ const DetailPageWrapper = ({
         customer,
       );
     }
-  }, [tabs?.curTab]);
+    if (tabs?.scope === 'product' && tabLabelsProduct.includes(tabs?.tabLabels?.[tabs.curTab])) {
+      productHightLight(
+        curData,
+        priceTableError,
+        errors,
+        setErrors,
+        tabs,
+      );
+    }
+  }, [tabs?.curTab, priceTableError]);
 
   return curData && (
     <>
@@ -162,7 +173,7 @@ const DetailPageWrapper = ({
             {extraActions}
           </Box>
         </Box>
-        {customTabs}
+        {!tabs && customTabs}
 
         {tabs?.tabLabels && (
           <Tabs

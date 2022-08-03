@@ -31,6 +31,7 @@ import {
   beforeSend,
   defLocalizationObj,
   defProductVariationObj,
+  tabLabels,
 } from './utils';
 import { setTempProductDescription } from '../../redux/actions/TempData';
 
@@ -86,6 +87,7 @@ const ProductDetailsScreen = () => {
   const parentId = history?.location?.state?.parentId;
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
+  const [errors, setErrors] = useState({});
   const [digitsErrors, setDigitsErrors] = useState({});
 
   const handleChangeTab = (tab) => {
@@ -633,6 +635,12 @@ const ProductDetailsScreen = () => {
           </>
         )
       }
+      tabs={{
+        scope: 'product',
+        setCurTab,
+        curTab,
+        tabLabels,
+      }}
       customTabs={(
         <ProductDetailsTabs
           curTab={curTab}
@@ -645,6 +653,9 @@ const ProductDetailsScreen = () => {
         />
       )}
       flexWrapper={codeMode && curTab === 3}
+      priceTableError={priceTableError}
+      errors={errors}
+      setErrors={setErrors}
     >
       <ProductDetailsView
         localizedErrors={localizedErrors}
@@ -676,6 +687,8 @@ const ProductDetailsScreen = () => {
         codeMode={codeMode}
         jsonIsValid={jsonIsValid}
         setJsonIsValid={setJsonIsValid}
+        errors={errors}
+        setErrors={setErrors}
       />
     </DetailPageWrapper>
   );
