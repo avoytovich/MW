@@ -19,7 +19,7 @@ import moment from 'moment';
 import PricesTable from './PricesTable';
 import InheritanceField from '../InheritanceField';
 import { SelectCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
-import { priceCurrency } from '../../../services/selectOptions/selectOptions';
+import { getCurrency } from '../../../services/selectOptions/selectOptions';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import parentPaths from '../../../services/paths';
 import localization from '../../../localization';
@@ -82,7 +82,7 @@ const Prices = ({
       ? Object.keys(currentProductData.priceByCountryByCurrency).map((it) => it)
       : Object.keys(currentProductData.priceByCountryByCurrency.value).map((it) => it);
 
-    return priceCurrency.filter((el) => selectedCurrency.includes(el.id)) || [];
+    return getCurrency().filter((el) => selectedCurrency.includes(el.id)) || [];
   };
   return (
     <>

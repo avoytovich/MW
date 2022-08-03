@@ -53,42 +53,16 @@ const validityPeriod = [
   { id: 'before', value: 'before' },
 ];
 
-const priceCurrency = [
-  { value: 'AED (UAE Dirham)', id: 'AED' },
-  { value: 'ARS (Argentine Peso)', id: 'ARS' },
-  { value: 'AUD (Australian Dollar)', id: 'AUD' },
-  { value: 'BRL (Brazilian Real)', id: 'BRL' },
-  { value: 'CAD (Canadian Dollar)', id: 'CAD' },
-  { value: 'CHF (Swiss Frank)', id: 'CHF' },
-  { value: 'CLP (Chilean Peso)', id: 'CLP' },
-  { value: 'CNY (Yuan Renminbi)', id: 'CNY' },
-  { value: 'COP (Colombian Peso)', id: 'COP' },
-  { value: 'DKK (Danish Krone)', id: 'DKK' },
-  { value: 'DZD (Algerian Dinar)', id: 'DZD' },
-  { value: 'EGP (Egyptian Pound)', id: 'EGP' },
-  { value: 'EUR (Euro)', id: 'EUR' },
-  { value: 'GBP (Pound Sterling)', id: 'GBP' },
-  { value: 'HKD (Hong Kong Dollar)', id: 'HKD' },
-  { value: 'IDR (Rupiah)', id: 'IDR' },
-  { value: 'ILS (New Israeli Sheqel)', id: 'ILS' },
-  { value: 'INR (Indian Rupee)', id: 'INR' },
-  { value: 'JPY (Yen)', id: 'JPY' },
-  { value: 'KES (Kenyan Shilling)', id: 'KES' },
-  { value: 'KRW (Won)', id: 'KRW' },
-  { value: 'MXN (Mexican Peso)', id: 'MXN' },
-  { value: 'MYR(Malaysian Ringgit)', id: 'MYR' },
-  { value: 'NAD (Namibia Dollar)', id: 'NAD' },
-  { value: 'NGN (Naira)', id: 'NGN' },
-  { value: 'NOK (Norwegian Krone)', id: 'NOK' },
-  { value: 'NZD (New Zealand Dollar)', id: 'NZD' },
-  { value: 'PEN (Sol)', id: 'PEN' },
-  { value: 'PHP (Philippine Peso)', id: 'PHP' },
-  { value: 'PLN (Zloty)', id: 'PLN' },
-  { value: 'QAR (Qatari Rial)', id: 'QAR' },
-  { value: 'USD (US Dollar)', id: 'USD' },
-];
-const getCurrency = () => priceCurrency.map((currency) => (
-  { ...currency, digits: currencies.code(currency.id).digits }));
+const codes = ['EUR', 'USD', 'GBP', 'AUD', 'CAD', 'BRL', 'CHF', 'JPY', 'NZD', 'NOK', 'DKK', 'SEK', 'INR', 'SGD', 'ARS', 'CLP', 'COP',
+  'MXN', 'PEN', 'TRY', 'AED', 'SYP', 'QAR', 'EGP', 'ZAR', 'KES', 'NGN', 'NAD', 'THB', 'VND', 'ILS', 'DZD', 'XOF', 'TND', 'TWD', 'HKD',
+  'SAR', 'KRW', 'PLN', 'MYR', 'PHP', 'IDR', 'CNY', 'RUB', 'RSD', 'RON', 'MDL', 'BGN', 'XAF', 'ISK', 'BYN', 'CZK', 'HUF', 'KZT', 'MAD', 'UAH'];
+
+const getCurrency = () => codes.sort().map((code) => (
+  {
+    id: code,
+    digits: currencies.code(code).digits,
+    value: `${code} (${currencies.code(code).currency})`,
+  }));
 
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
@@ -191,7 +165,6 @@ export {
   storeDetailsCardText,
   orderDetailStatus,
   businessSegment,
-  priceCurrency,
   defaultCurrency,
   orderCancelAction,
   installmentOptions,

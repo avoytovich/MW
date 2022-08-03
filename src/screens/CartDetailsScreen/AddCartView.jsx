@@ -24,7 +24,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Form, Field } from 'formik';
 
 import localization from '../../localization';
-import { priceCurrency } from '../../services/selectOptions/selectOptions';
+import { getCurrency } from '../../services/selectOptions/selectOptions';
 import {
   tabLabelsAdd, checkBoxSource, checkBoxBuyerDetails, checkBoxSalutation,
 } from './utils';
@@ -52,7 +52,7 @@ const AddCartView = ({
   },
 }) => {
   const [curTab, setCurTab] = useState(0);
-
+  
   const allowCountriesOpt = () => {
     if (selectedStore) {
       const getSelectedStoreById = storeOpt.items.filter((item) => item.id === selectedStore);
@@ -170,7 +170,7 @@ const AddCartView = ({
                     }}
                     onChange={handleChange}
                   >
-                    {priceCurrency.map((option) => (
+                    {getCurrency().map((option) => (
                       <MenuItem key={option.id} value={option.id}>
                         {option.value}
                       </MenuItem>

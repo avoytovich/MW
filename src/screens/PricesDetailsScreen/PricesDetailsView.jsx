@@ -16,7 +16,7 @@ import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import { getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 import { SelectCustom, AutocompleteCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
-import { priceCurrency } from '../../services/selectOptions/selectOptions';
+import { getCurrency } from '../../services/selectOptions/selectOptions';
 import { copyText, sortByAlphabetical } from '../../services/helpers/utils';
 import localization from '../../localization';
 
@@ -145,7 +145,7 @@ const PricesDetailsView = ({
                 label="currency"
                 isRequired
                 value={curPrice?.currency}
-                selectOptions={priceCurrency}
+                selectOptions={getCurrency()}
                 onChangeSelect={(e) => setCurPrice((c) => ({ ...c, currency: e.target.value }))}
               />
             </Box>
