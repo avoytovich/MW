@@ -31,6 +31,8 @@ const PricesTable = ({
   priceTableError,
   digitsErrors,
   setDigitsErrors,
+  errors,
+  setErrors,
 }) => {
   const currencyOptions = getCurrency();
   const countryOptions = getCountriesOptions();
@@ -144,6 +146,63 @@ const PricesTable = ({
     newArray[index][inputName] = e.target.value !== '' ? Number(e.target.value) : e.target.value;
     handleSetProductData({ ...priceByCountryByCurrency, [langName]: newArray });
   };
+
+  const withValidation = (target) => {
+    if (!target.value) {
+      setErrors({
+        ...errors,
+        prices: {
+          ...errors?.prices,
+          [target.name]: true,
+        },
+      });
+    } else {
+      setErrors({
+        ...errors,
+        prices: {
+          ...errors?.prices,
+          [target.name]: false,
+        },
+      });
+    }
+  };
+
+  const withValidationSelectCustom = (target, options = {}) => {
+    withValidation(target);
+    setNewCurrency(target.value);
+  };
+
+  const withValidationInputCustom = (e, el, item, index) => {
+    if (e.target.name === 'price') {
+      withValidation(e.target);
+      const currentDigits = currencyOptions.filter(
+        (option) => option.id === el,
+      )?.[0].digits;
+      if (!e.target.value || e.target.value === '0' || (e.target.value.includes('.') && e.target.value.split('.')?.[1]?.length > currentDigits)) {
+        if (!priceTableError.includes(item.key)) {
+          setPriceTableError((er) => [...er, item.key]);
+        }
+      } else if (priceTableError.includes(item.key)) {
+        const newErrors = priceTableError.filter(
+          (element) => element !== item.key,
+        );
+        setPriceTableError(newErrors);
+      }
+
+      if (e.target.value.includes('.') && e.target.value.split('.')?.[1]?.length > currentDigits) {
+        const newError = {
+          value: e.target.value, digits: currentDigits, currency: el,
+        };
+        setDigitsErrors((er) => ({ ...er, [item.key]: newError }));
+      } else if (digitsErrors[item.key]) {
+        const errorsObj = { ...digitsErrors };
+        delete errorsObj[item.key];
+        setDigitsErrors(errorsObj);
+      }
+      handleUpdate(e, 'value', el, index);
+    }
+  };
+
   useEffect(() => {
     if (currentProductData?.priceByCountryByCurrency.state) {
       setVariation(currentProductData?.priceByCountryByCurrency.state);
@@ -186,11 +245,14 @@ const PricesTable = ({
     <>
       <Box width='25%' pb={3}>
         <SelectCustom
+          name='currency'
           isDisabled={variation === 'inherits'}
           label='currency'
           value={newCurrency}
           selectOptions={currencyOptions}
-          onChangeSelect={(e) => setNewCurrency(e.target.value)}
+          onChangeSelect={(e) => withValidationSelectCustom(e.target)}
+          hasError={!!errors?.prices?.currency}
+          helperText={errors?.prices?.currency && localization.t('errorNotifications.required')}
         />
       </Box>
       {Object.keys(priceByCountryByCurrency)?.length > 0
@@ -274,8 +336,10 @@ const PricesTable = ({
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
                         <NumberInput
+                          name='price'
                           isRequired
                           hasError={!item.value || priceTableError.includes(item.key)}
+                          // helperText={errors?.prices?.price && localization.t('errorNotifications.required')}
                           inputRefFunc={(element) => {
                             if (!item.value) {
                               priceTableRef.current[item.key] = element;
@@ -291,33 +355,7 @@ const PricesTable = ({
                           minMAx={{ min: 0 }}
                           label='price'
                           value={item.value}
-                          onChangeInput={(e) => {
-                            const currentDigits = currencyOptions.filter(
-                              (option) => option.id === el,
-                            )?.[0].digits;
-                            if (!e.target.value || e.target.value === '0' || (e.target.value.includes('.') && e.target.value.split('.')?.[1]?.length > currentDigits)) {
-                              if (!priceTableError.includes(item.key)) {
-                                setPriceTableError((er) => [...er, item.key]);
-                              }
-                            } else if (priceTableError.includes(item.key)) {
-                              const newErrors = priceTableError.filter(
-                                (element) => element !== item.key,
-                              );
-                              setPriceTableError(newErrors);
-                            }
-
-                            if (e.target.value.includes('.') && e.target.value.split('.')?.[1]?.length > currentDigits) {
-                              const newError = {
-                                value: e.target.value, digits: currentDigits, currency: el,
-                              };
-                              setDigitsErrors((er) => ({ ...er, [item.key]: newError }));
-                            } else if (digitsErrors[item.key]) {
-                              const errorsObj = { ...digitsErrors };
-                              delete errorsObj[item.key];
-                              setDigitsErrors(errorsObj);
-                            }
-                            handleUpdate(e, 'value', el, index);
-                          }}
+                          onChangeInput={(e) => withValidationInputCustom(e, el, item, index)}
                         />
                       </TableCell>
                       <TableCell width="10%" className='tableCellWithBorder'>
@@ -413,6 +451,8 @@ PricesTable.propTypes = {
   priceTableError: PropTypes.array,
   digitsErrors: PropTypes.object,
   setDigitsErrors: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default PricesTable;

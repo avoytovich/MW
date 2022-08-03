@@ -43,6 +43,8 @@ const ProductDetailsView = ({
   setCurLocalizedData,
   localizedErrors,
   setLocalizedErrors,
+  errors,
+  setErrors,
 }) => {
   const checkSaveDisable = () => {
     const {
@@ -101,6 +103,8 @@ const ProductDetailsView = ({
             setSaveDisabled={setSaveDisabled}
             parentId={parentId}
             variablesDescriptions={variablesDescriptions}
+            errors={errors}
+            setErrors={setErrors}
           />
         </SectionLayout>
       )}
@@ -161,6 +165,8 @@ const ProductDetailsView = ({
             productData={productData}
             setNewData={setProductLocalizationChanges}
             parentId={parentId}
+            errors={errors}
+            setErrors={setErrors}
           />
         </SectionLayout>
       )}
@@ -238,6 +244,8 @@ ProductDetailsView.propTypes = {
   setCurLocalizedData: PropTypes.func,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default ProductDetailsView;

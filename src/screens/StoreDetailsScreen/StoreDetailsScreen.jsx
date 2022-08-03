@@ -289,6 +289,7 @@ const StoreDetailsScreen = () => {
       beforeSend={beforeSend}
       setUpdate={setUpdate}
       tabs={{
+        scope: 'store',
         setCurTab,
         curTab,
         tabLabels,
