@@ -78,7 +78,7 @@ const generateData = async (subscription) => {
       },
       {
         label: localization.t('labels.nextBillingDate'),
-        value: moment(subscription?.lifecycle?.nextBillingDate).format('YYYY-MM-DD') || emptyValue,
+        value: subscription?.lifecycle?.nextBillingDate ? moment(subscription?.lifecycle?.nextBillingDate).format('YYYY-MM-DD') : emptyValue,
       },
     ],
   };
