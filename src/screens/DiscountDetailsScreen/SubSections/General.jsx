@@ -10,7 +10,7 @@ import {
   Grid,
 } from '@mui/material';
 import {
-  priceCurrency,
+  getCurrency,
 } from '../../../services/selectOptions/selectOptions';
 import LocalizedContent from '../../../components/utils/LocalizedContent';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
@@ -156,7 +156,7 @@ const General = ({
                 setCurValue={(value) => setCurDiscount(
                   { ...curDiscount, amountByCurrency: value },
                 )}
-                selectOptions={priceCurrency}
+                selectOptions={getCurrency()}
                 labels={['currency', 'amount']}
               />
             )

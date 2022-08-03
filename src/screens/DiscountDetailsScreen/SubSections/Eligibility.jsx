@@ -17,7 +17,7 @@ import { sortByAlphabetical } from '../../../services/helpers/utils';
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
 import { SelectWithChip, SelectWithDeleteIcon, AutocompleteWithChips } from '../../../components/Inputs';
-import { priceCurrency } from '../../../services/selectOptions/selectOptions';
+import { getCurrency } from '../../../services/selectOptions/selectOptions';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
 const Eligibility = ({
@@ -211,7 +211,7 @@ const Eligibility = ({
           firstCanBeDeleted
           curValue={curDiscount.thresholds}
           setCurValue={(value) => setCurDiscount({ ...curDiscount, thresholds: value })}
-          selectOptions={priceCurrency}
+          selectOptions={getCurrency()}
           labels={['currency', 'amount']}
         />
       </Grid>
