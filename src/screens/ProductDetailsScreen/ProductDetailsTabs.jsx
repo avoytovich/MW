@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import {
@@ -6,10 +6,17 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import ArrowBack from '@mui/icons-material/ArrowBack';
 
+import { tabLabels as tabLabelsProduct } from './utils';
+import { productHightLight } from '../../components/utils/DetailPageWrapper/HighLightingTabs';
 import localization from '../../localization';
+
+const CustomizedTab = styled(Tab)`
+    color: red;
+  `;
 
 const ProductDetailsTabs = ({
   curTab,
@@ -19,20 +26,34 @@ const ProductDetailsTabs = ({
   selectOptions,
   backToParent,
   setBackToParent,
-}) => (
-  <Tabs
-    value={curTab}
-    data-test='productTabs'
-    indicatorColor='primary'
-    textColor='primary'
-    onChange={(e, tab) => {
-      if (tab === 7 && !backToParent) {
-        setBackToParent(true);
-      }
-      handleChangeTab(tab);
-    }}
-  >
-    {(currentProductData?.parentId || parentId) && (
+  tabs,
+}) => {
+  useEffect(() => {
+    if (tabs?.scope === 'product' && tabLabelsProduct.includes(tabs?.tabLabels?.[tabs.curTab])) {
+      productHightLight(
+        currentProductData,
+        tabs?.priceTableError,
+        tabs?.errors,
+        tabs?.setErrors,
+        tabs,
+      );
+    }
+  }, [tabs?.curTab, tabs?.priceTableError]);
+
+  return (
+    <Tabs
+      value={curTab}
+      data-test='productTabs'
+      indicatorColor='primary'
+      textColor='primary'
+      onChange={(e, tab) => {
+        if (tab === 7 && !backToParent) {
+          setBackToParent(true);
+        }
+        handleChangeTab(tab);
+      }}
+    >
+      {(currentProductData?.parentId || parentId) && (
       <Tab
         style={{ color: 'white', backgroundColor: '#9ec5ec' }}
         label={(
@@ -43,33 +64,38 @@ const ProductDetailsTabs = ({
         )}
         value={7}
       />
-    )}
-    <Tab label={localization.t('labels.general')} value={0} />
-    <Tab
-      label={localization.t('labels.fulfillment')}
-      value={1}
-      disabled={!selectOptions?.sellingStores}
-    />
-    <Tab
-      label={localization.t('labels.subscription')}
-      value={2}
-      disabled={!selectOptions?.sellingStores}
-    />
-    <Tab
-      label={localization.t('labels.localizedContent')}
-      value={3}
-      disabled={!selectOptions?.sellingStores}
-    />
-    <Tab label={localization.t('labels.prices')} value={4} />
-    <Tab label={localization.t('labels.productFiles')} value={5} />
-    {(!parentId) && (
+      )}
+      {tabs?.errors?.general?.isFulfilled === false
+        ? <CustomizedTab key='general' label={localization.t('labels.general')} />
+        : <Tab label={localization.t('labels.general')} value={0} />}
+      <Tab
+        label={localization.t('labels.fulfillment')}
+        value={1}
+        disabled={!selectOptions?.sellingStores}
+      />
+      <Tab
+        label={localization.t('labels.subscription')}
+        value={2}
+        disabled={!selectOptions?.sellingStores}
+      />
+      <Tab
+        label={localization.t('labels.localizedContent')}
+        value={3}
+        disabled={!selectOptions?.sellingStores}
+      />
+      {tabs?.errors?.prices?.isFulfilled === false
+        ? <CustomizedTab key='prices' label={localization.t('labels.prices')} />
+        : <Tab label={localization.t('labels.prices')} value={4} />}
+      <Tab label={localization.t('labels.productFiles')} value={5} />
+      {(!parentId) && (
       <Tab
         label={localization.t('labels.productVariations')}
         value={6}
       />
-    )}
-  </Tabs>
-);
+      )}
+    </Tabs>
+  );
+};
 
 ProductDetailsTabs.propTypes = {
   curTab: PropTypes.number,
@@ -79,6 +105,7 @@ ProductDetailsTabs.propTypes = {
   selectOptions: PropTypes.object,
   backToParent: PropTypes.bool,
   setBackToParent: PropTypes.func,
+  tabs: PropTypes.object,
 };
 
 export default ProductDetailsTabs;
