@@ -173,7 +173,7 @@ const DetailPageWrapper = ({
             {extraActions}
           </Box>
         </Box>
-        {!tabs && customTabs}
+        {customTabs}
 
         {tabs?.tabLabels && (
           <Tabs

@@ -635,12 +635,6 @@ const ProductDetailsScreen = () => {
           </>
         )
       }
-      tabs={{
-        scope: 'product',
-        setCurTab,
-        curTab,
-        tabLabels,
-      }}
       customTabs={(
         <ProductDetailsTabs
           curTab={curTab}
@@ -650,6 +644,15 @@ const ProductDetailsScreen = () => {
           selectOptions={selectOptions}
           backToParent={backToParent}
           setBackToParent={setBackToParent}
+          tabs={{
+            scope: 'product',
+            setCurTab,
+            curTab,
+            tabLabels,
+            errors,
+            setErrors,
+            priceTableError,
+          }}
         />
       )}
       flexWrapper={codeMode && curTab === 3}
