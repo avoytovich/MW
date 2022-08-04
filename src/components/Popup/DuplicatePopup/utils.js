@@ -172,14 +172,30 @@ const duplicateParamsByScope = {
               && !sellingStores.general) {
               sellingStores = [];
             }
-
-            requests.push(
+            if (sendVariation.genericName) {
+              const genericName = `Copy of ${sendVariation.genericName}`;
+              sendVariation.genericName = genericName;
+            }
+            const sendLocals = { ...sendVariation.descriptionData };
+            localsToDelete.forEach((item) => {
+              delete sendLocals[item];
+            });
+            sendLocals.description = '-';
+            delete sendVariation.descriptionData;
+            const request = api.addProductLocalsById(localsToSend).then((res) => {
+              const headersLocation = res.headers.location.split('/');
+              const childDescriptionId = headersLocation[headersLocation.length - 1];
               api.addNewProduct({
                 ...sendVariation,
                 parentId,
+                descriptionId: childDescriptionId,
+                publisherRefId: product.publisherRefId,
                 sellingStores,
                 status: 'DISABLED',
-              }),
+              });
+            });
+            requests.push(
+              request,
             );
           });
           return Promise.allSettled(requests).then(() => funcRes);
@@ -192,10 +208,32 @@ const duplicateParamsByScope = {
         )
           .then((
             [productDescriptionData, variationsData],
-          ) => ((productDescriptionData.value?.data || variationsData.value?.data.items.length) ? ({
-            description: productDescriptionData.value?.data || null,
-            variations: variationsData.value?.data.items || null,
-          }) : null)),
+          ) => {
+            const description = productDescriptionData.value?.data || null;
+            let variations = null;
+
+            if (variationsData.value?.data.items.length) {
+              const descArr = variationsData.value?.data.items.map(
+                (i) => api.getProductDescriptionById(i.descriptionId),
+              );
+              Promise.allSettled(descArr).then((descRes) => {
+                const variationsWithDescription = variationsData.value?.data.items
+                  .map((variation) => {
+                    const descriptionData = descRes.find(
+                      (d) => d.value.data.id === variation.descriptionId,
+                    ).value?.data || {};
+                    return ({ ...variation, descriptionData });
+                  });
+                variations = variationsWithDescription || null;
+                return { description, variations };
+              });
+            }
+            return ((productDescriptionData.value?.data
+              || variationsData.value?.data.items.length) ? ({
+                description: productDescriptionData.value?.data || null,
+                variations: variationsData.value?.data.items || null,
+              }) : null);
+          }),
       },
     },
     validation: ({ attributes }) => {
