@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { getCustomerName } from '../../services/helpers/customersHelper';
+import { getCustomerName, getCustomerNameSync } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 
 const emptyField = '-';
@@ -42,6 +42,8 @@ const markUp = {
 };
 
 const generateData = (data) => {
+  const usedCustomers = [];
+
   const values = data.items.map(async (val) => {
     const returnData = {
       id: val.id,
@@ -60,14 +62,14 @@ const generateData = (data) => {
       reasonOfOperation: val.why?.reason || emptyField,
     };
 
-    if (val.customerOfUser) {
-      const name = await getCustomerName(val.customerOfUser);
-      return { ...returnData, customer: name };
+    if (val?.customerOfUser && usedCustomers.indexOf(val.customerOfUser) < 0) {
+      usedCustomers.push(val.customerOfUser);
     }
-    if (val.subjectCustomer) {
-      const name = await getCustomerName(val.subjectCustomer);
-      return { ...returnData, customer: name };
+
+    if (val?.subjectCustomer && usedCustomers.indexOf(val.subjectCustomer) < 0) {
+      usedCustomers.push(val.subjectCustomer);
     }
+
     return returnData;
   });
 
@@ -77,8 +79,24 @@ const generateData = (data) => {
 
   return Promise
     .all(values)
-    .then((resp) => {
-      Object.assign(markUp, { values: resp, meta });
+    .then(async (resp) => {
+      const promises = usedCustomers.map((c) => getCustomerName(c));
+
+      await Promise
+        .all(promises)
+        .finally(() => Object.assign(markUp, {
+          values: resp.map((r) => {
+            const customerOfUserName = getCustomerNameSync(r?.customerOfUser);
+            const subjectCustomerName = getCustomerNameSync(r?.subjectCustomer);
+
+            return {
+              ...r,
+              customerOfUser: customerOfUserName,
+              subjectCustomer: subjectCustomerName,
+            };
+          }),
+          meta,
+        }));
 
       return markUp;
     });
