@@ -6,7 +6,7 @@ export const getCustomerName = async (id) => {
   const [existing] = loadedCustomers.filter((c) => c.id === id);
 
   if (existing) {
-    return existing.name || localization.t('labels.customerNotFound');
+    return existing?.name || localization.t('labels.customerNotFound');
   }
 
   const updateStorage = (name) => {
@@ -32,5 +32,5 @@ export const getCustomerNameSync = (id) => {
   const loadedCustomers = JSON.parse(sessionStorage.getItem('customersData')) || [];
   const [existing] = loadedCustomers.filter((c) => c.id === id);
 
-  return existing.name || id || localization.t('labels.customerNotFound');
+  return existing?.name || id || localization.t('labels.customerNotFound');
 };

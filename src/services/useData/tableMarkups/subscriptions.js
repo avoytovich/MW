@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getCustomerName } from '../../helpers/customersHelper';
+import { getCustomerName, getCustomerNameSync } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -27,6 +27,8 @@ const markUp = {
 };
 
 const generateData = (data) => {
+  const usedCustomers = [];
+
   const values = data.items.map(async (val) => {
     const returnData = {
       id: val.id,
@@ -39,9 +41,8 @@ const generateData = (data) => {
       storeId: val.storeId,
     };
 
-    if (val.customerId) {
-      const name = await getCustomerName(val.customerId);
-      return { ...returnData, customer: name };
+    if (val?.customerId && usedCustomers.indexOf(val.customerId) < 0) {
+      usedCustomers.push(val.customerId);
     }
 
     return returnData;
@@ -53,8 +54,19 @@ const generateData = (data) => {
 
   return Promise
     .all(values)
-    .then((resp) => {
-      Object.assign(markUp, { values: resp, meta });
+    .then(async (resp) => {
+      const promises = usedCustomers.map((c) => getCustomerName(c));
+
+      await Promise
+        .all(promises)
+        .finally(() => Object.assign(markUp, {
+          values: resp.map((r) => {
+            const name = getCustomerNameSync(r.customer);
+
+            return { ...r, customer: name };
+          }),
+          meta,
+        }));
 
       return markUp;
     });
