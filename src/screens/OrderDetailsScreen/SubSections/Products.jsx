@@ -36,7 +36,7 @@ const Products = ({ orderData, subscriptions }) => {
         noActions
         noTableActionsBar
         noEditDeleteActions
-        orderData={orderData?.processingEvent}
+        orderData={orderData?.lineItems[0].processingEvent}
         wrapperStyles={{
           paddingBottom: '24px',
         }}
