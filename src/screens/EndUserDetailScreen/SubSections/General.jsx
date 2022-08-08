@@ -322,6 +322,16 @@ const General = ({
             })}
           />
         </Box>
+        <Box p={2}>
+          <InputCustom
+            label='taxIdNumber'
+            value={curEndUser.taxIdNumber}
+            onChangeInput={(e) => setCurEndUser({
+              ...curEndUser,
+              taxIdNumber: e.target.value,
+            })}
+          />
+        </Box>
       </Grid>
     </Grid>
   );

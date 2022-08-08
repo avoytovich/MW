@@ -194,6 +194,16 @@ const generateData = (orderData, paymentData) => {
         label: localization.t('labels.vatNumber'),
         value: orderData?.endUser?.company?.vatNumber || emptyValue,
       },
+      {
+        key: ' taxOffice',
+        label: localization.t('labels.taxOffice'),
+        value: orderData?.endUser?.company?.taxOffice || emptyValue,
+      },
+      {
+        key: ' taxIdNumber',
+        label: localization.t('labels.taxIdNumber'),
+        value: orderData?.endUser?.company?.taxIdNumber || emptyValue,
+      },
     ],
     paymentAttempt: [
       {

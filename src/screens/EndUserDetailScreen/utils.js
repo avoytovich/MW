@@ -12,6 +12,7 @@ const defaultObject = {
   status: 'DISABLED',
   streetAddress: '',
   taxOffice: '',
+  taxIdNumber: '',
   groupId: '',
 };
 

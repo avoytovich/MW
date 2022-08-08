@@ -502,6 +502,7 @@ const labels = {
   vat: 'VAT',
   vatNumber: 'VAT number',
   taxOffice: 'Tax Office',
+  taxIdNumber: 'Tax Id Number',
   net: 'Net',
   gross: 'Gross',
   netPrice: 'Net price',
