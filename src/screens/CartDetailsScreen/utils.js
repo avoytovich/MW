@@ -111,6 +111,10 @@ const structureEndUser = (cartData) => ([
     label: 'taxOffice',
     field: cartData?.endUser?.taxOffice || '-',
   },
+  {
+    label: 'taxIdNumber',
+    field: cartData?.endUser?.taxIdNumber || '-',
+  },
 ]);
 
 const checkBoxSource = [
