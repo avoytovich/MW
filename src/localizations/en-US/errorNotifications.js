@@ -46,6 +46,7 @@ const errorNotifications = {
   isMandatoryForTheDefaultLanguage: 'is mandatory for the default language, as soon as it is set for some language.',
   isRequired: 'is required',
   subscriptionCanBeCopiedOnlyWithGeneralSection: 'Subscription can be copied only with General section',
+  defaultPriceIsRequired: 'Default price is required',
 };
 
 export default errorNotifications;
