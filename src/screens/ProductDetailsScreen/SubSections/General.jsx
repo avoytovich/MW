@@ -311,17 +311,24 @@ const General = ({
                 <Switch
                   name='status'
                   onChange={(e) => {
-                    setProductData({
-                      ...currentProductData,
-                      status: e.target.checked ? 'ENABLED' : 'DISABLED',
-                    });
+                    if (currentProductData?.status.state) {
+                      setProductData({
+                        ...currentProductData,
+                        status: { parentValue: currentProductData?.status.parentValue, state: 'overrides', value: e.target.checked ? 'ENABLED' : 'DISABLED' },
+                      });
+                    } else {
+                      setProductData({
+                        ...currentProductData,
+                        status: e.target.checked ? 'ENABLED' : 'DISABLED',
+                      });
+                    }
                   }}
-                  color={currentProductData?.status === 'ENABLED' ? 'success' : 'primary'}
-                  checked={currentProductData?.status === 'ENABLED'}
+                  color={checkValue(currentProductData?.status) === 'ENABLED' ? 'success' : 'primary'}
+                  checked={checkValue(currentProductData?.status) === 'ENABLED'}
                 />
               )}
               label={localization.t(
-                `labels.${currentProductData?.status === 'ENABLED' ? 'enabled' : 'disabled'
+                `labels.${checkValue(currentProductData?.status) === 'ENABLED' ? 'enabled' : 'disabled'
                 }`,
               )}
             />
