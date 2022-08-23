@@ -104,7 +104,10 @@ const generateData = (data, children) => {
     return returnData;
   });
 
-  const meta = { totalPages: data.totalPages };
+  const meta = {
+    totalPages: data.totalPages,
+    totalItems: data.totalItems,
+  };
 
   return Promise
     .all(values)

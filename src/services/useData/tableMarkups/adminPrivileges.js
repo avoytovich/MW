@@ -50,6 +50,7 @@ const generateData = (data) => {
 
   const meta = {
     totalPages: data.totalPages,
+    totalItems: data.totalItems,
   };
 
   Object.assign(markUp, { values, meta, defaultShow });

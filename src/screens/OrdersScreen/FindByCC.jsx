@@ -39,6 +39,7 @@ const selectOptions = ['10', '50', '100', '200'];
 const FindByCC = ({ open, onClose }) => {
   const [curPage, setCurPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [bin, setBin] = useState('');
   const [l4, setL4] = useState('');
@@ -75,9 +76,10 @@ const FindByCC = ({ open, onClose }) => {
 
       api
         .getOrdersByCard(dataToSend)
-        .then(({ data: { items, totalPages: total } }) => {
-          setResults(items);
+        .then(({ data: { items, totalPages: total, totalItems: totalItem } }) => {
+          setTotalItems(totalItem);
           setTotalPages(total);
+          setResults(items);
         })
         .finally(() => {
           setTimeout(() => setLoading(false), 300);
@@ -257,12 +259,15 @@ const FindByCC = ({ open, onClose }) => {
               </TextField>
             </Box>
           </Box>
-
-          <PaginationComponent
-            propCurrentPage={curPage}
-            propSetCurrentPage={setCurPage}
-            totalPages={totalPages}
-          />
+          {(results?.length > 0 && !isLoading)
+            && (
+              <PaginationComponent
+                propCurrentPage={curPage}
+                propSetCurrentPage={setCurPage}
+                totalPages={totalPages}
+                meta={{ totalItems }}
+              />
+            )}
         </Box>
 
         {(results?.length > 0 || isLoading) && <TableComponent />}

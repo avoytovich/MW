@@ -131,15 +131,15 @@ const TableComponent = ({
   if (isLoading || !showColumn) return <LinearProgress />;
   return tableData?.values?.length ? (
     <Box display='flex' flexDirection='column' flexGrow='1' pb={4} height={1} sx={wrapperStyles}>
-      {tableData.meta?.totalPages > 1 && (
+      {tableData.meta?.totalPages && (
         <Box display='flex' mb={3}>
           <PaginationComponent
             location='flex-end'
+            meta={tableData.meta}
             totalPages={tableData.meta?.totalPages}
           />
         </Box>
       )}
-
       <DataGridPro
         onSelectionModelChange={(newSelectionModel) => handleCheck(newSelectionModel)}
         selectionModel={curChecked}

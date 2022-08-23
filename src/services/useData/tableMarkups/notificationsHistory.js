@@ -97,6 +97,7 @@ const generateData = async (data, customers, selectedCustomer) => {
 
   const meta = {
     totalPages: data.totalPages,
+    totalItems: data.totalItems,
   };
 
   Object.assign(markUp, { values, meta });
