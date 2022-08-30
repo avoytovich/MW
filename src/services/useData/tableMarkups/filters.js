@@ -803,7 +803,7 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'creationDate',
+      id: 'createDate',
       label: localization.t('labels.creationDate'),
       type: 'date',
     },

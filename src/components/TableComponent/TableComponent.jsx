@@ -162,6 +162,7 @@ const TableComponent = ({
         disableColumnFilter
         sortingOrder={['asc', 'desc']}
         sortModel={sortModel}
+        sortingMode='server'
         onSortModelChange={([col]) => {
           if (col?.field && col?.sort) {
             setSortParams({ value: col?.field, type: col?.sort });

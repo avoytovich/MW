@@ -6,7 +6,7 @@ const defaultShow = {
   id: false,
   customer: true,
   description: true,
-  creationDate: true,
+  createDate: true,
   lastUpdate: true,
   name: true,
   startDate: true,
@@ -21,7 +21,7 @@ const markUp = {
     { value: localization.t('labels.description'), id: 'description' },
     {
       value: localization.t('labels.creationDate'),
-      id: 'creationDate',
+      id: 'createDate',
       sortParam: 'createDate',
     },
     {
@@ -61,7 +61,7 @@ const generateData = (data) => {
       id: val.id,
       customer: val.customerId,
       description: val.description,
-      creationDate: moment(val.createDate).format('D MMM YYYY'),
+      createDate: moment(val.createDate).format('D MMM YYYY'),
       lastUpdate: moment(val.updateDate).format('D MMM YYYY'),
       name: val.name,
       startDate: moment(val.startDate).format('D MMM YYYY'),

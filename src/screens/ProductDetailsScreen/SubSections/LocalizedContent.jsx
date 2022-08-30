@@ -20,6 +20,10 @@ import {
   checkValue,
 } from '../../../services/helpers/dataStructuring';
 
+import {
+  handleEditorParsing,
+} from '../utils';
+
 const LocalizedContent = ({
   parentId,
   setCodeMode,
@@ -28,8 +32,11 @@ const LocalizedContent = ({
   setJsonIsValid,
   curLocalizedData,
   setCurLocalizedData,
+  setDescriptionData,
   localizedErrors,
   setLocalizedErrors,
+  descriptionData,
+  parentDescriptionData = false,
 }) => {
   const [descrRequestData, setDescrRequestData] = useState(null);
   const availableLocales = getLanguagesOptions();
@@ -43,10 +50,12 @@ const LocalizedContent = ({
   };
 
   const updateContentByEditor = (content) => {
-    if (descrRequestData !== content) {
+    if (descriptionData !== content) {
       try {
         const data = JSON.parse(content);
-        setCurLocalizedData({ ...data });
+        handleEditorParsing(data, parentDescriptionData, setCurLocalizedData);
+
+        setDescriptionData(data);
       } catch (e) {
         setCurLocalizedData(content);
       }
@@ -89,7 +98,7 @@ const LocalizedContent = ({
           </>
         ) : (
           <JsonEditor
-            currentData={typeof curLocalizedData === 'object' ? JSON.stringify(curLocalizedData, 0, 4) : curLocalizedData}
+            currentData={typeof curLocalizedData === 'object' ? JSON.stringify(descriptionData, 0, 4) : descriptionData}
             setCurrentData={(content) => updateContentByEditor(content)}
             jsonIsValid={jsonIsValid}
             setJsonIsValid={setJsonIsValid}
@@ -110,6 +119,9 @@ LocalizedContent.propTypes = {
   setCurLocalizedData: PropTypes.func,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
+  descriptionData: PropTypes.object,
+  parentDescriptionData: PropTypes.any,
+  setDescriptionData: PropTypes.func,
 };
 
 export default LocalizedContent;

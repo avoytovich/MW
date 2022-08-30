@@ -271,6 +271,7 @@ const EditVariationModal = ({
                       type={curVariation?.type}
                       isLast={(i + 1) === curDescription?.variableValueDescriptions?.length}
                       curDefValue={curDefValue}
+                      key={v}
                       setCurDefValue={setCurDefValue}
                       setCurDescriptions={setCurDescriptions}
                       productDetails={productDetails}

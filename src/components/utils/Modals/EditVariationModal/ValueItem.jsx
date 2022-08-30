@@ -50,7 +50,7 @@ const ValueItem = ({
     }
 
     setNewDescription(value);
-  }, []);
+  }, [value]);
 
   const updateRangeInput = (val, inputType) => {
     let description;
@@ -147,7 +147,8 @@ const ValueItem = ({
           <TextField
             type='text'
             disabled
-            value={value?.descValue}
+            value={(value?.localizedValue && value?.localizedValue[productDetails?.fallbackLocale])
+              || value?.descValue}
             onChange={() => null}
             fullWidth
             variant='outlined'

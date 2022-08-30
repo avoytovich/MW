@@ -41,6 +41,9 @@ const ProductDetailsView = ({
   setDigitsErrors,
   curLocalizedData,
   setCurLocalizedData,
+  descriptionData,
+  setDescriptionData,
+  parentDescriptionData,
   localizedErrors,
   setLocalizedErrors,
   errors,
@@ -148,6 +151,9 @@ const ProductDetailsView = ({
             codeMode={codeMode}
             jsonIsValid={jsonIsValid}
             setJsonIsValid={setJsonIsValid}
+            descriptionData={descriptionData}
+            parentDescriptionData={parentDescriptionData}
+            setDescriptionData={setDescriptionData}
           />
         </SectionLayout>
       )}
@@ -246,6 +252,9 @@ ProductDetailsView.propTypes = {
   setLocalizedErrors: PropTypes.func,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
+  descriptionData: PropTypes.object,
+  parentDescriptionData: PropTypes.any,
+  setDescriptionData: PropTypes.func,
 };
 
 export default ProductDetailsView;
