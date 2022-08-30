@@ -116,6 +116,7 @@ const LocalizedContent = ({
       setPrevLangTab(selectedLocales[0]);
     }
   }, [selectedLocales]);
+
   return (!selectedLocales || !Object.keys(localizedData).length) && defaultLocale
     ? <LinearProgress /> : (
       <Box width='100%'>

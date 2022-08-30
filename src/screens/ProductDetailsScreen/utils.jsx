@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import {
   structureSelectOptions,
   renewingProductsOptions,
+  createInheritableValue,
   productsVariations,
   localizedValues,
   backToFront,
@@ -191,6 +192,78 @@ const handleGetProductDetails = (
   });
 };
 
+const handleEditorParsing = (data, parentData, setCurLocalizedData, setLocalizedData) => {
+  const avail = [];
+
+  localizedValues.forEach((it) => {
+    if (data[it]) {
+      Object.keys(data[it]).forEach((loc) => {
+        if (avail.indexOf(loc) < 0) {
+          avail.unshift(loc);
+        }
+      });
+    }
+
+    if (parentData && parentData[it]) {
+      Object.keys(parentData[it]).forEach((loc) => {
+        if (avail.indexOf(loc) < 0) {
+          avail.push(loc);
+        }
+      });
+    }
+  });
+
+  const i18nFields = avail.reduce((accumulator, current) => {
+    const childLocalizedValues = localizedValues.reduce(
+      (acc, curr) => ({ ...acc, [curr]: data[curr]?.[current] ? data[curr][current] : '' }),
+      {},
+    );
+
+    if (parentData) {
+      const parentLocalizedValues = localizedValues.reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr]: parentData[curr] ? parentData[curr][current] : '',
+        }),
+        {},
+      );
+
+      return {
+        ...accumulator,
+        [current]: backToFront(parentLocalizedValues, childLocalizedValues),
+      };
+    }
+
+    return {
+      ...accumulator,
+      [current]: childLocalizedValues,
+    };
+  }, {});
+
+  const productDescrData = { ...data };
+
+  localizedValues.forEach((item) => delete productDescrData[item]);
+
+  productDescrData.i18nFields = { ...i18nFields };
+
+  if (parentData) {
+    const inheritedFallbackLocale = createInheritableValue(
+      data.fallbackLocale,
+      parentData.fallbackLocale,
+    );
+
+    productDescrData.fallbackLocale = inheritedFallbackLocale;
+  } else if (!productDescrData?.fallbackLocale) {
+    productDescrData.fallbackLocale = 'en-US';
+  }
+
+  if (setLocalizedData) {
+    setLocalizedData({ ...productDescrData });
+  }
+
+  setCurLocalizedData({ ...productDescrData });
+};
+
 const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
   const frontToBackObj = frontToBack({
     ...tempData,
@@ -234,6 +307,7 @@ const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
 
   return dataToSave;
 };
+
 const createKey = (obj, newCurrency) => {
   let keyNumber = 0;
 
@@ -316,6 +390,7 @@ const tabLabels = [
 export {
   handleGetOptions,
   handleGetProductDetails,
+  handleEditorParsing,
   saveLocalizationDetails,
   createKey,
   beforeSend,

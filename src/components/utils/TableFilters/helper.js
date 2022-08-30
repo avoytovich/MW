@@ -21,9 +21,9 @@ const placeholderData = (scope) => {
     case 'discountrules':
       return localization.t('labels.searchByRuleName');
     case 'marketingCampaigns':
-      return localization.t('labels.searchByName');
+      return localization.t('labels.searchByIdName');
     case 'marketingAbandoned':
-      return localization.t('labels.searchByName');
+      return localization.t('labels.searchByIdName');
     case 'enduserlist':
       return localization.t('labels.searchByEmail');
     case 'endusergroups':

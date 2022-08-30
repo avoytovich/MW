@@ -21,11 +21,10 @@ import {
   frontToBack,
   checkValue,
   defaultProductLocales,
-  createInheritableValue,
-  localizedValues,
 } from '../../services/helpers/dataStructuring';
 import {
   handleGetOptions,
+  handleEditorParsing,
   handleGetProductDetails,
   saveLocalizationDetails,
   beforeSend,
@@ -73,6 +72,8 @@ const ProductDetailsScreen = () => {
   const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
 
   const [productData, setProductData] = useState(null);
+  const [descriptionData, setDescriptionData] = useState({});
+  const [parentDescriptionData, setParentDescriptionData] = useState(null);
   const [currentProductData, setCurrentProductData] = useState(defaultProduct);
   const [productDetails, setProductDetails] = useState(null);
   const [currentProductDetails, setCurrentProductDetails] = useState(null);
@@ -125,6 +126,7 @@ const ProductDetailsScreen = () => {
     setStoreLanguages(newLanguages);
     setCheckOutStores([...res]);
   };
+
   const handleDeleteVariation = (variationId) => {
     api
       .deleteProductById(variationId)
@@ -135,10 +137,11 @@ const ProductDetailsScreen = () => {
         )}`);
       });
   };
+
   const saveDetails = async () => {
     const formatePrices = beforeSend(currentProductData);
 
-    if (localizedContentHasChanges) {
+    if (localizedContentHasChanges || productHasLocalizationChanges) {
       const dataToSave = saveLocalizationDetails(curLocalizedData, currentProductData, nxState);
 
       api
@@ -146,12 +149,16 @@ const ProductDetailsScreen = () => {
           currentProductData?.descriptionId?.state
             ? currentProductData.descriptionId.value
             : currentProductData.descriptionId,
-          dataToSave,
+          {
+            ...dataToSave,
+            variableDescriptions: productDetails?.variableDescriptions || [],
+          },
         )
         .then(() => {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLoading(true);
           setLocalizedContentHasChanges(false);
+          setProductLocalizationChanges(false);
           setUpd((c) => c + 1);
         });
     }
@@ -171,7 +178,7 @@ const ProductDetailsScreen = () => {
       }
 
       api.updateProductById(currentProductData.id, sendObj).then(() => {
-        if (!localizedContentHasChanges) {
+        if (!localizedContentHasChanges && !productHasLocalizationChanges) {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLoading(true);
           setUpd((c) => c + 1);
@@ -179,67 +186,25 @@ const ProductDetailsScreen = () => {
       });
     }
   };
+
   useEffect(() => {
     if (currentProductData?.descriptionId?.state) {
       Promise.all([
         api.getProductDescriptionById(currentProductData?.descriptionId?.value),
         api.getProductDescriptionById(currentProductData?.descriptionId?.parentValue),
       ]).then(([productDescr, parentDescr]) => {
-        const avail = [];
-
-        localizedValues.forEach((it) => {
-          if (productDescr?.data[it]) {
-            Object.keys(productDescr?.data[it]).forEach((loc) => {
-              if (avail.indexOf(loc) < 0) {
-                avail.push(loc);
-              }
-            });
-          }
-
-          if (parentDescr?.data[it]) {
-            Object.keys(parentDescr?.data[it]).forEach((loc) => {
-              if (avail.indexOf(loc) < 0) {
-                avail.push(loc);
-              }
-            });
-          }
-        });
         const { data } = productDescr;
         const { data: dataParent } = parentDescr;
-        const i18nFields = avail.reduce((accumulator, current) => {
-          const childLocalizedValues = localizedValues.reduce(
-            (acc, curr) => ({ ...acc, [curr]: data[curr]?.[current] }),
-            {},
-          );
-          const parentLocalizedValues = localizedValues.reduce(
-            (acc, curr) => ({
-              ...acc,
-              [curr]: dataParent[curr] ? dataParent[curr][current] : '',
-            }),
-            {},
-          );
-          return {
-            ...accumulator,
-            [current]: backToFront(parentLocalizedValues, childLocalizedValues),
-          };
-        }, {});
 
-        const productDescrData = { ...productDescr?.data };
+        handleEditorParsing(data, dataParent, setCurLocalizedData, setLocalizedData);
 
-        localizedValues.forEach((item) => delete productDescrData[item]);
-
-        const inheritedFallbackLocale = createInheritableValue(
-          data.fallbackLocale,
-          dataParent.fallbackLocale,
-        );
-        productDescrData.i18nFields = i18nFields;
-        productDescrData.fallbackLocale = inheritedFallbackLocale;
-
-        setLocalizedData({ ...productDescrData });
-        setCurLocalizedData({ ...productDescrData });
+        setDescriptionData(data);
+        setParentDescriptionData(dataParent);
       });
+
       return;
     }
+
     if (!curLocalizedData || (curLocalizedData && currentProductData?.descriptionId)) {
       const productDescriptionRequest = !currentProductData.descriptionId
         ? Promise.resolve({
@@ -249,40 +214,12 @@ const ProductDetailsScreen = () => {
         }) : api.getProductDescriptionById(currentProductData.descriptionId);
 
       productDescriptionRequest.then(({ data }) => {
-        const avail = [];
-        localizedValues.forEach((it) => {
-          if (data[it]) {
-            Object.keys(data[it]).forEach((loc) => {
-              if (avail.indexOf(loc) < 0) {
-                avail.unshift(loc);
-              }
-            });
-          }
-        });
-
-        const i18nFields = avail.reduce((accumulator, current) => {
-          const childLocalizedValues = localizedValues.reduce(
-            (acc, curr) => ({ ...acc, [curr]: data[curr]?.[current] ? data[curr][current] : '' }),
-            {},
-          );
-          return {
-            ...accumulator,
-            [current]: childLocalizedValues,
-          };
-        }, {});
-
-        const productDescrData = { ...data };
-
-        localizedValues.forEach((item) => delete productDescrData[item]);
-        if (!productDescrData?.fallbackLocale) {
-          productDescrData.fallbackLocale = 'en-US';
-        }
-        setLocalizedData({ ...productDescrData, i18nFields: { ...i18nFields } });
-
-        setCurLocalizedData({ ...productDescrData, i18nFields: { ...i18nFields } });
+        handleEditorParsing(data, false, setCurLocalizedData, setLocalizedData);
+        setDescriptionData(data);
       });
     }
   }, [currentProductData?.descriptionId]);
+
   useEffect(() => {
     if (storeLanguages?.length && !currentProductData?.parentId && !parentId) {
       const i18nFields = { ...curLocalizedData.i18nFields };
@@ -292,12 +229,23 @@ const ProductDetailsScreen = () => {
             ? { ...defLocalizationObj } : { ...defProductVariationObj };
         }
       });
+
       if (id !== 'add') {
         setLocalizedData({ ...localizedData, i18nFields: { ...i18nFields } });
       }
       setCurLocalizedData({ ...curLocalizedData, i18nFields: { ...i18nFields } });
     }
   }, [storeLanguages]);
+
+  useEffect(() => {
+    if (descriptionData?.id) {
+      const dataToSave = saveLocalizationDetails(curLocalizedData, currentProductData, nxState);
+
+      if (JSON.stringify(dataToSave) !== JSON.stringify(descriptionData)) {
+        setDescriptionData({ ...dataToSave });
+      }
+    }
+  }, [curLocalizedData]);
 
   const saveProduct = async () => {
     if (!currentProductData.businessSegment) {
@@ -347,6 +295,7 @@ const ProductDetailsScreen = () => {
         localizedPurchaseEmailDesc,
         localizedShortDesc,
         localizedThankYouDesc,
+        variableDescriptions: productDetails?.variableDescriptions || [],
       }).then((res) => {
         const headersLocation = res.headers.location.split('/');
         const newId = headersLocation[headersLocation.length - 1];
@@ -361,7 +310,8 @@ const ProductDetailsScreen = () => {
       const id_ = loc[loc.length - 1];
 
       api.getProductById(id_).then(({ data }) => {
-        if (localizedContentHasChanges && !parentId && !productData?.parentId) {
+        if ((localizedContentHasChanges || productHasLocalizationChanges)
+          && !parentId && !productData?.parentId) {
           const localizationChangesToSave = saveLocalizationDetails(
             curLocalizedData, currentProductData, nxState,
           );
@@ -384,6 +334,7 @@ const ProductDetailsScreen = () => {
         } else {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLocalizedContentHasChanges(false);
+          setProductLocalizationChanges(false);
           setLoading(true);
           history.push(`${parentPaths.productlist}/${id_}`);
         }
@@ -511,6 +462,7 @@ const ProductDetailsScreen = () => {
       dispatch(setTempProductDescription({}));
     };
   }, [id, upd, history?.state]);
+
   useEffect(() => {
     setLoading(true);
     setCurTab(0);
@@ -662,10 +614,13 @@ const ProductDetailsScreen = () => {
     >
       <ProductDetailsView
         localizedErrors={localizedErrors}
+        descriptionData={descriptionData}
+        parentDescriptionData={parentDescriptionData}
         setLocalizedErrors={setLocalizedErrors}
         curLocalizedData={curLocalizedData}
         setCurLocalizedData={setCurLocalizedData}
         digitsErrors={digitsErrors}
+        setDescriptionData={setDescriptionData}
         setDigitsErrors={setDigitsErrors}
         priceTableError={priceTableError}
         setPriceTableError={setPriceTableError}

@@ -21,11 +21,8 @@ const LangItem = ({
   const [labelLangVal, setLabelLangVal] = useState('');
 
   useEffect(() => {
-    if (type === 'params') {
-      setLabelLangVal(curDescription?.localizedValue ? curDescription?.localizedValue[lang] : '');
-    } else {
-      setLabelLangVal(curDescription?.labels ? curDescription?.labels[lang] : '');
-    }
+    // eslint-disable-next-line no-nested-ternary
+    setLabelLangVal(curDescription?.localizedValue ? curDescription?.localizedValue[lang] : curDescription?.labels ? curDescription?.labels[lang] : '');
   }, []);
 
   return (

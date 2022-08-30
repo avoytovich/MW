@@ -7,7 +7,7 @@ const generateFilterUrl = (filters, availableFilters) => {
 
   Object.entries(filters).forEach(([key, val]) => {
     const filterConfig = availableFilters.filter((item) => item.id === key);
-    const subFilter = `&${key}=`;
+    const subFilter = `&${key === 'invoiceDate' ? 'creationDate' : key}=`;
 
     if (typeof val !== 'object') {
       if (filterConfig[0]?.exactSearch) {

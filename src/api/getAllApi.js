@@ -172,14 +172,18 @@ const getAllApi = {
   getCampaigns({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {
-    let url = `/marketing-campaign/campaigns?format=short&desc&size=${size}&page=${page}`;
-    if (sortParams) {
-      url += `&sort=${sortParams.value},${sortParams.type}`;
-    }
+    let url = '/marketing-campaign/campaigns?format=short';
 
     if (filters) {
       url += filters;
     }
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    url += `&size=${size}&page=${page}`;
+
     return axiosInstance({
       method: 'get',
       url,
