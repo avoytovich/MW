@@ -78,6 +78,7 @@ const generateData = (data) => {
 
   const meta = {
     totalPages: data.totalPages,
+    totalItems: data.totalItems,
   };
 
   return Promise

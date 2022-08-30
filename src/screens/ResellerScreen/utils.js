@@ -136,6 +136,7 @@ const generateData = (data, additionalData) => {
   });
   const meta = {
     totalPages: data.totalPages,
+    totalItems: data.totalItems,
   };
 
   Object.assign(markUp, { values, meta });

@@ -3,9 +3,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { Typography, Grid } from '@mui/material';
-
-import localization from '../../localization';
+import {
+  Typography, Grid, IconButton,
+} from '@mui/material';
+import {
+  KeyboardArrowRight,
+  KeyboardArrowLeft,
+  KeyboardDoubleArrowRight,
+  KeyboardDoubleArrowLeft,
+} from '@mui/icons-material';
 import { setCurrentPage } from '../../redux/actions/TableData';
 import './PaginationComponent.scss';
 
@@ -15,30 +21,27 @@ const PaginationComponent = ({
   location,
   propCurrentPage,
   propSetCurrentPage,
+  meta,
 }) => {
   const dispatch = useDispatch();
+  const tableRowsPerPage = useSelector(({ tableData: { rowsPerPage } }) => rowsPerPage);
   const currentPagination = propCurrentPage
     || useSelector(({ tableData: { currentPage } }) => currentPage);
   const calculatePaginationNumbers = (condition = 0) => {
     let plus;
-    const toLeft = currentPagination - 2;
+    const toLeft = currentPagination - 1;
     let min = condition;
-    if (toLeft === -1) {
-      min += currentPagination;
-      plus = 4;
-    } else if (toLeft === 0) {
+    if (toLeft === 0) {
       min = min + currentPagination - 1;
-      plus = 3;
+      plus = 2;
     } else if (totalPages === currentPagination) {
-      min = totalPages - 3;
-      plus = 3;
+      min = totalPages - 2;
+      plus = 0;
     } else if (totalPages < currentPagination) {
       dispatch(setCurrentPage(1));
-      min = totalPages - 3;
-      plus = 3;
     } else {
-      min = min + currentPagination - 2;
-      plus = 2;
+      min = min + currentPagination - 1;
+      plus = 1;
     }
     const toRoght = totalPages - (currentPagination + plus);
     const max = toRoght < 1 || toRoght === 0 ? totalPages : currentPagination + plus;
@@ -56,7 +59,7 @@ const PaginationComponent = ({
     if (totalPages < currentPagination) {
       exitConditin = max;
     }
-    return exitConditin < 2 && min > 1 && res.length < 5
+    return exitConditin < 2 && min > 1 && res.length < 3
       ? calculatePaginationNumbers(exitConditin === 0 && min > 2 ? -2 : -1)
       : res;
   };
@@ -68,59 +71,77 @@ const PaginationComponent = ({
       dispatch(setCurrentPage(newValue));
     }
   };
+  const calculateShoving = () => {
+    const from = (currentPagination - 1) * tableRowsPerPage + 1;
+    const till = tableRowsPerPage * currentPagination;
+    return `${from} to ${till > meta?.totalItems ? meta?.totalItems : till}`;
+  };
 
   return (
-    (totalPages > 1
-      && (
-        <Grid className="paginationBlock">
-          <Grid spacing={5} container justifyContent={location} direction="row">
-            {pageNumbers?.[0] !== 1
-              && (
-                <Grid item>
+    <Grid container justifyContent='space-between'>
+      <Grid item>
+        <Grid container justifyContent={location} direction="row">
+          <Grid item>
+            <IconButton
+              style={{ padding: 0 }}
+              color='secondary'
+              disabled={currentPagination === 1}
+              onClick={() => handleSetCurrentPage(1)}
+            >
+              <KeyboardDoubleArrowLeft />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton
+              color='secondary'
+              style={{ padding: 0 }}
+              disabled={currentPagination === 1}
+              onClick={() => handleSetCurrentPage(currentPagination - 1)}
+            >
+              <KeyboardArrowLeft />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <Grid container justifyContent="center" direction="row" className="paginationNumbers">
+              {pageNumbers.map((item) => (
+                <Grid item key={`page ${item}`}>
                   <Typography
-                    onClick={() => handleSetCurrentPage(1)}
-                    className="lastPaginationPage"
+                    color="secondary"
+                    className={item === currentPagination ? 'currentPage' : 'paginationNumber'}
+                    onClick={() => handleSetCurrentPage(item)}
                   >
-                    {localization.t('general.first')}
+                    {item}
                   </Typography>
                 </Grid>
-              )}
-            <Grid item>
-              <Grid spacing={3} container justifyContent="center" direction="row" className="paginationNumbers">
-                {pageNumbers.map((item) => (
-                  <Grid item key={`page ${item}`}>
-                    <Typography
-                      color="secondary"
-                      className={item === currentPagination ? 'currentPage' : ''}
-                      onClick={() => handleSetCurrentPage(item)}
-                    >
-                      {item}
-                    </Typography>
-                  </Grid>
-                ))}
-              </Grid>
+              ))}
             </Grid>
-            {pageNumbers[pageNumbers.length - 1] !== totalPages && (
-              <Grid item>
-                <Typography
-                  onClick={() => handleSetCurrentPage(totalPages)}
-                  className="lastPaginationPage"
-                >
-                  {localization.t('general.last')}
-                </Typography>
-              </Grid>
-            )}
-            {pageNumbers[pageNumbers.length - 1] !== currentPagination && (
-              <Grid item>
-                <Typography onClick={() => handleSetCurrentPage(currentPagination + 1)} className="nextPaginationPage">
-                  {localization.t('general.next')}
-                </Typography>
-              </Grid>
-            )}
+          </Grid>
+          <Grid item>
+            <IconButton
+              color='secondary'
+              style={{ padding: 0 }}
+              disabled={currentPagination === totalPages}
+              onClick={() => handleSetCurrentPage(currentPagination + 1)}
+            >
+              <KeyboardArrowRight />
+            </IconButton>
+          </Grid>
+          <Grid item>
+            <IconButton
+              style={{ padding: 0 }}
+              color='secondary'
+              disabled={currentPagination === totalPages}
+              onClick={() => handleSetCurrentPage(totalPages)}
+            >
+              <KeyboardDoubleArrowRight />
+            </IconButton>
           </Grid>
         </Grid>
-      )
-    )
+      </Grid>
+      <Grid item>
+        <Typography color='secondary'>{`Showing ${calculateShoving()} of ${meta?.totalItems}`}</Typography>
+      </Grid>
+    </Grid>
   );
 };
 
@@ -129,6 +150,7 @@ PaginationComponent.propTypes = {
   totalPages: PropTypes.number,
   propCurrentPage: PropTypes.number,
   propSetCurrentPage: PropTypes.func,
+  meta: PropTypes.object,
 };
 
 export default PaginationComponent;

@@ -79,6 +79,7 @@ const generateOrders = (data) => {
 
   const meta = {
     totalPages: data.totalPages,
+    totalItems: data.totalItems,
   };
 
   Object.assign(markUp, { values, meta, defaultOrdersShow });
@@ -118,6 +119,7 @@ const generateEmails = (data) => {
 
   const meta = {
     totalPages: data.totalPages,
+    totalItems: data.totalItems,
   };
 
   Object.assign(markUp, { values, meta, defaultEmailsShow });

@@ -52,6 +52,7 @@ const generateData = (data, customers) => {
   });
   const meta = {
     totalPages: data.totalPages,
+    totalItems: data.totalItems,
   };
 
   Object.assign(markUp, { values, meta });

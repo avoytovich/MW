@@ -216,6 +216,7 @@ const TableComponent = ({
           <PaginationComponent
             location='flex-end'
             totalPages={tableData.meta?.totalPages}
+            meta={tableData.meta}
           />
         </Box>
       )}

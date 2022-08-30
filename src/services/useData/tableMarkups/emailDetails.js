@@ -26,6 +26,7 @@ const generateData = (data) => {
 
   const meta = {
     totalPages: data.totalPages || 1,
+    totalItems: data.totalItems,
   };
 
   Object.assign(markUp, { values, meta });
