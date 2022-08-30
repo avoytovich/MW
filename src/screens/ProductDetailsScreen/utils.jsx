@@ -310,11 +310,10 @@ const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
 
 const createKey = (obj, newCurrency) => {
   let keyNumber = 0;
-
-  if (obj.priceByCountryByCurrency[newCurrency]) {
+  if (checkValue(obj.priceByCountryByCurrency)[newCurrency]) {
     keyNumber = Number(
-      obj.priceByCountryByCurrency[newCurrency][
-        obj.priceByCountryByCurrency[newCurrency].length - 1
+      checkValue(obj.priceByCountryByCurrency)[newCurrency][
+        checkValue(obj.priceByCountryByCurrency)[newCurrency].length - 1
       ].key.split('_')[1],
     ) + 1;
   }
@@ -347,7 +346,7 @@ const beforeSend = (data) => {
 const handleFilterOptions = (allOptions, selected, current) => {
   const allCountries = [];
   selected.forEach((it) => allCountries.push(...it.countries));
-  const res = allOptions.filter((el) => !allCountries.includes(el.id) || current.includes(el.id));
+  const res = [{ id: 'default', value: 'default' }, ...allOptions].filter((el) => !allCountries.includes(el.id) || current.includes(el.id));
   return res;
 };
 

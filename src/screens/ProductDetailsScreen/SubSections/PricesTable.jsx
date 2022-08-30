@@ -51,6 +51,16 @@ const PricesTable = ({
 
   const [checkAll, setCheckAll] = useState(checkIfAllChecked(priceByCountryByCurrency));
   const handleSetProductData = (newData) => {
+    Object.keys(newData).forEach((countryKey) => {
+      const defaultCountry = newData[countryKey].find((it) => it.countries.includes('default'));
+      if (!defaultCountry && !priceTableError.includes(countryKey)) {
+        setPriceTableError((er) => [...er, countryKey]);
+      } else if (defaultCountry && priceTableError.includes(countryKey)) {
+        const newErr = priceTableError.filter((i) => i !== countryKey);
+        setPriceTableError(newErr);
+      }
+    });
+
     setCheckAll(checkIfAllChecked(newData));
 
     let prices = { ...currentProductData.prices };
@@ -250,9 +260,7 @@ const PricesTable = ({
           label='currency'
           value={newCurrency}
           selectOptions={currencyOptions}
-          onChangeSelect={(e) => withValidationSelectCustom(e.target)}
-          hasError={!!errors?.prices?.currency}
-          helperText={errors?.prices?.currency && localization.t('errorNotifications.required')}
+          onChangeSelect={(e) => setNewCurrency(e.target.value)}
         />
       </Box>
       {Object.keys(priceByCountryByCurrency)?.length > 0
@@ -300,8 +308,23 @@ const PricesTable = ({
                           rowSpan={priceByCountryByCurrency[el].length}
                           scope="row"
                           id={el}
+                          style={priceTableError.includes(el) ? {
+                            color: '#ff6341',
+                          } : {}}
                         >
                           {el}
+                          {priceTableError.includes(el) && (
+                            <Box style={{
+                              fontSize: '12px',
+                              fontStyle: 'italic',
+                              textAlign: 'center',
+
+                            }}
+                            >
+                              {localization.t('errorNotifications.defaultPriceIsRequired')}
+
+                            </Box>
+                          )}
                         </TableCell>
                       )}
                       <TableCell className='tableCellWithBorder'>
@@ -309,7 +332,6 @@ const PricesTable = ({
                           isDisabled={variation === 'inherits'}
                           label='country'
                           value={item.countries}
-                          noDeletableChipId='default'
                           selectOptions={handleFilterOptions(
                             countryOptions,
                             priceByCountryByCurrency[el],
@@ -328,6 +350,9 @@ const PricesTable = ({
                               (val) => val !== chip,
                             );
                             newArray[index].countries = newValue;
+                            if (chip === 'default') {
+                              setPriceTableError([...priceTableError, el]);
+                            }
                             handleSetProductData({
                               ...priceByCountryByCurrency, [el]: newArray,
                             });
@@ -339,7 +364,6 @@ const PricesTable = ({
                           name='price'
                           isRequired
                           hasError={!item.value || priceTableError.includes(item.key)}
-                          // helperText={errors?.prices?.price && localization.t('errorNotifications.required')}
                           inputRefFunc={(element) => {
                             if (!item.value) {
                               priceTableRef.current[item.key] = element;
@@ -410,21 +434,16 @@ const PricesTable = ({
                         />
                       </TableCell>
                       <TableCell width="5%" align="right">
-                        {((priceByCountryByCurrency?.[el].length > 1
-                          && !priceByCountryByCurrency?.[el][index]?.countries?.includes('default'))
-                          || priceByCountryByCurrency?.[el].length === 1)
-                          && (
-                            <Box>
-                              <IconButton
-                                disabled={variation === 'inherits'}
-                                color='secondary'
-                                onClick={() => handleRemove(el, index, item.key)}
-                                size='large'
-                              >
-                                <ClearIcon />
-                              </IconButton>
-                            </Box>
-                          )}
+                        <Box>
+                          <IconButton
+                            disabled={variation === 'inherits'}
+                            color='secondary'
+                            onClick={() => handleRemove(el, index, item.key)}
+                            size='large'
+                          >
+                            <ClearIcon />
+                          </IconButton>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   ))
