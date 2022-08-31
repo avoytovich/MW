@@ -84,7 +84,7 @@ const ProductDetailsTabs = ({
         disabled={!selectOptions?.sellingStores}
       />
       {tabs?.errors?.prices?.isFulfilled === false
-        ? <CustomizedTab key='prices' label={localization.t('labels.prices')} />
+        ? <CustomizedTab key='prices' label={localization.t('labels.prices')} value={4} />
         : <Tab label={localization.t('labels.prices')} value={4} />}
       <Tab label={localization.t('labels.productFiles')} value={5} />
       {(!parentId) && (
