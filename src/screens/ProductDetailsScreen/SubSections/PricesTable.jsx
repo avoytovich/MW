@@ -260,7 +260,9 @@ const PricesTable = ({
           label='currency'
           value={newCurrency}
           selectOptions={currencyOptions}
-          onChangeSelect={(e) => setNewCurrency(e.target.value)}
+          onChangeSelect={(e) => withValidationSelectCustom(e.target)}
+          hasError={!!errors?.prices?.currency}
+          helperText={errors?.prices?.currency && localization.t('errorNotifications.required')}
         />
       </Box>
       {Object.keys(priceByCountryByCurrency)?.length > 0

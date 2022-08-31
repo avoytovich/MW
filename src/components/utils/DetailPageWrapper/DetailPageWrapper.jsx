@@ -25,8 +25,7 @@ import SelectCustomerNotification from '../SelectCustomerNotification';
 import defPath from '../../../services/helpers/routingHelper';
 import { copyText } from '../../../services/helpers/utils';
 import { tabLabels as tabLabelsStore } from '../../../screens/StoreDetailsScreen/utils';
-import { tabLabels as tabLabelsProduct } from '../../../screens/ProductDetailsScreen/utils';
-import { storeHightLight, productHightLight } from './HighLightingTabs';
+import { storeHightLight } from './HighLightingTabs';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -55,7 +54,6 @@ const DetailPageWrapper = ({
   isRankingOpen,
   flexWrapper,
   customer,
-  priceTableError,
   refScrool = null,
 }) => {
   const { id: paramsId } = useParams();
@@ -113,16 +111,7 @@ const DetailPageWrapper = ({
         customer,
       );
     }
-    if (tabs?.scope === 'product' && tabLabelsProduct.includes(tabs?.tabLabels?.[tabs.curTab])) {
-      productHightLight(
-        curData,
-        priceTableError,
-        errors,
-        setErrors,
-        tabs,
-      );
-    }
-  }, [tabs?.curTab, priceTableError]);
+  }, [curData, tabs?.curTab]);
 
   return curData && (
     <>
