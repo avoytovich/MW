@@ -44,6 +44,8 @@ const generateData = (orderData, paymentData) => {
       .then((response) => downloadPdf(response.data))
   );
 
+  const isPersonalConsumerType = orderData?.endUser?.consumerType === 'personal';
+
   const res = {
     general: [
       {
@@ -203,6 +205,11 @@ const generateData = (orderData, paymentData) => {
         key: ' taxIdNumber',
         label: localization.t('labels.taxIdNumber'),
         value: orderData?.endUser?.company?.taxIdNumber || emptyValue,
+      },
+      {
+        key: ' identificationNumber',
+        label: localization.t('labels.identificationNumber'),
+        value: (isPersonalConsumerType && orderData?.endUser?.identificationNumber) || emptyValue,
       },
     ],
     paymentAttempt: [

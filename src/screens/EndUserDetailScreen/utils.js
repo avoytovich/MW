@@ -13,6 +13,7 @@ const defaultObject = {
   streetAddress: '',
   taxOffice: '',
   taxIdNumber: '',
+  identificationNumber: '',
   groupId: '',
 };
 
