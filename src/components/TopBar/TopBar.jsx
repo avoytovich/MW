@@ -52,25 +52,24 @@ const TopBar = ({ toggleDrawer, drawerOpen }) => {
   return (
     <AppBar position='static' className='top-bar' elevation={1} sx={{ zIndex: 9 }} style={{ height: '45px' }}>
       <Toolbar>
-        {drawerOpen && (
+        {!drawerOpen
+          && (
+          <Box pb={3}>
+            <IconButton
+              edge='start'
+              aria-label='menu'
+              color='secondary'
+              onClick={toggleDrawer}
+              size='large'
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
+          )}
         <Box width={1} pb={3}>
           <CustomerStatusLabel customer={customerData} />
         </Box>
-        )}
-        <Box display='flex' width={1} justifyContent='space-between' pb={3}>
-          {drawerOpen
-            ? <Box />
-            : (
-              <IconButton
-                edge='start'
-                aria-label='menu'
-                color='secondary'
-                onClick={toggleDrawer}
-                size='large'
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
+        <Box display='flex' width={1} justifyContent='flex-end' pb={3}>
           <Box>
             <IconButton
               component={NavLink}

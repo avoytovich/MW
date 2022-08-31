@@ -47,7 +47,6 @@ const General = ({
       setInvalidVatNumber('');
     }
   };
-
   return (
     <Grid container>
       <Grid item md={6}>
@@ -329,6 +328,16 @@ const General = ({
             onChangeInput={(e) => setCurEndUser({
               ...curEndUser,
               taxIdNumber: e.target.value,
+            })}
+          />
+        </Box>
+        <Box p={2}>
+          <InputCustom
+            label='identificationNumber'
+            value={curEndUser.identificationNumber}
+            onChangeInput={(e) => setCurEndUser({
+              ...curEndUser,
+              identificationNumber: e.target.value,
             })}
           />
         </Box>
