@@ -604,6 +604,7 @@ const ProductDetailsScreen = () => {
             errors,
             setErrors,
             priceTableError,
+            localizedErrors,
           }}
         />
       )}

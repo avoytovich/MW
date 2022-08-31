@@ -36,9 +36,10 @@ const ProductDetailsTabs = ({
         tabs?.errors,
         tabs?.setErrors,
         tabs,
+        tabs?.localizedErrors,
       );
     }
-  }, [tabs?.curTab, tabs?.priceTableError]);
+  }, [currentProductData, tabs?.curTab, tabs?.priceTableError, tabs?.localizedErrors]);
 
   return (
     <Tabs
@@ -78,11 +79,9 @@ const ProductDetailsTabs = ({
         value={2}
         disabled={!selectOptions?.sellingStores}
       />
-      <Tab
-        label={localization.t('labels.localizedContent')}
-        value={3}
-        disabled={!selectOptions?.sellingStores}
-      />
+      {tabs?.errors?.localizedContent?.isFulfilled === false
+        ? <CustomizedTab key='localizedContent' label={localization.t('labels.localizedContent')} />
+        : <Tab label={localization.t('labels.localizedContent')} value={3} disabled={!selectOptions?.sellingStores} />}
       {tabs?.errors?.prices?.isFulfilled === false
         ? <CustomizedTab key='prices' label={localization.t('labels.prices')} value={4} />
         : <Tab label={localization.t('labels.prices')} value={4} />}
