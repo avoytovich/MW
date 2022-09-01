@@ -68,7 +68,7 @@ const Prices = ({
 
   useEffect(() => {
     api
-      .getPricesByProductId(parentId || currentProductData.id)
+      .getPricesByProductId(currentProductData.id)
       .then(({ data }) => setScheduledPrices(data?.items || []));
     return () => setScheduledPrices([]);
   }, []);
