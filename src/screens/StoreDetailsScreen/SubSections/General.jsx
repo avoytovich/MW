@@ -223,18 +223,19 @@ const General = ({
                     label='senderName'
                     value={currentStoreData.emailSenderOverride}
                     onChangeInput={(e) => withValidationInputCustom(e.target)}
-                    hasError={!!errors?.general?.senderName
-                      || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
-                        && (currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName)
-                      )}
-                    helperText={(errors?.general?.senderName
-                      || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
-                        && (
-                          currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName
-                        )))
-                      && (`${localization.t('errorNotifications.senderNameExactly')}
-                        "${customer?.iamClient?.realmName}" ${localization.t('errorNotifications.senderNameStartWith')}
-                        "${customer?.iamClient?.realmName}-" ${localization.t('errorNotifications.senderNameEnd')}`)}
+                    // For EmailSenderOverride
+                    // hasError={!!errors?.general?.senderName
+                    //   || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
+                    //     && (currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName)
+                    //   )}
+                    // helperText={(errors?.general?.senderName
+                    //   || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
+                    //     && (
+                    //       currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName
+                    //     )))
+                    //   && (`${localization.t('errorNotifications.senderNameExactly')}
+                    //     "${customer?.iamClient?.realmName}" ${localization.t('errorNotifications.senderNameStartWith')}
+                    //     "${customer?.iamClient?.realmName}-" ${localization.t('errorNotifications.senderNameEnd')}`)}
                   />
                 </Box>
                 <Button variant='contained' disabled>
