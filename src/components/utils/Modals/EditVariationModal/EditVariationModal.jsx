@@ -358,7 +358,7 @@ const EditVariationModal = ({
                           }
                         }}
                       >
-                        <AddBoxIcon style={{ fontSize: '37px' }} />
+                        <AddBoxIcon color='primary' style={{ fontSize: '37px' }} />
                       </Button>
                     </Box>
                   </Grid>
