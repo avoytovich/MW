@@ -91,8 +91,9 @@ const StoreDetailsScreen = () => {
     || !currentStoreData?.defaultLocale
     || !currentStoreData?.displayName
     || !currentStoreData?.routes[0]?.hostname
-    || (!currentStoreData?.emailSenderOverride.startsWith(`${currentCustomerData?.iamClient?.realmName}-`)
-      && currentStoreData?.emailSenderOverride !== currentCustomerData?.iamClient?.realmName)
+    // For EmailSenderOverride
+    // || (!currentStoreData?.emailSenderOverride.startsWith(`${currentCustomerData?.iamClient?.realmName}-`)
+    //   && currentStoreData?.emailSenderOverride !== currentCustomerData?.iamClient?.realmName)
     || Object.keys(errors).filter((item) => (!tabLabels.includes(item))).length > 0
     || checkThankYouDesc()
     || Object.keys(localizedErrors).length > 0;

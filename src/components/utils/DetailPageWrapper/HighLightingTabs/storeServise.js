@@ -50,8 +50,10 @@ const hightLightGeneral = (curData, customer) => (
   (curData.name)
     && (curData.displayName)
       && (curData.routes[0]?.hostname)
-        && ((curData.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`))
-          || (curData.emailSenderOverride === customer?.iamClient?.realmName)) ? null : false
+      // For EmailSenderOverride
+      // && ((curData.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`))
+      //   || (curData.emailSenderOverride === customer?.iamClient?.realmName))
+    ? null : false
 );
 
 const storeHightLight = (
