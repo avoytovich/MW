@@ -7,7 +7,7 @@ import {
 import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
 
 import localization from '../../../localization';
-import { SelectWithDeleteIcon } from '../../../components/Inputs';
+import { AutocompleteCustom } from '../../../components/Inputs';
 
 const Design = ({
   currentStoreData,
@@ -74,81 +74,71 @@ const Design = ({
           {curTab === 0 && (
             <>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="theme"
-                  value={
-                    Object.keys(currentStoreData.designs.endUserPortal.themeRef)
-                      .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.endUserPortal?.themeRef?.customerId
-                        || currentStoreData?.customerId
-                      }: ${currentStoreData?.designs?.endUserPortal?.themeRef?.name || ''}`
-                      : ''
-                  }
-                  selectOptions={selectOptions.theme}
-                  onChangeSelect={(e) => handleUpdateDesign(
+                  onSelect={(newValue) => handleUpdateDesign(
                     'endUserPortal',
                     'themeRef',
-                    e.target.value,
+                    newValue,
                   )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'themeRef')}
+                  selectOptions={selectOptions.theme || []}
+                  curValue={Object.keys(currentStoreData.designs.endUserPortal.themeRef)
+                    .length !== 0
+                    ? `${currentStoreData?.designs?.endUserPortal?.themeRef?.customerId
+                    || currentStoreData?.customerId
+                    }: ${currentStoreData?.designs?.endUserPortal?.themeRef?.name || ''}`
+                    : ''}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="layout"
-                  value={
-                    Object.keys(currentStoreData.designs.endUserPortal.layoutRef)
-                      .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.endUserPortal?.layoutRef?.customerId
-                        || currentStoreData?.customerId
-                      }: ${currentStoreData?.designs?.endUserPortal?.layoutRef?.name || ''}`
-                      : ''
-                  }
-                  selectOptions={selectOptions.layout}
-                  onChangeSelect={(e) => handleUpdateDesign(
+                  onSelect={(newValue) => handleUpdateDesign(
                     'endUserPortal',
                     'layoutRef',
-                    e.target.value,
+                    newValue,
                   )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'layoutRef')}
+                  selectOptions={selectOptions.layout || []}
+                  curValue={Object.keys(currentStoreData.designs.endUserPortal.layoutRef)
+                    .length !== 0
+                    ? `${currentStoreData?.designs?.endUserPortal?.layoutRef?.customerId
+                    || currentStoreData?.customerId
+                    }: ${currentStoreData?.designs?.endUserPortal?.layoutRef?.name || ''}`
+                    : ''}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="font"
-                  value={
-                    Object.keys(currentStoreData.designs.endUserPortal.fontRef)
-                      .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.endUserPortal?.fontRef?.customerId
-                        || currentStoreData?.customerId
-                      }: ${currentStoreData?.designs?.endUserPortal?.fontRef?.name || ''}`
-                      : ''
-                  }
-                  selectOptions={selectOptions.font}
-                  onChangeSelect={(e) => handleUpdateDesign(
+                  onSelect={(newValue) => handleUpdateDesign(
                     'endUserPortal',
                     'fontRef',
-                    e.target.value,
+                    newValue,
                   )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'fontRef')}
+                  selectOptions={selectOptions.font || []}
+                  curValue={Object.keys(currentStoreData.designs.endUserPortal.fontRef)
+                    .length !== 0
+                    ? `${currentStoreData?.designs?.endUserPortal?.fontRef?.customerId
+                    || currentStoreData?.customerId
+                    }: ${currentStoreData?.designs?.endUserPortal?.fontRef?.name || ''}`
+                    : ''}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='name'
                   label="i18n"
-                  value={currentStoreData?.designs?.endUserPortal?.i18nRef?.customerId || ''}
-                  selectOptions={
-                    selectOptions?.customersList?.sort((a, b) => ((a.name > b.name) ? 1 : -1))
-                  }
-                  onChangeSelect={(e) => handleUpdateDesign(
+                  onSelect={(newValue) => handleUpdateDesign(
                     'endUserPortal',
                     'i18nRef',
-                    e.target.value,
+                    newValue,
                   )}
-                  onClickDelIcon={() => handleUpdateDesign('endUserPortal', 'i18nRef')}
+                  selectOptions={selectOptions?.customersList?.sort((a, b) => ((a.name > b.name) ? 1
+                    : -1)) || []}
+                  curValue={currentStoreData?.designs?.endUserPortal?.i18nRef?.customerId || ''}
                 />
               </Box>
             </>
@@ -156,80 +146,97 @@ const Design = ({
           {curTab === 1 && (
             <>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="theme"
-                  value={
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'checkout',
+                    'themeRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions.theme || []}
+                  curValue={
                     Object.keys(currentStoreData.designs.checkout.themeRef)
                       .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.checkout?.themeRef?.customerId
-                        || currentStoreData?.customerId
+                      ? `${currentStoreData?.designs?.checkout?.themeRef?.customerId
+                      || currentStoreData?.customerId
                       }: ${currentStoreData?.designs?.checkout?.themeRef?.name || ''}`
                       : ''
                   }
-                  selectOptions={selectOptions.theme}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'themeRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'themeRef')}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="layout"
-                  value={
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'checkout',
+                    'layoutRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions.layout || []}
+                  curValue={
                     Object.keys(currentStoreData.designs.checkout.layoutRef)
                       .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.checkout?.layoutRef?.customerId
-                        || currentStoreData?.customerId
+                      ? `${currentStoreData?.designs?.checkout?.layoutRef?.customerId
+                      || currentStoreData?.customerId
                       }: ${currentStoreData?.designs?.checkout?.layoutRef?.name || ''}`
                       : ''
                   }
-                  selectOptions={selectOptions.layout}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'layoutRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'layoutRef')}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="font"
-                  value={
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'checkout',
+                    'fontRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions.font || []}
+                  curValue={
                     Object.keys(currentStoreData.designs.checkout.fontRef)
                       .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.checkout?.fontRef?.customerId
-                        || currentStoreData?.customerId
+                      ? `${currentStoreData?.designs?.checkout?.fontRef?.customerId
+                      || currentStoreData?.customerId
                       }: ${currentStoreData?.designs?.checkout?.fontRef?.name || ''}`
                       : ''
                   }
-                  selectOptions={selectOptions.font}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'fontRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'fontRef')}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='name'
                   label="i18n"
-                  value={currentStoreData?.designs?.checkout?.i18nRef?.customerId || ''}
-                  selectOptions={selectOptions?.customersList}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'i18nRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'i18nRef')}
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'checkout',
+                    'i18nRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions?.customersList?.sort((a, b) => ((a.name > b.name) ? 1
+                    : -1)) || []}
+                  curValue={currentStoreData?.designs?.checkout?.i18nRef?.customerId || ''}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="dpTheme"
-                  value={
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'checkout',
+                    'dpThemeRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions.theme || []}
+                  curValue={
                     Object.keys(currentStoreData.designs.checkout.dpThemeRef)
                       .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.checkout?.dpThemeRef?.customerId
-                        || currentStoreData?.customerId
+                      ? `${currentStoreData?.designs?.checkout?.dpThemeRef?.customerId
+                      || currentStoreData?.customerId
                       }: ${currentStoreData?.designs?.checkout?.dpThemeRef?.name || ''}`
                       : ''
                   }
-                  selectOptions={selectOptions.theme}
-                  onChangeSelect={(e) => handleUpdateDesign('checkout', 'dpThemeRef', e.target.value)}
-                  onClickDelIcon={() => handleUpdateDesign('checkout', 'dpThemeRef')}
                 />
               </Box>
             </>
@@ -237,79 +244,77 @@ const Design = ({
           {curTab === 2 && (
             <>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="theme"
-                  value={
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'resellerCheckout',
+                    'themeRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions.theme || []}
+                  curValue={
                     Object.keys(currentStoreData.designs.resellerCheckout.themeRef)
                       .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.resellerCheckout?.themeRef?.customerId
-                        || currentStoreData?.customerId
+                      ? `${currentStoreData?.designs?.resellerCheckout?.themeRef?.customerId
+                      || currentStoreData?.customerId
                       }: ${currentStoreData?.designs?.resellerCheckout?.themeRef?.name || ''}`
                       : ''
                   }
-                  selectOptions={selectOptions.theme}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'resellerCheckout',
-                    'themeRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'themeRef')}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="layout"
-                  value={
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'resellerCheckout',
+                    'layoutRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions.layout || []}
+                  curValue={
                     Object.keys(currentStoreData.designs.resellerCheckout.layoutRef)
                       .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.resellerCheckout?.layoutRef?.customerId
-                        || currentStoreData?.customerId
+                      ? `${currentStoreData?.designs?.resellerCheckout?.layoutRef?.customerId
+                      || currentStoreData?.customerId
                       }: ${currentStoreData?.designs?.resellerCheckout?.layoutRef?.name || ''}`
                       : ''
                   }
-                  selectOptions={selectOptions.layout}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'resellerCheckout',
-                    'layoutRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'layoutRef')}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='value'
                   label="font"
-                  value={
+                  onSelect={(newValue) => handleUpdateDesign(
+                    'resellerCheckout',
+                    'fontRef',
+                    newValue,
+                  )}
+                  selectOptions={selectOptions.font || []}
+                  curValue={
                     Object.keys(currentStoreData.designs.resellerCheckout.fontRef)
                       .length !== 0
-                      ? `${
-                        currentStoreData?.designs?.resellerCheckout?.fontRef?.customerId
-                        || currentStoreData?.customerId
+                      ? `${currentStoreData?.designs?.resellerCheckout?.fontRef?.customerId
+                      || currentStoreData?.customerId
                       }: ${currentStoreData?.designs?.resellerCheckout?.fontRef?.name || ''}`
                       : ''
                   }
-                  selectOptions={selectOptions.font}
-                  onChangeSelect={(e) => handleUpdateDesign(
-                    'resellerCheckout',
-                    'fontRef',
-                    e.target.value,
-                  )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'fontRef')}
                 />
               </Box>
               <Box p={2}>
-                <SelectWithDeleteIcon
+                <AutocompleteCustom
+                  optionLabelKey='name'
                   label="i18n"
-                  value={currentStoreData?.designs?.resellerCheckout?.i18nRef?.customerId || ''}
-                  selectOptions={selectOptions?.customersList}
-                  onChangeSelect={(e) => handleUpdateDesign(
+                  onSelect={(newValue) => handleUpdateDesign(
                     'resellerCheckout',
                     'i18nRef',
-                    e.target.value,
+                    newValue,
                   )}
-                  onClickDelIcon={() => handleUpdateDesign('resellerCheckout', 'i18nRef')}
+                  selectOptions={selectOptions?.customersList?.sort((a, b) => ((a.name > b.name) ? 1
+                    : -1)) || []}
+                  curValue={currentStoreData?.designs?.resellerCheckout?.i18nRef?.customerId || ''}
                 />
               </Box>
             </>

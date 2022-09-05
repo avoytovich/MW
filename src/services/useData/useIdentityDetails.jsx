@@ -27,7 +27,7 @@ const useIdentityDetails = (id, nxState) => {
         },
       });
     identityData.then(({ data }) => {
-      if (!isCancelled) {
+      if (!isCancelled && id === 'add') {
         const checkedIdentity = identityRequiredFields(data);
         setIdentity({ ...checkedIdentity });
         setCurIdentity({ ...checkedIdentity });
@@ -42,12 +42,22 @@ const useIdentityDetails = (id, nxState) => {
           api.getMetaRoles({ filters: `&customerId=${data.customerId}` }),
           api.getCustomers(),
         ]).then(([rolesOptions, metaRolesOptions, customersOptions]) => {
+          const structuredCustomers = structureSelectOptions({ options: customersOptions.value?.data.items, optionValue: 'name' }) || [];
           setSelectOptions({
             ...selectOptions,
             roles: structureSelectOptions({ options: rolesOptions.value?.data.items, optionValue: 'name' }) || [],
             metaRoles: structureSelectOptions({ options: metaRolesOptions.value?.data.items, optionValue: 'name' }) || [],
-            customers: structureSelectOptions({ options: customersOptions.value?.data.items, optionValue: 'name' }) || [],
+            customers: structuredCustomers,
           });
+          if (!isCancelled) {
+            const checkedIdentity = identityRequiredFields(data, structuredCustomers);
+            setIdentity({ ...checkedIdentity });
+            setCurIdentity({ ...checkedIdentity });
+            setLoading(false);
+            if (data.clientId) {
+              setIdentityType('application');
+            }
+          }
         });
       }
     })

@@ -8,7 +8,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ClearIcon from '@mui/icons-material/Clear';
 import { paymentDefaults, installmentOptions } from '../../../services/selectOptions/selectOptions';
 import {
-  SelectWithChip, SwitchInput, SelectCustom, DroppableSelectWithChip,
+  SelectWithChip, SwitchInput, SelectCustom, DroppableSelectWithChip, AutocompleteWithChips,
 } from '../../../components/Inputs';
 import { filterOptions, customerTypeOptions, handleTypeOptions } from '../utils';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
@@ -31,21 +31,21 @@ const Payment = ({
     if (onDelete) {
       Object.keys(newErrors).forEach((errorKey) => {
         delete newErrors[errorKey][key];
-        if (Object.keys(newErrors[errorKey]).length === 0) {
+        if (Object.keys(newErrors[errorKey])?.length === 0) {
           delete newErrors[errorKey];
         }
       });
     } else if (optionKey && newErrors.rankedPaymentTabs?.[key]?.[optionKey]) {
       delete newErrors.rankedPaymentTabs[key][optionKey];
-      if (Object.keys(newErrors.rankedPaymentTabs[key]).length === 0) {
+      if (Object.keys(newErrors.rankedPaymentTabs[key])?.length === 0) {
         delete newErrors.rankedPaymentTabs[key];
       }
-      if (Object.keys(newErrors.rankedPaymentTabs).length === 0) {
+      if (Object.keys(newErrors.rankedPaymentTabs)?.length === 0) {
         delete newErrors.rankedPaymentTabs;
       }
     } else if (!optionKey && newErrors.countries?.[key]) {
       delete newErrors.countries[key];
-      if (Object.keys(newErrors.countries).length === 0) {
+      if (Object.keys(newErrors.countries)?.length === 0) {
         delete newErrors.countries;
       }
     }
@@ -96,7 +96,7 @@ const Payment = ({
     setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
   };
   const handleUpdatePayment = (value) => {
-    if (value.length === 0) {
+    if (value?.length === 0) {
       setErrors({
         ...errors,
         defaultRanking: localization.t('errorNotifications.fieldIsRequired'),
@@ -181,32 +181,24 @@ const Payment = ({
         />
       </Box>
       <Box p={2}>
-        <SelectWithChip
-          label="blacklistedPaymentTypes"
-          value={currentStoreData.blackListedPaymentTypes}
-          selectOptions={selectOptions.paymentMethods}
-          onChangeSelect={(e) => setCurrentStoreData({
+        <AutocompleteWithChips
+          arrayTypeValue
+          label='blacklistedPaymentTypes'
+          arrayValue={currentStoreData.blackListedPaymentTypes}
+          selectOptions={selectOptions.paymentMethods || []}
+          onChange={(newValue) => setCurrentStoreData({
             ...currentStoreData,
-            blackListedPaymentTypes: e.target.value,
+            blackListedPaymentTypes: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [
-              ...currentStoreData.blackListedPaymentTypes,
-            ].filter((val) => val !== chip);
-            setCurrentStoreData({
-              ...currentStoreData,
-              blackListedPaymentTypes: newValue,
-            });
-          }}
         />
       </Box>
       <Box p={2}>
-        <SelectWithChip
-          label="additionalPaymentTypes"
-          value={[]}
+        <AutocompleteWithChips
+          arrayTypeValue
+          label='additionalPaymentTypes'
+          arrayValue={[]}
           selectOptions={[]}
-          onChangeSelect={() => { }}
-          onClickDelIcon={() => { }}
+          onChange={() => { }}
         />
       </Box>
       <Box p={2}>
@@ -217,30 +209,23 @@ const Payment = ({
               setCurrentStoreData({
                 ...currentStoreData,
                 allowInstallments: e.target.checked,
+                installmentOptions: [],
               });
             }}
             isChecked={currentStoreData.allowInstallments}
           />
         </Box>
         <Box>
-          <SelectWithChip
+          <AutocompleteWithChips
+            arrayTypeValue
             isDisabled={!currentStoreData.allowInstallments}
             label='installmentOptions'
-            value={currentStoreData.installmentOptions}
-            selectOptions={installmentOptions}
-            onChangeSelect={(e) => setCurrentStoreData({
+            arrayValue={currentStoreData.installmentOptions}
+            selectOptions={installmentOptions || []}
+            onChange={(newValue) => setCurrentStoreData({
               ...currentStoreData,
-              installmentOptions: e.target.value,
+              installmentOptions: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...currentStoreData.installmentOptions].filter(
-                (val) => val !== chip,
-              );
-              setCurrentStoreData({
-                ...currentStoreData,
-                installmentOptions: newValue,
-              });
-            }}
           />
         </Box>
       </Box>
@@ -278,13 +263,6 @@ const Payment = ({
               }
               selectOptions={paymentDefaults}
               onChangeSelect={(newVal) => handleUpdatePayment(newVal)}
-              onClickDelIcon={(chip) => {
-                const newValue = [
-                  ...currentStoreData.designs.paymentComponent
-                    .rankedPaymentTabsByCountriesList[0].rankedPaymentTabs,
-                ].filter((val) => val !== chip);
-                handleUpdatePayment(newValue);
-              }}
             />
           </Box>
         </Grid>

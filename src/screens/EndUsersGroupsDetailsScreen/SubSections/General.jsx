@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 
 import FileCopy from '@mui/icons-material/FileCopyOutlined';
-import { SelectCustom } from '../../../components/Inputs';
+import { AutocompleteCustom } from '../../../components/Inputs';
 import { getCustomerName } from '../../../services/helpers/customersHelper';
 
 import localization from '../../../localization';
@@ -63,11 +63,13 @@ const General = ({ setData, data }) => {
         </Box>
 
         <Box px={1} width="50%">
-          <SelectCustom
+          <AutocompleteCustom
+            uniqueOptionValue={(option) => option.value}
+            optionLabelKey='value'
             label='fallbackLocale'
-            onChangeSelect={(e) => setData((c) => ({ ...c, fallbackLocale: e.target.value }))}
+            onSelect={(newValue) => setData((c) => ({ ...c, fallbackLocale: newValue }))}
             selectOptions={languagesOptions}
-            value={data?.fallbackLocale || ''}
+            curValue={data?.fallbackLocale || ''}
           />
         </Box>
       </Box>

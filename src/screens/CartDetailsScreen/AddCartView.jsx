@@ -22,7 +22,7 @@ import {
 import { DateTimePicker } from 'formik-mui-lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Form, Field } from 'formik';
-
+import { AutocompleteCustom } from '../../components/Inputs';
 import localization from '../../localization';
 import { getCurrency } from '../../services/selectOptions/selectOptions';
 import {
@@ -52,9 +52,9 @@ const AddCartView = ({
   },
 }) => {
   const [curTab, setCurTab] = useState(0);
-  
+
   const allowCountriesOpt = () => {
-    if (selectedStore) {
+    if (selectedStore !== '') {
       const getSelectedStoreById = storeOpt.items.filter((item) => item.id === selectedStore);
       return countriesOpt?.items.filter((item) => (
         !getSelectedStoreById[0].blackListedCountries?.includes(item.alpha2Code)
@@ -64,14 +64,14 @@ const AddCartView = ({
   };
 
   const validation = (
-    <Typography variant='h6' className='validation'>
+    <Typography variant='p' className='validation'>
       {localization.t('labels.validationField')}
     </Typography>
   );
 
   const validate = (value) => {
     let error;
-    if (!value[0]) {
+    if (!value?.[0]) {
       error = validation;
     }
     return error;
@@ -208,30 +208,31 @@ const AddCartView = ({
             </FormControl>
           </Box>
           <Box p={2}>
-            <FormControl className="spread">
-              <Field
-                component={Select}
-                type="text"
-                name="store"
-                validate={validate}
-                variant="outlined"
-                value={values.store}
-                label={localization.t('labels.store')}
-                inputProps={{
-                  id: 'select-store',
-                }}
-                onChange={(val) => {
-                  handleChange(val);
-                  setSelectedStore(val.target.value);
-                }}
-              >
-                {storeOpt?.items?.map((option) => (
-                  <MenuItem key={option.id} value={option.id}>
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </Field>
-            </FormControl>
+            <Field
+              validate={validate}
+              name="store"
+              render={({ field, form }) => (
+                <AutocompleteCustom
+                  hasFormic
+                  helperText={form.errors?.store?.props?.children}
+                  error={form.errors?.store}
+                  {...field}
+                  isRequired
+                  name="store"
+                  optionLabelKey='name'
+                  label='store'
+                  onSelect={(newValue) => {
+                    setFieldValue(
+                      'store',
+                      newValue?.id || '',
+                    );
+                    setSelectedStore(newValue?.id);
+                  }}
+                  selectOptions={storeOpt?.items || []}
+                  curValue={values.store}
+                />
+              )}
+            />
           </Box>
           {values.store && (
             <>
@@ -375,40 +376,35 @@ const AddCartView = ({
           <Grid container spacing={0} justifyContent="center">
             <Grid item xs={6} sm={6}>
               <Box p={2}>
-                <FormControl className="spread">
-                  <InputLabel
-                    htmlFor="select-prefill"
-                    className="select-label"
-                    shrink={false}
-                  >
-                    {values.prefillWith.id ? '' : localization.t('labels.prefillWith')}
-                  </InputLabel>
-                  <Field
-                    component={Select}
-                    type="text"
-                    name="prefillWith"
-                    variant="outlined"
-                    value={values.prefillWith}
-                    inputProps={{
-                      id: 'select-prefill',
-                    }}
-                    onChange={(e) => {
-                      setSelectedEndUser(e.target.value);
-                      setFieldValue('emailAddress', e.target.value.email);
-                      setFieldValue('firstName', e.target.value.firstName);
-                      setFieldValue('lastName', e.target.value.lastName);
-                      setFieldValue('zip', e.target.value.zipCode);
-                      setFieldValue('city', e.target.value.city);
-                      handleChange(e);
-                    }}
-                  >
-                    {prefillOpt.items.map((option) => (
-                      <MenuItem key={option.id} value={option}>
-                        {`${option.email} (id ${option.id}: ${option.fullName} (${option.country}))`}
-                      </MenuItem>
-                    ))}
-                  </Field>
-                </FormControl>
+                <Field
+                  validate={validate}
+                  name="store"
+                  render={({ field }) => (
+                    <AutocompleteCustom
+                      hasFormic
+                      uniqueOptionValue={(option) => (Object.keys(option).length ? `${option.email} (id ${option.id}: ${option.fullName} (${option.country}))` : '')}
+                      {...field}
+                      isRequired
+                      name="prefillWith"
+                      optionLabelKey='email'
+                      label='prefillWith'
+                      onSelect={(newValue) => {
+                        setFieldValue(
+                          'prefillWith',
+                          newValue?.id ? newValue?.id : '',
+                        );
+                        setSelectedEndUser(newValue);
+                        setFieldValue('emailAddress', newValue.email || '');
+                        setFieldValue('firstName', newValue.firstName || '');
+                        setFieldValue('lastName', newValue.lastName || '');
+                        setFieldValue('zip', newValue.zipCode || '');
+                        setFieldValue('city', newValue.city || '');
+                      }}
+                      selectOptions={prefillOpt?.items || []}
+                      curValue={values.prefillWith}
+                    />
+                  )}
+                />
               </Box>
               <Box p={2}>
                 <FormControl className="spread">
@@ -574,26 +570,28 @@ const AddCartView = ({
           <Grid container spacing={0} justifyContent="left">
             <Grid item xs={6} sm={6}>
               <Box p={2}>
-                <FormControl className="spread">
-                  <Field
-                    component={Select}
-                    type="text"
-                    name="endUserEmail"
-                    label={localization.t('labels.email')}
-                    variant="outlined"
-                    value={values.endUserEmail}
-                    inputProps={{
-                      id: 'select-end-user-email',
-                    }}
-                    onChange={handleChange}
-                  >
-                    {prefillOpt.items.map((option) => (
-                      <MenuItem key={option.id} value={option.email}>
-                        {option.email}
-                      </MenuItem>
-                    ))}
-                  </Field>
-                </FormControl>
+                <Field
+                  validate={validate}
+                  name="store"
+                  render={({ field }) => (
+                    <AutocompleteCustom
+                      hasFormic
+                      {...field}
+                      name="endUserEmail"
+                      optionLabelKey='email'
+                      label='email'
+                      onSelect={(newValue) => {
+                        setFieldValue(
+                          'endUserEmail',
+                          newValue?.email ? newValue?.email : '',
+                        );
+                        setSelectedEndUser(newValue);
+                      }}
+                      selectOptions={prefillOpt?.items || []}
+                      curValue={values.endUserEmail}
+                    />
+                  )}
+                />
               </Box>
             </Grid>
           </Grid>

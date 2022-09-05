@@ -15,17 +15,26 @@ const AutocompleteCustom = ({
   isRequired,
   error,
   helperText,
+  hasFormic,
+  uniqueOptionValue,
+  usedOptions = [],
 }) => {
+  const noRepeatingOptions = selectOptions
+    .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
+
   const [curOption, setCurOption] = useState('');
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    if (curValue) {
-      setCurOption(selectOptions.filter((u) => u.id === curValue)[0]);
-      setSearch(selectOptions.filter((u) => u.id === curValue)[0]?.[optionLabelKey]?.split('(')[0]?.trim() || '');
-    } else {
-      setCurOption('');
-      setSearch('');
+    if (selectOptions.length) {
+      if (curValue) {
+        const newCurOption = selectOptions.filter((u) => u.id === curValue)[0] || '';
+        setCurOption(newCurOption);
+        setSearch(uniqueOptionValue ? uniqueOptionValue(newCurOption) : newCurOption?.[optionLabelKey]?.split('(')[0]?.trim() || '');
+      } else {
+        setCurOption('');
+        setSearch('');
+      }
     }
   }, [curValue]);
 
@@ -39,14 +48,15 @@ const AutocompleteCustom = ({
       inputValue={search || ''}
       value={curOption}
       onChange={(event, newValue) => {
-        onSelect(newValue?.id || '');
+        const res = hasFormic ? newValue : newValue?.id;
+        onSelect(res || '');
       }}
-      onBlur={() => setSearch(curOption?.[optionLabelKey]?.split('(')[0]?.trim() || '')}
+      onBlur={() => setSearch(uniqueOptionValue ? uniqueOptionValue(curOption) : curOption?.[optionLabelKey]?.split('(')[0]?.trim() || '')}
       handleHomeEndKeys
       id="autocomplete-select"
-      options={selectOptions}
-      getOptionLabel={(option) => option?.[optionLabelKey] || ''}
-      renderOption={(props, option) => <li {...props} key={option?.id}>{option?.[optionLabelKey] || ''}</li>}
+      options={noRepeatingOptions}
+      getOptionLabel={(option) => (uniqueOptionValue ? uniqueOptionValue(option) : option?.[optionLabelKey] || '')}
+      renderOption={(props, option) => <li {...props} key={option?.id}>{uniqueOptionValue ? uniqueOptionValue(option) : option?.[optionLabelKey] || ''}</li>}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -74,6 +84,9 @@ AutocompleteCustom.propTypes = {
   isRequired: PropTypes.bool,
   error: PropTypes.bool,
   helperText: PropTypes.string,
+  hasFormic: PropTypes.bool,
+  uniqueOptionValue: PropTypes.func,
+  usedOptions: PropTypes.array,
 };
 
 export default AutocompleteCustom;

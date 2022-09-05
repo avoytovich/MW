@@ -14,7 +14,9 @@ import ClearIcon from '@mui/icons-material/Clear';
 import PropTypes from 'prop-types';
 import localization from '../../../../localization';
 import { createKey } from '../utils';
-import { SelectWithChip, SelectCustom } from '../../../../components/Inputs';
+import {
+  AutocompleteCustom, AutocompleteWithChips,
+} from '../../../../components/Inputs';
 import './ClearancesInputs.scss';
 
 const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
@@ -75,23 +77,14 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
                         </TableCell>
                       )}
                       <TableCell className='tableCellWithBorder'>
-                        <SelectWithChip
+                        <AutocompleteWithChips
                           data-test='privileges'
-                          value={item.actions}
-                          selectOptions={selectOptions.privileges?.[right]}
-                          onChangeSelect={(e) => {
+                          label='privileges'
+                          arrayTypeValue
+                          arrayValue={item.actions}
+                          selectOptions={selectOptions.privileges?.[right] || []}
+                          onChange={(newValue) => {
                             const newArray = [...curRole.rights[right]];
-                            newArray[index].actions = e.target.value;
-                            setCurRole({
-                              ...curRole,
-                              rights: { ...curRole.rights, [right]: newArray },
-                            });
-                          }}
-                          onClickDelIcon={(chip) => {
-                            const newArray = [...curRole.rights[right]];
-                            const newValue = [...newArray[index].actions].filter(
-                              (val) => val !== chip,
-                            );
                             newArray[index].actions = newValue;
                             setCurRole({
                               ...curRole,
@@ -101,23 +94,14 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
                         />
                       </TableCell>
                       <TableCell className='tableCellWithBorder'>
-                        <SelectWithChip
+                        <AutocompleteWithChips
                           data-test='conditionsOfAvailability'
-                          value={item.availabilityConditions}
-                          selectOptions={selectOptions.conditionsOfAvailability}
-                          onChangeSelect={(e) => {
+                          label='conditionsOfAvailability'
+                          arrayTypeValue
+                          arrayValue={item.availabilityConditions}
+                          selectOptions={selectOptions.conditionsOfAvailability || []}
+                          onChange={(newValue) => {
                             const newArray = [...curRole.rights[right]];
-                            newArray[index].availabilityConditions = e.target.value;
-                            setCurRole({
-                              ...curRole,
-                              rights: { ...curRole.rights, [right]: newArray },
-                            });
-                          }}
-                          onClickDelIcon={(chip) => {
-                            const newArray = [...curRole.rights[right]];
-                            const newValue = [
-                              ...newArray[index].availabilityConditions,
-                            ].filter((val) => val !== chip);
                             newArray[index].availabilityConditions = newValue;
                             setCurRole({
                               ...curRole,
@@ -145,12 +129,13 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
           </TableContainer>
         )}
       <Box py={3} width='25%'>
-        <SelectCustom
+        <AutocompleteCustom
           data-test='serviceName'
+          optionLabelKey='value'
           label='serviceName'
-          value={newServiceName}
+          onSelect={(newValue) => setNewServiceName(newValue)}
           selectOptions={selectOptions.serviceNames}
-          onChangeSelect={(e) => setNewServiceName(e.target.value)}
+          curValue={newServiceName}
         />
       </Box>
     </>

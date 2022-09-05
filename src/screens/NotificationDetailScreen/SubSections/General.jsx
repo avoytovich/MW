@@ -11,7 +11,7 @@ import {
 import PropTypes from 'prop-types';
 import { email, urlIsValid } from '../../../services/helpers/inputValidators';
 import localization from '../../../localization';
-import { InputCustom, SelectWithChip } from '../../../components/Inputs';
+import { InputCustom, AutocompleteWithChips } from '../../../components/Inputs';
 
 const General = ({
   setCurNotification,
@@ -64,48 +64,31 @@ const General = ({
     </Grid>
     <Grid item md={6} sm={12}>
       <Box p={2}>
-        <SelectWithChip
+        <AutocompleteWithChips
           data-test='events'
           label='events'
-          value={curNotification.notificationDefinitionIds}
-          selectOptions={selectOptions.events}
-          onChangeSelect={(e) => setCurNotification({
+          arrayTypeValue
+          arrayValue={curNotification.notificationDefinitionIds}
+          selectOptions={selectOptions.events || []}
+          onChange={(newValue) => setCurNotification({
             ...curNotification,
-            notificationDefinitionIds: e.target.value,
+            notificationDefinitionIds: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curNotification.notificationDefinitionIds].filter(
-              (val) => val !== chip,
-            );
-            setCurNotification({
-              ...curNotification,
-              notificationDefinitionIds: newValue,
-            });
-          }}
-          isRequired
         />
       </Box>
     </Grid>
     <Grid item md={6} sm={12}>
       <Box p={2}>
-        <SelectWithChip
+        <AutocompleteWithChips
           data-test='targetedCustomers'
           label='targetedCustomers'
-          value={curNotification.targetedCustomerIds}
-          selectOptions={selectOptions.customers}
-          onChangeSelect={(e) => setCurNotification({
+          arrayTypeValue
+          arrayValue={curNotification.targetedCustomerIds}
+          selectOptions={selectOptions.customers || []}
+          onChange={(newValue) => setCurNotification({
             ...curNotification,
-            targetedCustomerIds: e.target.value,
+            targetedCustomerIds: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curNotification.targetedCustomerIds].filter(
-              (val) => val !== chip,
-            );
-            setCurNotification({
-              ...curNotification,
-              targetedCustomerIds: newValue,
-            });
-          }}
         />
       </Box>
     </Grid>

@@ -16,7 +16,10 @@ import { sortByAlphabetical } from '../../../services/helpers/utils';
 
 import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
-import { SelectWithChip, SelectWithDeleteIcon, AutocompleteWithChips } from '../../../components/Inputs';
+import {
+  AutocompleteWithChips,
+  AutocompleteCustom,
+} from '../../../components/Inputs';
 import { getCurrency } from '../../../services/selectOptions/selectOptions';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
@@ -115,45 +118,28 @@ const Eligibility = ({
           />
         </Box>
         <Box p={2}>
-          <SelectWithDeleteIcon
-            data-test='endUser'
-            label="endUser"
-            value={curDiscount.enduserId}
+          <AutocompleteCustom
+            uniqueOptionValue={(option) => option.value}
+            optionLabelKey='value'
+            label='endUser'
+            onSelect={(newValue) => setCurDiscount({
+              ...curDiscount,
+              enduserId: newValue,
+            })}
             selectOptions={selectOptions.endUsers}
-            onChangeSelect={(e) => {
-              setCurDiscount({
-                ...curDiscount,
-                enduserId: e.target.value,
-              });
-            }}
-            onClickDelIcon={() => {
-              setCurDiscount({
-                ...curDiscount,
-                enduserId: '',
-              });
-            }}
+            curValue={curDiscount.enduserId}
           />
         </Box>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
+            arrayTypeValue
             label='endUserGroups'
-            value={curDiscount.endUserGroupIds}
-            selectOptions={selectOptions.endUserGroups}
-            onChangeSelect={(e) => {
-              setCurDiscount({
-                ...curDiscount,
-                endUserGroupIds: e.target.value,
-              });
-            }}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.endUserGroupIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                endUserGroupIds: newValue,
-              });
-            }}
+            arrayValue={curDiscount.endUserGroupIds}
+            selectOptions={selectOptions.endUserGroups || []}
+            onChange={(newValue) => setCurDiscount({
+              ...curDiscount,
+              endUserGroupIds: newValue,
+            })}
           />
         </Box>
         <Box p={2}>
@@ -217,43 +203,27 @@ const Eligibility = ({
       </Grid>
       <Grid item md={6} sm={12}>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
+            arrayTypeValue
             label='countries'
-            value={curDiscount.countries}
-            selectOptions={countriesOptions}
-            onChangeSelect={(e) => setCurDiscount({
+            arrayValue={curDiscount.countries}
+            selectOptions={countriesOptions || []}
+            onChange={(newValue) => setCurDiscount({
               ...curDiscount,
-              countries: e.target.value,
+              countries: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.countries].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                countries: newValue,
-              });
-            }}
           />
         </Box>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
+            arrayTypeValue
             label='stores'
-            value={curDiscount.storeIds}
-            selectOptions={selectOptions.stores}
-            onChangeSelect={(e) => setCurDiscount({
+            arrayValue={curDiscount.storeIds}
+            selectOptions={selectOptions.stores || []}
+            onChange={(newValue) => setCurDiscount({
               ...curDiscount,
-              storeIds: e.target.value,
+              storeIds: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curDiscount.storeIds].filter(
-                (val) => val !== chip,
-              );
-              setCurDiscount({
-                ...curDiscount,
-                storeIds: newValue,
-              });
-            }}
           />
         </Box>
         <Box p={2}>

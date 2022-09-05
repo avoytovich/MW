@@ -10,8 +10,8 @@ import localization from '../../../localization';
 import {
   NumberInput,
   InputCustom,
-  SelectWithChip,
   SwitchInput,
+  AutocompleteWithChips,
 } from '../../../components/Inputs';
 
 const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
@@ -36,8 +36,7 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
                 }}
                 isChecked={currentCustomer.status !== 'TRIAL'}
                 switchLabel={localization.t(
-                  `labels.${
-                    currentCustomer.status !== 'TRIAL' ? 'live' : 'test'
+                  `labels.${currentCustomer.status !== 'TRIAL' ? 'live' : 'test'
                   }`,
                 )}
               />
@@ -137,45 +136,29 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
       {currentCustomer.id && (
         <Grid item md={6}>
           <Box p={2}>
-            <SelectWithChip
+            <AutocompleteWithChips
               data-test='fulfillmentTemplates'
               label='fulfillmentTemplates'
-              value={currentCustomer.fulfillments}
-              selectOptions={selectOptions.fulfillments}
-              onChangeSelect={(e) => setCurrentCustomer({
+              arrayTypeValue
+              arrayValue={currentCustomer.fulfillments}
+              selectOptions={selectOptions.fulfillments || []}
+              onChange={(newValue) => setCurrentCustomer({
                 ...currentCustomer,
-                fulfillments: e.target.value,
+                fulfillments: newValue,
               })}
-              onClickDelIcon={(chip) => {
-                const newValue = [...currentCustomer.fulfillments].filter(
-                  (val) => val !== chip,
-                );
-                setCurrentCustomer({
-                  ...currentCustomer,
-                  fulfillments: newValue,
-                });
-              }}
             />
           </Box>
           <Box p={2}>
-            <SelectWithChip
+            <AutocompleteWithChips
               data-test='subscriptionsModels'
               label='subscriptionsModels'
-              value={currentCustomer.subscriptions}
-              selectOptions={selectOptions.subscriptions}
-              onChangeSelect={(e) => setCurrentCustomer({
+              arrayTypeValue
+              arrayValue={currentCustomer.subscriptions}
+              selectOptions={selectOptions.subscriptions || []}
+              onChange={(newValue) => setCurrentCustomer({
                 ...currentCustomer,
-                subscriptions: e.target.value,
+                subscriptions: newValue,
               })}
-              onClickDelIcon={(chip) => {
-                const newValue = [...currentCustomer.subscriptions].filter(
-                  (val) => val !== chip,
-                );
-                setCurrentCustomer({
-                  ...currentCustomer,
-                  subscriptions: newValue,
-                });
-              }}
             />
           </Box>
           <Box p={2}>

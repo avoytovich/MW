@@ -7,7 +7,7 @@ import { Box } from '@mui/material';
 import InheritanceField from '../InheritanceField';
 
 import TinyEditor from '../../../components/TinyEditor/TinyProductEditor';
-import { SelectCustom } from '../../../components/Inputs';
+import { AutocompleteCustom } from '../../../components/Inputs';
 
 import { checkValue } from '../../../services/helpers/dataStructuring';
 
@@ -98,11 +98,12 @@ const DefaultLanguage = ({
       parentId={parentId}
       currentProductData={curData}
     >
-      <SelectCustom
-        label='defaultLanguage'
-        value={checkValue(curData.fallbackLocale)}
-        selectOptions={selectOptions}
-        onChangeSelect={(e) => onChange(e.target.value)}
+      <AutocompleteCustom
+        optionLabelKey='value'
+        label="defaultLanguage"
+        onSelect={(newValue) => onChange(newValue)}
+        selectOptions={selectOptions || []}
+        curValue={checkValue(curData.fallbackLocale)}
       />
     </InheritanceField>
   </Box>

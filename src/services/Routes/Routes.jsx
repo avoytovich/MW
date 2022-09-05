@@ -10,7 +10,7 @@ import SignedRoutes from './SignedRoutes';
 import GuestRoutes from './GuestRoutes';
 
 import LoadingScreen from '../../screens/LoadingScreen';
-import { getLanguagesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
+import { getLanguagesOptions, getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
 
 import MainLayout from '../../layouts/MainLayout';
 import AuthorizationLayout from '../../layouts/AuthorizationLayout';
@@ -18,7 +18,7 @@ import AuthorizationLayout from '../../layouts/AuthorizationLayout';
 const Routes = () => {
   const account = useSelector(({ account: acc }) => acc);
   getLanguagesOptions();
-
+  getCountriesOptions();
   return (
     <Suspense fallback={<LoadingScreen />}>
       {process?.env?.BUILT_AT && (

@@ -19,7 +19,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import InheritanceField from '../InheritanceField';
 
-import { InputCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
+import { InputCustom, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import { copyText } from '../../../services/helpers/utils';
 import parentPaths from '../../../services/paths';
@@ -74,18 +74,15 @@ const Fulfillment = ({
             parentId={parentId}
             currentProductData={currentProductData}
           >
-            <SelectWithDeleteIcon
+            <AutocompleteCustom
+              optionLabelKey='value'
               label="fulfillmentTemplate"
-              value={checkValue(currentProductData.fulfillmentTemplate)}
-              selectOptions={selectOptions.fulfillmentTemplates}
-              onChangeSelect={(e) => {
-                setProductData({ ...currentProductData, fulfillmentTemplate: e.target.value });
-              }}
-              onClickDelIcon={() => setProductData({
+              onSelect={(newValue) => setProductData({
                 ...currentProductData,
-                fulfillmentTemplate: '',
-                releaseDate: '',
+                fulfillmentTemplate: newValue,
               })}
+              selectOptions={selectOptions.fulfillmentTemplates || []}
+              curValue={checkValue(currentProductData?.fulfillmentTemplate)}
             />
           </InheritanceField>
         </Box>

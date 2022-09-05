@@ -18,7 +18,7 @@ import { makeCopy } from '../utils';
 import api from '../../../api';
 import parentPaths from '../../../services/paths';
 import localization from '../../../localization';
-import { InputCustom, SelectCustom } from '../../../components/Inputs';
+import { InputCustom, SelectCustom, AutocompleteCustom } from '../../../components/Inputs';
 
 import { getCustomerName } from '../../../services/helpers/customersHelper';
 
@@ -191,14 +191,15 @@ const General = ({
       </Grid>
       <Grid item md={6}>
         <Box p={2}>
-          <SelectCustom
+          <AutocompleteCustom
+            optionLabelKey='value'
             label='group'
-            value={curEndUser.groupId}
-            selectOptions={selectOptions.groups}
-            onChangeSelect={(e) => setCurEndUser({
+            onSelect={(newValue) => setCurEndUser({
               ...curEndUser,
-              groupId: e.target.value,
+              groupId: newValue,
             })}
+            selectOptions={selectOptions.groups}
+            curValue={curEndUser.groupId}
           />
         </Box>
         <Box p={2}>

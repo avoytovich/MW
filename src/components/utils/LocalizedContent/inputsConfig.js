@@ -85,11 +85,16 @@ const getStyles = (isVertical, key) => {
   return res || {};
 };
 localization.t('labels.naming[scope].content');
-const naming = { recommendations: { content: 'description', defaultLocale: 'fallbackLocale' } };
+const naming = {
+  recommendations: { content: 'description', defaultLocale: 'fallbackLocale' },
+  stores: { content: 'localizedContent', defaultLocale: 'defaultLanguage' },
+  productlist: { content: 'localizedContent', defaultLocale: 'defaultLanguage' },
+  endusergroups: { content: 'localizedContent', defaultLocale: 'fallbackLocale' },
+};
 
 const getNaming = (scope) => {
-  const content = localization.t(`labels.${naming[scope].content}`);
-  const defaultLocale = localization.t(`labels.${naming[scope].defaultLocale}`);
+  const content = localization.t(`labels.${naming[scope]?.content}`);
+  const defaultLocale = localization.t(`labels.${naming[scope]?.defaultLocale}`);
   return `${localization.t('general.forAdding')}  ${content}, ${defaultLocale} ${localization.t('general.needsToBeSelected')}`;
 };
 const tooltips = { discountrules: { discountLabel: localization.t('tooltips.discountLabel') } };

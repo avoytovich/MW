@@ -27,7 +27,7 @@ const PricesDetailsView = ({
 }) => {
   const countriesOptions = getCountriesOptions();
   const [validPeriod, setValidPeriod] = useState('between');
-
+  const currencyOptions = getCurrency();
   const handleChange = (e) => {
     e.persist();
     const { name, value } = e.target;
@@ -141,15 +141,16 @@ const PricesDetailsView = ({
         <Box display="flex" mb={4}>
           <Box width="50%" mr={4} display='flex'>
             <Box minWidth="200px">
-              <SelectCustom
-                label="currency"
+              <AutocompleteCustom
+                uniqueOptionValue={(option) => option.value}
                 isRequired
-                value={curPrice?.currency}
-                selectOptions={getCurrency()}
-                onChangeSelect={(e) => setCurPrice((c) => ({ ...c, currency: e.target.value }))}
+                optionLabelKey='value'
+                label='currency'
+                onSelect={(newValue) => setCurPrice((c) => ({ ...c, currency: newValue }))}
+                selectOptions={currencyOptions || []}
+                curValue={curPrice?.currency}
               />
             </Box>
-
             <Box ml={4}>
               <TextField
                 fullWidth
@@ -195,13 +196,13 @@ const PricesDetailsView = ({
           </Box>
 
           <Box width="50%" ml={4}>
-            <SelectCustom
-              label="priceCountry"
-              value={curPrice?.country || 'default'}
-              selectOptions={[{ id: 'default', value: 'default' }, ...countriesOptions]}
-              onChangeSelect={handleCountry}
+            <AutocompleteCustom
+              optionLabelKey='value'
+              label='priceCountry'
+              onSelect={(newValue) => handleCountry({ target: { value: newValue ? newValue : 'default' } })}
+              selectOptions={[{ id: 'default', value: 'default' }, ...countriesOptions] || []}
+              curValue={curPrice?.country || 'default'}
             />
-
             <Box pt={4}>
               <Typography variant="h5">VAT Included *</Typography>
             </Box>

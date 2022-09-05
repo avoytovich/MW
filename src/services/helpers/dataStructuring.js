@@ -42,7 +42,7 @@ const defaultStore = {
   name: '',
   emailSenderOverride: '',
   routes: [{ hostname: '' }],
-  defaultLocale: 'en-US',
+  defaultLocale: '',
   saleLocales: [],
   thankYouDesc: {},
   storeWebsite: '',
@@ -430,7 +430,8 @@ const frontToBack = (data) =>
 // eslint-disable-next-line no-nested-ternary
 const checkValue = (data) => ((!data?.state && !data?.value && data?.value !== '') ? data : data.state === 'inherits' ? data.parentValue : data.value);
 
-const identityRequiredFields = (identity) => {
+const identityRequiredFields = (identity, customers) => {
+  const authorizedCustomerIds = identity.authorizedCustomerIds?.map((it) => customers.find((customer) => customer.id === it) || { id: it, value: it }) || [];
   const defaultIdentity = {
     email: '',
     firstName: '',
@@ -442,7 +443,7 @@ const identityRequiredFields = (identity) => {
     metaRoleIds: [],
     inactive: true,
   };
-  return { ...defaultIdentity, ...identity };
+  return { ...defaultIdentity, ...identity, authorizedCustomerIds };
 };
 
 const realmRequiredFields = (realm) => {

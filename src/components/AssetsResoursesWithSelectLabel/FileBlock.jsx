@@ -5,7 +5,7 @@ import {
   CircularProgress, Grid, Box, Typography,
 } from '@mui/material';
 
-import { InputCustom, SelectCustom } from '../Inputs';
+import { InputCustom, AutocompleteCustom } from '../Inputs';
 import FileUpload from '../utils/FileUpload';
 import localization from '../../localization';
 
@@ -54,9 +54,8 @@ const FileBlock = ({
     <Box
       display="flex"
       flexWrap="wrap"
-      className={`product-files ${
-        urlFetching || isDisabled ? 'disable-block' : ''
-      } existing-item`}
+      className={`product-files ${urlFetching || isDisabled ? 'disable-block' : ''
+        } existing-item`}
     >
       <Box minWidth="250px">
         {urlLoading || initImage === ' ' ? (
@@ -77,17 +76,17 @@ const FileBlock = ({
             <Box my={2} display='flex'>
               {withSelect && (
                 <Box width="250px">
-                  <SelectCustom
-                    label="label"
-                    value={selectedLabel}
-                    selectOptions={labelOptions}
+                  <AutocompleteCustom
                     isDisabled={isDisabled}
+                    optionLabelKey='value'
+                    label="label"
+                    onSelect={(newValue) => updateResources(index, 'label', newValue)}
+                    selectOptions={labelOptions || []}
+                    curValue={selectedLabel}
                     usedOptions={
                       labelOptions.filter((l) => data.filter((r) => r.label === l.id).length)
                     }
-                    onChangeSelect={(e) => updateResources(index, 'label', e.target.value)}
                   />
-
                   {!item.label && item.label !== null && (
                     <Box width={1} pl={1}>
                       <Typography variant="body2" style={{ color: 'red' }}>
