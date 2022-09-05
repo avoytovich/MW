@@ -1,7 +1,7 @@
 import React from 'react';
 import { LinearProgress, Box } from '@mui/material';
 import PropTypes from 'prop-types';
-import { SelectWithChip, InputCustom } from '../../../../components/Inputs';
+import { InputCustom, AutocompleteWithChips } from '../../../../components/Inputs';
 
 const Clearances = ({ curMetaRole, setCurMetaRole, selectOptions }) => (
   curMetaRole === null
@@ -9,24 +9,16 @@ const Clearances = ({ curMetaRole, setCurMetaRole, selectOptions }) => (
     : (
       <>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
             data-test='aggregatedRoles'
             label='aggregatedRoles'
-            value={curMetaRole.roleIds}
+            arrayTypeValue
+            arrayValue={curMetaRole.roleIds}
             selectOptions={selectOptions.roles}
-            onChangeSelect={(e) => setCurMetaRole({
+            onChange={(newValue) => setCurMetaRole({
               ...curMetaRole,
-              roleIds: e.target.value,
+              roleIds: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curMetaRole.roleIds].filter(
-                (val) => val !== chip,
-              );
-              setCurMetaRole({
-                ...curMetaRole,
-                roleIds: newValue,
-              });
-            }}
           />
         </Box>
         <Box p={2}>

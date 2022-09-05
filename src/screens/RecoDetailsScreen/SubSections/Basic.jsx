@@ -12,7 +12,7 @@ import {
   Radio,
 } from '@mui/material';
 import localization from '../../../localization';
-import { SelectCustom } from '../../../components/Inputs';
+import { AutocompleteCustom } from '../../../components/Inputs';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import CustomCard from '../../../components/utils/CustomCard';
 import LocalizedContent from '../../../components/utils/LocalizedContent';
@@ -97,13 +97,14 @@ const Basic = ({
             variant='outlined'
           />
         </Box>
-
         <Box px={1} width='100%' py={3}>
-          <SelectCustom
+          <AutocompleteCustom
+            uniqueOptionValue={(option) => option.value}
+            optionLabelKey='value'
             label='fallbackLocale'
-            onChangeSelect={(e) => setCurReco({ ...curReco, fallbackLocale: e.target.value })}
+            onSelect={(newValue) => setCurReco({ ...curReco, fallbackLocale: newValue })}
             selectOptions={availableLocales}
-            value={curReco.fallbackLocale || ''}
+            curValue={curReco.fallbackLocale || ''}
           />
         </Box>
       </Box>

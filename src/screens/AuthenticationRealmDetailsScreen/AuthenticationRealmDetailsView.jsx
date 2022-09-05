@@ -2,14 +2,14 @@ import React from 'react';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import {
-  Box, Typography, Grid, TextField,
+  Box, Typography, Grid,
 } from '@mui/material';
 import { FileCopy } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import InheritanceField from '../ProductDetailsScreen/InheritanceField';
 import parentPaths from '../../services/paths';
 import {
-  InputCustom, AutocompleteWithChips, NumberInput, SelectWithChip,
+  InputCustom, NumberInput, SelectWithChip,
 } from '../../components/Inputs';
 import localization from '../../localization';
 import { copyText } from '../../services/helpers/utils';

@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 
 import localization from '../../../localization';
 import parentPaths from '../../../services/paths';
-import { InputCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
+import { InputCustom, AutocompleteCustom } from '../../../components/Inputs';
 
 import api from '../../../api';
 
@@ -68,18 +68,12 @@ const General = ({
           />
         </Box>
         <Box px={1} width="100%">
-          <SelectWithDeleteIcon
-            label='store'
-            value={data?.storeId || ''}
-            selectOptions={storeOptions}
-            onChangeSelect={(e) => {
-              updateData({ ...data, storeId: e.target.value });
-            }}
-            onClickDelIcon={() => {
-              const newData = { ...data };
-              delete newData?.storeId;
-              updateData({ ...newData });
-            }}
+          <AutocompleteCustom
+            optionLabelKey='value'
+            label="store"
+            onSelect={(newValue) => updateData({ ...data, storeId: newValue })}
+            selectOptions={storeOptions || []}
+            curValue={data?.storeId || ''}
           />
         </Box>
       </Box>

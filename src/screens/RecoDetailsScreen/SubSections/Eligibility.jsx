@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Box } from '@mui/material';
-import { SelectWithChip, AutocompleteWithChips } from '../../../components/Inputs';
+import { AutocompleteWithChips } from '../../../components/Inputs';
 
 import { sortByAlphabetical } from '../../../services/helpers/utils';
 
@@ -12,23 +12,15 @@ const Eligibility = ({ curReco, setCurReco, selectOptions }) => (
   <CustomCard mt={0}>
     <Box display='flex' py={2} mx={1} flexDirection='column'>
       <Box width='100%'>
-        <SelectWithChip
+        <AutocompleteWithChips
+          arrayTypeValue
           label='stores'
-          value={curReco.eligibleStoreIds}
-          selectOptions={selectOptions.stores}
-          onChangeSelect={(e) => setCurReco({
+          arrayValue={curReco.eligibleStoreIds}
+          selectOptions={selectOptions.stores || []}
+          onChange={(newValue) => setCurReco({
             ...curReco,
-            eligibleStoreIds: e.target.value,
+            eligibleStoreIds: newValue,
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [...curReco.eligibleStoreIds].filter(
-              (val) => val !== chip,
-            );
-            setCurReco({
-              ...curReco,
-              eligibleStoreIds: newValue,
-            });
-          }}
         />
       </Box>
       <Box width='100%' my={2} mt={4}>

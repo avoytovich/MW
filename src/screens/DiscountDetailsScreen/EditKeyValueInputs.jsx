@@ -14,6 +14,7 @@ import {
   SelectCustom,
   NumberInput,
   InputCustom,
+  AutocompleteCustom,
 } from '../../components/Inputs';
 import './discountDetailsScreen.scss';
 
@@ -52,25 +53,27 @@ const EditKeyValueInputs = ({
           <Fragment key={item.key}>
             <Grid item xs={4}>
               <Box py={2} pl={2}>
-                <SelectCustom
+                <AutocompleteCustom
                   isDisabled={additionalOption?.id === item.key}
+                  uniqueOptionValue={(option) => option.value}
+                  optionLabelKey='value'
                   label={labels[0]}
-                  value={item.key}
+                  onSelect={(newValue) => {
+                    const newArrayValue = [...curValue];
+                    newArrayValue.map((el) => {
+                      if (el.key === item.key) {
+                        el.key = newValue;
+                      }
+                      return el;
+                    });
+                    setCurValue(newArrayValue);
+                  }}
                   selectOptions={filterOptions(
                     optionsArray,
                     curValue,
                     item.key,
                   )}
-                  onChangeSelect={(e) => {
-                    const newValue = [...curValue];
-                    newValue.map((el) => {
-                      if (el.key === item.key) {
-                        el.key = e.target.value;
-                      }
-                      return el;
-                    });
-                    setCurValue(newValue);
-                  }}
+                  curValue={item.key || ''}
                 />
               </Box>
             </Grid>

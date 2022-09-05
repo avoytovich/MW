@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import PricesTable from './PricesTable';
 import InheritanceField from '../InheritanceField';
-import { SelectCustom, SelectWithDeleteIcon } from '../../../components/Inputs';
+import { SelectCustom, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
 import { getCurrency } from '../../../services/selectOptions/selectOptions';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import parentPaths from '../../../services/paths';
@@ -155,22 +155,15 @@ const Prices = ({
           parentId={parentId}
           currentProductData={currentProductData}
         >
-          <SelectWithDeleteIcon
-            label='priceFunction'
-            value={currentProductData.priceFunction}
-            selectOptions={selectOptions.priceFunctions || []}
-            onChangeSelect={(e) => {
-              setProductData({
-                ...currentProductData,
-                priceFunction: e.target.value,
-              });
-            }}
-            onClickDelIcon={() => {
-              setProductData({
-                ...currentProductData,
-                priceFunction: '',
-              });
-            }}
+          <AutocompleteCustom
+            optionLabelKey='value'
+            label="priceFunction"
+            onSelect={(newValue) => setProductData({
+              ...currentProductData,
+              priceFunction: newValue,
+            })}
+            selectOptions={selectOptions?.priceFunctions || []}
+            curValue={checkValue(currentProductData.priceFunction)}
           />
         </InheritanceField>
       </Box>

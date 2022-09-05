@@ -67,6 +67,8 @@ const getCurrency = () => codes.sort().map((code) => (
 const businessSegment = [
   { value: 'B2B', id: 'B2B' },
   { value: 'B2C', id: 'B2C' },
+  { value: 'STRICT B2B', id: 'STRICT_B2B' },
+  { value: 'STRICT B2C', id: 'STRICT_B2C' },
 ];
 
 const defaultCurrency = [
@@ -78,7 +80,6 @@ const defaultCurrency = [
 const orderCancelAction = [
   { id: 'CBA', value: 'CBA (Chargeback alert)' },
   { id: 'CHB', value: 'CHB (Chargeback)' },
-
   { id: 'DBL', value: 'DBL (Double order)' },
   { id: 'DIP', value: 'DIP (Disappointing product)' },
   { id: 'DIS', value: 'DIS (Disappointing service)' },

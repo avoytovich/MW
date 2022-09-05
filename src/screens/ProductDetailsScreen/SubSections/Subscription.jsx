@@ -88,16 +88,18 @@ const Subscription = ({
             value={currentProductData?.subscriptionTemplate}
             parentId={parentId}
             currentProductData={currentProductData}
+
           >
-            <SelectWithDeleteIcon
+            <AutocompleteCustom
+              optionLabelKey='value'
               label="subscriptionModel"
-              value={checkValue(currentProductData.subscriptionTemplate)}
-              selectOptions={selectOptions.subscriptionModels}
-              onChangeSelect={(e) => {
-                setProductData({ ...currentProductData, subscriptionTemplate: e.target.value });
-              }}
-              onClickDelIcon={() => setProductData({ ...currentProductData, subscriptionTemplate: '' })}
-              hasError={errorSubscription}
+              onSelect={(newValue) => setProductData({
+                ...currentProductData,
+                subscriptionTemplate: newValue,
+              })}
+              selectOptions={selectOptions.subscriptionModels || []}
+              curValue={checkValue(currentProductData?.subscriptionTemplate)}
+              error={errorSubscription}
               helperText={errorTextSubscription}
             />
           </InheritanceField>

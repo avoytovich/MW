@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../../localization';
-import { SelectWithChip } from '../../../../components/Inputs';
+import { AutocompleteWithChips } from '../../../../components/Inputs';
 import ClearancesInputs from './ClearancesInputs';
 
 const Clearances = ({ curRole, setCurRole, selectOptions }) => (
@@ -25,24 +25,16 @@ const Clearances = ({ curRole, setCurRole, selectOptions }) => (
           </Typography>
         </Box>
         <Box pt={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
             data-test='conditionsOfAvailability'
             label='conditionsOfAvailability'
-            value={curRole.availabilityConditions}
-            selectOptions={selectOptions.conditionsOfAvailability}
-            onChangeSelect={(e) => setCurRole({
+            arrayTypeValue
+            arrayValue={curRole.availabilityConditions}
+            selectOptions={selectOptions.conditionsOfAvailability || []}
+            onChange={(newValue) => setCurRole({
               ...curRole,
-              availabilityConditions: e.target.value,
+              availabilityConditions: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...curRole.availabilityConditions].filter(
-                (val) => val !== chip,
-              );
-              setCurRole({
-                ...curRole,
-                availabilityConditions: newValue,
-              });
-            }}
           />
         </Box>
       </Box>

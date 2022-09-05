@@ -11,6 +11,7 @@ import {
   SelectWithChip,
   SwitchInput,
   PlusMinusInput,
+  AutocompleteWithChips,
 } from '../../../components/Inputs';
 import '../CustomerDetailScreen.scss';
 
@@ -110,94 +111,53 @@ const PaymentServiceConfiguration = ({ currentCustomer, setCurrentCustomer, sele
         />
       </Box>
       <Box p={2}>
-        <SelectWithChip
+        <AutocompleteWithChips
           data-test='availableAdditionalPaymentTypes'
           label='availableAdditionalPaymentTypes'
-          selectOptions={selectOptions?.additionalPaymentTypes}
-          value={currentCustomer?.paymentServiceConfiguration?.availableAdditionalPaymentTypes}
-          onChangeSelect={(e) => setCurrentCustomer({
+          arrayTypeValue
+          arrayValue={currentCustomer?.paymentServiceConfiguration?.availableAdditionalPaymentTypes}
+          selectOptions={selectOptions?.additionalPaymentTypes || []}
+          onChange={(newValue) => setCurrentCustomer({
             ...currentCustomer,
-            availableAdditionalPaymentTypes: e.target.value,
+            availableAdditionalPaymentTypes: newValue,
             paymentServiceConfiguration: {
               ...currentCustomer.paymentServiceConfiguration,
-              availableAdditionalPaymentTypes: e.target.value,
+              availableAdditionalPaymentTypes: newValue,
             },
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [
-              ...currentCustomer.paymentServiceConfiguration.availableAdditionalPaymentTypes]
-              .filter(
-                (val) => val !== chip,
-              );
-            setCurrentCustomer({
-              ...currentCustomer,
-              availableAdditionalPaymentTypes: newValue,
-              paymentServiceConfiguration: {
-                ...currentCustomer.paymentServiceConfiguration,
-                availableAdditionalPaymentTypes: newValue,
-              },
-            });
-          }}
         />
       </Box>
       <Box p={2}>
-        <SelectWithChip
+        <AutocompleteWithChips
           data-test='blackListedPaymentTypes'
           label='blackListedPaymentTypes'
-          selectOptions={selectOptions.blackPaymentTypes}
-          value={currentCustomer?.paymentServiceConfiguration?.blackListedPaymentTypes}
-          onChangeSelect={(e) => setCurrentCustomer({
+          arrayTypeValue
+          arrayValue={currentCustomer?.paymentServiceConfiguration?.blackListedPaymentTypes}
+          selectOptions={selectOptions.blackPaymentTypes || []}
+          onChange={(newValue) => setCurrentCustomer({
             ...currentCustomer,
-            blackListedPaymentTypes: e.target.value,
+            blackListedPaymentTypes: newValue,
             paymentServiceConfiguration: {
               ...currentCustomer.paymentServiceConfiguration,
-              blackListedPaymentTypes: e.target.value,
+              blackListedPaymentTypes: newValue,
             },
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [
-              ...currentCustomer.paymentServiceConfiguration.blackListedPaymentTypes]
-              .filter(
-                (val) => val !== chip,
-              );
-            setCurrentCustomer({
-              ...currentCustomer,
-              blackListedPaymentTypes: newValue,
-              paymentServiceConfiguration: {
-                ...currentCustomer.paymentServiceConfiguration,
-                blackListedPaymentTypes: newValue,
-              },
-            });
-          }}
         />
       </Box>
       <Box p={2}>
-        <SelectWithChip
+        <AutocompleteWithChips
           data-test='forcedPaymentMethods'
-          selectOptions={selectOptions.forcedPaymentTypes}
           label='forcedPaymentMethods'
-          value={currentCustomer?.paymentServiceConfiguration?.forcedPaymentTypes}
-          onChangeSelect={(e) => setCurrentCustomer({
+          arrayTypeValue
+          arrayValue={currentCustomer?.paymentServiceConfiguration?.forcedPaymentTypes}
+          selectOptions={selectOptions.forcedPaymentTypes || []}
+          onChange={(newValue) => setCurrentCustomer({
             ...currentCustomer,
             paymentServiceConfiguration: {
               ...currentCustomer.paymentServiceConfiguration,
-              forcedPaymentTypes: e.target.value,
+              forcedPaymentTypes: newValue,
             },
           })}
-          onClickDelIcon={(chip) => {
-            const newValue = [
-              ...currentCustomer.paymentServiceConfiguration.forcedPaymentTypes]
-              .filter(
-                (val) => val !== chip,
-              );
-            setCurrentCustomer({
-              ...currentCustomer,
-              paymentServiceConfiguration: {
-                ...currentCustomer.paymentServiceConfiguration,
-                forcedPaymentTypes: newValue,
-              },
-            });
-          }}
         />
       </Box>
     </Grid>

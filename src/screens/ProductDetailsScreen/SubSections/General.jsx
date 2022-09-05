@@ -25,11 +25,10 @@ import moment from 'moment';
 import InheritanceField from '../InheritanceField';
 
 import {
-  SelectWithChip,
   SelectCustom,
   NumberInput,
   InputCustom,
-  SelectWithDeleteIcon,
+  AutocompleteWithChips,
   AutocompleteCustom,
 } from '../../../components/Inputs';
 
@@ -346,14 +345,15 @@ const General = ({
             parentId={parentId}
             currentProductData={currentProductData}
           >
-            <SelectCustom
-              name='type'
-              label='type'
+            <AutocompleteCustom
               isRequired
-              value={currentProductData?.type}
-              selectOptions={type}
-              onChangeSelect={(e) => withValidationSelectCustom(e.target)}
-              hasError={!!errors?.general?.type}
+              name='type'
+              optionLabelKey='value'
+              label="type"
+              onSelect={(newValue) => withValidationSelectCustom({ name: 'type', value: newValue })}
+              selectOptions={type || []}
+              curValue={checkValue(currentProductData?.type)}
+              error={!!errors?.general?.type}
               helperText={errors?.general?.type && localization.t('errorNotifications.required')}
             />
           </InheritanceField>
@@ -390,14 +390,15 @@ const General = ({
             parentId={parentId}
             currentProductData={currentProductData}
           >
-            <SelectWithDeleteIcon
-              label='businessSegment'
-              value={checkValue(currentProductData?.businessSegment)}
+            <AutocompleteCustom
+              optionLabelKey='value'
+              label="businessSegment"
+              onSelect={(newValue) => setProductData({
+                ...currentProductData,
+                businessSegment: newValue,
+              })}
               selectOptions={businessSegment || []}
-              onChangeSelect={(e) => {
-                setProductData({ ...currentProductData, businessSegment: e.target.value });
-              }}
-              onClickDelIcon={() => setProductData({ ...currentProductData, businessSegment: '' })}
+              curValue={checkValue(currentProductData?.businessSegment)}
             />
           </InheritanceField>
         </Box>
@@ -541,21 +542,15 @@ const General = ({
             parentId={parentId}
             currentProductData={currentProductData}
           >
-            <SelectWithChip
+            <AutocompleteWithChips
+              arrayTypeValue
               label='sellingStores'
-              value={checkValue(currentProductData?.sellingStores)}
-              selectOptions={selectOptions.sellingStores}
-              onChangeSelect={(e) => setProductData({
+              arrayValue={checkValue(currentProductData?.sellingStores)}
+              selectOptions={selectOptions.sellingStores || []}
+              onChange={(newValue) => setProductData({
                 ...currentProductData,
-                sellingStores: e.target.value,
+                sellingStores: newValue,
               })}
-              onClickDelIcon={(chip) => {
-                const newValue = [...checkValue(currentProductData?.sellingStores)].filter(
-                  (val) => val !== chip,
-                );
-                setProductData({ ...currentProductData, sellingStores: newValue });
-              }}
-              redirectTo='store'
             />
           </InheritanceField>
         </Box>
@@ -641,17 +636,13 @@ const General = ({
               </Box>
 
               <Box p={2}>
-                <SelectWithChip
-                  label={countrySelection === 'blocked' ? 'blockedCountries' : 'allowedCountries'}
-                  value={checkValue(selectedCountries)}
-                  selectOptions={countriesOptions}
-                  onChangeSelect={(e) => setSelectedCountries(e.target.value)}
+                <AutocompleteWithChips
+                  arrayTypeValue
                   isDisabled={currentProductData?.blackListedCountries?.state === 'inherits'}
-                  onClickDelIcon={(chip) => {
-                    const newValue = [...checkValue(selectedCountries)]
-                      .filter((val) => val !== chip);
-                    setSelectedCountries(newValue);
-                  }}
+                  label={countrySelection === 'blocked' ? 'blockedCountries' : 'allowedCountries'}
+                  arrayValue={checkValue(selectedCountries)}
+                  selectOptions={countriesOptions || []}
+                  onChange={(newValue) => setSelectedCountries(newValue)}
                 />
               </Box>
             </Box>

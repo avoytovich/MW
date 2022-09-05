@@ -20,9 +20,10 @@ import { urlIsValid } from '../../../services/helpers/inputValidators';
 import localization from '../../../localization';
 import {
   InputCustom,
-  SelectCustom,
   SelectWithChip,
   SwitchInput,
+  AutocompleteCustom,
+  AutocompleteWithChips,
 } from '../../../components/Inputs';
 import CheckboxInput from './CheckboxInput';
 
@@ -185,7 +186,7 @@ const General = ({
                     color={currentStoreData.status === 'ENABLED' ? 'success' : 'primary'}
                     checked={currentStoreData.status === 'ENABLED'}
                   />
-                  )}
+                )}
                 label={localization.t(
                   `labels.${currentStoreData.status === 'ENABLED' ? 'enabled' : 'disabled'
                   }`,
@@ -246,35 +247,30 @@ const General = ({
           </Grid>
         </Box>
         <Box p={2}>
-          <SelectCustom
-            label='defaultLanguage'
+          <AutocompleteCustom
+            optionLabelKey='value'
+            label="defaultLanguage"
             isRequired
-            name='defaultLocale'
-            value={currentStoreData.defaultLocale}
-            selectOptions={availableLocales}
-            onChangeSelect={(e) => withValidationSelectCustom(e.target)}
+            onSelect={(newValue) => withValidationSelectCustom({
+              name: 'defaultLocale',
+              value: newValue,
+            })}
+            selectOptions={availableLocales || []}
+            curValue={currentStoreData.defaultLocale}
             hasError={!!errors?.general?.defaultLocale}
             helperText={errors?.general?.defaultLocale && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
-          <SelectWithChip
+          <AutocompleteWithChips
             label='saleLanguages'
-            value={currentStoreData.saleLocales}
+            arrayTypeValue
+            arrayValue={currentStoreData.saleLocales}
             selectOptions={availableLocales}
-            onChangeSelect={(e) => setCurrentStoreData({
+            onChange={(newValue) => setCurrentStoreData({
               ...currentStoreData,
-              saleLocales: e.target.value,
+              saleLocales: newValue,
             })}
-            onClickDelIcon={(chip) => {
-              const newValue = [...currentStoreData.saleLocales].filter(
-                (val) => val !== chip,
-              );
-              setCurrentStoreData({
-                ...currentStoreData,
-                saleLocales: newValue,
-              });
-            }}
           />
         </Box>
         <Box p={2}>
@@ -443,24 +439,16 @@ const General = ({
         <Box p={2}>
           {
             countrySelection === 'blocked' ? (
-              <SelectWithChip
+              <AutocompleteWithChips
+                arrayTypeValue
                 label='blockedCountries'
-                value={currentStoreData.blackListedCountries}
+                arrayValue={currentStoreData.blackListedCountries}
                 selectOptions={countriesOptions}
-                onChangeSelect={(e) => setCurrentStoreData({
+                onChange={(newValue) => setCurrentStoreData({
                   ...currentStoreData,
                   restrictedCountries: [],
-                  blackListedCountries: e.target.value,
+                  blackListedCountries: newValue,
                 })}
-                onClickDelIcon={(chip) => {
-                  const newValue = [...currentStoreData.blackListedCountries].filter(
-                    (val) => val !== chip,
-                  );
-                  setCurrentStoreData({
-                    ...currentStoreData,
-                    blackListedCountries: newValue,
-                  });
-                }}
               />
             ) : (
               <SelectWithChip
@@ -502,14 +490,16 @@ const General = ({
           />
         </Box>
         <Box p={2}>
-          <SelectCustom
-            label='fallbackCartCountry'
-            value={currentStoreData.fallbackCartCountry}
-            selectOptions={countriesOptions}
-            onChangeSelect={(e) => setCurrentStoreData({
+          <AutocompleteCustom
+            optionLabelKey='value'
+            label="fallbackCartCountry"
+            isRequired
+            onSelect={(newValue) => setCurrentStoreData({
               ...currentStoreData,
-              fallbackCartCountry: e.target.value,
+              fallbackCartCountry: newValue,
             })}
+            selectOptions={countriesOptions}
+            curValue={currentStoreData.fallbackCartCountry}
           />
         </Box>
         <Box p={2}>

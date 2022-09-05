@@ -78,7 +78,16 @@ const InheritanceField = (props) => {
     if (field === 'blackListedCountries' && typeof val?.target?.value === 'string') {
       return;
     }
-
+    if (field === 'sellingStores') {
+      onChange({
+        ...currentProductData,
+        [field]: {
+          ...inheritanceValue,
+          value: val,
+        },
+      });
+      return;
+    }
     onChange({
       ...currentProductData,
       [field]: {
@@ -98,6 +107,7 @@ const InheritanceField = (props) => {
     value: inputValue,
     isDisabled: value.state === 'inherits',
     disabled: value.state === 'inherits',
+    onSelect: handleChange,
     onChange: handleChange, // overrides the one in wrappedProps, to allow proxying
     onChangeInput: handleChange, // overrides the one in wrappedProps, to allow proxying
     onChangeSelect: handleChange, // overrides the one in wrappedProps, to allow proxying

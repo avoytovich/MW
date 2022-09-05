@@ -6,11 +6,11 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
-import { SelectWithChip } from '../../../components/Inputs';
+import { SelectWithChip, AutocompleteWithChips } from '../../../components/Inputs';
 
 const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
   if (curIdentity === null) return <LinearProgress />;
-
+  
   return (
     !curIdentity?.id
       ? (
@@ -28,26 +28,15 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
             </Typography>
           </Box>
           <Box p={2}>
-            <SelectWithChip
+            <AutocompleteWithChips
               data-test='managedCustomers'
               label='managedCustomers'
-              value={curIdentity.authorizedCustomerIds}
+              arrayValue={curIdentity.authorizedCustomerIds}
               selectOptions={selectOptions.customers}
-              onChangeSelect={(e) => {
-                setCurIdentity({
-                  ...curIdentity,
-                  authorizedCustomerIds: e.target.value,
-                });
-              }}
-              onClickDelIcon={(chip) => {
-                const newValue = [...curIdentity.authorizedCustomerIds].filter(
-                  (val) => val !== chip,
-                );
-                setCurIdentity({
-                  ...curIdentity,
-                  authorizedCustomerIds: newValue,
-                });
-              }}
+              onChange={(newValue) => setCurIdentity({
+                ...curIdentity,
+                authorizedCustomerIds: newValue,
+              })}
             />
           </Box>
           <Box p={2}>

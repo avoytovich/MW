@@ -43,7 +43,7 @@ const errorNotifications = {
   senderNameEnd: 'and contain only email-friendly characters.',
   urlIsNotValid: 'url is not valid',
   isNotValid: 'is not valid',
-  isMandatoryForTheDefaultLanguage: 'is mandatory for the default language, as soon as it is set for some language.',
+  isMandatoryForTheDefaultLanguage: 'is mandatory for the default language, as long as it is set for some language.',
   isRequired: 'is required',
   subscriptionCanBeCopiedOnlyWithGeneralSection: 'Subscription can be copied only with General section',
   defaultPriceIsRequired: 'Default price is required',
