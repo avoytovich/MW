@@ -13,7 +13,7 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 
 import InheritanceField from '../InheritanceField';
 
-import { NumberInput, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
+import { NumberInput, AutocompleteCustom } from '../../../components/Inputs';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import parentPaths from '../../../services/paths';
 import { sortByAlphabetical } from '../../../services/helpers/utils';
@@ -69,6 +69,35 @@ const Subscription = ({
 
   const { lifeTime, subscriptionTemplate } = currentProductData;
 
+  const clearSubRelatedData = () => {
+    if (parentId) {
+      setProductData({
+        ...currentProductData,
+        trialDuration: {
+          ...currentProductData.trialDuration,
+          value: '',
+        },
+        trialAllowed: {
+          ...currentProductData.trialAllowed,
+          value: false,
+        },
+        nextGenerationOf: [],
+        subscriptionTemplate: {
+          ...currentProductData.subscriptionTemplate,
+          value: '',
+        },
+      });
+    } else {
+      setProductData({
+        ...currentProductData,
+        trialDuration: '',
+        trialAllowed: false,
+        nextGenerationOf: [],
+        subscriptionTemplate: '',
+      });
+    }
+  };
+
   useEffect(() => {
     if (lifeTime === 'PERMANENT' && subscriptionTemplate) {
       setErrorSubscription(true);
@@ -101,6 +130,7 @@ const Subscription = ({
               curValue={checkValue(currentProductData?.subscriptionTemplate)}
               error={errorSubscription}
               helperText={errorTextSubscription}
+              onClear={clearSubRelatedData}
             />
           </InheritanceField>
         </Box>
@@ -155,7 +185,7 @@ const Subscription = ({
       </Box>
 
       {
-        lifeTime !== 'PERMANENT' && subscriptionTemplate && (
+        checkValue(lifeTime) !== 'PERMANENT' && checkValue(subscriptionTemplate) && (
           <Box display="flex" flexDirection="row" alignItems="center">
             <Box p={2} width="50%">
               <AutocompleteCustom
@@ -164,44 +194,45 @@ const Subscription = ({
                 onSelect={changeProducts}
                 selectOptions={filteredArr?.sort(sortByAlphabetical) || []}
                 curValue={checkValue(currentProductData?.nextGenerationOf[0])}
-                isDisabled={currentProductData?.subProducts?.state === 'inherits'}
+                // isDisabled={currentProductData?.subProducts?.state === 'inherits'}
               />
             </Box>
           </Box>
         )
       }
 
-      <Box display="flex" flexDirection="row" alignItems="center">
-        <Box p={2}>
-          <Typography variant='h6' color="secondary">
-            {localization.t('labels.relatedProduct')}
-          </Typography>
+      {relatedProduct && (
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Box p={2}>
+            <Typography variant='h6' color="secondary">
+              {localization.t('labels.relatedProduct')}
+            </Typography>
+          </Box>
+
+          <Box pl={2}>
+            <Typography variant='subtitle1' color="secondary">
+              {`${relatedProduct.genericName},`}
+            </Typography>
+          </Box>
+
+          <Box pl={1}>
+            <Typography variant='subtitle1' className={classes.copyRelatedProductId}>
+              <span
+                onClick={() => history.push(`${parentPaths.productlist}/${relatedProduct.id}`)}
+              >
+                {relatedProduct.id}
+              </span>
+            </Typography>
+          </Box>
+
+          <Box p={1}>
+            <FileCopyIcon
+              onClick={() => makeCopy(relatedProduct.id)}
+              color="secondary"
+            />
+          </Box>
         </Box>
-        {relatedProduct && (
-          <>
-            <Box pl={2}>
-              <Typography variant='subtitle1' color="secondary">
-                {`${relatedProduct.genericName},`}
-              </Typography>
-            </Box>
-            <Box pl={1}>
-              <Typography variant='subtitle1' className={classes.copyRelatedProductId}>
-                <span
-                  onClick={() => history.push(`${parentPaths.productlist}/${relatedProduct.id}`)}
-                >
-                  {relatedProduct.id}
-                </span>
-              </Typography>
-            </Box>
-            <Box p={1}>
-              <FileCopyIcon
-                onClick={() => makeCopy(relatedProduct.id)}
-                color="secondary"
-              />
-            </Box>
-          </>
-        )}
-      </Box>
+      )}
     </>
   );
 };

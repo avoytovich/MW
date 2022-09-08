@@ -213,7 +213,7 @@ const handleEditorParsing = (data, parentData, setCurLocalizedData, setLocalized
     }
   });
 
-  const i18nFields = avail.reduce((accumulator, current) => {
+  const i18nFields = avail.reverse().reduce((accumulator, current) => {
     const childLocalizedValues = localizedValues.reduce(
       (acc, curr) => ({ ...acc, [curr]: data[curr]?.[current] ? data[curr][current] : '' }),
       {},

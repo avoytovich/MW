@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
+
+import 'ace-builds/webpack-resolver';
 import 'ace-builds/src-noconflict/ext-searchbox';
 import 'ace-builds/src-noconflict/mode-json';
 import 'ace-builds/src-noconflict/theme-tomorrow';
@@ -19,16 +21,22 @@ const JsonEditor = ({
   setCurrentData,
   title = 'JSON',
   jsonKey,
-  jsonIsValid = true,
-  setJsonIsValid = () => { },
+  // jsonIsValid = true,
+  // setJsonIsValid = () => { },
+  onSave,
   isReadOnly,
   showUploadButton,
 }) => {
+  const [jsonIsValid, setJsonIsValid] = useState(true);
+  const [editorData, setEditorData] = useState('');
+
   const handleChange = (newValue) => {
+    setEditorData(newValue);
+
     if (jsonKey) {
-      setCurrentData({ ...currentData, [jsonKey]: newValue });
+      setCurrentData && setCurrentData({ ...currentData, [jsonKey]: newValue });
     } else {
-      setCurrentData(newValue);
+      setCurrentData && setCurrentData(newValue);
     }
 
     try {
@@ -40,6 +48,7 @@ const JsonEditor = ({
       setJsonIsValid(false);
     }
   };
+
   useEffect(() => {
     try {
       const newValue = jsonKey ? currentData[jsonKey] : currentData;
@@ -49,19 +58,26 @@ const JsonEditor = ({
       setJsonIsValid(false);
     }
   }, []);
+
+  useEffect(() => {
+    setEditorData(currentData);
+  }, [currentData]);
+
   const handleJsonUpload = (e) => {
     e.persist();
 
     const reader = new FileReader();
     reader.readAsText(e.target.files[0]);
     reader.onload = () => {
+      setEditorData(reader.result);
+
       if (jsonKey) {
-        setCurrentData({
+        setCurrentData && setCurrentData({
           ...currentData,
           [jsonKey]: reader.result,
         });
       } else {
-        setCurrentData(reader.result);
+        setCurrentData && setCurrentData(reader.result);
       }
     };
   };
@@ -91,7 +107,18 @@ const JsonEditor = ({
           </Box>
           {!isReadOnly && !showUploadButton
             && (
-              <Box>
+              <Box display='flex'>
+                {onSave && (
+                  <Button
+                    disabled={!jsonIsValid || currentData === editorData}
+                    onClick={() => onSave(editorData)}
+                    variant='outlined'
+                    style={{ marginRight: '10px' }}
+                  >
+                    SAVE
+                  </Button>
+                )}
+
                 <Button
                   variant='outlined'
                   component='label'
@@ -113,18 +140,18 @@ const JsonEditor = ({
           <AceEditor
             name="jsonEditor"
             theme='tomorrow'
-            value={jsonKey ? currentData[jsonKey] : currentData}
+            value={jsonKey ? currentData[jsonKey] : editorData}
             mode="json"
             readOnly={isReadOnly}
             onChange={handleChange}
             setOptions={{
               showInvisibles: true,
               showPrintMargin: false,
-              useWorker: false,
+              // useWorker: false,
             }}
             width="100%"
             highlightActiveLine
-            debounceChangePeriod={1000}
+            // debounceChangePeriod={1000}
           />
         </Box>
       </Box>
@@ -140,10 +167,11 @@ JsonEditor.propTypes = {
   setCurrentData: PropTypes.func,
   title: PropTypes.string,
   jsonKey: PropTypes.string,
-  jsonIsValid: PropTypes.bool,
-  setJsonIsValid: PropTypes.func,
+  // jsonIsValid: PropTypes.bool,
+  // setJsonIsValid: PropTypes.func,
   isReadOnly: PropTypes.bool,
   showUploadButton: PropTypes.bool,
+  onSave: PropTypes.func,
 };
 
 export default JsonEditor;

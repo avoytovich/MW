@@ -46,13 +46,10 @@ const ProductVariationsTable = ({
   const onRequestSort = (event, property) => {
     setOrder(order === 'asc' ? 'desc' : 'asc');
     setOrderBy(property);
-    let compareFn = () => { };
-    if (order === 'asc') {
-      compareFn = (a, b) => b.updateDate - a.updateDate;
-    }
-    if (order === 'desc') {
-      compareFn = (a, b) => a.updateDate - b.updateDate;
-    }
+
+    const compareFn = (a, b) => (order === 'asc'
+      ? (`${a[property]}`).localeCompare(b[property]) : (`${b[property]}`).localeCompare(a[property]));
+
     setSortedBundledProducts(productVariations?.bundledProducts.sort(compareFn));
   };
 
@@ -87,21 +84,77 @@ const ProductVariationsTable = ({
                   <TableCell>Id</TableCell>
                   <TableCell align='center' sortDirection='asc'>
                     <TableSortLabel
-                      active
+                      active={orderBy === 'updateDate'}
                       direction={order}
-                      onClick={createSortHandler('updateLast')}
+                      onClick={createSortHandler('updateDate')}
+                      hideSortIcon
                     >
                       Last Update
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell align='center'>Status</TableCell>
-                  <TableCell align='center'>Publisher reference</TableCell>
-                  <TableCell align='center'>Lifetime</TableCell>
-                  <TableCell align='center'>Fulfillment Model</TableCell>
-                  <TableCell align='center'>Subscription Model</TableCell>
+                  <TableCell align='center' sortDirection='asc'>
+                    <TableSortLabel
+                      active={orderBy === 'status'}
+                      direction={order}
+                      onClick={createSortHandler('status')}
+                      hideSortIcon
+                    >
+                      Status
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell align='center' sortDirection='asc'>
+                    <TableSortLabel
+                      active={orderBy === 'publisherRefId'}
+                      direction={order}
+                      onClick={createSortHandler('publisherRefId')}
+                      hideSortIcon
+                    >
+                      Publisher reference
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell align='center' sortDirection='asc'>
+                    <TableSortLabel
+                      active={orderBy === 'lifeTime'}
+                      direction={order}
+                      onClick={createSortHandler('lifeTime')}
+                      hideSortIcon
+                    >
+                      Lifetime
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell align='center' sortDirection='asc'>
+                    <TableSortLabel
+                      active={orderBy === 'fulfillmentTemplate'}
+                      direction={order}
+                      onClick={createSortHandler('fulfillmentTemplate')}
+                      hideSortIcon
+                    >
+                      Fulfillment Model
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell align='center' sortDirection='asc'>
+                    <TableSortLabel
+                      active={orderBy === 'subscriptionTemplate'}
+                      direction={order}
+                      onClick={createSortHandler('subscriptionTemplate')}
+                      hideSortIcon
+                    >
+                      Subscription Model
+                    </TableSortLabel>
+                  </TableCell>
+
                   {currentProductData?.availableVariables
                     && currentProductData?.availableVariables.map((v) => (
-                      <TableCell align='center'>{v?.field || ''}</TableCell>
+                      <TableCell align='center' sortDirection='asc'>
+                        <TableSortLabel
+                          active={orderBy === v?.field}
+                          direction={order}
+                          onClick={createSortHandler(v?.field)}
+                          hideSortIcon
+                        >
+                          {v?.field || ''}
+                        </TableSortLabel>
+                      </TableCell>
                     ))}
                   <TableCell align='center' width='75px' />
                 </TableRow>
