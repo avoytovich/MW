@@ -18,6 +18,7 @@ const AutocompleteCustom = ({
   hasFormic,
   uniqueOptionValue,
   usedOptions = [],
+  onClear,
 }) => {
   const noRepeatingOptions = selectOptions
     .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
@@ -47,9 +48,13 @@ const AutocompleteCustom = ({
       )}
       inputValue={search || ''}
       value={curOption}
-      onChange={(event, newValue) => {
+      onChange={(event, newValue, reason) => {
         const res = hasFormic ? newValue : newValue?.id;
         onSelect(res || '');
+
+        if (reason === 'clear' && onClear) {
+          onClear();
+        }
       }}
       onBlur={() => setSearch(uniqueOptionValue ? uniqueOptionValue(curOption) : curOption?.[optionLabelKey]?.split('(')[0]?.trim() || '')}
       handleHomeEndKeys
@@ -87,6 +92,7 @@ AutocompleteCustom.propTypes = {
   hasFormic: PropTypes.bool,
   uniqueOptionValue: PropTypes.func,
   usedOptions: PropTypes.array,
+  onClear: PropTypes.func,
 };
 
 export default AutocompleteCustom;

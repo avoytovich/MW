@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -20,7 +20,6 @@ import { urlIsValid } from '../../../services/helpers/inputValidators';
 import localization from '../../../localization';
 import {
   InputCustom,
-  SelectWithChip,
   SwitchInput,
   AutocompleteCustom,
   AutocompleteWithChips,
@@ -41,8 +40,11 @@ const General = ({
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
   const [open, setOpen] = useState(false);
-  const [countrySelection, setCountrySelection] = useState(currentStoreData.restrictedCountries.length ? 'allowed' : 'blocked');
+  const [countrySelection, setCountrySelection] = useState('blocked');
   const [errorMessages, setErrorMessages] = useState(null);
+
+  const defaultBlacklisted = currentStoreData?.blackListedCountries || [];
+  const [selectedCountries, setSelectedCountries] = useState([...defaultBlacklisted]);
 
   const confirmModal = () => {
     setCurrentStoreData({
@@ -50,20 +52,6 @@ const General = ({
       status: 'DISABLED',
     });
     setOpen(false);
-  };
-
-  const selectAllCountries = () => {
-    setCurrentStoreData({
-      ...currentStoreData,
-      [countrySelection === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: countriesOptions.map((l) => l.id),
-    });
-  };
-
-  const removeAllCountries = () => {
-    setCurrentStoreData({
-      ...currentStoreData,
-      [countrySelection === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: [],
-    });
   };
 
   const handleUpdateGtm = (key, newValue) => {
@@ -136,6 +124,54 @@ const General = ({
       ...options,
     });
   };
+
+  useEffect(() => {
+    if (countrySelection === 'blocked' && selectedCountries?.length !== defaultBlacklisted?.length) {
+      setSelectedCountries([...defaultBlacklisted]);
+    }
+  }, [currentStoreData?.blackListedCountries]);
+
+  useEffect(() => {
+    const checkedSelected = selectedCountries || [];
+    const checkedDefault = defaultBlacklisted || [];
+
+    const newCountries = countrySelection === 'blocked' ? [...checkedSelected]
+      : [...countriesOptions.map((l) => l.id).filter((c) => checkedSelected?.indexOf(c) < 0)];
+
+    const [hasChanges] = newCountries
+      ? newCountries?.filter((itm) => checkedDefault?.indexOf(itm) < 0) : [];
+
+    const [hasReverseChanges] = checkedDefault?.length
+      ? checkedDefault?.filter((itm) => newCountries?.indexOf(itm) < 0) : [];
+
+    if (hasChanges || hasReverseChanges) {
+      setCurrentStoreData({
+        ...currentStoreData,
+        blackListedCountries: [...newCountries],
+      });
+    }
+  }, [selectedCountries]);
+
+  useEffect(() => {
+    const checkedDefault = defaultBlacklisted || [];
+
+    if (!countriesOptions?.length && checkedDefault?.length) return;
+
+    if (countrySelection === 'blocked') {
+      const newCountries = checkedDefault?.length ? countriesOptions
+        ?.map((l) => l.id)
+        .filter((c) => checkedDefault?.indexOf(c) >= 0) : [];
+
+      setSelectedCountries([...newCountries]);
+    } else {
+      const newCountries = checkedDefault?.length ? countriesOptions
+        .map((l) => l.id)
+        .filter((c) => checkedDefault?.indexOf(c) < 0)
+        : countriesOptions.map((l) => l.id);
+
+      setSelectedCountries([...newCountries]);
+    }
+  }, [countrySelection]);
 
   return (
     <>
@@ -402,10 +438,21 @@ const General = ({
         <Box p={2} height={74} alignItems='center' display='flex'>
           <Typography variant='h4'>{localization.t('labels.allowedBlockedCountries')}</Typography>
 
-          <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={selectAllCountries}>
+          <Button
+            variant='outlined'
+            color='primary'
+            style={{ marginLeft: '15px' }}
+            onClick={() => setSelectedCountries(countriesOptions.map((l) => l.id))}
+          >
             {localization.t('labels.selectAll')}
           </Button>
-          <Button variant='outlined' color='primary' style={{ marginLeft: '15px' }} onClick={removeAllCountries}>
+
+          <Button
+            variant='outlined'
+            color='primary'
+            style={{ marginLeft: '15px' }}
+            onClick={() => setSelectedCountries([])}
+          >
             {localization.t('labels.removeAll')}
           </Button>
         </Box>
@@ -414,13 +461,7 @@ const General = ({
           <RadioGroup
             row
             value={countrySelection}
-            onChange={(e) => {
-              setCountrySelection(e.target.value);
-              setCurrentStoreData({
-                ...currentStoreData,
-                [e.target.value === 'blocked' ? 'blackListedCountries' : 'restrictedCountries']: [],
-              });
-            }}
+            onChange={(e) => setCountrySelection(e.target.value)}
           >
             <FormControlLabel
               value='blocked'
@@ -437,42 +478,15 @@ const General = ({
         </Box>
 
         <Box p={2}>
-          {
-            countrySelection === 'blocked' ? (
-              <AutocompleteWithChips
-                arrayTypeValue
-                label='blockedCountries'
-                arrayValue={currentStoreData.blackListedCountries}
-                selectOptions={countriesOptions}
-                onChange={(newValue) => setCurrentStoreData({
-                  ...currentStoreData,
-                  restrictedCountries: [],
-                  blackListedCountries: newValue,
-                })}
-              />
-            ) : (
-              <SelectWithChip
-                label='allowedCountries'
-                value={currentStoreData.restrictedCountries}
-                selectOptions={countriesOptions}
-                onChangeSelect={(e) => setCurrentStoreData({
-                  ...currentStoreData,
-                  blackListedCountries: [],
-                  restrictedCountries: e.target.value,
-                })}
-                onClickDelIcon={(chip) => {
-                  const newValue = [...currentStoreData.restrictedCountries].filter(
-                    (val) => val !== chip,
-                  );
-                  setCurrentStoreData({
-                    ...currentStoreData,
-                    restrictedCountries: newValue,
-                  });
-                }}
-              />
-            )
-          }
+          <AutocompleteWithChips
+            arrayTypeValue
+            label={countrySelection === 'blocked' ? 'blockedCountries' : 'allowedCountries'}
+            arrayValue={selectedCountries}
+            selectOptions={countriesOptions || []}
+            onChange={(newValue) => setSelectedCountries(newValue)}
+          />
         </Box>
+
         <Box p={2}>
           <SwitchInput
             label='useGeoIpToForceEnduserCountry'

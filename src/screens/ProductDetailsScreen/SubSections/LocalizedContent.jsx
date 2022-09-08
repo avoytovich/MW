@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -24,21 +24,27 @@ import {
   handleEditorParsing,
 } from '../utils';
 
+const defaultEditorData = {
+  localizedMarketingName: {},
+  localizedShortDesc: {},
+  localizedLongDesc: {},
+  localizedThankYouDesc: {},
+  localizedPurchaseEmailDesc: {},
+  localizedManualRenewalEmailDesc: {},
+};
+
 const LocalizedContent = ({
   parentId,
   setCodeMode,
   codeMode,
-  jsonIsValid,
-  setJsonIsValid,
   curLocalizedData,
   setCurLocalizedData,
-  setDescriptionData,
   localizedErrors,
   setLocalizedErrors,
   descriptionData,
   parentDescriptionData = false,
 }) => {
-  const [descrRequestData, setDescrRequestData] = useState(null);
+  const [descrEditorData, setDescrEditorData] = useState({ ...defaultEditorData });
   const availableLocales = getLanguagesOptions();
 
   const handleChangeDefaultLanguage = (defLanguage) => {
@@ -49,18 +55,24 @@ const LocalizedContent = ({
     }
   };
 
-  const updateContentByEditor = (content) => {
-    if (descriptionData !== content) {
-      try {
-        const data = JSON.parse(content);
-        handleEditorParsing(data, parentDescriptionData, setCurLocalizedData);
+  const saveDescriptionData = (newData) => {
+    const data = JSON.parse(newData);
 
-        setDescriptionData(data);
-      } catch (e) {
-        setCurLocalizedData(content);
-      }
-    }
+    handleEditorParsing({
+      ...descriptionData, ...data,
+    }, parentDescriptionData, setCurLocalizedData);
   };
+
+  useEffect(() => {
+    const newEditorData = {};
+
+    // eslint-disable-next-line guard-for-in, no-restricted-syntax
+    for (const ed in defaultEditorData) {
+      newEditorData[ed] = checkValue(descriptionData[ed]);
+    }
+
+    setDescrEditorData(newEditorData);
+  }, [descriptionData]);
 
   if (!curLocalizedData) return <LinearProgress />;
 
@@ -98,10 +110,8 @@ const LocalizedContent = ({
           </>
         ) : (
           <JsonEditor
-            currentData={typeof curLocalizedData === 'object' ? JSON.stringify(descriptionData, 0, 4) : descriptionData}
-            setCurrentData={(content) => updateContentByEditor(content)}
-            jsonIsValid={jsonIsValid}
-            setJsonIsValid={setJsonIsValid}
+            currentData={JSON.stringify(descrEditorData, 0, 4)}
+            onSave={saveDescriptionData}
           />
         )
       }
@@ -113,15 +123,12 @@ LocalizedContent.propTypes = {
   parentId: PropTypes.string,
   setCodeMode: PropTypes.func,
   codeMode: PropTypes.bool,
-  jsonIsValid: PropTypes.bool,
-  setJsonIsValid: PropTypes.func,
   curLocalizedData: PropTypes.object,
   setCurLocalizedData: PropTypes.func,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
   descriptionData: PropTypes.object,
   parentDescriptionData: PropTypes.any,
-  setDescriptionData: PropTypes.func,
 };
 
 export default LocalizedContent;
