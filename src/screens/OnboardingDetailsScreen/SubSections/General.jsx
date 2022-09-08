@@ -28,7 +28,6 @@ const General = ({
   onboarding,
 }) => {
   const history = useHistory();
-
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
       .then(() => toast(localization.t('general.itemHasBeenCopied')));

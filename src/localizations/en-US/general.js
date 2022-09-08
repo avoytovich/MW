@@ -76,6 +76,8 @@ const general = {
     servicename: 'Service name',
     availableactions: 'Available actions',
   },
+  onboard: 'Onboarding on Monetize',
+  onboardDescriptionText: 'Welcome to the Nexway onboarding website. The process of onboarding is split into several consecutive steps. Please ensure to have the onboarding guide (PDF) at hand, before you start.',
   keyHasBeenAdded: 'Key Has Been Added',
   keyHasBeenRemoved: 'Key Has BeenRemoved',
   noResourcesMatchCriteria: 'No resources match criteria',

@@ -164,6 +164,14 @@ const postApi = {
       data,
     });
   },
+  sendConfirmationMailOnboardScreen(capchaToken, data) {
+    const url = `/onboarding/public?capchaToken=${capchaToken}&reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   resyncPayments(customerId) {
     const url = `/payment-proxy/payments/${customerId}/resync?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified`;
     return axiosInstance({
