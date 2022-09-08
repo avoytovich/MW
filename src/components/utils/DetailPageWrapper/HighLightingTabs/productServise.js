@@ -5,8 +5,11 @@ const hightLightGeneral = (curData) => (
 );
 
 const hightLightPrices = (curData, priceTableError) => (
-  (curData.prices.defaultCurrency || Object.keys(curData.priceByCountryByCurrency).length)
-    && (!priceTableError.length)
+  (curData.prices.defaultCurrency
+    || Object.keys(curData?.prices?.priceByCountryByCurrency || []).length
+    || curData?.prices?.value?.defaultCurrency
+    || Object.keys(curData?.prices?.value?.priceByCountryByCurrency || []).length)
+  && (!priceTableError.length)
     ? null : false
 );
 
@@ -45,8 +48,14 @@ const productHightLight = (
         },
         [tabs?.tabLabels?.[tabs.curTab]]: {
           ...errors?.[tabs?.tabLabels?.[tabs.curTab]],
-          isFulfilled: hightLightPrices(curData, priceTableError),
-          currency: errors?.prices?.currency ? true : !curData.prices.defaultCurrency,
+          isFulfilledParent: (!curData.parentId && !curData.prices.value) ? hightLightPrices(curData, priceTableError) : null,
+          isFulfilledVariant: (curData.parentId || curData.prices.value) ? hightLightPrices(curData, priceTableError) : null,
+          currencyParent: (errors?.prices?.currency && !curData?.parentId)
+            || curData?.prices?.defaultCurrency
+            ? false : !Object.keys(curData?.prices?.priceByCountryByCurrency || []).length,
+          currencyVariant: errors?.prices?.currency
+            || curData?.prices?.value?.defaultCurrency
+            ? false : !Object.keys(curData?.prices?.value?.priceByCountryByCurrency || []).length,
           price: errors?.prices?.price ? true : !!priceTableError.length,
         },
       });

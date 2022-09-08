@@ -82,9 +82,11 @@ const ProductDetailsTabs = ({
       {tabs?.errors?.localizedContent?.isFulfilled === false
         ? <CustomizedTab key='localizedContent' label={localization.t('labels.localizedContent')} />
         : <Tab label={localization.t('labels.localizedContent')} value={3} disabled={!selectOptions?.sellingStores} />}
-      {tabs?.errors?.prices?.isFulfilled === false
+      {tabs?.errors?.prices?.isFulfilledParent === false && !parentId
         ? <CustomizedTab key='prices' label={localization.t('labels.prices')} value={4} />
-        : <Tab label={localization.t('labels.prices')} value={4} />}
+        : tabs?.errors?.prices?.isFulfilledVariant === false && parentId
+          ? <CustomizedTab key='prices' label={localization.t('labels.prices')} value={4} />
+          : <Tab label={localization.t('labels.prices')} value={4} />}
       <Tab label={localization.t('labels.productFiles')} value={5} />
       {(!parentId) && (
       <Tab
