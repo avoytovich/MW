@@ -846,16 +846,19 @@ const General = ({
                               >
                                 <Box display='flex'>
                                   {variableValueDescriptions?.map(
-                                    ({ descValue, description: _description }) => (
-                                      <FormControlLabel
-                                        key={_description}
-                                        className='radio'
-                                        value={_description}
-                                        disabled={disabled}
-                                        control={<Radio color='primary' />}
-                                        label={descValue || '?'}
-                                      />
-                                    ),
+                                    ({ descValue, description: _description }) => {
+                                      const labelDescription = ['val1', 'val2', 'val3'].includes(_description) ? '' : _description;
+                                      return (
+                                        <FormControlLabel
+                                          key={_description}
+                                          className='radio'
+                                          value={_description}
+                                          disabled={disabled}
+                                          control={<Radio color='primary' />}
+                                          label={`${labelDescription} ${descValue || '?'}`}
+                                        />
+                                      );
+                                    },
                                   )}
                                 </Box>
                               </RadioGroup>
@@ -866,7 +869,7 @@ const General = ({
                                 value={checkValue(currentProductData[description])}
                                 selectOptions={variableValueDescriptions
                                   ?.map(({ descValue, description: _description }) => ({
-                                    value: descValue, id: _description,
+                                    value: `${_description} ${descValue}`, id: _description,
                                   })) || []}
                               />
                             )
