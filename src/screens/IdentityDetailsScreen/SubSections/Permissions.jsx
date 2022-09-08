@@ -6,11 +6,11 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
-import { SelectWithChip, AutocompleteWithChips } from '../../../components/Inputs';
+import { AutocompleteWithChips } from '../../../components/Inputs';
 
 const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
   if (curIdentity === null) return <LinearProgress />;
-  
+
   return (
     !curIdentity?.id
       ? (
@@ -40,49 +40,29 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
             />
           </Box>
           <Box p={2}>
-            <SelectWithChip
+            <AutocompleteWithChips
+              arrayTypeValue
               data-test='roles'
               label='roles'
-              value={curIdentity.roleIds}
+              arrayValue={curIdentity.roleIds}
               selectOptions={selectOptions.roles}
-              onChangeSelect={(e) => {
-                setCurIdentity({
-                  ...curIdentity,
-                  roleIds: e.target.value,
-                });
-              }}
-              onClickDelIcon={(chip) => {
-                const newValue = [...curIdentity.roleIds].filter(
-                  (val) => val !== chip,
-                );
-                setCurIdentity({
-                  ...curIdentity,
-                  roleIds: newValue,
-                });
-              }}
+              onChange={(newValue) => setCurIdentity({
+                ...curIdentity,
+                roleIds: newValue,
+              })}
             />
           </Box>
           <Box p={2}>
-            <SelectWithChip
+            <AutocompleteWithChips
+              arrayTypeValue
               data-test='metaRoles'
               label='metaRoles'
-              value={curIdentity.metaRoleIds}
+              arrayValue={curIdentity.metaRoleIds}
               selectOptions={selectOptions.metaRoles}
-              onChangeSelect={(e) => {
-                setCurIdentity({
-                  ...curIdentity,
-                  metaRoleIds: e.target.value,
-                });
-              }}
-              onClickDelIcon={(chip) => {
-                const newValue = [...curIdentity.metaRoleIds].filter(
-                  (val) => val !== chip,
-                );
-                setCurIdentity({
-                  ...curIdentity,
-                  metaRoleIds: newValue,
-                });
-              }}
+              onChange={(newValue) => setCurIdentity({
+                ...curIdentity,
+                metaRoleIds: newValue,
+              })}
             />
           </Box>
         </>
