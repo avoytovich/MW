@@ -24,11 +24,14 @@ const Forms = {
     sendCancellationMail: 'Send cancellation mail again',
     SendPrebillingMailAgain: 'Send resources.orders.misc.emailTemplates.PREBILLING mail again',
     repairOrder: 'Repair Order',
+    onboardTextAfterSending: `Thanks you for your application, it's been successfully posted.
+    You'll quickly receive a verification email, please follow the link it contains so we can process to the validation of your account.`,
   },
   inputs: {
     username: 'Username',
     password: 'Password',
     email: 'Email address',
+    confirmEmail: 'Confirm email',
     createPassword: 'Password',
     confirmPassword: 'Confirm password',
     productName: 'Product name',
@@ -45,6 +48,9 @@ const Forms = {
     physical: 'Physical',
     priceFunction: 'Price function',
     name: 'Name',
+    firstName: 'First name',
+    lastName: 'Last name',
+    companyName: 'Company name',
     displayName: 'Display name',
     localizedContent: {
       marketing: 'Marketing name',
@@ -100,10 +106,12 @@ const Forms = {
     stores: 'Stores',
     byProducts: 'By products',
     byParentProducts: 'By parent products',
+
   },
   buttons: {
     createAccount: 'Create your account',
     signIn: 'Sign In',
+    signUp: 'Sign Up',
     signOut: 'Sign out',
     save: 'Save',
     submit: 'Submit',

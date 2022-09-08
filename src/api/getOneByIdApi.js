@@ -262,6 +262,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getRealmDataByName(name) {
+    const url = `/customers/public/${name}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getCreditNote(id) {
     const url = `/invoices/credits/${id}/pdf`;
     return axiosInstance({

@@ -1,5 +1,8 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import {
+  useLocation,
+} from 'react-router-dom';
 
 import moment from 'moment';
 
@@ -14,8 +17,17 @@ import { getLanguagesOptions, getCountriesOptions } from '../../components/utils
 
 import MainLayout from '../../layouts/MainLayout';
 import AuthorizationLayout from '../../layouts/AuthorizationLayout';
+import Session from '../session';
+import OnboardingLayout from '../../layouts/OnboardingLayout/OnboardingLayout';
 
 const Routes = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const { pathname } = location;
+
+    Session.setRedirect(pathname);
+  }, []);
   const account = useSelector(({ account: acc }) => acc);
   getLanguagesOptions();
   getCountriesOptions();
@@ -39,19 +51,25 @@ const Routes = () => {
         </Box>
       )}
 
-      {account && account.user ? (
+      {
+      // eslint-disable-next-line no-nested-ternary
+      account && account.user ? (
         <MainLayout>
           <Suspense fallback={<LoadingScreen />}>
             <SignedRoutes />
           </Suspense>
         </MainLayout>
+      ) : location.pathname.includes('onboard') ? (
+        <OnboardingLayout />
       ) : (
         <AuthorizationLayout>
           <Suspense fallback={<LoadingScreen />}>
             <GuestRoutes />
           </Suspense>
         </AuthorizationLayout>
-      )}
+      )
+      }
+
     </Suspense>
   );
 };
