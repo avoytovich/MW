@@ -261,7 +261,9 @@ const PricesTable = ({
           value={newCurrency}
           selectOptions={currencyOptions}
           onChangeSelect={(e) => withValidationSelectCustom(e.target)}
-          hasError={!!errors?.prices?.currency}
+          hasError={currentProductData.parentId
+            ? !!errors?.prices?.currencyVariant : (currentProductData.prices.value
+              ? !!errors?.prices?.currencyVariant : !!errors?.prices?.currencyParent)}
           helperText={errors?.prices?.currency && localization.t('errorNotifications.required')}
         />
       </Box>
