@@ -261,9 +261,10 @@ const PricesTable = ({
           value={newCurrency}
           selectOptions={currencyOptions}
           onChangeSelect={(e) => withValidationSelectCustom(e.target)}
-          hasError={currentProductData.parentId
-            ? !!errors?.prices?.currencyVariant : (currentProductData.prices.value
-              ? !!errors?.prices?.currencyVariant : !!errors?.prices?.currencyParent)}
+          hasError={currentProductData?.prices?.state === 'inherits'
+            ? false : (currentProductData.parentId
+              ? !!errors?.prices?.currencyVariant : (currentProductData.prices.value
+                ? !!errors?.prices?.currencyVariant : !!errors?.prices?.currencyParent))}
           helperText={errors?.prices?.currency && localization.t('errorNotifications.required')}
         />
       </Box>
