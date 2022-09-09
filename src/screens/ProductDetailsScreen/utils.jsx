@@ -340,6 +340,9 @@ const beforeSend = (data) => {
   if (data.status.state) {
     res.status = { parentValue: data.status.parentValue, state: 'overrides', value: data.status.value };
   }
+  if (res.subscriptionTemplate === '') {
+    delete res.subscriptionTemplate;
+  }
   res.prices = state
     ? { ...res.prices, value: { ...res.prices.value, priceByCountryByCurrency } }
     : { ...res.prices, priceByCountryByCurrency };
