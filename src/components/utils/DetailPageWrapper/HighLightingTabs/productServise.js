@@ -48,8 +48,10 @@ const productHightLight = (
         },
         [tabs?.tabLabels?.[tabs.curTab]]: {
           ...errors?.[tabs?.tabLabels?.[tabs.curTab]],
-          isFulfilledParent: (!curData.parentId && !curData.prices.value) ? hightLightPrices(curData, priceTableError) : null,
-          isFulfilledVariant: (curData.parentId || curData.prices.value) ? hightLightPrices(curData, priceTableError) : null,
+          isFulfilledParent: (!curData.parentId && !curData.prices.value)
+            ? (curData.prices.state === 'inherits' ? null : hightLightPrices(curData, priceTableError)) : null,
+          isFulfilledVariant: (curData.parentId || curData.prices.value)
+            ? (curData.prices.state === 'inherits' ? null : hightLightPrices(curData, priceTableError)) : null,
           currencyParent: (errors?.prices?.currency && !curData?.parentId)
             || curData?.prices?.defaultCurrency
             ? false : !Object.keys(curData?.prices?.priceByCountryByCurrency || []).length,
