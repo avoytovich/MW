@@ -377,6 +377,12 @@ const ProductDetailsScreen = () => {
 
               setProductData(initData);
               setCurrentProductData(result);
+
+              handleGetProductDetails(
+                product?.descriptionId,
+                setVariablesDescriptions,
+                setProductDetails,
+              );
             } else {
               handleGetProductDetails(
                 product?.descriptionId,
