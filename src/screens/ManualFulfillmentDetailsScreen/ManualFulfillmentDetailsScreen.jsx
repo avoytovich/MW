@@ -25,12 +25,6 @@ const ManualFulfillmentDetailsScreen = () => {
 
   const beforeSend = () => {
     const objToSend = { ...curFulfillment };
-    if (objToSend.publisherProductId.length) {
-      objToSend.publisherProductId = [...objToSend.publisherProductId].map((item) => item.id);
-    }
-    if (objToSend.nexwayProductId.length) {
-      objToSend.nexwayProductId = [...objToSend.nexwayProductId].map((item) => item.id);
-    }
     return objToSend;
   };
 
@@ -53,20 +47,8 @@ const ManualFulfillmentDetailsScreen = () => {
           api.getProducts({ filters: `&customerId=${data.publisherId}&status=ENABLED` }).then((res) => {
             const products = structureProdAutocompleteSelectOptions({ options: res?.data?.items, optionValue: 'genericName' }) || [];
             const productByReference = structureProdAutocompleteSelectOptions({ options: res?.data.items, optionValue: 'publisherRefId', optionId: 'publisherRefId' }) || [];
-            const nexwayProductId = products.filter((obj) => data.nexwayProductId?.includes(obj.id));
-            if (nexwayProductId.length < data.nexwayProductId.length) {
-              data.nexwayProductId.forEach((u) => {
-                if (!nexwayProductId.find((prodId) => prodId.id === u)) {
-                  nexwayProductId.push({ id: u, value: u });
-                }
-              });
-            }
-            const publisherProductId = productByReference
-              .filter((obj) => data.publisherProductId?.includes(obj.id));
-            setFulfillment({ ...data, publisherProductId, nexwayProductId });
-            setCurFulfillment(JSON.parse(JSON.stringify(
-              { ...data, publisherProductId, nexwayProductId },
-            )));
+            setFulfillment({ ...data });
+            setCurFulfillment(JSON.parse(JSON.stringify( { ...data })));
             setSelectOptions({
               ...selectOptions,
               products,
@@ -98,7 +80,7 @@ const ManualFulfillmentDetailsScreen = () => {
       name={fulfillment?.name || `${localization.t('general.new')} ${localization.t(
         'general.manualFulfillment',
       )}`}
-      saveIsDisabled={!curFulfillment?.name || !curFulfillment.nexwayProductId.length}
+      saveIsDisabled={!curFulfillment?.name}
       hasChanges={hasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.fulfillment.manualFulfillmentsTab}

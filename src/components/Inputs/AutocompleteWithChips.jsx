@@ -12,13 +12,74 @@ const AutocompleteWithChips = ({
   arrayValue,
   arrayTypeValue,
   isDisabled,
+  getAdditionalOptionsOptions,
 }) => {
   const [curArrayOfObjects, setCurArrayOfObjects] = useState([]);
+  const [additionalOptions, setAdditionalOptions] = useState([]);
+  const [search, setSearch] = useState('');
+
+  const handleSetAdditionalOptions = (optionsData) => {
+    const newAddOpt = [...additionalOptions];
+    const idsArray = additionalOptions.map((o) => o.id);
+    optionsData.forEach((el) => {
+      if (!idsArray.includes(el.id)) {
+        newAddOpt.push(el);
+        idsArray.push(el.id);
+      }
+    });
+    setAdditionalOptions(newAddOpt);
+  };
+
+  useEffect(() => {
+    if (search && getAdditionalOptionsOptions) {
+      getAdditionalOptionsOptions(search)
+        .then((res) => {
+          handleSetAdditionalOptions(res);
+        });
+    }
+  }, [search]);
 
   useEffect(() => {
     if (selectOptions.length && arrayTypeValue) {
-      setCurArrayOfObjects(arrayValue.map((it) => selectOptions.find((opt) => opt.id === it)
-        || { id: it, value: it }));
+      if (!getAdditionalOptionsOptions) {
+        setCurArrayOfObjects(arrayValue.map((it) => selectOptions.find((opt) => opt.id === it)
+          || { id: it, value: it }));
+      } else {
+        const notInOptionIds = [];
+        const newCurArrayOfObjects = [];
+        arrayValue.forEach((it) => {
+          const option = selectOptions.find((opt) => opt.id === it)
+            || additionalOptions.find((opt) => opt.id === it);
+          if (option) {
+            newCurArrayOfObjects.push(option);
+          } else {
+            notInOptionIds.push(it);
+          }
+        });
+        if (notInOptionIds.length) {
+          const requestArray = [];
+          notInOptionIds.forEach((id) => {
+            requestArray.push(getAdditionalOptionsOptions(id));
+          });
+
+          Promise.allSettled(requestArray)
+            .then((res) => {
+              const newAdOpt = [];
+              const currentAdditional = [];
+              res.forEach((o) => {
+                newAdOpt.push(...o.value);
+              });
+              notInOptionIds.forEach((id) => {
+                currentAdditional.push(newAdOpt.find((it) => it.id === id));
+              });
+              setCurArrayOfObjects([...newCurArrayOfObjects, ...currentAdditional]);
+              handleSetAdditionalOptions(newAdOpt);
+            });
+        } else {
+          setCurArrayOfObjects(newCurArrayOfObjects);
+          handleSetAdditionalOptions(additionalOptions);
+        }
+      }
     } else if (selectOptions.length) {
       setCurArrayOfObjects([...arrayValue]);
     }
@@ -38,7 +99,7 @@ const AutocompleteWithChips = ({
       value={curArrayOfObjects}
       multiple
       id='tags-filled'
-      options={selectOptions}
+      options={[...selectOptions, ...additionalOptions]}
       clearOnBlur
       renderTags={(value, getTagProps) => value?.map((option, index) => (
         <Chip
@@ -49,6 +110,9 @@ const AutocompleteWithChips = ({
       ))}
       renderInput={(params) => (
         <TextField
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
           {...params}
           variant='outlined'
           label={localization.t(`labels.${label}`)}
@@ -67,6 +131,7 @@ AutocompleteWithChips.propTypes = {
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
   arrayTypeValue: PropTypes.bool,
+  getAdditionalOptionsOptions: PropTypes.func,
 };
 
 export default AutocompleteWithChips;
