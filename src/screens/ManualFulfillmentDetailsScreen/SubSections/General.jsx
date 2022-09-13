@@ -9,8 +9,11 @@ import {
   Switch,
 } from '@mui/material';
 import localization from '../../../localization';
+import { structureProdAutocompleteSelectOptions } from '../../../services/helpers/dataStructuring';
+
 import { InputCustom, NumberInput, AutocompleteWithChips } from '../../../components/Inputs';
 import { sortByAlphabetical } from '../../../services/helpers/utils';
+import api from '../../../api';
 
 const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
   <Grid container>
@@ -52,24 +55,48 @@ const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
       </Box>
       <Box p={2}>
         <AutocompleteWithChips
+          arrayTypeValue
           label='productNameOrId'
+          getAdditionalOptionsOptions={(searchValue) => Promise.allSettled([
+            api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&id=${searchValue}` }),
+            api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&genericName=*${searchValue}*` }),
+          ])
+            .then(([idSearch, nameSearch]) => {
+              const res = idSearch.value?.data?.items?.length
+                ? idSearch.value?.data?.items : nameSearch.value?.data?.items;
+              return structureProdAutocompleteSelectOptions({ options: res, optionValue: 'genericName' });
+            })}
           arrayValue={curFulfillment.nexwayProductId}
           selectOptions={selectOptions.products?.sort(sortByAlphabetical)}
-          onChange={(newValue) => setCurFulfillment({
-            ...curFulfillment,
-            nexwayProductId: newValue,
-          })}
+          onChange={(newValue) => {
+            setCurFulfillment({
+              ...curFulfillment,
+              nexwayProductId: newValue,
+            });
+          }}
         />
       </Box>
       <Box p={2}>
         <AutocompleteWithChips
           label='productByReference'
+          arrayTypeValue
+          getAdditionalOptionsOptions={(searchValue) => Promise.allSettled([
+            api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&id=${searchValue}` }),
+            api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&publisherRefId=*${searchValue}*` }),
+          ])
+            .then(([idSearch, refIdSearch]) => {
+              const res = idSearch.value?.data?.items?.length
+                ? idSearch.value?.data?.items : refIdSearch.value?.data?.items;
+              return structureProdAutocompleteSelectOptions({ options: res, optionValue: 'publisherRefId', optionId: 'publisherRefId' });
+            })}
           arrayValue={curFulfillment.publisherProductId}
           selectOptions={selectOptions.productByReference}
-          onChange={(newValue) => setCurFulfillment({
-            ...curFulfillment,
-            publisherProductId: newValue,
-          })}
+          onChange={(newValue) => {
+            setCurFulfillment({
+              ...curFulfillment,
+              publisherProductId: newValue,
+            });
+          }}
         />
       </Box>
       <Box p={2}>

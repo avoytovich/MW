@@ -9,9 +9,11 @@ import {
   Grid,
 } from '@mui/material';
 import PropTypes from 'prop-types';
+import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
 import { email, urlIsValid } from '../../../services/helpers/inputValidators';
 import localization from '../../../localization';
 import { InputCustom, AutocompleteWithChips } from '../../../components/Inputs';
+import api from '../../../api';
 
 const General = ({
   setCurNotification,
@@ -80,6 +82,14 @@ const General = ({
     <Grid item md={6} sm={12}>
       <Box p={2}>
         <AutocompleteWithChips
+          getAdditionalOptionsOptions={(searchValue) => Promise.allSettled([
+            api.getCustomerById(searchValue),
+            api.getCustomers({ filters: `&name=*${searchValue}*` })])
+            .then(([idSearch, nameSearch]) => {
+              const res = idSearch.value?.data
+                ? [idSearch.value?.data] : nameSearch.value?.data?.items;
+              return structureSelectOptions({ options: res, optionValue: 'name' });
+            })}
           data-test='targetedCustomers'
           label='targetedCustomers'
           arrayTypeValue
