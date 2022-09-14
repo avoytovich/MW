@@ -112,6 +112,7 @@ const installmentOptions = [
 
 const paymentDefaults = [
   { id: 'bank_transfer', value: 'Bank Transfer' },
+  { id: 'express_checkout', value: 'Express Сheckout' },
   { id: 'cheque', value: 'Cheque' },
   { id: 'credit_card', value: 'Credit Card' },
   { id: 'directebanking', value: 'Directebanking' },
