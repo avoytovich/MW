@@ -29,11 +29,13 @@ const TemplateEditor = ({
 }) => {
   const availableLocales = [{ id: 'neutral', value: 'neutral' }, ...getLanguagesOptions()];
   const [tmplData, setTmplData] = useState(null);
+  const [tmplError, setTmplError] = useState(false);
   const [curTab, setCurTab] = useState(0);
 
   useEffect(() => {
     if (data?.templates && Object.values(data?.templates).length && Object.keys(firstSampleData).length && editorMode === 'preview') {
       setTmplData(null);
+      setTmplError(false);
 
       const curLocale = data.fallbackLocale && data.templates[data.fallbackLocale]
         ? data.fallbackLocale : Object.keys(data.templates)[0];
@@ -58,7 +60,12 @@ const TemplateEditor = ({
             url: URL.createObjectURL(blob),
           });
         })
-        .catch(() => {
+        .catch((e) => {
+          const err = e?.response?.data?.message;
+          if (err) {
+            setTmplError(err);
+          }
+
           setTmplData(false);
         });
     } else {
@@ -118,7 +125,15 @@ const TemplateEditor = ({
           )}
         </Box>
       </>
-    ) : <Box pt={3}><Typography>{localization.t('general.noTmplData')}</Typography></Box>
+    ) : (
+      <Box pt={3}>
+        <Typography
+          style={{ color: tmplError ? '#FF6341' : 'inherit' }}
+        >
+          {tmplError || localization.t('general.noTmplData')}
+        </Typography>
+      </Box>
+    )
   );
 
   const TemplateEdit = () => (

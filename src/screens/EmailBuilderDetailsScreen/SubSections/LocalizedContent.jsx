@@ -22,7 +22,7 @@ const LocalizedContent = ({
   const [availLocales, setAvailLocales] = useState([]);
   const [newLangValue, setNewLangValue] = useState('');
   const [curTab, setCurTab] = useState(0);
-  const availableLocales = getLanguagesOptions();
+  const availableLocales = [{ id: 'neutral', value: 'neutral' }, ...getLanguagesOptions()];
 
   const removeLocale = (e, locale) => {
     e.stopPropagation();
@@ -120,7 +120,8 @@ const LocalizedContent = ({
                   label='addLanguage'
                   isDisabled={curTab !== 0}
                   value={newLangValue}
-                  selectOptions={availableLocales}
+                  selectOptions={availableLocales
+                    .filter((l) => !availLocales?.filter((a) => a === l.id)?.length)}
                   onChangeSelect={(e) => setNewLangValue(e.target.value)}
                 />
 
