@@ -13,6 +13,7 @@ const defaultShow = {
   lifeTime: true,
   status: true,
   family: false,
+  businessSegment: true,
   subscriptionModel: true,
   priceFunction: true,
 };
@@ -53,6 +54,7 @@ const markUp = {
     },
     { value: localization.t('labels.family'), id: 'family' },
     { value: localization.t('labels.priceFunction'), id: 'priceFunction' },
+    { value: localization.t('labels.businessSegment'), id: 'businessSegment' },
     { value: localization.t('labels.subscriptionModel'), id: 'subscriptionModel' },
   ],
 };
@@ -93,6 +95,7 @@ const generateData = (data, children) => {
       lifeTime: val.lifeTime,
       status: val.status,
       family: val.productFamily || '-',
+      businessSegment: val?.businessSegment,
       subscriptionModel: val?.subscriptionTemplate,
       priceFunction: val.priceFunction || '-',
       hasChildren,

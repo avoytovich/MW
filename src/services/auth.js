@@ -80,10 +80,9 @@ class Auth {
       if (data.access_token) {
         this.setSession(data.access_token, data.refresh_token);
         this.setAxiosInterceptors();
-        return window.location.reload();
       }
 
-      this.logout();
+      // this.logout();
       return window.location.reload();
     }).catch(() => {
       this.logout();
