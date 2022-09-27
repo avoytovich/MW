@@ -342,7 +342,57 @@ const getAllApi = {
       url,
     });
   },
+  getLocales({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/referential-manager/locale?size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
 
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getCurrency({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/referential-manager/currency?size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getCountry({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/referential-manager/country?size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getEventsOptions() {
     const url = '/customer-notifier/notification-definitions?format=short&size=30&page=0';
     return axiosInstance({

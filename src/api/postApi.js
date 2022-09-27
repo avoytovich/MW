@@ -229,6 +229,30 @@ const postApi = {
       data,
     });
   },
+  addCurrency(data) {
+    const url = '/referential-manager/currency';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addLocale(data) {
+    const url = '/referential-manager/locale';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
+  addCountry(data) {
+    const url = '/referential-manager/country';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addCatalogs(data) {
     const url = '/catalogs?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
 

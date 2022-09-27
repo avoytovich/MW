@@ -192,6 +192,11 @@ const navConfig = [
         title: sideBarTitle.serviceconfiguration,
         href: parentPaths.serviceconfiguration,
       },
+      {
+        id: 'referentials',
+        title: sideBarTitle.referentials,
+        href: parentPaths.referentials.main,
+      },
     ],
   },
   {

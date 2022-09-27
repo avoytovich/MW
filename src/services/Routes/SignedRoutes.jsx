@@ -299,6 +299,22 @@ const SignedRoutes = () => {
         path={`${parentPaths.realms}`}
         component={lazy(() => import('../../screens/AuthenticationRealmsScreen'))}
       />
+      <Route
+        path={`${parentPaths.referentials.currenciesTab}/:id`}
+        component={lazy(() => import('../../screens/CurrencyDetailScreen'))}
+      />
+      <Route
+        path={`${parentPaths.referentials.localesTab}/:id`}
+        component={lazy(() => import('../../screens/LocaleDetailScreen'))}
+      />
+      <Route
+        path={`${parentPaths.referentials.countriesTab}/:id`}
+        component={lazy(() => import('../../screens/CountryDetailScreen'))}
+      />
+      <Route
+        path={`${parentPaths.referentials.main}`}
+        component={lazy(() => import('../../screens/ReferentialsScreen'))}
+      />
       {/*
       <Route
         path={`${parentPaths.crudHelper.main}`}
