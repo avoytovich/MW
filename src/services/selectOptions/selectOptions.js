@@ -1,4 +1,5 @@
 import currencies from 'currency-codes';
+import localization from '../../localization';
 
 const status = [
   { id: 'ENABLED', value: 'ENABLED' },
@@ -109,7 +110,11 @@ const installmentOptions = [
   { id: 8, value: 8 },
   { id: 9, value: 9 },
 ];
-
+const zipCodeStatusOptions = [
+  { id: 'OPTIONAL', value: localization.t('labels.optional') },
+  { id: 'MANDATORY', value: localization.t('labels.mandatory') },
+  { id: 'VALID', value: localization.t('labels.valid') },
+];
 const paymentDefaults = [
   { id: 'bank_transfer', value: 'Bank Transfer' },
   { id: 'express_checkout', value: 'Express Сheckout' },
@@ -174,4 +179,5 @@ export {
   paymentImages,
   serviceConfigs,
   getCurrency,
+  zipCodeStatusOptions,
 };

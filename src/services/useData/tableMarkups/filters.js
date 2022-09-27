@@ -1,4 +1,5 @@
 import localization from '../../../localization';
+import { zipCodeStatusOptions } from '../../selectOptions/selectOptions';
 
 const filters = {
   productlist: [
@@ -1407,6 +1408,120 @@ const filters = {
       label: localization.t('labels.path'),
       type: 'text',
     },
+  ],
+  currencies: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'code',
+      label: localization.t('labels.code'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
+  locales: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+    },
+    {
+      id: 'label',
+      label: localization.t('labels.label'),
+      type: 'text',
+    },
+    {
+      id: 'code',
+      label: localization.t('labels.code'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
+  countries: [{
+    id: 'id',
+    label: localization.t('labels.id'),
+    type: 'text',
+  },
+  {
+    id: 'name',
+    label: localization.t('labels.name'),
+    type: 'text',
+  },
+  {
+    id: 'alpha3Code',
+    label: localization.t('labels.alpha3Code'),
+    type: 'text',
+  },
+  {
+    id: 'alpha2Code',
+    label: localization.t('labels.alpha2Code'),
+    type: 'text',
+  },
+  {
+    id: 'numericCode',
+    label: localization.t('labels.numericCode'),
+    type: 'text',
+  },
+  {
+    id: 'inEU',
+    label: localization.t('labels.inEU'),
+    type: 'selectWithChip',
+    values: [
+      { id: 'true', value: localization.t('labels.yes') },
+      { id: 'false', value: localization.t('labels.no') },
+    ],
+  },
+  {
+    id: 'inEEC',
+    label: localization.t('labels.inEEC'),
+    type: 'selectWithChip',
+    values: [
+      { id: 'true', value: localization.t('labels.yes') },
+      { id: 'false', value: localization.t('labels.no') },
+    ],
+  },
+  {
+    id: 'zipCodeStatus',
+    label: localization.t('labels.zipCodeStatus'),
+    type: 'selectWithChip',
+    values: zipCodeStatusOptions,
+  },
+  {
+    id: 'creationDate',
+    label: localization.t('labels.creationDate'),
+    type: 'date',
+  },
+  {
+    id: 'updatingDate',
+    label: localization.t('labels.updateDate'),
+    type: 'date',
+  },
   ],
 };
 

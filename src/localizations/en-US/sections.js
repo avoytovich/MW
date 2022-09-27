@@ -55,6 +55,10 @@ const sections = {
   sales: 'Sales',
   businessAnalysis: 'Business Analysis',
   realms: 'Realms List',
+  referentials: 'Referentials',
+  currencies: 'Currencies',
+  locales: 'Locales',
+  countries: 'Countries',
 };
 
 export default sections;

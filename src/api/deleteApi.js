@@ -139,6 +139,27 @@ const deleteApi = {
       url,
     });
   },
+  deleteCurrencyById(id) {
+    const url = `/referential-manager/currency/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteCountryById(id) {
+    const url = `/referential-manager/country/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+  deleteLocaleById(id) {
+    const url = `/referential-manager/locale/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
   deleteNotificationById(id) {
     const url = `/customer-notifier/receivers/${id}`;
     return axiosInstance({

@@ -68,6 +68,12 @@ const parentPaths = {
     request: `${defPath}/settings/crudHelper/request`,
   },
   serviceconfiguration: `${defPath}/settings/serviceconfiguration`,
+  referentials: {
+    main: `${defPath}/settings/referentials`,
+    currenciesTab: `${defPath}/settings/referentials/currencies`,
+    localesTab: `${defPath}/settings/referentials/locales`,
+    countriesTab: `${defPath}/settings/referentials/countries`,
+  },
 
   customers: `${defPath}/customermanagement/customerslist`,
   onboarding: `${defPath}/customermanagement/onboarding`,

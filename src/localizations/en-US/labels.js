@@ -790,6 +790,17 @@ const labels = {
   attributes: 'attributes',
   relatedProduct: 'Related product',
   formatError: 'Can only be letters, digits and underscores',
+  currencies: 'Currencies',
+  local: 'Local',
+  alpha2Code: 'Alpha 2 code',
+  alpha3Code: 'Alpha 3 code',
+  numericCode: 'Numeric code',
+  zipCodeStatus: 'Zip code status',
+  inEEC: 'in EEC',
+  mandatory: 'Mandatory',
+  optional: 'Optional',
+  valid: 'Valid',
+  inEU: 'in EU',
 };
 
 export default labels;

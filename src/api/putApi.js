@@ -25,6 +25,30 @@ const putApi = {
       data,
     });
   },
+  updateCurrencyById(id, data) {
+    const url = `/referential-manager/currency/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateLocaleById(id, data) {
+    const url = `/referential-manager/locale/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
+  updateCountryById(id, data) {
+    const url = `/referential-manager/country/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateIdentityById(id, data) {
     const url = `/iam/identities/${id}`;
     return axiosInstance({

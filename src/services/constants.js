@@ -27,6 +27,9 @@ const VALID_REFRESH_SCOPES = [
   'invoicetranslations',
   'users',
   'realms',
+  'currencies',
+  'locales',
+  'countries',
 ];
 const VALID_FILTER_SCOPES = [
   'productlist',
@@ -67,6 +70,9 @@ const VALID_FILTER_SCOPES = [
   'invoicetranslations',
   'users',
   'realms',
+  'currencies',
+  'locales',
+  'countries',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway', '/kasperskyfrance'];

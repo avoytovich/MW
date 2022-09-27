@@ -121,27 +121,27 @@ const duplicateParamsByScope = {
             [defLang]: { default: product.prices.priceByCountryByCurrency[defLang].default },
           };
         }
-        let localsToSend = {
+        let localesToSend = {
           ...defLocalizedContent, customerId: product?.customerId,
         };
         if (attributes.localizedContent) {
-          localsToSend = {
+          localesToSend = {
             ...additionalData.description,
           };
           localsToDelete.forEach((item) => {
-            delete localsToSend[item];
+            delete localesToSend[item];
           });
         } else {
           const fallbackLocale = additionalData.description?.fallbackLocale;
-          localsToSend.fallbackLocale = fallbackLocale;
-          localsToSend.localizedMarketingName = {
+          localesToSend.fallbackLocale = fallbackLocale;
+          localesToSend.localizedMarketingName = {
             [fallbackLocale]: additionalData.description.localizedMarketingName[fallbackLocale],
           };
         }
 
-        localsToSend.description = '-';
+        localesToSend.description = '-';
 
-        const descriptionId = await api.addProductLocalsById(localsToSend).then((res) => {
+        const descriptionId = await api.addProductLocalsById(localesToSend).then((res) => {
           const headersLocation = res.headers.location.split('/');
           const newId = headersLocation[headersLocation.length - 1];
 
@@ -182,7 +182,7 @@ const duplicateParamsByScope = {
             });
             sendLocals.description = '-';
             delete sendVariation.descriptionData;
-            const request = api.addProductLocalsById(localsToSend).then((res) => {
+            const request = api.addProductLocalsById(localesToSend).then((res) => {
               const headersLocation = res.headers.location.split('/');
               const childDescriptionId = headersLocation[headersLocation.length - 1];
               api.addNewProduct({

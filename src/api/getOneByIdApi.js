@@ -398,6 +398,27 @@ const getOneByIdApi = {
       url,
     });
   },
+  getCurrencyById(id) {
+    const url = `/referential-manager/currency/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getLocaleById(id) {
+    const url = `/referential-manager/locale/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+  getCountryById(id) {
+    const url = `/referential-manager/country/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getProductsPriceFunctionById(id) {
     const url = `/products/price-functions/${id}`;
     return axiosInstance({
