@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, useHistory, useParams } from 'react-router-dom';
 
@@ -54,7 +54,14 @@ const DetailPageWrapper = ({
   isRankingOpen,
   flexWrapper,
   customer,
-  refScrool = null,
+  priceTableError,
+  refTab = null,
+  myRefView,
+  isScroolUp,
+  setIsScroolUp,
+  isScroolDown,
+  setIsScroolDown,
+  parentId,
 }) => {
   const { id: paramsId } = useParams();
   const location = useLocation();
@@ -91,13 +98,40 @@ const DetailPageWrapper = ({
   }
 
   const handleChange = (event, newValue) => {
-    refScrool?.[newValue]?.current.scrollIntoView();
+    refTab?.[newValue]?.current.scrollIntoView();
     return tabs?.setCurTab(newValue);
   };
 
   const CustomizedTab = styled(Tab)`
     color: red;
   `;
+
+  let lastScrollTop = 0;
+
+  const handleScroll = useCallback(() => {
+    const st = myRefView.current.scrollTop || document.documentElement.scrollTop;
+    if (st > lastScrollTop) {
+      if (parentId) {
+        setIsScroolDown(true);
+        setIsScroolUp(false);
+      }
+      if (!isScroolDown) {
+        setIsScroolDown(true);
+        setIsScroolUp(false);
+      }
+    } else if (!isScroolUp) {
+      setIsScroolUp(true);
+      setIsScroolDown(false);
+    }
+    lastScrollTop = st <= 0 ? 0 : st;
+  }, [lastScrollTop]);
+
+  useEffect(() => {
+    myRefView?.current.addEventListener('scroll', handleScroll);
+    return () => {
+      myRefView?.current?.removeEventListener('scroll', handleScroll);
+    };
+  });
 
   useEffect(() => {
     if (tabs?.scope === 'store' && tabLabelsStore.includes(tabs?.tabLabels?.[tabs.curTab])) {
@@ -192,7 +226,14 @@ const DetailPageWrapper = ({
         )}
       </Box>
 
-      <Box overflow='auto' mt={noTabsMargin ? 0 : 4} p='2px' flexGrow={1} display={flexWrapper ? 'flex' : 'block'}>
+      <Box
+        overflow='auto'
+        mt={noTabsMargin ? 0 : 4}
+        p='2px'
+        flexGrow={1}
+        display={flexWrapper ? 'flex' : 'block'}
+        ref={myRefView}
+      >
         {children}
       </Box>
     </>

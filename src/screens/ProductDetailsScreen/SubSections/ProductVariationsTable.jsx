@@ -39,6 +39,8 @@ const ProductVariationsTable = ({
   productId,
   sortedBundledProducts,
   productDetails,
+  myRefTab,
+  myRefScroll,
 }) => {
   const [orderBy, setOrderBy] = useState('updateLast');
   const [order, setOrder] = useState('desc');
@@ -58,8 +60,8 @@ const ProductVariationsTable = ({
   };
 
   return (
-    <SectionLayout label='productVariations' wrapperWidth='initial'>
-      <Box px={2}>
+    <SectionLayout label='productVariations' wrapperWidth='initial' myRef={myRefTab}>
+      <Box px={2} ref={myRefScroll}>
         <Typography>Emphasized values override parent product's values.</Typography>
         <Box mt={3}>
           <Box mb={3}>
@@ -302,6 +304,8 @@ ProductVariationsTable.propTypes = {
   productId: PropTypes.string,
   sortedBundledProducts: PropTypes.array,
   productDetails: PropTypes.object,
+  myRefTab: PropTypes.object,
+  myRefScroll: PropTypes.object,
 };
 
 export default ProductVariationsTable;

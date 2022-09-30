@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Box } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 import ProductFiles from './SubSections/ProductFiles';
 
@@ -12,6 +14,9 @@ import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
 import SubProductVariations from './SubSections/SubProductVariations';
 import { checkValue } from '../../services/helpers/dataStructuring';
+import useScroolWithTabs from './hooks/useScroolWithTabs';
+
+import './productDetailsScreen.scss';
 
 const ProductDetailsView = ({
   selectOptions,
@@ -30,6 +35,7 @@ const ProductDetailsView = ({
   setSaveDisabled,
   setTabsDisabled,
   curTab,
+  setCurTab,
   setCodeMode,
   codeMode,
   jsonIsValid,
@@ -46,6 +52,10 @@ const ProductDetailsView = ({
   parentDescriptionData,
   localizedErrors,
   setLocalizedErrors,
+  refTab,
+  refScrool,
+  isScroolUp,
+  isScroolDown,
   errors,
   setErrors,
 }) => {
@@ -72,6 +82,10 @@ const ProductDetailsView = ({
     setSaveDisabled(disableSave);
   };
 
+  const [showTopBtn, goToTop] = useScroolWithTabs(
+    refScrool, curTab, setCurTab, isScroolUp, isScroolDown, refTab, parentId,
+  );
+
   useEffect(() => {
     const {
       catalogId, publisherRefId, genericName, type, prices, priceByCountryByCurrency,
@@ -97,130 +111,154 @@ const ProductDetailsView = ({
 
   return (
     <>
-      {curTab === 0 && (
-        <SectionLayout dataTest='general' label='general'>
-          <General
-            selectOptions={selectOptions}
-            setProductData={setProductData}
-            currentProductData={curProductData}
-            setSaveDisabled={setSaveDisabled}
-            parentId={parentId}
-            variablesDescriptions={variablesDescriptions}
-            errors={errors}
-            setErrors={setErrors}
+      <SectionLayout
+        dataTest='general'
+        label='general'
+        myRef={refTab[0]}
+      >
+        <General
+          myRef={refScrool[0]}
+          selectOptions={selectOptions}
+          setProductData={setProductData}
+          currentProductData={curProductData}
+          setSaveDisabled={setSaveDisabled}
+          parentId={parentId}
+          variablesDescriptions={variablesDescriptions}
+          errors={errors}
+          setErrors={setErrors}
+        />
+      </SectionLayout>
+      <SectionLayout
+        dataTest='fulfillment'
+        label='fulfillment'
+        myRef={refTab[1]}
+      >
+        <Fulfillment
+          myRef={refScrool[1]}
+          selectOptions={selectOptions}
+          setProductData={setProductData}
+          currentProductData={curProductData}
+          parentId={parentId}
+        />
+      </SectionLayout>
+      <SectionLayout
+        dataTest='subscription'
+        label='subscription'
+        myRef={refTab[2]}
+      >
+        <Subscription
+          myRef={refScrool[2]}
+          selectOptions={selectOptions}
+          setProductData={setProductData}
+          currentProductData={curProductData}
+          parentId={parentId}
+          relatedProduct={relatedProduct}
+        />
+      </SectionLayout>
+      <SectionLayout
+        dataTest='localizedContent'
+        label='localizedContent'
+        myRef={refTab[3]}
+      >
+        <LocalizedContent
+          myRef={refScrool[3]}
+          localizedErrors={localizedErrors}
+          setLocalizedErrors={setLocalizedErrors}
+          curLocalizedData={curLocalizedData}
+          setCurLocalizedData={setCurLocalizedData}
+          storeLanguages={storeLanguages}
+          setProductData={setProductData}
+          currentProductData={curProductData}
+          productData={productData}
+          parentId={parentId}
+          setCodeMode={setCodeMode}
+          codeMode={codeMode}
+          jsonIsValid={jsonIsValid}
+          setJsonIsValid={setJsonIsValid}
+          descriptionData={descriptionData}
+          parentDescriptionData={parentDescriptionData}
+          setDescriptionData={setDescriptionData}
+        />
+      </SectionLayout>
+      <SectionLayout
+        dataTest='prices'
+        label='prices'
+        myRef={refTab[4]}
+      >
+        <Prices
+          myRef={refScrool[4]}
+          digitsErrors={digitsErrors}
+          setDigitsErrors={setDigitsErrors}
+          priceTableError={priceTableError}
+          setPriceTableError={setPriceTableError}
+          selectOptions={selectOptions}
+          setProductData={setProductData}
+          currentProductData={curProductData}
+          productData={productData}
+          setNewData={setProductLocalizationChanges}
+          parentId={parentId}
+          errors={errors}
+          setErrors={setErrors}
+        />
+      </SectionLayout>
+      <SectionLayout
+        dataTest='productFiles'
+        label='productFiles'
+        myRef={refTab[5]}
+      >
+        <ProductFiles
+          myRef={refScrool[5]}
+          productData={productData}
+          currentProductData={curProductData}
+          setProductData={setProductData}
+          setSaveDisabled={setSaveDisabled}
+          parentId={parentId}
+        />
+      </SectionLayout>
+      {curTab === 5 && parentId ? null : (parentId ? (
+        <SubProductVariations
+          myRefTab={refTab[6]}
+          myRefScroll={refScrool[6]}
+          setProductData={setProductData}
+          setProductDetails={setProductDetails}
+          currentProductData={curProductData}
+          productDetails={productDetails}
+          setSubProductVariations={setSubProductVariations}
+              // productVariations={productVariations}
+          parentId={parentId}
+          selectOptions={selectOptions}
+          variablesDescriptions={variablesDescriptions}
+        />
+      ) : (
+        <Variations
+          myRefTab={refTab[6]}
+          myRefScroll={refScrool[6]}
+          handleDeleteVariation={handleDeleteVariation}
+          setSubProductVariations={setSubProductVariations}
+          selectOptions={selectOptions}
+          setProductData={setProductData}
+          currentProductData={curProductData}
+          productVariations={productVariations}
+          setProductDetails={setProductDetails}
+          productDetails={productDetails}
+          setProductLocalizationChanges={setProductLocalizationChanges}
+        />
+      ))}
+      <Box m={2} className='top-to-btm'>
+        {showTopBtn && (
+          <ArrowUpwardIcon
+            className='icon-position icon-style'
+            onClick={goToTop}
           />
-        </SectionLayout>
-      )}
-
-      {curTab === 1 && (
-        <SectionLayout dataTest='fulfillment' label='fulfillment'>
-          <Fulfillment
-            selectOptions={selectOptions}
-            setProductData={setProductData}
-            currentProductData={curProductData}
-            parentId={parentId}
-          />
-        </SectionLayout>
-      )}
-
-      {curTab === 2 && (
-        <SectionLayout dataTest='subscription' label='subscription'>
-          <Subscription
-            selectOptions={selectOptions}
-            setProductData={setProductData}
-            currentProductData={curProductData}
-            parentId={parentId}
-            relatedProduct={relatedProduct}
-          />
-        </SectionLayout>
-      )}
-
-      {curTab === 3 && (
-        <SectionLayout dataTest='localizedContent' label='localizedContent'>
-          <LocalizedContent
-            localizedErrors={localizedErrors}
-            setLocalizedErrors={setLocalizedErrors}
-            curLocalizedData={curLocalizedData}
-            setCurLocalizedData={setCurLocalizedData}
-            storeLanguages={storeLanguages}
-            setProductData={setProductData}
-            currentProductData={curProductData}
-            productData={productData}
-            parentId={parentId}
-            setCodeMode={setCodeMode}
-            codeMode={codeMode}
-            jsonIsValid={jsonIsValid}
-            setJsonIsValid={setJsonIsValid}
-            descriptionData={descriptionData}
-            parentDescriptionData={parentDescriptionData}
-            setDescriptionData={setDescriptionData}
-          />
-        </SectionLayout>
-      )}
-
-      {curTab === 4 && (
-        <SectionLayout dataTest='prices' label='prices'>
-          <Prices
-            digitsErrors={digitsErrors}
-            setDigitsErrors={setDigitsErrors}
-            priceTableError={priceTableError}
-            setPriceTableError={setPriceTableError}
-            selectOptions={selectOptions}
-            setProductData={setProductData}
-            currentProductData={curProductData}
-            productData={productData}
-            setNewData={setProductLocalizationChanges}
-            parentId={parentId}
-            errors={errors}
-            setErrors={setErrors}
-          />
-        </SectionLayout>
-      )}
-
-      {curTab === 5 && ( // eslint-disable-line
-        <SectionLayout dataTest='productFiles' label='productFiles'>
-          <ProductFiles
-            productData={productData}
-            currentProductData={curProductData}
-            setProductData={setProductData}
-            setSaveDisabled={setSaveDisabled}
-            parentId={parentId}
-          />
-        </SectionLayout>
-      )}
-
-      {curTab === 6 && (
-        parentId ? (
-          <SubProductVariations
-            setProductData={setProductData}
-            setProductDetails={setProductDetails}
-            currentProductData={curProductData}
-            productDetails={productDetails}
-            setSubProductVariations={setSubProductVariations}
-            // productVariations={productVariations}
-            parentId={parentId}
-            selectOptions={selectOptions}
-            variablesDescriptions={variablesDescriptions}
-          />
-        ) : (
-          <Variations
-            handleDeleteVariation={handleDeleteVariation}
-            setSubProductVariations={setSubProductVariations}
-            selectOptions={selectOptions}
-            setProductData={setProductData}
-            currentProductData={curProductData}
-            productVariations={productVariations}
-            setProductDetails={setProductDetails}
-            productDetails={productDetails}
-            setProductLocalizationChanges={setProductLocalizationChanges}
-          />
-        )
-      )}
+        )}
+      </Box>
     </>
   );
 };
 
 ProductDetailsView.propTypes = {
+  refTab: PropTypes.array,
+  refScrool: PropTypes.array,
   setProductData: PropTypes.func,
   curProductData: PropTypes.object,
   selectOptions: PropTypes.object,
@@ -234,6 +272,7 @@ ProductDetailsView.propTypes = {
   variablesDescriptions: PropTypes.array,
   storeLanguages: PropTypes.array,
   curTab: PropTypes.number,
+  setCurTab: PropTypes.func,
   setSaveDisabled: PropTypes.func,
   setTabsDisabled: PropTypes.func,
   setCodeMode: PropTypes.func,
@@ -250,6 +289,8 @@ ProductDetailsView.propTypes = {
   setCurLocalizedData: PropTypes.func,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
+  isScroolDown: PropTypes.bool,
+  isScroolUp: PropTypes.bool,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
   descriptionData: PropTypes.object,

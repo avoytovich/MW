@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 });
 
 const Subscription = ({
+  myRef,
   setProductData,
   currentProductData,
   selectOptions,
@@ -64,7 +65,7 @@ const Subscription = ({
     );
   };
 
-  const filteredArr = toFilter(selectOptions.renewingProducts)
+  const filteredArr = toFilter(selectOptions.renewingProducts || [])
     .filter((i) => i.id !== currentProductData?.id);
 
   const { lifeTime, subscriptionTemplate } = currentProductData;
@@ -163,7 +164,7 @@ const Subscription = ({
           </Box>
         </Box>
 
-        <Box p={2} width="50%">
+        <Box p={2} width="50%" ref={myRef}>
           <InheritanceField
             field='trialDuration'
             onChange={setProductData}
@@ -243,6 +244,7 @@ Subscription.propTypes = {
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
   relatedProduct: PropTypes.object,
+  myRef: PropTypes.object,
 };
 
 export default Subscription;

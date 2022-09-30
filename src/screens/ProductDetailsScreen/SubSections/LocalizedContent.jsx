@@ -34,6 +34,7 @@ const defaultEditorData = {
 };
 
 const LocalizedContent = ({
+  myRef,
   parentId,
   setCodeMode,
   codeMode,
@@ -88,6 +89,7 @@ const LocalizedContent = ({
         !codeMode ? (
           <>
             <DefaultLanguage
+              myRef={myRef}
               curData={curLocalizedData}
               selectOptions={availableLocales}
               onChange={handleChangeDefaultLanguage}

@@ -10,6 +10,7 @@ const SectionLayout = ({
   wrapperWidth = '100%',
   contentWidth = '100%',
   dataTest = '',
+  myRef,
 }) => (
   <Box
     data-test={dataTest}
@@ -21,7 +22,7 @@ const SectionLayout = ({
     position='relative'
   >
     <Box p={4}>
-      <Typography gutterBottom variant='h4'>
+      <Typography gutterBottom variant='h4' ref={myRef}>
         {localization.t(`labels.${label}`)}
       </Typography>
     </Box>
@@ -37,6 +38,7 @@ SectionLayout.propTypes = {
   wrapperWidth: PropTypes.string,
   contentWidth: PropTypes.string,
   dataTest: PropTypes.string,
+  myRef: PropTypes.object,
 };
 
 export default SectionLayout;

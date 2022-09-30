@@ -21,7 +21,9 @@ const resourceLabels = [
 
 const defaultFiles = { key: 0, label: null, url: null };
 
-const ProductFiles = ({ currentProductData, setProductData, parentId }) => {
+const ProductFiles = ({
+  myRef, currentProductData, setProductData, parentId,
+}) => {
   const [contents, setContents] = useState([{ ...defaultFiles }]);
   const [resources, setResources] = useState([{ ...defaultFiles }]);
 
@@ -72,7 +74,7 @@ const ProductFiles = ({ currentProductData, setProductData, parentId }) => {
   }, [currentProductData.resources]);
 
   return (
-    <Box p={2} pt={0}>
+    <Box p={2} pt={0} ref={myRef}>
       <Typography variant='h5' style={{ marginBottom: '15px', fontWeight: '400' }}>
         {localization.t('labels.dropFileOrSelect')}
       </Typography>

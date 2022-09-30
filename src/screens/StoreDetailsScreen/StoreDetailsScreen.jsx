@@ -56,6 +56,11 @@ const StoreDetailsScreen = () => {
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
 
+  const [isScroolUp, setIsScroolUp] = useState(false);
+  const [isScroolDown, setIsScroolDown] = useState(false);
+
+  const myRefView = useRef(null);
+
   const myRefGeneral = useRef(null);
   const myRefDesign = useRef(null);
   const myRefPayment = useRef(null);
@@ -66,6 +71,18 @@ const StoreDetailsScreen = () => {
     myRefDesign,
     myRefPayment,
     myRefLocalizedContent,
+  ];
+
+  const tabRefGeneral = useRef(null);
+  const tabRefDesign = useRef(null);
+  const tabRefPayment = useRef(null);
+  const tabRefLocalizedContent = useRef(null);
+
+  const refTab = [
+    tabRefGeneral,
+    tabRefDesign,
+    tabRefPayment,
+    tabRefLocalizedContent,
   ];
 
   const dispatch = useDispatch();
@@ -304,7 +321,13 @@ const StoreDetailsScreen = () => {
         />
       )}
       customer={currentCustomerData}
+      refTab={refTab}
       refScrool={refScrool}
+      myRefView={myRefView}
+      isScroolUp={isScroolUp}
+      setIsScroolUp={setIsScroolUp}
+      isScroolDown={isScroolDown}
+      setIsScroolDown={setIsScroolDown}
     >
       <StoreDetailsView
         localizedErrors={localizedErrors}
@@ -322,6 +345,9 @@ const StoreDetailsScreen = () => {
         setCurTab={setCurTab}
         customer={currentCustomerData}
         refScrool={refScrool}
+        refTab={refTab}
+        isScroolUp={isScroolUp}
+        isScroolDown={isScroolDown}
       />
     </DetailPageWrapper>
   );

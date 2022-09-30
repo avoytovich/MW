@@ -28,6 +28,7 @@ const LocalizedContent = ({
   defaultLocale,
   isVertical,
   parentId,
+  myRef,
 }) => {
   const location = useLocation().pathname.split('/');
   const scope = location[location.length - 2];
@@ -116,102 +117,105 @@ const LocalizedContent = ({
       setPrevLangTab(selectedLocales[0]);
     }
   }, [selectedLocales]);
-
-  return (!selectedLocales || !Object.keys(localizedData).length) && defaultLocale
-    ? <LinearProgress /> : (
-      <Box width='100%'>
-        {defaultLocale
-          ? (
-            <Box display='flex' flexDirection={isVertical ? 'row' : 'column'} style={getStyles(isVertical, 'box')}>
-              <Box>
-                <Tabs
-                  ref={TabsRef}
-                  orientation={isVertical ? 'vertical' : 'horizontal'}
-                  indicatorColor='primary'
-                  variant="scrollable"
-                  value={tabValue}
-                  style={getStyles(isVertical, 'tabs')}
-                  onChange={(e, newTab) => {
-                    setTabValue(newTab);
-                    if (newTab !== 0) {
-                      setPrevLangTab(newTab);
-                    }
-                    if (newTab === 0 && !anchorEl) setTabValue(prevLangTab);
-                  }}
-                  aria-label='Localizations'
-                >
-                  <Tab
-                    ref={addButtonRef}
-                    value={0}
-                    component={forwardRef(({ children, ...props }, ref) => (
-                      <div role='button' {...props} ref={ref}>
-                        <Button
-                          size="small"
-                          variant="contained"
-                          onClick={(event) => setAnchorEl(event.currentTarget)}
-                        >
-                          {`+ ${localization.t('general.addLanguage')}`}
-                        </Button>
-                      </div>
-                    ))}
-                  />
-                  {selectedLocales.map((locale) => (
-                    <Tab
-                      style={errors?.[locale] ? { color: '#ff6341' } : {}}
-                      label={locale === defaultLocale ? `${locale} (default)` : locale}
-                      key={locale}
-                      value={locale}
-                      component={forwardRef(({ children, ...props }, ref) => locale && (
-                        <div role='button' {...props} ref={ref}>
-                          <span className='localization-label'>{children}</span>
-                          {locale !== defaultLocale
+  return (
+    <Box width='100%' ref={myRef}>
+      {(!selectedLocales || !Object.keys(localizedData).length) && defaultLocale
+        ? <LinearProgress /> : (
+          <Box width='100%'>
+            {defaultLocale
+              ? (
+                <Box display='flex' flexDirection={isVertical ? 'row' : 'column'} style={getStyles(isVertical, 'box')}>
+                  <Box>
+                    <Tabs
+                      ref={TabsRef}
+                      orientation={isVertical ? 'vertical' : 'horizontal'}
+                      indicatorColor='primary'
+                      variant="scrollable"
+                      value={tabValue}
+                      style={getStyles(isVertical, 'tabs')}
+                      onChange={(e, newTab) => {
+                        setTabValue(newTab);
+                        if (newTab !== 0) {
+                          setPrevLangTab(newTab);
+                        }
+                        if (newTab === 0 && !anchorEl) setTabValue(prevLangTab);
+                      }}
+                      aria-label='Localizations'
+                    >
+                      <Tab
+                        ref={addButtonRef}
+                        value={0}
+                        component={forwardRef(({ children, ...props }, ref) => (
+                          <div role='button' {...props} ref={ref}>
+                            <Button
+                              size="small"
+                              variant="contained"
+                              onClick={(event) => setAnchorEl(event.currentTarget)}
+                            >
+                              {`+ ${localization.t('general.addLanguage')}`}
+                            </Button>
+                          </div>
+                        ))}
+                      />
+                      {selectedLocales.map((locale) => (
+                        <Tab
+                          style={errors?.[locale] ? { color: '#ff6341' } : {}}
+                          label={locale === defaultLocale ? `${locale} (default)` : locale}
+                          key={locale}
+                          value={locale}
+                          component={forwardRef(({ children, ...props }, ref) => locale && (
+                          <div role='button' {...props} ref={ref}>
+                            <span className='localization-label'>{children}</span>
+                            {locale !== defaultLocale
                             && <ClearIcon onClick={(e) => removeLocale(e, locale)} />}
-                        </div>
+                          </div>
+                          ))}
+                        />
                       ))}
+                    </Tabs>
+                  </Box>
+                  <Box display='flex' width='100%' flexDirection='column'>
+                    {localizedData[tabValue] && (
+                    <LocalizedInputs
+                      isDefaultLang={defaultLocale === tabValue}
+                      setLocalizedData={setLocalizedData}
+                      localizedData={localizedData}
+                      onChangeVariation={onChangeVariation}
+                      parentId={parentId}
+                      errors={errors[tabValue]}
+                      handleChange={(lang, curContent, inputKey) => setLocalizedData(
+                        {
+                          ...localizedData,
+                          [lang]: { ...localizedData[lang], [inputKey]: curContent },
+                        },
+                      )}
+                      localizedLangData={localizedData[tabValue]}
+                      lang={tabValue}
+                      scope={scope}
+                      isVertical={isVertical}
                     />
-                  ))}
-                </Tabs>
-              </Box>
-              <Box display='flex' width='100%' flexDirection='column'>
-                {localizedData[tabValue] && (
-                  <LocalizedInputs
-                    isDefaultLang={defaultLocale === tabValue}
-                    setLocalizedData={setLocalizedData}
-                    localizedData={localizedData}
-                    onChangeVariation={onChangeVariation}
-                    parentId={parentId}
-                    errors={errors[tabValue]}
-                    handleChange={(lang, curContent, inputKey) => setLocalizedData(
-                      {
-                        ...localizedData,
-                        [lang]: { ...localizedData[lang], [inputKey]: curContent },
-                      },
                     )}
-                    localizedLangData={localizedData[tabValue]}
-                    lang={tabValue}
-                    scope={scope}
-                    isVertical={isVertical}
-                  />
-                )}
-              </Box>
-            </Box>
-          ) : (
-            <Box px={2}>
-              <Typography color='secondary'>{getNaming([scope])}</Typography>
-            </Box>
-          )}
+                  </Box>
+                </Box>
+              ) : (
+                <Box px={2}>
+                  <Typography color='secondary'>{getNaming([scope])}</Typography>
+                </Box>
+              )}
 
-        <LanguagesMenu
-          top={addButtonRef?.current?.offsetTop}
-          left={addButtonRef?.current?.offsetLeft + 300}
-          anchorEl={anchorEl}
-          setAnchorEl={setAnchorEl}
-          handleClose={handleClose}
-          setNewLangValue={setNewLangValue}
-          usedOptions={Object.keys(localizedData)}
-        />
-      </Box>
-    );
+            <LanguagesMenu
+              top={addButtonRef?.current?.offsetTop}
+              left={addButtonRef?.current?.offsetLeft + 300}
+              anchorEl={anchorEl}
+              setAnchorEl={setAnchorEl}
+              handleClose={handleClose}
+              setNewLangValue={setNewLangValue}
+              usedOptions={Object.keys(localizedData)}
+            />
+          </Box>
+        )}
+    </Box>
+  );
 };
 
 LocalizedContent.propTypes = {

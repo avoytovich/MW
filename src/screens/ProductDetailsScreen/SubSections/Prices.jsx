@@ -29,6 +29,7 @@ import api from '../../../api';
 import './prices.scss';
 
 const Prices = ({
+  myRef,
   selectOptions,
   productData,
   currentProductData,
@@ -86,7 +87,7 @@ const Prices = ({
   };
   return (
     <>
-      <Box px={2} className='product-prices' mb={2}>
+      <Box px={2} className='product-prices' mb={2} ref={myRef}>
         <TableContainer component={Paper}>
           <InheritanceField
             additionalField='prices'
@@ -259,6 +260,7 @@ Prices.propTypes = {
   priceTableError: PropTypes.array,
   digitsErrors: PropTypes.object,
   setDigitsErrors: PropTypes.func,
+  myRef: PropTypes.object,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
 };
