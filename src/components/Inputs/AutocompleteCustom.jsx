@@ -19,19 +19,50 @@ const AutocompleteCustom = ({
   uniqueOptionValue,
   usedOptions = [],
   onClear,
+  getAdditionalOptions,
 }) => {
   const noRepeatingOptions = selectOptions
     .filter((so) => !usedOptions.filter((uo) => (uo.id || uo) === so.id).length);
+  const [additionalOptions, setAdditionalOptions] = useState([]);
 
   const [curOption, setCurOption] = useState('');
   const [search, setSearch] = useState('');
-
+  const handleSetAdditionalOptions = (optionsData) => {
+    const newAddOpt = [...additionalOptions];
+    const idsArray = additionalOptions.map((o) => o.id);
+    optionsData.forEach((el) => {
+      if (!idsArray.includes(el.id)) {
+        newAddOpt.push(el);
+        idsArray.push(el.id);
+      }
+    });
+    setAdditionalOptions(newAddOpt);
+  };
+  useEffect(() => {
+    if (search && getAdditionalOptions) {
+      const hasOption = selectOptions.filter((u) => u.id === search)?.[0];
+      if (!hasOption) {
+        getAdditionalOptions(search)
+          .then((res) => {
+            handleSetAdditionalOptions(res);
+          });
+      }
+    }
+  }, [search]);
   useEffect(() => {
     if (selectOptions.length) {
       if (curValue) {
         const newCurOption = selectOptions.filter((u) => u.id === curValue)[0] || '';
-        setCurOption(newCurOption);
-        setSearch(uniqueOptionValue ? uniqueOptionValue(newCurOption) : newCurOption?.[optionLabelKey]?.split('(')[0]?.trim() || '');
+        if (getAdditionalOptions && !newCurOption) {
+          getAdditionalOptions(curValue).then((res) => {
+            handleSetAdditionalOptions(res);
+            setCurOption(res[0]);
+            setSearch(uniqueOptionValue ? uniqueOptionValue(res[0]) : res[0]?.[optionLabelKey]?.split('(')[0]?.trim() || '');
+          });
+        } else {
+          setCurOption(newCurOption);
+          setSearch(uniqueOptionValue ? uniqueOptionValue(newCurOption) : newCurOption?.[optionLabelKey]?.split('(')[0]?.trim() || '');
+        }
       } else {
         setCurOption('');
         setSearch('');
@@ -59,7 +90,7 @@ const AutocompleteCustom = ({
       onBlur={() => setSearch(uniqueOptionValue ? uniqueOptionValue(curOption) : curOption?.[optionLabelKey]?.split('(')[0]?.trim() || '')}
       handleHomeEndKeys
       id="autocomplete-select"
-      options={noRepeatingOptions}
+      options={[...noRepeatingOptions, ...additionalOptions]}
       getOptionLabel={(option) => (uniqueOptionValue ? uniqueOptionValue(option) : option?.[optionLabelKey] || '')}
       renderOption={(props, option) => <li {...props} key={option?.id}>{uniqueOptionValue ? uniqueOptionValue(option) : option?.[optionLabelKey] || ''}</li>}
       renderInput={(params) => (
@@ -93,6 +124,7 @@ AutocompleteCustom.propTypes = {
   uniqueOptionValue: PropTypes.func,
   usedOptions: PropTypes.array,
   onClear: PropTypes.func,
+  getAdditionalOptions: PropTypes.func,
 };
 
 export default AutocompleteCustom;

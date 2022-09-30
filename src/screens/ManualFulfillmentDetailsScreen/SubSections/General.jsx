@@ -57,7 +57,7 @@ const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
         <AutocompleteWithChips
           arrayTypeValue
           label='productNameOrId'
-          getAdditionalOptionsOptions={(searchValue) => Promise.allSettled([
+          getAdditionalOptions={(searchValue) => Promise.allSettled([
             api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&id=${searchValue}` }),
             api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&genericName=*${searchValue}*` }),
           ])
@@ -80,7 +80,7 @@ const General = ({ setCurFulfillment, curFulfillment, selectOptions }) => (
         <AutocompleteWithChips
           label='productByReference'
           arrayTypeValue
-          getAdditionalOptionsOptions={(searchValue) => Promise.allSettled([
+          getAdditionalOptions={(searchValue) => Promise.allSettled([
             api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&id=${searchValue}` }),
             api.getProducts({ filters: `&customerId=${curFulfillment.publisherId}&status=ENABLED&publisherRefId=*${searchValue}*` }),
           ])

@@ -82,7 +82,7 @@ const General = ({
     <Grid item md={6} sm={12}>
       <Box p={2}>
         <AutocompleteWithChips
-          getAdditionalOptionsOptions={(searchValue) => Promise.allSettled([
+          getAdditionalOptions={(searchValue) => Promise.allSettled([
             api.getCustomerById(searchValue),
             api.getCustomers({ filters: `&name=*${searchValue}*` })])
             .then(([idSearch, nameSearch]) => {
