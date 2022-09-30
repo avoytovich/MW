@@ -38,8 +38,10 @@ const fromObjectToArray = (object, keyName) => {
 const fromArrayToObj = (array) => {
   const resObject = {};
   array.forEach((item) => {
-    const value = item.value.map((u) => u.id);
-    resObject[item.keyValue] = value;
+    if (item.keyValue) {
+      resObject[item.keyValue] = item.value;
+      delete resObject.key;
+    }
   });
   return resObject;
 };

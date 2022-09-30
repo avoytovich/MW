@@ -12,7 +12,7 @@ const AutocompleteWithChips = ({
   arrayValue,
   arrayTypeValue,
   isDisabled,
-  getAdditionalOptionsOptions,
+  getAdditionalOptions,
 }) => {
   const [curArrayOfObjects, setCurArrayOfObjects] = useState([]);
   const [additionalOptions, setAdditionalOptions] = useState([]);
@@ -31,8 +31,8 @@ const AutocompleteWithChips = ({
   };
 
   useEffect(() => {
-    if (search && getAdditionalOptionsOptions) {
-      getAdditionalOptionsOptions(search)
+    if (search && getAdditionalOptions) {
+      getAdditionalOptions(search)
         .then((res) => {
           handleSetAdditionalOptions(res);
         });
@@ -41,7 +41,7 @@ const AutocompleteWithChips = ({
 
   useEffect(() => {
     if (selectOptions.length && arrayTypeValue) {
-      if (!getAdditionalOptionsOptions) {
+      if (!getAdditionalOptions) {
         setCurArrayOfObjects(arrayValue.map((it) => selectOptions.find((opt) => opt.id === it)
           || { id: it, value: it }));
       } else {
@@ -59,7 +59,7 @@ const AutocompleteWithChips = ({
         if (notInOptionIds.length) {
           const requestArray = [];
           notInOptionIds.forEach((id) => {
-            requestArray.push(getAdditionalOptionsOptions(id));
+            requestArray.push(getAdditionalOptions(id));
           });
 
           Promise.allSettled(requestArray)
@@ -131,7 +131,7 @@ AutocompleteWithChips.propTypes = {
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
   arrayTypeValue: PropTypes.bool,
-  getAdditionalOptionsOptions: PropTypes.func,
+  getAdditionalOptions: PropTypes.func,
 };
 
 export default AutocompleteWithChips;

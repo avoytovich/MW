@@ -7,10 +7,11 @@ import {
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ClearIcon from '@mui/icons-material/Clear';
 
-import { filterOptions } from '../utils';
+import { filterOptions, formateProductOptions } from '../utils';
 import localization from '../../../localization';
 
 import { AutocompleteCustom, AutocompleteWithChips } from '../../../components/Inputs';
+import api from '../../../api';
 
 const SelectModeInputs = ({
   curValue,
@@ -73,12 +74,22 @@ const SelectModeInputs = ({
                   item.keyValue,
                 )}
                 curValue={item.keyValue}
+                getAdditionalOptions={(searchValue) => Promise.allSettled([
+                  api.getProducts({ filters: `&customerId=${curReco.customerId}&id=${searchValue}`, notAddParentId: true }),
+                  api.getProducts({ filters: `&customerId=${curReco.customerId}&target=genericName&genericName=*${searchValue}*`, notAddParentId: true }),
+                ])
+                  .then(([idSearch, nameSearch]) => {
+                    const res = idSearch.value?.data?.items?.length
+                      ? idSearch.value?.data?.items : nameSearch.value?.data?.items;
+                    return formateProductOptions(res);
+                  })}
               />
             </Box>
           </Grid>
           <Grid item xs={6}>
             <Box p={2}>
               <AutocompleteWithChips
+                arrayTypeValue
                 label={labels[1]}
                 arrayValue={item.value}
                 selectOptions={selectOptions}
@@ -87,6 +98,15 @@ const SelectModeInputs = ({
                   newValue[index].value = val;
                   setCurReco({ ...curReco, [curKey]: newValue });
                 }}
+                getAdditionalOptions={(searchValue) => Promise.allSettled([
+                  api.getProducts({ filters: `&customerId=${curReco.customerId}&id=${searchValue}`, notAddParentId: true }),
+                  api.getProducts({ filters: `&customerId=${curReco.customerId}&target=genericName&genericName=*${searchValue}*`, notAddParentId: true }),
+                ])
+                  .then(([idSearch, nameSearch]) => {
+                    const res = idSearch.value?.data?.items?.length
+                      ? idSearch.value?.data?.items : nameSearch.value?.data?.items;
+                    return formateProductOptions(res);
+                  })}
               />
             </Box>
           </Grid>

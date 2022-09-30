@@ -35,8 +35,7 @@ const RecoDetailsScreen = () => {
     stores: null,
     products: null,
     productsByParent: null,
-    recoByProduct: null,
-    recoByParent: null,
+    prodRecommendation: null,
   });
 
   const beforeSend = () => {
@@ -87,39 +86,23 @@ const RecoDetailsScreen = () => {
         api.getStores({ filters: `&customerId=${data.customerId}` }),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}` }),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}&parentId=${null}` }),
-        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}&status=ENABLED` }),
-        api.getProducts(
-          0,
-          `&customerId=${data.customerId}&parentId=${null}&status=ENABLED`,
-        ),
+        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}`, notAddParentId: true }),
       ]).then(
         ([
           storeOptions,
           productOptions,
           parentProductOptions,
-          recoByProductOptions,
-          recoByParentOptions,
+          recoOptions,
         ]) => {
           const products = formateProductOptions(productOptions.value?.data?.items) || [];
           const productsByParent = formateProductOptions(parentProductOptions.value?.data?.items)
             || [];
-          const recoByProduct = formateProductOptions(recoByProductOptions.value?.data?.items)
+          const prodRecommendation = formateProductOptions(recoOptions.value?.data?.items)
             || [];
-          const recoByParent = formateProductOptions(recoByParentOptions.value?.data?.items)
-            || [];
-
           let eligibleProductIds = [...checkedReco.eligibleProductIds];
           let eligibleParentProductIds = [...checkedReco.eligibleParentProductIds];
           const productIds = [];
 
-          const byProductIds = checkedReco.byProductIds.map((item) => {
-            const value = recoByProduct.filter((obj) => item.value.includes(obj.id));
-            return ({ ...item, value });
-          });
-          const byParentProductIds = checkedReco.byParentProductIds.map((item) => {
-            const value = recoByParent.filter((obj) => item.value.includes(obj.id));
-            return ({ ...item, value });
-          });
           if (checkedReco.productIds.length) {
             checkedReco.productIds.forEach((u) => {
               const res = products.find((el) => el.id === u);
@@ -145,16 +128,12 @@ const RecoDetailsScreen = () => {
             eligibleProductIds,
             eligibleParentProductIds,
             productIds,
-            byProductIds,
-            byParentProductIds,
           })));
           setCurReco(JSON.parse(JSON.stringify({
             ...checkedReco,
             eligibleProductIds,
             eligibleParentProductIds,
             productIds,
-            byProductIds,
-            byParentProductIds,
           })));
           setLoading(false);
 
@@ -169,10 +148,7 @@ const RecoDetailsScreen = () => {
               ) || [],
             products,
             productsByParent,
-            recoByProduct,
-
-            recoByParent,
-
+            prodRecommendation,
           });
         },
       );
