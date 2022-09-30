@@ -24,6 +24,7 @@ const Payment = ({
   setErrors,
   isRankingOpen,
   setIsRankingOpen,
+  myRef,
 }) => {
   const allCountries = getCountriesOptions();
   const handleDeleteError = (key, optionKey, onDelete) => {
@@ -192,7 +193,7 @@ const Payment = ({
           })}
         />
       </Box>
-      <Box p={2}>
+      <Box p={2} ref={myRef}>
         <AutocompleteWithChips
           arrayTypeValue
           label='additionalPaymentTypes'
@@ -384,6 +385,7 @@ Payment.propTypes = {
   setErrors: PropTypes.func,
   isRankingOpen: PropTypes.bool,
   setIsRankingOpen: PropTypes.func,
+  myRef: PropTypes.object,
 };
 
 export default Payment;

@@ -47,6 +47,7 @@ import { sortByAlphabetical } from '../../../services/helpers/utils';
 import localization from '../../../localization';
 
 const General = ({
+  myRef,
   setProductData,
   currentProductData,
   selectOptions,
@@ -335,7 +336,7 @@ const General = ({
         </Box>
       </Box>
 
-      <Box display='flex' flexDirection='row' alignItems='center'>
+      <Box display='flex' flexDirection='row' alignItems='center' ref={myRef}>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field='type'
@@ -898,6 +899,7 @@ General.propTypes = {
   handlePopoverClose: PropTypes.func,
   handlePopoverOpen: PropTypes.func,
   variablesDescriptions: PropTypes.array,
+  myRef: PropTypes.object,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
 };

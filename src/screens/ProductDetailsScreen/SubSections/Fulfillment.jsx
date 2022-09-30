@@ -29,6 +29,7 @@ import api from '../../../api';
 import './FulfillmentAndSubscription.scss';
 
 const Fulfillment = ({
+  myRef,
   setProductData,
   currentProductData,
   selectOptions,
@@ -88,7 +89,7 @@ const Fulfillment = ({
         </Box>
       </Box>
 
-      <Box width={1} display="flex" flexDirection='column' px={1}>
+      <Box width={1} display="flex" flexDirection='column' px={1} ref={myRef}>
         <Box p={2}>
           <Typography color="secondary">{localization.t('labels.licenseKeyPackages')}</Typography>
         </Box>
@@ -203,6 +204,7 @@ Fulfillment.propTypes = {
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
+  myRef: PropTypes.object,
 };
 
 export default Fulfillment;

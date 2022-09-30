@@ -391,6 +391,15 @@ const tabLabels = [
   'productVariations',
 ];
 
+const tabLabelsVariation = [
+  'general',
+  'fulfillment',
+  'subscription',
+  'localizedContent',
+  'prices',
+  'productFiles',
+];
+
 export {
   handleGetOptions,
   handleGetProductDetails,
@@ -403,4 +412,5 @@ export {
   defLocalizationObj,
   defProductVariationObj,
   tabLabels,
+  tabLabelsVariation,
 };

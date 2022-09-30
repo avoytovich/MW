@@ -1,5 +1,5 @@
 /* eslint-disable consistent-return */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -31,6 +31,7 @@ import {
   defLocalizationObj,
   defProductVariationObj,
   tabLabels,
+  tabLabelsVariation,
 } from './utils';
 import { setTempProductDescription } from '../../redux/actions/TempData';
 
@@ -91,11 +92,53 @@ const ProductDetailsScreen = () => {
   const [errors, setErrors] = useState({});
   const [digitsErrors, setDigitsErrors] = useState({});
 
+  const [isScroolUp, setIsScroolUp] = useState(false);
+  const [isScroolDown, setIsScroolDown] = useState(false);
+
+  const myRefView = useRef(null);
+
+  const myRefGeneral = useRef(null);
+  const myRefFulfillment = useRef(null);
+  const myRefSubscription = useRef(null);
+  const myRefLocalizedContent = useRef(null);
+  const myRefPrices = useRef(null);
+  const myRefProductFiles = useRef(null);
+  const myRefProductVariations = useRef(null);
+
+  const refScrool = [
+    myRefGeneral,
+    myRefFulfillment,
+    myRefSubscription,
+    myRefLocalizedContent,
+    myRefPrices,
+    myRefProductFiles,
+    myRefProductVariations,
+  ];
+
+  const tabRefGeneral = useRef(null);
+  const tabRefFulfillment = useRef(null);
+  const tabRefSubscription = useRef(null);
+  const tabRefLocalizedContent = useRef(null);
+  const tabRefPrices = useRef(null);
+  const tabRefProductFiles = useRef(null);
+  const tabRefProductVariations = useRef(null);
+
+  const refTab = [
+    tabRefGeneral,
+    tabRefFulfillment,
+    tabRefSubscription,
+    tabRefLocalizedContent,
+    tabRefPrices,
+    tabRefProductFiles,
+    tabRefProductVariations,
+  ];
+
   const handleChangeTab = (tab) => {
     if (tab === 7) {
       setLoading(true);
       history.push(`${parentPaths.productlist}/${currentProductData?.parentId || parentId}`);
     } else {
+      refTab?.[tab]?.current.scrollIntoView();
       setCurTab(tab);
     }
   };
@@ -606,7 +649,7 @@ const ProductDetailsScreen = () => {
             scope: 'product',
             setCurTab,
             curTab,
-            tabLabels,
+            tabLabels: parentId ? tabLabelsVariation : tabLabels,
             errors,
             setErrors,
             priceTableError,
@@ -618,6 +661,14 @@ const ProductDetailsScreen = () => {
       priceTableError={priceTableError}
       errors={errors}
       setErrors={setErrors}
+      refTab={refTab}
+      refScrool={refScrool}
+      myRefView={myRefView}
+      isScroolUp={isScroolUp}
+      setIsScroolUp={setIsScroolUp}
+      isScroolDown={isScroolDown}
+      setIsScroolDown={setIsScroolDown}
+      parentId={parentId || currentProductData?.parentId}
     >
       <ProductDetailsView
         localizedErrors={localizedErrors}
@@ -639,6 +690,7 @@ const ProductDetailsScreen = () => {
         selectOptions={selectOptions}
         setProductData={setCurrentProductData}
         curTab={curTab}
+        setCurTab={setCurTab}
         productVariations={productVariations}
         setProductLocalizationChanges={setProductLocalizationChanges}
         productDetails={productDetails}
@@ -652,6 +704,10 @@ const ProductDetailsScreen = () => {
         codeMode={codeMode}
         jsonIsValid={jsonIsValid}
         setJsonIsValid={setJsonIsValid}
+        refTab={refTab}
+        refScrool={refScrool}
+        isScroolUp={isScroolUp}
+        isScroolDown={isScroolDown}
         errors={errors}
         setErrors={setErrors}
       />

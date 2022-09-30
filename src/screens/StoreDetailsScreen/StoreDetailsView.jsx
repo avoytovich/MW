@@ -13,7 +13,7 @@ import {
   resourceLabel,
 } from './utils';
 
-import useScroolWithTabs from '../../services/hooks/useScroolWithTabs';
+import useScroolWithTabs from './hooks/useScroolWithTabs';
 
 import './storeDetailsScreen.scss';
 
@@ -27,21 +27,28 @@ const StoreDetailsView = ({
   setErrors,
   isRankingOpen,
   setIsRankingOpen,
+  curTab,
   setCurTab,
   customer,
   refScrool = [],
+  refTab = [],
   localizedErrors,
   setLocalizedErrors,
+  isScroolUp,
+  isScroolDown,
 }) => {
-  const [showTopBtn, goToTop] = useScroolWithTabs(refScrool, setCurTab);
+  const [showTopBtn, goToTop] = useScroolWithTabs(
+    refScrool, curTab, setCurTab, isScroolUp, isScroolDown, refTab,
+  );
 
   return (
     <>
       <StoreSection
         label={tabLabels[0]}
-        myRef={refScrool[0]}
+        myRef={refTab[0]}
       >
         <General
+          myRef={refScrool[0]}
           errors={errors}
           setErrors={setErrors}
           currentStoreData={currentStoreData}
@@ -52,9 +59,10 @@ const StoreDetailsView = ({
       </StoreSection>
       <StoreSection
         label={tabLabels[1]}
-        myRef={refScrool[1]}
+        myRef={refTab[1]}
       >
         <Design
+          myRef={refScrool[1]}
           resourceLabel={resourceLabel}
           currentStoreResources={currentStoreResources}
           setCurrentStoreResources={setCurrentStoreResources}
@@ -65,9 +73,10 @@ const StoreDetailsView = ({
       </StoreSection>
       <StoreSection
         label={tabLabels[2]}
-        myRef={refScrool[2]}
+        myRef={refTab[2]}
       >
         <Payment
+          myRef={refScrool[2]}
           errors={errors}
           setErrors={setErrors}
           isRankingOpen={isRankingOpen}
@@ -79,9 +88,10 @@ const StoreDetailsView = ({
       </StoreSection>
       <StoreSection
         label={tabLabels[3]}
-        myRef={refScrool[3]}
+        myRef={refTab[3]}
       >
         <LocalizedContent
+          myRef={refScrool[3]}
           isVertical
           setLocalizedData={(newValue) => {
             setCurrentStoreData((c) => ({
@@ -121,7 +131,11 @@ StoreDetailsView.propTypes = {
   setIsRankingOpen: PropTypes.func,
   setCurTab: PropTypes.func,
   customer: PropTypes.object,
+  curTab: PropTypes.number,
+  refTab: PropTypes.array,
   refScrool: PropTypes.array,
+  isScroolUp: PropTypes.bool,
+  isScroolDown: PropTypes.bool,
 };
 
 export default StoreDetailsView;

@@ -34,6 +34,8 @@ const Variations = ({
   productDetails,
   handleDeleteVariation,
   setProductLocalizationChanges,
+  myRefTab,
+  myRefScroll,
 }) => {
   const history = useHistory();
   const { id: productId } = useParams();
@@ -79,7 +81,7 @@ const Variations = ({
     setSortedBundledProducts(productVariations?.bundledProducts);
   }, [productVariations]);
 
-  return productVariations?.bundledProducts ? (
+  return (
     <Box display='flex' flexDirection='column' width='100%' p={2}>
       {currentProductData.id
         && (
@@ -92,11 +94,13 @@ const Variations = ({
             productId={productId}
             sortedBundledProducts={sortedBundledProducts}
             productDetails={productDetails}
+            myRefTab={myRefTab}
+            myRefScroll={myRefScroll}
           />
         )}
       <Box display='flex'>
-        <SectionLayout label='variationParameters' width='100%'>
-          <Box px={2}>
+        <SectionLayout label='variationParameters' width='100%' myRef={currentProductData.id ? null : myRefTab}>
+          <Box px={2} ref={currentProductData.id ? null : myRefScroll}>
             <Box mb={2}>
               <Button variant='outlined' color='primary' onClick={handleOpen}>
                 Add Parameter
@@ -164,7 +168,7 @@ const Variations = ({
         />
       </Box>
     </Box>
-  ) : <LinearProgress />;
+  );
 };
 Variations.propTypes = {
   setProductData: PropTypes.func,
@@ -177,6 +181,8 @@ Variations.propTypes = {
   setProductLocalizationChanges: PropTypes.func,
   productDetails: PropTypes.object,
   handleDeleteVariation: PropTypes.func,
+  myRefTab: PropTypes.object,
+  myRefScroll: PropTypes.object,
 };
 
 export default Variations;

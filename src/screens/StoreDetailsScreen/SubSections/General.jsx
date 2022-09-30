@@ -35,7 +35,12 @@ const checkBoxObj = [
 ];
 
 const General = ({
-  currentStoreData, setCurrentStoreData, customer, setErrors, errors,
+  currentStoreData,
+  setCurrentStoreData,
+  customer,
+  setErrors,
+  errors,
+  myRef,
 }) => {
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
@@ -232,7 +237,7 @@ const General = ({
           </Box>
         </Box>
       </Grid>
-      <Grid item md={6} sm={12}>
+      <Grid item md={6} sm={12} ref={myRef}>
         <Box p={2}>
           <InputCustom
             isRequired
@@ -566,6 +571,7 @@ General.propTypes = {
   setErrors: PropTypes.func,
   errors: PropTypes.object,
   customer: PropTypes.object,
+  myRef: PropTypes.object,
 };
 
 export default General;
