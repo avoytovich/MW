@@ -6,7 +6,9 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
-import { AutocompleteWithChips } from '../../../components/Inputs';
+import { AutocompleteMultiple, AutocompleteWithChips } from '../../../components/Inputs';
+import api from '../../../api';
+import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
 
 const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
   if (curIdentity === null) return <LinearProgress />;
@@ -28,7 +30,7 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
             </Typography>
           </Box>
           <Box p={2}>
-            <AutocompleteWithChips
+            <AutocompleteMultiple
               data-test='managedCustomers'
               label='managedCustomers'
               arrayValue={curIdentity.authorizedCustomerIds}
@@ -37,6 +39,20 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
                 ...curIdentity,
                 authorizedCustomerIds: newValue,
               })}
+              getAdditionalOptions={(searchValue) => Promise.allSettled([
+                api.getCustomerById(searchValue),
+                api.getCustomers({ filters: `&name=*${searchValue}*` }),
+              ])
+                .then(([idSearch, nameSearch]) => {
+                  const res = idSearch.value?.data?.id
+                    ? [idSearch.value?.data] : nameSearch.value?.data?.items;
+                  return structureSelectOptions({ options: res, optionValue: 'name', adIddToValue: true });
+                })}
+              getMultipleOptions={(searchValue) => {
+                const ids = searchValue.map((item) => `id=${item}`);
+                return api.getCustomersByIds(ids.join('&'))
+                  .then(({ data }) => structureSelectOptions({ options: data.items, optionValue: 'name', adIddToValue: true }));
+              }}
             />
           </Box>
           <Box p={2}>

@@ -39,15 +39,11 @@ const IdentityDetailsScreen = () => {
   });
   const beforeSend = () => {
     const filterBlankKeys = { ...curIdentity };
-    const authorizedCustomerIds = filterBlankKeys.authorizedCustomerIds?.map((it) => it.id);
     Object.keys(filterBlankKeys).forEach((key) => {
       if (!filterBlankKeys[key]) {
         delete filterBlankKeys[key];
       }
     });
-    if (authorizedCustomerIds.length > 0) {
-      filterBlankKeys.authorizedCustomerIds = [...authorizedCustomerIds];
-    }
     return filterBlankKeys;
   };
 

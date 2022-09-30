@@ -155,7 +155,7 @@ const productRequiredFields = (product) => {
               ? !element.upSell && !product.prices.priceByCountryByCurrency[item][itemChild].upSell
               : element.upSell === product.prices.priceByCountryByCurrency[item][itemChild].upSell);
 
-              
+
           const existedIndex = priceByCountryByCurrency[item].findIndex(isTheSame);
           if (existedIndex >= 0) {
             priceByCountryByCurrency[item][existedIndex].countries.push(itemChild);
@@ -216,14 +216,14 @@ const structureProdAutocompleteSelectOptions = ({
 };
 
 const structureSelectOptions = ({
-  options, optionValue, otherOptions, optionId,
+  options, optionValue, otherOptions, optionId, adIddToValue,
 }) => {
   const res = [];
   if (options) {
     options.forEach((option) => {
       const id = optionId ? option[optionId] : option.id || option[optionValue];
       if (!res.find((u) => u.id === id)) {
-        const newObj = { id, value: option[optionValue] || id };
+        const newObj = { id, value: !adIddToValue ? option[optionValue] : `${option[optionValue]} (${id})` || id };
         if (otherOptions) {
           otherOptions.forEach((element) => {
             newObj[element] = option[element];
@@ -430,8 +430,7 @@ const frontToBack = (data) =>
 // eslint-disable-next-line no-nested-ternary
 const checkValue = (data) => ((!data?.state && !data?.value && data?.value !== '') ? data : data.state === 'inherits' ? data.parentValue : data.value);
 
-const identityRequiredFields = (identity, customers) => {
-  const authorizedCustomerIds = identity.authorizedCustomerIds?.map((it) => customers.find((customer) => customer.id === it) || { id: it, value: it }) || [];
+const identityRequiredFields = (identity) => {
   const defaultIdentity = {
     email: '',
     firstName: '',
@@ -443,7 +442,7 @@ const identityRequiredFields = (identity, customers) => {
     metaRoleIds: [],
     inactive: true,
   };
-  return { ...defaultIdentity, ...identity, authorizedCustomerIds };
+  return { ...defaultIdentity, ...identity };
 };
 
 const realmRequiredFields = (realm) => {

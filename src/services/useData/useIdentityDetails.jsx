@@ -42,7 +42,7 @@ const useIdentityDetails = (id, nxState) => {
           api.getMetaRoles({ filters: `&customerId=${data.customerId}` }),
           api.getCustomers(),
         ]).then(([rolesOptions, metaRolesOptions, customersOptions]) => {
-          const structuredCustomers = structureSelectOptions({ options: customersOptions.value?.data.items, optionValue: 'name' }) || [];
+          const structuredCustomers = structureSelectOptions({ options: customersOptions.value?.data.items, optionValue: 'name', adIddToValue: true }) || [];
           setSelectOptions({
             ...selectOptions,
             roles: structureSelectOptions({ options: rolesOptions.value?.data.items, optionValue: 'name' }) || [],
