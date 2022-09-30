@@ -47,6 +47,7 @@ const errorNotifications = {
   isRequired: 'is required',
   subscriptionCanBeCopiedOnlyWithGeneralSection: 'Subscription can be copied only with General section',
   defaultPriceIsRequired: 'Default price is required',
+  nextIdsNotFound: 'Next Ids not found',
 };
 
 export default errorNotifications;

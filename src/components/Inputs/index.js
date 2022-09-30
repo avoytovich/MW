@@ -10,6 +10,7 @@ import SelectWithChipImages from './SelectWithChipImages';
 import DroppableSelectWithChip from './DroppableSelectWithChip';
 import AutocompleteCustom from './AutocompleteCustom';
 import AutocompleteWithChips from './AutocompleteWithChips';
+import AutocompleteMultiple from './AutocompleteMultiple';
 
 export {
   SelectWithChip,
@@ -24,4 +25,5 @@ export {
   DroppableSelectWithChip,
   AutocompleteCustom,
   AutocompleteWithChips,
+  AutocompleteMultiple,
 };
