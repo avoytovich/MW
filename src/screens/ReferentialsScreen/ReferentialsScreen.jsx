@@ -17,7 +17,7 @@ import TabTable from '../../components/TabTable';
 import parentPaths from '../../services/paths';
 
 const ReferentialsScreen = ({ location }) => {
-  const [curBab, setCurTab] = useState(location.pathname === parentPaths.referentials.main
+  const [curBab, setCurTab] = useState(location.pathname === parentPaths.referentialManager.main
     ? tabsData[0].path
     : location.pathname);
   const drawAddButton = () => {
@@ -31,7 +31,7 @@ const ReferentialsScreen = ({ location }) => {
         {currentTab.button && (
           <Box alignSelf='flex-end'>
             <Button
-              id='add-referentials-button'
+              id='add-referentialManager-button'
               color='primary'
               size='large'
               variant='contained'
@@ -85,7 +85,7 @@ const ReferentialsScreen = ({ location }) => {
           path={tabsData[2].path}
           component={() => <TabTable tabObject={tabsData[2]} />}
         />
-        <Redirect exact from={`${parentPaths.referentials.main}`} to={tabsData[0].path} />
+        <Redirect exact from={`${parentPaths.referentialManager.main}`} to={tabsData[0].path} />
       </Switch>
     </>
   );

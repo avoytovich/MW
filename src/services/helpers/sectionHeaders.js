@@ -28,13 +28,14 @@ const sideBarTitle = {
   notifications: localization.t('sideBar.titles.eventNotifications'),
   myaccount: localization.t('sideBar.titles.myAccount'),
   serviceconfiguration: localization.t('sideBar.titles.serviceConfiguration'),
-  referentials: localization.t('sideBar.titles.referentials'),
   customerslist: localization.t('sideBar.titles.customers'),
   onboarding: localization.t('sideBar.titles.onboarding'),
   remittables: localization.t('sideBar.titles.remittables'),
   audits: localization.t('sideBar.titles.audits'),
   crudHelper: localization.t('sideBar.titles.crudHelper'),
   'product-documentation': localization.t('sideBar.titles.productDocumentation'),
+  referentialManager: localization.t('sideBar.titles.referentialManager'),
+  subsidiaryManager: localization.t('sideBar.titles.subsidiaryManager'),
 };
 
 const customHeaders = {

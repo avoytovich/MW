@@ -59,6 +59,8 @@ const sections = {
   currencies: 'Currencies',
   locales: 'Locales',
   countries: 'Countries',
+  referentialmanager: 'Referential Manager',
+  serviceconfiguration: 'Service Configuration',
 };
 
 export default sections;

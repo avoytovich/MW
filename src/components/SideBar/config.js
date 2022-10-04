@@ -1,4 +1,5 @@
 import {
+  MiscellaneousServices,
   Layers,
   ShoppingCart,
   Widgets,
@@ -187,16 +188,11 @@ const navConfig = [
       //   title: sideBarTitle.crudHelper,
       //   href: parentPaths.crudHelper.main,
       // },
-      {
-        id: 'service-configuration',
-        title: sideBarTitle.serviceconfiguration,
-        href: parentPaths.serviceconfiguration,
-      },
-      {
-        id: 'referentials',
-        title: sideBarTitle.referentials,
-        href: parentPaths.referentials.main,
-      },
+      // {
+      //   id: 'service-configuration',
+      //   title: sideBarTitle.serviceconfiguration,
+      //   href: parentPaths.serviceconfiguration,
+      // },
     ],
   },
   {
@@ -227,6 +223,22 @@ const navConfig = [
         id: 'event-notifications',
         title: sideBarTitle.notifications,
         href: parentPaths.notifications.main,
+      },
+    ],
+  },
+  {
+    subheader: localization.t('sideBar.subheaders.serviceConfiguration'),
+    subheaderIcon: MiscellaneousServices,
+    items: [
+      {
+        id: 'referential-manager',
+        title: sideBarTitle.referentialManager,
+        href: parentPaths.referentialManager.main,
+      },
+      {
+        id: 'subsidiary-manager',
+        title: sideBarTitle.subsidiaryManager,
+        href: parentPaths.subsidiaryManager,
       },
     ],
   },

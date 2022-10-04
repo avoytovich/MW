@@ -34,7 +34,7 @@ const CurrencyDetailScreen = () => {
       saveIsDisabled={validate()}
       hasChanges={hasChanges}
       isLoading={isLoading}
-      curParentPath={parentPaths.referentials.currenciesTab}
+      curParentPath={parentPaths.referentialManager.currenciesTab}
       curData={curCurrency}
       addFunc={api.addCurrency}
       updateFunc={api.updateCurrencyById}
