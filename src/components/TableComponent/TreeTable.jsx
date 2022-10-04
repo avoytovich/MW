@@ -179,6 +179,7 @@ const TableComponent = ({
       <div>
         {filteredDescendantCount > 0 ? (
           <Button
+            style={{ minWidth: '30px' }}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
             tabIndex={-1}
@@ -187,8 +188,8 @@ const TableComponent = ({
             {!rowNode.childrenExpanded ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
             {filteredDescendantCount}
             {' '}
-            {localization.t('labels.subProducts')}
-            {filteredDescendantCount > 1 ? 's' : ''}
+            {/* {localization.t('labels.subProducts')} */}
+            {/* {filteredDescendantCount > 1 ? 's' : ''} */}
           </Button>
         ) : (
           <span />
@@ -228,6 +229,7 @@ const TableComponent = ({
           field: 'hierarchy',
           renderCell: (params) => <CustomGridTreeDataGroupingCell {...params} />,
           hide: !showColumn.hierarchy,
+          width: 75,
         }}
         treeData
         getTreeDataPath={(row) => row.hierarchy}
