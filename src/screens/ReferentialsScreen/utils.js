@@ -8,7 +8,7 @@ import parentPaths from '../../services/paths';
 const tabsData = [
   {
     label: 'currencies',
-    path: parentPaths.referentials.currenciesTab,
+    path: parentPaths.referentialManager.currenciesTab,
     request: api.getCurrency,
     sortKey: 'currencies',
     generateData: generateCurrencies,
@@ -22,7 +22,7 @@ const tabsData = [
   },
   {
     label: 'locales',
-    path: parentPaths.referentials.localesTab,
+    path: parentPaths.referentialManager.localesTab,
     request: api.getLocales,
     generateData: generateLocales,
     defaultShow: defaultShowlocales,
@@ -36,7 +36,7 @@ const tabsData = [
   },
   {
     label: 'countries',
-    path: parentPaths.referentials.countriesTab,
+    path: parentPaths.referentialManager.countriesTab,
     button: `${localization.t('general.add')} ${localization.t(
       'labels.country',
     )}`,

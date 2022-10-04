@@ -34,7 +34,7 @@ const LocaleDetailScreen = () => {
       saveIsDisabled={validate()}
       hasChanges={hasChanges}
       isLoading={isLoading}
-      curParentPath={parentPaths.referentials.localesTab}
+      curParentPath={parentPaths.referentialManager.localesTab}
       curData={curLocale}
       addFunc={api.addLocale}
       updateFunc={api.updateLocaleById}

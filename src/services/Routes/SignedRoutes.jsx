@@ -94,10 +94,10 @@ const SignedRoutes = () => {
         path={`${parentPaths.myaccount}`}
         component={lazy(() => import('../../screens/MyAccountScreen'))}
       />
-      <Route
+      {/* <Route
         path={`${parentPaths.serviceconfiguration}`}
         component={lazy(() => import('../../screens/ServiceConfigScreen'))}
-      />
+      /> */}
       <Route
         path={`${parentPaths.licenses}/:id`}
         component={lazy(() => import('../../screens/LicenseDetailsScreen'))}
@@ -300,19 +300,19 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/AuthenticationRealmsScreen'))}
       />
       <Route
-        path={`${parentPaths.referentials.currenciesTab}/:id`}
+        path={`${parentPaths.referentialManager.currenciesTab}/:id`}
         component={lazy(() => import('../../screens/CurrencyDetailScreen'))}
       />
       <Route
-        path={`${parentPaths.referentials.localesTab}/:id`}
+        path={`${parentPaths.referentialManager.localesTab}/:id`}
         component={lazy(() => import('../../screens/LocaleDetailScreen'))}
       />
       <Route
-        path={`${parentPaths.referentials.countriesTab}/:id`}
+        path={`${parentPaths.referentialManager.countriesTab}/:id`}
         component={lazy(() => import('../../screens/CountryDetailScreen'))}
       />
       <Route
-        path={`${parentPaths.referentials.main}`}
+        path={`${parentPaths.referentialManager.main}`}
         component={lazy(() => import('../../screens/ReferentialsScreen'))}
       />
       {/*

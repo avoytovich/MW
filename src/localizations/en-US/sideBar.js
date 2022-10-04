@@ -8,6 +8,7 @@ const sideBar = {
     endUsers: 'End-Users',
     settings: 'Settings',
     help: 'Help',
+    serviceConfiguration: 'Service Configuration',
   },
   titles: {
     dashboard: 'Dashboard',
@@ -51,8 +52,9 @@ const sideBar = {
     audits: 'Audits',
     apiDocumentation: 'API Documentation',
     productDocumentation: 'Product Documentation',
-    referentials: 'Referentials',
     crudHelper: 'C.R.U.D. Helper',
+    referentialManager: 'Referential Manager',
+    subsidiaryManager: 'Subsidiary Manager',
   },
 };
 

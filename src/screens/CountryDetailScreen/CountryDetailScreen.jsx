@@ -35,7 +35,7 @@ const CountryDetailScreen = () => {
       saveIsDisabled={validate()}
       hasChanges={hasChanges}
       isLoading={isLoading}
-      curParentPath={parentPaths.referentials.countriesTab}
+      curParentPath={parentPaths.referentialManager.countriesTab}
       curData={curCountry}
       addFunc={api.addCountry}
       updateFunc={api.updateCountryById}
