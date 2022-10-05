@@ -1,15 +1,13 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box, LinearProgress, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../../localization';
-import { AutocompleteWithChips } from '../../../components/Inputs';
-import { sortedData } from '../../../services/helpers/utils';
+import { AutocompleteWithChips, AutocompleteMultiple } from '../../../components/Inputs';
+import api from '../../../api';
+import { structureSelectOptions } from '../../../services/helpers/dataStructuring';
 
 const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
   if (curIdentity === null) return <LinearProgress />;
-  const sortedOptions = useMemo(() => {
-    selectOptions.roles.sort(sortedData);
-  }, [selectOptions.roles]);
 
   return (
     !curIdentity?.id
@@ -28,7 +26,7 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
             </Typography>
           </Box>
           <Box p={2}>
-            <AutocompleteWithChips
+            <AutocompleteMultiple
               data-test='managedCustomers'
               label='managedCustomers'
               arrayValue={curIdentity.authorizedCustomerIds}
