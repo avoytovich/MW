@@ -1,7 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
 import api from '../../../api';
-import { countriesOptionsFormatting, languagesOptionsFormatting } from '../../../services/helpers/dataStructuring';
-import { setCountriesOptions, setLanguagesOptions } from '../../../redux/actions/SessionData';
+import {
+  countriesOptionsFormatting,
+  languagesOptionsFormatting,
+  legalEntitiesOptionsFormatting,
+} from '../../../services/helpers/dataStructuring';
+import {
+  setCountriesOptions,
+  setLanguagesOptions,
+  setLegalEntityOptions,
+} from '../../../redux/actions/SessionData';
 
 const getCountriesOptions = () => {
   const dispatch = useDispatch();
@@ -29,4 +37,17 @@ const getLanguagesOptions = () => {
   return languagesOptions;
 };
 
-export { getCountriesOptions, getLanguagesOptions };
+const getLegalEntitiesOptions = () => {
+  const dispatch = useDispatch();
+  const legalEntitiesOptions = useSelector(({ sessionData: { legalEntities } }) => legalEntities);
+
+  if (legalEntitiesOptions.length === 0) {
+    api.getLegalEntitiesOptions().then(({ data: { items } }) => {
+      const legalEntities = legalEntitiesOptionsFormatting(items);
+      dispatch(setLegalEntityOptions(legalEntities));
+    });
+  }
+  return legalEntitiesOptions;
+};
+
+export { getCountriesOptions, getLanguagesOptions, getLegalEntitiesOptions };

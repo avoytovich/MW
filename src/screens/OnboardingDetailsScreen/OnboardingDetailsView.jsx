@@ -10,9 +10,10 @@ import { tabLabels } from './utils';
 import './onboardingDetailsScreen.scss';
 
 const OnboardingDetailsView = ({
-  customer,
   curTab,
+  curCustomer,
   curOnboarding,
+  setCurCustomer,
   setCurOnboarding,
   onboarding,
 }) => (
@@ -21,7 +22,8 @@ const OnboardingDetailsView = ({
       <OnboardingSection label={tabLabels[curTab]}>
         <General
           id={onboarding.id}
-          customer={customer}
+          curCustomer={curCustomer}
+          setCurCustomer={setCurCustomer}
           curOnboarding={curOnboarding}
           setCurOnboarding={setCurOnboarding}
           onboarding={onboarding}
@@ -40,7 +42,8 @@ const OnboardingDetailsView = ({
 );
 
 OnboardingDetailsView.propTypes = {
-  customer: PropTypes.object,
+  curCustomer: PropTypes.object,
+  setCurCustomer: PropTypes.func,
   setCurOnboarding: PropTypes.func,
   curOnboarding: PropTypes.object,
   onboarding: PropTypes.object,

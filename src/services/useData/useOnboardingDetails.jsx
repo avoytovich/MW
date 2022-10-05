@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../api';
 
 const useOnboardingDetails = (id) => {
@@ -7,6 +7,8 @@ const useOnboardingDetails = (id) => {
   const [onboarding, setOnboarding] = useState(null);
   const [curOnboarding, setCurOnboarding] = useState(null);
   const [customer, setCustomer] = useState(null);
+  const [curCustomer, setCurCustomer] = useState(null);
+  const [customerHasChanges, setCustomerHasChanges] = useState(null);
   const [update, setUpdate] = useState(0);
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -18,7 +20,10 @@ const useOnboardingDetails = (id) => {
         setLoading(false);
 
         const { customerId } = data;
-        api.getCustomerById(customerId).then((res) => setCustomer(res.data));
+        api.getCustomerById(customerId).then((res) => {
+          setCustomer(JSON.parse(JSON.stringify(res.data)));
+          setCurCustomer(JSON.parse(JSON.stringify(res.data)));
+        });
       })
       .catch(() => {
         setLoading(false);
@@ -27,19 +32,28 @@ const useOnboardingDetails = (id) => {
 
   useEffect(() => {
     setHasChanges(JSON.stringify(curOnboarding) !== JSON.stringify(onboarding));
+    setCustomerHasChanges(JSON.stringify(curCustomer) !== JSON.stringify(customer));
 
-    return () => setHasChanges(false);
+    return () => {
+      setHasChanges(false);
+      setCustomerHasChanges(false);
+    };
   }, [
     curOnboarding,
     onboarding,
+    curCustomer,
+    customer,
   ]);
 
   return {
     isLoading,
     onboarding,
     curOnboarding,
+    setCurCustomer,
     customer,
+    curCustomer,
     hasChanges,
+    customerHasChanges,
     setCurOnboarding,
     setUpdate,
   };
