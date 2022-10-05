@@ -17,6 +17,7 @@ const defaultShow = {
   linkedCustomerId: false,
   linkedCustomer: false,
   userName: true,
+  clientId: true,
   identityId: false,
   email: true,
   createDate: true,
@@ -87,6 +88,10 @@ const markUp = {
       sortParam: 'userName',
     },
     {
+      value: localization.t('labels.clientId'),
+      id: 'clientId',
+    },
+    {
       value: localization.t('labels.identityId'),
       id: 'identityId',
     },
@@ -116,6 +121,7 @@ const generateData = (data) => {
       linkedCustomerId: val.customerId,
       linkedCustomer: val.customerId,
       userName: val.userName,
+      clientId: val.clientId,
       identityId: val.id,
       email: val.email,
       createDate: val.createDate,

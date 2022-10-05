@@ -1,26 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   IconButton,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
   Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import PropTypes from 'prop-types';
 import localization from '../../../../localization';
 import { createKey } from '../utils';
-import {
-  AutocompleteCustom, AutocompleteWithChips,
-} from '../../../../components/Inputs';
+import { AutocompleteCustom, AutocompleteWithChips } from '../../../../components/Inputs';
 import './ClearancesInputs.scss';
+import { sortedData } from '../../../../services/helpers/utils';
 
 const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
   const [newServiceName, setNewServiceName] = useState('');
+
+  const sortedOptions = useMemo(() => {
+    selectOptions.serviceNames.sort(sortedData);
+  }, [selectOptions.serviceNames]);
+
   const handleRemove = (key, index) => {
     const newRights = { ...curRole.rights };
     if (curRole.rights[key].length < 2) {
@@ -67,7 +71,7 @@ const ClearancesInputs = ({ selectOptions, curRole, setCurRole }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {Object.keys(curRole.rights).map((right) => (
+                {Object.keys(curRole.rights).sort().map((right) => (
                   curRole.rights[right].map((item, index) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <TableRow data-test='tableRow' data-index={index} key={`${right}_${index}`}>

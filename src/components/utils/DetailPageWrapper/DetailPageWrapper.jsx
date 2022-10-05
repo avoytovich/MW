@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 
@@ -74,7 +74,7 @@ const DetailPageWrapper = ({
           setUpdate((u) => u + 1);
         });
       } else {
-        updateFunc(sendObj.id, sendObj).then(() => {
+        updateFunc(id, sendObj).then(() => {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setUpdate((u) => u + 1);
         });

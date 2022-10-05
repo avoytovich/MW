@@ -5,6 +5,7 @@ const defaultShow = {
   name: true,
   rights: true,
   conditionsOfAvailability: true,
+  description: false,
   createDate: true,
   updateDate: true,
 };
@@ -21,6 +22,10 @@ const markUp = {
     {
       value: localization.t('labels.conditionsOfAvailability'),
       id: 'conditionsOfAvailability',
+    },
+    {
+      value: localization.t('labels.description'),
+      id: 'description',
     },
     {
       value: localization.t('labels.createDate'),
@@ -48,6 +53,7 @@ const generateData = (data) => {
       } services`,
       conditionsOfAvailability: `${val.availabilityConditions?.length || 0
       } conditions`,
+      description: val.description,
       createDate: val.createDate,
       updateDate: val.updateDate,
     };
