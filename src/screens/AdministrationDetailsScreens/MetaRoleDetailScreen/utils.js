@@ -12,4 +12,18 @@ const structureSelectOptions = (options) => {
   }
   return res;
 };
-export { requiredFields, structureSelectOptions, defaultMetaRoleObj };
+
+function sortedData(a, b) {
+  if (a.value === 'api-services: Responsibility given by default to the application '
+    + 'user (clientId = api-services) created during the onboarding. Will be removed in the future.') return -1;
+  if (a.value < b.value) {
+    return -1;
+  }
+  if (a.value > b.value) {
+    return 1;
+  }
+  return 0;
+}
+export {
+  requiredFields, structureSelectOptions, defaultMetaRoleObj, sortedData,
+};

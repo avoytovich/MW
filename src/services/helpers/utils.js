@@ -40,10 +40,21 @@ const sortByAlphabetical = (a, b) => {
   return 0;
 };
 
+function sortedData(a, b) {
+  if (a.value < b.value) {
+    return -1;
+  }
+  if (a.value > b.value) {
+    return 1;
+  }
+  return 0;
+}
+
 export {
   b64DecodeUnicode,
   b64EncodeUnicode,
   copyText,
   copyUrl,
   sortByAlphabetical,
+  sortedData,
 };
