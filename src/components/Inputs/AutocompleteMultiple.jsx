@@ -24,11 +24,13 @@ const AutocompleteMultiple = ({
 
   const handleSetAdditionalOptions = (optionsData) => {
     const newAddOpt = [...additionalOptions];
-    const idsArray = additionalOptions.map((o) => o.id);
+    const idsArrayAdditional = additionalOptions.map((o) => o.id);
+    const idsArraySelect = selectOptions.map((o) => o.id);
+
     optionsData.forEach((el) => {
-      if (!idsArray.includes(el.id)) {
+      if (!idsArrayAdditional.includes(el.id) && !idsArraySelect.includes(el.id)) {
         newAddOpt.push(el);
-        idsArray.push(el.id);
+        idsArrayAdditional.push(el.id);
       }
     });
 
@@ -38,9 +40,9 @@ const AutocompleteMultiple = ({
   const handleGetMultipleOptions = (value) => {
     const newArray = [];
     const newUKnownIds = [];
-    value.trim().split(' ').forEach((it) => {
-      if (!newArray.includes(it)) {
-        newArray.push(it);
+    value.trim().split(',').forEach((it) => {
+      if (!newArray.includes(it.trim())) {
+        newArray.push(it.trim());
       }
     });
     getMultipleOptions(newArray)
@@ -130,7 +132,7 @@ const AutocompleteMultiple = ({
         isOptionEqualToValue={(option, value) => option.id === value?.id}
         getOptionLabel={(option) => option?.value || ''}
         onChange={(e, newValue) => {
-          const isArray = `${e.target.value}`?.trim()?.split(' ');
+          const isArray = `${e.target.value}`?.trim()?.split(',');
           if (e.code === 'Enter' && isArray?.length > 1) {
             handleGetMultipleOptions(e.target.value);
           } else if (e.code !== 'Enter') {
@@ -153,7 +155,7 @@ const AutocompleteMultiple = ({
           <TextField
             maxRows={8}
             onChange={(e) => {
-              setValueIsArray(e.target.value?.trim()?.split(' ') < 2);
+              setValueIsArray(e.target.value?.trim()?.split(',').length > 1);
               setSearch(e.target.value);
             }}
             {...params}

@@ -40,7 +40,7 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
                 authorizedCustomerIds: newValue,
               })}
               getAdditionalOptions={(searchValue) => Promise.allSettled([
-                api.getCustomerById(searchValue),
+                api.getCustomerById(searchValue.trim()),
                 api.getCustomers({ filters: `&name=*${searchValue}*` }),
               ])
                 .then(([idSearch, nameSearch]) => {
@@ -49,7 +49,7 @@ const Permissions = ({ curIdentity, setCurIdentity, selectOptions }) => {
                   return structureSelectOptions({ options: res, optionValue: 'name', adIddToValue: true });
                 })}
               getMultipleOptions={(searchValue) => {
-                const ids = searchValue.map((item) => `id=${item}`);
+                const ids = searchValue.map((item) => `id=${item.trim()}`);
                 return api.getCustomersByIds(ids.join('&'))
                   .then(({ data }) => structureSelectOptions({ options: data.items, optionValue: 'name', adIddToValue: true }));
               }}
