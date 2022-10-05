@@ -155,7 +155,6 @@ const productRequiredFields = (product) => {
               ? !element.upSell && !product.prices.priceByCountryByCurrency[item][itemChild].upSell
               : element.upSell === product.prices.priceByCountryByCurrency[item][itemChild].upSell);
 
-
           const existedIndex = priceByCountryByCurrency[item].findIndex(isTheSame);
           if (existedIndex >= 0) {
             priceByCountryByCurrency[item][existedIndex].countries.push(itemChild);
@@ -462,6 +461,10 @@ const countriesOptionsFormatting = (array) => array.map((item) => (
   { id: item.alpha2Code, value: item.name }
 ));
 
+const legalEntitiesOptionsFormatting = (array) => array.map((item) => (
+  { id: item.id, value: item.legalEntityName }
+));
+
 const languagesOptionsFormatting = (array) => array.map((item) => {
   const languageNames = new Intl.DisplayNames(['en'], { type: 'language' });
   return (
@@ -547,4 +550,5 @@ export {
   defaultProductLocales,
   structureProdAutocompleteSelectOptions,
   realmRequiredFields,
+  legalEntitiesOptionsFormatting,
 };

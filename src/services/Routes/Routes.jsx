@@ -1,8 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  useLocation,
-} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import moment from 'moment';
 
@@ -13,7 +11,11 @@ import SignedRoutes from './SignedRoutes';
 import GuestRoutes from './GuestRoutes';
 
 import LoadingScreen from '../../screens/LoadingScreen';
-import { getLanguagesOptions, getCountriesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
+import {
+  getCountriesOptions,
+  getLanguagesOptions,
+  getLegalEntitiesOptions,
+} from '../../components/utils/OptionsFetcher/OptionsFetcher';
 
 import MainLayout from '../../layouts/MainLayout';
 import AuthorizationLayout from '../../layouts/AuthorizationLayout';
@@ -31,6 +33,7 @@ const Routes = () => {
   const account = useSelector(({ account: acc }) => acc);
   getLanguagesOptions();
   getCountriesOptions();
+  getLegalEntitiesOptions();
   return (
     <Suspense fallback={<LoadingScreen />}>
       {process?.env?.BUILT_AT && (

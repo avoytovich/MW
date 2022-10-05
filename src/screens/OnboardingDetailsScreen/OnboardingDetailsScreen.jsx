@@ -18,6 +18,9 @@ const OnboardingDetailsScreen = () => {
     onboarding,
     curOnboarding,
     customer,
+    curCustomer,
+    customerHasChanges,
+    setCurCustomer,
     hasChanges,
     setCurOnboarding,
     setUpdate,
@@ -29,11 +32,15 @@ const OnboardingDetailsScreen = () => {
       id={id}
       name={onboarding?.companyName}
       saveIsDisabled={!curOnboarding?.companyName}
-      hasChanges={hasChanges}
+      hasChanges={hasChanges || customerHasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.onboarding}
       curData={curOnboarding}
-      updateFunc={api.updateOnboardingById}
+      updateFunc={(updateId, data) =>
+        !customerHasChanges ? api.updateOnboardingById(updateId, data)
+          : !hasChanges ? api.updateCustomerById(curCustomer.id, curCustomer)
+            : Promise.all([api.updateCustomerById(curCustomer.id,
+              curCustomer), api.updateOnboardingById(id, data)])}
       setUpdate={setUpdate}
       tabs={{
         curTab,
@@ -43,6 +50,8 @@ const OnboardingDetailsScreen = () => {
     >
       <OnboardingDetailsView
         customer={customer}
+        curCustomer={curCustomer}
+        setCurCustomer={setCurCustomer}
         curOnboarding={curOnboarding}
         setCurOnboarding={setCurOnboarding}
         onboarding={onboarding}

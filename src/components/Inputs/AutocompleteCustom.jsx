@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Autocomplete, TextField, Paper,
-} from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Autocomplete, Paper, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import localization from '../../localization';
 
@@ -68,7 +66,7 @@ const AutocompleteCustom = ({
         setSearch('');
       }
     }
-  }, [curValue]);
+  }, [curValue, selectOptions]);
 
   return (
     <Autocomplete

@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
-import {
-  UPDATE_SESSION_STATE,
-} from '../constants/actionTypes';
+import { UPDATE_SESSION_STATE } from '../constants/actionTypes';
 
 const initialState = {
   languages: [],
   countries: [],
+  legalEntities: [],
 };
 
 const SessionData = (state = initialState, {

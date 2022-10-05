@@ -1,6 +1,4 @@
-import {
-  UPDATE_SESSION_STATE,
-} from '../constants/actionTypes';
+import { UPDATE_SESSION_STATE } from '../constants/actionTypes';
 
 const setCountriesOptions = (newState) => (dispatch) => {
   dispatch({
@@ -18,5 +16,13 @@ const setLanguagesOptions = (newState) => (dispatch) => {
     },
   });
 };
+const setLegalEntityOptions = (newState) => (dispatch) => {
+  dispatch({
+    type: UPDATE_SESSION_STATE,
+    payload: {
+      legalEntities: [...newState],
+    },
+  });
+};
 
-export { setCountriesOptions, setLanguagesOptions };
+export { setCountriesOptions, setLanguagesOptions, setLegalEntityOptions };

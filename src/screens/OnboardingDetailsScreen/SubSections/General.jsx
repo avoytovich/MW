@@ -2,28 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
-import {
-  Box,
-  Typography,
-  FormControlLabel,
-  Switch,
-  Button,
-  Grid,
-} from '@mui/material';
+import { Box, Button, FormControlLabel, Grid, Switch, Typography } from '@mui/material';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import { toast } from 'react-toastify';
 
 import localization from '../../../localization';
 import parentPaths from '../../../services/paths';
-import {
-  InputCustom,
-} from '../../../components/Inputs';
+import { AutocompleteCustom, InputCustom } from '../../../components/Inputs';
 import api from '../../../api';
+import { getLegalEntitiesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 
 const General = ({
   id,
-  customer,
   curOnboarding,
+  curCustomer,
+  setCurCustomer,
   setCurOnboarding,
   onboarding,
 }) => {
@@ -32,6 +25,8 @@ const General = ({
     navigator.clipboard.writeText(value)
       .then(() => toast(localization.t('general.itemHasBeenCopied')));
   };
+
+  const legalEntitiesOptions = getLegalEntitiesOptions();
 
   const statusApproving = (
     <FormControlLabel
@@ -243,6 +238,24 @@ const General = ({
       />
     </Box>
   );
+  const renderLegalEntity = (field) => (
+    <Box p={2}>
+      <AutocompleteCustom
+        optionLabelKey='value'
+        label='legalEntity'
+        selectOptions={legalEntitiesOptions}
+        isDisabled={curOnboarding.status === 'APPROVED'}
+        curValue={curCustomer?.legalEntityId || ''}
+        onSelect={(newValue) => {
+          setCurCustomer({
+            ...curCustomer,
+            [field]: newValue,
+          });
+        }}
+        uniqueOptionValue={(option) => option.value}
+      />
+    </Box>
+  );
 
   const renderEndUserPortalField = (field) => (
     <Box p={2}>
@@ -268,7 +281,6 @@ const General = ({
       />
     </Box>
   );
-
   return (
     <Grid item md={12} sm={12} className='wrapper-onboarding-general' container>
       <Grid item md={6} sm={12}>
@@ -303,21 +315,21 @@ const General = ({
           <Grid item md={9} sm={12}>
             <Box className="onboarding-customer" display="flex">
               <Box>
-                <Typography variant='subtitle1' className="onboarding-customer-value">
-                  {customer && (
+                <Typography variant='subtitle1' className='onboarding-customer-value'>
+                  {curCustomer && (
                     <span
                       className="customer-value"
                       onClick={() => history.push(`${parentPaths.customers}/${curOnboarding.customerId}`)}
                     >
-                      {customer.name}
+                      {curCustomer.name}
                     </span>
                   )}
                 </Typography>
               </Box>
               <Box pl={2}>
                 <FileCopyIcon
-                  onClick={() => makeCopy(customer.name)}
-                  color="secondary"
+                  onClick={() => makeCopy(curCustomer.name)}
+                  color='secondary'
                 />
               </Box>
             </Box>
@@ -346,6 +358,7 @@ const General = ({
         {renderSwitchField('createStore')}
         {renderSwitchField('usingLicenseKeyProvider')}
         {renderSwitchField('withFulfillmentSample')}
+        {renderLegalEntity('legalEntityId')}
       </Grid>
       <Grid item md={6} sm={12}>
         {renderCheckoutField('name')}
@@ -359,7 +372,8 @@ const General = ({
 
 General.propTypes = {
   id: PropTypes.string,
-  customer: PropTypes.object,
+  curCustomer: PropTypes.object,
+  setCurCustomer: PropTypes.func,
   curOnboarding: PropTypes.object,
   setCurOnboarding: PropTypes.func,
   onboarding: PropTypes.object,

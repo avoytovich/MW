@@ -1,19 +1,11 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
-import {
-  LinearProgress,
-  Button,
-  Zoom,
-  Box,
-  Typography,
-  Tabs,
-  Tab,
-} from '@mui/material';
+import { Box, Button, LinearProgress, Tab, Tabs, Typography, Zoom } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -72,7 +64,6 @@ const DetailPageWrapper = ({
       customSave();
     } else {
       const sendObj = beforeSend ? beforeSend(curData) : curData;
-
       if (id === 'add') {
         addFunc(sendObj).then((res) => {
           const headersLocation = res.headers.location.split('/');
@@ -83,14 +74,13 @@ const DetailPageWrapper = ({
           setUpdate((u) => u + 1);
         });
       } else {
-        updateFunc(id, sendObj).then(() => {
+        updateFunc(sendObj.id, sendObj).then(() => {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setUpdate((u) => u + 1);
         });
       }
     }
   };
-
   if (isLoading) return <LinearProgress />;
   if (!isLoading && !curData) return <LoadingErrorNotification />;
   if (id === 'add' && !nxState?.selectedCustomer?.id && !nxStateNotNeeded) {

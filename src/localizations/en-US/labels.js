@@ -125,6 +125,7 @@ const labels = {
   subscriptionV1: 'Subscription v1',
   fulfillmentV1: 'Fulfillment v1',
   fulfillmentTemplates: 'Fulfillment templates',
+  legalEntity: 'Legal Entity',
   subscriptionsModels: 'Subscriptions models',
   availablePayments: 'Available payments',
   blockedPayments: 'Blocked payments',
