@@ -67,10 +67,21 @@ const General = ({
     } else {
       setErrors({ ...errors, [key]: true });
     }
-    setCurrentStoreData({
-      ...currentStoreData,
-      [key]: newValue,
-    });
+    if (newValue === '') {
+      const newData = { ...currentStoreData };
+      delete newData[key];
+      setCurrentStoreData({
+        ...newData,
+      });
+      const newErrors = { ...errors };
+      delete newErrors[key];
+      setErrors({ ...newErrors });
+    } else {
+      setCurrentStoreData({
+        ...currentStoreData,
+        [key]: newValue,
+      });
+    }
   };
 
   const withValidation = (target) => {
