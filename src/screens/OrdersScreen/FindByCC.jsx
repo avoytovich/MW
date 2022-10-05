@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -81,6 +81,10 @@ const FindByCC = ({ open, onClose }) => {
           setTotalPages(total);
           setResults(items);
         })
+        .catch(({ response }) => {
+          setError(response);
+          setResults(null);
+        })
         .finally(() => {
           setTimeout(() => setLoading(false), 300);
         });
@@ -104,8 +108,15 @@ const FindByCC = ({ open, onClose }) => {
       setAmount('');
       setCurrency('');
       setDate(null);
+      setError(false);
     }
   }, [open]);
+
+  const ErrorBox = () => (
+    <Box my={2} textAlign='center' color='red'>
+      <Typography>{hasError.statusText}</Typography>
+    </Box>
+  );
 
   const TableComponent = () => {
     if (isLoading) return <LinearProgress style={{ margin: '20px' }} />;
@@ -269,6 +280,8 @@ const FindByCC = ({ open, onClose }) => {
               />
             )}
         </Box>
+
+        {hasError && <ErrorBox />}
 
         {(results?.length > 0 || isLoading) && <TableComponent />}
       </DialogContent>
