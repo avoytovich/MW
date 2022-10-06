@@ -80,10 +80,17 @@ const EmailBuilderDetailsScreen = () => {
             name: templateData?.name,
           })
           .then(({ data: { items: [tmplSamples] } }) => {
+            let selectedSample = tmplSamples?.samples.length
+              && { ...JSON.parse(tmplSamples.samples[0]) };
+
+            if (!selectedSample) {
+              const savedCustomSample = nxState?.customSample || {};
+              const availableSample = typeof savedCustomSample === 'object' ? savedCustomSample : JSON.parse(savedCustomSample);
+              selectedSample = availableSample;
+            }
+
             setSamplesData(tmplSamples);
-            setFirstSampleData(
-              tmplSamples?.samples.length ? { ...JSON.parse(tmplSamples.samples[0]) } : {},
-            );
+            setFirstSampleData(selectedSample);
           })
           .finally(() => setLoading(false));
       }

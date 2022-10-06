@@ -13,9 +13,7 @@ import CodeEditor from '../../../components/CodeEditor';
 import LocalizedContent from './LocalizedContent';
 import localization from '../../../localization';
 import { b64DecodeUnicode } from '../../../services/helpers/utils';
-import { InputCustom, SelectCustom } from '../../../components/Inputs';
-
-import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
+import { InputCustom } from '../../../components/Inputs';
 
 import api from '../../../api';
 
@@ -27,7 +25,6 @@ const TemplateEditor = ({
   selectedLang,
   setSelectedLang,
 }) => {
-  const availableLocales = [{ id: 'neutral', value: 'neutral' }, ...getLanguagesOptions()];
   const [tmplData, setTmplData] = useState(null);
   const [tmplError, setTmplError] = useState(false);
   const [curTab, setCurTab] = useState(0);
@@ -138,15 +135,6 @@ const TemplateEditor = ({
 
   const TemplateEdit = () => (
     <Box display='flex' flexDirection='column'>
-      <Box px={3} width="50%" my={4}>
-        <SelectCustom
-          label='fallbackLocale'
-          onChangeSelect={(e) => updateData((c) => ({ ...c, fallbackLocale: e.target.value }))}
-          selectOptions={availableLocales}
-          value={data?.fallbackLocale || ''}
-        />
-      </Box>
-
       <LocalizedContent
         selectedLang={selectedLang}
         setSelectedLang={setSelectedLang}

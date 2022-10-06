@@ -50,9 +50,9 @@ const LocalizationInputs = ({
   };
 
   return (
-    <Box display='flex' width='100%' flexDirection='column' px={4}>
+    <Box display='flex' width='100%' flexDirection='column'>
       <Box py={2} pt={4} display='flex'>
-        <Box width="50%">
+        <Box flexGrow='1'>
           <InputCustom
             label='subj'
             isRequired
@@ -63,18 +63,18 @@ const LocalizationInputs = ({
           />
         </Box>
 
-        <Box display='flex' width="50%" height='55px' justifyContent='flex-end'>
-          <Button onClick={onSave} mt='15px'>
-            <SaveIcon
-              style={{ fontSize: '36px' }}
-              color={hasChanges ? 'primary' : 'secondary'}
-            />
-          </Button>
-        </Box>
+        <Button onClick={onSave} mt='15px' style={{ height: '54px' }}>
+          <SaveIcon
+            style={{ fontSize: '36px' }}
+            color={hasChanges ? 'primary' : 'secondary'}
+          />
+        </Button>
       </Box>
       <Box display="flex">
         <CodeEditor
-          title='body'
+          height='700px'
+          fontSize='12px'
+          noTitle
           editorName='bodyEditor'
           mode='html'
           onChangeHandler={(newVal) => setCurBody(newVal)}

@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 
 const CustomCard = ({
-  title, children, noDivider, extraActions, ...other
+  title, noTitleSpace, children, showDivider, noDivider, extraActions, ...other
 }) => (
   <Box
     my={3}
@@ -17,11 +17,11 @@ const CustomCard = ({
     {...other}
   >
     <Box display='flex' justifyContent='space-between'>
-      <Typography variant='h4'>{title}</Typography>
+      {!noTitleSpace && <Typography variant='h4'>{title}</Typography>}
       {extraActions}
     </Box>
 
-    {title && !noDivider && <Box mt={3}><Divider light /></Box>}
+    {((title && !noDivider) || showDivider) && <Box mt={3}><Divider light /></Box>}
 
     {children}
   </Box>
@@ -31,6 +31,8 @@ CustomCard.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
   noDivider: PropTypes.bool,
+  noTitleSpace: PropTypes.bool,
+  showDivider: PropTypes.bool,
   extraActions: PropTypes.any,
 };
 

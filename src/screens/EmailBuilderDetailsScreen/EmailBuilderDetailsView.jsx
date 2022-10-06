@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import {
   Box,
-  Tabs,
-  Tab,
   Button,
   Typography,
 } from '@mui/material';
@@ -18,6 +16,8 @@ import General from './SubSections/General';
 import TemplateEditor from './SubSections/TemplateEditor';
 import SampleData from './SubSections/SampleData';
 
+import { getLanguagesOptions } from '../../components/utils/OptionsFetcher/OptionsFetcher';
+import { SelectCustom } from '../../components/Inputs';
 import CustomCard from '../../components/utils/CustomCard';
 import localization from '../../localization';
 
@@ -39,6 +39,7 @@ const EmailBuilderDetailsView = ({
   setJsonIsValid,
   curTab,
 }) => {
+  const availableLocales = [{ id: 'neutral', value: 'neutral' }, ...getLanguagesOptions()];
   const [editorMode, setEditorMode] = useState('preview');
   const [activatedCapture, setActivatedCapture] = useState(false);
 
@@ -57,22 +58,33 @@ const EmailBuilderDetailsView = ({
   };
 
   const ExtraActions = () => (
-    <Box display='flex' justifyContent='space-between' width='140px' my='-6px'>
-      <Button
-        variant='contained'
-        color={editorMode === 'preview' ? 'primary' : 'default'}
-        onClick={() => setEditorMode('preview')}
-      >
-        <VisibilityIcon />
-      </Button>
+    <Box display='flex' width={1} justifyContent='space-between' alignItems='center'>
+      <Box display='flex' justifyContent='space-between' width='140px' height='40px'>
+        <Button
+          variant='contained'
+          color={editorMode === 'preview' ? 'primary' : 'default'}
+          onClick={() => setEditorMode('preview')}
+        >
+          <VisibilityIcon />
+        </Button>
 
-      <Button
-        variant='contained'
-        color={editorMode === 'edit' ? 'primary' : 'default'}
-        onClick={() => setEditorMode('edit')}
-      >
-        <EditIcon />
-      </Button>
+        <Button
+          variant='contained'
+          color={editorMode === 'edit' ? 'primary' : 'default'}
+          onClick={() => setEditorMode('edit')}
+        >
+          <EditIcon />
+        </Button>
+      </Box>
+
+      <Box width="40%" my={1}>
+        <SelectCustom
+          label='fallbackLocale'
+          onChangeSelect={(e) => updateData((c) => ({ ...c, fallbackLocale: e.target.value }))}
+          selectOptions={availableLocales}
+          value={templateData?.fallbackLocale || ''}
+        />
+      </Box>
     </Box>
   );
 
@@ -109,7 +121,13 @@ const EmailBuilderDetailsView = ({
       )}
 
       {curTab === 1 && (
-        <CustomCard title={localization.t('labels.editor')} extraActions={<ExtraActions />} mt={0}>
+        <CustomCard
+          noTitleSpace
+          showDivider
+          extraActions={<ExtraActions />}
+          mt={0}
+          justifyContent='space-between'
+        >
           <TemplateEditor
             data={templateData}
             firstSampleData={firstSampleData}

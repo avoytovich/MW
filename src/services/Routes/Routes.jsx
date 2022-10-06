@@ -19,18 +19,19 @@ import {
 
 import MainLayout from '../../layouts/MainLayout';
 import AuthorizationLayout from '../../layouts/AuthorizationLayout';
-import Session from '../session';
+// import Session from '../session';
 import OnboardingLayout from '../../layouts/OnboardingLayout/OnboardingLayout';
 
 const Routes = () => {
   const location = useLocation();
   const isOnboard = location.pathname.split('/').includes('onboard');
 
-  useEffect(() => {
+  /* useEffect(() => {
     const { pathname } = location;
 
     Session.setRedirect(pathname);
-  }, []);
+  }, []); */
+
   const account = useSelector(({ account: acc }) => acc);
   getLanguagesOptions();
   getCountriesOptions();

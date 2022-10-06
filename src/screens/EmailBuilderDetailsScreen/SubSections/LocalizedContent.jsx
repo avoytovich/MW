@@ -82,15 +82,13 @@ const LocalizedContent = ({
   useEffect(() => setCurTab(selectedLang), [selectedLang]);
 
   return (
-    <Box display='flex' width='100%'>
-      <Box width='20%'>
+    <Box display='flex' width='100%' flexDirection='column'>
+      <Box width='100%'>
         <Tabs
-          orientation='vertical'
           indicatorColor='primary'
           variant='scrollable'
           scrollButtons={false}
           value={curTab}
-          style={{ borderRight: '1px solid #e2e2e2', height: '100%' }}
           onChange={(e, newTab) => {
             setSelectedLang(newTab);
             setCurTab(newTab);
@@ -103,9 +101,15 @@ const LocalizedContent = ({
               key={locale}
               value={locale}
               component={forwardRef(({ children, ...props }, ref) => locale && (
-                <div role='button' {...props} ref={ref}>
+                <div role='button' {...props} ref={ref} style={{ fontSize: '16px' }}>
                   {children}
-                  <ClearIcon onClick={(e) => removeLocale(e, locale)} className={locale !== data.fallbackLocale ? '' : 'disabled'} />
+                  <ClearIcon
+                    style={{
+                      marginLeft: '10px',
+                    }}
+                    onClick={(e) => removeLocale(e, locale)}
+                    className={locale !== data.fallbackLocale ? '' : 'disabled'}
+                  />
                 </div>
               ))}
             />
@@ -115,20 +119,32 @@ const LocalizedContent = ({
             label='Add Language'
             value={0}
             component={forwardRef(({ children, ...props }, ref) => (
-              <div role='button' {...props} style={{ minWidth: '100%', cursor: 'pointer' }} ref={ref}>
-                <SelectCustom
-                  label='addLanguage'
-                  isDisabled={curTab !== 0}
-                  value={newLangValue}
-                  selectOptions={availableLocales
-                    .filter((l) => !availLocales?.filter((a) => a === l.id)?.length)}
-                  onChangeSelect={(e) => setNewLangValue(e.target.value)}
-                />
+              <div
+                role='button'
+                style={{
+                  minWidth: curTab === 0 ? '240px' : 'unset',
+                  padding: '10px 15px',
+                  cursor: 'pointer',
+                  minHeight: '76px',
+                }}
+                ref={ref}
+                {...props}
+              >
+                {curTab === 0 && (
+                  <SelectCustom
+                    label='addLanguage'
+                    isDisabled={curTab !== 0}
+                    value={newLangValue}
+                    selectOptions={availableLocales
+                      .filter((l) => !availLocales?.filter((a) => a === l.id)?.length)}
+                    onChangeSelect={(e) => setNewLangValue(e.target.value)}
+                  />
+                )}
 
                 <div hidden>{children}</div>
                 <AddCircleIcon
                   color='primary'
-                  style={{ marginLeft: 15 }}
+                  style={{ marginLeft: curTab === 0 ? 15 : 0 }}
                   onClick={addLocale}
                 />
               </div>
@@ -137,7 +153,7 @@ const LocalizedContent = ({
         </Tabs>
       </Box>
 
-      <Box display='flex' flexDirection='row' alignItems='baseline' width='80%' position='relative'>
+      <Box display='flex' flexDirection='row' alignItems='baseline' width='100%' position='relative' mt='10px'>
         {!!curTab && (
           <LocalizationInputs
             handleChange={setData}
