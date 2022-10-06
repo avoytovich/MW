@@ -27,14 +27,20 @@ const CodeEditor = ({
   isReadOnly,
   editorName = 'codeEditor',
   title,
+  noTitle,
   isRequired,
+  height,
+  fontSize = 14,
 }) => {
   const label = title ? localization.t(`labels.${title}`) : `${mode} ${localization.t('labels.editor')}`;
   return (
     <Box display='flex' flexDirection='column' width='100%'>
-      <Box pt={2} pb={1}>
-        <Typography>{`${label} ${isRequired ? '*' : ''}`}</Typography>
-      </Box>
+      {!noTitle && (
+        <Box pt={2} pb={1}>
+          <Typography>{`${label} ${isRequired ? '*' : ''}`}</Typography>
+        </Box>
+      )}
+
       <Box
         bgcolor='#fff'
         p={1}
@@ -46,6 +52,8 @@ const CodeEditor = ({
           theme='tomorrow'
           name={editorName}
           width='100%'
+          height={height}
+          fontSize={fontSize}
           setOptions={{
             showInvisibles: true,
             showPrintMargin: false,
@@ -53,7 +61,6 @@ const CodeEditor = ({
           }}
           minLines={10}
           onChange={onChangeHandler}
-          fontSize={14}
           highlightActiveLine
           value={value}
         />
@@ -70,7 +77,9 @@ CodeEditor.propTypes = {
   editorName: PropTypes.string,
   title: PropTypes.string,
   isRequired: PropTypes.bool,
-
+  noTitle: PropTypes.bool,
+  height: PropTypes.string,
+  fontSize: PropTypes.string,
 };
 
 export default CodeEditor;
