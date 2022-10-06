@@ -1,17 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box, Typography, Grid, Link,
-} from '@mui/material';
+import { Box, Grid, Link, Typography } from '@mui/material';
 import { FileCopy } from '@mui/icons-material';
 import { toast } from 'react-toastify';
 
 import localization from '../../../localization';
 import {
-  NumberInput,
-  InputCustom,
-  SwitchInput,
   AutocompleteWithChips,
+  InputCustom,
+  NumberInput,
+  SwitchInput,
 } from '../../../components/Inputs';
 
 const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
@@ -113,7 +111,7 @@ const General = ({ currentCustomer, setCurrentCustomer, selectOptions }) => {
           <Typography>
             API Secret is attached to
             {' '}
-            <Link href="/settings/identities">identities</Link>
+            <Link href="/settings/users">identities</Link>
             {' '}
             having clientId = "api-services"
           </Typography>
