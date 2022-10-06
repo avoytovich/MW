@@ -24,6 +24,7 @@ import OnboardingLayout from '../../layouts/OnboardingLayout/OnboardingLayout';
 
 const Routes = () => {
   const location = useLocation();
+  const isOnboard = location.pathname.split('/').includes('onboard');
 
   useEffect(() => {
     const { pathname } = location;
@@ -62,7 +63,7 @@ const Routes = () => {
             <SignedRoutes />
           </Suspense>
         </MainLayout>
-      ) : location.pathname.includes('onboard') ? (
+      ) : isOnboard ? (
         <OnboardingLayout />
       ) : (
         <AuthorizationLayout>
