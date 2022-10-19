@@ -35,7 +35,7 @@ import {
 
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import Popup from '../../../components/Popup';
-
+import { notShowMaxPaymentsPart } from '../utils';
 import {
   lifeTime,
   type,
@@ -58,8 +58,6 @@ const General = ({
   errors,
   setErrors,
 }) => {
-  const [lifeTimeUpdateValue, setLifeTimeUpdateValue] = useState({ number: 1, value: '' });
-  const [showLifeTimeNumber, setShowLifeTimeNumber] = useState(false);
   const [countrySelection, setCountrySelection] = useState('blocked');
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
   const [updSelectedCountries, setUpdSelectedCountries] = useState(0);
@@ -138,7 +136,7 @@ const General = ({
   }, [currentProductData?.blackListedCountries]);
 
   useEffect(() => {
-    if (checkValue(lifetime) === 'PERMANENT' && checkValue(subscriptionTemplate)) {
+    if (checkValue(lifetime.name) === 'PERMANENT' && checkValue(subscriptionTemplate)) {
       setErrorLifetime(true);
       setErrorTextLifetime(localization.t('labels.errorProductPerAndSub'));
     } else {
@@ -146,59 +144,6 @@ const General = ({
       setErrorTextLifetime(false);
     }
   }, [lifetime, subscriptionTemplate]);
-
-  useEffect(() => {
-    let LifeTimeNumber = false;
-    const lT = checkValue(currentProductData?.lifeTime);
-
-    const res = lT.match(/[a-zA-Z]+|[0-9]+/g);
-
-    if (res && res?.length > 1 && res[1]) {
-      setLifeTimeUpdateValue({ number: res[0], value: res[1] });
-
-      LifeTimeNumber = res[1] === 'MONTH' || res[1] === 'YEAR' || res[1] === 'DAY';
-    } else if (res) {
-      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: lT });
-
-      LifeTimeNumber = res[0] === 'MONTH' || res[0] === 'YEAR' || res[0] === 'DAY';
-    } else {
-      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: '' });
-    }
-
-    setShowLifeTimeNumber(LifeTimeNumber);
-  }, [currentProductData?.lifeTime?.state]);
-
-  useEffect(() => {
-    const newLifeTime = showLifeTimeNumber ? `${lifeTimeUpdateValue.number}${lifeTimeUpdateValue.value}` : lifeTimeUpdateValue.value;
-
-    // eslint-disable-next-line no-nested-ternary
-    currentProductData?.lifeTime?.state
-      ? currentProductData?.lifeTime?.state === 'inherits'
-        ? setProductData({
-          ...currentProductData,
-          lifeTime: {
-            ...currentProductData.lifeTime,
-            parentValue: newLifeTime,
-          },
-        }) : setProductData({
-          ...currentProductData,
-          lifeTime: {
-            ...currentProductData.lifeTime,
-            value: newLifeTime,
-          },
-        }) : setProductData({ ...currentProductData, lifeTime: newLifeTime });
-  }, [lifeTimeUpdateValue]);
-
-  useEffect(() => {
-    if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number === '7') {
-      setShowLifeTimeNumber(false);
-      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, number: 1, value: '7DAY' });
-    } else if (lifeTimeUpdateValue.value === 'DAY' && lifeTimeUpdateValue.number >= 8) {
-      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, number: 1 });
-    } else if (lifeTimeUpdateValue.value === 'MONTH' && lifeTimeUpdateValue.number > 24) {
-      setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, number: 24 });
-    }
-  }, [lifeTimeUpdateValue.value, lifeTimeUpdateValue.number]);
 
   useEffect(() => {
     const checkedSelected = checkValue(selectedCountries) || [];
@@ -422,50 +367,67 @@ const General = ({
 
         <Box display='flex'>
           <Box p={2} minWidth='170px' display='flex'>
-            <InheritanceField
-              field='lifeTime'
-              buttonStyles={{ maxHeight: errorLifetime ? '56px' : 'unset' }}
-              onChange={setProductData}
-              value={currentProductData?.lifeTime}
-              selectOptions={lifeTime || []}
-              parentId={parentId}
-              currentProductData={currentProductData}
-            >
-              <Box display='flex'>
-                <SelectCustom
-                  label='lifeTime'
-                  gridArea='lifeTime'
-                  isDisabled={currentProductData?.lifeTime?.state === 'inherits'}
-                  value={checkValue(lifeTimeUpdateValue?.value)}
-                  selectOptions={lifeTime}
-                  onChangeSelect={(e) => {
-                    setShowLifeTimeNumber(e.target.value === 'MONTH' || e.target.value === 'YEAR' || e.target.value === 'DAY');
-                    setLifeTimeUpdateValue({ ...lifeTimeUpdateValue, value: e.target.value });
-                  }}
-                  hasError={errorLifetime}
-                  helperText={errorTextLifetime}
-                />
-
-                {showLifeTimeNumber && (
+            <Box display='flex'>
+              {!notShowMaxPaymentsPart.includes(checkValue(currentProductData?.lifeTime)?.name)
+                && (
                   <Box minWidth='165px' p={2} gridArea='count'>
-                    <NumberInput
-                      isDisabled={currentProductData?.lifeTime?.state === 'inherits'}
-                      label='maxPaymentsPart'
-                      value={lifeTimeUpdateValue.number}
-                      onChangeInput={(e) => {
-                        setLifeTimeUpdateValue({
-                          ...lifeTimeUpdateValue,
-                          // eslint-disable-next-line no-nested-ternary
-                          number: e.target.value > 99
-                            ? 99 : e.target.value < 1 ? 1 : e.target.value,
-                        });
-                      }}
-                      minMAx={{ min: 1, max: 99 }}
-                    />
+                    <InheritanceField
+                      field='maxPaymentsPart'
+                      onChange={setProductData}
+                      value={currentProductData?.lifeTime}
+                      parentId={parentId}
+                      currentProductData={currentProductData}
+                    >
+                      <NumberInput
+                        label='maxPaymentsPart'
+                        value={currentProductData?.lifeTime?.number}
+                        onChangeInput={(e) => {
+                          if (e.target.value === '7' && currentProductData?.lifeTime.name === 'DAY') {
+                            setProductData({
+                              ...currentProductData,
+                              lifeTime: { ...currentProductData.lifeTime, name: '7DAY', number: 1 },
+                            });
+                          } else {
+                            setProductData({
+                              ...currentProductData,
+                              lifeTime: {
+                                ...currentProductData.lifeTime,
+                                number: e.target.value,
+                              },
+                            });
+                          }
+                        }}
+                        minMAx={{ min: 1, max: 99 }}
+                      />
+                    </InheritanceField>
                   </Box>
                 )}
-              </Box>
-            </InheritanceField>
+              <InheritanceField
+                field='lifeTime'
+                onChange={setProductData}
+                value={currentProductData?.lifeTime}
+                parentId={parentId}
+                currentProductData={currentProductData}
+              >
+                <SelectCustom
+                  label='lifeTime'
+                  hasError={errorLifetime}
+                  helperText={errorTextLifetime}
+                  value={currentProductData?.lifeTime?.name}
+                  selectOptions={lifeTime}
+                  onChangeSelect={(e) => {
+                    const newValue = { ...currentProductData.lifeTime, name: e.target.value };
+                    if (notShowMaxPaymentsPart.includes(e.target.value)) {
+                      newValue.number = 1;
+                    }
+                    setProductData({
+                      ...currentProductData,
+                      lifeTime: newValue,
+                    });
+                  }}
+                />
+              </InheritanceField>
+            </Box>
           </Box>
         </Box>
       </Box>

@@ -61,7 +61,44 @@ const InheritanceField = (props) => {
       });
       return;
     }
-
+    if (field === 'lifeTime') {
+      onChange({
+        ...currentProductData,
+        [field]: {
+          ...inheritanceValue,
+          value: {
+            ...inheritanceValue.value,
+            name: val?.target?.value,
+          },
+        },
+      });
+      return;
+    }
+    if (field === 'maxPaymentsPart') {
+      if (val?.target?.value === '7' && currentProductData.lifeTime.value.name === 'DAY') {
+        onChange({
+          ...currentProductData,
+          lifeTime: {
+            ...inheritanceValue,
+            value: {
+              name: '7DAY', number: 1,
+            },
+          },
+        });
+      } else {
+        onChange({
+          ...currentProductData,
+          lifeTime: {
+            ...inheritanceValue,
+            value: {
+              ...inheritanceValue.value,
+              number: val?.target?.value,
+            },
+          },
+        });
+      }
+      return;
+    }
     if (field === 'defaultCurrency') {
       onChange({
         ...currentProductData,
@@ -112,6 +149,12 @@ const InheritanceField = (props) => {
 
   if (field === 'defaultCurrency') {
     inputValue = inputValue[field];
+  }
+  if (field === 'lifeTime') {
+    inputValue = inputValue.name;
+  }
+  if (field === 'maxPaymentsPart') {
+    inputValue = inputValue.number;
   }
 
   const inputProps = {
@@ -184,7 +227,7 @@ const InheritanceField = (props) => {
     buttonAction && buttonAction();
   };
 
-  if (field === 'defaultCurrency') {
+  if (field === 'defaultCurrency' || field === 'maxPaymentsPart') {
     return newChildren;
   }
 

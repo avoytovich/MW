@@ -190,8 +190,10 @@ const productRequiredFields = (product) => {
       index,
     }));
   }
+  const res = product.lifeTime !== '7DAY' ? product.lifeTime.match(/[a-zA-Z]+|[0-9]+/g) : ['7DAY'];
+  const lifeTime = { number: res[1] ? res[0] : '1', name: res[1] ? res[1] : res[0] };
   return {
-    ...defaultProduct, ...product, resources: resourcesKeys || [], priceByCountryByCurrency,
+    ...defaultProduct, ...product, resources: resourcesKeys || [], priceByCountryByCurrency, lifeTime,
   };
 };
 const structureProdAutocompleteSelectOptions = ({
@@ -404,7 +406,6 @@ const backToFront = (
 
     return value;
   }, iResource);
-
   return iResource;
 };
 
