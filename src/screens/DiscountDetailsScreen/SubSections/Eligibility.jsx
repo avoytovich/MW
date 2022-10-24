@@ -8,7 +8,7 @@ import {
   Grid,
   TextField,
   Chip,
-  Autocomplete,
+  Autocomplete, Radio, RadioGroup,
 } from '@mui/material';
 
 import { email } from '../../../services/helpers/inputValidators';
@@ -18,7 +18,7 @@ import EditKeyValueInputs from '../EditKeyValueInputs';
 import localization from '../../../localization';
 import {
   AutocompleteWithChips,
-  AutocompleteCustom,
+  AutocompleteCustom, InputCustom,
 } from '../../../components/Inputs';
 import { getCurrency } from '../../../services/selectOptions/selectOptions';
 import { getCountriesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
@@ -88,6 +88,54 @@ const Eligibility = ({
             label='Billing Plan'
           />
         </Box>
+        {curDiscount?.sources?.indexOf('SUBSCRIPTION') >= 0 && (
+          <Box p={2}>
+            <RadioGroup
+              row
+              data-test='sourses'
+              aria-label="Sourses"
+              name="Sourses"
+              value={curDiscount.subscriptionSubSources}
+              onChange={(e) => setCurDiscount({
+                ...curDiscount,
+                subscriptionSubSources: [e.target.value],
+              })}
+            >
+              <FormControlLabel
+                value="TRIAL_CONVERSION"
+                control={<Radio color="primary" />}
+                label="Trial"
+              />
+              <FormControlLabel
+                value="SUBSCRIPTIONID"
+                control={<Radio color="primary" />}
+                label="Subscription id"
+              />
+              <FormControlLabel
+                value="RENEWAL"
+                control={<Radio color="primary" />}
+                label="Renewal"
+              />
+            </RadioGroup>
+          </Box>
+        )}
+        {curDiscount.subscriptionSubSources?.includes('SUBSCRIPTIONID')
+          && curDiscount.sources?.includes('SUBSCRIPTION') && (
+          <Box p={2}>
+            <InputCustom
+              data-test='subscriptionIdInput'
+              label="subscriptionIdInput"
+              isRequired
+              helperText='Subscription id is required when subscription source selected'
+              hasError={curDiscount.subscriptionId === ''}
+              value={curDiscount?.subscriptionId}
+              onChangeInput={(e) => setCurDiscount({
+                ...curDiscount,
+                subscriptionId: e.target.value,
+              })}
+            />
+          </Box>
+        )}
         <Box pt={2} pl={2}>
           <Typography>{localization.t('labels.endUserTypes')}</Typography>
         </Box>

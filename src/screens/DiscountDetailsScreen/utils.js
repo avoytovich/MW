@@ -124,7 +124,9 @@ const discountRequiredFields = (discount) => {
   if (resObj.discountRate && resObj.discountRate < 1) {
     resObj.discountRate = discount.discountRate * 100;
   }
-
+  if (resObj.subscriptionId) {
+    resObj.subscriptionSubSources = ['SUBSCRIPTIONID'];
+  }
   return resObj;
 };
 export {
