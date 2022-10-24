@@ -87,7 +87,7 @@ LocalizationInputs.propTypes = {
 };
 
 const DefaultLanguage = ({
-  myRef, curData, selectOptions, onChange, parentId,
+  myRef, curData, selectOptions, onChange, parentId, errors,
 }) => (
   <Box p={2} width='50%' display='flex' ref={myRef}>
     <InheritanceField
@@ -104,12 +104,15 @@ const DefaultLanguage = ({
         onSelect={(newValue) => onChange(newValue)}
         selectOptions={selectOptions || []}
         curValue={checkValue(curData.fallbackLocale)}
+        error={errors?.localizedContent?.defaultLanguage}
+        helperText={errors?.localizedContent?.defaultLanguage && 'Required'}
       />
     </InheritanceField>
   </Box>
 );
 
 DefaultLanguage.propTypes = {
+  errors: PropTypes.object,
   curData: PropTypes.object,
   selectOptions: PropTypes.array,
   onChange: PropTypes.func,

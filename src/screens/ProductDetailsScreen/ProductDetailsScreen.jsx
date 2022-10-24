@@ -604,7 +604,8 @@ const ProductDetailsScreen = () => {
           : `${productData?.genericName?.value || productData?.genericName} - ${id}`
       }
       saveIsDisabled={saveDisabled || tabsDisabled || lifetimeSaveDisabled
-        || !jsonIsValid || priceTableError.length > 0 || Object.keys(localizedErrors).length}
+        || !jsonIsValid || priceTableError.length > 0 || Object.keys(localizedErrors).length
+          || curLocalizedData?.fallbackLocale === '' || curLocalizedData?.fallbackLocale?.value === ''}
       hasChanges={productHasChanges || !productData?.id
         || localizedContentHasChanges}
       isLoading={isLoading}
@@ -641,6 +642,7 @@ const ProductDetailsScreen = () => {
           curTab={curTab}
           handleChangeTab={handleChangeTab}
           currentProductData={currentProductData}
+          curLocalizedData={curLocalizedData}
           parentId={parentId || currentProductData?.parentId}
           selectOptions={selectOptions}
           backToParent={backToParent}

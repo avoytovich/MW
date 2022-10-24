@@ -22,6 +22,7 @@ const ProductDetailsTabs = ({
   curTab,
   handleChangeTab,
   currentProductData,
+  curLocalizedData,
   parentId,
   selectOptions,
   backToParent,
@@ -32,6 +33,7 @@ const ProductDetailsTabs = ({
     if (tabs?.scope === 'product' && tabLabelsProduct.includes(tabs?.tabLabels?.[tabs.curTab])) {
       productHightLight(
         currentProductData,
+        curLocalizedData,
         tabs?.priceTableError,
         tabs?.errors,
         tabs?.setErrors,
@@ -39,7 +41,14 @@ const ProductDetailsTabs = ({
         tabs?.localizedErrors,
       );
     }
-  }, [currentProductData, tabs?.curTab, tabs?.priceTableError, tabs?.localizedErrors]);
+  },
+  [
+    currentProductData,
+    curLocalizedData,
+    tabs?.curTab,
+    tabs?.priceTableError,
+    tabs?.localizedErrors,
+  ]);
 
   return (
     <Tabs
@@ -102,6 +111,7 @@ ProductDetailsTabs.propTypes = {
   curTab: PropTypes.number,
   handleChangeTab: PropTypes.func,
   currentProductData: PropTypes.object,
+  curLocalizedData: PropTypes.object,
   parentId: PropTypes.string,
   selectOptions: PropTypes.object,
   backToParent: PropTypes.bool,
