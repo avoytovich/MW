@@ -162,6 +162,7 @@ const ProductDetailsView = ({
       >
         <LocalizedContent
           myRef={refScrool[3]}
+          errors={errors}
           localizedErrors={localizedErrors}
           setLocalizedErrors={setLocalizedErrors}
           curLocalizedData={curLocalizedData}

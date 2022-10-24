@@ -13,13 +13,16 @@ const hightLightPrices = (curData, priceTableError) => (
     ? null : false
 );
 
-const hightLightLocalizedContent = (localizedErrors) => (
+const hightLightLocalizedContent = (localizedErrors, curLocalizedData) => (
   (!Object.keys(localizedErrors).length)
+    && (curLocalizedData?.fallbackLocale !== '')
+      && ((curLocalizedData?.fallbackLocale?.value !== ''))
     ? null : false
 );
 
 const productHightLight = (
   curData,
+  curLocalizedData,
   priceTableError,
   errors = {},
   setErrors = () => {},
@@ -72,7 +75,8 @@ const productHightLight = (
         },
         [tabs?.tabLabels?.[tabs.curTab]]: {
           ...errors?.[tabs?.tabLabels?.[tabs.curTab]],
-          isFulfilled: hightLightLocalizedContent(localizedErrors),
+          isFulfilled: hightLightLocalizedContent(localizedErrors, curLocalizedData),
+          defaultLanguage: curLocalizedData?.fallbackLocale === '' || curLocalizedData?.fallbackLocale?.value === '',
           marketingName: !!Object.keys(localizedErrors).length,
         },
       });

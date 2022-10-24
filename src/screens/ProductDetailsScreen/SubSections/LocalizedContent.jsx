@@ -44,6 +44,7 @@ const LocalizedContent = ({
   setLocalizedErrors,
   descriptionData,
   parentDescriptionData = false,
+  errors,
 }) => {
   const [descrEditorData, setDescrEditorData] = useState({ ...defaultEditorData });
   const availableLocales = getLanguagesOptions();
@@ -94,6 +95,7 @@ const LocalizedContent = ({
               selectOptions={availableLocales}
               onChange={handleChangeDefaultLanguage}
               parentId={parentId}
+              errors={errors}
             />
             <LocalizedContentInputs
               parentId={parentId}
