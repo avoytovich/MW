@@ -848,7 +848,7 @@ const General = ({
                                 <Box display='flex'>
                                   {variableValueDescriptions?.map(
                                     ({ descValue, description: _description }) => {
-                                      const labelDescription = ['val1', 'val2', 'val3'].includes(_description) ? '' : _description;
+                                      const labelDescription = _description.startsWith('val') ? '' : _description;
                                       return (
                                         <FormControlLabel
                                           key={_description}
@@ -870,7 +870,7 @@ const General = ({
                                 value={checkValue(currentProductData[description])}
                                 selectOptions={variableValueDescriptions
                                   ?.map(({ descValue, description: _description }) => ({
-                                    value: `${_description} ${descValue}`, id: _description,
+                                    value: `${_description.startsWith('val') ? '' : _description} ${descValue}`, id: _description,
                                   })) || []}
                               />
                             )
