@@ -145,6 +145,8 @@ const Subscription = ({
 
           <Box p={2}>
             <InheritanceField
+              additionalField='trialDuration'
+              additionalValue={currentProductData?.trialDuration}
               field='trialAllowed'
               onChange={setProductData}
               value={currentProductData?.trialAllowed}
