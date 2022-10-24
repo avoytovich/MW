@@ -9,6 +9,7 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
+import PermIdentity from '@mui/icons-material/PermIdentity';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import HandleSearchSection from './HandleSearchSection';
 import NavItem from './NavItem';
@@ -16,6 +17,7 @@ import CollapsableNav from './CollapsableNav';
 import CustomerHandling from '../CustomerHandling';
 import LogoHome from '../utils/LogoHome';
 import navConfig from './config';
+import useSessionCountDown from '../../services/hooks/useSessionCountDown';
 import localization from '../../localization';
 import './SideBar.scss';
 
@@ -25,6 +27,8 @@ const SideBar = ({ toggleDrawer, open }) => {
   const [inputValue, setInputValue] = useState('');
   const [curNavConfig, setCurNavConfig] = useState(navConfig);
   const [openAllSections, setOpenAllSections] = useState(false);
+
+  const timer = useSessionCountDown();
 
   const handleUpdateValue = (value) => {
     const searchValue = value.toLowerCase();
@@ -73,6 +77,15 @@ const SideBar = ({ toggleDrawer, open }) => {
           >
             <Box display='flex' flexDirection='row'>
               <LogoHome wrapperHeight={64} height={32} width={107} />
+              <Box
+                display='flex'
+                justifyContent='center'
+                alignItems='center'
+                style={{ color: timer ? 'green' : 'red' }}
+              >
+                <PermIdentity />
+                {timer}
+              </Box>
               <IconButton
                 edge='start'
                 aria-label='menu'
