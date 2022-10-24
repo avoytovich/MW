@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -76,6 +77,8 @@ const General = ({
   const countriesOptions = getCountriesOptions();
 
   const { lifeTime: lifetime, subscriptionTemplate, fulfillmentTemplate } = currentProductData;
+
+  const { id } = useParams();
 
   const withValidation = (target) => {
     if (!target.value) {
@@ -248,6 +251,19 @@ const General = ({
       setSelectedCountries([...newCountries]);
     }
   }, [countrySelection, updSelectedCountries]);
+
+  useEffect(() => {
+    if (id !== 'add') {
+      setErrors((s) => ({
+        ...s,
+        general: {
+          name: !currentProductData.genericName,
+          type: !currentProductData.type,
+          publisherRefId: !currentProductData.publisherRefId,
+        },
+      }));
+    }
+  }, [currentProductData]);
 
   return (
     <>
