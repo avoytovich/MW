@@ -236,7 +236,7 @@ const generateData = (orderData, paymentData) => {
         label: localization.t('labels.transactionID'),
         value: orderData?.payment?.transactionId || emptyValue,
         link: 'external',
-        path: `https://stagingpayment.nexway.com/bo/transactions/details/transaction/${orderData?.payment?.transactionId}`,
+        path: `https://${process?.env?.ENV_MODE === 'production' ? 'directpayment' : 'stagingpayment'}.nexway.com/bo/transactions/details/transaction/${orderData?.payment?.transactionId}`,
         shouldCopy: orderData?.payment?.transactionId,
       },
       {
