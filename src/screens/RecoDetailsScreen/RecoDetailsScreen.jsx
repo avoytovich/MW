@@ -6,6 +6,7 @@ import {
   recoRequiredFields,
   formateProductOptions,
   fromArrayToObj,
+  formateProductOptionsForGenericNameOnly,
 } from './utils';
 import parentPaths from '../../services/paths';
 import { structureSelectOptions } from '../../services/helpers/dataStructuring';
@@ -30,14 +31,12 @@ const RecoDetailsScreen = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
   const [curTab, setCurTab] = useState(0);
-
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
     products: null,
     productsByParent: null,
     prodRecommendation: null,
   });
-
   const beforeSend = () => {
     const localizedDesc = {};
     Object.keys(curReco.localizedDesc).forEach((lang) => {
@@ -83,8 +82,8 @@ const RecoDetailsScreen = () => {
     recoRequest.then(({ data }) => {
       const checkedReco = recoRequiredFields(data);
       Promise.allSettled([
-        api.getStores({ filters: `&customerId=${data.customerId}` }),
-        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}` }),
+        api.getStores({ size: 10, filters: `&customerId=${data.customerId}` }),
+        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}`}),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}&parentId=${null}` }),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}`, notAddParentId: true }),
       ]).then(
@@ -94,15 +93,20 @@ const RecoDetailsScreen = () => {
           parentProductOptions,
           recoOptions,
         ]) => {
-          const products = formateProductOptions(productOptions.value?.data?.items) || [];
-          const productsByParent = formateProductOptions(parentProductOptions.value?.data?.items)
+          const products = formateProductOptionsForGenericNameOnly(
+            productOptions.value?.data?.items,
+          ) || [];
+          const productsByParent = formateProductOptionsForGenericNameOnly(
+            parentProductOptions.value?.data?.items,
+          )
             || [];
-          const prodRecommendation = formateProductOptions(recoOptions.value?.data?.items)
+          const prodRecommendation = formateProductOptionsForGenericNameOnly(
+            recoOptions.value?.data?.items,
+          )
             || [];
           let eligibleProductIds = [...checkedReco.eligibleProductIds];
           let eligibleParentProductIds = [...checkedReco.eligibleParentProductIds];
           const productIds = [];
-
           if (checkedReco.productIds.length) {
             checkedReco.productIds.forEach((u) => {
               const res = products.find((el) => el.id === u);
@@ -143,7 +147,7 @@ const RecoDetailsScreen = () => {
               structureSelectOptions(
                 {
                   options: storeOptions.value?.data.items,
-                  optionValue: 'displayName',
+                  optionValue: 'name',
                 },
               ) || [],
             products,

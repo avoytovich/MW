@@ -83,6 +83,19 @@ const formateProductOptions = (options) => {
   }
   return res;
 };
+const formateProductOptionsForGenericNameOnly = (options) => {
+  let res = [];
+  if (options) {
+    res = options.map((option) => {
+      const resObj = {
+        id: option.id,
+        value: `${option.genericName}`,
+      };
+      return resObj;
+    });
+  }
+  return res;
+};
 const filterOptions = (all, selected, currentValue) => {
   const res = all.filter(
     (option) => !selected.includes(option.id) || option.id === currentValue,
@@ -93,6 +106,7 @@ const filterOptions = (all, selected, currentValue) => {
 export {
   recoRequiredFields,
   formateProductOptions,
+  formateProductOptionsForGenericNameOnly,
   fromObjectToArray,
   filterOptions,
   fromArrayToObj,
