@@ -142,6 +142,7 @@ const labels = {
   discount: 'Discount',
   discountRuleId: 'Discount Rule ID',
   discountRuleName: 'Discount Rule Name',
+  subscriptionIdInput: 'Subscription id',
   model: 'Model',
   discountAmount: 'Discount Amount',
   discountApply: 'Apply discount ?',

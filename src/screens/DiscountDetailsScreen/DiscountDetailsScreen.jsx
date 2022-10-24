@@ -65,6 +65,12 @@ const DiscountDetailsScreen = () => {
       res.publisherRefIds = [...curDiscount.publisherRefIds]
         .map((item) => item.id);
     }
+    if (res.subscriptionSubSources == 'RENEWAL' || res.subscriptionSubSources == 'TRIAL_CONVERSION') {
+      delete res.subscriptionId;
+    }
+    if (res.subscriptionId) {
+      res.subscriptionSubSources = [];
+    }
     return removeEmptyPropsInObject(res);
   };
 
@@ -75,7 +81,9 @@ const DiscountDetailsScreen = () => {
       name={discount?.name || `${localization.t('general.new')} ${localization.t(
         'general.discount',
       )}`}
-      saveIsDisabled={!curDiscount?.name || (curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === '')
+      saveIsDisabled={!curDiscount?.name
+        || (!curDiscount?.subscriptionId && curDiscount?.subscriptionSubSources?.includes('SUBSCRIPTIONID'))
+        || (curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === '')
         || Object.keys(localizedErrors).length}
       hasChanges={hasChanges}
       isLoading={isLoading}
