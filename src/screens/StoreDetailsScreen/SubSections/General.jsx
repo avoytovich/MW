@@ -309,7 +309,7 @@ const General = ({
             })}
             selectOptions={availableLocales || []}
             curValue={currentStoreData.defaultLocale}
-            hasError={!!errors?.general?.defaultLocale}
+            error={!!errors?.general?.defaultLocale}
             helperText={errors?.general?.defaultLocale && localization.t('errorNotifications.required')}
           />
         </Box>

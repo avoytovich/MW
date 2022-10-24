@@ -50,9 +50,10 @@ const hightLightGeneral = (curData, customer) => (
   (curData.name)
     && (curData.displayName)
       && (curData.routes[0]?.hostname)
-      // For EmailSenderOverride
-      // && ((curData.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`))
-      //   || (curData.emailSenderOverride === customer?.iamClient?.realmName))
+       && (curData.defaultLocale)
+  // For EmailSenderOverride
+  // && ((curData.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`))
+  //   || (curData.emailSenderOverride === customer?.iamClient?.realmName))
     ? null : false
 );
 
@@ -96,6 +97,11 @@ const storeHightLight = (
       ...errors,
       general: {
         ...errors?.general,
+        name: !!errors?.general?.name || !curData.name,
+        displayName: !!errors?.general?.displayName || !curData.displayName,
+        routes: !!errors?.general?.routes || !curData.routes
+          ?.map((el) => !el.hostname).some((el) => !el === true),
+        defaultLocale: !!errors?.general?.defaultLocale || !curData.defaultLocale,
         isFulfilled: hightLightGeneral(curData, customer),
       },
       payment: {
@@ -108,13 +114,8 @@ const storeHightLight = (
       ...errors,
       payment: {
         ...errors?.payment,
+        // here has to be same as in '!== general'
         isFulfilled: hightLightPayment(curData, isRankingOpen),
-      },
-      general: {
-        name: !!errors?.general?.name || !curData.name,
-        displayName: !!errors?.general?.displayName || !curData.displayName,
-        routes: !!errors?.general?.routes || !curData.routes
-          ?.map((el) => !el.hostname).some((el) => !el === true),
       },
     });
   }
