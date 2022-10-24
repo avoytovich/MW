@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Button, Tooltip } from '@mui/material';
 import InsertLinkIcon from '@mui/icons-material/InsertLink';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
+import { checkValue } from '../../../services/helpers/dataStructuring';
 
 const InheritanceField = (props) => {
   const {
@@ -88,6 +89,16 @@ const InheritanceField = (props) => {
       });
       return;
     }
+    if (field === 'trialAllowed') {
+      onChange({
+        ...currentProductData,
+        [field]: {
+          ...inheritanceValue,
+          value: !checkValue(currentProductData?.trialAllowed),
+        },
+      });
+      return;
+    }
     onChange({
       ...currentProductData,
       [field]: {
@@ -168,7 +179,6 @@ const InheritanceField = (props) => {
         };
       }
     }
-
     onChange(newData);
 
     buttonAction && buttonAction();
