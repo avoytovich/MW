@@ -1523,6 +1523,41 @@ const filters = {
     type: 'date',
   },
   ],
+  subsidiaries: [
+    {
+      id: 'id',
+      label: localization.t('labels.id'),
+      type: 'text',
+      exactSearch: true,
+    },
+    {
+      id: 'subsidiaryId',
+      label: localization.t('labels.subsidiaryId'),
+      type: 'text',
+      exactSearch: true,
+    },
+
+    {
+      id: 'name',
+      label: localization.t('labels.name'),
+      type: 'text',
+    },
+    {
+      id: 'legalName',
+      label: localization.t('labels.legalName'),
+      type: 'text',
+    },
+    {
+      id: 'creationDate',
+      label: localization.t('labels.creationDate'),
+      type: 'date',
+    },
+    {
+      id: 'updatingDate',
+      label: localization.t('labels.updateDate'),
+      type: 'date',
+    },
+  ],
 };
 
 export default filters;

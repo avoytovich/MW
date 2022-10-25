@@ -25,6 +25,14 @@ const putApi = {
       data,
     });
   },
+  updateSubsidiaryById(id, data) {
+    const url = `/subsidiary-manager/subsidiaries/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
+    return axiosInstance({
+      method: 'put',
+      url,
+      data,
+    });
+  },
   updateCurrencyById(id, data) {
     const url = `/referential-manager/currency/${id}?reason=Nexway-Center%20PUT%20%3A%20reason%20not%20specified`;
     return axiosInstance({

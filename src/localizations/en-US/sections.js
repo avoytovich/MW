@@ -61,6 +61,9 @@ const sections = {
   countries: 'Countries',
   referentialmanager: 'Referential Manager',
   serviceconfiguration: 'Service Configuration',
+  subsidiarymanager: 'Subsidiary Manager',
+  subsidiaries: 'Subsidiaries',
+  subsidiaryrules: 'Subsidiary Rules',
 };
 
 export default sections;

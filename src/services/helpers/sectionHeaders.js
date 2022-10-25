@@ -34,6 +34,7 @@ const sideBarTitle = {
   audits: localization.t('sideBar.titles.audits'),
   crudHelper: localization.t('sideBar.titles.crudHelper'),
   'product-documentation': localization.t('sideBar.titles.productDocumentation'),
+  subsidiarymanager: localization.t('sideBar.titles.subsidiarymanager'),
   referentialManager: localization.t('sideBar.titles.referentialManager'),
   subsidiaryManager: localization.t('sideBar.titles.subsidiaryManager'),
 };

@@ -69,7 +69,6 @@ const parentPaths = {
   },
   serviceconfiguration: `${defPath}/settings/serviceconfiguration`,
 
-
   customers: `${defPath}/customermanagement/customerslist`,
   onboarding: `${defPath}/customermanagement/onboarding`,
   remittables: `${defPath}/customermanagement/remittables`,
@@ -81,7 +80,11 @@ const parentPaths = {
     localesTab: `${defPath}/serviceconfiguration/referentialmanager/locales`,
     countriesTab: `${defPath}/serviceconfiguration/referentialmanager/countries`,
   },
-  subsidiaryManager: `${defPath}/serviceconfiguration/subsidiarymanager`,
+  subsidiaryManager: {
+    main: `${defPath}/serviceconfiguration/subsidiarymanager`,
+    subsidiariesTab: `${defPath}/serviceconfiguration/subsidiarymanager/subsidiaries`,
+    subsidiaryRulesTab: `${defPath}/serviceconfiguration/subsidiarymanager/subsidiaryrules`,
+  },
 
   productdocumentation: 'https://www.nexway.com/',
   apidocumentation: 'https://apidoc.nexway.store',

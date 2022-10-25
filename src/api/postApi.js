@@ -220,6 +220,14 @@ const postApi = {
       data,
     });
   },
+  addSubsidiary(data) {
+    const url = '/subsidiary-manager/subsidiaries?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
+    return axiosInstance({
+      method: 'post',
+      url,
+      data,
+    });
+  },
   addCustomerById(data) {
     const url = '/customers?reason=Nexway-Center%20POST%20%3A%20reason%20not%20specified';
 

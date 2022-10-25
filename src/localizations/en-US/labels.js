@@ -803,6 +803,22 @@ const labels = {
   optional: 'Optional',
   valid: 'Valid',
   inEU: 'in EU',
+  legalName: 'Legal Name',
+  subsidiaryId: 'Subsidiary ID',
+  subsidiary: 'Subsidiary',
+  subsidiaries: 'Subsidiaries',
+  subsidiaryRules: 'Subsidiary Rules',
+  external: 'External',
+  adress1: 'Adress 1',
+  adress2: 'Adress 2',
+  informations1: 'Informations 1',
+  informations2: 'Informations 2',
+  countryIso2: 'Country ISO 2',
+  countryIso3: 'Country ISO 3',
+  companyCode: 'Company Code',
+  taxCode: 'Tax Code',
+  exemptionPolicy: 'Exemption Policy',
+  timeZone: 'Time Zone',
 };
 
 export default labels;

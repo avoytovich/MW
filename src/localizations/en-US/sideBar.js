@@ -53,6 +53,7 @@ const sideBar = {
     apiDocumentation: 'API Documentation',
     productDocumentation: 'Product Documentation',
     crudHelper: 'C.R.U.D. Helper',
+    subsidiarymanager: 'Subsidiary Manager',
     referentialManager: 'Referential Manager',
     subsidiaryManager: 'Subsidiary Manager',
   },

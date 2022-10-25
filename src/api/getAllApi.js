@@ -383,6 +383,24 @@ const getAllApi = {
       url,
     });
   },
+  getSubsidiary({
+    page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
+  } = defaultRequestedObject) {
+    let url = `/subsidiary-manager/subsidiaries?size=${size}&page=${page}`;
+    if (filters) {
+      url += filters;
+    }
+
+    if (sortParams) {
+      url += `&sort=${sortParams.value},${sortParams.type}`;
+    }
+
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
+
   getCountry({
     page = defaultRequestedPage, size = defaultRequestedSize, filters, sortParams,
   } = defaultRequestedObject) {

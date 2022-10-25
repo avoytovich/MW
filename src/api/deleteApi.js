@@ -146,6 +146,14 @@ const deleteApi = {
       url,
     });
   },
+  deleteSubsidiaryById(id) {
+    const url = `/subsidiary-manager/subsidiaries/${id}`;
+    return axiosInstance({
+      method: 'delete',
+      url,
+    });
+  },
+
   deleteCountryById(id) {
     const url = `/referential-manager/country/${id}`;
     return axiosInstance({
