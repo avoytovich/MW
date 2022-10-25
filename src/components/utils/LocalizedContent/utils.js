@@ -32,7 +32,7 @@ const handleValidate = (allLang, defaultLang, scope, additionalValidation) => {
         && !allErrors[lang]?.isRequired?.includes(reqField) && !isNew) {
         if (allErrors[lang].isRequired) {
           allErrors[lang].isRequired.push(reqField);
-        } else {
+        } else if (lang === defaultLang) {
           allErrors[lang].isRequired = [reqField];
         }
       }
