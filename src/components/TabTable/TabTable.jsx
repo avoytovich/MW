@@ -38,7 +38,7 @@ const TabTable = ({ tabObject }) => {
       deleteFunc(id).then(() => {
         setMakeUpdate((v) => v + 1);
         toast(
-          `${localization.t('general.translation')} ${id} ${localization.t(
+          `${id} ${localization.t(
             'general.hasBeenSuccessfullyDeleted',
           )}`,
         );

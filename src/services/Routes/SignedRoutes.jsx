@@ -300,6 +300,15 @@ const SignedRoutes = () => {
         component={lazy(() => import('../../screens/AuthenticationRealmsScreen'))}
       />
       <Route
+        path={`${parentPaths.subsidiaryManager.subsidiariesTab}/:id`}
+        component={lazy(() => import('../../screens/SubsidiaryDetailScreen'))}
+      />
+      <Route
+        path={`${parentPaths.subsidiaryManager.main}`}
+        component={lazy(() => import('../../screens/SubsidiaryManagerScreen'))}
+      />
+
+      <Route
         path={`${parentPaths.referentialManager.currenciesTab}/:id`}
         component={lazy(() => import('../../screens/CurrencyDetailScreen'))}
       />

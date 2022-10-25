@@ -30,6 +30,7 @@ const VALID_REFRESH_SCOPES = [
   'currencies',
   'locales',
   'countries',
+  'subsidiaries',
 ];
 const VALID_FILTER_SCOPES = [
   'productlist',
@@ -73,6 +74,7 @@ const VALID_FILTER_SCOPES = [
   'currencies',
   'locales',
   'countries',
+  'subsidiaries',
 ];
 
 const KNOWN_REALMS = ['/nexway', '/mynexway', '/kasperskyfrance'];

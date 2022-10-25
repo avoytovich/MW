@@ -398,6 +398,13 @@ const getOneByIdApi = {
       url,
     });
   },
+  getSubsidiaryById(id) {
+    const url = `/subsidiary-manager/subsidiaries/${id}`;
+    return axiosInstance({
+      method: 'get',
+      url,
+    });
+  },
   getCurrencyById(id) {
     const url = `/referential-manager/currency/${id}`;
     return axiosInstance({
