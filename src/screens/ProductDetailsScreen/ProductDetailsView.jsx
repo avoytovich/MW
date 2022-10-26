@@ -64,7 +64,7 @@ const ProductDetailsView = ({
       relatedContents, resources, lifeTime, subscriptionTemplate,
     } = curProductData;
 
-    let disableSave = !!(lifeTime === 'PERMANENT' && subscriptionTemplate);
+    let disableSave = !!(lifeTime.name === 'PERMANENT' && subscriptionTemplate);
 
     const rcChecked = checkValue(relatedContents);
     const resourceChecked = checkValue(resources);

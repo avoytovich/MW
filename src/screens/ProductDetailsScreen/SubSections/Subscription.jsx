@@ -100,7 +100,7 @@ const Subscription = ({
   };
 
   useEffect(() => {
-    if (lifeTime === 'PERMANENT' && subscriptionTemplate) {
+    if (lifeTime.name === 'PERMANENT' && subscriptionTemplate) {
       setErrorSubscription(true);
       setErrorTextSubscription(localization.t('labels.errorProductPerAndSub'));
     } else {
@@ -188,7 +188,7 @@ const Subscription = ({
       </Box>
 
       {
-        checkValue(lifeTime) !== 'PERMANENT' && checkValue(subscriptionTemplate) && (
+        checkValue(lifeTime).name !== 'PERMANENT' && checkValue(subscriptionTemplate) && (
           <Box display="flex" flexDirection="row" alignItems="center">
             <Box p={2} width="50%">
               <AutocompleteCustom

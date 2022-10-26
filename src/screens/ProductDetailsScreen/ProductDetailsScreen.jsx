@@ -32,6 +32,7 @@ import {
   defProductVariationObj,
   tabLabels,
   tabLabelsVariation,
+  notShowMaxPaymentsPart,
 } from './utils';
 import { setTempProductDescription } from '../../redux/actions/TempData';
 
@@ -212,8 +213,10 @@ const ProductDetailsScreen = () => {
         ? frontToBack(formatePrices)
         : { ...formatePrices };
 
-      sendObj.lifeTime = sendObj.lifeTime.toUpperCase();
-
+      if (sendObj.lifeTime) {
+        const newNumber = notShowMaxPaymentsPart.includes(sendObj.lifeTime.name) ? '' : sendObj.lifeTime.number;
+        sendObj.lifeTime = `${newNumber}${sendObj.lifeTime.name}`;
+      }
       if (!sendObj.businessSegment) {
         delete sendObj.businessSegment;
       }
@@ -307,7 +310,10 @@ const ProductDetailsScreen = () => {
         ? (currentProductData?.customerId?.value || currentProductData?.customerId?.parentValue)
         : (currentProductData?.customerId || nxState?.selectedCustomer?.id);
     }
-
+    if (dataToSave.lifeTime) {
+      const newNumber = notShowMaxPaymentsPart.includes(dataToSave.lifeTime.name) ? '' : dataToSave.lifeTime.number;
+      dataToSave.lifeTime = `${newNumber}${dataToSave.lifeTime.name}`;
+    }
     if (productData?.parentId || parentId) {
       delete dataToSave?.id;
       delete dataToSave?.descriptionId;
@@ -406,7 +412,6 @@ const ProductDetailsScreen = () => {
                 setVariablesDescriptions,
                 setProductDetails,
               );
-
               setProductData(initData);
               setCurrentProductData(result);
               setLoading(false);
@@ -416,7 +421,7 @@ const ProductDetailsScreen = () => {
             const newHashes = JSON.parse(JSON.stringify(checkedProduct));
 
             if (id === 'add') {
-              const result = backToFront(productRequiredFields(checkedProduct), checkedProduct);
+              const result = backToFront(checkedProduct, checkedProduct);
               const initData = JSON.parse(JSON.stringify(result));
 
               setProductData(initData);
@@ -592,9 +597,8 @@ const ProductDetailsScreen = () => {
   }
 
   const lifetimeSaveDisabled = currentProductData?.parentId
-    && checkValue(currentProductData?.lifeTime) === 'PERMANENT'
+    && checkValue(currentProductData?.lifeTime).name === 'PERMANENT'
     && checkValue(currentProductData?.subscriptionTemplate);
-
   return (
     <DetailPageWrapper
       nxState={nxState}

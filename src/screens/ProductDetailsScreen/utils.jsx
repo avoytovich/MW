@@ -319,7 +319,7 @@ const createKey = (obj, newCurrency) => {
   }
   return `${newCurrency}_${keyNumber}`;
 };
-
+const notShowMaxPaymentsPart = ['PERMANENT', '7DAY'];
 const beforeSend = (data) => {
   const res = { ...data };
   const { state } = data.priceByCountryByCurrency;
@@ -413,4 +413,5 @@ export {
   defProductVariationObj,
   tabLabels,
   tabLabelsVariation,
+  notShowMaxPaymentsPart,
 };
