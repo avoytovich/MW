@@ -104,7 +104,7 @@ const localizedValues = [
 ];
 
 const defaultIndependentFields = [
-  // 'fulfillmentTemplate',
+  'fulfillmentTemplate',
   'releaseDate',
   'nextGenerationOf',
   'id',
@@ -114,9 +114,10 @@ const defaultIndependentFields = [
   // 'productFamily',
   // 'priceFunction',
   // 'trialAllowed',
-  // 'subscriptionTemplate',
   // 'trialDuration',
 ];
+
+const changableFields = ['fulfillmentTemplate'];
 
 const unchangableInheritedFields = ['customerId', 'status'];
 
@@ -338,7 +339,7 @@ const types = {
   object: {},
 };
 
-const createStandaloneValue = (value) => {
+const createStandaloneValue = (value, key) => {
   if (!value?.state) return value;
 
   let valueType = typeof value.value;
@@ -346,7 +347,8 @@ const createStandaloneValue = (value) => {
   if (valueType === 'object' && Array.isArray(value.value)) {
     valueType = 'array';
   }
-  return value?.state === 'inherits' ? types[valueType] : value.value;
+
+  return (value?.state === 'inherits' && !changableFields.includes(key)) ? types[valueType] : (value?.value || value || '');
 };
 
 const createUnchangableInheritedValue = (value, key) => (value?.parentValue && key !== 'status' ? value.parentValue : (value || ''));
@@ -388,8 +390,12 @@ const backToFront = (
   let iResource = R.mergeWith(handler, inputA, inputB);
   // managing fields which cannot inherit
   iResource = R.mapObjIndexed((value, key) => {
+    if (changableFields.includes(key)) {
+      return resource[key];
+    }
+
     if (independentFields.includes(key)) {
-      return createStandaloneValue(value);
+      return createStandaloneValue(value, key);
     }
 
     if (unchangableInheritedFields.includes(key)) {
@@ -427,7 +433,7 @@ const frontToBack = (data) =>
   }, {});
 
 // eslint-disable-next-line no-nested-ternary
-const checkValue = (data) => ((!data?.state && !data?.value && data?.value !== '') ? data : data.state === 'inherits' ? data.parentValue : data.value);
+const checkValue = (data, type) => (((!data?.state && !data?.value && data?.value !== '') || changableFields.includes(type)) ? data : data.state === 'inherits' ? data.parentValue : data.value);
 
 const identityRequiredFields = (identity) => {
   const defaultIdentity = {

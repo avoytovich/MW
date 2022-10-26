@@ -22,6 +22,7 @@ const SelectCustom = ({
   isDisabled,
   name,
   withDots,
+  optionKeyName,
   hasError = false,
   helperText = '',
   testing,
@@ -62,7 +63,11 @@ const SelectCustom = ({
                   flexDirection='row'
                   flexWrap='wrap'
                 >
-                  {selectedItem?.value || selected}
+                  {
+                    selectedItem?.value
+                      || (optionKeyName && selectedItem[optionKeyName])
+                      || selected
+                  }
                 </Box>
               );
             }
@@ -82,11 +87,11 @@ const SelectCustom = ({
             .filter((so) => !usedOptions.filter((uo) => uo.id === so.id).length)
             .map((option) => (
               <MenuItem
-                key={option.id || option.value}
+                key={option.id || option.value || (optionKeyName && option[optionKeyName])}
                 value={option.id}
                 disabled={!option.configName && name === 'serviceConfig'}
               >
-                {option.value}
+                {option.value || (optionKeyName && option[optionKeyName])}
               </MenuItem>
             ))
         ) : (
@@ -124,6 +129,7 @@ SelectCustom.propTypes = {
   hasError: PropTypes.bool,
   helperText: PropTypes.string,
   testing: PropTypes.bool,
+  optionKeyName: PropTypes.string,
 };
 
 export default SelectCustom;

@@ -37,6 +37,11 @@ const EmailBuilderDetailsView = ({
   customSample,
   jsonIsValid,
   setJsonIsValid,
+  refCustomers,
+  curRefCustomer,
+  setCurRefCustomer,
+  curSelectedSample,
+  setCurSelectedSample,
   curTab,
 }) => {
   const availableLocales = [{ id: 'neutral', value: 'neutral' }, ...getLanguagesOptions()];
@@ -131,6 +136,8 @@ const EmailBuilderDetailsView = ({
           <TemplateEditor
             data={templateData}
             firstSampleData={firstSampleData}
+            samplesData={samplesData}
+            curSelectedSample={curSelectedSample}
             editorMode={editorMode}
             updateData={updateData}
             selectedLang={selectedLang}
@@ -150,7 +157,12 @@ const EmailBuilderDetailsView = ({
             jsonIsValid={jsonIsValid}
             setJsonIsValid={setJsonIsValid}
             data={samplesData}
+            curRefCustomer={curRefCustomer}
+            setCurRefCustomer={setCurRefCustomer}
             saveCustomSample={saveCustomSample}
+            refCustomers={refCustomers}
+            curSelectedSample={curSelectedSample}
+            setCurSelectedSample={setCurSelectedSample}
           />
         </CustomCard>
       )}
@@ -170,7 +182,12 @@ EmailBuilderDetailsView.propTypes = {
   customSample: PropTypes.string,
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
+  refCustomers: PropTypes.array,
   curTab: PropTypes.number,
+  curRefCustomer: PropTypes.object,
+  setCurRefCustomer: PropTypes.func,
+  curSelectedSample: PropTypes.any,
+  setCurSelectedSample: PropTypes.func,
 };
 
 export default EmailBuilderDetailsView;

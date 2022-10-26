@@ -24,6 +24,8 @@ const TemplateEditor = ({
   updateData,
   selectedLang,
   setSelectedLang,
+  samplesData,
+  curSelectedSample,
 }) => {
   const [tmplData, setTmplData] = useState(null);
   const [tmplError, setTmplError] = useState(false);
@@ -37,9 +39,13 @@ const TemplateEditor = ({
       const curLocale = data.fallbackLocale && data.templates[data.fallbackLocale]
         ? data.fallbackLocale : Object.keys(data.templates)[0];
 
+      const previewSample = (samplesData?.samples?.length
+        && curSelectedSample && samplesData?.samples[curSelectedSample])
+        ? { ...JSON.parse(samplesData.samples[curSelectedSample]) } : firstSampleData;
+
       api
         .emailTestTemplating({
-          ...firstSampleData,
+          ...previewSample,
           template: {
             locale: curLocale,
             ...data.templates[curLocale],
@@ -160,6 +166,8 @@ TemplateEditor.propTypes = {
   selectedLang: PropTypes.string,
   updateData: PropTypes.func,
   setSelectedLang: PropTypes.func,
+  samplesData: PropTypes.object,
+  curSelectedSample: PropTypes.any,
 };
 
 export default TemplateEditor;

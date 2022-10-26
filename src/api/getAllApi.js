@@ -158,7 +158,7 @@ const getAllApi = {
     page = 0, filters, size = defaultRequestedSize, sortParams,
   } = defaultRequestedObject) {
     let url = `/customers?format=short&size=${size}&page=${page}`;
-    if (sortParams) {
+    if (sortParams?.value && sortParams?.type) {
       url += `&sort=${sortParams.value},${sortParams.type}`;
     }
     if (filters) {
