@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AceEditor from 'react-ace';
 
 import 'ace-builds/webpack-resolver';
@@ -13,6 +13,8 @@ import {
 import PropTypes from 'prop-types';
 import PublishIcon from '@mui/icons-material/Publish';
 
+import Session from '../../services/session';
+
 import localization from '../../localization';
 import './jsonEditor.scss';
 
@@ -24,10 +26,13 @@ const JsonEditor = ({
   // jsonIsValid = true,
   // setJsonIsValid = () => { },
   onSave,
+  cursorPage,
   isReadOnly,
   showUploadButton,
 }) => {
+  const editorRef = useRef(null);
   const [jsonIsValid, setJsonIsValid] = useState(true);
+  const [isRendering, setRendering] = useState(true);
   const [editorData, setEditorData] = useState('');
 
   const handleChange = (newValue) => {
@@ -81,6 +86,26 @@ const JsonEditor = ({
       }
     };
   };
+
+  useEffect(() => {
+    if (editorRef?.current?.editor) {
+      let rendering = true;
+
+      editorRef.current.editor.renderer.on('afterRender', () => {
+        if (rendering) {
+          const positionSettings = cursorPage && Session.getEditorCursor(cursorPage);
+
+          if (positionSettings) {
+            const [row, column] = positionSettings.split(':');
+            editorRef.current.editor.gotoLine(row, column);
+          }
+
+          setRendering(false);
+          rendering = false;
+        }
+      });
+    }
+  }, [editorRef]);
 
   return (
     <>
@@ -149,6 +174,14 @@ const JsonEditor = ({
               showPrintMargin: false,
               // useWorker: false,
             }}
+            ref={editorRef}
+            onCursorChange={(selection) => {
+              const cursorPosition = selection.getCursor();
+
+              if (!isRendering && cursorPage && cursorPosition) {
+                Session.setEditorCursor(cursorPage, `${cursorPosition.row + 1}:${cursorPosition.column}`);
+              }
+            }}
             width="100%"
             highlightActiveLine
             // debounceChangePeriod={1000}
@@ -172,6 +205,7 @@ JsonEditor.propTypes = {
   isReadOnly: PropTypes.bool,
   showUploadButton: PropTypes.bool,
   onSave: PropTypes.func,
+  cursorPage: PropTypes.string,
 };
 
 export default JsonEditor;

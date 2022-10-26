@@ -7,7 +7,6 @@ import { axiosInstance } from '../axios';
 class Auth {
   setAxiosInterceptors() {
     const token = this.getAccessToken();
-
     axiosInstance.interceptors.request.use(
       (config) => {
         const headers = { ...config.headers };
@@ -39,14 +38,14 @@ class Auth {
     const accessToken = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
 
-    if (!accessToken) {
+    if (!accessToken && !refreshToken) {
       return;
     }
 
-    if (this.isValidToken(accessToken)) {
+    if (this.isValidToken(accessToken, refreshToken)) {
       this.setSession(accessToken, refreshToken);
     } else {
-      this.setSession(null);
+      this.logout();
     }
   }
 
@@ -77,16 +76,19 @@ class Auth {
       grantType: 'refresh_token',
       realm,
     }).then(({ data }) => {
-      if (data.access_token) {
+      if (data?.access_token) {
         this.setSession(data.access_token, data.refresh_token);
         this.setAxiosInterceptors();
       }
 
-      // this.logout();
       return window.location.reload();
     }).catch(() => {
-      this.logout();
-      return window.location.reload();
+      if (!refresh) {
+        this.logout();
+      }
+
+      localStorage.removeItem('refreshToken');
+      window.location.reload();
     });
   }
 
@@ -103,20 +105,20 @@ class Auth {
     return localStorage.removeItem('accessToken');
   }
 
-  getAccessToken() { return localStorage.getItem('accessToken'); }
+  getAccessToken() { return localStorage.getItem('accessToken') === 'null' ? null : localStorage.getItem('accessToken'); }
 
-  getRefreshToken() { return localStorage.getItem('refreshToken'); }
+  getRefreshToken() { return localStorage.getItem('refreshToken') === 'null' ? null : localStorage.getItem('refreshToken'); }
 
   getRealm() { return localStorage.getItem('realm'); }
 
   decodeToken(accessToken) { return jwtDecode(accessToken); }
 
-  isValidToken(accessToken) {
-    if (!accessToken) {
+  isValidToken(accessToken, refreshToken) {
+    if (!accessToken && !refreshToken) {
       return false;
     }
 
-    const decoded = this.decodeToken(accessToken);
+    const decoded = refreshToken ? this.decodeToken(refreshToken) : this.decodeToken(accessToken);
     const currentTime = Date.now() / 1000;
 
     if (decoded.exp < currentTime) {
@@ -126,7 +128,7 @@ class Auth {
     return decoded.exp > currentTime;
   }
 
-  isSignedIn() { return !!this.getAccessToken(); }
+  isSignedIn() { return !!this.getAccessToken() && !!this.getRefreshToken(); }
 }
 
 const auth = new Auth();

@@ -43,6 +43,7 @@ const defaultSelectOptions = {
   sellingStores: null,
   renewingProducts: null,
   subscriptionModels: null,
+  fulfillmentTemplates: null,
   catalogs: null,
   priceFunctions: null,
 };

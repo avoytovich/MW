@@ -39,6 +39,8 @@ const ofDateType = ['createDate', 'updateDate'];
 
 const ofBoolIconType = ['status', 'singleUse', 'running', 'account', 'accountStatus'];
 
+const getColumnSize = (scope, field) => localStorage.getItem(`grid-column-width:${scope}:${field}`);
+
 const shouldCopy = (key, isOrders) => (
   (isOrders && key === 'orderId')
   || key === 'id'
@@ -85,9 +87,11 @@ export const adjustColumnsData = (
   isOrders,
   errorHighlight,
   tableCellLinks,
+  scope,
 ) => {
   const tableHeaders = headers.map((header) => {
     const customConfigs = {};
+
     let tableLink = null;
     if (tableCellLinks) {
       tableLink = tableCellLinks.filter((item) => item.id === header.id)?.[0];
@@ -118,7 +122,7 @@ export const adjustColumnsData = (
       };
 
       customConfigs.cellClassName = 'flex-cell';
-      customConfigs.width = 105;
+      customConfigs.width = getColumnSize(scope, header.id) || 105;
     } else if (header?.id === 'value') {
       customConfigs.renderCell = ({ row }) => (
         <PriceNumberFormat number={row?.value} currency={row?.currency} />
@@ -130,7 +134,7 @@ export const adjustColumnsData = (
         <FullNameAvatar name={row?.fullName} />
       );
 
-      customConfigs.width = 105;
+      customConfigs.width = getColumnSize(scope, header.id) || 105;
     }
 
     if (shouldCopy(header?.id, isOrders)) {
@@ -158,7 +162,7 @@ export const adjustColumnsData = (
       editable: false,
       hide: !showColumn[header.id],
       sortable: header?.sortParam,
-      width: 200,
+      width: getColumnSize(scope, header.id) || 200,
       valueFormatter: (row) => {
         if (ofDateType.indexOf(row?.field) >= 0) {
           return row.value ? moment(row.value).format('D MMM YYYY') : '-';

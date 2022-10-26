@@ -170,6 +170,7 @@ const ProductVariationsTable = ({
                     publisherRefId,
                     lifeTime,
                     fulfillmentTemplate,
+                    fulfillmentTemplateName,
                     subscriptionTemplate,
                     ...params
                   } = item;
@@ -254,7 +255,7 @@ const ProductVariationsTable = ({
                         {lifeTime || ''}
                       </TableCell>
                       <TableCell align='center'>
-                        {(fulfillmentTemplate === undefined ? currentProductData?.fulfillmentTemplateName : fulfillmentTemplate) || ''}
+                        {fulfillmentTemplateName || fulfillmentTemplate || ''}
                       </TableCell>
                       <TableCell
                         align='center'

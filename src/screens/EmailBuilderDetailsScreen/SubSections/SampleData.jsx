@@ -9,15 +9,27 @@ import {
   Box,
   Tabs,
   Tab,
+  LinearProgress,
 } from '@mui/material';
 import JsonEditor from '../../../components/JsonEditor';
+import SelectCustom from '../../../components/Inputs/SelectCustom';
 import localization from '../../../localization';
 
 const SampleData = ({
-  data, saveCustomSample, jsonIsValid, setJsonIsValid, customSample,
+  data,
+  saveCustomSample,
+  jsonIsValid,
+  setJsonIsValid,
+  customSample,
+  curRefCustomer,
+  setCurRefCustomer,
+  curSelectedSample,
+  setCurSelectedSample,
+  refCustomers,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [curSampleData, setCurSampleData] = useState(null);
-  const [curTab, setCurTab] = useState(data?.samples?.length ? 0 : 'custom');
+  const [curTab, setCurTab] = useState(curSelectedSample || (data?.samples?.length ? 0 : 'custom'));
 
   // const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -33,14 +45,45 @@ const SampleData = ({
       res.lastSeen = JSON.stringify(JSON.parse(data?.lastSeenSample), 0, 4);
     }
     setCurSampleData({ ...res });
+
+    const newTab = data?.samples?.length ? 0 : 'custom';
+
+    if (!curSelectedSample && curTab !== newTab) {
+      setCurTab(newTab);
+      setCurSelectedSample(newTab);
+    }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
     formateCurSampleData();
-  }, []);
+  }, [data]);
+
+  if (isLoading) return <LinearProgress />;
 
   return (
     <>
+      <Box pb={1} pt={4} width='300px'>
+        <SelectCustom
+          optionKeyName='name'
+          label='customer'
+          onChangeSelect={
+            (e) => {
+              setCurRefCustomer(refCustomers.filter((c) => c.id === e.target.value)[0]);
+              setIsLoading(true);
+            }
+          }
+          selectOptions={
+            refCustomers
+              .filter((c) => !!c.name)
+              .sort((a, b) => ((a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)))
+            || []
+          }
+          value={curRefCustomer?.id}
+        />
+      </Box>
+
       <Box bgcolor='#fff'>
         <Tabs
           data-test='tabs'
@@ -49,7 +92,10 @@ const SampleData = ({
           textColor='primary'
           variant='scrollable'
           scrollButtons
-          onChange={(event, newValue) => setCurTab(newValue)}
+          onChange={(event, newValue) => {
+            setCurTab(newValue);
+            setCurSelectedSample(newValue);
+          }}
         >
           {
             data?.samples?.length && data?.samples.map((smpl, ind) => <Tab key={`sampleData#${ind + 1}`} label={`${localization.t('labels.sampleData')} #${ind + 1}`} />)
@@ -72,6 +118,7 @@ const SampleData = ({
           {Object.keys(curSampleData).map((key) => curTab == key && (
             <JsonEditor
               key={key}
+              cursorPage={`email-builder-${data?.id}-${curTab}`}
               isReadOnly
               currentData={curSampleData[key]}
             />
@@ -99,6 +146,11 @@ SampleData.propTypes = {
   jsonIsValid: PropTypes.bool,
   setJsonIsValid: PropTypes.func,
   customSample: PropTypes.string,
+  refCustomers: PropTypes.array,
+  curRefCustomer: PropTypes.object,
+  setCurRefCustomer: PropTypes.func,
+  curSelectedSample: PropTypes.any,
+  setCurSelectedSample: PropTypes.func,
 };
 
 export default SampleData;

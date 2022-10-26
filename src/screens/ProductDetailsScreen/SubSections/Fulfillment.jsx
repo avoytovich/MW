@@ -82,7 +82,7 @@ const Fulfillment = ({
                 ...currentProductData,
                 fulfillmentTemplate: newValue,
               })}
-              selectOptions={selectOptions.fulfillmentTemplates || []}
+              selectOptions={selectOptions?.fulfillmentTemplates || []}
               curValue={checkValue(currentProductData?.fulfillmentTemplate)}
             />
           </InheritanceField>

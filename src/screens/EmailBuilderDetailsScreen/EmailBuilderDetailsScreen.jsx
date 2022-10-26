@@ -34,6 +34,9 @@ const EmailBuilderDetailsScreen = () => {
   const [customSample, setCustomSampleData] = useState(null);
   const [jsonIsValid, setJsonIsValid] = useState(true);
   const [curTab, setCurTab] = useState(0);
+  const [curRefCustomer, setCurRefCustomer] = useState({});
+  const [refCustomers, setRefCustomers] = useState([]);
+  const [curSelectedSample, setCurSelectedSample] = useState(null);
 
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
@@ -71,31 +74,45 @@ const EmailBuilderDetailsScreen = () => {
     if (templateData?.customerId) {
       getCustomerName(templateData?.customerId).then((name) => {
         setCustomerName(name);
-      });
 
-      if (templateData?.name) {
         api
-          .getTemplateSamples({
-            customerId: templateData?.customerId,
-            name: templateData?.name,
-          })
-          .then(({ data: { items: [tmplSamples] } }) => {
-            let selectedSample = tmplSamples?.samples.length
-              && { ...JSON.parse(tmplSamples.samples[0]) };
+          .getCustomers()
+          .then(({ data }) => {
+            setCurRefCustomer({ id: templateData.customerId, name });
 
-            if (!selectedSample) {
-              const savedCustomSample = nxState?.customSample || {};
-              const availableSample = typeof savedCustomSample === 'object' ? savedCustomSample : JSON.parse(savedCustomSample);
-              selectedSample = availableSample;
-            }
-
-            setSamplesData(tmplSamples);
-            setFirstSampleData(selectedSample);
-          })
-          .finally(() => setLoading(false));
-      }
+            setRefCustomers(() => [
+              ...data?.items,
+              { id: templateData.customerId, name },
+            ]);
+          });
+      });
     }
   }, [templateData]);
+
+  useEffect(() => {
+    if (curRefCustomer?.name && templateData?.name) {
+      api
+        .getTemplateSamples({
+          customerId: curRefCustomer?.id,
+          name: templateData?.name,
+        })
+        .then(({ data: { items: [tmplSamples] } }) => {
+          let selectedSample = tmplSamples?.samples?.length
+            && { ...JSON.parse(tmplSamples.samples[0]) };
+
+          if (!selectedSample) {
+            const savedCustomSample = nxState?.customSample || {};
+            const availableSample = typeof savedCustomSample === 'object' ? savedCustomSample : JSON.parse(savedCustomSample);
+            selectedSample = availableSample;
+          }
+
+          setCurSelectedSample(null);
+          setSamplesData(tmplSamples || {});
+          setFirstSampleData(selectedSample);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [curRefCustomer, templateData]);
 
   const saveCustomSample = () => {
     dispatch(
@@ -172,6 +189,11 @@ const EmailBuilderDetailsScreen = () => {
         saveCustomSample={setCustomSampleData}
         jsonIsValid={jsonIsValid}
         setJsonIsValid={setJsonIsValid}
+        curRefCustomer={curRefCustomer}
+        setCurRefCustomer={setCurRefCustomer}
+        refCustomers={refCustomers}
+        curSelectedSample={curSelectedSample}
+        setCurSelectedSample={setCurSelectedSample}
         curTab={curTab}
       />
 
