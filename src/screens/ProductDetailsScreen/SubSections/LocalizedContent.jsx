@@ -25,7 +25,7 @@ import {
 } from '../utils';
 
 const defaultEditorData = {
-  localizedMarketingName: {},
+  // localizedMarketingName: {},
   localizedShortDesc: {},
   localizedLongDesc: {},
   localizedThankYouDesc: {},

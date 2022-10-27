@@ -278,7 +278,7 @@ const saveLocalizationDetails = (tempData, currentProductData, nxState) => {
 
   const localizedValuesToSave = localizedValues.reduce((acc, cur) => {
     const localizedValue = Object.entries(i18nFields).reduce((ac, [key, value]) => {
-      if (i18nFields[key][cur] !== undefined) {
+      if (i18nFields[key][cur] !== undefined && i18nFields[key][cur]) {
         return { ...ac, [key]: value[cur] };
       }
       return ac;

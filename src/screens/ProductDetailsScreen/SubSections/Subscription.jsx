@@ -83,10 +83,7 @@ const Subscription = ({
           value: false,
         },
         nextGenerationOf: [],
-        subscriptionTemplate: {
-          ...currentProductData.subscriptionTemplate,
-          value: '',
-        },
+        subscriptionTemplate: '',
       });
     } else {
       setProductData({

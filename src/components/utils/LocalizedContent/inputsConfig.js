@@ -10,7 +10,7 @@ const textEditorInputs = [
   'recommendationDescription',
   'localizedLongDesc',
   'localizedManualRenewalEmailDesc',
-  'localizedMarketingName',
+  // 'localizedMarketingName',
   'localizedPurchaseEmailDesc',
   'localizedShortDesc',
   'localizedThankYouDesc',

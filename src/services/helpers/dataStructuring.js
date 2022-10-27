@@ -105,6 +105,7 @@ const localizedValues = [
 
 const defaultIndependentFields = [
   'fulfillmentTemplate',
+  'subscriptionTemplate',
   'releaseDate',
   'nextGenerationOf',
   'id',
@@ -117,7 +118,7 @@ const defaultIndependentFields = [
   // 'trialDuration',
 ];
 
-const changableFields = ['fulfillmentTemplate'];
+const changableFields = ['fulfillmentTemplate', 'subscriptionTemplate'];
 
 const unchangableInheritedFields = ['customerId', 'status'];
 

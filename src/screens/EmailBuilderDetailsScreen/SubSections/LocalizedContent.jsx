@@ -46,22 +46,22 @@ const LocalizedContent = ({
     });
   };
 
-  const addLocale = () => {
-    if (newLangValue) {
-      if (availLocales.indexOf(newLangValue) < 0) {
+  const addLocale = (val) => {
+    if (newLangValue || val) {
+      if (availLocales.indexOf(newLangValue || val) < 0) {
         setData((cur) => ({
           ...cur,
           templates: {
             ...cur.templates,
-            [newLangValue]: {
+            [newLangValue || val]: {
               subject: '',
               body: '',
             },
           },
         }));
 
-        setSelectedLang(newLangValue);
-        setCurTab(newLangValue);
+        setSelectedLang(newLangValue || val);
+        setCurTab(newLangValue || val);
         setNewLangValue('');
       } else {
         toast.error('Locale already exists!');
@@ -137,16 +137,21 @@ const LocalizedContent = ({
                     value={newLangValue}
                     selectOptions={availableLocales
                       .filter((l) => !availLocales?.filter((a) => a === l.id)?.length)}
-                    onChangeSelect={(e) => setNewLangValue(e.target.value)}
+                    onChangeSelect={(e) => {
+                      setNewLangValue(e.target.value);
+                      addLocale(e.target.value);
+                    }}
                   />
                 )}
 
                 <div hidden>{children}</div>
-                <AddCircleIcon
-                  color='primary'
-                  style={{ marginLeft: curTab === 0 ? 15 : 0 }}
-                  onClick={addLocale}
-                />
+                {curTab !== 0 && (
+                  <AddCircleIcon
+                    color='primary'
+                    style={{ marginLeft: curTab === 0 ? 15 : 0 }}
+                    // onClick={() => addLocale(null)}
+                  />
+                )}
               </div>
             ))}
           />
