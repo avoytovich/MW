@@ -8,7 +8,7 @@ const defaultProduct = {
   catalogId: '',
   publisherRefId: '',
   priceByCountryByCurrency: {},
-  lifeTime: 'PERMANENT',
+  lifeTime: { name: 'PERMANENT', number: 1 },
   physical: false,
   sellingStores: [],
   blackListedCountries: [],
