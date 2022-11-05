@@ -5,7 +5,9 @@ import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
-import { Box, Button, LinearProgress, Tab, Tabs, Typography, Zoom } from '@mui/material';
+import {
+  Box, Button, LinearProgress, Tab, Tabs, Typography, Zoom,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -17,7 +19,8 @@ import SelectCustomerNotification from '../SelectCustomerNotification';
 import defPath from '../../../services/helpers/routingHelper';
 import { copyText } from '../../../services/helpers/utils';
 import { tabLabels as tabLabelsStore } from '../../../screens/StoreDetailsScreen/utils';
-import { storeHightLight } from './HighLightingTabs';
+import { tabLabels as tabLabelsReco } from '../../../screens/RecoDetailsScreen/utils';
+import { recoHightLight, storeHightLight } from './HighLightingTabs';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -128,6 +131,19 @@ const DetailPageWrapper = ({
       storeHightLight(
         curData,
         isRankingOpen,
+        errors,
+        setErrors,
+        tabs,
+        paramsId,
+        customer,
+      );
+    }
+  }, [curData, tabs?.curTab]);
+
+  useEffect(() => {
+    if (tabs?.scope === 'recommendation' && tabLabelsReco.includes(tabs?.tabLabels?.[tabs.curTab])) {
+      recoHightLight(
+        curData,
         errors,
         setErrors,
         tabs,

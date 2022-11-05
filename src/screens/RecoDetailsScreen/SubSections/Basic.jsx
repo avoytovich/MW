@@ -24,12 +24,35 @@ const Basic = ({
   setCurReco,
   localizedErrors,
   setLocalizedErrors,
+  errors,
+  setErrors,
 }) => {
   const i18nFieldsReco = useSelector(
     ({ tempData }) => tempData.i18nFieldsReco,
   ) || curReco.localizedDesc;
 
   const availableLocales = getLanguagesOptions();
+
+  const withValidation = (e) => {
+    handleChange(e);
+    if (!e.target.value) {
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [e.target.name]: true,
+        },
+      });
+    } else {
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [e.target.name]: false,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     setCurReco({
@@ -78,8 +101,10 @@ const Basic = ({
             name='name'
             type='text'
             value={curReco.name}
-            onChange={handleChange}
+            onChange={(e) => withValidation(e)}
             variant='outlined'
+            error={!!errors?.general?.name}
+            helperText={errors?.general?.name && localization.t('errorNotifications.required')}
           />
         </Box>
       </Box>
@@ -266,6 +291,8 @@ Basic.propTypes = {
   setCurReco: PropTypes.func,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default Basic;
