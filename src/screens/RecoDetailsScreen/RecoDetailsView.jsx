@@ -16,6 +16,8 @@ const RecoDetailsView = ({
   selectOptions,
   localizedErrors,
   setLocalizedErrors,
+  errors,
+  setErrors,
 }) => {
   const updateReco = (type, value, selections) => {
     let setValue = value;
@@ -56,6 +58,8 @@ const RecoDetailsView = ({
           updateReco={updateReco}
           handleChange={handleChange}
           setCurReco={setCurReco}
+          errors={errors}
+          setErrors={setErrors}
         />
       )}
 
@@ -88,6 +92,8 @@ RecoDetailsView.propTypes = {
   curTab: PropTypes.number,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default RecoDetailsView;

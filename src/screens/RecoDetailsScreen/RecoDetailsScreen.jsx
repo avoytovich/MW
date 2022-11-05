@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import {
+  tabLabels,
   recoRequiredFields,
   formateProductOptions,
   fromArrayToObj,
@@ -31,6 +32,7 @@ const RecoDetailsScreen = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
   const [curTab, setCurTab] = useState(0);
+  const [errors, setErrors] = useState({});
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
     products: null,
@@ -39,10 +41,18 @@ const RecoDetailsScreen = () => {
   });
   const beforeSend = () => {
     const localizedDesc = {};
+    let objToSend = {};
     Object.keys(curReco.localizedDesc).forEach((lang) => {
       localizedDesc[lang] = curReco.localizedDesc[lang].recommendationDescription;
     });
-    const objToSend = { ...curReco, localizedDesc };
+    if (curReco.localizedDesc
+        && Object.keys(curReco.localizedDesc).length === 0
+        && Object.getPrototypeOf(curReco.localizedDesc) === Object.prototype) {
+      objToSend = { ...curReco };
+      delete objToSend.localizedDesc;
+    } else {
+      objToSend = { ...curReco, localizedDesc };
+    }
 
     if (curReco.function === 'idToIdsRecoRule') {
       delete objToSend.productIds;
@@ -83,7 +93,7 @@ const RecoDetailsScreen = () => {
       const checkedReco = recoRequiredFields(data);
       Promise.allSettled([
         api.getStores({ size: 10, filters: `&customerId=${data.customerId}` }),
-        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}`}),
+        api.getProducts({ size: 10, filters: `&customerId=${data.customerId}` }),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}&parentId=${null}` }),
         api.getProducts({ size: 10, filters: `&customerId=${data.customerId}`, notAddParentId: true }),
       ]).then(
@@ -182,10 +192,13 @@ const RecoDetailsScreen = () => {
       beforeSend={beforeSend}
       setUpdate={setUpdate}
       tabs={{
+        scope: 'recommendation',
         curTab,
         setCurTab,
-        tabLabels: ['general', 'eligibility', 'cappingAndLimits', 'recommendations'],
+        tabLabels,
       }}
+      errors={errors}
+      setErrors={setErrors}
     >
       <RecoDetailsView
         localizedErrors={localizedErrors}
@@ -194,6 +207,8 @@ const RecoDetailsScreen = () => {
         curTab={curTab}
         setCurReco={setCurReco}
         selectOptions={selectOptions}
+        errors={errors}
+        setErrors={setErrors}
       />
     </DetailPageWrapper>
   );

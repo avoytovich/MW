@@ -1,3 +1,10 @@
+const tabLabels = [
+  'general',
+  'eligibility',
+  'cappingAndLimits',
+  'recommendations',
+];
+
 const defRecoObject = {
   eligibleProductIds: [],
   eligibleStoreIds: [],
@@ -104,6 +111,7 @@ const filterOptions = (all, selected, currentValue) => {
 };
 
 export {
+  tabLabels,
   recoRequiredFields,
   formateProductOptions,
   formateProductOptionsForGenericNameOnly,
