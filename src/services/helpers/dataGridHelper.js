@@ -109,6 +109,8 @@ export const adjustColumnsData = (
             {row[header?.id]}
           </a>
         ) : <div>-</div>);
+
+      customConfigs.width = getColumnSize(scope, header.id) || 105;
     } else if (!isOrders && ofBoolIconType.indexOf(header?.id) >= 0) {
       // eslint-disable-next-line
       customConfigs.renderCell = (cell) => {
@@ -154,6 +156,8 @@ export const adjustColumnsData = (
           />
         </>
       );
+
+      customConfigs.width = getColumnSize(scope, header.id) || 105;
     }
 
     return {

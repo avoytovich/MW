@@ -104,7 +104,7 @@ const localizedValues = [
 ];
 
 const defaultIndependentFields = [
-  'fulfillmentTemplate',
+  // 'fulfillmentTemplateName',
   'subscriptionTemplate',
   'releaseDate',
   'nextGenerationOf',
@@ -193,8 +193,13 @@ const productRequiredFields = (product) => {
   }
   const res = product.lifeTime !== '7DAY' ? product.lifeTime.match(/[a-zA-Z]+|[0-9]+/g) : ['7DAY'];
   const lifeTime = { number: res[1] ? res[0] : '1', name: res[1] ? res[1] : res[0] };
+
+  const newDefault = { ...defaultProduct };
+
+  delete newDefault.fulfillmentTemplate;
+
   return {
-    ...defaultProduct, ...product, resources: resourcesKeys || [], priceByCountryByCurrency, lifeTime,
+    ...newDefault, ...product, resources: resourcesKeys || [], priceByCountryByCurrency, lifeTime,
   };
 };
 const structureProdAutocompleteSelectOptions = ({
@@ -354,10 +359,12 @@ const createStandaloneValue = (value, key) => {
   return (value?.state === 'inherits' && !changableFields.includes(key)) ? types[valueType] : (value?.value || value || '');
 };
 
+const createChangableValue = (value, selfValue) => ({ state: (selfValue || selfValue === '') ? 'overrides' : 'inherits', parentValue: value.parentValue, value: selfValue });
+
 const createUnchangableInheritedValue = (value, key) => (value?.parentValue && key !== 'status' ? value.parentValue : (value || ''));
 
-const createInheritableValue = (value, parentValue) => {
-  const state = R.isEmpty(value) || R.isNil(value) || R.equals(value, parentValue) || (parentValue?.defaultCurrency && !value?.defaultCurrency)
+const createInheritableValue = (value, parentValue, key) => {
+  const state = ((R.isEmpty(value) || R.isNil(value)) && !changableFields.includes(key)) || R.equals(value, parentValue) || (parentValue?.defaultCurrency && !value?.defaultCurrency)
     ? 'inherits'
     : 'overrides'; // initial state, user can force after
 
@@ -386,7 +393,7 @@ const backToFront = (
   );
 
   const inputB = R.mapObjIndexed(
-    (value) => createInheritableValue(undefined, value),
+    (value, key) => createInheritableValue(undefined, value, key),
     parent || {},
   );
 
@@ -394,7 +401,7 @@ const backToFront = (
   // managing fields which cannot inherit
   iResource = R.mapObjIndexed((value, key) => {
     if (changableFields.includes(key)) {
-      return resource[key];
+      return createChangableValue(value, resource[key]);
     }
 
     if (independentFields.includes(key)) {
@@ -424,11 +431,10 @@ const frontToBack = (data) =>
     if (mandatoryFields.includes(key) && !newValue) {
       newValue = value?.parentValue;
     }
-
-    if (typeof newValue !== 'undefined') {
+    if (typeof newValue !== 'undefined' || changableFields.includes(key)) {
       accumulator = {
         ...accumulator,
-        [key]: newValue,
+        [key]: newValue ? newValue : changableFields.includes(key) ? 'NONE' : '',
       };
     }
     return accumulator;
