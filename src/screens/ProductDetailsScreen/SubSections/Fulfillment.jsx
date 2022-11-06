@@ -70,7 +70,25 @@ const Fulfillment = ({
         <Box p={2} width="50%">
           <InheritanceField
             field='fulfillmentTemplate'
-            onChange={setProductData}
+            onChange={(data) => {
+              const [selectedTemplate] = selectOptions?.fulfillmentTemplates?.filter(
+                (s) => s.id === (data?.fulfillmentTemplate?.value || data?.fulfillmentTemplate)
+              );
+              const [selectedParentTemplate] = selectOptions?.fulfillmentTemplates?.filter(
+                (s) => s.id === (data?.fulfillmentTemplate?.parentValue || data?.fulfillmentTemplate)
+              );
+
+              const newData = {
+                ...data,
+                fulfillmentTemplateName: {
+                  ...data.fulfillmentTemplate,
+                  parentValue: selectedParentTemplate?.value,
+                  value: selectedTemplate?.value,
+                },
+              };
+
+              setProductData({ ...newData });
+            }}
             value={currentProductData?.fulfillmentTemplate}
             parentId={parentId}
             currentProductData={currentProductData}

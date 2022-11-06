@@ -340,12 +340,27 @@ const beforeSend = (data) => {
   if (data.status.state) {
     res.status = { parentValue: data.status.parentValue, state: 'overrides', value: data.status.value };
   }
+
   if (res.subscriptionTemplate === '') {
+    res.subscriptionTemplate = 'NONE';
+  }
+
+  if (res.fulfillmentTemplate === '') {
+    res.fulfillmentTemplate = 'NONE';
+  }
+
+  if (res?.subscriptionTemplate?.state === 'inherits') {
     delete res.subscriptionTemplate;
   }
+
+  if (res?.fulfillmentTemplate?.state === 'inherits') {
+    delete res.fulfillmentTemplate;
+  }
+
   res.prices = state
     ? { ...res.prices, value: { ...res.prices.value, priceByCountryByCurrency } }
     : { ...res.prices, priceByCountryByCurrency };
+
   return res;
 };
 const handleFilterOptions = (allOptions, selected, current) => {

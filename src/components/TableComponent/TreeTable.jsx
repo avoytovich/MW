@@ -32,6 +32,8 @@ import { adjustColumnsData, parsePath } from '../../services/helpers/dataGridHel
 
 import './TableComponent.scss';
 
+const setColumnSize = (scope, field, width) => localStorage.setItem(`grid-column-width:${scope}:${field}`, JSON.stringify(width));
+
 const TableComponent = ({
   tableData,
   isLoading,
@@ -244,6 +246,7 @@ const TableComponent = ({
           isOrders,
           errorHighlight,
           tableCellLinks,
+          'productlist',
         )}
         componentsProps={{ row: { style: { cursor: 'context-menu' } } }}
         hideFooter
@@ -256,6 +259,11 @@ const TableComponent = ({
 
           if (colField && col?.sort) {
             setSortParams({ value: colField, type: col?.sort });
+          }
+        }}
+        onColumnResize={(details) => {
+          if (details?.colDef) {
+            setColumnSize(scope, details?.colDef?.field, details?.width || 0);
           }
         }}
         disableSelectionOnClick

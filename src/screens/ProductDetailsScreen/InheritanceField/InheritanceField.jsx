@@ -40,6 +40,10 @@ const InheritanceField = (props) => {
   const handleChange = (val) => {
     const { value: inheritanceValue } = props;
 
+    if (field === 'localizedMarketingName' && localizedLang) {
+      return;
+    }
+
     if (field === 'status') {
       onChange({
         ...currentProductData,

@@ -77,13 +77,23 @@ const LocalizedInputs = ({
               ) : (
                 <TextField
                   placeholder={localization.t(`forms.inputs.localizedContent.${inputLabel}`)}
-                  value={checkValue(localizedLangData[inputLabel])}
+                  value={checkValue(localizedLangData[inputLabel] || '')}
                   fullWidth
                   type='text'
                   InputProps={{
                     form: { autocomplete: 'off' },
                   }}
-                  onChange={(e) => handleChange(lang, e.target.value, inputLabel)}
+                  disabled={localizedLangData[inputLabel]?.state === 'inherits'}
+                  onChange={(e) => {
+                    if (inputLabel === 'localizedMarketingName' && parentId) {
+                      handleChange(lang, {
+                        ...localizedLangData[inputLabel],
+                        value: e.target.value,
+                      }, inputLabel);
+                    } else {
+                      handleChange(lang, e.target.value, inputLabel);
+                    }
+                  }}
                   variant='outlined'
                 />
               )}
