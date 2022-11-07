@@ -341,13 +341,13 @@ const beforeSend = (data) => {
     res.status = { parentValue: data.status.parentValue, state: 'overrides', value: data.status.value };
   }
 
-  if (res.subscriptionTemplate === '') {
+ /*  if (res.subscriptionTemplate === '') {
     res.subscriptionTemplate = 'NONE';
   }
 
   if (res.fulfillmentTemplate === '') {
     res.fulfillmentTemplate = 'NONE';
-  }
+  } */
 
   if (res?.subscriptionTemplate?.state === 'inherits') {
     delete res.subscriptionTemplate;

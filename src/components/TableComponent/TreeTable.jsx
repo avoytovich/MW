@@ -60,6 +60,7 @@ const TableComponent = ({
   const [curChecked, setCurChecked] = useState([]);
   const [allChecked, setAllChecked] = useState([]);
   const [collapse, setCollapse] = useState({});
+  const [allToggled, setAllToggled] = useState(false);
 
   const tableCheckedItemsData = useSelector((
     { tableData: { checkedItemsData } },
@@ -85,6 +86,20 @@ const TableComponent = ({
     || (!tableData?.values?.length && Object.keys(activeFilters).length)) {
     dispatch(setCurrentPage(1));
   }
+
+  const toggleAll = () => {
+    const treeItems = tableData?.values?.filter((v) => v.hasChildren).map((t) => t.id);
+    const newCollapse = {};
+
+    treeItems.forEach((i) => {
+      const res = !(Object.values(collapse).filter((v) => !!v).length > 0);
+      newCollapse[i] = res;
+      setAllToggled(res);
+    });
+
+    setCollapse({ ...newCollapse });
+  };
+
   useEffect(() => {
     if (tableCheckedItemsData.length === 0) {
       setCurChecked([]);
@@ -230,9 +245,18 @@ const TableComponent = ({
           headerName: '',
           field: 'hierarchy',
           renderCell: (params) => <CustomGridTreeDataGroupingCell {...params} />,
+          renderHeader: () => (
+            <Button
+              style={{ minWidth: '30px' }}
+              onClick={toggleAll}
+            >
+              {!allToggled ? <KeyboardArrowRightIcon /> : <KeyboardArrowDownIcon />}
+            </Button>
+          ),
           hide: !showColumn.hierarchy,
           width: 75,
         }}
+        defaultGroupingExpansionDepth={allToggled ? -1 : 0}
         treeData
         getTreeDataPath={(row) => row.hierarchy}
         rows={tableData?.values}
@@ -247,6 +271,7 @@ const TableComponent = ({
           errorHighlight,
           tableCellLinks,
           'productlist',
+          toggleAll,
         )}
         componentsProps={{ row: { style: { cursor: 'context-menu' } } }}
         hideFooter

@@ -61,6 +61,7 @@ const ProductDetailsScreen = () => {
   const [customer, setCustomer] = useState(null);
   const [backToParent, setBackToParent] = useState(false);
   const [curTab, setCurTab] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
 
   const [localizedContentHasChanges, setLocalizedContentHasChanges] = useState(false);
   const [curLocalizedData, setCurLocalizedData] = useState(null);
@@ -138,7 +139,7 @@ const ProductDetailsScreen = () => {
   const handleChangeTab = (tab) => {
     if (tab === 7) {
       setLoading(true);
-      history.push(`${parentPaths.productlist}/${currentProductData?.parentId || parentId}`);
+      history.replace(`${parentPaths.productlist}/${currentProductData?.parentId || parentId}`);
     } else {
       refTab?.[tab]?.current.scrollIntoView();
       setCurTab(tab);
@@ -295,6 +296,8 @@ const ProductDetailsScreen = () => {
   }, [curLocalizedData]);
 
   const saveProduct = async () => {
+    setIsSaving(true);
+
     if (!currentProductData.businessSegment) {
       delete currentProductData.businessSegment;
     }
@@ -351,6 +354,8 @@ const ProductDetailsScreen = () => {
         const newId = headersLocation[headersLocation.length - 1];
 
         return newId || '';
+      }).catch(() => {
+        setIsSaving(false);
       });
     }
 
@@ -389,6 +394,8 @@ const ProductDetailsScreen = () => {
           history.push(`${parentPaths.productlist}/${id_}`);
         }
       });
+    }).catch(() => {
+      setIsSaving(false);
     });
   };
 
@@ -520,7 +527,14 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => {
     setLoading(true);
-    setCurTab(0);
+
+    if (history?.action === 'REPLACE') {
+      setCurTab(6);
+      setBackToParent(false);
+    } else {
+      setCurTab(0);
+    }
+
     return () => {
       setSubProductVariations({});
     };
@@ -581,13 +595,6 @@ const ProductDetailsScreen = () => {
     }
   }, [id]);
 
-  useEffect(() => {
-    if (backToParent) {
-      setCurTab(6);
-      setBackToParent(false);
-    }
-  });
-
   if (!parentId
     && !currentProductData?.parentId
     && currentProductData?.createDate?.parentValue) return <LinearProgress />;
@@ -610,7 +617,7 @@ const ProductDetailsScreen = () => {
       }
       saveIsDisabled={saveDisabled || tabsDisabled || lifetimeSaveDisabled
         || !jsonIsValid || priceTableError.length > 0 || Object.keys(localizedErrors).length
-          || curLocalizedData?.fallbackLocale === '' || curLocalizedData?.fallbackLocale?.value === ''}
+          || curLocalizedData?.fallbackLocale === '' || curLocalizedData?.fallbackLocale?.value === '' || isSaving}
       hasChanges={productHasChanges || !productData?.id
         || localizedContentHasChanges}
       isLoading={isLoading}
