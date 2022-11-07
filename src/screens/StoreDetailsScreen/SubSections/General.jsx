@@ -523,7 +523,6 @@ const General = ({
           <AutocompleteCustom
             optionLabelKey='value'
             label="fallbackCartCountry"
-            isRequired
             onSelect={(newValue) => setCurrentStoreData({
               ...currentStoreData,
               fallbackCartCountry: newValue,
