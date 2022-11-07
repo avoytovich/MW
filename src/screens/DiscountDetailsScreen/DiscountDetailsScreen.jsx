@@ -68,6 +68,10 @@ const DiscountDetailsScreen = () => {
     if (res.subscriptionSubSources == 'RENEWAL' || res.subscriptionSubSources == 'TRIAL_CONVERSION') {
       delete res.subscriptionId;
     }
+    if (!res.sources.includes('SUBSCRIPTION')) {
+      delete res.subscriptionSubSources;
+      delete res.subscriptionId;
+    }
     if (res.subscriptionId) {
       res.subscriptionSubSources = [];
     }
@@ -82,7 +86,7 @@ const DiscountDetailsScreen = () => {
         'general.discount',
       )}`}
       saveIsDisabled={!curDiscount?.name
-        || (!curDiscount?.subscriptionId && curDiscount?.subscriptionSubSources?.includes('SUBSCRIPTIONID'))
+        || (!curDiscount?.subscriptionId && curDiscount?.subscriptionSubSources?.includes('SUBSCRIPTIONID') && curDiscount.sources?.includes('SUBSCRIPTION'))
         || (curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === '')
         || Object.keys(localizedErrors).length}
       hasChanges={hasChanges}
