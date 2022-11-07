@@ -63,13 +63,12 @@ const handleGetOptions = (
           bundledProducts: id === null ? [] : subProducts?.data?.items,
           variations: productsVariations(renewingProducts?.data?.items, id),
         });
-
         if (!isCancelled) {
           setSelectOptions({
             ...selectOptions,
             sellingStores:
               structureSelectOptions({ options: sellingStores?.data?.items, optionValue: 'name', otherOptions: ['hostnames', 'saleLocales', 'defaultLocale'] }) || [],
-            renewingProducts: renewingProductsOptions(renewingProducts?.data?.items) || [],
+            renewingProducts: renewingProducts?.data?.items || [],
             fulfillmentTemplates:
               structureSelectOptions({ options: fulfillmentTemplates?.data?.items, optionValue: 'name' }) || [],
             catalogs: structureSelectOptions({ options: catalogs?.data?.items, optionValue: 'name' }) || [],

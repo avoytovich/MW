@@ -254,7 +254,8 @@ const groupBy = (objectArray, property) => objectArray.reduce((acc, obj) => {
 }, {});
 const renewingProductsOptions = (options) => options.map((item) => {
   const value = item?.genericName
-    ? `${item.genericName}(${item.publisherRefId}${item.subscriptionTemplate ? ', ' : ''}${item.subscriptionTemplate || ''})(${item?.id})`
+    ? `${item.genericName}(${item.publisherRefId}${item.subscriptionTemplate ? ', '
+      : ''}${item.subscriptionTemplate || ''})(${item?.id})`
     : item?.id;
 
   return { id: item.id, value };
