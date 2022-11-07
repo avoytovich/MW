@@ -35,7 +35,7 @@ const FileBlock = ({
     }
 
     setUrlLoading(false);
-  }, []);
+  }, [item]);
 
   const setFileUrl = (value) => {
     updateResources(index, 'url', value);
@@ -55,7 +55,7 @@ const FileBlock = ({
       display="flex"
       flexWrap="wrap"
       className={`product-files ${urlFetching || isDisabled ? 'disable-block' : ''
-        } existing-item`}
+      } existing-item`}
     >
       <Box minWidth="250px">
         {urlLoading || initImage === ' ' ? (
