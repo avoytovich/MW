@@ -41,9 +41,7 @@ import {
   type,
   businessSegment,
 } from '../../../services/selectOptions/selectOptions';
-import { checkValue } from '../../../services/helpers/dataStructuring';
-
-import { sortByAlphabetical } from '../../../services/helpers/utils';
+import { checkValue, renewingProductsOptions } from '../../../services/helpers/dataStructuring';
 
 import localization from '../../../localization';
 
@@ -121,9 +119,17 @@ const General = ({
       [target.name]: target.value,
     });
   };
-  const handleSelectOptions = selectOptions?.renewingProducts
-    ?.filter((item) => item.id !== currentProductData.id)
-    ?.sort(sortByAlphabetical) || [];
+  const filteredSelectOptions = selectOptions?.renewingProducts
+    ?.filter(
+      (candidate) => !(candidate.subProducts && candidate.subProducts.length
+          && candidate.fulfillmentTemplate)
+          && !candidate.subscriptionTemplate
+          && (!candidate.subProducts || candidate.subProducts.length === 0)
+          && (!currentProductData.id
+            || (currentProductData.id !== candidate.parentId
+              && currentProductData.id !== candidate.id)),
+    ) || [];
+  const handleSelectOptionsGroup = renewingProductsOptions(filteredSelectOptions);
 
   useEffect(() => {
     setSaveDisabled(!!(fulfillmentTemplate && selectedBundledProduct));
@@ -742,7 +748,7 @@ const General = ({
                 optionLabelKey='value'
                 label='productNameOrId'
                 onSelect={setSelectedBundledProduct}
-                selectOptions={handleSelectOptions}
+                selectOptions={handleSelectOptionsGroup}
                 curValue={checkValue(selectedBundledProduct) || ''}
                 isDisabled={currentProductData?.subProducts?.state === 'inherits'}
                 error={!!(fulfillmentTemplate && selectedBundledProduct)}

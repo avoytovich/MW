@@ -31,7 +31,7 @@ const getFewByIdsApi = {
     });
   },
   getProductsByStore(customerId, storeId) {
-    const url = `/products?format=short&customerId=${customerId}&sellingStores=${storeId}&size=30&page=0`;
+    const url = `/products?format=full&customerId=${customerId}&sellingStores=${storeId}&size=30&page=0`;
     return axiosInstance({
       method: 'get',
       url,

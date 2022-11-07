@@ -46,10 +46,10 @@ const useDiscountDetails = (id, nxState) => {
       const { customerId } = data;
       Promise.allSettled([
         api.getEndUsersByCustomerId(customerId),
-        api.getStores({ filters: `&customerId=${customerId}` }),
+        api.getStores(),
         api.getDiscountProductsByIds(customerId),
         api.getParentProductsByIds(customerId, null),
-        api.getEndUsersGroupsByCustomerId(customerId),
+        api.getEndUsersGroups(),
       ]).then(
         ([
           endUsers,
