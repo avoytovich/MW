@@ -22,6 +22,7 @@ const Payment = ({
   selectOptions,
   errors,
   setErrors,
+  customer: { availableAdditionalPaymentTypes: additionalPayment },
   isRankingOpen,
   setIsRankingOpen,
   myRef,
@@ -167,6 +168,12 @@ const Payment = ({
     };
     setCurrentStoreData({ ...currentStoreData, paymentGroups: newPaymentGroups });
   };
+
+  const additionalPaymentOptions = additionalPayment?.map((item) => ({
+    id: item,
+    value: item,
+  }));
+
   return (
     <Box display="flex" flexDirection="column" width={1}>
       <Box p={2}>
@@ -197,9 +204,12 @@ const Payment = ({
         <AutocompleteWithChips
           arrayTypeValue
           label='additionalPaymentTypes'
-          arrayValue={[]}
-          selectOptions={[]}
-          onChange={() => { }}
+          arrayValue={currentStoreData.additionalPaymentTypes || []}
+          selectOptions={additionalPaymentOptions || []}
+          onChange={(newValue) => setCurrentStoreData({
+            ...currentStoreData,
+            additionalPaymentTypes: newValue,
+          })}
         />
       </Box>
       <Box p={2}>
@@ -380,6 +390,7 @@ const Payment = ({
 Payment.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
+  customer: PropTypes.object,
   selectOptions: PropTypes.object,
   errors: PropTypes.object,
   setErrors: PropTypes.func,

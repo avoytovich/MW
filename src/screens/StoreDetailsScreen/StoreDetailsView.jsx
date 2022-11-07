@@ -79,6 +79,7 @@ const StoreDetailsView = ({
           myRef={refScrool[2]}
           errors={errors}
           setErrors={setErrors}
+          customer={customer}
           isRankingOpen={isRankingOpen}
           setIsRankingOpen={setIsRankingOpen}
           selectOptions={selectOptions}
