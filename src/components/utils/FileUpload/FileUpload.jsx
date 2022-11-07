@@ -51,7 +51,7 @@ const FileUpload = ({
     }
 
     return () => setCurImage(null);
-  }, []);
+  }, [initialFiles]);
 
   return (
     (curImage || !initialFiles) && (

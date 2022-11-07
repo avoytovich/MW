@@ -128,6 +128,9 @@ const postApi = {
       method: 'post',
       url,
       data,
+      headers: {
+        'Content-type': 'multipart/form-data',
+      },
     });
   },
   addNewDiscount(data) {
