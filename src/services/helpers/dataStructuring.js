@@ -434,7 +434,8 @@ const frontToBack = (data) =>
     if (typeof newValue !== 'undefined' || changableFields.includes(key)) {
       accumulator = {
         ...accumulator,
-        [key]: newValue ? newValue : changableFields.includes(key) ? 'NONE' : '',
+        // [key]: newValue ? newValue : changableFields.includes(key) ? 'NONE' : '',
+        [key]: newValue || '',
       };
     }
     return accumulator;
