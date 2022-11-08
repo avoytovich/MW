@@ -403,7 +403,7 @@ const ProductDetailsScreen = () => {
     let isCancelled = false;
     const productId = id === 'add' ? parentId : id;
 
-    if (id !== 'add' || (parentId && !productData)) {
+    if (id !== 'add' && !productData) {
       api.getProductById(productId).then(({ data: product }) => {
         if (!isCancelled) {
           if (product?.parentId) {
@@ -606,6 +606,7 @@ const ProductDetailsScreen = () => {
   const lifetimeSaveDisabled = currentProductData?.parentId
     && checkValue(currentProductData?.lifeTime).name === 'PERMANENT'
     && checkValue(currentProductData?.subscriptionTemplate);
+
   return (
     <DetailPageWrapper
       nxState={nxState}

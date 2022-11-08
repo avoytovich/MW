@@ -962,7 +962,7 @@ const filters = {
       type: 'text',
     },
     {
-      id: 'company.companyName',
+      id: 'companyName',
       label: localization.t('labels.companyName'),
       type: 'text',
     },

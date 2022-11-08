@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
@@ -10,6 +10,10 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import SearchIcon from '@mui/icons-material/Search';
 
@@ -59,60 +63,106 @@ const FilterBlockInputs = ({
     />
   );
 
-  const DateSubFilter = () => (
-    <>
-      <TextField
-        data-test='fromDate'
-        fullWidth
-        name='fromDate'
-        value={curData?.from ? moment(curData.from).format('YYYY-MM-DD') : ''}
-        label={localization.t('labels.from')}
-        type='date'
-        variant='outlined'
-        InputLabelProps={{ shrink: true }}
-        inputProps={{
-          style: {
-            fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '8px',
-          },
-        }}
-        onChange={(e) => {
-          const toSave = { from: e.target.value };
+  const DateSubFilter = () => {
+    const [fromVal, setFromVal] = useState('');
+    const [toVal, setToVal] = useState('');
 
-          if (curData?.to) {
-            toSave.to = curData.to;
-          }
+    useEffect(() => {
+      if (!fromVal) {
+        setFromVal(curData?.from);
+      }
+    }, [curData?.from]);
 
-          updateConfig(data.id, toSave);
-        }}
-      />
+    useEffect(() => {
+      if (!toVal) {
+        setToVal(curData?.to);
+      }
+    }, [curData?.to]);
 
-      <TextField
-        data-test='toDate'
-        fullWidth
-        name='toDate'
-        value={curData?.to ? moment(curData.to).format('YYYY-MM-DD') : ''}
-        label={localization.t('labels.to')}
-        type='date'
-        variant='outlined'
-        InputLabelProps={{ shrink: true }}
-        inputProps={{
-          style: {
-            fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '8px',
-          },
-          min: curData?.from ? moment(curData.from).format('YYYY-MM-DD') : '',
-        }}
-        onChange={(e) => {
-          const toSave = { to: e.target.value };
+    useEffect(() => {
+      if (!curData?.to && toVal) {
+        setToVal('');
+      }
 
-          if (curData?.from) {
-            toSave.from = curData.from;
-          }
+      if (!curData?.from && fromVal) {
+        setFromVal('');
+      }
+    }, [curData]);
 
-          updateConfig(data.id, toSave);
-        }}
-      />
-    </>
-  );
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          label={localization.t('labels.from')}
+          value={fromVal}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              data-test='fromDate'
+              fullWidth
+              error={false}
+              name='fromDate'
+              type='date'
+              value={fromVal}
+              variant='outlined'
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ endAdornment: () => null }}
+              // eslint-disable-next-line react/jsx-no-duplicate-props
+              inputProps={{
+                style: {
+                  fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '8px',
+                },
+              }}
+              onChange={(e) => {
+                const toSave = { from: e?.target?.value };
+
+                if (curData?.to) {
+                  toSave.to = curData.to;
+                }
+
+                updateConfig(data.id, toSave);
+                setFromVal(e?.target?.value);
+              }}
+            />
+          )}
+        />
+
+        <DatePicker
+          label={localization.t('labels.to')}
+          value={toVal}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              data-test='toDate'
+              fullWidth
+              name='toDate'
+              type='date'
+              value={toVal}
+              variant='outlined'
+              error={curData?.to && curData?.to !== '' && curData?.from && curData?.from !== '' && moment(curData?.from).isAfter(curData?.to)}
+              InputLabelProps={{ shrink: true }}
+              InputProps={{ endAdornment: () => null }}
+              // eslint-disable-next-line react/jsx-no-duplicate-props
+              inputProps={{
+                style: {
+                  fontSize: '12px', height: '56px', boxSizing: 'border-box', color: '#b9b1b1', padding: '8px',
+                },
+              }}
+              onChange={(e) => {
+                const toSave = { to: e?.target?.value };
+
+                if (curData?.from) {
+                  toSave.from = curData.from;
+                }
+
+                updateConfig(data.id, toSave);
+                setToVal(e?.target?.value);
+              }}
+            />
+          )}
+        />
+      </LocalizationProvider>
+    );
+  };
 
   const SelectSubFilter = () => (
     <Select
