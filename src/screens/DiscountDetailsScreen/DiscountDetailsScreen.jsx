@@ -17,6 +17,7 @@ const DiscountDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const { id } = useParams();
+  const [errors, setErrors] = useState({});
   const [localizedErrors, setLocalizedErrors] = useState({});
 
   const {
@@ -88,6 +89,7 @@ const DiscountDetailsScreen = () => {
       saveIsDisabled={!curDiscount?.name
         || (!curDiscount?.subscriptionId && curDiscount?.subscriptionSubSources?.includes('SUBSCRIPTIONID') && curDiscount.sources?.includes('SUBSCRIPTION'))
         || (curDiscount?.codes.length > 1 && curDiscount?.codes[0].value === '')
+        || (curDiscount?.model === 'SINGLE_USE_CODE' && !curDiscount?.maxUsages)
         || Object.keys(localizedErrors).length}
       hasChanges={hasChanges}
       isLoading={isLoading}
@@ -99,10 +101,13 @@ const DiscountDetailsScreen = () => {
       setUpdate={setUpdate}
       noTabsMargin
       tabs={{
+        scope: 'discounts',
         tabLabels: tabsLabels,
         curTab,
         setCurTab,
       }}
+      errors={errors}
+      setErrors={setErrors}
     >
       <DiscountDetailsView
         localizedErrors={localizedErrors}
@@ -114,6 +119,8 @@ const DiscountDetailsScreen = () => {
         amountType={amountType}
         selectOptions={selectOptions}
         curTab={curTab}
+        errors={errors}
+        setErrors={setErrors}
       />
     </DetailPageWrapper>
   );

@@ -25,7 +25,6 @@ const AbandonedScreen = () => {
   );
   const [makeUpdate, setMakeUpdate] = useState(0);
 
-
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
     const res = await api.getAbandoned({
       page: reduxCurrentPage, size: rowsPerPage, filters: filtersUrl, sortParams,

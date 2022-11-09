@@ -34,6 +34,8 @@ const General = ({
   setUsedDiscounts,
   localizedErrors,
   setLocalizedErrors,
+  errors,
+  setErrors,
 }) => {
   const handleUpdateAmount = (e) => {
     if (e.target.value === 'byPercentage' && !curDiscount.discountRate) {
@@ -42,6 +44,26 @@ const General = ({
     setAmountType(e.target.value);
   };
   const availableLocales = getLanguagesOptions();
+
+  const withValidation = (e) => {
+    if (!e.target.value) {
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [e.target.name]: true,
+        },
+      });
+    } else {
+      setErrors({
+        ...errors,
+        general: {
+          ...errors?.general,
+          [e.target.name]: false,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     if (curDiscount.model === 'SINGLE_USE_CODE') {
@@ -101,10 +123,15 @@ const General = ({
             label="discountRuleName"
             isRequired
             value={curDiscount.name}
-            onChangeInput={(e) => setCurDiscount({
-              ...curDiscount,
-              name: e.target.value,
-            })}
+            hasError={!!errors?.general?.discountRuleName}
+            helperText={errors?.general?.discountRuleName && localization.t('errorNotifications.required')}
+            onChangeInput={(e) => {
+              withValidation(e);
+              setCurDiscount({
+                ...curDiscount,
+                name: e.target.value,
+              });
+            }}
           />
         </Box>
         <Box pt={4} pl={2}>
@@ -283,6 +310,8 @@ General.propTypes = {
   setUsedDiscounts: PropTypes.func,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default General;
