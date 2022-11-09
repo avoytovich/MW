@@ -20,7 +20,8 @@ import defPath from '../../../services/helpers/routingHelper';
 import { copyText } from '../../../services/helpers/utils';
 import { tabLabels as tabLabelsStore } from '../../../screens/StoreDetailsScreen/utils';
 import { tabLabels as tabLabelsReco } from '../../../screens/RecoDetailsScreen/utils';
-import { recoHightLight, storeHightLight } from './HighLightingTabs';
+import { tabsLabels as tabLabelsDiscount } from '../../../screens/DiscountDetailsScreen/utils';
+import { recoHightLight, storeHightLight, discountHighlight } from './HighLightingTabs';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -136,6 +137,18 @@ const DetailPageWrapper = ({
         tabs,
         paramsId,
         customer,
+      );
+    }
+  }, [curData, tabs?.curTab]);
+
+  useEffect(() => {
+    if (tabs?.scope === 'discounts' && tabLabelsDiscount.includes(tabs?.tabLabels?.[tabs.curTab])) {
+      discountHighlight(
+        curData,
+        errors,
+        setErrors,
+        tabs,
+        paramsId,
       );
     }
   }, [curData, tabs?.curTab]);

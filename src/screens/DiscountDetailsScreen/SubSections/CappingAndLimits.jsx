@@ -11,7 +11,12 @@ import DateRangePicker from '../../../components/utils/Modals/DateRangePicker';
 import localization from '../../../localization';
 import { NumberInput, SelectCustom } from '../../../components/Inputs';
 
-const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
+const CappingAndLimits = ({
+  curDiscount,
+  setCurDiscount,
+  errors,
+  setErrors,
+}) => {
   const [validPeriod, setValidPeriod] = useState('between');
   useEffect(() => {
     if (validPeriod === 'before') {
@@ -20,6 +25,26 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
       setCurDiscount(newDiscount);
     }
   }, [validPeriod]);
+
+  const withValidation = (e) => {
+    if (!e.target.value) {
+      setErrors({
+        ...errors,
+        cappingAndLimits: {
+          ...errors?.cappingAndLimits,
+          [e.target.name]: true,
+        },
+      });
+    } else {
+      setErrors({
+        ...errors,
+        cappingAndLimits: {
+          ...errors?.cappingAndLimits,
+          [e.target.name]: false,
+        },
+      });
+    }
+  };
 
   useEffect(() => {
     setValidPeriod(curDiscount.startDate ? 'between' : 'before');
@@ -103,8 +128,17 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
                 data-test='maximumUses'
                 label='maximumUses'
                 value={curDiscount.maxUsages}
-                onChangeInput={(e) => setCurDiscount({ ...curDiscount, maxUsages: e.target.value })}
                 minMAx={{ min: 0, max: 9999, step: 1 }}
+                hasError={!!errors?.cappingAndLimits?.maximumUses}
+                isRequired={curDiscount?.model === 'SINGLE_USE_CODE'}
+                helperText={errors?.cappingAndLimits?.maximumUses && localization.t('errorNotifications.required')}
+                onChangeInput={(e) => {
+                  withValidation(e);
+                  setCurDiscount({
+                    ...curDiscount,
+                    maxUsages: e.target.value,
+                  });
+                }}
               />
             </Box>
           </Grid>
@@ -145,6 +179,8 @@ const CappingAndLimits = ({ curDiscount, setCurDiscount }) => {
 CappingAndLimits.propTypes = {
   curDiscount: PropTypes.object,
   setCurDiscount: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default CappingAndLimits;

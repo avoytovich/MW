@@ -20,6 +20,8 @@ const DiscountDetailsView = ({
   selectOptions,
   localizedErrors,
   setLocalizedErrors,
+  errors,
+  setErrors,
 }) => {
   const [checkedSingleUseCode, setCheckedSingleUseCode] = useState(false);
   const [prevSaveSingleUseCode, setPrevSaveSingleUseCode] = useState(false);
@@ -63,6 +65,8 @@ const DiscountDetailsView = ({
             setCheckedSingleUseCode={setCheckedSingleUseCode}
             setPrevSaveSingleUseCode={setPrevSaveSingleUseCode}
             setUsedDiscounts={setUsedDiscounts}
+            errors={errors}
+            setErrors={setErrors}
           />
         </DiscountSection>
       )}
@@ -71,6 +75,8 @@ const DiscountDetailsView = ({
           <CappingAndLimits
             curDiscount={curDiscount}
             setCurDiscount={setCurDiscount}
+            errors={errors}
+            setErrors={setErrors}
           />
         </DiscountSection>
       )}
@@ -106,6 +112,8 @@ DiscountDetailsView.propTypes = {
   curTab: PropTypes.number,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
+  errors: PropTypes.object,
+  setErrors: PropTypes.func,
 };
 
 export default DiscountDetailsView;

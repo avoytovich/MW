@@ -31,18 +31,11 @@ const FontsTab = () => {
   };
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
-    const costumersIds = [];
     const res = await api.getDesignsFonts({
       page: reduxCurrentPage, size: rowsPerPage, sortParams, filters: filtersUrl,
     });
-    res.data.items.forEach((item) => {
-      const costumer = `id=${item.customerId}`;
-      if (!costumersIds.includes(costumer)) {
-        costumersIds.push(costumer);
-      }
-    });
-    const customers = await api.getCustomersByIds(costumersIds.join('&'));
-    return generateData(res.data, customers.data.items);
+
+    return generateData(res.data);
   };
 
   const fonts = useTableData(

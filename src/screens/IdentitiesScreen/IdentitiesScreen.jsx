@@ -33,8 +33,6 @@ const IdentitiesScreen = () => {
   };
 
   const requests = async (rowsPerPage, reduxCurrentPage, filtersUrl) => {
-    const custumersIds = [];
-
     const res = await api.getIdentities(
       {
         page: reduxCurrentPage,
@@ -44,16 +42,7 @@ const IdentitiesScreen = () => {
       },
     );
 
-    res.data.items.forEach((item) => {
-      const custumer = `id=${item.customerId}`;
-      if (!custumersIds.includes(custumer)) {
-        custumersIds.push(custumer);
-      }
-    });
-
-    const customers = await api.getCustomersByIds(custumersIds.join('&'));
-
-    return generateData(res.data, customers.data);
+    return generateData(res.data);
   };
 
   const identities = useTableData(

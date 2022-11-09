@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { getCustomerName, getCustomerNameSync } from '../../helpers/customersHelper';
+import { fetchCustomersNames, getCustomerNameSync } from '../../helpers/customersHelper';
 import localization from '../../../localization';
 
 const defaultShow = {
@@ -84,18 +84,16 @@ const generateData = (data) => {
   return Promise
     .all(values)
     .then(async (resp) => {
-      const promises = usedCustomers.map((c) => getCustomerName(c));
-
-      await Promise
-        .all(promises)
-        .finally(() => Object.assign(markUp, {
+      await fetchCustomersNames(usedCustomers).then(() => {
+        Object.assign(markUp, {
           values: resp.map((r) => {
             const name = getCustomerNameSync(r.customer);
 
             return { ...r, customer: name };
           }),
           meta,
-        }));
+        });
+      });
 
       return markUp;
     });
