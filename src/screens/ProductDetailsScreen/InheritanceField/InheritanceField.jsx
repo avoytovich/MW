@@ -23,7 +23,6 @@ const InheritanceField = (props) => {
   } = props;
   if (!Children) return null;
   if (!parentId || !value?.state) return Children;
-
   const handleOnClickDelIcon = (chip) => {
     const { value: inheritanceValue } = props;
     const newValue = [...inheritanceValue?.value].filter((val) => val !== chip);
@@ -140,6 +139,7 @@ const InheritanceField = (props) => {
       });
       return;
     }
+
     onChange({
       ...currentProductData,
       [field]: {

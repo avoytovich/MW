@@ -2,7 +2,7 @@
 import { removeEmptyPropsInObject } from '../../../services/helpers/dataStructuring';
 import { requiredFields } from './inputsConfig';
 
-const handleValidate = (allLang, defaultLang, scope, additionalValidation) => {
+const handleValidate = (allLang, defaultLang, scope, additionalValidation, requiredOnlyDefault) => {
   const allErrors = {};
   const defaultLangObj = { ...allLang[defaultLang] };
   const langObj = { ...allLang };
@@ -32,7 +32,7 @@ const handleValidate = (allLang, defaultLang, scope, additionalValidation) => {
         && !allErrors[lang]?.isRequired?.includes(reqField) && !isNew) {
         if (allErrors[lang].isRequired) {
           allErrors[lang].isRequired.push(reqField);
-        } else if (lang === defaultLang) {
+        } else if ((lang === defaultLang && requiredOnlyDefault) || !requiredOnlyDefault) {
           allErrors[lang].isRequired = [reqField];
         }
       }

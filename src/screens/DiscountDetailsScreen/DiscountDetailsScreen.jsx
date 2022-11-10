@@ -1,8 +1,9 @@
 // ToDo: consider making a common layout for such type of settings screens
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import moment from 'moment';
+import useValidation from '../../services/useValidation/useValidation';
 
 import { fromArrayToObject, tabsLabels, formatCodesToObject } from './utils';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
@@ -17,7 +18,6 @@ const DiscountDetailsScreen = () => {
   const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
   const { id } = useParams();
-  const [errors, setErrors] = useState({});
   const [localizedErrors, setLocalizedErrors] = useState({});
 
   const {
@@ -31,6 +31,13 @@ const DiscountDetailsScreen = () => {
     selectOptions,
     setUpdate,
   } = useDiscountDetails(id, nxState);
+
+  const {
+    errors,
+    handleSetErrors,
+    setErrors,
+  } = useValidation(curTab, tabsLabels, curDiscount, 'discountrules');
+
   const beforeSend = () => {
     const localizedLabels = {};
 
@@ -78,6 +85,22 @@ const DiscountDetailsScreen = () => {
     }
     return removeEmptyPropsInObject(res);
   };
+  useEffect(() => {
+    if (curDiscount?.model === 'SINGLE_USE_CODE' && !curDiscount?.maxUsages) {
+      setErrors({
+        ...errors, cappingAndLimits: ['maxUsages'],
+      });
+    } else if (errors.cappingAndLimits?.includes('maxUsages')) {
+      const newErrors = { ...errors };
+      const cappingAndLimits = errors?.cappingAndLimits.filter((it) => it !== 'maxUsages');
+      if (!cappingAndLimits.length) {
+        delete newErrors.cappingAndLimits;
+      } else {
+        newErrors.cappingAndLimits = cappingAndLimits;
+      }
+      setErrors(newErrors)
+    }
+  }, [curDiscount])
 
   return (
     <DetailPageWrapper
@@ -101,13 +124,12 @@ const DiscountDetailsScreen = () => {
       setUpdate={setUpdate}
       noTabsMargin
       tabs={{
-        scope: 'discounts',
+        scope: 'discountrules',
         tabLabels: tabsLabels,
         curTab,
         setCurTab,
       }}
       errors={errors}
-      setErrors={setErrors}
     >
       <DiscountDetailsView
         localizedErrors={localizedErrors}
@@ -120,7 +142,7 @@ const DiscountDetailsScreen = () => {
         selectOptions={selectOptions}
         curTab={curTab}
         errors={errors}
-        setErrors={setErrors}
+        setErrors={handleSetErrors}
       />
     </DetailPageWrapper>
   );

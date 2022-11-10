@@ -13,6 +13,7 @@ import {
 import { getCustomerName } from '../../services/helpers/customersHelper';
 import localization from '../../localization';
 import parentPaths from '../../services/paths';
+import useValidation from '../../services/useValidation/useValidation';
 
 import {
   formDesignOptions,
@@ -21,7 +22,7 @@ import {
   checkExistingLabelsUrl,
   formatBeforeSending,
   checkGroupFields,
-  tabLabels,
+  checkRequiredFields,
 } from './utils';
 
 import api from '../../api';
@@ -37,9 +38,7 @@ const StoreDetailsScreen = () => {
   const [storeResources, setStoreResources] = useState([]);
   const [resourcesHasChanges, setResourcesHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
-  const [errors, setErrors] = useState({});
   const [isLoading, setLoading] = useState(true);
-  const [curTab, setCurTab] = useState(0);
   const { id } = useParams();
   const [storeHasChanges, setStoreChanges] = useState(false);
   const [selectOptions, setSelectOptions] = useState({
@@ -55,35 +54,31 @@ const StoreDetailsScreen = () => {
 
   const [currentCustomerData, setCurrentCustomerData] = useState(null);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
+  const componentRef = useRef(null);
+  const wrapperRef = useRef(null);
 
-  const [isScroolUp, setIsScroolUp] = useState(false);
-  const [isScroolDown, setIsScroolDown] = useState(false);
+  const generalRef = useRef(null);
+  const designRef = useRef(null);
+  const paymentRef = useRef(null);
+  const localizedContentRef = useRef(null);
 
-  const myRefView = useRef(null);
-
-  const myRefGeneral = useRef(null);
-  const myRefDesign = useRef(null);
-  const myRefPayment = useRef(null);
-  const myRefLocalizedContent = useRef(null);
-
-  const refScrool = [
-    myRefGeneral,
-    myRefDesign,
-    myRefPayment,
-    myRefLocalizedContent,
+  const sectionRefs = [
+    { section: 'general', ref: generalRef },
+    { section: 'design', ref: designRef },
+    { section: 'payment', ref: paymentRef },
+    { section: 'localizedContent', ref: localizedContentRef },
   ];
+  const [selectedSection, setSelectedSection] = useState(sectionRefs[0].section);
 
-  const tabRefGeneral = useRef(null);
-  const tabRefDesign = useRef(null);
-  const tabRefPayment = useRef(null);
-  const tabRefLocalizedContent = useRef(null);
+  const countSection = () => {
+    const keysSections = sectionRefs.map((sect) => sect.section);
+    return keysSections.indexOf(selectedSection);
+  };
 
-  const refTab = [
-    tabRefGeneral,
-    tabRefDesign,
-    tabRefPayment,
-    tabRefLocalizedContent,
-  ];
+  const {
+    errors,
+    handleSetErrors,
+  } = useValidation(countSection(), sectionRefs.map((sect) => sect.section), currentStoreData, 'stores');
 
   const dispatch = useDispatch();
 
@@ -97,23 +92,6 @@ const StoreDetailsScreen = () => {
     });
     return res;
   };
-  const checkThankYouDesc = () => {
-    const res = Object.keys(currentStoreData.thankYouDesc)
-      .filter((it) => !!currentStoreData.thankYouDesc[it].deliveryRemark);
-    return res.length > 0 && !currentStoreData.thankYouDesc[currentStoreData.defaultLocale];
-  };
-  const handleDisabledSave = (currentStoreData?.externalContextAlias
-    && !!currentStoreData?.externalContextGenerationParams.length)
-    || !currentStoreData?.name
-    || !currentStoreData?.defaultLocale
-    || !currentStoreData?.displayName
-    || !currentStoreData?.routes[0]?.hostname
-    // For EmailSenderOverride
-    // || (!currentStoreData?.emailSenderOverride.startsWith(`${currentCustomerData?.iamClient?.realmName}-`)
-    //   && currentStoreData?.emailSenderOverride !== currentCustomerData?.iamClient?.realmName)
-    || Object.keys(errors).filter((item) => (!tabLabels.includes(item))).length > 0
-    || checkThankYouDesc()
-    || Object.keys(localizedErrors).length > 0;
 
   const beforeSend = () => {
     const updatedData = formatBeforeSending(
@@ -128,7 +106,9 @@ const StoreDetailsScreen = () => {
     if (checkExistingLabelsUrl(currentStoreResources)) {
       if (!checkLabelDuplicate(currentStoreResources)) {
         if (!checkGroupFields(currentStoreData)) {
-          return false;
+          if (checkRequiredFields(currentStoreData)) {
+            return false;
+          }
         }
       }
     }
@@ -271,6 +251,15 @@ const StoreDetailsScreen = () => {
   }, [currentStoreResources]);
 
   useEffect(() => {
+    const keys = Object.keys(localizedErrors);
+    if (keys.length && !errors?.localizedContent?.length) {
+      handleSetErrors(true, 'localizedContent', 'hasError');
+    } else if (!keys.length) {
+      handleSetErrors(false, 'localizedContent', 'hasError');
+    }
+  }, [localizedErrors]);
+
+  useEffect(() => {
     setStoreChanges(
       JSON.stringify(currentStoreData) !== JSON.stringify(storeData),
     );
@@ -297,7 +286,7 @@ const StoreDetailsScreen = () => {
       name={id !== 'add' ? `${storeData?.name} - ${storeData?.id}` : `${localization.t('general.new')} ${localization.t(
         'general.store',
       )}`}
-      saveIsDisabled={validation() || handleDisabledSave}
+      saveIsDisabled={validation() || Object.keys(errors).length}
       hasChanges={storeHasChanges || resourcesHasChanges}
       isLoading={isLoading}
       curParentPath={parentPaths.stores}
@@ -306,14 +295,10 @@ const StoreDetailsScreen = () => {
       updateFunc={api.updateStoreById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
-      tabs={{
-        scope: 'store',
-        setCurTab,
-        curTab,
-        tabLabels,
-      }}
       errors={errors}
-      setErrors={setErrors}
+      sectionRefs={sectionRefs}
+      componentRef={componentRef}
+      wrapperRef={wrapperRef}
       isRankingOpen={isRankingOpen}
       extraHeader={(
         <CustomerStatusLabel
@@ -321,19 +306,16 @@ const StoreDetailsScreen = () => {
         />
       )}
       customer={currentCustomerData}
-      refTab={refTab}
-      refScrool={refScrool}
-      myRefView={myRefView}
-      isScroolUp={isScroolUp}
-      setIsScroolUp={setIsScroolUp}
-      isScroolDown={isScroolDown}
-      setIsScroolDown={setIsScroolDown}
+      selectedSection={selectedSection}
+      setSelectedSection={setSelectedSection}
     >
       <StoreDetailsView
+        selectedSection={selectedSection}
+        sectionRefs={sectionRefs}
         localizedErrors={localizedErrors}
         setLocalizedErrors={setLocalizedErrors}
         errors={errors}
-        setErrors={setErrors}
+        setErrors={handleSetErrors}
         isRankingOpen={isRankingOpen}
         setIsRankingOpen={setIsRankingOpen}
         currentStoreData={currentStoreData}
@@ -341,13 +323,8 @@ const StoreDetailsScreen = () => {
         setCurrentStoreData={setCurrentStoreData}
         currentStoreResources={currentStoreResources}
         setCurrentStoreResources={setCurrentStoreResources}
-        curTab={curTab}
-        setCurTab={setCurTab}
         customer={currentCustomerData}
-        refScrool={refScrool}
-        refTab={refTab}
-        isScroolUp={isScroolUp}
-        isScroolDown={isScroolDown}
+        setSelectedSection={setSelectedSection}
       />
     </DetailPageWrapper>
   );

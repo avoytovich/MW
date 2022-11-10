@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useParams } from 'react-router-dom';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -17,6 +16,7 @@ import {
   RadioGroup,
   FormControlLabel,
   InputAdornment,
+  FormHelperText,
 } from '@mui/material';
 
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -44,23 +44,21 @@ import {
 import { checkValue, renewingProductsOptions } from '../../../services/helpers/dataStructuring';
 
 import localization from '../../../localization';
+import '../productDetailsScreen.scss';
 
 const General = ({
-  myRef,
   setProductData,
   currentProductData,
   selectOptions,
   parentId,
-  setSaveDisabled,
   variablesDescriptions,
   errors,
-  setErrors,
+  modified,
+  setModified,
 }) => {
   const [countrySelection, setCountrySelection] = useState('blocked');
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
   const [updSelectedCountries, setUpdSelectedCountries] = useState(0);
-  const [errorLifetime, setErrorLifetime] = useState(false);
-  const [errorTextLifetime, setErrorTextLifetime] = useState('');
 
   const defaultBlacklisted = checkValue(currentProductData?.blackListedCountries) || [];
   const [selectedCountries, setSelectedCountries] = useState([...defaultBlacklisted]);
@@ -72,84 +70,22 @@ const General = ({
 
   const countriesOptions = getCountriesOptions();
 
-  const { lifeTime: lifetime, subscriptionTemplate, fulfillmentTemplate } = currentProductData;
-
-  const { id } = useParams();
-
-  const withValidation = (target) => {
-    if (!target.value) {
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.general,
-          [target.name]: true,
-        },
-      });
-    } else {
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.general,
-          [target.name]: false,
-        },
-      });
-    }
-  };
-
-  const withValidationInputCustom = (target) => {
-    if (target.name !== 'name') {
-      withValidation(target);
-      setProductData({
-        ...currentProductData,
-        [target.name]: target.value,
-      });
-    } else {
-      withValidation(target);
-      setProductData({
-        ...currentProductData,
-        genericName: target.value,
-      });
-    }
-  };
-
-  const withValidationSelectCustom = (target, options = {}) => {
-    withValidation(target);
-    setProductData({
-      ...currentProductData,
-      [target.name]: target.value,
-    });
-  };
   const filteredSelectOptions = selectOptions?.renewingProducts
     ?.filter(
       (candidate) => !(candidate.subProducts && candidate.subProducts.length
-          && candidate.fulfillmentTemplate)
-          && !candidate.subscriptionTemplate
-          && (!candidate.subProducts || candidate.subProducts.length === 0)
-          && (!currentProductData.id
-            || (currentProductData.id !== candidate.parentId
-              && currentProductData.id !== candidate.id)),
+        && candidate.fulfillmentTemplate)
+        && !candidate.subscriptionTemplate
+        && (!candidate.subProducts || candidate.subProducts.length === 0)
+        && (!currentProductData.id
+          || (currentProductData.id !== candidate.parentId
+            && currentProductData.id !== candidate.id)),
     ) || [];
   const handleSelectOptionsGroup = renewingProductsOptions(filteredSelectOptions);
-
-  useEffect(() => {
-    setSaveDisabled(!!(fulfillmentTemplate && selectedBundledProduct));
-  }, [fulfillmentTemplate, selectedBundledProduct]);
-
   useEffect(() => {
     if (countrySelection === 'blocked' && selectedCountries?.length !== defaultBlacklisted?.length) {
       setSelectedCountries([...defaultBlacklisted]);
     }
   }, [currentProductData?.blackListedCountries]);
-
-  useEffect(() => {
-    if (checkValue(lifetime.name) === 'PERMANENT' && checkValue(subscriptionTemplate)) {
-      setErrorLifetime(true);
-      setErrorTextLifetime(localization.t('labels.errorProductPerAndSub'));
-    } else {
-      setErrorLifetime(false);
-      setErrorTextLifetime(false);
-    }
-  }, [lifetime, subscriptionTemplate]);
 
   useEffect(() => {
     const checkedSelected = checkValue(selectedCountries) || [];
@@ -203,46 +139,9 @@ const General = ({
     }
   }, [countrySelection, updSelectedCountries]);
 
-  useEffect(() => {
-    if (id !== 'add') {
-      setErrors((s) => ({
-        ...s,
-        general: {
-          name: !currentProductData.genericName,
-          type: !currentProductData.type,
-          publisherRefId: !currentProductData.publisherRefId,
-        },
-      }));
-    }
-  }, [currentProductData]);
-
   return (
     <>
       <Box display='flex' flexDirection='row' alignItems='center'>
-        {/* <Box p={2} width='50%' display='flex'>
-          <InheritanceField
-            field='catalogId'
-            onChange={setProductData}
-            value={currentProductData?.catalogId}
-            selectOptions={selectOptions.catalogs || []}
-            parentId={parentId}
-            currentProductData={currentProductData}
-          >
-            <SelectCustom
-              isRequired
-              label='catalog'
-              value={currentProductData.catalogId}
-              selectOptions={selectOptions.catalogs}
-              onChangeSelect={(e) => {
-                setProductData({
-                  ...currentProductData,
-                  catalogId: e.target.value,
-                });
-              }}
-            />
-          </InheritanceField>
-        </Box> */}
-
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field='genericName'
@@ -250,14 +149,24 @@ const General = ({
             value={currentProductData?.genericName}
             parentId={parentId}
             currentProductData={currentProductData}
+            buttonStyles={errors?.general?.includes('genericName') ? { bottom: '16px' } : {}}
           >
             <InputCustom
               label='name'
               isRequired
               value={checkValue(currentProductData.genericName)}
-              onChangeInput={(e) => withValidationInputCustom(e.target)}
-              hasError={!!errors?.general?.name}
-              helperText={errors?.general?.name && localization.t('errorNotifications.required')}
+              onChangeInput={(e) => {
+                setProductData({
+                  ...currentProductData,
+                  genericName: e.target.value,
+                });
+                if (!modified.includes('genericName')) {
+                  setModified([...modified, 'genericName']);
+                }
+              }}
+              hasError={errors?.general?.includes('genericName')}
+              helperText={errors?.general?.includes('genericName') && localization.t('errorNotifications.required')}
+
             />
           </InheritanceField>
         </Box>
@@ -303,26 +212,34 @@ const General = ({
         </Box>
       </Box>
 
-      <Box display='flex' flexDirection='row' alignItems='center' ref={myRef}>
+      <Box display='flex' flexDirection='row' alignItems='center'>
         <Box p={2} width='50%' display='flex'>
           <InheritanceField
             field='type'
             onChange={setProductData}
             value={currentProductData?.type}
-            selectOptions={type || []}
             parentId={parentId}
             currentProductData={currentProductData}
+            buttonStyles={errors?.general?.includes('type') ? { bottom: '16px' } : {}}
           >
             <AutocompleteCustom
               isRequired
               name='type'
               optionLabelKey='value'
               label="type"
-              onSelect={(newValue) => withValidationSelectCustom({ name: 'type', value: newValue })}
+              onSelect={(newValue) => {
+                setProductData({
+                  ...currentProductData,
+                  type: newValue,
+                });
+                if (!modified.includes('type')) {
+                  setModified([...modified, 'type']);
+                }
+              }}
               selectOptions={type || []}
               curValue={checkValue(currentProductData?.type)}
-              error={!!errors?.general?.type}
-              helperText={errors?.general?.type && localization.t('errorNotifications.required')}
+              error={errors?.general?.includes('type')}
+              helperText={errors?.general?.includes('type') && localization.t('errorNotifications.required')}
             />
           </InheritanceField>
         </Box>
@@ -334,22 +251,31 @@ const General = ({
             value={currentProductData.publisherRefId}
             parentId={parentId}
             currentProductData={currentProductData}
+            buttonStyles={errors?.general?.includes('publisherRefId') ? { bottom: '16px' } : {}}
           >
             <InputCustom
               isRequired
               tooltip={localization.t('tooltips.publisherRefId')}
               label='publisherRefId'
               value={checkValue(currentProductData?.publisherRefId)}
-              onChangeInput={(e) => withValidationInputCustom(e.target)}
-              hasError={!!errors?.general?.publisherRefId}
-              helperText={errors?.general?.publisherRefId && localization.t('errorNotifications.required')}
+              onChangeInput={(e) => {
+                setProductData({
+                  ...currentProductData,
+                  publisherRefId: e.target.value,
+                });
+                if (!modified.includes('publisherRefId')) {
+                  setModified([...modified, 'publisherRefId']);
+                }
+              }}
+              hasError={errors?.general?.includes('publisherRefId')}
+              helperText={errors?.general?.includes('publisherRefId') && localization.t('errorNotifications.required')}
             />
           </InheritanceField>
         </Box>
       </Box>
 
       <Box display='flex' flexDirection='row' alignItems='center'>
-        <Box p={2} width='50%' display='flex'>
+        <Box p={2} width='50%'>
           <InheritanceField
             field='businessSegment'
             onChange={setProductData}
@@ -376,7 +302,7 @@ const General = ({
             <Box display='flex'>
               {!notShowMaxPaymentsPart.includes(checkValue(currentProductData?.lifeTime)?.name)
                 && (
-                  <Box minWidth='165px' p={2} gridArea='count'>
+                  <Box minWidth='165px' pr={2} gridArea='count'>
                     <InheritanceField
                       field='maxPaymentsPart'
                       onChange={setProductData}
@@ -414,11 +340,12 @@ const General = ({
                 value={currentProductData?.lifeTime}
                 parentId={parentId}
                 currentProductData={currentProductData}
+                buttonStyles={errors?.general?.includes('lifeTime') ? { bottom: '16px' } : {}}
               >
                 <SelectCustom
+                  hasError={errors?.general?.includes('lifeTime')}
+                  helperText={errors?.general?.includes('lifeTime') && localization.t('labels.errorProductPerAndSub')}
                   label='lifeTime'
-                  hasError={errorLifetime}
-                  helperText={errorTextLifetime}
                   value={currentProductData?.lifeTime?.name}
                   selectOptions={lifeTime}
                   onChangeSelect={(e) => {
@@ -634,12 +561,10 @@ const General = ({
           </InheritanceField>
         </Box>
       </Box>
-
-      <Box p={2}>
+      <Box p={2} className={errors?.general?.includes('bundledProducts') ? 'bundledError' : ''}>
         <Box py={2}>
           <Typography gutterBottom variant='h4'>{localization.t('labels.bundledProducts')}</Typography>
         </Box>
-
         {Object.entries(counts).map(([key, value]) => {
           const selectValue = selectOptions?.renewingProducts?.find(({ id }) => id === key) || '';
 
@@ -751,8 +676,6 @@ const General = ({
                 selectOptions={handleSelectOptionsGroup}
                 curValue={checkValue(selectedBundledProduct) || ''}
                 isDisabled={currentProductData?.subProducts?.state === 'inherits'}
-                error={!!(fulfillmentTemplate && selectedBundledProduct)}
-                helperText={localization.t('labels.errorProductFulAndBun')}
               />
               <Box marginLeft='5px'>
                 <IconButton
@@ -790,92 +713,96 @@ const General = ({
             </>
           </InheritanceField>
         </Box>
-        {parentId ? (
-          <Box display='flex' width='100%' flexDirection='column'>
-            <Box py={4}>
-              <Typography gutterBottom variant='h4'>{localization.t('labels.variationParameters')}</Typography>
-            </Box>
-            <Box display='flex' flexDirection='column'>
-              {variablesDescriptions?.map(
-                ({ label, description, variableValueDescriptions }, i) => {
-                  const disabled = currentProductData[description]?.state === 'inherits';
-
-                  return (
-                    <Box display='flex' alignItems='center' key={label || description}>
-                      <Box width='250px'>
-                        <Typography>{description || label}</Typography>
-                      </Box>
-
-                      <Box
-                        display='flex'
-                        justifyContent='space-between'
-                        alignItems='center'
-                        marginLeft='20px'
-                        width='100%'
-                        my={1}
-                      >
-                        <InheritanceField
-                          field={description}
-                          valuePath={i}
-                          onChange={setProductData}
-                          value={currentProductData[description]}
-                          parentId={parentId}
-                          currentProductData={currentProductData}
-                        >
-                          {
-                            variableValueDescriptions?.length <= 5 ? (
-                              <RadioGroup
-                                aria-label={description}
-                                name={description}
-                                data-test='variationParameter'
-                              >
-                                <Box display='flex'>
-                                  {variableValueDescriptions?.map(
-                                    ({ descValue, description: _description }) => {
-                                      const labelDescription = _description.startsWith('val') ? '' : _description;
-                                      return (
-                                        <FormControlLabel
-                                          key={_description}
-                                          className='radio'
-                                          value={_description}
-                                          disabled={disabled}
-                                          control={<Radio color='primary' />}
-                                          label={`${labelDescription} ${descValue || '?'}`}
-                                        />
-                                      );
-                                    },
-                                  )}
-                                </Box>
-                              </RadioGroup>
-                            ) : (
-                              <SelectCustom
-                                gridArea='variationParameter'
-                                isDisabled={disabled}
-                                value={checkValue(currentProductData[description])}
-                                selectOptions={variableValueDescriptions
-                                  ?.map(({ descValue, description: _description }) => ({
-                                    value: `${_description.startsWith('val') ? '' : _description} ${descValue}`, id: _description,
-                                  })) || []}
-                              />
-                            )
-                          }
-                        </InheritanceField>
-                      </Box>
-                    </Box>
-                  );
-                },
-              )}
-            </Box>
-          </Box>
-        ) : ''}
       </Box>
+      {errors?.general?.includes('bundledProducts') && (
+        <Box pb={1}>
+          <FormHelperText error>{localization.t('errorNotifications.fulfillmentBundleProduct')}</FormHelperText>
+        </Box>
+      )}
+      {parentId ? (
+        <Box display='flex' width='100%' flexDirection='column'>
+          <Box py={4}>
+            <Typography gutterBottom variant='h4'>{localization.t('labels.variationParameters')}</Typography>
+          </Box>
+          <Box display='flex' flexDirection='column'>
+            {variablesDescriptions?.map(
+              ({ label, description, variableValueDescriptions }, i) => {
+                const disabled = currentProductData[description]?.state === 'inherits';
+
+                return (
+                  <Box display='flex' alignItems='center' key={label || description}>
+                    <Box width='250px'>
+                      <Typography>{description || label}</Typography>
+                    </Box>
+
+                    <Box
+                      display='flex'
+                      justifyContent='space-between'
+                      alignItems='center'
+                      marginLeft='20px'
+                      width='100%'
+                      my={1}
+                    >
+                      <InheritanceField
+                        field={description}
+                        valuePath={i}
+                        onChange={setProductData}
+                        value={currentProductData[description]}
+                        parentId={parentId}
+                        currentProductData={currentProductData}
+                      >
+                        {
+                          variableValueDescriptions?.length <= 5 ? (
+                            <RadioGroup
+                              aria-label={description}
+                              name={description}
+                              data-test='variationParameter'
+                            >
+                              <Box display='flex'>
+                                {variableValueDescriptions?.map(
+                                  ({ descValue, description: _description }) => {
+                                    const labelDescription = _description.startsWith('val') ? '' : _description;
+                                    return (
+                                      <FormControlLabel
+                                        key={_description}
+                                        className='radio'
+                                        value={_description}
+                                        disabled={disabled}
+                                        control={<Radio color='primary' />}
+                                        label={`${labelDescription} ${descValue || '?'}`}
+                                      />
+                                    );
+                                  },
+                                )}
+                              </Box>
+                            </RadioGroup>
+                          ) : (
+                            <SelectCustom
+                              gridArea='variationParameter'
+                              isDisabled={disabled}
+                              value={checkValue(currentProductData[description])}
+                              selectOptions={variableValueDescriptions
+                                ?.map(({ descValue, description: _description }) => ({
+                                  value: `${_description.startsWith('val') ? '' : _description} ${descValue}`, id: _description,
+                                })) || []}
+                            />
+                          )
+                        }
+                      </InheritanceField>
+                    </Box>
+                  </Box>
+                );
+              },
+            )}
+          </Box>
+        </Box>
+      ) : ''}
     </>
   );
 };
 
 General.propTypes = {
   setProductData: PropTypes.func,
-  setSaveDisabled: PropTypes.bool,
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
@@ -883,9 +810,9 @@ General.propTypes = {
   handlePopoverClose: PropTypes.func,
   handlePopoverOpen: PropTypes.func,
   variablesDescriptions: PropTypes.array,
-  myRef: PropTypes.object,
   errors: PropTypes.object,
-  setErrors: PropTypes.func,
+  modified: PropTypes.array,
+  setModified: PropTypes.func,
 };
 
 export default General;

@@ -1,12 +1,11 @@
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Box, Typography } from '@mui/material';
 
 import AssetsResource from '../../../components/AssetsResoursesWithSelectLabel';
 
-import { checkValue } from '../../../services/helpers/dataStructuring';
 import localization from '../../../localization';
 
 import './productFile.scss';
@@ -19,14 +18,9 @@ const resourceLabels = [
   { id: 'product_icon', value: localization.t('labels.icon') },
 ];
 
-const defaultFiles = { key: 0, label: null, url: null };
-
 const ProductFiles = ({
-  myRef, currentProductData, setProductData, parentId,
+  currentProductData, setProductData, parentId, contents, resources,
 }) => {
-  const [contents, setContents] = useState([{ ...defaultFiles }]);
-  const [resources, setResources] = useState([{ ...defaultFiles }]);
-
   const updateResources = (newData) => {
     setProductData((c) => ({ ...c, resources: [...newData] }));
   };
@@ -45,36 +39,8 @@ const ProductFiles = ({
     }
   };
 
-  useEffect(() => {
-    let toSetData = checkValue(currentProductData?.relatedContents) || [];
-
-    if (Array.isArray(toSetData)) {
-      if (!toSetData.length) {
-        toSetData = [{ ...defaultFiles }];
-      }
-      setContents([...toSetData]);
-    }
-
-    if (toSetData.value) {
-      if (!toSetData?.value?.length) {
-        toSetData = [{ ...defaultFiles }];
-      }
-      setContents([...toSetData.value]);
-    }
-  }, [currentProductData.relatedContents]);
-
-  useEffect(() => {
-    let toSetData = checkValue(currentProductData?.resources) || [];
-
-    if (!toSetData.length) {
-      toSetData = [{ ...defaultFiles }];
-    }
-
-    setResources([...toSetData]);
-  }, [currentProductData.resources]);
-
-  return (
-    <Box p={2} pt={0} ref={myRef}>
+  return resources && contents && (
+    <Box p={2} pt={0}>
       <Typography variant='h5' style={{ marginBottom: '15px', fontWeight: '400' }}>
         {localization.t('labels.dropFileOrSelect')}
       </Typography>
@@ -127,6 +93,8 @@ ProductFiles.propTypes = {
   currentProductData: PropTypes.object,
   setProductData: PropTypes.func,
   parentId: PropTypes.string,
+  contents: PropTypes.object,
+  resources: PropTypes.object,
 };
 
 export default ProductFiles;

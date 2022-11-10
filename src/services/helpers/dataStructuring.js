@@ -191,8 +191,11 @@ const productRequiredFields = (product) => {
       index,
     }));
   }
-  const res = product.lifeTime !== '7DAY' ? product.lifeTime.match(/[a-zA-Z]+|[0-9]+/g) : ['7DAY'];
-  const lifeTime = { number: res[1] ? res[0] : '1', name: res[1] ? res[1] : res[0] };
+  let { lifeTime } = product;
+  if (typeof lifeTime === 'string') {
+    const res = product.lifeTime !== '7DAY' ? product.lifeTime.match(/[a-zA-Z]+|[0-9]+/g) : ['7DAY'];
+    lifeTime = { number: res[1] ? res[0] : '1', name: res[1] ? res[1] : res[0] };
+  }
 
   const newDefault = { ...defaultProduct };
 
@@ -200,6 +203,13 @@ const productRequiredFields = (product) => {
 
   return {
     ...newDefault, ...product, resources: resourcesKeys || [], priceByCountryByCurrency, lifeTime,
+  };
+};
+const productVariationRequiredFields = (product) => {
+  const res = product.lifeTime !== '7DAY' ? product.lifeTime.match(/[a-zA-Z]+|[0-9]+/g) : ['7DAY'];
+  const lifeTime = { number: res[1] ? res[0] : '1', name: res[1] ? res[1] : res[0] };
+  return {
+    ...product, lifeTime,
   };
 };
 const structureProdAutocompleteSelectOptions = ({
@@ -423,7 +433,7 @@ const mandatoryFields = ['lifeTime', 'publisherRefId', 'salesMode'];
 
 const frontToBack = (data) =>
   // eslint-disable-next-line
-  Object.entries(data).reduce((accumulator, [key, value]) => {
+   Object.entries(data).reduce((accumulator, [key, value]) => {
     let newValue = (!value?.state && !value?.value) // eslint-disable-line
       ? value
       : (value?.state === 'overrides' || (!value?.state && value?.value))
@@ -440,7 +450,8 @@ const frontToBack = (data) =>
       };
     }
     return accumulator;
-  }, {});
+  }, {})
+;
 
 // eslint-disable-next-line no-nested-ternary
 const checkValue = (data, type) => (((!data?.state && !data?.value && data?.value !== '') || changableFields.includes(type)) ? data : data.state === 'inherits' ? data.parentValue : data.value);
@@ -567,4 +578,5 @@ export {
   structureProdAutocompleteSelectOptions,
   realmRequiredFields,
   legalEntitiesOptionsFormatting,
+  productVariationRequiredFields,
 };

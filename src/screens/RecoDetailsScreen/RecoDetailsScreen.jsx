@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import {
   tabLabels,
   recoRequiredFields,
-  formateProductOptions,
   fromArrayToObj,
   formateProductOptionsForGenericNameOnly,
 } from './utils';
@@ -14,7 +13,7 @@ import { structureSelectOptions } from '../../services/helpers/dataStructuring';
 import { getCustomerName } from '../../services/helpers/customersHelper';
 import api from '../../api';
 import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
-
+import useValidation from '../../services/useValidation/useValidation';
 import RecoDetailsView from './RecoDetailsView';
 import localization from '../../localization';
 
@@ -32,13 +31,26 @@ const RecoDetailsScreen = () => {
   const [hasChanges, setHasChanges] = useState(false);
   const [update, setUpdate] = useState(0);
   const [curTab, setCurTab] = useState(0);
-  const [errors, setErrors] = useState({});
   const [selectOptions, setSelectOptions] = useState({
     stores: null,
     products: null,
     productsByParent: null,
     prodRecommendation: null,
   });
+
+  const {
+    errors,
+    handleSetErrors,
+  } = useValidation(curTab, tabLabels, curReco, 'recommendation');
+
+  useEffect(() => {
+    const keys = Object.keys(localizedErrors);
+    if (keys.length && !errors?.localizedContent?.length) {
+      handleSetErrors(true, 'general', 'localizedContent');
+    } else if (!keys.length) {
+      handleSetErrors(false, 'general', 'localizedContent');
+    }
+  }, [localizedErrors]);
   const beforeSend = () => {
     const localizedDesc = {};
     let objToSend = {};
@@ -46,8 +58,8 @@ const RecoDetailsScreen = () => {
       localizedDesc[lang] = curReco.localizedDesc[lang].recommendationDescription;
     });
     if (curReco.localizedDesc
-        && Object.keys(curReco.localizedDesc).length === 0
-        && Object.getPrototypeOf(curReco.localizedDesc) === Object.prototype) {
+      && Object.keys(curReco.localizedDesc).length === 0
+      && Object.getPrototypeOf(curReco.localizedDesc) === Object.prototype) {
       objToSend = { ...curReco };
       delete objToSend.localizedDesc;
     } else {
@@ -179,7 +191,7 @@ const RecoDetailsScreen = () => {
     <DetailPageWrapper
       nxState={nxState}
       id={id}
-      name={curReco?.name || `${localization.t('general.new')} ${localization.t(
+      name={reco?.name || `${localization.t('general.new')} ${localization.t(
         'general.recommendation',
       )}`}
       saveIsDisabled={curReco?.name === '' || curReco?.errors?.endDate || Object.keys(localizedErrors).length}
@@ -198,7 +210,6 @@ const RecoDetailsScreen = () => {
         tabLabels,
       }}
       errors={errors}
-      setErrors={setErrors}
     >
       <RecoDetailsView
         localizedErrors={localizedErrors}
@@ -208,7 +219,7 @@ const RecoDetailsScreen = () => {
         setCurReco={setCurReco}
         selectOptions={selectOptions}
         errors={errors}
-        setErrors={setErrors}
+        setErrors={handleSetErrors}
       />
     </DetailPageWrapper>
   );

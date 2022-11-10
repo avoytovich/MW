@@ -1,12 +1,11 @@
 /* eslint-disable consistent-return */
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useHistory, useLocation } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { LinearProgress } from '@mui/material';
 
-import ProductDetailsTabs from './ProductDetailsTabs';
 import ProductDetailsView from './ProductDetailsView';
 import CheckoutMenu from './CheckoutMenu';
 
@@ -21,6 +20,7 @@ import {
   frontToBack,
   checkValue,
   defaultProductLocales,
+  productVariationRequiredFields,
 } from '../../services/helpers/dataStructuring';
 import {
   handleGetOptions,
@@ -30,8 +30,7 @@ import {
   beforeSend,
   defLocalizationObj,
   defProductVariationObj,
-  tabLabels,
-  tabLabelsVariation,
+  defaultResourcesFiles,
   notShowMaxPaymentsPart,
 } from './utils';
 import { setTempProductDescription } from '../../redux/actions/TempData';
@@ -40,6 +39,12 @@ import localization from '../../localization';
 import api from '../../api';
 import { setHeaderCustomerName } from '../../redux/actions/TableData';
 
+const scrollTo = (ele) => {
+  ele.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start',
+  });
+};
 const defaultSelectOptions = {
   sellingStores: null,
   renewingProducts: null,
@@ -53,99 +58,80 @@ const ProductDetailsScreen = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  const [codeMode, setCodeMode] = useState(false);
 
   const [isLoading, setLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
+
   const [upd, setUpd] = useState(0);
 
-  const [customer, setCustomer] = useState(null);
-  const [backToParent, setBackToParent] = useState(false);
-  const [curTab, setCurTab] = useState(0);
-  const [isSaving, setIsSaving] = useState(false);
-
-  const [localizedContentHasChanges, setLocalizedContentHasChanges] = useState(false);
-  const [curLocalizedData, setCurLocalizedData] = useState(null);
-  const [localizedData, setLocalizedData] = useState(null);
-  const [storeLanguages, setStoreLanguages] = useState(null);
   const [localizedErrors, setLocalizedErrors] = useState({});
+  const [priceTableError, setPriceTableError] = useState([]);
+  const [jsonIsValid, setJsonIsValid] = useState(true);
+  const [errors, setErrors] = useState({});
 
-  const [saveDisabled, setSaveDisabled] = useState(false);
-  const [tabsDisabled, setTabsDisabled] = useState(true);
-
+  const [contents, setContents] = useState(null);
+  const [resources, setResources] = useState(null);
+  const [localizedContentHasChanges, setLocalizedContentHasChanges] = useState(false);
   const [productHasChanges, setProductChanges] = useState(false);
   const [productHasLocalizationChanges, setProductLocalizationChanges] = useState(false);
+  const parentId = history?.location?.state?.parentId;
 
-  const [productData, setProductData] = useState(null);
-  const [descriptionData, setDescriptionData] = useState({});
-  const [parentDescriptionData, setParentDescriptionData] = useState(null);
+  const [customer, setCustomer] = useState(null);
+
+  const [localizedData, setLocalizedData] = useState(null);
+  const [curLocalizedData, setCurLocalizedData] = useState(null);
+  const [productData, setProductData] = useState(parentId ? null : defaultProduct);
   const [currentProductData, setCurrentProductData] = useState(defaultProduct);
+
+  const [descriptionData, setDescriptionData] = useState({});
+
   const [productDetails, setProductDetails] = useState(null);
   const [currentProductDetails, setCurrentProductDetails] = useState(null);
-  const [variablesDescriptions, setVariablesDescriptions] = useState([]);
-  const [productVariations, setSubProductVariations] = useState({});
+
+  const [storeLanguages, setStoreLanguages] = useState(null);
   const [checkOutStores, setCheckOutStores] = useState([]);
-  const [codeMode, setCodeMode] = useState(false);
-  const [jsonIsValid, setJsonIsValid] = useState(true);
-  const [selectOptions, setSelectOptions] = useState({ ...defaultSelectOptions });
+
+  const [parentDescriptionData, setParentDescriptionData] = useState(null);
+
   const [relatedProduct, setRelatedProduct] = useState(null);
-  const [priceTableError, setPriceTableError] = useState([]);
-  const parentId = history?.location?.state?.parentId;
+
+  // handleGetProductDetails
+  const [variablesDescriptions, setVariablesDescriptions] = useState([]);
+  // handleGetOptions
+  const [productVariations, setSubProductVariations] = useState({});
+  const [selectOptions, setSelectOptions] = useState({ ...defaultSelectOptions });
+  const [isSaving, setIsSaving] = useState(false);
+
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
 
-  const [errors, setErrors] = useState({});
   const [digitsErrors, setDigitsErrors] = useState({});
 
-  const [isScroolUp, setIsScroolUp] = useState(false);
-  const [isScroolDown, setIsScroolDown] = useState(false);
-
-  const myRefView = useRef(null);
-
-  const myRefGeneral = useRef(null);
-  const myRefFulfillment = useRef(null);
-  const myRefSubscription = useRef(null);
-  const myRefLocalizedContent = useRef(null);
-  const myRefPrices = useRef(null);
-  const myRefProductFiles = useRef(null);
-  const myRefProductVariations = useRef(null);
-
-  const refScrool = [
-    myRefGeneral,
-    myRefFulfillment,
-    myRefSubscription,
-    myRefLocalizedContent,
-    myRefPrices,
-    myRefProductFiles,
-    myRefProductVariations,
+  const generalRef = useRef(null);
+  const fulfillmentRef = useRef(null);
+  const subscriptionRef = useRef(null);
+  const localizedContentRef = useRef(null);
+  const pricesRef = useRef(null);
+  const productFilesRef = useRef(null);
+  const productVariationsRef = useRef(null);
+  const sectionRefs = [
+    { section: 'general', ref: generalRef },
+    { section: 'fulfillment', ref: fulfillmentRef },
+    { section: 'subscription', ref: subscriptionRef },
+    { section: 'localizedContent', ref: localizedContentRef },
+    { section: 'prices', ref: pricesRef },
+    { section: 'productFiles', ref: productFilesRef },
   ];
-
-  const tabRefGeneral = useRef(null);
-  const tabRefFulfillment = useRef(null);
-  const tabRefSubscription = useRef(null);
-  const tabRefLocalizedContent = useRef(null);
-  const tabRefPrices = useRef(null);
-  const tabRefProductFiles = useRef(null);
-  const tabRefProductVariations = useRef(null);
-
-  const refTab = [
-    tabRefGeneral,
-    tabRefFulfillment,
-    tabRefSubscription,
-    tabRefLocalizedContent,
-    tabRefPrices,
-    tabRefProductFiles,
-    tabRefProductVariations,
-  ];
-
-  const handleChangeTab = (tab) => {
-    if (tab === 7) {
-      setLoading(true);
-      history.replace(`${parentPaths.productlist}/${currentProductData?.parentId || parentId}`);
-    } else {
-      refTab?.[tab]?.current.scrollIntoView();
-      setCurTab(tab);
-    }
-  };
-
+  if (currentProductData && !currentProductData?.parentId) {
+    sectionRefs.push({ section: 'productVariations', ref: productVariationsRef });
+  }
+  const [selectedSection, setSelectedSection] = useState(sectionRefs[0].section);
+  const [checkedSections, setCheckedSections] = useState([]);
+  const [modified, setModified] = useState(id === 'add' && !parentId ? [] : ['genericName', 'type', 'publisherRefId', 'currency']);
+  const backToParentHistory = history?.location?.state?.backToParent;
+  const [backToParent, setBackToParent] = useState(!!backToParentHistory);
   const filterCheckoutStores = () => {
     let newLanguages = [];
     const res = [];
@@ -168,11 +154,9 @@ const ProductDetailsScreen = () => {
         hostnames?.forEach((hostname) => res.push({ value, hostname }));
       }
     });
-
     setStoreLanguages(newLanguages);
     setCheckOutStores([...res]);
   };
-
   const handleDeleteVariation = (variationId) => {
     api
       .deleteProductById(variationId)
@@ -183,13 +167,157 @@ const ProductDetailsScreen = () => {
         )}`);
       });
   };
+  const handleSetErrors = () => {
+    const {
+      lifeTime,
+      subscriptionTemplate,
+      fulfillmentTemplate,
+      subProducts,
+      genericName,
+      type,
+      publisherRefId,
+      prices,
+    } = currentProductData;
+    let general = errors.general ? [...errors.general] : [];
+    let subscription = errors.subscription ? [...errors.subscription] : [];
+    let fulfillment = errors.fulfillment ? [...errors.fulfillment] : [];
+    let pricesErrors = errors.prices ? [...errors.prices] : [];
+
+    if (checkValue(lifeTime).name === 'PERMANENT' && checkValue(subscriptionTemplate)) {
+      general.push('lifeTime');
+      subscription.push('subscriptionModel');
+    } else if (errors.general?.includes('lifeTime')) {
+      general = general.filter((it) => it !== 'lifeTime');
+      subscription = subscription.filter((it) => it !== 'subscriptionModel');
+    }
+    if (checkValue(fulfillmentTemplate) && checkValue(subProducts)?.length) {
+      general.push('bundledProducts');
+      fulfillment.push('fulfillmentTemplate');
+    } else if (errors.general?.includes('bundledProducts')) {
+      general = general.filter((it) => it !== 'bundledProducts');
+      fulfillment = fulfillment.filter((it) => it !== 'fulfillmentTemplate');
+    }
+    if (!checkValue(genericName) && !errors.general?.includes('genericName') && modified.includes('genericName')) {
+      general.push('genericName');
+    } else if (errors.general?.includes('genericName') && checkValue(genericName)) {
+      general = general.filter((it) => it !== 'genericName');
+    }
+    if (!checkValue(type) && !errors.general?.includes('type') && modified.includes('type')) {
+      general.push('type');
+    } else if (errors.general?.includes('type') && checkValue(type)) {
+      general = general.filter((it) => it !== 'type');
+    }
+    if (!checkValue(publisherRefId) && !errors.general?.includes('publisherRefId') && modified.includes('publisherRefId')) {
+      general.push('publisherRefId');
+    } else if (errors.general?.includes('publisherRefId') && checkValue(publisherRefId)) {
+      general = general.filter((it) => it !== 'publisherRefId');
+    }
+
+    if (!checkValue(prices).defaultCurrency && !errors.prices?.includes('currency') && modified.includes('currency')) {
+      pricesErrors.push('currency');
+    } else if (errors.prices?.includes('currency') && checkValue(prices).defaultCurrency) {
+      pricesErrors = pricesErrors.filter((it) => it !== 'currency');
+    }
+
+    const newErrors = {
+      ...errors, general, subscription, fulfillment, prices: pricesErrors,
+    };
+    Object.keys(newErrors).forEach((it) => {
+      if (!newErrors[it].length) {
+        delete newErrors[it];
+      }
+    });
+    setErrors(newErrors);
+  };
+  const handleValidate = (sections) => {
+    const newErrors = { ...errors };
+    const newCheckedSections = [...checkedSections];
+    const sectionsValidation = {
+      general: () => {
+        const general = [{ id: 'genericName', field: 'genericName' }, { id: 'type', field: 'type' }, { id: 'publisherRefId', field: 'publisherRefId' }];
+        const generalErrors = general.filter((item) => !currentProductData[item.id]);
+        const generalKeys = generalErrors.map((it) => it.field);
+        if (generalErrors.length) {
+          if (!newErrors.general) {
+            newErrors.general = generalKeys;
+          } else {
+            generalKeys.forEach((el) => {
+              if (!errors?.general?.includes(el)) {
+                newErrors.general.push(el);
+              }
+            });
+          }
+        }
+      },
+      localizedContent: () => {
+        if (Object.keys(localizedErrors).length) {
+          newErrors.localizedContent = ['hasError'];
+        }
+      },
+      prices: () => {
+        if (!Object.keys(currentProductData.priceByCountryByCurrency).length) {
+          newErrors.prices = ['currency'];
+        }
+      },
+    };
+    sections.forEach((section) => {
+      newCheckedSections.push(section);
+      if (sectionsValidation?.[section] && !checkedSections.includes(section)) {
+        sectionsValidation?.[section]();
+      }
+    });
+    setErrors(newErrors);
+    setCheckedSections(newCheckedSections);
+  };
+  useEffect(() => {
+    if (productHasChanges || parentId) {
+      handleSetErrors();
+    }
+  }, [currentProductData, productHasChanges, parentId]);
+
+  useEffect(() => {
+    const localizedKeys = Object.keys(localizedErrors);
+
+    if ((localizedKeys.length && !errors?.localizedContent?.includes('hasError') && checkedSections?.includes('localizedContent'))
+      || (localizedKeys.length && !errors?.localizedContent?.includes('hasError') && selectedSection === 'localizedContent')) {
+      setErrors({ ...errors, localizedContent: ['hasError'] });
+    } else if (!localizedKeys.length && !errors.localizedContent?.includes('fallbackLocale')) {
+      const newErrors = { ...errors };
+      delete newErrors.localizedContent;
+      setErrors(newErrors);
+    }
+  }, [localizedErrors]);
+
+  useEffect(() => {
+    if (curLocalizedData && !checkValue(curLocalizedData?.fallbackLocale) && !errors.localizedContent?.includes('fallbackLocale')) {
+      setErrors({ ...errors, localizedContent: ['fallbackLocale'] });
+    } else if (errors.localizedContent?.includes('fallbackLocale') && checkValue(curLocalizedData?.fallbackLocale)) {
+      const newErrors = { ...errors };
+      delete newErrors.localizedContent;
+      setErrors(newErrors);
+    }
+  }, [curLocalizedData]);
+
+  useEffect(() => {
+    if (priceTableError.length && !errors?.prices?.includes('hasError')) {
+      setErrors({ ...errors, prices: ['hasError'] });
+    } else if (!priceTableError.length && errors?.prices?.includes('hasError')) {
+      const newErrors = { ...errors };
+      const newPrices = [...newErrors.prices].filter((it) => it !== 'hasError');
+      if (newPrices.length) {
+        newErrors.prices = [...newPrices];
+      } else {
+        delete newErrors.prices;
+      }
+      setErrors(newErrors);
+    }
+  }, [priceTableError]);
 
   const saveDetails = async () => {
     const formatePrices = beforeSend(currentProductData);
 
     if (localizedContentHasChanges || productHasLocalizationChanges) {
       const dataToSave = saveLocalizationDetails(curLocalizedData, currentProductData, nxState);
-
       api
         .updateProductLocalsById(
           currentProductData?.descriptionId?.state
@@ -203,6 +331,7 @@ const ProductDetailsScreen = () => {
         .then(() => {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLoading(true);
+          setHasLoaded(false);
           setLocalizedContentHasChanges(false);
           setProductLocalizationChanges(false);
           setUpd((c) => c + 1);
@@ -228,6 +357,7 @@ const ProductDetailsScreen = () => {
       api.updateProductById(currentProductData.id, sendObj).then(() => {
         if (!localizedContentHasChanges && !productHasLocalizationChanges) {
           toast(localization.t('general.updatesHaveBeenSaved'));
+          setHasLoaded(false);
           setLoading(true);
           setUpd((c) => c + 1);
         }
@@ -383,6 +513,7 @@ const ProductDetailsScreen = () => {
             )
             .then(() => {
               toast(localization.t('general.updatesHaveBeenSaved'));
+              setHasLoaded(false);
               setLoading(true);
               history.push(`${parentPaths.productlist}/${id_}`);
             });
@@ -390,6 +521,7 @@ const ProductDetailsScreen = () => {
           toast(localization.t('general.updatesHaveBeenSaved'));
           setLocalizedContentHasChanges(false);
           setProductLocalizationChanges(false);
+          setHasLoaded(false);
           setLoading(true);
           history.push(`${parentPaths.productlist}/${id_}`);
         }
@@ -402,15 +534,15 @@ const ProductDetailsScreen = () => {
   useEffect(() => {
     let isCancelled = false;
     const productId = id === 'add' ? parentId : id;
-
-    if (id !== 'add' && !productData) {
+    setSelectedSection(sectionRefs[0].section);
+    if (id !== 'add' || (parentId && !productData)) {
       api.getProductById(productId).then(({ data: product }) => {
         if (!isCancelled) {
           if (product?.parentId) {
             api.getProductById(product.parentId).then(({ data }) => {
               const result = backToFront(
                 productRequiredFields(data),
-                productRequiredFields(product),
+                productVariationRequiredFields(product),
               );
               const initData = JSON.parse(JSON.stringify(result));
 
@@ -449,14 +581,12 @@ const ProductDetailsScreen = () => {
               setProductData(checkedProduct);
               setCurrentProductData({ ...newHashes });
             }
-
             setLoading(false);
           }
         }
 
         if (id === 'add') {
           const customerId = nxState?.selectedCustomer?.id || product?.customerId;
-
           return handleGetOptions(
             setLoading,
             customerId,
@@ -501,7 +631,6 @@ const ProductDetailsScreen = () => {
         setProductData(initData);
         setCurrentProductData(result);
       }
-
       return handleGetOptions(
         setLoading,
         customerId,
@@ -511,7 +640,9 @@ const ProductDetailsScreen = () => {
         selectOptions,
         setSubProductVariations,
         (catalogId) => {
-          setCurrentProductData((c) => ({ ...c, customerId, catalogId }));
+          const newData = { ...currentProductData, customerId, catalogId };
+          setProductData(JSON.parse(JSON.stringify(newData)));
+          setCurrentProductData(newData);
         },
         true,
       );
@@ -524,21 +655,6 @@ const ProductDetailsScreen = () => {
       dispatch(setTempProductDescription({}));
     };
   }, [id, upd, history?.state]);
-
-  useEffect(() => {
-    setLoading(true);
-
-    if (history?.action === 'REPLACE') {
-      setCurTab(6);
-      setBackToParent(false);
-    } else {
-      setCurTab(0);
-    }
-
-    return () => {
-      setSubProductVariations({});
-    };
-  }, [location?.pathname]);
 
   useEffect(() => {
     if (productData?.customerId && customer?.id !== productData?.customerId) {
@@ -555,21 +671,27 @@ const ProductDetailsScreen = () => {
     ) {
       filterCheckoutStores();
     }
-
-    setProductChanges(JSON.stringify(currentProductData) !== JSON.stringify(productData));
+    setProductChanges(JSON.stringify(currentProductData) !== JSON.stringify(productData) || (parentId && id === 'add'));
 
     return () => setProductChanges(false);
   }, [currentProductData]);
 
   useEffect(() => {
-    setLocalizedContentHasChanges(JSON.stringify(curLocalizedData)
-      !== JSON.stringify(localizedData));
-    return () => setLocalizedContentHasChanges(false);
-  }, [curLocalizedData]);
+    if (curLocalizedData?.i18nFields?.[curLocalizedData?.fallbackLocale]
+      && !localizedData?.i18nFields?.[curLocalizedData?.fallbackLocale]
+      && !Object.keys(localizedData?.i18nFields).length) {
+      setLocalizedData(JSON.parse(JSON.stringify(curLocalizedData)));
+    } else {
+      setLocalizedContentHasChanges(JSON.stringify(curLocalizedData)
+        !== JSON.stringify(localizedData));
+      return () => setLocalizedContentHasChanges(false);
+    }
+  }, [curLocalizedData, localizedData]);
 
   useEffect(() => {
     if (selectOptions.sellingStores) {
       filterCheckoutStores();
+      setDataLoading(false);
     }
   }, [selectOptions?.sellingStores]);
 
@@ -595,6 +717,47 @@ const ProductDetailsScreen = () => {
     }
   }, [id]);
 
+  useEffect(() => {
+    let toSetData = checkValue(currentProductData?.relatedContents) || [];
+
+    if (Array.isArray(toSetData)) {
+      if (!toSetData.length) {
+        toSetData = [{ ...defaultResourcesFiles }];
+      }
+      setContents([...toSetData]);
+    }
+
+    if (toSetData.value) {
+      if (!toSetData?.value?.length) {
+        toSetData = [{ ...defaultResourcesFiles }];
+      }
+      setContents([...toSetData.value]);
+    }
+  }, [currentProductData.relatedContents]);
+  useEffect(() => {
+    let toSetData = checkValue(currentProductData?.resources) || [];
+
+    if (!toSetData.length) {
+      toSetData = [{ ...defaultResourcesFiles }];
+    }
+
+    setResources([...toSetData]);
+  }, [currentProductData.resources]);
+  useEffect(() => {
+    if (!isLoading && contents && resources && !dataLoading) {
+      setHasLoaded(true);
+    }
+  }, [contents, resources, isLoading, dataLoading]);
+
+  useEffect(() => {
+    if (hasLoaded && backToParent) {
+      scrollTo(productVariationsRef.current);
+      window.history.replaceState({}, '');
+      setSelectedSection(sectionRefs[6].section);
+      setBackToParent(false);
+    }
+  }, [hasLoaded, backToParent]);
+
   if (!parentId
     && !currentProductData?.parentId
     && currentProductData?.createDate?.parentValue) return <LinearProgress />;
@@ -602,13 +765,32 @@ const ProductDetailsScreen = () => {
   if (customer) {
     dispatch(setHeaderCustomerName({ ...customer }));
   }
+  useEffect(() => {
+    const keysSections = sectionRefs.map((sect) => sect.section);
+    const sectionIndex = keysSections.indexOf(selectedSection);
+    if (sectionIndex > 0) {
+      const newArray = keysSections.slice(0, sectionIndex);
+      const validateSections = [];
+      newArray.forEach((it) => {
+        if (!checkedSections.includes(it)) {
+          validateSections.push(it);
+        }
+      });
+      if (validateSections.length) {
+        handleValidate(validateSections);
+      }
+    }
+  }, [selectedSection]);
 
-  const lifetimeSaveDisabled = currentProductData?.parentId
-    && checkValue(currentProductData?.lifeTime).name === 'PERMANENT'
-    && checkValue(currentProductData?.subscriptionTemplate);
+  const handleSaveIsDisabled = () => !currentProductData?.type
+    || !Object.keys(currentProductData?.priceByCountryByCurrency).length
+    || Object.keys(localizedErrors).length
+    || !currentProductData.publisherRefId
+    || Object.keys(errors).length;
 
   return (
     <DetailPageWrapper
+      sectionRefs={sectionRefs}
       nxState={nxState}
       id={id}
       name={
@@ -616,12 +798,9 @@ const ProductDetailsScreen = () => {
           ? localization.t('labels.newProduct')
           : `${productData?.genericName?.value || productData?.genericName} - ${id}`
       }
-      saveIsDisabled={saveDisabled || tabsDisabled || lifetimeSaveDisabled
-        || !jsonIsValid || priceTableError.length > 0 || Object.keys(localizedErrors).length
-          || curLocalizedData?.fallbackLocale === '' || curLocalizedData?.fallbackLocale?.value === '' || isSaving}
-      hasChanges={productHasChanges || !productData?.id
-        || localizedContentHasChanges}
-      isLoading={isLoading}
+      saveIsDisabled={handleSaveIsDisabled() || isSaving}
+      hasChanges={productHasChanges || localizedContentHasChanges}
+      isLoading={!hasLoaded}
       setUpdate={setUpd}
       curParentPath={parentPaths.productlist}
       curData={currentProductData}
@@ -650,42 +829,23 @@ const ProductDetailsScreen = () => {
           </>
         )
       }
-      customTabs={(
-        <ProductDetailsTabs
-          curTab={curTab}
-          handleChangeTab={handleChangeTab}
-          currentProductData={currentProductData}
-          curLocalizedData={curLocalizedData}
-          parentId={parentId || currentProductData?.parentId}
-          selectOptions={selectOptions}
-          backToParent={backToParent}
-          setBackToParent={setBackToParent}
-          tabs={{
-            scope: 'product',
-            setCurTab,
-            curTab,
-            tabLabels: parentId ? tabLabelsVariation : tabLabels,
-            errors,
-            setErrors,
-            priceTableError,
-            localizedErrors,
-          }}
-        />
-      )}
-      flexWrapper={codeMode && curTab === 3}
+      flexWrapper={codeMode}
       priceTableError={priceTableError}
       errors={errors}
-      setErrors={setErrors}
-      refTab={refTab}
-      refScrool={refScrool}
-      myRefView={myRefView}
-      isScroolUp={isScroolUp}
-      setIsScroolUp={setIsScroolUp}
-      isScroolDown={isScroolDown}
-      setIsScroolDown={setIsScroolDown}
       parentId={parentId || currentProductData?.parentId}
+      selectedSection={selectedSection}
+      setSelectedSection={setSelectedSection}
+      setBackToParent={setBackToParent}
     >
       <ProductDetailsView
+        modified={modified}
+        setModified={setModified}
+        setErrors={setErrors}
+        contents={contents}
+        resources={resources}
+        sectionRefs={sectionRefs}
+        selectedSection={selectedSection}
+        setSelectedSection={setSelectedSection}
         localizedErrors={localizedErrors}
         descriptionData={descriptionData}
         parentDescriptionData={parentDescriptionData}
@@ -704,27 +864,19 @@ const ProductDetailsScreen = () => {
         relatedProduct={relatedProduct}
         selectOptions={selectOptions}
         setProductData={setCurrentProductData}
-        curTab={curTab}
-        setCurTab={setCurTab}
+
         productVariations={productVariations}
         setProductLocalizationChanges={setProductLocalizationChanges}
         productDetails={productDetails}
         setProductDetails={setCurrentProductDetails}
         variablesDescriptions={variablesDescriptions}
         storeLanguages={storeLanguages}
-        setSaveDisabled={setSaveDisabled}
-        setTabsDisabled={setTabsDisabled}
         parentId={parentId || currentProductData?.parentId}
         setCodeMode={setCodeMode}
         codeMode={codeMode}
         jsonIsValid={jsonIsValid}
         setJsonIsValid={setJsonIsValid}
-        refTab={refTab}
-        refScrool={refScrool}
-        isScroolUp={isScroolUp}
-        isScroolDown={isScroolDown}
         errors={errors}
-        setErrors={setErrors}
       />
     </DetailPageWrapper>
   );

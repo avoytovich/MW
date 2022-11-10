@@ -33,26 +33,6 @@ const Basic = ({
 
   const availableLocales = getLanguagesOptions();
 
-  const withValidation = (e) => {
-    handleChange(e);
-    if (!e.target.value) {
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.general,
-          [e.target.name]: true,
-        },
-      });
-    } else {
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.general,
-          [e.target.name]: false,
-        },
-      });
-    }
-  };
 
   useEffect(() => {
     setCurReco({
@@ -101,10 +81,13 @@ const Basic = ({
             name='name'
             type='text'
             value={curReco.name}
-            onChange={(e) => withValidation(e)}
+            onChange={(e) => {
+              handleChange(e);
+              setErrors(!e.target.value, 'general', 'name');
+            }}
             variant='outlined'
-            error={!!errors?.general?.name}
-            helperText={errors?.general?.name && localization.t('errorNotifications.required')}
+            error={errors?.general?.includes('name')}
+            helperText={errors?.general?.includes('name') && localization.t('errorNotifications.required')}
           />
         </Box>
       </Box>

@@ -132,7 +132,7 @@ const TableComponent = ({
 
   if (isLoading || !showColumn) return <LinearProgress />;
   return tableData?.values?.length ? (
-    <Box display='flex' flexDirection='column' flexGrow='1' pb={4} height={1} sx={wrapperStyles}>
+    <Box display='flex' flexDirection='column' height={1} sx={wrapperStyles}>
       {tableData.meta?.totalPages && (
         <Box display='flex' mb={3}>
           <PaginationComponent

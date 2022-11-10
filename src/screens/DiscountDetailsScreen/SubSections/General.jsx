@@ -45,26 +45,6 @@ const General = ({
   };
   const availableLocales = getLanguagesOptions();
 
-  const withValidation = (e) => {
-    if (!e.target.value) {
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.general,
-          [e.target.name]: true,
-        },
-      });
-    } else {
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.general,
-          [e.target.name]: false,
-        },
-      });
-    }
-  };
-
   useEffect(() => {
     if (curDiscount.model === 'SINGLE_USE_CODE') {
       if (id) {
@@ -123,10 +103,10 @@ const General = ({
             label="discountRuleName"
             isRequired
             value={curDiscount.name}
-            hasError={!!errors?.general?.discountRuleName}
-            helperText={errors?.general?.discountRuleName && localization.t('errorNotifications.required')}
+            hasError={errors?.general?.includes('name')}
+            helperText={errors?.general?.includes('name') && localization.t('errorNotifications.required')}
             onChangeInput={(e) => {
-              withValidation(e);
+              setErrors(!e.target.value, 'general', 'name');
               setCurDiscount({
                 ...curDiscount,
                 name: e.target.value,

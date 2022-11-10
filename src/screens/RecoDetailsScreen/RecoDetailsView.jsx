@@ -43,7 +43,6 @@ const RecoDetailsView = ({
     setCurReco((c) => ({ ...c, [type]: setValue }));
   };
   const handleChange = (e) => {
-    e.persist();
     const { name, value } = e.target;
     setCurReco({ ...curReco, [name]: value });
   };

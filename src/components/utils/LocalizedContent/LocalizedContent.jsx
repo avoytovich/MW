@@ -28,7 +28,7 @@ const LocalizedContent = ({
   defaultLocale,
   isVertical,
   parentId,
-  myRef,
+  requiredOnlyDefault,
 }) => {
   const location = useLocation().pathname.split('/');
   const scope = location[location.length - 2];
@@ -103,13 +103,17 @@ const LocalizedContent = ({
     const res = defaultLocale ? [defaultLocale, ...newLocalized] : [...newLocalized];
     setSelectedLocales(res || []);
     const validateLang = handleValidate(
-      localizedData, checkValue(defaultLocale), scope, inputValidations[scope], parentId,
+      localizedData,
+      checkValue(defaultLocale),
+      scope,
+      inputValidations[scope],
+      requiredOnlyDefault,
     );
     if (Object.keys(validateLang).length
       || (!Object.keys(validateLang).length && Object.keys(errors).length)) {
       setErrors(validateLang);
     }
-  }, [localizedData, defaultLocale]);
+  }, [localizedData, defaultLocale, requiredOnlyDefault]);
 
   useEffect(() => {
     if (!tabValue && selectedLocales) {
@@ -118,7 +122,7 @@ const LocalizedContent = ({
     }
   }, [selectedLocales]);
   return (
-    <Box width='100%' ref={myRef}>
+    <Box width='100%'>
       {(!selectedLocales || !Object.keys(localizedData).length) && defaultLocale
         ? <LinearProgress /> : (
           <Box width='100%'>
@@ -164,11 +168,11 @@ const LocalizedContent = ({
                           key={locale}
                           value={locale}
                           component={forwardRef(({ children, ...props }, ref) => locale && (
-                          <div role='button' {...props} ref={ref}>
-                            <span className='localization-label'>{children}</span>
-                            {locale !== defaultLocale
-                            && <ClearIcon onClick={(e) => removeLocale(e, locale)} />}
-                          </div>
+                            <div role='button' {...props} ref={ref}>
+                              <span className='localization-label'>{children}</span>
+                              {locale !== defaultLocale
+                                && <ClearIcon onClick={(e) => removeLocale(e, locale)} />}
+                            </div>
                           ))}
                         />
                       ))}
@@ -176,24 +180,24 @@ const LocalizedContent = ({
                   </Box>
                   <Box display='flex' width='100%' flexDirection='column'>
                     {localizedData[tabValue] && (
-                    <LocalizedInputs
-                      isDefaultLang={defaultLocale === tabValue}
-                      setLocalizedData={setLocalizedData}
-                      localizedData={localizedData}
-                      onChangeVariation={onChangeVariation}
-                      parentId={parentId}
-                      errors={errors[tabValue]}
-                      handleChange={(lang, curContent, inputKey) => setLocalizedData(
-                        {
-                          ...localizedData,
-                          [lang]: { ...localizedData[lang], [inputKey]: curContent },
-                        },
-                      )}
-                      localizedLangData={localizedData[tabValue]}
-                      lang={tabValue}
-                      scope={scope}
-                      isVertical={isVertical}
-                    />
+                      <LocalizedInputs
+                        isDefaultLang={defaultLocale === tabValue}
+                        setLocalizedData={setLocalizedData}
+                        localizedData={localizedData}
+                        onChangeVariation={onChangeVariation}
+                        parentId={parentId}
+                        errors={errors[tabValue]}
+                        handleChange={(lang, curContent, inputKey) => setLocalizedData(
+                          {
+                            ...localizedData,
+                            [lang]: { ...localizedData[lang], [inputKey]: curContent },
+                          },
+                        )}
+                        localizedLangData={localizedData[tabValue]}
+                        lang={tabValue}
+                        scope={scope}
+                        isVertical={isVertical}
+                      />
                     )}
                   </Box>
                 </Box>
@@ -220,12 +224,12 @@ const LocalizedContent = ({
 
 LocalizedContent.propTypes = {
   setLocalizedData: PropTypes.func,
-  errors: PropTypes.object,
   setErrors: PropTypes.func,
   localizedData: PropTypes.object,
   defaultLocale: PropTypes.string,
   isVertical: PropTypes.bool,
   parentId: PropTypes.string,
+  requiredOnlyDefault: PropTypes.bool,
 };
 
 export default LocalizedContent;

@@ -57,7 +57,7 @@ const FileBlock = ({
       className={`product-files ${urlFetching || isDisabled ? 'disable-block' : ''
       } existing-item`}
     >
-      <Box minWidth="250px">
+      <Box minWidth="250px" minHeight='139px'>
         {urlLoading || initImage === ' ' ? (
           <CircularProgress />
         ) : (

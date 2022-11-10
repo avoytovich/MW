@@ -1,27 +1,22 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
 import {
   Box, Button, LinearProgress, Tab, Tabs, Typography, Zoom,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
+import ScrollingTabs from '../ScrollingTabs';
 import localization from '../../../localization';
 import CustomBreadcrumbs from '../CustomBreadcrumbs';
 import LoadingErrorNotification from '../LoadingErrorNotification';
 import SelectCustomerNotification from '../SelectCustomerNotification';
 import defPath from '../../../services/helpers/routingHelper';
 import { copyText } from '../../../services/helpers/utils';
-import { tabLabels as tabLabelsStore } from '../../../screens/StoreDetailsScreen/utils';
-import { tabLabels as tabLabelsReco } from '../../../screens/RecoDetailsScreen/utils';
-import { tabsLabels as tabLabelsDiscount } from '../../../screens/DiscountDetailsScreen/utils';
-import { recoHightLight, storeHightLight, discountHighlight } from './HighLightingTabs';
 
 const DetailPageWrapper = ({
   nxStateNotNeeded,
@@ -39,27 +34,17 @@ const DetailPageWrapper = ({
   beforeSend,
   setUpdate,
   extraActions,
-  extraHeader,
   noTabsMargin,
-  customTabs,
   customSave,
   headerTitleCopy,
   tabs,
   errors,
-  setErrors,
-  isRankingOpen,
-  flexWrapper,
-  customer,
-  priceTableError,
-  refTab = null,
-  myRefView,
-  isScroolUp,
-  setIsScroolUp,
-  isScroolDown,
-  setIsScroolDown,
   parentId,
+  sectionRefs,
+  setBackToParent,
+  selectedSection,
+  setSelectedSection,
 }) => {
-  const { id: paramsId } = useParams();
   const location = useLocation();
   const sections = location.pathname.split(`/${defPath}/`)[0].split('/').slice(1);
   const history = useHistory();
@@ -91,80 +76,7 @@ const DetailPageWrapper = ({
     return <SelectCustomerNotification />;
   }
 
-  const handleChange = (event, newValue) => {
-    refTab?.[newValue]?.current.scrollIntoView();
-    return tabs?.setCurTab(newValue);
-  };
-
-  const CustomizedTab = styled(Tab)`
-    color: red;
-  `;
-
-  let lastScrollTop = 0;
-
-  const handleScroll = useCallback(() => {
-    const st = myRefView.current.scrollTop || document.documentElement.scrollTop;
-    if (st > lastScrollTop) {
-      if (parentId) {
-        setIsScroolDown(true);
-        setIsScroolUp(false);
-      }
-      if (!isScroolDown) {
-        setIsScroolDown(true);
-        setIsScroolUp(false);
-      }
-    } else if (!isScroolUp) {
-      setIsScroolUp(true);
-      setIsScroolDown(false);
-    }
-    lastScrollTop = st <= 0 ? 0 : st;
-  }, [lastScrollTop]);
-
-  useEffect(() => {
-    myRefView?.current.addEventListener('scroll', handleScroll);
-    return () => {
-      myRefView?.current?.removeEventListener('scroll', handleScroll);
-    };
-  });
-
-  useEffect(() => {
-    if (tabs?.scope === 'store' && tabLabelsStore.includes(tabs?.tabLabels?.[tabs.curTab])) {
-      storeHightLight(
-        curData,
-        isRankingOpen,
-        errors,
-        setErrors,
-        tabs,
-        paramsId,
-        customer,
-      );
-    }
-  }, [curData, tabs?.curTab]);
-
-  useEffect(() => {
-    if (tabs?.scope === 'discounts' && tabLabelsDiscount.includes(tabs?.tabLabels?.[tabs.curTab])) {
-      discountHighlight(
-        curData,
-        errors,
-        setErrors,
-        tabs,
-        paramsId,
-      );
-    }
-  }, [curData, tabs?.curTab]);
-
-  useEffect(() => {
-    if (tabs?.scope === 'recommendation' && tabLabelsReco.includes(tabs?.tabLabels?.[tabs.curTab])) {
-      recoHightLight(
-        curData,
-        errors,
-        setErrors,
-        tabs,
-        paramsId,
-        customer,
-      );
-    }
-  }, [curData, tabs?.curTab]);
+  const handleChange = (event, newValue) => tabs?.setCurTab(newValue);
 
   return curData && (
     <>
@@ -215,7 +127,17 @@ const DetailPageWrapper = ({
             {extraActions}
           </Box>
         </Box>
-        {customTabs}
+        {sectionRefs
+          && (
+            <ScrollingTabs
+              setBackToParent={setBackToParent}
+              parentId={parentId}
+              sectionRefs={sectionRefs}
+              errors={errors}
+              selectedSection={selectedSection}
+              setSelectedSection={setSelectedSection}
+            />
+          )}
 
         {tabs?.tabLabels && (
           <Tabs
@@ -225,33 +147,22 @@ const DetailPageWrapper = ({
             onChange={handleChange}
             aria-label='disabled tabs example'
           >
-            {tabs?.tabLabels.map((tab) => {
-              let { curTab } = tabs;
-              while (curTab >= 0) {
-                if (errors?.[tab]?.isFulfilled === false) {
-                  return (
-                    // comment CustomizedTab instead of Tab for unhighlight tabs
-                    <CustomizedTab key={tab} label={localization.t(`labels.${tab}`)} />
-                    // <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-                  );
-                }
-                curTab -= 1;
-              }
-              return (
-                <Tab key={tab} label={localization.t(`labels.${tab}`)} />
-              );
-            })}
+            {tabs?.tabLabels.map((tab) => (
+              <Tab
+                style={errors?.[tab] ? { color: '#ff6341' } : {}}
+                key={tab}
+                label={localization.t(`labels.${tab}`)}
+              />
+            ))}
           </Tabs>
         )}
       </Box>
-
       <Box
         overflow='auto'
-        mt={noTabsMargin ? 0 : 4}
+        mt={noTabsMargin ? 0 : 2}
         p='2px'
         flexGrow={1}
-        display={flexWrapper ? 'flex' : 'block'}
-        ref={myRefView}
+        display='block'
       >
         {children}
       </Box>
@@ -274,11 +185,11 @@ DetailPageWrapper.propTypes = {
   beforeSend: PropTypes.func,
   nxStateNotNeeded: PropTypes.bool,
   extraActions: PropTypes.node,
-  extraHeader: PropTypes.node,
-  customTabs: PropTypes.node,
   tabs: PropTypes.object,
   customSave: PropTypes.func,
   headerTitleCopy: PropTypes.any,
+  sectionRefs: PropTypes.any,
+  setBackToParent: PropTypes.func,
 };
 
 export default DetailPageWrapper;

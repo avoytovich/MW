@@ -14,6 +14,9 @@ const tabLabels = [
   'payment',
   'localizedContent',
 ];
+const checkRequiredFields = (data) => data?.routes[0]?.hostname
+  && data?.name && data?.defaultLocale && data?.displayName;
+
 const checkGroupFields = (data) => {
   let checkingPassed = false;
   if (data?.paymentGroups && Object.keys(data?.paymentGroups).length) {
@@ -171,4 +174,5 @@ export {
   customerTypeOptions,
   handleTypeOptions,
   checkGroupFields,
+  checkRequiredFields,
 };

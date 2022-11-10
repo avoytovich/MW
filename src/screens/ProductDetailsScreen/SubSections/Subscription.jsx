@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -32,16 +32,14 @@ const useStyles = makeStyles({
 });
 
 const Subscription = ({
-  myRef,
   setProductData,
   currentProductData,
   selectOptions,
   parentId,
   relatedProduct,
+  errors,
 }) => {
   const [searchVal, setSearchVal] = useState('');
-  const [errorSubscription, setErrorSubscription] = useState(false);
-  const [errorTextSubscription, setErrorTextSubscription] = useState('');
 
   const history = useHistory();
   const classes = useStyles();
@@ -96,15 +94,6 @@ const Subscription = ({
     }
   };
 
-  useEffect(() => {
-    if (lifeTime.name === 'PERMANENT' && subscriptionTemplate) {
-      setErrorSubscription(true);
-      setErrorTextSubscription(localization.t('labels.errorProductPerAndSub'));
-    } else {
-      setErrorSubscription(false);
-    }
-  }, [lifeTime, subscriptionTemplate]);
-
   return (
     <>
       <Box display="flex" flexDirection="row" alignItems="baseline">
@@ -115,19 +104,21 @@ const Subscription = ({
             value={currentProductData?.subscriptionTemplate}
             parentId={parentId}
             currentProductData={currentProductData}
-
+            buttonStyles={errors?.subscription?.includes('subscriptionModel') ? { bottom: '16px' } : {}}
           >
             <AutocompleteCustom
               optionLabelKey='value'
               label="subscriptionModel"
-              onSelect={(newValue) => setProductData({
-                ...currentProductData,
-                subscriptionTemplate: newValue,
-              })}
+              onSelect={(newValue) => {
+                setProductData({
+                  ...currentProductData,
+                  subscriptionTemplate: newValue,
+                })
+              }}
+              error={errors?.subscription?.includes('subscriptionModel')}
+              helperText={errors?.subscription?.includes('subscriptionModel') && localization.t('labels.errorProductPerAndSub')}
               selectOptions={selectOptions.subscriptionModels || []}
               curValue={checkValue(currentProductData?.subscriptionTemplate)}
-              error={errorSubscription}
-              helperText={errorTextSubscription}
               onClear={clearSubRelatedData}
             />
           </InheritanceField>
@@ -163,7 +154,7 @@ const Subscription = ({
           </Box>
         </Box>
 
-        <Box p={2} width="50%" ref={myRef}>
+        <Box p={2} width="50%">
           <InheritanceField
             field='trialDuration'
             onChange={setProductData}
@@ -194,7 +185,7 @@ const Subscription = ({
                 onSelect={changeProducts}
                 selectOptions={filteredArr?.sort(sortByAlphabetical) || []}
                 curValue={checkValue(currentProductData?.nextGenerationOf[0])}
-                // isDisabled={currentProductData?.subProducts?.state === 'inherits'}
+              // isDisabled={currentProductData?.subProducts?.state === 'inherits'}
               />
             </Box>
           </Box>
@@ -243,7 +234,7 @@ Subscription.propTypes = {
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
   relatedProduct: PropTypes.object,
-  myRef: PropTypes.object,
+  errors: PropTypes.object,
 };
 
 export default Subscription;

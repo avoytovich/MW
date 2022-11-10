@@ -15,7 +15,6 @@ const CappingAndLimits = ({
   curDiscount,
   setCurDiscount,
   errors,
-  setErrors,
 }) => {
   const [validPeriod, setValidPeriod] = useState('between');
   useEffect(() => {
@@ -26,25 +25,6 @@ const CappingAndLimits = ({
     }
   }, [validPeriod]);
 
-  const withValidation = (e) => {
-    if (!e.target.value) {
-      setErrors({
-        ...errors,
-        cappingAndLimits: {
-          ...errors?.cappingAndLimits,
-          [e.target.name]: true,
-        },
-      });
-    } else {
-      setErrors({
-        ...errors,
-        cappingAndLimits: {
-          ...errors?.cappingAndLimits,
-          [e.target.name]: false,
-        },
-      });
-    }
-  };
 
   useEffect(() => {
     setValidPeriod(curDiscount.startDate ? 'between' : 'before');
@@ -129,11 +109,10 @@ const CappingAndLimits = ({
                 label='maximumUses'
                 value={curDiscount.maxUsages}
                 minMAx={{ min: 0, max: 9999, step: 1 }}
-                hasError={!!errors?.cappingAndLimits?.maximumUses}
+                hasError={errors?.cappingAndLimits?.includes('maxUsages')}
+                helperText={errors?.cappingAndLimits?.includes('maxUsages') && localization.t('errorNotifications.required')}
                 isRequired={curDiscount?.model === 'SINGLE_USE_CODE'}
-                helperText={errors?.cappingAndLimits?.maximumUses && localization.t('errorNotifications.required')}
                 onChangeInput={(e) => {
-                  withValidation(e);
                   setCurDiscount({
                     ...curDiscount,
                     maxUsages: e.target.value,
@@ -180,7 +159,6 @@ CappingAndLimits.propTypes = {
   curDiscount: PropTypes.object,
   setCurDiscount: PropTypes.func,
   errors: PropTypes.object,
-  setErrors: PropTypes.func,
 };
 
 export default CappingAndLimits;
