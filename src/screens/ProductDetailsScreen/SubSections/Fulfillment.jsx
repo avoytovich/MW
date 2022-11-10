@@ -19,7 +19,7 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 import InheritanceField from '../InheritanceField';
 
-import { InputCustom, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
+import { InputCustom, AutocompleteCustom } from '../../../components/Inputs';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import { copyText } from '../../../services/helpers/utils';
 import parentPaths from '../../../services/paths';
@@ -29,11 +29,11 @@ import api from '../../../api';
 import './FulfillmentAndSubscription.scss';
 
 const Fulfillment = ({
-  myRef,
   setProductData,
   currentProductData,
   selectOptions,
   parentId,
+  errors,
 }) => {
   const history = useHistory();
   const [packages, setPackages] = useState([]);
@@ -92,8 +92,10 @@ const Fulfillment = ({
             value={currentProductData?.fulfillmentTemplate}
             parentId={parentId}
             currentProductData={currentProductData}
+            buttonStyles={errors?.fulfillment?.includes('fulfillmentTemplate') ? { bottom: '16px' } : {}}
           >
             <AutocompleteCustom
+              name='fulfillmentTemplate'
               optionLabelKey='value'
               label="fulfillmentTemplate"
               onSelect={(newValue) => setProductData({
@@ -102,12 +104,14 @@ const Fulfillment = ({
               })}
               selectOptions={selectOptions?.fulfillmentTemplates || []}
               curValue={checkValue(currentProductData?.fulfillmentTemplate)}
+              error={errors?.fulfillment?.includes('fulfillmentTemplate')}
+              helperText={errors?.fulfillment?.includes('fulfillmentTemplate') && localization.t('errorNotifications.fulfillmentBundleProduct')}
             />
           </InheritanceField>
         </Box>
       </Box>
 
-      <Box width={1} display="flex" flexDirection='column' px={1} ref={myRef}>
+      <Box width={1} display="flex" flexDirection='column' px={1}>
         <Box p={2}>
           <Typography color="secondary">{localization.t('labels.licenseKeyPackages')}</Typography>
         </Box>
@@ -222,7 +226,7 @@ Fulfillment.propTypes = {
   currentProductData: PropTypes.object,
   selectOptions: PropTypes.object,
   parentId: PropTypes.string,
-  myRef: PropTypes.object,
+  errors: PropTypes.object,
 };
 
 export default Fulfillment;

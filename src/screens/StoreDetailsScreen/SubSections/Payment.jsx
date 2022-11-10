@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box, Typography, Grid, Divider, IconButton,
@@ -21,15 +21,14 @@ const Payment = ({
   setCurrentStoreData,
   selectOptions,
   errors,
-  setErrors,
+  handleSetErrors,
   customer: { availableAdditionalPaymentTypes: additionalPayment },
-  isRankingOpen,
   setIsRankingOpen,
-  myRef,
 }) => {
+  const [paymentErrors, setPaymentErrors] = useState({});
   const allCountries = getCountriesOptions();
   const handleDeleteError = (key, optionKey, onDelete) => {
-    const newErrors = { ...errors };
+    const newErrors = { ...paymentErrors };
     if (onDelete) {
       Object.keys(newErrors).forEach((errorKey) => {
         delete newErrors[errorKey][key];
@@ -51,21 +50,29 @@ const Payment = ({
         delete newErrors.countries;
       }
     }
-    setErrors({ ...newErrors });
+    setPaymentErrors({ ...newErrors });
   };
+  useEffect(() => {
+    const keys = Object.keys(paymentErrors);
+    if (keys.length && !errors?.payment?.length) {
+      handleSetErrors(true, 'payment', 'hasError');
+    } else if (!keys.length) {
+      handleSetErrors(false, 'payment', 'hasError');
+    }
+  }, [paymentErrors]);
 
   const handleUpdateGroup = (targetEvent, key, optionKey) => {
     let newPaymentGroups;
     if (!optionKey) {
       if (targetEvent.value.length === 0) {
-        setErrors({
-          ...errors,
+        setPaymentErrors({
+          ...paymentErrors,
           countries: {
-            ...errors.countries,
+            ...paymentErrors.countries,
             [key]: localization.t('errorNotifications.groupDoesNotReferenceAnyCountry'),
           },
         });
-      } else if (errors.countries?.[key]) {
+      } else if (paymentErrors.countries?.[key]) {
         handleDeleteError(key, optionKey);
       }
       newPaymentGroups = {
@@ -74,14 +81,14 @@ const Payment = ({
       };
     } else {
       if (Array.isArray(targetEvent.value) && targetEvent.value.length === 0) {
-        setErrors({
-          ...errors,
+        setPaymentErrors({
+          ...paymentErrors,
           rankedPaymentTabs: {
-            ...errors.rankedPaymentTabs,
-            [key]: { ...errors.rankedPaymentTabs?.[key], [optionKey]: localization.t('errorNotifications.groupDoesNotReferenceAnyPaymentType') },
+            ...paymentErrors.rankedPaymentTabs,
+            [key]: { ...paymentErrors.rankedPaymentTabs?.[key], [optionKey]: localization.t('errorNotifications.groupDoesNotReferenceAnyPaymentType') },
           },
         });
-      } else if (errors.rankedPaymentTabs?.[key]?.[optionKey]) {
+      } else if (paymentErrors.rankedPaymentTabs?.[key]?.[optionKey]) {
         handleDeleteError(key, optionKey);
       }
       newPaymentGroups = {
@@ -99,14 +106,14 @@ const Payment = ({
   };
   const handleUpdatePayment = (value) => {
     if (value?.length === 0) {
-      setErrors({
-        ...errors,
+      setPaymentErrors({
+        ...paymentErrors,
         defaultRanking: localization.t('errorNotifications.fieldIsRequired'),
       });
-    } else if (errors.defaultRanking) {
-      const newErrors = { ...errors };
+    } else if (paymentErrors.defaultRanking) {
+      const newErrors = { ...paymentErrors };
       delete newErrors.defaultRanking;
-      setErrors(newErrors);
+      setPaymentErrors(newErrors);
     }
     const newArray = [
       ...currentStoreData.designs.paymentComponent
@@ -200,7 +207,7 @@ const Payment = ({
           })}
         />
       </Box>
-      <Box p={2} ref={myRef}>
+      <Box p={2}>
         <AutocompleteWithChips
           arrayTypeValue
           label='additionalPaymentTypes'
@@ -265,8 +272,8 @@ const Payment = ({
           <Box p={2}>
             <DroppableSelectWithChip
               isRequired
-              hasError={!!errors.defaultRanking}
-              helperText={errors.defaultRanking ? errors.defaultRanking : ''}
+              hasError={!!paymentErrors.defaultRanking}
+              helperText={paymentErrors.defaultRanking ? paymentErrors.defaultRanking : ''}
               label="defaultRanking"
               value={
                 currentStoreData.designs.paymentComponent
@@ -293,8 +300,8 @@ const Payment = ({
                     <Box pb={2}>
                       <SelectWithChip
                         isRequired
-                        hasError={!!errors.countries?.[key]}
-                        helperText={errors.countries?.[key] ? errors.countries?.[key] : ''}
+                        hasError={!!paymentErrors.countries?.[key]}
+                        helperText={paymentErrors.countries?.[key] ? paymentErrors.countries?.[key] : ''}
                         label="countries"
                         name='countries'
                         value={currentStoreData.paymentGroups[key].countries}
@@ -334,8 +341,8 @@ const Payment = ({
                           <Box pb={2} width='100%'>
                             <DroppableSelectWithChip
                               isRequired
-                              hasError={!!errors.rankedPaymentTabs?.[key]?.[objKey]}
-                              helperText={errors.rankedPaymentTabs?.[key]?.[objKey] ? errors.rankedPaymentTabs?.[key][objKey] : ''}
+                              hasError={!!paymentErrors.rankedPaymentTabs?.[key]?.[objKey]}
+                              helperText={paymentErrors.rankedPaymentTabs?.[key]?.[objKey] ? paymentErrors.rankedPaymentTabs?.[key][objKey] : ''}
                               name='rankedPaymentTabs'
                               label="paymentTypes"
                               value={currentStoreData.paymentGroups[key].options[objKey].rankedPaymentTabs}
@@ -392,11 +399,9 @@ Payment.propTypes = {
   setCurrentStoreData: PropTypes.func,
   customer: PropTypes.object,
   selectOptions: PropTypes.object,
+  handleSetErrors: PropTypes.func,
   errors: PropTypes.object,
-  setErrors: PropTypes.func,
-  isRankingOpen: PropTypes.bool,
   setIsRankingOpen: PropTypes.func,
-  myRef: PropTypes.object,
 };
 
 export default Payment;

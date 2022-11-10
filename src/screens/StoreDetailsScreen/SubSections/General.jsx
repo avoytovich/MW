@@ -37,17 +37,13 @@ const checkBoxObj = [
 const General = ({
   currentStoreData,
   setCurrentStoreData,
-  customer,
   setErrors,
   errors,
-  myRef,
 }) => {
   const countriesOptions = getCountriesOptions();
   const availableLocales = getLanguagesOptions();
   const [open, setOpen] = useState(false);
   const [countrySelection, setCountrySelection] = useState('blocked');
-  const [errorMessages, setErrorMessages] = useState(null);
-
   const defaultBlacklisted = currentStoreData?.blackListedCountries || [];
   const [selectedCountries, setSelectedCountries] = useState([...defaultBlacklisted]);
 
@@ -60,12 +56,13 @@ const General = ({
   };
 
   const handleUpdateGtm = (key, newValue) => {
+    let hasErrors = false;
     if (/^GTM[A-Z0-9]*$/.test(newValue)) {
       const newErrors = { ...errors };
       delete newErrors[key];
-      setErrors({ ...newErrors });
+      hasErrors = false;
     } else {
-      setErrors({ ...errors, [key]: true });
+      hasErrors = true;
     }
     if (newValue === '') {
       const newData = { ...currentStoreData };
@@ -73,67 +70,26 @@ const General = ({
       setCurrentStoreData({
         ...newData,
       });
-      const newErrors = { ...errors };
-      delete newErrors[key];
-      setErrors({ ...newErrors });
+      hasErrors = false;
     } else {
       setCurrentStoreData({
         ...currentStoreData,
         [key]: newValue,
       });
     }
-  };
-
-  const withValidation = (target) => {
-    if (target.name !== 'senderName') {
-      if (!target.value) {
-        setErrors({
-          ...errors,
-          general: {
-            ...errors?.general,
-            [target.name]: true,
-          },
-        });
-      } else {
-        setErrors({
-          ...errors,
-          general: {
-            ...errors?.general,
-            [target.name]: false,
-          },
-        });
-      }
-    } else {
-      const isValidSenderName = () => target.value.startsWith(`${customer?.iamClient?.realmName}-`)
-        || target.value === customer?.iamClient?.realmName;
-      setErrors({
-        ...errors,
-        general: {
-          ...errors?.senderName,
-          [target.name]: !isValidSenderName(),
-        },
-      });
-    }
+    setErrors(hasErrors, 'general', key);
   };
 
   const withValidationInputCustom = (target) => {
-    if (target.name !== 'senderName') {
-      withValidation(target);
-      setCurrentStoreData({
-        ...currentStoreData,
-        [target.name]: target.value,
-      });
-    } else {
-      withValidation(target);
-      setCurrentStoreData({
-        ...currentStoreData,
-        emailSenderOverride: target.value,
-      });
-    }
+    setErrors(!target.value, 'general', target.name);
+    setCurrentStoreData({
+      ...currentStoreData,
+      [target.name]: target.value,
+    });
   };
 
   const withValidationSelectCustom = (target, options = {}) => {
-    withValidation(target);
+    setErrors(!target.value, 'general', target.name);
     setCurrentStoreData({
       ...currentStoreData,
       [target.name]: target.value,
@@ -190,7 +146,7 @@ const General = ({
   }, [countrySelection]);
 
   return (
-    <>
+    <Grid container>
       <Grid item md={12} sm={12}>
         <Box p={2}>
           <Modal
@@ -248,15 +204,15 @@ const General = ({
           </Box>
         </Box>
       </Grid>
-      <Grid item md={6} sm={12} ref={myRef}>
+      <Grid item md={6} sm={12}>
         <Box p={2}>
           <InputCustom
             isRequired
             label='name'
             value={currentStoreData.name}
             onChangeInput={(e) => withValidationInputCustom(e.target)}
-            hasError={!!errors?.general?.name}
-            helperText={errors?.general?.name && localization.t('errorNotifications.required')}
+            hasError={errors?.general?.includes('name')}
+            helperText={errors?.general?.includes('name') && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
@@ -275,20 +231,10 @@ const General = ({
                   <InputCustom
                     label='senderName'
                     value={currentStoreData.emailSenderOverride}
-                    onChangeInput={(e) => withValidationInputCustom(e.target)}
-                    // For EmailSenderOverride
-                    // hasError={!!errors?.general?.senderName
-                    //   || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
-                    //     && (currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName)
-                    //   )}
-                    // helperText={(errors?.general?.senderName
-                    //   || (!currentStoreData?.emailSenderOverride.startsWith(`${customer?.iamClient?.realmName}-`)
-                    //     && (
-                    //       currentStoreData?.emailSenderOverride !== customer?.iamClient?.realmName
-                    //     )))
-                    //   && (`${localization.t('errorNotifications.senderNameExactly')}
-                    //     "${customer?.iamClient?.realmName}" ${localization.t('errorNotifications.senderNameStartWith')}
-                    //     "${customer?.iamClient?.realmName}-" ${localization.t('errorNotifications.senderNameEnd')}`)}
+                    onChangeInput={(e) => setCurrentStoreData({
+                      ...currentStoreData,
+                      emailSenderOverride: e.target.value,
+                    })}
                   />
                 </Box>
                 <Button variant='contained' disabled>
@@ -309,8 +255,8 @@ const General = ({
             })}
             selectOptions={availableLocales || []}
             curValue={currentStoreData.defaultLocale}
-            error={!!errors?.general?.defaultLocale}
-            helperText={errors?.general?.defaultLocale && localization.t('errorNotifications.required')}
+            error={errors?.general?.includes('defaultLocale')}
+            helperText={errors?.general?.includes('defaultLocale') && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
@@ -328,16 +274,16 @@ const General = ({
         <Box p={2}>
           <InputCustom
             label='gtmId'
-            hasError={!!errors.gtmId}
-            helperText={errors.gtmId ? localization.t('errorNotifications.googleTagManagerIdShouldContains') : ''}
+            hasError={errors?.general?.includes('gtmId')}
+            helperText={errors?.general?.includes('gtmId') ? localization.t('errorNotifications.googleTagManagerIdShouldContains') : ''}
             value={currentStoreData.gtmId}
             onChangeInput={(e) => handleUpdateGtm('gtmId', e.target.value)}
           />
         </Box>
         <Box p={2}>
           <InputCustom
-            hasError={!!errors.nexwayGtmId}
-            helperText={errors.nexwayGtmId ? localization.t('errorNotifications.googleTagManagerIdShouldContains') : ''}
+            hasError={errors?.general?.includes('nexwayGtmId')}
+            helperText={errors?.general?.includes('nexwayGtmId') ? localization.t('errorNotifications.googleTagManagerIdShouldContains') : ''}
             label='gtmIdOwnedByNexway'
             value={currentStoreData.nexwayGtmId}
             onChangeInput={(e) => handleUpdateGtm('nexwayGtmId', e.target.value)}
@@ -357,22 +303,22 @@ const General = ({
             label='displayName'
             value={currentStoreData.displayName}
             onChangeInput={(e) => withValidationInputCustom(e.target)}
-            hasError={!!errors?.general?.displayName}
-            helperText={errors?.general?.displayName && localization.t('errorNotifications.required')}
+            hasError={errors?.general?.includes('displayName')}
+            helperText={errors?.general?.includes('displayName') && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
           <InputCustom
             label='storeWebsite'
-            hasError={!!errorMessages}
-            helperText={errorMessages}
+            hasError={errors?.general?.includes('storeWebsite')}
+            helperText={errors?.general?.includes('storeWebsite') && localization.t('errorNotifications.urlIsNotValid')}
             value={currentStoreData.storeWebsite}
             onChangeInput={(e) => {
               const validUrl = urlIsValid(e.target.value);
               if (!validUrl && e.target.value) {
-                setErrorMessages(localization.t('errorNotifications.invalidUrl'));
+                setErrors(true, 'general', 'storeWebsite');
               } else {
-                setErrorMessages(null);
+                setErrors(false, 'general', 'storeWebsite');
               }
               setCurrentStoreData({
                 ...currentStoreData,
@@ -394,7 +340,7 @@ const General = ({
               if (e.target.value) {
                 res = e.target.value.split(/\r?\n/);
               }
-              withValidation(e.target);
+              setErrors(!e.target.value, 'general', 'routes');
               setCurrentStoreData({
                 ...currentStoreData,
                 routes: res.map((item) => ({
@@ -402,8 +348,8 @@ const General = ({
                 })),
               });
             }}
-            hasError={!!errors?.general?.routes}
-            helperText={errors?.general?.routes && localization.t('errorNotifications.required')}
+            hasError={errors?.general?.includes('routes')}
+            helperText={errors?.general?.includes('routes') && localization.t('errorNotifications.required')}
           />
         </Box>
         <Box p={2}>
@@ -571,7 +517,7 @@ const General = ({
           />
         </Box>
       </Grid>
-    </>
+    </Grid>
   );
 };
 
@@ -580,8 +526,6 @@ General.propTypes = {
   setCurrentStoreData: PropTypes.func,
   setErrors: PropTypes.func,
   errors: PropTypes.object,
-  customer: PropTypes.object,
-  myRef: PropTypes.object,
 };
 
 export default General;

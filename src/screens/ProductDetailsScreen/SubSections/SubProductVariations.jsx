@@ -28,8 +28,6 @@ const SubProductVariations = ({
   open,
   handlePopoverOpen,
   handlePopoverClose,
-  myRefTab,
-  myRefScroll,
 }) => {
   const [selectedBundledProduct, setSelectedBundledProduct] = useState(null);
 
@@ -201,8 +199,8 @@ const SubProductVariations = ({
           </InheritanceField>
         </Box>
       </SectionLayout> */}
-      <SectionLayout label='variationParameters' width='100%' myRef={myRefTab}>
-        <Box display='flex' flexDirection='column' ref={myRefScroll}>
+      <SectionLayout label='variationParameters' width='100%'>
+        <Box display='flex' flexDirection='column'>
           {variablesDescriptions?.map(
             ({ label, description, variableValueDescriptions }, i) => {
               const disabled = currentProductData[description]?.state === 'inherits';
@@ -272,8 +270,6 @@ SubProductVariations.propTypes = {
   handlePopoverOpen: PropTypes.func,
   handlePopoverClose: PropTypes.func,
   variablesDescriptions: PropTypes.array,
-  myRefTab: PropTypes.object,
-  myRefScroll: PropTypes.object,
 };
 
 export default SubProductVariations;

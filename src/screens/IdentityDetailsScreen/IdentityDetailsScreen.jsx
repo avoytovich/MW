@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -12,9 +12,20 @@ import DetailPageWrapper from '../../components/utils/DetailPageWrapper';
 import IdentityDetailsView from './IdentityDetailsView';
 
 const IdentityDetailsScreen = () => {
+  const generalRef = useRef(null);
+  const identificationRef = useRef(null);
+  const permissionsRef = useRef(null);
+  const emailsRef = useRef(null);
+
+  const sectionRefs = [
+    { section: 'general', ref: generalRef },
+    { section: 'identification', ref: identificationRef },
+    { section: 'permissions', ref: permissionsRef },
+    { section: 'emails', ref: emailsRef },
+  ];
   const { id } = useParams();
-  const [curTab, setCurTab] = useState(0);
   const nxState = useSelector(({ account: { nexwayState } }) => nexwayState);
+  const [selectedSection, setSelectedSection] = useState(sectionRefs[0].section);
 
   const {
     setUpdate,
@@ -64,13 +75,14 @@ const IdentityDetailsScreen = () => {
       updateFunc={api.updateIdentityById}
       beforeSend={beforeSend}
       setUpdate={setUpdate}
-      tabs={{
-        curTab,
-        setCurTab,
-        tabLabels: ['general', 'identification', 'permissions', 'emails'],
-      }}
+      sectionRefs={sectionRefs}
+      selectedSection={selectedSection}
+      setSelectedSection={setSelectedSection}
+
     >
       <IdentityDetailsView
+        selectedSection={selectedSection}
+        sectionRefs={sectionRefs}
         id={id}
         curIdentity={curIdentity}
         identityType={identityType}
@@ -79,7 +91,7 @@ const IdentityDetailsScreen = () => {
         addSecretKey={addSecretKey}
         removeSecretKey={removeSecretKey}
         selectOptions={selectOptions}
-        curTab={curTab}
+        setSelectedSection={setSelectedSection}
       />
     </DetailPageWrapper>
   );

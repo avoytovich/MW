@@ -11,8 +11,9 @@ import {
 import CodeIcon from '@mui/icons-material/Code';
 import CodeOffIcon from '@mui/icons-material/CodeOff';
 import LocalizedContentInputs from '../../../components/utils/LocalizedContent';
-import { DefaultLanguage } from './LocalizationInputs';
-
+import { AutocompleteCustom } from '../../../components/Inputs';
+import InheritanceField from '../InheritanceField';
+import localization from '../../../localization';
 import { getLanguagesOptions } from '../../../components/utils/OptionsFetcher/OptionsFetcher';
 import JsonEditor from '../../../components/JsonEditor';
 
@@ -34,7 +35,6 @@ const defaultEditorData = {
 };
 
 const LocalizedContent = ({
-  myRef,
   parentId,
   setCodeMode,
   codeMode,
@@ -89,28 +89,44 @@ const LocalizedContent = ({
       {
         !codeMode ? (
           <>
-            <DefaultLanguage
-              myRef={myRef}
-              curData={curLocalizedData}
-              selectOptions={availableLocales}
-              onChange={handleChangeDefaultLanguage}
-              parentId={parentId}
-              errors={errors}
-            />
-            <LocalizedContentInputs
-              parentId={parentId}
-              isVertical
-              defaultLocale={checkValue(curLocalizedData.fallbackLocale)}
-              setLocalizedData={(newValue) => {
-                setCurLocalizedData((c) => ({
-                  ...c,
-                  i18nFields: newValue,
-                }));
-              }}
-              errors={localizedErrors}
-              setErrors={setLocalizedErrors}
-              localizedData={curLocalizedData?.i18nFields}
-            />
+            <Box p={2} width='50%' display='flex'>
+              <InheritanceField
+                field='fallbackLocale'
+                onChange={handleChangeDefaultLanguage}
+                value={curLocalizedData.fallbackLocale}
+                selectOptions={availableLocales || []}
+                parentId={parentId}
+                currentProductData={curLocalizedData}
+                buttonStyles={errors?.localizedContent?.includes('fallbackLocale') ? { bottom: '16px' } : {}}
+              >
+                <AutocompleteCustom
+                  optionLabelKey='value'
+                  label="defaultLanguage"
+                  onSelect={(newValue) => handleChangeDefaultLanguage(newValue)}
+                  selectOptions={availableLocales || []}
+                  curValue={checkValue(curLocalizedData.fallbackLocale)}
+                  error={errors?.localizedContent?.includes('fallbackLocale')}
+                  helperText={errors?.localizedContent?.includes('fallbackLocale') && localization.t('errorNotifications.required')}
+                />
+              </InheritanceField>
+            </Box>
+            <Box minHeight='504px'>
+              <LocalizedContentInputs
+                parentId={parentId}
+                requiredOnlyDefault
+                isVertical
+                defaultLocale={checkValue(curLocalizedData.fallbackLocale)}
+                setLocalizedData={(newValue) => {
+                  setCurLocalizedData((c) => ({
+                    ...c,
+                    i18nFields: newValue,
+                  }));
+                }}
+                errors={localizedErrors}
+                setErrors={setLocalizedErrors}
+                localizedData={curLocalizedData?.i18nFields}
+              />
+            </Box>
           </>
         ) : (
           <JsonEditor

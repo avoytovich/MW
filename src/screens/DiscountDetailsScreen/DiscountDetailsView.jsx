@@ -76,7 +76,6 @@ const DiscountDetailsView = ({
             curDiscount={curDiscount}
             setCurDiscount={setCurDiscount}
             errors={errors}
-            setErrors={setErrors}
           />
         </DiscountSection>
       )}

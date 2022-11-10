@@ -1,20 +1,15 @@
-import React, { useEffect } from 'react';
+/* eslint-disable no-nested-ternary */
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Box } from '@mui/material';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-
 import ProductFiles from './SubSections/ProductFiles';
 
 import General from './SubSections/General';
 import Prices from './SubSections/Prices';
 import Fulfillment from './SubSections/Fulfillment';
 import Subscription from './SubSections/Subscription';
-import SectionLayout from '../../components/SectionLayout';
+import ScrollSectionLayout from '../../components/SectionLayout/ScrollSectionLayout';
 import LocalizedContent from './SubSections/LocalizedContent';
 import Variations from './SubSections/Variations';
-import SubProductVariations from './SubSections/SubProductVariations';
-import { checkValue } from '../../services/helpers/dataStructuring';
-import useScroolWithTabs from './hooks/useScroolWithTabs';
 
 import './productDetailsScreen.scss';
 
@@ -32,10 +27,6 @@ const ProductDetailsView = ({
   parentId,
   variablesDescriptions,
   storeLanguages,
-  setSaveDisabled,
-  setTabsDisabled,
-  curTab,
-  setCurTab,
   setCodeMode,
   codeMode,
   jsonIsValid,
@@ -52,214 +43,147 @@ const ProductDetailsView = ({
   parentDescriptionData,
   localizedErrors,
   setLocalizedErrors,
-  refTab,
-  refScrool,
-  isScroolUp,
-  isScroolDown,
   errors,
-  setErrors,
-}) => {
-  const checkSaveDisable = () => {
-    const {
-      relatedContents, resources, lifeTime, subscriptionTemplate,
-    } = curProductData;
+  sectionRefs,
+  setSelectedSection,
+  contents,
+  resources,
+  selectedSection,
+  modified,
+  setModified,
+}) => (
+  <>
+    <ScrollSectionLayout
+      sectionRef={sectionRefs[0]}
+      setSelectedSection={setSelectedSection}
+      selectedSection={selectedSection}
+    >
+      <General
+        modified={modified}
+        setModified={setModified}
+        selectOptions={selectOptions}
+        setProductData={setProductData}
+        currentProductData={curProductData}
+        parentId={parentId}
+        variablesDescriptions={variablesDescriptions}
+        errors={errors}
+      />
+    </ScrollSectionLayout>
+    <ScrollSectionLayout
+      sectionRef={sectionRefs[1]}
+      setSelectedSection={setSelectedSection}
+      selectedSection={selectedSection}
+    >
+      <Fulfillment
+        selectOptions={selectOptions}
+        setProductData={setProductData}
+        currentProductData={curProductData}
+        parentId={parentId}
+        errors={errors}
+      />
+    </ScrollSectionLayout>
+    <ScrollSectionLayout
+      sectionRef={sectionRefs[2]}
+      setSelectedSection={setSelectedSection}
+      selectedSection={selectedSection}
+    >
+      <Subscription
+        selectOptions={selectOptions}
+        setProductData={setProductData}
+        currentProductData={curProductData}
+        parentId={parentId}
+        relatedProduct={relatedProduct}
+        errors={errors}
+      />
+    </ScrollSectionLayout>
+    <ScrollSectionLayout
+      sectionRef={sectionRefs[3]}
+      setSelectedSection={setSelectedSection}
+      selectedSection={selectedSection}
+    >
+      <LocalizedContent
+        errors={errors}
+        localizedErrors={localizedErrors}
+        setLocalizedErrors={setLocalizedErrors}
+        curLocalizedData={curLocalizedData}
+        setCurLocalizedData={setCurLocalizedData}
+        storeLanguages={storeLanguages}
+        setProductData={setProductData}
+        currentProductData={curProductData}
+        productData={productData}
+        parentId={parentId}
+        setCodeMode={setCodeMode}
+        codeMode={codeMode}
+        jsonIsValid={jsonIsValid}
+        setJsonIsValid={setJsonIsValid}
+        descriptionData={descriptionData}
+        parentDescriptionData={parentDescriptionData}
+        setDescriptionData={setDescriptionData}
+      />
+    </ScrollSectionLayout>
 
-    let disableSave = !!(lifeTime.name === 'PERMANENT' && subscriptionTemplate);
-
-    const rcChecked = checkValue(relatedContents);
-    const resourceChecked = checkValue(resources);
-
-    if (rcChecked?.value?.length) {
-      const [hasInvalid] = rcChecked.value.filter((v) => !v.label || !v.url);
-      disableSave = disableSave || !!hasInvalid;
-    }
-
-    if (resourceChecked?.length) {
-      const [hasInvalid] = resourceChecked.filter((v) => !v.label || !v.url);
-      disableSave = disableSave || !!hasInvalid;
-    }
-
-    setSaveDisabled(disableSave);
-  };
-
-  const [showTopBtn, goToTop] = useScroolWithTabs(
-    refScrool, curTab, setCurTab, isScroolUp, isScroolDown, refTab, parentId,
-  );
-
-  useEffect(() => {
-    const {
-      catalogId, publisherRefId, genericName, type, prices, priceByCountryByCurrency,
-    } = curProductData;
-    const currency = prices?.state ? prices.value.defaultCurrency !== '' : prices.defaultCurrency !== '';
-
-    const byCountryByCurrency = priceByCountryByCurrency.state
-      ? Object.keys(priceByCountryByCurrency.value).length > 0
-      : Object.keys(priceByCountryByCurrency).length > 0;
-
-    if (catalogId
-      && publisherRefId
-      && genericName
-      && type
-      && byCountryByCurrency && currency) {
-      setTabsDisabled(false);
-    } else {
-      setTabsDisabled(true);
-    }
-
-    checkSaveDisable();
-  }, [curProductData]);
-
-  return (
-    <>
-      <SectionLayout
-        dataTest='general'
-        label='general'
-        myRef={refTab[0]}
-      >
-        <General
-          myRef={refScrool[0]}
-          selectOptions={selectOptions}
-          setProductData={setProductData}
-          currentProductData={curProductData}
-          setSaveDisabled={setSaveDisabled}
-          parentId={parentId}
-          variablesDescriptions={variablesDescriptions}
-          errors={errors}
-          setErrors={setErrors}
-        />
-      </SectionLayout>
-      <SectionLayout
-        dataTest='fulfillment'
-        label='fulfillment'
-        myRef={refTab[1]}
-      >
-        <Fulfillment
-          myRef={refScrool[1]}
-          selectOptions={selectOptions}
-          setProductData={setProductData}
-          currentProductData={curProductData}
-          parentId={parentId}
-        />
-      </SectionLayout>
-      <SectionLayout
-        dataTest='subscription'
-        label='subscription'
-        myRef={refTab[2]}
-      >
-        <Subscription
-          myRef={refScrool[2]}
-          selectOptions={selectOptions}
-          setProductData={setProductData}
-          currentProductData={curProductData}
-          parentId={parentId}
-          relatedProduct={relatedProduct}
-        />
-      </SectionLayout>
-      <SectionLayout
-        dataTest='localizedContent'
-        label='localizedContent'
-        myRef={refTab[3]}
-      >
-        <LocalizedContent
-          myRef={refScrool[3]}
-          errors={errors}
-          localizedErrors={localizedErrors}
-          setLocalizedErrors={setLocalizedErrors}
-          curLocalizedData={curLocalizedData}
-          setCurLocalizedData={setCurLocalizedData}
-          storeLanguages={storeLanguages}
-          setProductData={setProductData}
-          currentProductData={curProductData}
-          productData={productData}
-          parentId={parentId}
-          setCodeMode={setCodeMode}
-          codeMode={codeMode}
-          jsonIsValid={jsonIsValid}
-          setJsonIsValid={setJsonIsValid}
-          descriptionData={descriptionData}
-          parentDescriptionData={parentDescriptionData}
-          setDescriptionData={setDescriptionData}
-        />
-      </SectionLayout>
-      <SectionLayout
-        dataTest='prices'
-        label='prices'
-        myRef={refTab[4]}
-      >
-        <Prices
-          myRef={refScrool[4]}
-          digitsErrors={digitsErrors}
-          setDigitsErrors={setDigitsErrors}
-          priceTableError={priceTableError}
-          setPriceTableError={setPriceTableError}
-          selectOptions={selectOptions}
-          setProductData={setProductData}
-          currentProductData={curProductData}
-          productData={productData}
-          setNewData={setProductLocalizationChanges}
-          parentId={parentId}
-          errors={errors}
-          setErrors={setErrors}
-        />
-      </SectionLayout>
-      <SectionLayout
-        dataTest='productFiles'
-        label='productFiles'
-        myRef={refTab[5]}
-      >
-        <ProductFiles
-          myRef={refScrool[5]}
-          productData={productData}
-          currentProductData={curProductData}
-          setProductData={setProductData}
-          setSaveDisabled={setSaveDisabled}
-          parentId={parentId}
-        />
-      </SectionLayout>
-      {curTab === 5 && parentId ? null : (parentId ? (
-        <SubProductVariations
-          myRefTab={refTab[6]}
-          myRefScroll={refScrool[6]}
-          setProductData={setProductData}
-          setProductDetails={setProductDetails}
-          currentProductData={curProductData}
-          productDetails={productDetails}
-          setSubProductVariations={setSubProductVariations}
-              // productVariations={productVariations}
-          parentId={parentId}
-          selectOptions={selectOptions}
-          variablesDescriptions={variablesDescriptions}
-        />
-      ) : (
-        <Variations
-          myRefTab={refTab[6]}
-          myRefScroll={refScrool[6]}
-          handleDeleteVariation={handleDeleteVariation}
-          setSubProductVariations={setSubProductVariations}
-          selectOptions={selectOptions}
-          setProductData={setProductData}
-          currentProductData={curProductData}
-          productVariations={productVariations}
-          setProductDetails={setProductDetails}
-          productDetails={productDetails}
-          setProductLocalizationChanges={setProductLocalizationChanges}
-        />
-      ))}
-      <Box m={2} className='top-to-btm'>
-        {showTopBtn && (
-          <ArrowUpwardIcon
-            className='icon-position icon-style'
-            onClick={goToTop}
+    <ScrollSectionLayout
+      sectionRef={sectionRefs[4]}
+      setSelectedSection={setSelectedSection}
+      selectedSection={selectedSection}
+    >
+      <Prices
+        modified={modified}
+        setModified={setModified}
+        digitsErrors={digitsErrors}
+        setDigitsErrors={setDigitsErrors}
+        priceTableError={priceTableError}
+        setPriceTableError={setPriceTableError}
+        selectOptions={selectOptions}
+        setProductData={setProductData}
+        currentProductData={curProductData}
+        productData={productData}
+        setNewData={setProductLocalizationChanges}
+        parentId={parentId}
+        errors={errors}
+      />
+    </ScrollSectionLayout>
+    <ScrollSectionLayout
+      sectionRef={sectionRefs[5]}
+      setSelectedSection={setSelectedSection}
+      selectedSection={selectedSection}
+    >
+      <ProductFiles
+        productData={productData}
+        currentProductData={curProductData}
+        setProductData={setProductData}
+        parentId={parentId}
+        contents={contents}
+        resources={resources}
+      />
+    </ScrollSectionLayout>
+    {
+      !parentId && (
+        <ScrollSectionLayout
+          sectionRef={sectionRefs[6]}
+          setSelectedSection={setSelectedSection}
+          selectedSection={selectedSection}
+        >
+          <Variations
+            handleDeleteVariation={handleDeleteVariation}
+            setSubProductVariations={setSubProductVariations}
+            selectOptions={selectOptions}
+            setProductData={setProductData}
+            currentProductData={curProductData}
+            productVariations={productVariations}
+            setProductDetails={setProductDetails}
+            productDetails={productDetails}
+            setProductLocalizationChanges={setProductLocalizationChanges}
           />
-        )}
-      </Box>
-    </>
-  );
-};
+
+        </ScrollSectionLayout>
+      )
+    }
+  </>
+);
 
 ProductDetailsView.propTypes = {
-  refTab: PropTypes.array,
-  refScrool: PropTypes.array,
+  sectionRefs: PropTypes.array,
   setProductData: PropTypes.func,
   curProductData: PropTypes.object,
   selectOptions: PropTypes.object,
@@ -272,10 +196,6 @@ ProductDetailsView.propTypes = {
   productData: PropTypes.object,
   variablesDescriptions: PropTypes.array,
   storeLanguages: PropTypes.array,
-  curTab: PropTypes.number,
-  setCurTab: PropTypes.func,
-  setSaveDisabled: PropTypes.func,
-  setTabsDisabled: PropTypes.func,
   setCodeMode: PropTypes.func,
   codeMode: PropTypes.bool,
   jsonIsValid: PropTypes.bool,
@@ -290,13 +210,16 @@ ProductDetailsView.propTypes = {
   setCurLocalizedData: PropTypes.func,
   localizedErrors: PropTypes.object,
   setLocalizedErrors: PropTypes.func,
-  isScroolDown: PropTypes.bool,
-  isScroolUp: PropTypes.bool,
   errors: PropTypes.object,
-  setErrors: PropTypes.func,
   descriptionData: PropTypes.object,
   parentDescriptionData: PropTypes.any,
   setDescriptionData: PropTypes.func,
+  setSelectedSection: PropTypes.func,
+  contents: PropTypes.array,
+  resources: PropTypes.array,
+  selectedSection: PropTypes.string,
+  modified: PropTypes.array,
+  setModified: PropTypes.func,
 };
 
 export default ProductDetailsView;

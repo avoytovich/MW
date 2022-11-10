@@ -83,7 +83,11 @@ const handleGetOptions = (
         }
       },
     );
-  }).finally(() => setLoading(false));
+  }).finally(() => {
+    if (!id) {
+      setLoading(false);
+    }
+  });
 };
 
 const handleGetProductDetails = (
@@ -414,6 +418,8 @@ const tabLabelsVariation = [
   'productFiles',
 ];
 
+const defaultResourcesFiles = { key: 0, label: null, url: null };
+
 export {
   handleGetOptions,
   handleGetProductDetails,
@@ -427,5 +433,6 @@ export {
   defProductVariationObj,
   tabLabels,
   tabLabelsVariation,
+  defaultResourcesFiles,
   notShowMaxPaymentsPart,
 };

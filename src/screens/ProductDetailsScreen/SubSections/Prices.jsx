@@ -1,5 +1,5 @@
 /* eslint-disable no-lonely-if */
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import {
@@ -18,18 +18,15 @@ import { toast } from 'react-toastify';
 import moment from 'moment';
 import PricesTable from './PricesTable';
 import InheritanceField from '../InheritanceField';
-import { SelectCustom, SelectWithDeleteIcon, AutocompleteCustom } from '../../../components/Inputs';
+import { SelectCustom, AutocompleteCustom } from '../../../components/Inputs';
 import { getCurrency } from '../../../services/selectOptions/selectOptions';
 import { checkValue } from '../../../services/helpers/dataStructuring';
 import parentPaths from '../../../services/paths';
 import localization from '../../../localization';
 
-import api from '../../../api';
-
 import './prices.scss';
 
 const Prices = ({
-  myRef,
   selectOptions,
   productData,
   currentProductData,
@@ -41,42 +38,11 @@ const Prices = ({
   setDigitsErrors,
   errors,
   setErrors,
+  modified,
+  setModified,
 }) => {
   const [scheduledPrices, setScheduledPrices] = useState([]);
   const history = useHistory();
-
-  useEffect(() => {
-    let prices;
-    if (currentProductData.priceByCountryByCurrency.value) {
-      if (Object.keys(currentProductData.priceByCountryByCurrency.value).length
-        && currentProductData.prices.value.defaultCurrency
-        && !Object.keys(currentProductData.priceByCountryByCurrency.value)
-          .includes(currentProductData.prices.value.defaultCurrency)) {
-        prices = { ...currentProductData.prices, value: { ...currentProductData.prices.value, defaultCurrency: '' } };
-      }
-    } else {
-      if (Object.keys(currentProductData.priceByCountryByCurrency).length
-        && currentProductData.prices.defaultCurrency
-        && !Object.keys(currentProductData.priceByCountryByCurrency)
-          .includes(currentProductData.prices.defaultCurrency)) {
-        prices = { ...currentProductData.prices, defaultCurrency: '' };
-      }
-    }
-    if (prices) {
-      setProductData({ ...currentProductData, prices });
-    }
-  }, [currentProductData]);
-
-  useEffect(() => {
-    if (currentProductData?.id) {
-      api
-        .getPricesByProductId(currentProductData.id)
-        .then(({ data }) => setScheduledPrices(data?.items || []));
-    } else {
-      setScheduledPrices([]);
-    }
-    return () => setScheduledPrices([]);
-  }, []);
 
   const makeCopy = (value) => {
     navigator.clipboard.writeText(value)
@@ -91,7 +57,7 @@ const Prices = ({
   };
   return (
     <>
-      <Box px={2} className='product-prices' mb={2} ref={myRef}>
+      <Box px={2} className='product-prices' mb={2}>
         <TableContainer component={Paper}>
           <InheritanceField
             additionalField='prices'
@@ -106,6 +72,10 @@ const Prices = ({
           </InheritanceField>
 
           <PricesTable
+            modified={modified}
+            setModified={setModified}
+            setErrors={setErrors}
+            errors={errors}
             digitsErrors={digitsErrors}
             setDigitsErrors={setDigitsErrors}
             priceTableError={priceTableError}
@@ -115,8 +85,6 @@ const Prices = ({
             currentProductData={currentProductData}
             setProductData={setProductData}
             priceByCountryByCurrency={checkValue(currentProductData?.priceByCountryByCurrency)}
-            errors={errors}
-            setErrors={setErrors}
           />
         </TableContainer>
       </Box>
@@ -264,9 +232,10 @@ Prices.propTypes = {
   priceTableError: PropTypes.array,
   digitsErrors: PropTypes.object,
   setDigitsErrors: PropTypes.func,
-  myRef: PropTypes.object,
   errors: PropTypes.object,
   setErrors: PropTypes.func,
+  modified: PropTypes.array,
+  setModified: PropTypes.func,
 };
 
 export default Prices;

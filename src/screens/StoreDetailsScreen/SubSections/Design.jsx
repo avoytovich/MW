@@ -16,7 +16,6 @@ const Design = ({
   resourceLabel,
   currentStoreResources,
   setCurrentStoreResources,
-  myRef,
 }) => {
   const [curTab, setCurTab] = useState(0);
   const handleUpdateDesign = (parent, updateParam, value) => {
@@ -92,7 +91,7 @@ const Design = ({
                     : ''}
                 />
               </Box>
-              <Box p={2} ref={myRef}>
+              <Box p={2}>
                 <AutocompleteCustom
                   optionLabelKey='value'
                   label="layout"
@@ -345,7 +344,6 @@ Design.propTypes = {
   currentStoreData: PropTypes.object,
   setCurrentStoreData: PropTypes.func,
   selectOptions: PropTypes.object,
-  myRef: PropTypes.object,
 };
 
 export default Design;

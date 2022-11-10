@@ -49,6 +49,7 @@ const errorNotifications = {
   defaultPriceIsRequired: 'Default price is required',
   nextIdsNotFound: 'Next Ids not found',
   shouldBeUnique: 'Should be unique',
+  fulfillmentBundleProduct: 'Product with fulfillment model can not be bundle',
 };
 
 export default errorNotifications;
